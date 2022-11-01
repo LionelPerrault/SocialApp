@@ -41,7 +41,7 @@ class _MyAppState extends AppStateMVC<MyApp> {
         valueListenable: Helper.setting,
         builder: (context, Setting _setting, _) {
             return MaterialApp(
-                title: 'Test POC',
+                title: 'Shnatter',
                 //home: HomeScreen(key: UniqueKey()),
                 locale: _setting.language,
                 localizationsDelegates: [
