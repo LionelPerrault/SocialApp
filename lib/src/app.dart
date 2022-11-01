@@ -10,6 +10,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_generator.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'controllers/AppController.dart';
@@ -65,10 +66,8 @@ class _MyAppState extends AppStateMVC<MyApp> {
                 // ignore: dead_code
                 theme: _setting.isBright? ThemeData(
                                   brightness: Brightness.dark,
-                                  primaryColor: Colors.greenAccent[800],
-                                  primarySwatch: Colors.green,
-                                  primaryColorDark: Colors.greenAccent[500],
-                                  backgroundColor: Color(0xffeeeeee),
+                                  primarySwatch: kprimarySwatch,
+                                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
                                   fontFamily: 'Georgia',
                                   buttonTheme: ButtonThemeData(
                                     buttonColor: Color(0xff00adb5),
@@ -81,9 +80,7 @@ class _MyAppState extends AppStateMVC<MyApp> {
                                   ):
                                   ThemeData(
                                   brightness: Brightness.light,
-                                  primaryColor: Colors.greenAccent[800],
-                                  primarySwatch: Colors.green,
-                                  primaryColorDark: Colors.greenAccent[500],
+                                  primarySwatch: kprimarySwatch,
                                   backgroundColor: Color(0xffeeeeee),
                                   fontFamily: 'Georgia',
                                   buttonTheme: ButtonThemeData(

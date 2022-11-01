@@ -48,6 +48,7 @@ dependencies:
   firebase_core: ^2.1.0
   cloud_firestore: ^4.0.2
   mobile_scanner: ^2.0.0
+  flutter_svg: ^1.1.6
 
 dev_dependencies:
   flutter_test:
@@ -71,8 +72,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  #assets:
-  #   - assets/
+  assets:
+     - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
