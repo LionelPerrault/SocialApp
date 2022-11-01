@@ -1,9 +1,9 @@
 import 'dart:js';
 
 import 'package:flutter/material.dart';
-import 'package:my_app/src/routes/route_names.dart';
-import 'package:my_app/src/views/homescreen.dart';
-import 'package:my_app/src/views/qrscanscreen.dart';
+import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/homescreen.dart';
+import 'package:shnatter/src/views/qrscanscreen.dart';
 
 class RouteGenerator {
   

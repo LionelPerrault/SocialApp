@@ -4,8 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:my_app/src/helpers/helper.dart';
-import 'package:my_app/src/routes/route_names.dart';
+import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 
 import '../controllers/HomeController.dart';
 import '../utils/size_config.dart';
