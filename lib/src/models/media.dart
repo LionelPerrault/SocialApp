@@ -1,5 +1,5 @@
 class Media {
-  String id = ' ';
+  String id = '';
   String name = '';
   String url = '';
   String thumb = '';
