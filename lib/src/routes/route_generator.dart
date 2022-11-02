@@ -31,8 +31,12 @@ class RouteGenerator {
       case RouteNames.privacy:
         return MaterialPageRoute(
             builder: (context) => PrivacyScreen(), settings: settings);
+      case RouteNames.login:
+        return MaterialPageRoute(
+            builder: (context) => LoginScreen(), settings: settings);
       default:
-        return MaterialPageRoute(builder: (context) => LoginScreen());
+        return MaterialPageRoute(
+            builder: (context) => HomeScreen(), settings: settings);
     }
   }
 }
