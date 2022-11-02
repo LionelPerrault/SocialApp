@@ -94,7 +94,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                   height: 30,
                                   child: TextFormField(
                                     onChanged: (newIndex) {
-                                      con.setState(() => con.email=newIndex);
                                     },
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(horizontal: 40),
@@ -133,7 +132,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                   child: TextFormField(
                                     obscureText: true,
                                     onChanged: (newIndex) {
-                                      con.setState(() => con.email=newIndex);
                                     },
 
                                     decoration: InputDecoration(
@@ -207,7 +205,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                             child: WhiteButton(
                                     buttonName:  "Login",
                                     onPressed: () =>{
-                                      con.changeLaguage("en")
                                     },
                                     miniumSize: const Size(260, 35),
                                     ),
