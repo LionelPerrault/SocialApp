@@ -65,7 +65,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            Column(
+            ListView(
               children: [
                 ShnatterNavigation(searchController: searchController,onSearchBarFocus: onSearchBarFocus,),
                 SingleChildScrollView(
