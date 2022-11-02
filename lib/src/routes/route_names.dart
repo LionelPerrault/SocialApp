@@ -4,4 +4,5 @@ class RouteNames {
   static const homePage = '/home';
   static const qrCodeScan = '/qrscan';
   static const register = '/register';
+  static const reset = '/reset';
 }

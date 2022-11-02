@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
+import 'package:shnatter/src/views/resetpassword.dart';
 
 class RouteGenerator {
   
@@ -21,6 +22,10 @@ class RouteGenerator {
       case RouteNames.homePage:
         return MaterialPageRoute(builder: 
           (context) => HomeScreen()
+        );
+      case RouteNames.reset:
+        return MaterialPageRoute(builder: 
+          (context) => ResetScreen()
         );
       default:
          return MaterialPageRoute(builder: 
