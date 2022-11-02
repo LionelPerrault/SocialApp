@@ -20,6 +20,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => QrCodeScan());
       case RouteNames.register:
         return MaterialPageRoute(builder: (context) => RegisterScreen());
+        return MaterialPageRoute(builder: (context) => HomeScreen());
       default:
         return MaterialPageRoute(builder: (context) => HomeScreen());
     }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/navigationbar.dart';
 
 import '../controllers/HomeController.dart';
 import '../utils/size_config.dart';
@@ -13,6 +14,7 @@ import '../widget/mprimary_button.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key})
@@ -25,7 +27,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends mvc.StateMVC<HomeScreen> {
-  bool light = true;
   final List<String> imagesList = [
     'assets/images/3.jpg',
     'assets/images/2.jpg',
@@ -61,9 +62,19 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
             {con.getWalletFromPref()}
         });
   }
+    
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+    //
+    @override
+    void initState() {
+      add(widget.con);
+      con = controller as HomeController;
+      super.initState();
+    }
 
   late HomeController con;
-
+<<<<<<< HEAD
   @override
   Widget addEmail(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
@@ -562,4 +573,26 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
           ],
         ));
   }
+=======
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+          key: _scaffoldKey,
+          body: 
+            Column(children: [
+              ShnatterNavigation(),
+              Text("text"),
+              TextField(
+                controller: new TextEditingController(text: "test"),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                  labelText: 'Search',
+                ),
+              ),
+
+            ],)
+        );
+    }
+>>>>>>> 83f8f0a66b581c6cda72c5b2dfb14bae49a84bc9
 }
