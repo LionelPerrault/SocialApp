@@ -5,4 +5,6 @@ class RouteNames {
   static const qrCodeScan = '/qrscan';
   static const register = '/register';
   static const reset = '/reset';
+  static const terms = '/terms';
+  static const privacy = '/privacy';
 }
