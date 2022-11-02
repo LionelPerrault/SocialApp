@@ -72,24 +72,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       height: 20,
                     ) //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                     ),
-                Container(
-                  width: SizeConfig(context).screenWidth * 0.4,
-                  child: const TextField(
-                    cursorColor: Colors.white,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search,
-                          color: Color.fromARGB(150, 170, 212, 255), size: 20),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                      ),
-                      filled: true,
-                      fillColor: Color(0xff202020),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(fontSize: 15.0, color: Colors.white),
-                    ),
-                  ),
-                ),
+                
               ],
             ),
             Container(
@@ -193,3 +176,4 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         ));
   }
 }
+
