@@ -15,8 +15,6 @@ class Helper {
             "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
         .hasMatch(input);
   }
-  static const String tokenName = "JB-Token";
-  static const String tokenIcon = "assets/images/jb.jpg";
   static showToast(String message) {
      Fluttertoast.showToast(
                   msg: message,

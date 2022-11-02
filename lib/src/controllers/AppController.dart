@@ -19,23 +19,6 @@ class AppController extends ControllerMVC {
     await Firebase.initializeApp(
        options: DefaultFirebaseOptions.currentPlatform,
     );
-    //
-    
-   
-    //Stream<QuerySnapshot<TokenLogin>> data = await authdata.where('email', isEqualTo:sampleMail).snapshots();
-    //data.forEach((element) {
-    //  print(element);
-    //});
-
-
-    /*
-    await Firestore.instance.collection("products").add({
-    'productName': _productName,
-    'productPrice': _productPrice,
-    'imageUrl': _imageUrl,
-    'isFavourite': _isFavourite,
-    });
-    */
     return true;
   }
   @override

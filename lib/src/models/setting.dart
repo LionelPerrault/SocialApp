@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Setting {
-    late String appName = '';
+    late String appName = ' ';
     late String mainColor;
     late String mainDarkColor;
     late String secondColor;
