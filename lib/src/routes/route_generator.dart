@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/qrscanscreen.dart';
+import 'package:shnatter/src/views/loginscreen.dart';
 
 class RouteGenerator {
   
@@ -28,7 +29,7 @@ class RouteGenerator {
         );
       default:
          return MaterialPageRoute(builder: 
-          (context) => HomeScreen()
+          (context) => LoginScreen()
         );
     }   
   }
