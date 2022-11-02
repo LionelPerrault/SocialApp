@@ -3,7 +3,6 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/homescreen.dart';
-import 'package:shnatter/src/views/qrscanscreen.dart';
 
 class RouteGenerator {
   
@@ -21,10 +20,6 @@ class RouteGenerator {
       case RouteNames.homePage:
         return MaterialPageRoute(builder: 
           (context) => HomeScreen()
-        );
-      case RouteNames.qrCodeScan:
-        return MaterialPageRoute(builder: 
-          (context) => QrCodeScan()
         );
       default:
          return MaterialPageRoute(builder: 
