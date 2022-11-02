@@ -16,6 +16,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'box/notification.dart';
+
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key})
       : con = HomeController(),
@@ -29,18 +31,32 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends mvc.StateMVC<HomeScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  bool showSearch = true;
+  final TextEditingController searchController = TextEditingController(
+    
+  );
+  bool showSearch = false;
+  late FocusNode searchFocusNode;
   //
   @override
   void initState() {
     add(widget.con);
     con = controller as HomeController;
     super.initState();
+    searchFocusNode = FocusNode();
   }
 
   late HomeController con;
-
+  void onSearchBarFocus()
+  {
+    searchFocusNode.requestFocus();
+    setState(() {showSearch = true;});
+  }
+  @override
+  void dispose()
+  {
+    searchFocusNode.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +66,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
           children: [
             Column(
               children: [
-                ShnatterNavigation(),
+                ShnatterNavigation(searchController: searchController,onSearchBarFocus: onSearchBarFocus,),
                 Text("text"),
                 TextField(
                   controller: new TextEditingController(text: "test"),
@@ -80,18 +96,20 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
                               children: [
                                 Container(
                                     padding: EdgeInsets.only(right: 20.0),
-                                    child: SizedBox(
+                                    child: const SizedBox(
                                       width: 20,
                                       height: 20,
                                     )),
                                 Container(
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                       top: 10, bottom: 10, right: 9),
                                   width: SizeConfig(context).screenWidth * 0.4,
-                                  child: const TextField(
+                                  child: TextField(
+                                    focusNode: searchFocusNode,
+                                    controller: searchController,
                                     cursorColor: Colors.white,
-                                    style: TextStyle(color: Colors.white),
-                                    decoration: InputDecoration(
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
                                       prefixIcon: Icon(Icons.search,
                                           color: Color.fromARGB(
                                               150, 170, 212, 255),
@@ -109,7 +127,8 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
                                   ),
                                 )
                               ],
-                            )
+                            ),
+                            ShnatterNotification()  
                           ],
                         )),
                   )
