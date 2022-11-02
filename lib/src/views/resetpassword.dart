@@ -157,6 +157,7 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                   ),
                 ]),
               ),
+              const Padding(padding: EdgeInsets.only(top:60.0),),
               SizedBox(
                 width: 1100,
                 height: 90,
