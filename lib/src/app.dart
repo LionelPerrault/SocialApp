@@ -43,6 +43,7 @@ class _MyAppState extends AppStateMVC<MyApp> {
         builder: (context, Setting _setting, _) {
             return MaterialApp(
                 title: 'Shnatter',
+                debugShowCheckedModeBanner: false,
                 //home: HomeScreen(key: UniqueKey()),
                 locale: _setting.language,
                 localizationsDelegates: [
