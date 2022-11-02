@@ -6,6 +6,7 @@ import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
+import 'package:shnatter/src/views/loginscreen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -31,8 +32,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => PrivacyScreen(), settings: settings);
       default:
-        return MaterialPageRoute(
-            builder: (context) => HomeScreen(), settings: settings);
+        return MaterialPageRoute(builder: (context) => LoginScreen());
     }
   }
 }

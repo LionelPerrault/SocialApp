@@ -30,6 +30,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool showSearch = true;
   //
   @override
   void initState() {
@@ -44,18 +45,75 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        body: Column(
+        body: Stack(
+          fit: StackFit.expand,
           children: [
-            ShnatterNavigation(),
-            Text("text"),
-            TextField(
-              controller: new TextEditingController(text: "test"),
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-                labelText: 'Search',
-              ),
+            Column(
+              children: [
+                ShnatterNavigation(),
+                Text("text"),
+                TextField(
+                  controller: new TextEditingController(text: "test"),
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                    labelText: 'Search',
+                  ),
+                ),
+              ],
             ),
+            showSearch
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showSearch = false;
+                      });
+                    },
+                    child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: Color.fromARGB(0, 214, 212, 212),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    padding: EdgeInsets.only(right: 20.0),
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                    )),
+                                Container(
+                                  padding: EdgeInsets.only(
+                                      top: 10, bottom: 10, right: 9),
+                                  width: SizeConfig(context).screenWidth * 0.4,
+                                  child: const TextField(
+                                    cursorColor: Colors.white,
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      prefixIcon: Icon(Icons.search,
+                                          color: Color.fromARGB(
+                                              150, 170, 212, 255),
+                                          size: 20),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                      ),
+                                      filled: true,
+                                      fillColor: Color(0xff202020),
+                                      hintText: 'Search',
+                                      hintStyle: TextStyle(
+                                          fontSize: 15.0, color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        )),
+                  )
+                : SizedBox()
           ],
         ));
   }
