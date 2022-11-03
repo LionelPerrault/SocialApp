@@ -12,11 +12,12 @@ import '../controllers/HomeController.dart';
 import '../utils/size_config.dart';
 import '../widget/mprimary_button.dart';
 import '../widget/list_text.dart';
+import '../widget/suggestion_header.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:flutter/gestures.dart';
 import 'box/notification.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,6 +38,12 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
   );
   bool showSearch = false;
   late FocusNode searchFocusNode;
+  var suggest = <String, bool> {
+    'friends': true,
+    'pages': true,
+    'groups': true,
+    'events': true
+  };
   //
   @override
   void initState() {
@@ -51,6 +58,10 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
   {
     searchFocusNode.requestFocus();
     setState(() {showSearch = true;});
+  }
+  void viewSuggestionBar(witch)
+  {
+    setState(() {suggest[witch] = suggest[witch] == true?false:true;});
   }
   @override
   void dispose()
@@ -68,114 +79,419 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
             ListView(
               children: [
                 ShnatterNavigation(searchController: searchController,onSearchBarFocus: onSearchBarFocus,),
-                SingleChildScrollView(
-                  child:  Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(padding: EdgeInsets.only(top: 18.0)),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'shnatter',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile.svg?alt=media&token=c40823c5-872b-49b8-8f59-70c7b9314263'
+                Row(
+                  children: [
+                    SingleChildScrollView(
+                      child:  Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(padding: EdgeInsets.only(top: 18.0)),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'shnatter',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile.svg?alt=media&token=c40823c5-872b-49b8-8f59-70c7b9314263'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Messages',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmessages.svg?alt=media&token=9893a9e0-1f09-4bca-82de-b829ba0f0bb5'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Settings',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Shnatter Token',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter_token.svg?alt=media&token=48ac103d-10fc-4847-943e-33ea5d6281bc'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Admin Panel',
+                                    image: ''
+                                  ),
+                                  Row(
+                                    children: const [
+                                      Padding(padding: EdgeInsets.only(left: 30.0)),
+                                      Text('FAVOURITES',
+                                            style: TextStyle(
+                                            color: Color.fromARGB(255, 150, 150, 150),
+                                            fontSize: 10)),
+                                      ]
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'People',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpeople.svg?alt=media&token=64d020ea-d767-45da-826e-2c24a989b175'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Events',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fevents.svg?alt=media&token=92e4dba9-b601-4289-94f9-99534605a248'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Memories',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmemories.svg?alt=media&token=a3432e12-3fab-4944-9a4e-3c73adf4f568'
+                                  ),
+                                  Row(
+                                    children: const [
+                                      Padding(padding: EdgeInsets.only(left: 30.0)),
+                                      Text('EXPLORE',
+                                            style: TextStyle(
+                                            color: Color.fromARGB(255, 150, 150, 150),
+                                            fontSize: 10)),
+                                      ]
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'My Articles',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_articles.svg?alt=media&token=e98ee341-30f4-4e2d-8797-0e8396c4fada'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'My Products',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_products.svg?alt=media&token=91cdcfb3-cb0a-4061-a19f-b020c61299a0'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Saved Posts',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsaved_posts.svg?alt=media&token=a6950b2b-26ee-4cb8-b1ff-78047383e0de'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Pages',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpages.svg?alt=media&token=eed0ae72-6faf-4fdc-8581-bf3a99a04fa7'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Groups',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fgroups.svg?alt=media&token=56ef9dc4-2c1b-4dfd-b945-3439cb5dfe25'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'News',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fnews.svg?alt=media&token=c68ab470-dcd6-4c58-9ed6-5e5fc1540110'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Marketplace',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmarketplace.svg?alt=media&token=cd9adfd0-3db3-4d46-a5fa-7ce8f99016bf'
+                                  ),
+                                  ListText(
+                                    onTap: ()=>{},
+                                    label: 'Real estate',
+                                    image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=70d45887-6f23-456d-8396-d38287ae8d9e'
+                                  ),
+                                ],
                               ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Messages',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmessages.svg?alt=media&token=9893a9e0-1f09-4bca-82de-b829ba0f0bb5'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Settings',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Shnatter Token',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter_token.svg?alt=media&token=48ac103d-10fc-4847-943e-33ea5d6281bc'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Admin Panel',
-                                image: ''
-                              ),
-                              Row(
-                                children: const [
-                                  Padding(padding: EdgeInsets.only(left: 30.0)),
-                                  Text('FAVOURITES',
-                                        style: TextStyle(
-                                        color: Color.fromARGB(255, 150, 150, 150),
-                                        fontSize: 10)),
-                                  ]
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'People',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpeople.svg?alt=media&token=64d020ea-d767-45da-826e-2c24a989b175'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Events',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fevents.svg?alt=media&token=92e4dba9-b601-4289-94f9-99534605a248'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Memories',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmemories.svg?alt=media&token=a3432e12-3fab-4944-9a4e-3c73adf4f568'
-                              ),
-                              Row(
-                                children: const [
-                                  Padding(padding: EdgeInsets.only(left: 30.0)),
-                                  Text('EXPLORE',
-                                        style: TextStyle(
-                                        color: Color.fromARGB(255, 150, 150, 150),
-                                        fontSize: 10)),
-                                  ]
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'My Articles',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_articles.svg?alt=media&token=e98ee341-30f4-4e2d-8797-0e8396c4fada'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'My Products',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_products.svg?alt=media&token=91cdcfb3-cb0a-4061-a19f-b020c61299a0'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Saved Posts',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsaved_posts.svg?alt=media&token=a6950b2b-26ee-4cb8-b1ff-78047383e0de'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Pages',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpages.svg?alt=media&token=eed0ae72-6faf-4fdc-8581-bf3a99a04fa7'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Groups',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fgroups.svg?alt=media&token=56ef9dc4-2c1b-4dfd-b945-3439cb5dfe25'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'News',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fnews.svg?alt=media&token=c68ab470-dcd6-4c58-9ed6-5e5fc1540110'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Marketplace',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmarketplace.svg?alt=media&token=cd9adfd0-3db3-4d46-a5fa-7ce8f99016bf'
-                              ),
-                              ListText(
-                                onTap: ()=>{},
-                                label: 'Real estate',
-                                image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=70d45887-6f23-456d-8396-d38287ae8d9e'
-                              ),
-                            ],
-                          ),
+                    ),
+                    SingleChildScrollView(
+                      child: Column(children: [
+                        Container(
+                          child: Column(children: [
+                            Column(
+                              children: [
+                                    SuggestionHeader(onTap: ()=>{}, onChange: ()=>{viewSuggestionBar('friends')}, bigLabel: 'Friends Suggestions', smallLabel: 'See All', state: true),
+                                Container(
+                                  child: Column(children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: SvgPicture.network('https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg'),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 15.0)),
+                                        RichText(
+                                          text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'label',
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(255, 90, 90, 90),
+                                                        fontSize: 13),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {()=>{};})
+                                              ]),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 30.0)),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(255, 34, 37, 41),
+                                            shadowColor: Colors.black,
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                            minimumSize: new Size(81, 35),
+                                            maximumSize: new Size(81, 35),
+                                          ),
+                                          onPressed: () {
+                                            ()=>{};
+                                          },
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.person_add_alt_rounded,
+                                              color: Colors.white,
+                                            ),
+                                            Text('Add',
+                                              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          ],)
+                                          
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: SvgPicture.network('https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg'),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 15.0)),
+                                        RichText(
+                                          text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'label',
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(255, 90, 90, 90),
+                                                        fontSize: 13),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {()=>{};})
+                                              ]),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 30.0)),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(255, 34, 37, 41),
+                                            shadowColor: Colors.black,
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                            minimumSize: new Size(81, 35),
+                                            maximumSize: new Size(81, 35),
+                                          ),
+                                          onPressed: () {
+                                            ()=>{};
+                                          },
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.person_add_alt_rounded,
+                                              color: Colors.white,
+                                            ),
+                                            Text('Add',
+                                              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          ],)
+                                          
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: SvgPicture.network('https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg'),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 15.0)),
+                                        RichText(
+                                          text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'label',
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(255, 90, 90, 90),
+                                                        fontSize: 13),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {()=>{};})
+                                              ]),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 30.0)),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(255, 34, 37, 41),
+                                            shadowColor: Colors.black,
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                            minimumSize: new Size(81, 35),
+                                            maximumSize: new Size(81, 35),
+                                          ),
+                                          onPressed: () {
+                                            ()=>{};
+                                          },
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.person_add_alt_rounded,
+                                              color: Colors.white,
+                                            ),
+                                            Text('Add',
+                                              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          ],)
+                                          
+                                        )
+                                      ],
+                                    )
+                                  ],),
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                    SuggestionHeader(onTap: ()=>{}, onChange: ()=>{viewSuggestionBar('friends')}, bigLabel: 'Friends Suggestions', smallLabel: 'See All', state: true),
+                                Container(
+                                  child: Column(children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: SvgPicture.network('https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg'),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 15.0)),
+                                        RichText(
+                                          text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'label',
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(255, 90, 90, 90),
+                                                        fontSize: 13),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {()=>{};})
+                                              ]),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 30.0)),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(255, 34, 37, 41),
+                                            shadowColor: Colors.black,
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                            minimumSize: new Size(81, 35),
+                                            maximumSize: new Size(81, 35),
+                                          ),
+                                          onPressed: () {
+                                            ()=>{};
+                                          },
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.person_add_alt_rounded,
+                                              color: Colors.white,
+                                            ),
+                                            Text('Add',
+                                              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          ],)
+                                          
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: SvgPicture.network('https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg'),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 15.0)),
+                                        RichText(
+                                          text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'label',
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(255, 90, 90, 90),
+                                                        fontSize: 13),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {()=>{};})
+                                              ]),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 30.0)),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(255, 34, 37, 41),
+                                            shadowColor: Colors.black,
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                            minimumSize: new Size(81, 35),
+                                            maximumSize: new Size(81, 35),
+                                          ),
+                                          onPressed: () {
+                                            ()=>{};
+                                          },
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.person_add_alt_rounded,
+                                              color: Colors.white,
+                                            ),
+                                            Text('Add',
+                                              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          ],)
+                                          
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: SvgPicture.network('https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg'),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 15.0)),
+                                        RichText(
+                                          text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'label',
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(255, 90, 90, 90),
+                                                        fontSize: 13),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {()=>{};})
+                                              ]),
+                                        ),
+                                        const Padding(padding: EdgeInsets.only(left: 30.0)),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(255, 34, 37, 41),
+                                            shadowColor: Colors.black,
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                            minimumSize: new Size(81, 35),
+                                            maximumSize: new Size(81, 35),
+                                          ),
+                                          onPressed: () {
+                                            ()=>{};
+                                          },
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.person_add_alt_rounded,
+                                              color: Colors.white,
+                                            ),
+                                            Text('Add',
+                                              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          ],)
+                                          
+                                        )
+                                      ],
+                                    )
+                                  ],),
+                                )
+                              ],
+                            ),
+                          ]),
+                        )
+                      ]),
+                    )
+                  ],
                 )
-                
               ],
             ),
             showSearch
@@ -188,14 +504,14 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
                     child: Container(
                         width: double.infinity,
                         height: double.infinity,
-                        color: Color.fromARGB(0, 214, 212, 212),
+                        color: const Color.fromARGB(0, 214, 212, 212),
                         child: Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                    padding: EdgeInsets.only(right: 20.0),
+                                    padding: const EdgeInsets.only(right: 20.0),
                                     child: const SizedBox(
                                       width: 20,
                                       height: 20,
@@ -232,7 +548,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
                           ],
                         )),
                   )
-                : SizedBox()
+                : const SizedBox()
           ],
         ));
   }
