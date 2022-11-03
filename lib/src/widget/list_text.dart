@@ -23,7 +23,7 @@ class ListText extends StatelessWidget {
           children: [
             const Padding(padding: EdgeInsets.only(left: 45.0)),
             SvgPicture.network(image, width: 21,),
-            const Padding(padding: EdgeInsets.only(left: 15.0)),
+            const Padding(padding: EdgeInsets.only(left: 20.0)),
             RichText(
               text: TextSpan(
                   children: <TextSpan>[

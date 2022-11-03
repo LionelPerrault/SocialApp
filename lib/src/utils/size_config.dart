@@ -6,10 +6,10 @@ class SizeConfig {
   late double screenHeight;
   late double defaultSize;
   late Orientation orientation;
-  static const leftBarWidth = 180.0;
+  static const leftBarWidth = 260.0;
   static const navbarHeight = 68.0;
   static const mainPaneWidth = 300.0;
-  static const rightPaneWidth = 300.0;
+  static const rightPaneWidth = 280.0;
   SizeConfig(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;

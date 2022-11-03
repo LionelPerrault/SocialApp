@@ -10,6 +10,7 @@ import 'package:shnatter/src/utils/colors.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../controllers/HomeController.dart';
 
@@ -71,7 +72,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Container(
-          width: 280,
+          width: SizeConfig.rightPaneWidth,
           // color: Color.fromARGB(255, 255, 255, 255),
           padding: EdgeInsets.all(10),
           child: Column(
@@ -83,6 +84,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                     "Suggested Events",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
+                  const Padding(padding: EdgeInsets.only(top: 45.0),),
                   Row(children: [
                     Text(
                       'See All',
@@ -109,7 +111,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                 ],
               ),
               const Divider(
-                  //height: 20,
+                  height: 1,
                   //thickness: 5,
                   //indent: 20,
                   //endIndent: 0,
@@ -178,6 +180,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(
                         height: 1,
+                        endIndent: 10,
                       ),
                 ),
               )

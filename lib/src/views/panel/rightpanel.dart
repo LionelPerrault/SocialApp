@@ -15,23 +15,21 @@ class RightPanel extends StatelessWidget {
       {super.key});
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(top: SizeConfig.navbarHeight, left:SizeConfig.leftBarWidth+SizeConfig.mainPaneWidth),
+    return Padding(padding: const EdgeInsets.only(top: SizeConfig.navbarHeight, left:SizeConfig.leftBarWidth+SizeConfig.mainPaneWidth),
       child: SizedBox(width: SizeConfig.rightPaneWidth,
         child: Row(children: [
           SingleChildScrollView(
             child: Column(children: [
-              Container(
-                child: Column(children: [
-                  Padding(padding: EdgeInsets.only(top: 20.0),),
-                  ShnatterUserSuggest(),
-                  Padding(padding: EdgeInsets.only(top: 10.0),),
-                  ShnatterPageSuggest(),
-                  Padding(padding: EdgeInsets.only(top: 10.0),),
-                  ShnatterGroupSuggest(),
-                  Padding(padding: EdgeInsets.only(top: 10.0),),
-                  ShnatterEventSuggest(),
-                ]),
-              )
+              Column(children: [
+                const Padding(padding: EdgeInsets.only(top: 20.0),),
+                ShnatterUserSuggest(),
+                const Padding(padding: EdgeInsets.only(top: 10.0),),
+                ShnatterPageSuggest(),
+                const Padding(padding: EdgeInsets.only(top: 10.0),),
+                ShnatterGroupSuggest(),
+                const Padding(padding: EdgeInsets.only(top: 10.0),),
+                ShnatterEventSuggest(),
+              ])
             ]),
           ),
         ],)

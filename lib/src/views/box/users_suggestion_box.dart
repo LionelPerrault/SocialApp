@@ -10,6 +10,7 @@ import 'package:shnatter/src/utils/colors.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../controllers/HomeController.dart';
 
@@ -66,7 +67,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Container(
-          width: 280,
+          width: SizeConfig.rightPaneWidth,
           // color: Colors.white,
           padding: const EdgeInsets.all(5),
           child: Column(
@@ -105,7 +106,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                 ],
               ),
               const Divider(
-                  //height: 20,
+                  height: 1,
                   //thickness: 5,
                   //indent: 20,
                   //endIndent: 0,
@@ -142,22 +143,22 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                               Container(
                                 child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color.fromARGB(255, 33, 37, 41),
+                                        backgroundColor: const Color.fromARGB(255, 33, 37, 41),
                                         elevation: 3,
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(2.0)),
-                                        minimumSize: new Size(70, 35),
-                                        maximumSize: new Size(70, 35)
+                                        minimumSize: const Size(70, 35),
+                                        maximumSize: const Size(70, 35)
                                       ),
                                       onPressed: () { ()=>{}; },
                                       child: 
-                                      Row(children: [
+                                      Row(children: const [
                                         Icon(Icons.person_add_alt_rounded,
                                             color: Colors.white,
                                             size: 18.0,
                                         ),
                                         Text('Add',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold)),
@@ -170,7 +171,8 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                       ))),
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(
-                        height: 4,
+                        height: 1,
+                        endIndent: 10,
                       ),
                 ),
               )
