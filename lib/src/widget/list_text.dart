@@ -31,7 +31,7 @@ class ListText extends StatelessWidget {
                         text: label,
                         style: const TextStyle(
                             color: Color.fromARGB(255, 90, 90, 90),
-                            fontSize: 13),
+                            fontSize: 14),
                         recognizer:
                             TapGestureRecognizer()
                               ..onTap = () {onTap;})

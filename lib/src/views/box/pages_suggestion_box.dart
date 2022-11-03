@@ -116,7 +116,7 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                   //color: Colors.black,
                   ),
               SizedBox(
-                height: 310,
+                height: 260,
                 //size: Size(100,100),
                 child: ListView.separated(
                   itemCount: sampleData.length,
@@ -136,7 +136,7 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                         children: [
                           Row(children: [
                             Container(
-                              width: 90,
+                              width: 95,
                               alignment: Alignment.topLeft,
                               child: Column(children: [
                                 Text(sampleData[index]['name'],
@@ -154,8 +154,8 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                                       elevation: 3,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(2.0)),
-                                      minimumSize: new Size(80, 35),
-                                      maximumSize: new Size(80, 35),
+                                      minimumSize: new Size(70, 35),
+                                      maximumSize: new Size(70, 35),
                                     ),
                                     onPressed: () { ()=>{}; },
                                     child: 

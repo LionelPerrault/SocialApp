@@ -116,7 +116,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                   //color: Colors.black,
                   ),
               SizedBox(
-                height: 300,
+                height: 260,
                 //size: Size(100,100),
                 child: ListView.separated(
                   itemCount: sampleData.length,
@@ -136,7 +136,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                         children: [
                           Row(children: [
                             Container(
-                              width: 100,
+                              width: 95,
                               alignment: Alignment.topLeft,
                               child: Column(children: [
                                 Text(sampleData[index]['name'],

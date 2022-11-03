@@ -112,7 +112,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                   //color: Colors.black,
                   ),
               SizedBox(
-                height: 310,
+                height: 260,
                 //size: Size(100,100),
                 child: ListView.separated(
                   itemCount: sampleData.length,

@@ -22,7 +22,7 @@ class RightPanel extends StatelessWidget {
             child: Column(children: [
               Container(
                 child: Column(children: [
-                  Padding(padding: EdgeInsets.only(top: 30.0),),
+                  Padding(padding: EdgeInsets.only(top: 20.0),),
                   ShnatterUserSuggest(),
                   Padding(padding: EdgeInsets.only(top: 10.0),),
                   ShnatterPageSuggest(),

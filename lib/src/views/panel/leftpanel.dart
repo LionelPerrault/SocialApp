@@ -12,7 +12,7 @@ class LeftPanel extends StatelessWidget {
       {super.key});
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(top: 80.0),
+    return Padding(padding: EdgeInsets.only(top: 90.0),
             child: 
             Container(
               child:  ListView(
