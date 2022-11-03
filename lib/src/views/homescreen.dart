@@ -52,6 +52,11 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
     searchFocusNode.requestFocus();
     setState(() {showSearch = true;});
   }
+  void onSearchBarDismiss()
+  {
+    if (showSearch)
+      setState(() {showSearch = false;});
+  }
   @override
   void dispose()
   {
@@ -67,7 +72,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
           children: [
             ListView(
               children: [
-                ShnatterNavigation(searchController: searchController,onSearchBarFocus: onSearchBarFocus,),
+                ShnatterNavigation(searchController: searchController,onSearchBarFocus: onSearchBarFocus,onSearchBarDismiss:onSearchBarDismiss,),
                 SingleChildScrollView(
                   child:  Column(
                             mainAxisAlignment: MainAxisAlignment.start,
