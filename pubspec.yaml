@@ -51,6 +51,7 @@ dependencies:
   flutter_svg: ^1.1.6
   custom_pop_up_menu: ^1.2.4
   material_floating_search_bar: ^0.3.7
+  fl_chart: ^0.55.2
 
 dev_dependencies:
   flutter_test:

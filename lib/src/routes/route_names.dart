@@ -7,4 +7,5 @@ class RouteNames {
   static const reset = '/reset';
   static const terms = '/terms';
   static const privacy = '/privacy';
+  static const admin = '/adminp';
 }
