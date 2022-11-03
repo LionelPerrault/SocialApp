@@ -15,7 +15,6 @@ import '../controllers/HomeController.dart';
 import '../utils/size_config.dart';
 import '../widget/mprimary_button.dart';
 import '../widget/list_text.dart';
-import '../widget/suggestion_header.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
