@@ -201,27 +201,27 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Users',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Admins',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Moderators',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                             ListText(
                             onTap: () => {},
                             label: 'List online',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                             ListText(
                             onTap: () => {},
                             label: 'List Banned',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -256,12 +256,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Pages',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Categories',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -291,12 +291,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Groups',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Categories',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -326,12 +326,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Events',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Categories',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
