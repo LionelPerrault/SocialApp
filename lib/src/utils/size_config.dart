@@ -8,7 +8,7 @@ class SizeConfig {
   late Orientation orientation;
   static const mediumScreenSize = 800;
   static const smallScreenSize = 600;
-  static const leftBarWidth = 260.0;
+  static const leftBarWidth = 280.0;
   static const navbarHeight = 68.0;
   //static const mainPaneWidth = 300.0;
   static const rightPaneWidth = 280.0;

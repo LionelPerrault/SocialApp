@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../widget/list_text.dart';
 
@@ -12,7 +13,10 @@ class LeftPanel extends StatelessWidget {
       {super.key});
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return 
+      Container(
+        width: SizeConfig.leftBarWidth,
+        child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -107,6 +111,7 @@ class LeftPanel extends StatelessWidget {
                     image:
                         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=70d45887-6f23-456d-8396-d38287ae8d9e'),
               ],
-            );
+            ),
+      );
   }
 }
