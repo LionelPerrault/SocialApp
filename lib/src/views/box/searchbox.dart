@@ -10,6 +10,7 @@ import 'package:shnatter/src/utils/colors.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../controllers/HomeController.dart';
 
@@ -26,28 +27,55 @@ class ShnatterSearchBox extends StatefulWidget {
 class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   //
   bool isSound = false;
-  List<Map> sampleData = [
+  List<Map> usersData = [
     {
       'avatarImg': '',
       'name': 'Adetola',
-      'subname': 'now following you',
-      'subsubtitle': '2 days ago',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': 'now following you',
-      'subsubtitle': '2 days ago',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': 'now following you',
-      'subsubtitle': '2 days ago',
+      'subname': '1 Interested',
       'icon': Icons.nature
     }
+  ];
+  List<Map> pagesData = [
+    {
+      'avatarImg': '',
+      'name': 'Adetola',
+      'subname': '1 Interested',
+      'icon': Icons.nature
+    }
+  ];
+  List<Map> groupsData = [
+    {
+      'avatarImg': '',
+      'name': 'Adetola',
+      'subname': '1 Interested',
+      'icon': Icons.nature
+    }
+  ];
+  List<Map> eventsData = [
+    {
+      'avatarImg': '',
+      'name': 'Adetola',
+      'subname': '1 Interested',
+      'icon': Icons.nature
+    },
+    {
+      'avatarImg': '',
+      'name': 'Adetola',
+      'subname': '1 Interested',
+      'icon': Icons.nature
+    },
+    {
+      'avatarImg': '',
+      'name': 'Adetola',
+      'subname': '1 Interested',
+      'icon': Icons.nature
+    },
+    {
+      'avatarImg': '',
+      'name': 'Adetola',
+      'subname': '1 Interested',
+      'icon': Icons.nature
+    },
   ];
   @override
   void initState() {
@@ -59,90 +87,111 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   late HomeController con;
   @override
   Widget build(BuildContext context) {
+    var listTileSize = SizeConfig(context).screenWidth * 0.4 * 0.6;
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
-      child: Container(
-          width: 400,
-          color: Color.fromARGB(255, 255, 255, 255),
-          padding: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Notifications",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  Row(children: [
+      child: 
+        Column(
+          children: [
+          Container(
+            width: 400,
+            color: Color.fromARGB(255, 255, 255, 255),
+            padding: const EdgeInsets.only(top:10, left:10, right:10),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
                     Text(
-                      'Alert Sound',
-                      style: TextStyle(fontSize: 11),
+                      "Search Results",
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
-                      height: 20,
-                      child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
-                        child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          activeColor: kprimaryColor,
-                          value: isSound,
-                          onChanged: (value) {
-                            setState(() {
-                              isSound = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ])
-                ],
-              ),
-              SizedBox(height: 5,),
-              const Divider(
-                   height: 1,
-                   endIndent: 10,
-                  ),
-              SizedBox(
-                height: 300,
-                //size: Size(100,100),
-                child: ListView.separated(
-                  itemCount: sampleData.length,
-                  itemBuilder: (context, index) => 
-                  Material(
-                  child:
-                  ListTile(
-                      onTap: () { print("tap!");},
-                      hoverColor: Color.fromARGB(255, 243, 243, 243),
-                      enabled: true,
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
-                      ),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(sampleData[index]['name'],
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10),
-                          ),
-                          Text(sampleData[index]['subname'],
-                          style: TextStyle(fontWeight: FontWeight.normal,fontSize: 10)
-                          ),
-                          Text(sampleData[index]['subsubtitle'],
-                          style: TextStyle(fontWeight: FontWeight.normal,fontSize: 8)
-                          )
-                        ],
-                      ))),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                         height: 1,
-                        endIndent: 10,
-                      ),
+                  ],
                 ),
-              )
-            ],
+                const SizedBox(height: 5,),
+                const Divider(
+                    height: 1,
+                    endIndent: 10,
+                    ),
+                SizedBox(
+                  height: eventsData.length*49,
+                  //size: Size(100,100),
+                  child: 
+                  ListView.separated(
+                      itemCount: eventsData.length,
+                      itemBuilder: (context, index) => 
+                      Material(
+                      child:
+                      ListTile(
+                        onTap: () { print("tap!");},
+                        hoverColor: const Color.fromARGB(255, 243, 243, 243),
+                        tileColor: Colors.white,
+                        enabled: true,
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              "https://test.shnatter.com/content/themes/default/images/blank_event.jpg"),
+                        ),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: [
+                              Container(
+                                width: 190,
+                                alignment: Alignment.topLeft,
+                                child: Column(children: [
+                                  Text(eventsData[index]['name'],
+                                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),
+                                  ),
+                                  Text(eventsData[index]['subname'],
+                                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: 10)
+                                  ),
+                                ]),
+                              ),
+                              Container(
+                                child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 3,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(2.0)),
+                                        minimumSize: new Size(100, 35),
+                                        maximumSize: new Size(100, 35),
+                                      ),
+                                      onPressed: () { ()=>{}; },
+                                      child: 
+                                      Row(children: [
+                                        Icon(Icons.star,
+                                            color: Color.fromARGB(255, 33, 37, 41),
+                                            size: 18.0,
+                                        ),
+                                        Text('Interested',
+                                          style: const TextStyle(
+                                          color: Color.fromARGB(255, 33, 37, 41),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold)),
+                                      ],)
+                                    )
+                                  ),
+                            ],)
+                          ],
+                        ))),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
+                            height: 1,
+                            endIndent: 10,
+                          ),
+                    ),
+                )
+              ],
           )),
+          Container(
+            width: 400,
+            height: 22,
+            color: Colors.grey[400],
+            alignment: Alignment.center,
+            child: Text('See All Results', style: TextStyle(fontSize: 10),),
+          )
+        ],)
     );
   }
 }

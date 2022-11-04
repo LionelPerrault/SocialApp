@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
@@ -178,7 +179,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
                                 )
                               ],
                             ),
-                            ShnatterNotification()
+                            ShnatterSearchBox()
                           ],
                         )),
                   )
