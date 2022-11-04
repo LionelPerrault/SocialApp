@@ -34,13 +34,15 @@ class HomeScreen extends StatefulWidget {
   State createState() => HomeScreenState();
 }
 
-class HomeScreenState extends mvc.StateMVC<HomeScreen> {
+class HomeScreenState extends mvc.StateMVC<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
+  late AnimationController _drawerSlideController;
   var suggest = <String, bool>{
     'friends': true,
     'pages': true,
@@ -54,6 +56,10 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
     con = controller as HomeController;
     super.initState();
     searchFocusNode = FocusNode();
+    _drawerSlideController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+    );
   }
 
   late HomeController con;
@@ -65,10 +71,16 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
   }
 
   void clickMenu() {
-    setState(() {
-      showMenu = !showMenu;
-    });
-    print("showmenu is {$showMenu}");
+    //setState(() {
+    //  showMenu = !showMenu;
+    //});
+    //Scaffold.of(context).openDrawer();
+    //print("showmenu is {$showMenu}");
+    if (_isDrawerOpen() || _isDrawerOpening()) {
+      _drawerSlideController.reverse();
+    } else {
+      _drawerSlideController.forward();
+    }
   }
 
   void onSearchBarDismiss() {
@@ -78,9 +90,22 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
       });
   }
 
+  bool _isDrawerOpen() {
+    return _drawerSlideController.value == 1.0;
+  }
+
+  bool _isDrawerOpening() {
+    return _drawerSlideController.status == AnimationStatus.forward;
+  }
+
+  bool _isDrawerClosed() {
+    return _drawerSlideController.value == 0.0;
+  }
+
   @override
   void dispose() {
     searchFocusNode.dispose();
+    _drawerSlideController.dispose();
     super.dispose();
   }
 
@@ -88,6 +113,8 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
+        drawerEnableOpenDragGesture: false,
+        drawer: Drawer(),
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -98,37 +125,69 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
               drawClicked: clickMenu,
             ),
             Padding(
-              padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
-              child: //AnimatedPositioned(
-                  //top: showMenu ? 0 : -150.0,
-                  //duration: const Duration(seconds: 2),
-                  //curve: Curves.fastOutSlowIn,
-                  //child:
+                padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+                child:
+                    //AnimatedPositioned(
+                    //top: showMenu ? 0 : -150.0,
+                    //duration: const Duration(seconds: 2),
+                    //curve: Curves.fastOutSlowIn,
+                    //child:
                     SingleChildScrollView(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizeConfig(context).screenWidth >
-                                  SizeConfig.smallScreenSize
-                              ? LeftPanel()
-                             : SizedBox(width: 0),
-                          Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(child: MainPanel()),
-                              SizeConfig(context).screenWidth >
-                                      SizeConfig.mediumScreenSize
-                                  ? RightPanel()
-                                  : SizedBox(width: 0),
-                            ],
-                          )),
-                          //MainPanel(),
-                        ]),
-                  ),//),
-            ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizeConfig(context).screenWidth <
+                                SizeConfig.smallScreenSize
+                            ? const SizedBox()
+                            : LeftPanel(),
+                        //    : SizedBox(width: 0),
+                        Expanded(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(child: MainPanel()),
+                            SizeConfig(context).screenWidth >
+                                    SizeConfig.mediumScreenSize
+                                ? RightPanel()
+                                : SizedBox(width: 0),
+                          ],
+                        )),
+                        //MainPanel(),
+                      ]),
+                )),
+            AnimatedBuilder(
+                animation: _drawerSlideController,
+                builder: (context, child) {
+                  return FractionalTranslation(
+                      translation: SizeConfig(context).screenWidth >
+                              SizeConfig.smallScreenSize
+                          ? Offset(0, 0)
+                          : Offset(_drawerSlideController.value * 0.001, 0.0),
+                      child: SizeConfig(context).screenWidth >
+                                  SizeConfig.smallScreenSize ||
+                              _isDrawerClosed()
+                          ? const SizedBox()
+                          : Padding(
+                              padding:
+                                  EdgeInsets.only(top: SizeConfig.navbarHeight),
+                              child: Container(
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        color: Colors.white,
+                                        width: SizeConfig.leftBarWidth,
+                                        child: SingleChildScrollView(
+                                          child: LeftPanel(),
+                                        ),
+                                      )
+                                    ]),
+                              )));
+                }),
             showSearch
                 ? GestureDetector(
                     onTap: () {
