@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/views/navigationbar.dart';
+import 'package:shnatter/src/views/admin/navigationbar.dart';
 import 'package:shnatter/src/views/admin/admin_panel/adminbodypanel.dart';
 
 import '../../controllers/HomeController.dart';
@@ -74,7 +74,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            ShnatterNavigation(
+            AdminShnatterNavigation(
               searchController: searchController,
               onSearchBarFocus: onSearchBarFocus,
               onSearchBarDismiss: onSearchBarDismiss,

@@ -131,7 +131,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Themes',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.display_settings)),
               ListText(
                   onTap: () => {},
                   label: 'Design',
@@ -345,9 +345,9 @@ class AdminLeftPanel extends StatelessWidget {
                 tilePadding: const EdgeInsets.all(0),
                 title: ListText(
                   onTap: () => {},
-                  label: 'Aticles',
+                  label: 'Blogs',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.article)),
             
                 children: <Widget>[
                   Row(
@@ -361,12 +361,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Articles',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Categories',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -382,7 +382,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Marketplace',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.card_travel)),
             
                 children: <Widget>[
                   Row(
@@ -396,7 +396,7 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Categories',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -412,7 +412,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Offers',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.forward)),
             
                 children: <Widget>[
                   Row(
@@ -426,12 +426,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Offers',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Categories',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -447,7 +447,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Jobs',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.card_travel)),
             
                 children: <Widget>[
                   Row(
@@ -461,12 +461,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Jobs',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Categories',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -480,9 +480,9 @@ class AdminLeftPanel extends StatelessWidget {
                 tilePadding: const EdgeInsets.all(0),
                 title: ListText(
                   onTap: () => {},
-                  label: 'Frums',
+                  label: 'Forums',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.comment_bank)),
             
                 children: <Widget>[
                   Row(
@@ -496,17 +496,17 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Forums',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Threads',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Replies',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           
                         ],
                       )
@@ -523,7 +523,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Movies',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.movie_filter_outlined)),
             
                 children: <Widget>[
                   Row(
@@ -537,12 +537,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Movies',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Genres',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -554,7 +554,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Games',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.games_rounded)),
               Row(children: const [
                 Padding(padding: EdgeInsets.only(left: 30.0)),
                 Text('MONEY',
@@ -570,7 +570,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Ads',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.attach_money)),
             
                 children: <Widget>[
                   Row(
@@ -584,17 +584,17 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'Ads Settings',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Users Ads',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List System Ads',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           
                         ],
                       )
@@ -611,7 +611,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Wallet',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.wallet)),
             
                 children: <Widget>[
                   Row(
@@ -625,12 +625,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'Wallet Settings',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Payment Requests',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -646,7 +646,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Pro System',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.square)),
             
                 children: <Widget>[
                   Row(
@@ -660,22 +660,22 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'Pro Settings',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Packages',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Subscribers',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Earnings',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -691,7 +691,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Affiliates',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.currency_exchange)),
             
                 children: <Widget>[
                   Row(
@@ -705,12 +705,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'Affiliates Settings',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Payment Requests',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -726,7 +726,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Points System',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.system_security_update_outlined)),
             
                 children: <Widget>[
                   Row(
@@ -740,12 +740,12 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'Points Settings',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Payment Requests',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -761,7 +761,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Fundings',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.attach_money)),
             
                 children: <Widget>[
                   Row(
@@ -775,17 +775,17 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'Funding Settings',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Payment Requests',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Funding Requests',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           
                         ],
                       )
@@ -801,6 +801,24 @@ class AdminLeftPanel extends StatelessWidget {
                         color: Color.fromARGB(255, 150, 150, 150),
                         fontSize: 10)),
               ]),
+              ListText(
+                  onTap: () => {},
+                  label: 'CoinPayments',
+                  icon:
+                      const Icon(Icons.currency_bitcoin)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Bank Receipts',
+                  icon:
+                      const Icon(Icons.school_rounded)),
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('DEVELOPERS',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
+              
               ExpansionTileTheme(
                 data:const ExpansionTileThemeData(),
                 child: ExpansionTile(
@@ -809,7 +827,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Developers',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.square_foot)),
             
                 children: <Widget>[
                   Row(
@@ -823,17 +841,17 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'Developers Settings',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Apps',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Categories',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           
                         ],
                       )
@@ -853,19 +871,12 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Reports',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.warning)),
               ListText(
                   onTap: () => {},
                   label: 'Blacklist',
                   icon:
-                      const Icon(Icons.dashboard)),
-              Row(children: const [
-                Padding(padding: EdgeInsets.only(left: 30.0)),
-                Text('DEVELOPERS',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 150, 150, 150),
-                        fontSize: 10)),
-              ]),
+                      const Icon(Icons.remove_circle)),
               ExpansionTileTheme(
                 data:const ExpansionTileThemeData(),
                 child: ExpansionTile(
@@ -874,7 +885,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Verification',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.check_circle)),
             
                 children: <Widget>[
                   Row(
@@ -888,17 +899,17 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'List Requests',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Verified Users',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'List Verified Pages',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           
                         ],
                       )
@@ -915,7 +926,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Tools',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.badge_rounded)),
             
                 children: <Widget>[
                   Row(
@@ -929,27 +940,27 @@ class AdminLeftPanel extends StatelessWidget {
                             onTap: () => {},
                             label: 'Fake Generator',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Auto Connect',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Garbage Collector',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Backup Database & Files',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                           ListText(
                             onTap: () => {},
                             label: 'Factory Reset',
                             icon:
-                                const Icon(Icons.dashboard)),
+                                const Icon(null)),
                         ],
                       )
                     ],
@@ -968,37 +979,37 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Custom Fields',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.line_weight)),
               ListText(
                   onTap: () => {},
                   label: 'Static Pages',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.find_in_page_rounded)),
               ListText(
                   onTap: () => {},
                   label: 'Colored Posts',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.color_lens)),
               ListText(
                   onTap: () => {},
                   label: 'Widgets',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.widgets)),
               ListText(
                   onTap: () => {},
                   label: 'Emojis',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.emoji_emotions)),
               ListText(
                   onTap: () => {},
                   label: 'Stickers',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.back_hand)),
               ListText(
                   onTap: () => {},
                   label: 'Gifts',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.card_giftcard)),
               Row(children: const [
                 Padding(padding: EdgeInsets.only(left: 30.0)),
                 Text('REACH',
@@ -1010,17 +1021,17 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Announcements',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.announcement)),
               ListText(
                   onTap: () => {},
                   label: 'Mass Notifications',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.notification_important_rounded)),
               ListText(
                   onTap: () => {},
                   label: 'Newsletter',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.arrow_right_alt_sharp)),
               Row(children: const [
                 Padding(padding: EdgeInsets.only(left: 30.0)),
                 Text('SINGLE',
@@ -1032,12 +1043,12 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Changelog',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.lock_clock)),
               ListText(
                   onTap: () => {},
                   label: 'Build v3.4',
                   icon:
-                      const Icon(Icons.dashboard)),
+                      const Icon(Icons.copyright)),
             ],
           ),
            
