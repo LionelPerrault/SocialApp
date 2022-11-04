@@ -18,7 +18,7 @@ class MindSlice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 42,
-      width: 250,
+      width: 240,
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 230, 230, 230),
         borderRadius: BorderRadius.circular(21),

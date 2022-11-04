@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
+import 'package:shnatter/src/widget/daytimeM.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 
 // ignore: must_be_immutable
@@ -114,8 +115,11 @@ class MainPanel extends StatelessWidget {
                 ],)
               ]
             ),
-          )
-          
+          ),
+          // Container(
+          //   width: SizeConfig(context).screenWidth * 0.4,
+          //   child: DayTimeM(time: 'morning', username: 'Shnatter Admin'),
+          // )
       ],)
       );
   }
