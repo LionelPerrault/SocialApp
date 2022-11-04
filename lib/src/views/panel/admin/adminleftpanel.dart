@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../../widget/admin_list_text.dart';
 
@@ -9,103 +10,1042 @@ class AdminLeftPanel extends StatelessWidget {
       {super.key});
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: const EdgeInsets.only(top: 90.0),
+    return 
+    Container(
+      width: SizeConfig.leftBarWidth,
+      child: 
+       Padding(padding: const EdgeInsets.only(top: 90.0),
             child: 
             ListView(
             children: [
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('SYSTEM',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
               ListText(
                   onTap: () => {},
                   label: 'Dashboard',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile.svg?alt=media&token=c40823c5-872b-49b8-8f59-70c7b9314263'),
-              ListText(
-                  onTap: () => {},
-                  label: 'Messages',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmessages.svg?alt=media&token=9893a9e0-1f09-4bca-82de-b829ba0f0bb5'),
-              ListText(
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
                   onTap: () => {},
                   label: 'Settings',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb'),
+                  icon:
+                      const Icon(Icons.settings)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'System Settings',
+                            icon:
+                                const Icon(Icons.settings_suggest_outlined)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Posts Settings',
+                            icon:
+                                const Icon(Icons.message_rounded)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Registration Settings',
+                            icon:
+                                const Icon(Icons.input_outlined)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Accounts Settings',
+                            icon:
+                                const Icon(Icons.manage_accounts)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Email Settings',
+                            icon:
+                                const Icon(Icons.mail)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'SMS Settings',
+                            icon:
+                                const Icon(Icons.sms)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Notification Settings',
+                            icon:
+                                const Icon(Icons.notifications)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Chat Settings',
+                            icon:
+                                const Icon(Icons.message_rounded)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Live Stream Settings',
+                            icon:
+                                const Icon(Icons.network_cell_rounded)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Uploads Settings',
+                            icon:
+                                const Icon(Icons.file_upload_rounded)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Payments Settings',
+                            icon:
+                                const Icon(Icons.credit_card)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Security Settings',
+                            icon:
+                                const Icon(Icons.security_rounded)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Limits Settings',
+                            icon:
+                                const Icon(Icons.iso_rounded)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Analytics Settings',
+                            icon:
+                                const Icon(Icons.pie_chart)),
+                            
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              
               ListText(
                   onTap: () => {},
-                  label: 'Shnatter Token',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter_token.svg?alt=media&token=48ac103d-10fc-4847-943e-33ea5d6281bc'),
-              ListText(onTap: () => {}, label: 'Admin Panel', image: ''),
+                  label: 'Themes',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Design',
+                  icon:
+                      const Icon(Icons.display_settings_rounded)),
+              ListText(
+                onTap: () => {},
+                label: 'Languages',
+                icon:
+                    const Icon(Icons.brush)),
+              ListText(
+                onTap: () => {},
+                label: 'Countries',
+                icon:
+                    const Icon(Icons.abc)),
+              ListText(
+                onTap: () => {},
+                label: 'Currencies',
+                icon:
+                    const Icon(Icons.language)),
+              ListText(
+                onTap: () => {},
+                label: 'Shnatter token',
+                icon:
+                    const Icon(Icons.money_rounded)),
+              ListText(
+                onTap: () => {},
+                label: 'Manage prices',
+                icon:
+                    const Icon(Icons.money_rounded)),
+              ListText(
+                onTap: () => {},
+                label: 'Genders',
+                icon:
+                    const Icon(Icons.roundabout_left_sharp)),
+              ListText(
+                onTap: () => {},
+                label: 'Webmail',
+                icon:
+                    const Icon(Icons.roundabout_left)),
               Row(children: const [
                 Padding(padding: EdgeInsets.only(left: 30.0)),
-                Text('FAVOURITES',
+                Text('MODELS',
                     style: TextStyle(
                         color: Color.fromARGB(255, 150, 150, 150),
                         fontSize: 10)),
               ]),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Users',
+                  icon:
+                      const Icon(Icons.person)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Users',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Admins',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Moderators',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                            ListText(
+                            onTap: () => {},
+                            label: 'List online',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                            ListText(
+                            onTap: () => {},
+                            label: 'List Banned',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
               ListText(
                   onTap: () => {},
-                  label: 'People',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpeople.svg?alt=media&token=64d020ea-d767-45da-826e-2c24a989b175'),
-              ListText(
-                  onTap: () => {},
-                  label: 'Events',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fevents.svg?alt=media&token=92e4dba9-b601-4289-94f9-99534605a248'),
-              ListText(
-                  onTap: () => {},
-                  label: 'Memories',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmemories.svg?alt=media&token=a3432e12-3fab-4944-9a4e-3c73adf4f568'),
-              Row(children: const [
-                Padding(padding: EdgeInsets.only(left: 30.0)),
-                Text('EXPLORE',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 150, 150, 150),
-                        fontSize: 10)),
-              ]),
-              ListText(
-                  onTap: () => {},
-                  label: 'My Articles',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_articles.svg?alt=media&token=e98ee341-30f4-4e2d-8797-0e8396c4fada'),
-              ListText(
-                  onTap: () => {},
-                  label: 'My Products',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_products.svg?alt=media&token=91cdcfb3-cb0a-4061-a19f-b020c61299a0'),
-              ListText(
-                  onTap: () => {},
-                  label: 'Saved Posts',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsaved_posts.svg?alt=media&token=a6950b2b-26ee-4cb8-b1ff-78047383e0de'),
-              ListText(
+                  label: 'Posts',
+                  icon:
+                      const Icon(Icons.post_add)),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
                   onTap: () => {},
                   label: 'Pages',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpages.svg?alt=media&token=eed0ae72-6faf-4fdc-8581-bf3a99a04fa7'),
-              ListText(
+                  icon:
+                      const Icon(Icons.flag)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Pages',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Categories',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
                   onTap: () => {},
                   label: 'Groups',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fgroups.svg?alt=media&token=56ef9dc4-2c1b-4dfd-b945-3439cb5dfe25'),
-              ListText(
+                  icon:
+                      const Icon(Icons.groups)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Groups',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Categories',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
                   onTap: () => {},
-                  label: 'News',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fnews.svg?alt=media&token=c68ab470-dcd6-4c58-9ed6-5e5fc1540110'),
-              ListText(
+                  label: 'Events',
+                  icon:
+                      const Icon(Icons.event)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Events',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Categories',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Aticles',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Articles',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Categories',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
                   onTap: () => {},
                   label: 'Marketplace',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmarketplace.svg?alt=media&token=cd9adfd0-3db3-4d46-a5fa-7ce8f99016bf'),
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Categories',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Offers',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Offers',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Categories',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Jobs',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Jobs',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Categories',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Frums',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Forums',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Threads',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Replies',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Movies',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Movies',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Genres',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
               ListText(
                   onTap: () => {},
-                  label: 'Real estate',
-                  image:
-                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=70d45887-6f23-456d-8396-d38287ae8d9e'),
+                  label: 'Games',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('MONEY',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Ads',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'Ads Settings',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Users Ads',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List System Ads',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Wallet',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'Wallet Settings',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Payment Requests',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Pro System',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'Pro Settings',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Packages',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Subscribers',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Earnings',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Affiliates',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'Affiliates Settings',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Payment Requests',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Points System',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'Points Settings',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Payment Requests',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Fundings',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'Funding Settings',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Payment Requests',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Funding Requests',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('PAYMENTS',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Developers',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'Developers Settings',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Apps',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Categories',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('TOOLS',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
+              ListText(
+                  onTap: () => {},
+                  label: 'Reports',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Blacklist',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('DEVELOPERS',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Verification',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Requests',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Verified Users',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'List Verified Pages',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              ExpansionTileTheme(
+                data:const ExpansionTileThemeData(),
+                child: ExpansionTile(
+                tilePadding: const EdgeInsets.all(0),
+                title: ListText(
+                  onTap: () => {},
+                  label: 'Tools',
+                  icon:
+                      const Icon(Icons.dashboard)),
+            
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 15.0),),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListText(
+                            onTap: () => {},
+                            label: 'Fake Generator',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Auto Connect',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Garbage Collector',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Backup Database & Files',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                          ListText(
+                            onTap: () => {},
+                            label: 'Factory Reset',
+                            icon:
+                                const Icon(Icons.dashboard)),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+                ),
+              ),
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('CUSTOMIZATION',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
+              ListText(
+                  onTap: () => {},
+                  label: 'Custom Fields',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Static Pages',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Colored Posts',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Widgets',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Emojis',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Stickers',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Gifts',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('REACH',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
+              ListText(
+                  onTap: () => {},
+                  label: 'Announcements',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Mass Notifications',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Newsletter',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              Row(children: const [
+                Padding(padding: EdgeInsets.only(left: 30.0)),
+                Text('SINGLE',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 10)),
+              ]),
+              ListText(
+                  onTap: () => {},
+                  label: 'Changelog',
+                  icon:
+                      const Icon(Icons.dashboard)),
+              ListText(
+                  onTap: () => {},
+                  label: 'Build v3.4',
+                  icon:
+                      const Icon(Icons.dashboard)),
             ],
-            ),
+          ),
            
-            );
+        ),
+    );
+   
   }
+}
+
+void setState(Null Function() param0) {
 }

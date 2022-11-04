@@ -10,10 +10,10 @@ class ListText extends StatelessWidget {
       {super.key,
       required this.onTap,
       required this.label,
-      required this.image});
+      required this.icon});
   final GestureTapCallback onTap;
   String label;
-  String image;
+  Icon icon;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,7 +22,7 @@ class ListText extends StatelessWidget {
         Row(
           children: [
             const Padding(padding: EdgeInsets.only(left: 45.0)),
-            SvgPicture.network(image, width: 21,),
+            icon,
             const Padding(padding: EdgeInsets.only(left: 15.0)),
             RichText(
               text: TextSpan(
@@ -31,7 +31,7 @@ class ListText extends StatelessWidget {
                         text: label,
                         style: const TextStyle(
                             color: Color.fromARGB(255, 90, 90, 90),
-                            fontSize: 14),
+                            fontSize: 13),
                         recognizer:
                             TapGestureRecognizer()
                               ..onTap = () {onTap;})
@@ -39,7 +39,7 @@ class ListText extends StatelessWidget {
             ),
           ],
         ),
-        const Padding(padding: EdgeInsets.only(top: 8.0)),
+        const Padding(padding: EdgeInsets.only(top: 10.0)),
       ],
     );
   }

@@ -75,8 +75,13 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
               onSearchBarFocus: onSearchBarFocus,
               onSearchBarDismiss: onSearchBarDismiss,
             ),
+            Row(
+              children: [
             const AdminLeftPanel(),
             const AdminBodyPanel(),
+
+              ],
+            ),
             showSearch
                 ? GestureDetector(
                     onTap: () {
