@@ -12,10 +12,9 @@ class LeftPanel extends StatelessWidget {
       {super.key});
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(top: 90.0),
-            child: 
-            Container(
-              child:  ListView(
+    return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ListText(
                     onTap: () => {},
@@ -108,9 +107,6 @@ class LeftPanel extends StatelessWidget {
                     image:
                         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=70d45887-6f23-456d-8396-d38287ae8d9e'),
               ],
-            ),
-            ),
-           
             );
   }
 }

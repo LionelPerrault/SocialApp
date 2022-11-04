@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -38,7 +39,8 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
   late FocusNode searchFocusNode;
-  var suggest = <String, bool> {
+  bool showMenu = false;
+  var suggest = <String, bool>{
     'friends': true,
     'pages': true,
     'groups': true,
@@ -59,6 +61,13 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
     setState(() {
       showSearch = true;
     });
+  }
+
+  void clickMenu() {
+    setState(() {
+      showMenu = !showMenu;
+    });
+    print("showmenu is {$showMenu}");
   }
 
   void onSearchBarDismiss() {
@@ -85,10 +94,40 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen> {
               searchController: searchController,
               onSearchBarFocus: onSearchBarFocus,
               onSearchBarDismiss: onSearchBarDismiss,
+              drawClicked: clickMenu,
             ),
-            LeftPanel(),
-            MainPanel(),
-            RightPanel(),
+            Padding(
+              padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+              child: //AnimatedPositioned(
+                  //top: showMenu ? 0 : -150.0,
+                  //duration: const Duration(seconds: 2),
+                  //curve: Curves.fastOutSlowIn,
+                  //child:
+                    SingleChildScrollView(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizeConfig(context).screenWidth >
+                                  SizeConfig.smallScreenSize
+                              ? LeftPanel()
+                             : SizedBox(width: 0),
+                          Expanded(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(child: MainPanel()),
+                              SizeConfig(context).screenWidth >
+                                      SizeConfig.mediumScreenSize
+                                  ? RightPanel()
+                                  : SizedBox(width: 0),
+                            ],
+                          )),
+                          //MainPanel(),
+                        ]),
+                  ),//),
+            ),
             showSearch
                 ? GestureDetector(
                     onTap: () {
