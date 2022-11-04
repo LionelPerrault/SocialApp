@@ -8,7 +8,7 @@ import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
 import 'package:shnatter/src/views/resetpassword.dart';
-import 'package:shnatter/src/views/adminscreen.dart';
+import 'package:shnatter/src/views/admin/adminscreen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

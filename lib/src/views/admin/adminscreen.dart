@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/panel/admin/adminbodypanel.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
-import 'package:shnatter/src/views/panel/mainpanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/adminbodypanel.dart';
 
-import '../controllers/HomeController.dart';
-import '../utils/size_config.dart';
-import 'box/notification.dart';
-import 'box/admin_dash_chart.dart';
-import 'panel/admin/adminleftpanel.dart';
+import '../../controllers/HomeController.dart';
+import '../../utils/size_config.dart';
+import '../box/notification.dart';
+import '../box/admin_dash_chart.dart';
+import 'admin_panel/adminleftpanel.dart';
 
 class AdminScreen extends StatefulWidget {
   AdminScreen({Key? key})
