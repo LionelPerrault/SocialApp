@@ -27,7 +27,8 @@ class ShnatterNavigation extends StatefulWidget {
       {Key? key,
       required this.searchController,
       required this.onSearchBarFocus,
-      required this.onSearchBarDismiss
+      required this.onSearchBarDismiss,
+      required this.drawClicked,
       })
       : con = HomeController(),
         super(key: key);
@@ -35,6 +36,7 @@ class ShnatterNavigation extends StatefulWidget {
   final TextEditingController searchController;
   final VoidCallback onSearchBarFocus;
   final VoidCallback onSearchBarDismiss;
+  final VoidCallback drawClicked;
   @override
   State createState() => ShnatterNavigationState();
 }
@@ -66,7 +68,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   late HomeController con;
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth >600 ? buildLargeSize():buildSmallSize();
+    return SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? buildLargeSize():buildSmallSize();
   }
   @override
   Widget buildSmallSize()
@@ -94,7 +96,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       Container(
                         padding: const EdgeInsets.only(right: 0),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () { widget.drawClicked();},
                           style: ButtonStyle(
                             minimumSize:MaterialStateProperty.all(Size(30, 30)) ,
                             padding: MaterialStateProperty.all(EdgeInsets.all(2)),

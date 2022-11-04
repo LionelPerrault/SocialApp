@@ -99,12 +99,10 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                   ])
                 ],
               ),
+              SizedBox(height: 5,),
               const Divider(
-                  //height: 20,
-                  //thickness: 5,
-                  //indent: 20,
-                  //endIndent: 0,
-                  //color: Colors.black,
+                   height: 1,
+                   endIndent: 10,
                   ),
               SizedBox(
                 height: 300,
@@ -137,7 +135,10 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                         ],
                       ))),
                   separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
+                      const Divider(
+                         height: 1,
+                        endIndent: 10,
+                      ),
                 ),
               )
             ],

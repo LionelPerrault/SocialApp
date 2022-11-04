@@ -27,6 +27,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
   late FocusNode searchFocusNode;
+  bool showMenu = false;
   var suggest = <String, bool> {
     'friends': true,
     'pages': true,
@@ -49,6 +50,11 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
       showSearch = true;
     });
   }
+  void clickMenu() {
+      setState(() {
+        showMenu = !showMenu;
+      });
+    }
 
   void onSearchBarDismiss() {
     if (showSearch)
@@ -74,6 +80,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
               searchController: searchController,
               onSearchBarFocus: onSearchBarFocus,
               onSearchBarDismiss: onSearchBarDismiss,
+              drawClicked: clickMenu,
             ),
             Row(
               children: [

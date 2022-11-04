@@ -85,7 +85,11 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                   ])
                 ],
               ),
-              const Divider(),
+              SizedBox( height: 5,),
+              const Divider(
+                 height: 1,
+                 endIndent: 10,
+              ),
               SizedBox(
                 height: 300,
                 //size: Size(100,100),
@@ -117,7 +121,10 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                         ],
                       ))),
                   separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
+                      const Divider(
+                        height: 1,
+                        endIndent: 10,
+                      ),
                 ),
               )
             ],

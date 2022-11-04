@@ -11,10 +11,13 @@ class MainPanel extends StatelessWidget {
       {super.key});
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(top: SizeConfig.navbarHeight, left: SizeConfig.leftBarWidth),
-      child: SizedBox(width: SizeConfig.mainPaneWidth,
+    return Padding(padding: EdgeInsets.only(top: 0, left:0),
+      child: Container(
+        //width:double.infinity,
+        //height: double.infinity,
+        decoration: BoxDecoration(color: Colors.grey),
         child: Text("This is body", style: TextStyle(color: Colors.red, fontSize: 30),),
-      ),
-    );    
+      )        
+      );
   }
 }

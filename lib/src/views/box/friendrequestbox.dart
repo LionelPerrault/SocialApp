@@ -76,12 +76,10 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                   ),
                 ],
               ),
+              SizedBox(height: 10,),
               const Divider(
-                  //height: 20,
-                  //thickness: 5,
-                  //indent: 20,
-                  //endIndent: 0,
-                  //color: Colors.black,
+                  height: 1,
+                        endIndent: 10,
                   ),
               SizedBox(
                 height: 300,
@@ -114,7 +112,10 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                         ],
                       ))),
                   separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
+                      const Divider(
+                         height: 1,
+                        endIndent: 10,
+                      ),
                 ),
               )
             ],
