@@ -10,7 +10,6 @@ import 'dart:html';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/routes/route_names.dart';
@@ -132,11 +131,12 @@ class MindPostState extends mvc.StateMVC <MindPost> {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               Expanded(
                 child: SizedBox(
-                  width: 200,
-                  height: 35,
+                  width: 100,
+                  height: 38,
                   child:DecoratedBox(
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 17, 205, 239),
+                        borderRadius: BorderRadius.circular(4),
                         border: Border.all(
                             color: const Color.fromARGB(255, 17, 205, 239),
                             width:
@@ -144,35 +144,48 @@ class MindPostState extends mvc.StateMVC <MindPost> {
                       ),
                       child: Padding(
                           padding: const EdgeInsets.only(
-                              top: 7, right: 5),
+                              top: 7, left: 15),
                           child: DropdownButton(
                             hint: Row(children: const [
                               Icon(Icons.language, color: Colors.white,),
+                              Padding(padding: EdgeInsets.only(left: 5)),
                               Text(
                                 'Public',
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 13,
                                   color: Colors.white,
                                 ),
                               ),
                             ],),
-                            items: const [
-                              //add items in the dropdown
+                            items: [
                               DropdownMenuItem(
                                 value: "Public",
-                                child: Text("Public"),
+                                child: Row(children: const [
+                                  Icon(Icons.language, color: Colors.black,),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text("Public", style: TextStyle(fontSize: 13),)]),
                               ),
                               DropdownMenuItem(
-                                  value: "Friends",
-                                  child: Text("Friends")),
+                                value: "Friends",
+                                child: Row(children: const [
+                                  Icon(Icons.groups, color: Colors.black,),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text("Friends", style: TextStyle(fontSize: 13),)]),
+                              ),
                               DropdownMenuItem(
                                 value: "Friends of Friends",
-                                child: Text("Friends of Friends"),
+                                child: Row(children: const [
+                                  Icon(Icons.groups, color: Colors.black,),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text("Friends of Friends", style: TextStyle(fontSize: 13),)]),
                               ),
                               DropdownMenuItem(
                                 value: "Only Me",
-                                child: Text("Only Me"),
-                              )
+                                child: Row(children: const [
+                                  Icon(Icons.lock_outline, color: Colors.black,),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text("Only Me", style: TextStyle(fontSize: 13),)]),
+                              ),
                             ],
                             onChanged: (String? value) {
                               //get value when changed
@@ -180,43 +193,37 @@ class MindPostState extends mvc.StateMVC <MindPost> {
                               setState(() {});
                             },
                             icon: const Padding(
-                                //Icon at tail, arrow bottom is default icon
-                                padding:
-                                    EdgeInsets.only(left: 20),
-                                child: Icon(
-                                    Icons.arrow_drop_down)),
+                                padding: EdgeInsets.only(left: 20),
+                                child: Icon(Icons.arrow_drop_down)),
                             iconEnabledColor:
                                 Colors.white, //Icon color
                             style: const TextStyle(
-                                //te
-                                color:
-                                    Colors.black, //Font color
-                                fontSize:
-                                    11,
+                                color: Colors.black, //Font color
+                                fontSize: 11,
                                 fontWeight: FontWeight.bold,
                                 ),
-
                             dropdownColor: Colors.white,
                             underline:
                                 Container(), //remove underline
                             isExpanded: true,
                             isDense: true,
                           ))),),),
+              const Padding(padding: EdgeInsets.only(left: 10)),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4.0)),
-                  minimumSize: const Size(75, 40),
-                  maximumSize: const Size(75, 40),
+                  minimumSize: const Size(85, 45),
+                  maximumSize: const Size(85, 45),
                 ),
                 onPressed: () { ()=>{}; },
                 child: 
                   const Text('Post',
                     style: TextStyle(
                     color: Colors.black,
-                    fontSize: 11,
+                    fontSize: 13,
                     fontWeight: FontWeight.w900)),
               )
             ],)
