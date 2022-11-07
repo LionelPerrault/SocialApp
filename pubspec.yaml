@@ -52,6 +52,9 @@ dependencies:
   custom_pop_up_menu: ^1.2.4
   material_floating_search_bar: ^0.3.7
   fl_chart: ^0.55.2
+  crypto: ^3.0.2
+  firebase_auth: ^4.1.1
+  google_sign_in: ^5.4.2
 
 dev_dependencies:
   flutter_test:

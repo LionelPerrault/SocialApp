@@ -3,32 +3,50 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class PrimaryInput extends StatelessWidget {
-  PrimaryInput(
-      {super.key,
-      required this.onChange,
-      required this.label,
-      required this.icon});
-  final GestureTapCallback onChange;
+class PrimaryInput extends StatefulWidget {
+  Function onChange;
+  Function validator;
   String label;
+  bool obscureText = false;
   var icon = const Icon(
     Icons.person_outline_rounded,
     color: Colors.white,
   );
+
+  PrimaryInput({
+    Key? key,
+    required this.onChange,
+    required this.label,
+    this.obscureText = false,
+    required this.validator,
+    this.icon = const Icon(
+      null,
+    ),
+  }) : super(key: key);
+  @override
+  State createState() => PrimaryInputState();
+}
+
+class PrimaryInputState extends State<PrimaryInput> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: _formKey,
       onChanged: (newIndex) {
-        onChange();
+        widget.onChange(newIndex);
       },
+      obscureText: widget.obscureText,
+      style: const TextStyle(color: Colors.white, fontSize: 11),
+      cursorColor: Colors.white,
       decoration: InputDecoration(
         filled: true,
+
         fillColor: const Color.fromRGBO(35, 35, 35, 1), //<-- SEE HERE
         focusColor: Colors.white,
         //add prefix icon
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 10), // <-- SEE HERE
-        prefixIcon: icon,
+        contentPadding: const EdgeInsets.symmetric(vertical: 3), // <-- SEE HERE
+        prefixIcon: widget.icon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
           borderSide: const BorderSide(color: Colors.grey, width: 0.1),
@@ -41,11 +59,11 @@ class PrimaryInput extends StatelessWidget {
           borderSide: const BorderSide(color: Colors.grey, width: 0.1),
           borderRadius: BorderRadius.circular(20.0),
         ),
-        hintText: label,
+        hintText: widget.label,
         //make hint text
         hintStyle: const TextStyle(
           color: Colors.grey,
-          fontSize: 12,
+          fontSize: 11,
           fontFamily: "verdana_regular",
           fontWeight: FontWeight.w400,
         ),
@@ -57,9 +75,7 @@ class PrimaryInput extends StatelessWidget {
         // code when the user saves the form.
       },
       validator: (String? value) {
-        return (value != null && value.contains('@'))
-            ? 'Do not use the @ char.'
-            : null;
+        widget.validator(value);
       },
     );
   }

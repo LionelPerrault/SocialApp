@@ -1,9 +1,8 @@
 const functions = require("firebase-functions");
+const admin = require('firebase-admin');
+const {getAuth,linkWithCredential, EmailAuthProvider} = require('firebase/auth')
+admin.initializeApp();
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.emailVerification = functions.https.onRequest(async (req, res) => {
+    res.redirect('https://shnatter-a69cd.web.app/');
+  })

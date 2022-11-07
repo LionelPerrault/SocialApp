@@ -8,4 +8,5 @@ class RouteNames {
   static const terms = '/terms';
   static const privacy = '/privacy';
   static const admin = '/adminp';
+  static const started = '/started';
 }

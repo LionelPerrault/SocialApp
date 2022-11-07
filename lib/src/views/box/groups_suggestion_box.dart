@@ -12,13 +12,10 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
-import '../../controllers/HomeController.dart';
+import '../../controllers/UserController.dart';
 
 class ShnatterGroupSuggest extends StatefulWidget {
-  ShnatterGroupSuggest({Key? key})
-      : con = HomeController(),
-        super(key: key);
-  final HomeController con;
+  ShnatterGroupSuggest({Key? key}) : super(key: key);
 
   @override
   State createState() => ShnatterGroupSuggestState();
@@ -61,12 +58,9 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
   ];
   @override
   void initState() {
-    add(widget.con);
-    con = controller as HomeController;
     super.initState();
   }
 
-  late HomeController con;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -84,7 +78,9 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                     "Suggested Groups",
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 45.0),),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 45.0),
+                  ),
                   Row(children: [
                     Text(
                       'See All',
@@ -111,76 +107,87 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                 ],
               ),
               const Divider(
-                  height: 1,
-                  //thickness: 5,
-                  //indent: 20,
-                  //endIndent: 0,
-                  //color: Colors.black,
-                  ),
+                height: 1,
+                //thickness: 5,
+                //indent: 20,
+                //endIndent: 0,
+                //color: Colors.black,
+              ),
               SizedBox(
                 height: 260,
                 //size: Size(100,100),
                 child: ListView.separated(
                   itemCount: sampleData.length,
-                  itemBuilder: (context, index) => 
-                  Material(
-                  child:
-                  ListTile(
-                      onTap: () { print("tap!");},
-                      hoverColor: const Color.fromARGB(255, 243, 243, 243),
-                      enabled: true,
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://test.shnatter.com/content/themes/default/images/blank_group.jpg"),
-                      ),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(children: [
-                            Container(
-                              width: 95,
-                              alignment: Alignment.topLeft,
-                              child: Column(children: [
-                                Text(sampleData[index]['name'],
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),
-                                ),
-                                Text(sampleData[index]['subname'],
-                                style: TextStyle(fontWeight: FontWeight.normal,fontSize: 10)
-                                ),
-                              ]),
-                            ),
-                            Container(
-                              child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color.fromARGB(255, 33, 37, 41),
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(2.0)),
-                                        minimumSize: new Size(80, 35),
+                  itemBuilder: (context, index) => Material(
+                      child: ListTile(
+                          onTap: () {
+                            print("tap!");
+                          },
+                          hoverColor: const Color.fromARGB(255, 243, 243, 243),
+                          enabled: true,
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                "https://test.shnatter.com/content/themes/default/images/blank_group.jpg"),
+                          ),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 95,
+                                    alignment: Alignment.topLeft,
+                                    child: Column(children: [
+                                      Text(
+                                        sampleData[index]['name'],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
                                       ),
-                                      onPressed: () { ()=>{}; },
-                                      child: 
-                                      Row(children: [
-                                        Icon(Icons.person_add_alt_rounded,
-                                            color: Colors.white,
-                                            size: 18.0,
-                                        ),
-                                        Text('Join',
-                                          style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold)),
-                                      ],)
-                                    )
-                                ),
-                          ],)
-                        ],
-                      ))),
+                                      Text(sampleData[index]['subname'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 10)),
+                                    ]),
+                                  ),
+                                  Container(
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Color.fromARGB(255, 33, 37, 41),
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(2.0)),
+                                            minimumSize: new Size(80, 35),
+                                          ),
+                                          onPressed: () {
+                                            () => {};
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.person_add_alt_rounded,
+                                                color: Colors.white,
+                                                size: 18.0,
+                                              ),
+                                              Text('Join',
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ],
+                                          ))),
+                                ],
+                              )
+                            ],
+                          ))),
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(
-                        height: 1,
-                        endIndent: 10,
-                      ),
+                    height: 1,
+                    endIndent: 10,
+                  ),
                 ),
               )
             ],

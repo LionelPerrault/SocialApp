@@ -11,13 +11,10 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../controllers/HomeController.dart';
+import '../../controllers/UserController.dart';
 
 class ShnatterNotification extends StatefulWidget {
-  ShnatterNotification({Key? key})
-      : con = HomeController(),
-        super(key: key);
-  final HomeController con;
+  ShnatterNotification({Key? key}) : super(key: key);
 
   @override
   State createState() => ShnatterNotificationState();
@@ -51,12 +48,9 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   ];
   @override
   void initState() {
-    add(widget.con);
-    con = controller as HomeController;
     super.initState();
   }
 
-  late HomeController con;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

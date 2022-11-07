@@ -13,7 +13,7 @@ import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 
-import '../controllers/HomeController.dart';
+import '../controllers/UserController.dart';
 import '../utils/size_config.dart';
 import '../widget/mprimary_button.dart';
 import '../widget/list_text.dart';
@@ -26,10 +26,9 @@ import 'box/notification.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key})
-      : con = HomeController(),
+      : userCon = UserController(),
         super(key: key);
-  final HomeController con;
-
+  final UserController userCon;
   @override
   State createState() => HomeScreenState();
 }
@@ -39,6 +38,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
+  late UserController userCon;
   bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
@@ -52,17 +52,20 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
   //
   @override
   void initState() {
-    add(widget.con);
-    con = controller as HomeController;
+    add(widget.userCon);
     super.initState();
+    userCon = controller as UserController;
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    userCon.checkIfLogined().then((value) => {
+          if (!value)
+            {Navigator.pushReplacementNamed(context, RouteNames.login)}
+        });
   }
 
-  late HomeController con;
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
     setState(() {

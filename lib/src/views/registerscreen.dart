@@ -1,29 +1,44 @@
-import 'dart:html';
+import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/primaryInput.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../helpers/helper.dart';
+import '../utils/size_config.dart';
 import '../widget/mprimary_button.dart';
 import './footerbar.dart';
 
+// ignore: must_be_immutable
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+  RegisterScreen({Key? key})
+      : con = UserController(),
+        super(key: key);
+  @override
   State createState() => RegisterScreenState();
+  late UserController con;
 }
 
 class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   bool check1 = false;
   bool check2 = false;
+  late UserController con;
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
+    add(widget.con);
+    con = controller as UserController;
+    if (con.isLogined) {
+      Navigator.pushReplacementNamed(context, RouteNames.homePage);
+    }
   }
 
+  var signUpUserInfo = {};
   String dropdownValue = 'Male';
   @override
   Widget build(BuildContext context) {
@@ -78,35 +93,59 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
                                 input(
-                                    'First Name',
-                                    const Icon(
+                                    label: 'First Name',
+                                    icon: const Icon(
                                       Icons.person,
                                       color: Colors.white,
-                                    )),
+                                    ),
+                                    validator: (value) async {
+                                      print(value);
+                                    },
+                                    onchange: (value) async {
+                                      signUpUserInfo['firstName'] = value;
+                                      setState(() {});
+                                    }),
                                 input(
-                                    'Last Name',
-                                    const Icon(
+                                    label: 'Last Name',
+                                    icon: const Icon(
                                       Icons.person,
                                       color: Colors.white,
-                                    )),
+                                    ),
+                                    onchange: (value) async {
+                                      signUpUserInfo['lastName'] = value;
+                                      setState(() {});
+                                    }),
                                 input(
-                                    'User Name',
-                                    const Icon(
+                                    label: 'User Name',
+                                    icon: const Icon(
                                       Icons.ev_station_sharp,
                                       color: Colors.white,
-                                    )),
+                                    ),
+                                    onchange: (value) async {
+                                      signUpUserInfo['userName'] = value;
+                                      setState(() {});
+                                    }),
                                 input(
-                                    'Email',
-                                    const Icon(
+                                    label: 'Email',
+                                    icon: const Icon(
                                       Icons.email,
                                       color: Colors.white,
-                                    )),
+                                    ),
+                                    onchange: (value) async {
+                                      signUpUserInfo['email'] = value;
+                                      setState(() {});
+                                    }),
                                 input(
-                                    'Password',
-                                    const Icon(
+                                    label: 'Password',
+                                    obscureText: true,
+                                    icon: const Icon(
                                       Icons.key,
                                       color: Colors.white,
-                                    )),
+                                    ),
+                                    onchange: (value) async {
+                                      signUpUserInfo['password'] = value;
+                                      setState(() {});
+                                    }),
                                 Container(
                                     width: double.infinity - 50,
                                     padding: const EdgeInsets.only(top: 10),
@@ -154,6 +193,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               ],
                                               onChanged: (String? value) {
                                                 //get value when changed
+                                                signUpUserInfo['sex'] = value;
                                                 dropdownValue = value!;
                                                 setState(() {});
                                               },
@@ -293,10 +333,11 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                   padding: const EdgeInsets.only(top: 10),
                                   child: MyPrimaryButton(
                                     color: Colors.white,
+                                    isShowProgressive: con.isSendRegisterInfo,
                                     buttonName: "Sign up",
                                     onPressed: () => {
-                                      Navigator.pushReplacementNamed(
-                                          context, RouteNames.homePage)
+                                      con.validate(context, signUpUserInfo),
+                                      // con.createPassword()
                                     },
                                   ),
                                 ),
@@ -325,21 +366,29 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                           ),
                         ])),
                     Container(
-                        margin: const EdgeInsets.only(top: 30),
+                        width: SizeConfig(context).screenWidth * 0.6,
+                        margin: const EdgeInsets.only(
+                            top: 80, right: 150, bottom: 20),
                         child: footbar(context))
                   ],
                 ))));
   }
-}
 
-Widget input(String label, Icon icon) {
-  return Container(
-    height: 38,
-    padding: const EdgeInsets.only(top: 10),
-    child: PrimaryInput(
-      onChange: () {},
-      icon: icon,
-      label: label,
-    ),
-  );
+  Widget input({label, icon, onchange, obscureText = false, validator}) {
+    return Container(
+      height: 38,
+      padding: const EdgeInsets.only(top: 10),
+      child: PrimaryInput(
+        validator: (val) async {
+          validator(val);
+        },
+        obscureText: obscureText,
+        onChange: (val) async {
+          onchange(val);
+        },
+        icon: icon,
+        label: label,
+      ),
+    );
+  }
 }

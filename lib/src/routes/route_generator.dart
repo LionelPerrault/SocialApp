@@ -21,13 +21,11 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);
       case RouteNames.homePage:
-        return MaterialPageRoute(builder: 
-          (context) => HomeScreen()
-        );
+        return MaterialPageRoute(
+            builder: (context) => HomeScreen(), settings: settings);
       case RouteNames.reset:
-        return MaterialPageRoute(builder: 
-          (context) => ResetScreen()
-        );
+        return MaterialPageRoute(
+            builder: (context) => ResetScreen(), settings: settings);
       case RouteNames.register:
         return MaterialPageRoute(
             builder: (context) => RegisterScreen(), settings: settings);
@@ -36,13 +34,16 @@ class RouteGenerator {
             builder: (context) => TermsScreen(), settings: settings);
       case RouteNames.privacy:
         return MaterialPageRoute(
-            builder: (context) => PrivacyScreen(), settings: settings);
+            builder: (context) => const PrivacyScreen(), settings: settings);
       case RouteNames.login:
         return MaterialPageRoute(
             builder: (context) => LoginScreen(), settings: settings);
       case RouteNames.admin:
         return MaterialPageRoute(
             builder: (context) => AdminScreen(), settings: settings);
+      case RouteNames.started:
+        return MaterialPageRoute(
+            builder: (context) => HomeScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);

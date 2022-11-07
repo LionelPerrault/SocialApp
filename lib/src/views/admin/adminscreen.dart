@@ -3,17 +3,14 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/admin/navigationbar.dart';
 import 'package:shnatter/src/views/admin/admin_panel/adminbodypanel.dart';
 
-import '../../controllers/HomeController.dart';
+import '../../controllers/UserController.dart';
 import '../../utils/size_config.dart';
 import '../box/notification.dart';
 import '../box/admin_dash_chart.dart';
 import 'admin_panel/adminleftpanel.dart';
 
 class AdminScreen extends StatefulWidget {
-  AdminScreen({Key? key})
-      : con = HomeController(),
-        super(key: key);
-  final HomeController con;
+  AdminScreen({Key? key}) : super(key: key);
 
   @override
   State createState() => AdminScreenState();
@@ -26,7 +23,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
   bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
-  var suggest = <String, bool> {
+  var suggest = <String, bool>{
     'friends': true,
     'pages': true,
     'groups': true,
@@ -35,24 +32,22 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
   //
   @override
   void initState() {
-    add(widget.con);
-    con = controller as HomeController;
     super.initState();
     searchFocusNode = FocusNode();
   }
 
-  late HomeController con;
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
     setState(() {
       showSearch = true;
     });
   }
+
   void clickMenu() {
-      setState(() {
-        showMenu = !showMenu;
-      });
-    }
+    setState(() {
+      showMenu = !showMenu;
+    });
+  }
 
   void onSearchBarDismiss() {
     if (showSearch)
@@ -82,9 +77,8 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
             ),
             Row(
               children: [
-            const AdminLeftPanel(),
-            const AdminBodyPanel(),
-
+                const AdminLeftPanel(),
+                const AdminBodyPanel(),
               ],
             ),
             showSearch

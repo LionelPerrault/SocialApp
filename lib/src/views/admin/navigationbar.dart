@@ -7,7 +7,7 @@ import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 
-import '../../controllers/HomeController.dart';
+import '../../controllers/UserController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -23,16 +23,13 @@ enum Menu {
 }
 
 class AdminShnatterNavigation extends StatefulWidget {
-  AdminShnatterNavigation(
-      {Key? key,
-      required this.searchController,
-      required this.onSearchBarFocus,
-      required this.onSearchBarDismiss,
-      required this.drawClicked,
-      })
-      : con = HomeController(),
-        super(key: key);
-  final HomeController con;
+  AdminShnatterNavigation({
+    Key? key,
+    required this.searchController,
+    required this.onSearchBarFocus,
+    required this.onSearchBarDismiss,
+    required this.drawClicked,
+  }) : super(key: key);
   final TextEditingController searchController;
   final VoidCallback onSearchBarFocus;
   final VoidCallback onSearchBarDismiss;
@@ -41,7 +38,8 @@ class AdminShnatterNavigation extends StatefulWidget {
   State createState() => AdminShnatterNavigationState();
 }
 
-class AdminShnatterNavigationState extends mvc.StateMVC<AdminShnatterNavigation> {
+class AdminShnatterNavigationState
+    extends mvc.StateMVC<AdminShnatterNavigation> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late TextEditingController searhCon;
   late FocusNode searchFocusNode;
@@ -49,9 +47,7 @@ class AdminShnatterNavigationState extends mvc.StateMVC<AdminShnatterNavigation>
   //
   @override
   void initState() {
-    add(widget.con);
     searhCon = widget.searchController;
-    con = controller as HomeController;
     searchFocusNode = FocusNode();
     searchFocusNode.addListener(() {
       widget.onSearchBarFocus();
@@ -65,21 +61,17 @@ class AdminShnatterNavigationState extends mvc.StateMVC<AdminShnatterNavigation>
     super.dispose();
   }
 
-  late HomeController con;
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? buildLargeSize():buildSmallSize();
+    return SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+        ? buildLargeSize()
+        : buildSmallSize();
   }
-  @override
-  Widget buildSmallSize()
-  {
-    Future.delayed(
-      Duration(microseconds: 300),
-    () =>{
-      widget.onSearchBarDismiss()
-    }
-    );
 
+  @override
+  Widget buildSmallSize() {
+    Future.delayed(
+        Duration(microseconds: 300), () => {widget.onSearchBarDismiss()});
 
     return Stack(
       children: [
@@ -93,23 +85,24 @@ class AdminShnatterNavigationState extends mvc.StateMVC<AdminShnatterNavigation>
               children: [
                 Row(
                   children: [
-                      Container(
+                    Container(
                         padding: const EdgeInsets.only(right: 0),
                         child: ElevatedButton(
-                          onPressed: () { widget.drawClicked();},
-                          style: ButtonStyle(
-                            minimumSize:MaterialStateProperty.all(Size(30, 30)) ,
-                            padding: MaterialStateProperty.all(EdgeInsets.all(2)),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black),
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                          ),
-                          child:const Icon(
-                                CupertinoIcons.line_horizontal_3,
-                                size: 30,
-                                color: Colors.white)
-                        )
+                            onPressed: () {
+                              widget.drawClicked();
+                            },
+                            style: ButtonStyle(
+                              minimumSize:
+                                  MaterialStateProperty.all(Size(30, 30)),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(2)),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.black),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                            ),
+                            child: const Icon(CupertinoIcons.line_horizontal_3,
+                                size: 30, color: Colors.white))
                         //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                         ),
                   ],
@@ -121,8 +114,10 @@ class AdminShnatterNavigationState extends mvc.StateMVC<AdminShnatterNavigation>
                         child: ElevatedButton(
                           onPressed: () {},
                           style: ButtonStyle(
-                            minimumSize:MaterialStateProperty.all(Size(30, 30)) ,
-                            padding: MaterialStateProperty.all(EdgeInsets.all(2)),
+                            minimumSize:
+                                MaterialStateProperty.all(Size(30, 30)),
+                            padding:
+                                MaterialStateProperty.all(EdgeInsets.all(2)),
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.black),
                             backgroundColor:
@@ -141,32 +136,35 @@ class AdminShnatterNavigationState extends mvc.StateMVC<AdminShnatterNavigation>
                         )
                         //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                         ),
-                     Container(
+                    Container(
                         padding: const EdgeInsets.only(right: 1),
                         child: ButtonTheme(
                           minWidth: 30,
                           child: ElevatedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                            minimumSize:MaterialStateProperty.all(Size(30, 30)) ,
-                            padding: MaterialStateProperty.all(EdgeInsets.all(2)),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black),
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.transparent),
+                            onPressed: () {},
+                            style: ButtonStyle(
+                              minimumSize:
+                                  MaterialStateProperty.all(Size(30, 30)),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(2)),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.black),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                            ),
+                            child: SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.search,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
                           ),
-                          child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.search,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),)
-                         
+                        )
+
                         //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                         ),
                     Container(
@@ -226,9 +224,9 @@ class AdminShnatterNavigationState extends mvc.StateMVC<AdminShnatterNavigation>
       ],
     );
   }
+
   @override
-  Widget buildLargeSize()
-  {
+  Widget buildLargeSize() {
     return Stack(
       children: [
         Container(
@@ -242,32 +240,38 @@ class AdminShnatterNavigationState extends mvc.StateMVC<AdminShnatterNavigation>
                 Padding(
                     padding: const EdgeInsets.only(left: 58.0),
                     child: TextButton(
-                      onPressed: () {},
-                      onHover: (hover) { 
-                        setState(() {
-                          onHover = hover;
-                        });
-
-                      },
-                      child: Row(children: [
-                        AnimatedOpacity(
-                          duration: Duration(microseconds:1000),
-                          curve: Curves.easeIn,
-                          opacity: onHover?0.5:1,
-                          child: SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
-                              SVGPath.logo,
-                              width: 40,
-                              height: 40,
-                              semanticsLabel: 'Logo'),
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 20.0),),
-                        const Text('Admin Page', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w600))
-                      ],)
-                    )),
+                        onPressed: () {},
+                        onHover: (hover) {
+                          setState(() {
+                            onHover = hover;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            AnimatedOpacity(
+                              duration: Duration(microseconds: 1000),
+                              curve: Curves.easeIn,
+                              opacity: onHover ? 0.5 : 1,
+                              child: SvgPicture.network(
+                                  placeholderBuilder: (context) => const Icon(
+                                      Icons.logo_dev,
+                                      size: 30,
+                                      color: Colors.white),
+                                  SVGPath.logo,
+                                  width: 40,
+                                  height: 40,
+                                  semanticsLabel: 'Logo'),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 20.0),
+                            ),
+                            const Text('Admin Page',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w600))
+                          ],
+                        ))),
                 Row(
                   children: [
                     Container(

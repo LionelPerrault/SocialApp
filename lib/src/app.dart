@@ -16,6 +16,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'controllers/AppController.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'controllers/UserController.dart';
 import 'helpers/helper.dart';
 import 'models/setting.dart';
 
@@ -32,73 +33,83 @@ class _MyAppState extends AppStateMVC<MyApp> {
   _MyAppState._()
       : super(
           controller: AppController(),
-          controllers: [],
+          controllers: [UserController()],
         );
   static _MyAppState? _this;
-  Widget createApp()
-  {
-    return 
-      ValueListenableBuilder(
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Widget createApp() {
+    return ValueListenableBuilder(
         valueListenable: Helper.setting,
         builder: (context, Setting _setting, _) {
-            return MaterialApp(
-                title: 'Shnatter',
-                debugShowCheckedModeBanner: false,
-                //home: HomeScreen(key: UniqueKey()),
-                locale: _setting.language,
-                localizationsDelegates: [
-                  AppLocalizations.delegate, // Add this line
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const <Locale>[
-                  Locale.fromSubtags(languageCode: 'en'),
-                  Locale.fromSubtags(languageCode: 'ar'),
-                  Locale.fromSubtags(languageCode: 'es'),
-                  Locale.fromSubtags(languageCode: 'fr'),
-                  Locale.fromSubtags(languageCode: 'fr', countryCode: 'CA'),
-                  Locale.fromSubtags(languageCode: 'in'),
-                  Locale.fromSubtags(languageCode: 'ko'),
-                  Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
-                ]   ,
-                initialRoute: "/",
-                onGenerateRoute: RouteGenerator.generateRoute,
-                // ignore: dead_code
-                theme: _setting.isBright? ThemeData(
-                                  brightness: Brightness.dark,
-                                  primarySwatch: kprimarySwatch,
-                                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                                  fontFamily: 'Georgia',
-                                  buttonTheme: ButtonThemeData(
-                                    buttonColor: Color(0xff00adb5),
-                                  ),
-                                  textTheme: const TextTheme(
-                                    headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-                                    headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                                    bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-                                  ),
-                                  ):
-                                  ThemeData(
-                                  brightness: Brightness.light,
-                                  primarySwatch: kprimarySwatch,
-                                  backgroundColor: Color(0xffeeeeee),
-                                  fontFamily: 'Georgia',
-                                  buttonTheme: ButtonThemeData(
-                                    buttonColor: Color(0xff00adb5),
-                                  ),
-                                  textTheme: const TextTheme(
-                                    headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-                                    headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                                    bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-                                  ),
-                                  )
-              );
-          });
+          return MaterialApp(
+              title: 'Shnatter',
+              debugShowCheckedModeBanner: false,
+              //home: HomeScreen(key: UniqueKey()),
+              locale: _setting.language,
+              localizationsDelegates: const [
+                AppLocalizations.delegate, // Add this line
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const <Locale>[
+                Locale.fromSubtags(languageCode: 'en'),
+                Locale.fromSubtags(languageCode: 'ar'),
+                Locale.fromSubtags(languageCode: 'es'),
+                Locale.fromSubtags(languageCode: 'fr'),
+                Locale.fromSubtags(languageCode: 'fr', countryCode: 'CA'),
+                Locale.fromSubtags(languageCode: 'in'),
+                Locale.fromSubtags(languageCode: 'ko'),
+                Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
+              ],
+              initialRoute: RouteNames.login,
+              onGenerateRoute: RouteGenerator.generateRoute,
+              // ignore: dead_code
+              theme: _setting.isBright
+                  ? ThemeData(
+                      brightness: Brightness.dark,
+                      primarySwatch: kprimarySwatch,
+                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                      fontFamily: 'Georgia',
+                      buttonTheme: const ButtonThemeData(
+                        buttonColor: Color(0xff00adb5),
+                      ),
+                      textTheme: const TextTheme(
+                        headline1: TextStyle(
+                            fontSize: 72.0, fontWeight: FontWeight.bold),
+                        headline6: TextStyle(
+                            fontSize: 36.0, fontStyle: FontStyle.italic),
+                        bodyText2:
+                            TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+                      ),
+                    )
+                  : ThemeData(
+                      brightness: Brightness.light,
+                      primarySwatch: kprimarySwatch,
+                      backgroundColor: const Color(0xffeeeeee),
+                      fontFamily: 'Georgia',
+                      buttonTheme: const ButtonThemeData(
+                        buttonColor: Color(0xff00adb5),
+                      ),
+                      textTheme: const TextTheme(
+                        headline1: TextStyle(
+                            fontSize: 72.0, fontWeight: FontWeight.bold),
+                        headline6: TextStyle(
+                            fontSize: 36.0, fontStyle: FontStyle.italic),
+                        bodyText2:
+                            TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+                      ),
+                    ));
+        });
   }
+
   @override
   Widget buildChild(BuildContext context) {
     bool isBright = false;
-    return createApp();        
+    return createApp();
   }
 }
