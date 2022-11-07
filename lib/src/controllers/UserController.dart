@@ -106,6 +106,19 @@ class UserController extends ControllerMVC {
     signUpUserInfo = info;
     email = signUpUserInfo['email'];
     password = signUpUserInfo['password'];
+    var check = email.contains('@gmail.com'); //return true if contains
+    if (!check) {
+      Helper.showToast('Invalid Email');
+      isSendRegisterInfo = false;
+      setState(() {});
+      return;
+    }
+    if (password.length < 9) {
+      Helper.showToast('Password length should be 8 over');
+      isSendRegisterInfo = false;
+      setState(() {});
+      return;
+    }
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
     if (querySnapshot.size > 0) {
@@ -114,7 +127,7 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    createRelysiaAccount();
+    // createRelysiaAccount();
   }
 
   String createActivationCode() {
