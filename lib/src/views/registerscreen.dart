@@ -54,13 +54,18 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                        alignment: Alignment.topRight,
-                        margin: const EdgeInsets.only(right: 170),
+                        alignment: Alignment.topCenter,
+                        width: SizeConfig(context).screenWidth <
+                                SizeConfig.smallScreenSize ? SizeConfig.smallScreenSize*0.94 : 300,
+                        margin: EdgeInsets.only(
+                          left: SizeConfig(context).screenWidth <
+                                      SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.03 : SizeConfig(context).screenWidth * 0.2,
+                          right: SizeConfig(context).screenWidth <
+                                      SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.03 : SizeConfig(context).screenWidth * 0.03,),
                         height: 600,
-                        width: 300,
                         decoration: const BoxDecoration(
                           color: Color.fromRGBO(0, 0, 0, 1),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -366,10 +371,11 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                           ),
                         ])),
                     Container(
-                        width: SizeConfig(context).screenWidth * 0.6,
-                        margin: const EdgeInsets.only(
-                            top: 80, right: 150, bottom: 20),
-                        child: footbar(context))
+                      width: SizeConfig(context).screenWidth <
+                                      SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth : SizeConfig(context).screenWidth * 0.6,
+                      margin: const EdgeInsets.only(top: 80, bottom: 20),
+                      child: SizeConfig(context).screenWidth <
+                                      SizeConfig.smallScreenSize ? footbarM(context) : footbar(context))
                   ],
                 ))));
   }
