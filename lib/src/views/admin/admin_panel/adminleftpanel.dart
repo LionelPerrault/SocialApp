@@ -810,7 +810,7 @@ class AdminLeftPanel extends StatelessWidget {
                   onTap: () => {},
                   label: 'Bank Receipts',
                   icon:
-                      const Icon(Icons.school_rounded)),
+                      const Icon(Icons.vertical_shades_closed_sharp)),
               Row(children: const [
                 Padding(padding: EdgeInsets.only(left: 30.0)),
                 Text('DEVELOPERS',
