@@ -9,6 +9,7 @@ import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
 import 'package:shnatter/src/views/resetpassword.dart';
 import 'package:shnatter/src/views/admin/adminscreen.dart';
+import 'package:shnatter/src/views/startedscreen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -43,7 +44,7 @@ class RouteGenerator {
             builder: (context) => AdminScreen(), settings: settings);
       case RouteNames.started:
         return MaterialPageRoute(
-            builder: (context) => HomeScreen(), settings: settings);
+            builder: (context) => StartedScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);
