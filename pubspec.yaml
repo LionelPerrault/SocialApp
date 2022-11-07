@@ -55,6 +55,7 @@ dependencies:
   crypto: ^3.0.2
   firebase_auth: ^4.1.1
   google_sign_in: ^5.4.2
+  time_elapsed: ^0.2.6
 
 dev_dependencies:
   flutter_test:

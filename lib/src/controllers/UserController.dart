@@ -1,17 +1,16 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:js';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
 import '../models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../routes/route_names.dart';
+import 'package:time_elapsed/time_elapsed.dart';
 
 enum EmailType { emailVerify, googleVerify }
 
@@ -106,6 +105,19 @@ class UserController extends ControllerMVC {
     signUpUserInfo = info;
     email = signUpUserInfo['email'];
     password = signUpUserInfo['password'];
+    var check = email.contains('@gmail.com'); //return true if contains
+    if (!check) {
+      Helper.showToast('Invalid Email');
+      isSendRegisterInfo = false;
+      setState(() {});
+      return;
+    }
+    if (password.length < 9) {
+      Helper.showToast('Password length should be 8 over');
+      isSendRegisterInfo = false;
+      setState(() {});
+      return;
+    }
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
     if (querySnapshot.size > 0) {
@@ -139,29 +151,24 @@ class UserController extends ControllerMVC {
         .collection(Helper.userField)
         .doc(uuid)
         .set({
-      'firstName': signUpUserInfo['firstName'],
-      'lastName': signUpUserInfo['lastName'],
-      'userName': signUpUserInfo['userName'],
-      'email': signUpUserInfo['email'],
-      'password': signUpUserInfo['password'],
-      'sex': signUpUserInfo['sex'],
-      'paymail': paymail,
-      'walletAddress': walletAddress,
-      'relysiaEmail': relysiaEmail,
-      'relysiaPassword': relysiaPassword,
-      'isStarted': false,
-    });
-    var userPreference = {
       ...signUpUserInfo,
       'paymail': paymail,
       'walletAddress': walletAddress,
       'relysiaEmail': relysiaEmail,
       'relysiaPassword': relysiaPassword,
       'isStarted': false,
-      'isVerify': false
-    };
-    await Helper.saveJSONPreference(
-        Helper.userField, {'userInfo': userPreference.toString()});
+    });
+    await Helper.saveJSONPreference(Helper.userField, {
+      ...signUpUserInfo,
+      'paymail': paymail,
+      'walletAddress': walletAddress,
+      'relysiaEmail': relysiaEmail,
+      'relysiaPassword': relysiaPassword,
+      'isStarted': 'false',
+      'isVerify': 'false',
+      'isRememberme': 'false',
+      'expirationPeriod': DateTime.now().toString()
+    });
   }
 
   void getBalance() {
@@ -197,7 +204,7 @@ class UserController extends ControllerMVC {
     }
   }
 
-  void loginWithEmail(context, em, pass) async {
+  void loginWithEmail(context, em, pass, isRememberme) async {
     if (em == '' || pass == '') {
       Helper.showToast('all field required');
       return;
@@ -227,7 +234,9 @@ class UserController extends ControllerMVC {
           'paymail': user.paymail,
           'walletAddress': user.walletAddress,
           'isStarted': user.isStarted.toString(),
-          'isVerify': isVerify.toString()
+          'isVerify': isVerify.toString(),
+          'isRememberme': isRememberme.toString(),
+          'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         });
         loginRelysia(context);
       } else {
