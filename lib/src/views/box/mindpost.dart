@@ -33,7 +33,8 @@ class MindPostState extends mvc.StateMVC <MindPost> {
   Widget build(BuildContext context) {
     return 
       Container(
-        width: SizeConfig(context).screenWidth * 0.4,
+        width: double.infinity,
+        padding: EdgeInsets.only(left:30, right:30),
         child: Column(
           children: [
             Container(
@@ -65,14 +66,15 @@ class MindPostState extends mvc.StateMVC <MindPost> {
                             "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10, right: 9),
-                      width: SizeConfig(context).screenWidth * 0.35,
+                    Expanded(
+                      child:
+                      Container(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
                       child: const TextField(
                         controller: null,
                         // cursorColor: Colors.white,
                         focusNode: null,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
                         decoration: InputDecoration(
                           hoverColor: Color.fromARGB(255, 250, 250, 250),
                           filled: true,
@@ -82,7 +84,7 @@ class MindPostState extends mvc.StateMVC <MindPost> {
                           hintStyle: TextStyle(fontSize: 17.0, color: Colors.grey),
                         ),
                       ),
-                    ),
+                    )),
                     Container(
                       padding: const EdgeInsets.only(top: 40),
                       child: const Icon(Icons.emoji_emotions_outlined),
@@ -92,41 +94,77 @@ class MindPostState extends mvc.StateMVC <MindPost> {
             ),
             const Padding(padding: EdgeInsets.only(top: 15)),
             Row(children: [
-              const Padding(padding: EdgeInsets.only(left: 18)),
-              Column(
-                children: [
-                  MindSlice(onTap: ()=>{}, label: 'Upload Photos', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcamera.svg?alt=media&token=0b7478a3-c746-47ed-a4fc-7505accf22a5'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Feelings/Activity', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Femoji.svg?alt=media&token=d8ff786b-c7e0-4922-a260-0627bacab851'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Colored Posts', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcolor.svg?alt=media&token=7d8b7631-2471-4acf-8f34-e0071e7a4600'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Write Aticle', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Farticle.svg?alt=media&token=585f68e4-bc57-4b5f-a55e-0e2f4e686809'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Create Poll', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fpoll.svg?alt=media&token=9a0f6f31-3685-42ce-9a2b-f18a512d3829'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Upload Audio', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fmusic_file.svg?alt=media&token=b2d62e94-0c58-487e-b3dc-da02bdfd7ac9'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                ],
+              Expanded(
+                flex: 1,
+                child: 
+                MindSlice(onTap: ()=>{}, label: 'Upload Photos', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcamera.svg?alt=media&token=0b7478a3-c746-47ed-a4fc-7505accf22a5'),
               ),
-              const Padding(padding: EdgeInsets.only(left: 40)),
-              Column(
-                children: [
-                  MindSlice(onTap: ()=>{}, label: 'Create Album', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Falbum.svg?alt=media&token=a24aeb90-c93c-4a92-b116-7d85f2a3acbc'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Check In', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Voice Notes', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvoice.svg?alt=media&token=b49c28b5-3b27-487e-a6c1-ffd978c215fa'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Sell Something', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Upload Video', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvideo_camera.svg?alt=media&token=89343741-3bfc-4001-87d4-9344e752192d'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  MindSlice(onTap: ()=>{}, label: 'Upload File', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Ffolder.svg?alt=media&token=8a62d7d4-95dc-4f0b-8a62-3c9ef26aec81'),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                ],
+              SizedBox(width: 10,),
+              Expanded(flex: 1,child: 
+                MindSlice(onTap: ()=>{}, label: 'Create Album', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Falbum.svg?alt=media&token=a24aeb90-c93c-4a92-b116-7d85f2a3acbc'),
               ),
             ],),
+            SizedBox(height:10),
+            Row(children: [
+              Expanded(
+                flex: 1,
+                child: 
+                MindSlice(onTap: ()=>{}, label: 'Feelings/Activity', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Femoji.svg?alt=media&token=d8ff786b-c7e0-4922-a260-0627bacab851'),
+              ),
+              SizedBox(width: 10,),
+              Expanded(flex: 1,child: 
+                MindSlice(onTap: ()=>{}, label: 'Check In', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738'),
+              ),
+            ],),
+            SizedBox(height:10),
+            Row(children: [
+              Expanded(
+                flex: 1,
+                child: 
+                MindSlice(onTap: ()=>{}, label: 'Colored Posts', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcolor.svg?alt=media&token=7d8b7631-2471-4acf-8f34-e0071e7a4600'),
+              ),
+              SizedBox(width: 10,),
+              Expanded(flex: 1,child: 
+                MindSlice(onTap: ()=>{}, label: 'Voice Notes', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvoice.svg?alt=media&token=b49c28b5-3b27-487e-a6c1-ffd978c215fa'),
+              ),
+            ],),
+            SizedBox(height:10),
+            Row(children: [
+              Expanded(
+                flex: 1,
+                child: 
+                MindSlice(onTap: ()=>{}, label: 'Write Aticle', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Farticle.svg?alt=media&token=585f68e4-bc57-4b5f-a55e-0e2f4e686809'),
+              ),
+              SizedBox(width: 10,),
+              Expanded(flex: 1,child: 
+                MindSlice(onTap: ()=>{}, label: 'Sell Something', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda'),
+              ),
+            ],),
+            SizedBox(height:10),
+            Row(children: [
+              Expanded(
+                flex: 1,
+                child: 
+                MindSlice(onTap: ()=>{}, label: 'Create Poll', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fpoll.svg?alt=media&token=9a0f6f31-3685-42ce-9a2b-f18a512d3829'),
+              ),
+              SizedBox(width: 10,),
+              Expanded(flex: 1,child: 
+                MindSlice(onTap: ()=>{}, label: 'Upload Video', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvideo_camera.svg?alt=media&token=89343741-3bfc-4001-87d4-9344e752192d'),
+              ),
+            ],),
+            SizedBox(height:10),
+            Row(children: [
+              Expanded(
+                flex: 1,
+                child: 
+                MindSlice(onTap: ()=>{}, label: 'Upload Audio', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fmusic_file.svg?alt=media&token=b2d62e94-0c58-487e-b3dc-da02bdfd7ac9'),
+              ),
+              SizedBox(width: 10,),
+              Expanded(flex: 1,child: 
+                MindSlice(onTap: ()=>{}, label: 'Upload File', image: 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Ffolder.svg?alt=media&token=8a62d7d4-95dc-4f0b-8a62-3c9ef26aec81'),
+              ),
+            ],),
+            SizedBox(height:10),
             Row(children: [
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               Expanded(

@@ -16,7 +16,7 @@ class MainPanel extends StatelessWidget {
   bool showMind = false;
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: const EdgeInsets.only(top: 20, left:0),
+    return Container(padding: const EdgeInsets.only(top: 20, left:0),
       child: 
         Column(children: [
           MindPost(),
