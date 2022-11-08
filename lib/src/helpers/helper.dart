@@ -29,6 +29,17 @@ class Helper {
         gravity: ToastGravity.CENTER);
   }
 
+  static showAlert(String message) {
+    Container(
+      color: Colors.white,
+      padding: const EdgeInsets.all(10),
+      child: Text(
+        message,
+        style: const TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
   static saveJSONPreference(String field, Map<String, String> data) async {
     final prefs = await SharedPreferences.getInstance();
     String saveData = jsonEncode(data);
