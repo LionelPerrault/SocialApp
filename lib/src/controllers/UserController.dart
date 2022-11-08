@@ -253,9 +253,6 @@ class UserController extends ControllerMVC {
       isSendLoginedInfo = false;
       setState(() {});
     }
-    // print(userCredential);
-    // isSendLoginedInfo = true;
-    // setState(() {});
   }
 
   void loginRelysia(context) {
