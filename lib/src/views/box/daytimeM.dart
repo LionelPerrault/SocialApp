@@ -37,6 +37,8 @@ class DayTimeM extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map> result = sampleData.where((i) => i['id']==time).toList();
     return 
+    Padding(padding: EdgeInsets.only(left:20, right:20),
+    child: 
     ClipRRect(
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(4.0),
@@ -53,7 +55,7 @@ class DayTimeM extends StatelessWidget {
           // borderRadius: BorderRadius.circular(12),
         ),
         height: 70,
-        width: SizeConfig(context).screenWidth * 0.35,
+        width: double.infinity,
         child: Row(children: [
           const Padding(padding: EdgeInsets.only(left: 20)),
           SizedBox(width: 42, child: SvgPicture.network(result[0]['image']),),
@@ -73,6 +75,7 @@ class DayTimeM extends StatelessWidget {
           Container(child: const Icon(Icons.close, size: 10,))
         ]),
       )
-    );
+    )
+    ,);
   }
 }
