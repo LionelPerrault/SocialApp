@@ -71,16 +71,18 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Container(
-          width: 150,
+          width: 160,
           color: Colors.white,
-          padding: EdgeInsets.all(10),
+          // padding: EdgeInsets.all(10),
           child: Column(
             children: [
               SizedBox(
-                height: 200,
+                height: 300,
                 //size: Size(100,100),
                 child: ListView.separated(
                   itemCount: sampleData.length,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
                   itemBuilder: (context, index) => Material(
                       child: ListTile(
                           onTap: () {
@@ -108,7 +110,7 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(
                     height: 0,
-                    endIndent: 0,
+                    thickness: 0,
                   ),
                 ),
               )
