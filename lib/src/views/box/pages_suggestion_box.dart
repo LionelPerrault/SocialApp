@@ -135,7 +135,7 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                               Row(
                                 children: [
                                   Container(
-                                    width: 95,
+                                    width: 90,
                                     alignment: Alignment.topLeft,
                                     child: Column(children: [
                                       Text(

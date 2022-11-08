@@ -135,7 +135,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                               Row(
                                 children: [
                                   Container(
-                                    width: 95,
+                                    width: 90,
                                     alignment: Alignment.topLeft,
                                     child: Column(children: [
                                       Text(
@@ -159,7 +159,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(2.0)),
-                                            minimumSize: new Size(80, 35),
+                                            minimumSize: new Size(75, 35),
                                           ),
                                           onPressed: () {
                                             () => {};
