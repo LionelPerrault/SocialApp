@@ -387,6 +387,20 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                           const Padding(padding: EdgeInsets.only(bottom: 10))
                         ],
                       ),
+                      Row(children: [
+                        Column(children: [
+                          Row(
+                            children: const [
+                              Padding(padding: EdgeInsets.only(left: 30)),
+                              Text('Current City',
+                                style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 11)),
+                              const Padding(padding: EdgeInsets.only(top: 30),)
+                            ],
+                          ),
+                        ],)
+                      ],)
                     ],),
                   ],
                 ),),]),

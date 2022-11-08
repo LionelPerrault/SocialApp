@@ -7,6 +7,7 @@ import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
+import 'package:shnatter/src/views/box/postsnavbox.dart';
 
 import '../controllers/UserController.dart';
 import '../helpers/helper.dart';
@@ -138,6 +139,23 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         )
                         //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                         ),
+                    Container(
+                      padding: EdgeInsets.only(right: 9.0),
+                      child: CustomPopupMenu(
+                          menuBuilder: () => PostsNavBox(),
+                          pressType: PressType.singleClick,
+                          verticalMargin: -10,
+                          child: SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.posts,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          )),
+                    ),
                     Container(
                       padding: EdgeInsets.only(right: 9.0),
                       child: CustomPopupMenu(
@@ -347,6 +365,23 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 ),
                 Container(
                   child: Row(children: [
+                    Container(
+                      padding: EdgeInsets.only(right: 9.0),
+                      child: CustomPopupMenu(
+                          menuBuilder: () => PostsNavBox(),
+                          pressType: PressType.singleClick,
+                          verticalMargin: -10,
+                          child: SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.posts,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          )),
+                    ),
                     Container(
                       padding: EdgeInsets.only(right: 9.0),
                       child: CustomPopupMenu(
