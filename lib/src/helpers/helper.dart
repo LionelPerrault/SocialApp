@@ -47,4 +47,9 @@ class Helper {
     var digest = sha256.convert(bytes).toString();
     return digest.toString();
   }
+
+  static Future<void> removeAllPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(userField);
+  }
 }

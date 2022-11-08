@@ -21,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends mvc.StateMVC<LoginScreen> {
-  bool check1 = false;
+  bool isRememberme = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String password = '';
   String email = '';
@@ -145,14 +145,15 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
 
                                   fillColor: MaterialStateProperty.resolveWith(
                                       getColor),
-                                  value: check1,
+                                  value: isRememberme,
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(
                                               5.0))), //rounded checkbox
                                   onChanged: (value) {
                                     setState(() {
-                                      check1 = check1 ? false : true;
+                                      isRememberme =
+                                          isRememberme ? false : true;
                                     });
                                   },
                                 )),
@@ -186,7 +187,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                         isShowProgressive: con.isSendLoginedInfo,
                         buttonName: "login",
                         onPressed: () => {
-                          con.loginWithEmail(context, email, password)
+                          con.loginWithEmail(
+                              context, email, password, isRememberme)
                           // con.createPassword()
                         },
                       ),

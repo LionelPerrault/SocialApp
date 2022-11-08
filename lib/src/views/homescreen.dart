@@ -56,13 +56,34 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
     super.initState();
     userCon = controller as UserController;
     searchFocusNode = FocusNode();
+    var loginDate;
+    var difference = 0;
     _drawerSlideController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
     userCon.checkIfLogined().then((value) => {
+          print(value),
           if (!value)
             {Navigator.pushReplacementNamed(context, RouteNames.login)}
+          else
+            {
+              Helper.getJSONPreference(Helper.userField).then((info) => {
+                    print(info['isRememberme']),
+                    if (info['isRememberme'] == 'false')
+                      {
+                        loginDate = DateTime.parse(info['expirationPeriod']),
+                        difference =
+                            DateTime.now().difference(loginDate).inHours,
+                        if (difference > 1)
+                          {
+                            Navigator.pushReplacementNamed(
+                                context, RouteNames.login),
+                            Helper.removeAllPreference()
+                          }
+                      }
+                  })
+            }
         });
   }
 

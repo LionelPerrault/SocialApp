@@ -424,7 +424,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             PopupMenuDivider(),
                             PopupMenuItem<Menu>(
                                 onTap: () async {
-                                  await removeAllPreference();
+                                  await Helper.removeAllPreference();
                                   // ignore: use_build_context_synchronously
                                   await Navigator.pushReplacementNamed(
                                       context, RouteNames.login);
@@ -493,10 +493,5 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         )
       ],
     );
-  }
-
-  Future<void> removeAllPreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(Helper.userField);
   }
 }
