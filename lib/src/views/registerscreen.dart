@@ -402,8 +402,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                         margin: const EdgeInsets.only(top: 80, bottom: 20),
                         child: SizeConfig(context).screenWidth <
                                 SizeConfig.smallScreenSize
-                            ? footbarM(context)
-                            : footbar(context))
+                            ? footbarM()
+                            : footbar())
                   ],
                 ))));
   }
