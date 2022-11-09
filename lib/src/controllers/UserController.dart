@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
 import '../models/userModel.dart';
@@ -222,6 +223,7 @@ class UserController extends ControllerMVC {
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+        UserManager.getUserInfo();
         loginRelysia(context);
       } else {
         Helper.showToast(

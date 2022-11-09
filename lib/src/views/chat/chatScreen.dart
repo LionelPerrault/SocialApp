@@ -7,8 +7,8 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/primaryInput.dart';
 
-import '../controllers/ChatController.dart';
-import '../models/chatModel.dart';
+import '../../controllers/ChatController.dart';
+import '../../models/chatModel.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({Key? key})
@@ -80,7 +80,10 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                   child: SizedBox(),
                 ),
                 GestureDetector(
-                  onTap: (() {}),
+                  onTap: (() {
+                    con.chatBoxs.add({'type': 'new'});
+                    con.setState(() {});
+                  }),
                   child: Icon(
                     Icons.edit_calendar_rounded,
                     size: 15,
@@ -90,6 +93,9 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                   onTap: (() {}),
                   child: Icon(Icons.settings, size: 15),
                 ),
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                )
               ]),
               //       StreamBuilder(
               // // stream: getLoginedUsers(),

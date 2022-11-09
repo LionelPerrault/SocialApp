@@ -11,7 +11,7 @@ class UserManager {
   static var userInfo = {};
   static bool isLogined = false;
 
-  Future<void> getUserInfo() async {
+  static Future<void> getUserInfo() async {
     //await removeAllPreference();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user = prefs.getString(Helper.userField);

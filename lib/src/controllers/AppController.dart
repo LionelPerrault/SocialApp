@@ -30,6 +30,6 @@ class AppController extends ControllerMVC {
   }
 
   Future<void> getUserInfo() async {
-    UserManager().getUserInfo();
+    UserManager.getUserInfo();
   }
 }
