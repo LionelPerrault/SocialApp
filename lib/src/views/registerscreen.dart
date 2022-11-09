@@ -59,13 +59,20 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                     Container(
                         alignment: Alignment.topCenter,
                         width: SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize ? SizeConfig.smallScreenSize*0.94 : 300,
+                                SizeConfig.smallScreenSize
+                            ? SizeConfig.smallScreenSize * 0.94
+                            : 300,
                         margin: EdgeInsets.only(
                           left: SizeConfig(context).screenWidth <
-                                      SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.03 : SizeConfig(context).screenWidth * 0.2,
+                                  SizeConfig.smallScreenSize
+                              ? SizeConfig(context).screenWidth * 0.03
+                              : SizeConfig(context).screenWidth * 0.2,
                           right: SizeConfig(context).screenWidth <
-                                      SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.03 : SizeConfig(context).screenWidth * 0.03,),
-                        height: 600,
+                                  SizeConfig.smallScreenSize
+                              ? SizeConfig(context).screenWidth * 0.03
+                              : SizeConfig(context).screenWidth * 0.03,
+                        ),
+                        height: con.failRegister == '' ? 600 : 630,
                         decoration: const BoxDecoration(
                           color: Color.fromRGBO(0, 0, 0, 1),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -341,11 +348,28 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                     isShowProgressive: con.isSendRegisterInfo,
                                     buttonName: "Sign up",
                                     onPressed: () => {
-                                      con.validate(context, signUpUserInfo),
+                                      if (!check1 || !check2)
+                                        {
+                                          con.failRegister =
+                                              'You must read and agree to our terms and privacy policy',
+                                          con.setState(() {}),
+                                        }
+                                      else
+                                        {
+                                          con.validate(context, signUpUserInfo),
+                                        }
                                       // con.createPassword()
                                     },
                                   ),
                                 ),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 10)),
+                                con.failRegister == ''
+                                    ? Container()
+                                    : Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child:
+                                            Helper.failAlert(con.failRegister)),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
                                 RichText(
@@ -371,11 +395,15 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                           ),
                         ])),
                     Container(
-                      width: SizeConfig(context).screenWidth <
-                                      SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth : SizeConfig(context).screenWidth * 0.6,
-                      margin: const EdgeInsets.only(top: 80, bottom: 20),
-                      child: SizeConfig(context).screenWidth <
-                                      SizeConfig.smallScreenSize ? footbarM(context) : footbar(context))
+                        width: SizeConfig(context).screenWidth <
+                                SizeConfig.smallScreenSize
+                            ? SizeConfig(context).screenWidth
+                            : SizeConfig(context).screenWidth * 0.6,
+                        margin: const EdgeInsets.only(top: 80, bottom: 20),
+                        child: SizeConfig(context).screenWidth <
+                                SizeConfig.smallScreenSize
+                            ? footbarM(context)
+                            : footbar(context))
                   ],
                 ))));
   }

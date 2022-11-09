@@ -64,26 +64,25 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     super.dispose();
   }
 
-  Future<void> onAdminClicked()async
-  {
+  Future<void> onAdminClicked() async {
     Helper.showToast("go to admin");
     print("go to login");
     await Navigator.pushReplacementNamed(context, RouteNames.adp);
   }
-  void onSettingClicked(){
+
+  void onSettingClicked() {
     Navigator.pushReplacementNamed(context, RouteNames.settings);
   }
 
-  void onHomeClicked()
-  {
+  void onHomeClicked() {
     Navigator.pushReplacementNamed(context, RouteNames.homePage);
   }
-  Future<void> onLogOut()
-  async {
+
+  Future<void> onLogOut() async {
     await Helper.removeAllPreference();
-    await Navigator.pushReplacementNamed(
-    context, RouteNames.login);
+    await Navigator.pushReplacementNamed(context, RouteNames.login);
   }
+
   @override
   Widget build(BuildContext context) {
     return SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
@@ -279,17 +278,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             ),
                             PopupMenuDivider(),
                             PopupMenuItem<Menu>(
-                              onTap: () => {
-                                onAdminClicked()
-                              },
                               value: Menu.itemAdminPanel,
-                              child: Text('AdminPanel'),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, RouteNames.adp);
+                                    print(1123);
+                                  },
+                                  child: Text('AdminPanel')),
                             ),
                             PopupMenuDivider(),
                             PopupMenuItem<Menu>(
-                                onTap: () => {
-                                  onLogOut()
-                                },
+                                onTap: () => {onLogOut()},
                                 value: Menu.itemLogout,
                                 child: Row(children: [
                                   Icon(Icons.logout),
@@ -473,7 +473,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               child: Text('Profile'),
                             ),
                             PopupMenuItem<Menu>(
-                              onTap: ()=> onSettingClicked(),
+                              onTap: () => onSettingClicked(),
                               value: Menu.itemSettings,
                               child: Text('Settings'),
                             ),
@@ -481,15 +481,17 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               value: Menu.itemPrivacy,
                               child: Text('Privacy'),
                             ),
-                            PopupMenuDivider(),
+                            const PopupMenuDivider(),
                             PopupMenuItem<Menu>(
-                              onTap: ()=>{
-                                onAdminClicked()
-                              },
                               value: Menu.itemAdminPanel,
-                              child: Text('AdminPanel'),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, RouteNames.adp);
+                                  },
+                                  child: const Text('AdminPanel')),
                             ),
-                            PopupMenuDivider(),
+                            const PopupMenuDivider(),
                             PopupMenuItem<Menu>(
                                 onTap: () {
                                   onLogOut();

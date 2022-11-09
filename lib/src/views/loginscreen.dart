@@ -5,6 +5,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/footerbar.dart';
 
 import '../controllers/UserController.dart';
+import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../widget/mprimary_button.dart';
 import '../widget/primaryInput.dart';
@@ -29,10 +30,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
   void initState() {
     add(widget.con);
     con = controller as UserController;
-    con.checkIfLogined().then((value) => {
-          if (value)
-            {Navigator.pushReplacementNamed(context, RouteNames.homePage)}
-        });
     super.initState();
   }
 
@@ -67,14 +64,21 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
             Container(
               alignment: AlignmentDirectional.topCenter,
               child: Container(
-                width: SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize ? SizeConfig.smallScreenSize*0.94 : 300,
-                height: 450,
+                width:
+                    SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
+                        ? SizeConfig.smallScreenSize * 0.94
+                        : 300,
+                height: con.failLogin == '' ? 450 : 500,
                 margin: EdgeInsets.only(
-                    left: SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.03 : SizeConfig(context).screenWidth * 0.2,
-                    right: SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.03 : 10,),
+                  left: SizeConfig(context).screenWidth <
+                          SizeConfig.smallScreenSize
+                      ? SizeConfig(context).screenWidth * 0.03
+                      : SizeConfig(context).screenWidth * 0.2,
+                  right: SizeConfig(context).screenWidth <
+                          SizeConfig.smallScreenSize
+                      ? SizeConfig(context).screenWidth * 0.03
+                      : 10,
+                ),
                 decoration: BoxDecoration(
                     color: Colors.black,
                     border: Border.all(
@@ -179,7 +183,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                             color: Colors.white, fontSize: 10),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                           Navigator.pushReplacementNamed(
+                                            Navigator.pushReplacementNamed(
                                                 context, RouteNames.reset);
                                             con.isSendResetPassword = false;
                                             con.setState(() {});
@@ -192,8 +196,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                       width: 260,
                       margin: const EdgeInsets.only(top: 10.0),
                       padding: const EdgeInsets.only(left: 30.0, right: 30),
-                      child: 
-                      MyPrimaryButton(
+                      child: MyPrimaryButton(
                         color: Colors.white,
                         isShowProgressive: con.isSendLoginedInfo,
                         buttonName: "login",
@@ -204,6 +207,12 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                         },
                       ),
                     ),
+                    con.failLogin != ''
+                        ? Container(
+                            margin: const EdgeInsets.only(
+                                left: 30, right: 30, top: 10),
+                            child: Helper.failAlert(con.failLogin))
+                        : Container(),
                     Container(
                       margin: const EdgeInsets.only(top: 10.0),
                       alignment: Alignment.center,
@@ -230,11 +239,15 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
               ),
             ),
             Container(
-                width: SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth : SizeConfig(context).screenWidth * 0.6,
+                width:
+                    SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
+                        ? SizeConfig(context).screenWidth
+                        : SizeConfig(context).screenWidth * 0.6,
                 margin: const EdgeInsets.only(top: 80, right: 0, bottom: 20),
-                child: SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize ? footbarM(context) : footbar(context))
+                child:
+                    SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
+                        ? footbarM(context)
+                        : footbar(context))
           ])),
     ));
   }

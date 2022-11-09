@@ -33,6 +33,8 @@ class UserController extends ControllerMVC {
   bool isVerify = false;
   bool isSendResetPassword = false;
   bool isLogined = false;
+  String failLogin = '';
+  String failRegister = '';
   var resData = {};
   var userInfo = {};
   // ignore: prefer_typing_uninitialized_variables
@@ -51,17 +53,6 @@ class UserController extends ControllerMVC {
           toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
         );
     return true;
-  }
-
-  Future<bool> checkIfLogined() async {
-    //await removeAllPreference();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? user = prefs.getString(Helper.userField);
-    if (user == null) {
-      return false;
-    } else {
-      return true;
-    }
   }
 
   String createRandNumber() {
@@ -96,7 +87,7 @@ class UserController extends ControllerMVC {
       }
     }
     if (!fill) {
-      Helper.showToast('correctly all fill');
+      failRegister = 'You must fill all field';
       isSendRegisterInfo = false;
       setState(() {});
       return;
@@ -107,13 +98,13 @@ class UserController extends ControllerMVC {
     password = signUpUserInfo['password'];
     var check = email.contains('@gmail.com'); //return true if contains
     if (!check) {
-      Helper.showToast('Invalid Email');
+      failRegister = 'Invalid Email';
       isSendRegisterInfo = false;
       setState(() {});
       return;
     }
     if (password.length < 9) {
-      Helper.showToast('Password length should be 8 over');
+      failRegister = 'Password length should be 8 over';
       isSendRegisterInfo = false;
       setState(() {});
       return;
@@ -121,12 +112,13 @@ class UserController extends ControllerMVC {
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
     if (querySnapshot.size > 0) {
-      Helper.showToast('Already Registered User');
+      failRegister =
+          'Sorry, it looks like $email belongs to an existing account';
       isSendRegisterInfo = false;
       setState(() {});
       return;
     }
-    createRelysiaAccount();
+    if (failRegister == '') createRelysiaAccount();
   }
 
   String createActivationCode() {
@@ -180,19 +172,7 @@ class UserController extends ControllerMVC {
         });
   }
 
-  void getWalletFromPref(context) async {
-    Helper.getJSONPreference(Helper.userField).then((value) => {
-          if (value['paymail'] != null)
-            {
-              paymail = value['paymail'],
-              walletAddress = value['address'],
-              email = value['email'],
-              relysiaPassword = value['password'],
-              loginRelysia(context),
-              setState(() {})
-            }
-        });
-  }
+  void getWalletFromPref(context) async {}
 
   Future<void> resetPassword({required String email}) async {
     try {
@@ -206,7 +186,8 @@ class UserController extends ControllerMVC {
 
   void loginWithEmail(context, em, pass, isRememberme) async {
     if (em == '' || pass == '') {
-      Helper.showToast('all field required');
+      failLogin = 'You must fill all field';
+      setState(() {});
       return;
     }
     email = em;
@@ -216,6 +197,8 @@ class UserController extends ControllerMVC {
       setState(() {});
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      failLogin = '';
+      setState(() {});
       QuerySnapshot<TokenLogin> querySnapshot =
           await Helper.authdata.where('email', isEqualTo: email).get();
       if (querySnapshot.size > 0) {
@@ -224,7 +207,7 @@ class UserController extends ControllerMVC {
         relysiaPassword = user.relysiaPassword;
         isStarted = user.isStarted;
         isVerify = userCredential.user!.emailVerified;
-        await Helper.saveJSONPreference(Helper.userField, {
+        userInfo = {
           'firstName': user.firstName,
           'lastName': user.lastName,
           'userName': user.userName,
@@ -237,18 +220,23 @@ class UserController extends ControllerMVC {
           'isVerify': isVerify.toString(),
           'isRememberme': isRememberme.toString(),
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
-        });
+        };
+        await Helper.saveJSONPreference(Helper.userField, {...userInfo});
         loginRelysia(context);
       } else {
         Helper.showToast(
             'The email you entered does not belong to any account');
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email') {
-        Helper.showToast(
-            'The email you entered does not belong to any account');
+      print(e.code);
+      if (e.code == 'invalid-email' || e.code == 'user-not-found') {
+        failLogin = 'The username you entered does not belong to any account';
+        setState(
+          () {},
+        );
       } else if (e.code == 'wrong-password') {
-        Helper.showToast('The password you entered is incorrect.');
+        failLogin = 'wrong-password';
+        setState(() {});
       }
       isSendLoginedInfo = false;
       setState(() {});
@@ -262,7 +250,6 @@ class UserController extends ControllerMVC {
             {
               if (res['statusCode'] == 200)
                 {
-                  Helper.showToast("Successfully login"),
                   token = res['data']['token'],
                   getBalance(),
                   RelysiaManager.getPaymail(token).then((response) async => {
@@ -374,8 +361,6 @@ class UserController extends ControllerMVC {
                                               paymail = response['paymail'],
                                               walletAddress =
                                                   response['address'],
-                                              Helper.showToast(
-                                                  "Successfully register"),
                                               await registerUserInfo(),
                                               isSendRegisterInfo = false,
                                               isLogined = true,
