@@ -184,6 +184,7 @@ class MindPostState extends mvc.StateMVC <MindPost> {
                           padding: const EdgeInsets.only(
                               top: 7, left: 15),
                           child: DropdownButton(
+                            value: dropdownValue,
                             hint: Row(children: const [
                               Icon(Icons.language, color: Colors.white,),
                               Padding(padding: EdgeInsets.only(left: 5)),

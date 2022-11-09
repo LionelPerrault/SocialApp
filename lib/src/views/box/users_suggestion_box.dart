@@ -23,7 +23,7 @@ class ShnatterUserSuggest extends StatefulWidget {
 
 class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
   //
-  bool isSound = false;
+  bool isSound = true;
   List<Map> sampleData = [
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
@@ -88,7 +88,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                 //endIndent: 0,
                 //color: Colors.black,
               ),
-              SizedBox(
+              isSound ? SizedBox(
                 height: 260,
                 //size: Size(100,100),
                 child: ListView.separated(
@@ -161,6 +161,8 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                   ),
                 ),
               )
+              :
+              Column()
             ],
           )),
     );
