@@ -1,6 +1,8 @@
 import 'dart:js';
 
 import 'package:flutter/material.dart';
+import 'package:shnatter/src/controllers/AppController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
@@ -11,10 +13,27 @@ import 'package:shnatter/src/views/resetpassword.dart';
 import 'package:shnatter/src/views/admin/adminscreen.dart';
 import 'package:shnatter/src/views/startedscreen.dart';
 
+import '../managers/user_manager.dart';
+
 class RouteGenerator {
+  static Future<void> checkRoute(RouteSettings settings) async {
+    generateRoute(settings);
+  }
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
-    switch (settings.name) {
+    var url = settings.name;
+    bool islogined = UserManager.isLogined;
+    if (islogined == true) {
+      if (url == '/login' || url == '/register') {
+        url = RouteNames.homePage;
+      }
+    } else {
+      if (url != '/register' && url != '/login') {
+        url = RouteNames.login;
+      }
+    }
+    switch (url) {
       case RouteNames.splashScreen:
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);

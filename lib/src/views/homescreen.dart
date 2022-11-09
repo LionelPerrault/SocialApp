@@ -8,6 +8,8 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
+import 'package:shnatter/src/views/chatBox.dart';
+import 'package:shnatter/src/views/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
@@ -62,29 +64,30 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    userCon.checkIfLogined().then((value) => {
-          print(value),
-          if (!value)
-            {Navigator.pushReplacementNamed(context, RouteNames.login)}
-          else
-            {
-              Helper.getJSONPreference(Helper.userField).then((info) => {
-                    print(info['isRememberme']),
-                    if (info['isRememberme'] == 'false')
-                      {
-                        loginDate = DateTime.parse(info['expirationPeriod']),
-                        difference =
-                            DateTime.now().difference(loginDate).inHours,
-                        if (difference > 1)
-                          {
-                            Navigator.pushReplacementNamed(
-                                context, RouteNames.login),
-                            Helper.removeAllPreference()
-                          }
-                      }
-                  })
-            }
-        });
+    // userCon.checkIfLogined().then((value) => {
+    //       print(value),
+    //       if (!value)
+    //         {Navigator.pushReplacementNamed(context, RouteNames.login)}
+    //       else
+    //         {
+    //           userCon.getWalletFromPref(context),
+    //           Helper.getJSONPreference(Helper.userField).then((info) => {
+    //                 print(info['isRememberme']),
+    //                 if (info['isRememberme'] == 'false')
+    //                   {
+    //                     loginDate = DateTime.parse(info['expirationPeriod']),
+    //                     difference =
+    //                         DateTime.now().difference(loginDate).inHours,
+    //                     if (difference > 1)
+    //                       {
+    //                         Navigator.pushReplacementNamed(
+    //                             context, RouteNames.login),
+    //                         Helper.removeAllPreference()
+    //                       }
+    //                   }
+    //               })
+    //         }
+    //     });
   }
 
   void onSearchBarFocus() {
@@ -176,6 +179,9 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                                     SizeConfig.mediumScreenSize
                                 ? RightPanel()
                                 : SizedBox(width: 0),
+                            ChatScreen(),
+
+                            // ChatScreen()
                           ],
                         )),
                         //MainPanel(),
@@ -266,7 +272,8 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                           ],
                         )),
                   )
-                : const SizedBox()
+                : const SizedBox(),
+            // ChatBoxScreen(),
           ],
         ));
   }

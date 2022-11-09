@@ -257,9 +257,15 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               child: Text('Privacy'),
                             ),
                             PopupMenuDivider(),
-                            const PopupMenuItem<Menu>(
+                            PopupMenuItem<Menu>(
                               value: Menu.itemAdminPanel,
-                              child: Text('AdminPanel'),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, RouteNames.admin);
+                                    print(1123);
+                                  },
+                                  child: Text('AdminPanel')),
                             ),
                             PopupMenuDivider(),
                             PopupMenuItem<Menu>(
@@ -451,12 +457,17 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               value: Menu.itemPrivacy,
                               child: Text('Privacy'),
                             ),
-                            PopupMenuDivider(),
-                            const PopupMenuItem<Menu>(
+                            const PopupMenuDivider(),
+                            PopupMenuItem<Menu>(
                               value: Menu.itemAdminPanel,
-                              child: Text('AdminPanel'),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, RouteNames.admin);
+                                  },
+                                  child: const Text('AdminPanel')),
                             ),
-                            PopupMenuDivider(),
+                            const PopupMenuDivider(),
                             PopupMenuItem<Menu>(
                                 onTap: () async {
                                   await Helper.removeAllPreference();

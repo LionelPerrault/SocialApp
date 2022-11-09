@@ -29,15 +29,31 @@ class Helper {
         gravity: ToastGravity.CENTER);
   }
 
-  static showAlert(String message) {
-    Container(
-      color: Colors.white,
-      padding: const EdgeInsets.all(10),
-      child: Text(
-        message,
-        style: const TextStyle(color: Colors.white),
-      ),
-    );
+  static failAlert(String str) {
+    return Container(
+        padding:
+            const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 10),
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(247, 86, 118, 1),
+            borderRadius: BorderRadius.all(Radius.circular(3))),
+        child: str == 'wrong-password'
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                    Text(
+                      'please re-enter password',
+                      style: TextStyle(color: Colors.white, fontSize: 11),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Text(
+                      'The password you entered is incorrect. If you forgot your password? Request a new one',
+                      style: TextStyle(color: Colors.white, fontSize: 11),
+                    ),
+                  ])
+            : Text(
+                str,
+                style: TextStyle(color: Colors.white, fontSize: 11),
+              ));
   }
 
   static saveJSONPreference(String field, Map<String, String> data) async {
