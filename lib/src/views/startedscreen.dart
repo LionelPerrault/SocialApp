@@ -135,8 +135,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
               onSearchBarDismiss: onSearchBarDismiss,
               drawClicked: clickMenu,
             ),
-            ListView(
-              padding: EdgeInsets.only(left: 320, right:320),
+            Column(
             children: [
               const Padding(padding:EdgeInsets.only(top: 190)),
               Container(
