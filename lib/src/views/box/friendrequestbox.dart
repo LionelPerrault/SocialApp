@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
@@ -117,6 +118,31 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                     endIndent: 10,
                   ),
                 ),
+              ),
+              Container(
+              height: 22,
+              color: Colors.grey[400],
+              alignment: Alignment.center,
+              child: Flexible(
+                      child: RichText(
+                        text: TextSpan(
+                            style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: 'See All',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10),
+                                  recognizer:
+                                      TapGestureRecognizer()
+                                        ..onTap = () {
+                                          ()=>{};
+                                        }),
+                            ]),
+                      ),
+                    )
               )
             ],
           )),

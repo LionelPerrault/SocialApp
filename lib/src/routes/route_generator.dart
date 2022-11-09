@@ -3,6 +3,7 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/controllers/AppController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
@@ -58,12 +59,17 @@ class RouteGenerator {
       case RouteNames.login:
         return MaterialPageRoute(
             builder: (context) => LoginScreen(), settings: settings);
-      case RouteNames.admin:
+      case RouteNames.adp:
+        Helper.showToast("ok now to admin");
         return MaterialPageRoute(
             builder: (context) => AdminScreen(), settings: settings);
       case RouteNames.started:
         return MaterialPageRoute(
             builder: (context) => StartedScreen(), settings: settings);
+      case RouteNames.settings:
+        return MaterialPageRoute(
+            builder: (context) => AdminScreen(), settings: settings);
+
       default:
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);

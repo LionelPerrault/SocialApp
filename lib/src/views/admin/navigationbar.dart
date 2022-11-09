@@ -8,6 +8,7 @@ import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 
 import '../../controllers/UserController.dart';
+import '../../routes/route_names.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -25,14 +26,8 @@ enum Menu {
 class AdminShnatterNavigation extends StatefulWidget {
   AdminShnatterNavigation({
     Key? key,
-    required this.searchController,
-    required this.onSearchBarFocus,
-    required this.onSearchBarDismiss,
     required this.drawClicked,
   }) : super(key: key);
-  final TextEditingController searchController;
-  final VoidCallback onSearchBarFocus;
-  final VoidCallback onSearchBarDismiss;
   final VoidCallback drawClicked;
   @override
   State createState() => AdminShnatterNavigationState();
@@ -47,11 +42,6 @@ class AdminShnatterNavigationState
   //
   @override
   void initState() {
-    searhCon = widget.searchController;
-    searchFocusNode = FocusNode();
-    searchFocusNode.addListener(() {
-      widget.onSearchBarFocus();
-    });
     super.initState();
   }
 
@@ -68,11 +58,15 @@ class AdminShnatterNavigationState
         : buildSmallSize();
   }
 
+
+  void onHomeClicked()
+  {
+    Navigator.pushReplacementNamed(context, RouteNames.homePage);
+  }
+  
   @override
   Widget buildSmallSize() {
-    Future.delayed(
-        Duration(microseconds: 300), () => {widget.onSearchBarDismiss()});
-
+   
     return Stack(
       children: [
         Container(
@@ -112,7 +106,9 @@ class AdminShnatterNavigationState
                     Container(
                         padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            onHomeClicked();
+                          },
                           style: ButtonStyle(
                             minimumSize:
                                 MaterialStateProperty.all(Size(30, 30)),
@@ -136,60 +132,13 @@ class AdminShnatterNavigationState
                         )
                         //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                         ),
-                    Container(
-                        padding: const EdgeInsets.only(right: 1),
-                        child: ButtonTheme(
-                          minWidth: 30,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                              minimumSize:
-                                  MaterialStateProperty.all(Size(30, 30)),
-                              padding:
-                                  MaterialStateProperty.all(EdgeInsets.all(2)),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.black),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.transparent),
-                            ),
-                            child: SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
-                              SVGPath.search,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                          ),
-                        )
-
-                        //Icon(Icons.home_outlined, size: 30, color: Colors.white),
-                        ),
+                   
                     Container(
                         padding: EdgeInsets.all(9.0),
                         child: PopupMenuButton(
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemProfile,
-                              child: Text('Profile'),
-                            ),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemSettings,
-                              child: Text('Settings'),
-                            ),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemPrivacy,
-                              child: Text('Privacy'),
-                            ),
-                            PopupMenuDivider(),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemAdminPanel,
-                              child: Text('AdminPanel'),
-                            ),
-                            PopupMenuDivider(),
+                           
                             PopupMenuItem<Menu>(
                                 value: Menu.itemLogout,
                                 child: Row(children: [
@@ -198,11 +147,7 @@ class AdminShnatterNavigationState
                                   Text('Log Out'),
                                 ])),
                             PopupMenuDivider(),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemKeyboardShortcut,
-                              child: Text('Keyboard Shortcuts'),
-                            ),
-                            PopupMenuDivider(),
+                           
                           ],
                           onSelected: (Menu item) {},
                           child: Row(
@@ -277,7 +222,7 @@ class AdminShnatterNavigationState
                     Container(
                         padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () { onHomeClicked();},
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.black),
@@ -309,24 +254,7 @@ class AdminShnatterNavigationState
                         child: PopupMenuButton(
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemProfile,
-                              child: Text('Profile'),
-                            ),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemSettings,
-                              child: Text('Settings'),
-                            ),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemPrivacy,
-                              child: Text('Privacy'),
-                            ),
-                            PopupMenuDivider(),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemAdminPanel,
-                              child: Text('AdminPanel'),
-                            ),
-                            PopupMenuDivider(),
+                           
                             PopupMenuItem<Menu>(
                                 value: Menu.itemLogout,
                                 child: Row(children: [
@@ -334,12 +262,7 @@ class AdminShnatterNavigationState
                                   SizedBox(width: 8),
                                   Text('Log Out'),
                                 ])),
-                            PopupMenuDivider(),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemKeyboardShortcut,
-                              child: Text('Keyboard Shortcuts'),
-                            ),
-                            PopupMenuDivider(),
+                           
                           ],
                           onSelected: (Menu item) {},
                           child: Row(

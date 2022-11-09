@@ -64,6 +64,25 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     super.dispose();
   }
 
+  Future<void> onAdminClicked() async {
+    Helper.showToast("go to admin");
+    print("go to login");
+    await Navigator.pushReplacementNamed(context, RouteNames.adp);
+  }
+
+  void onSettingClicked() {
+    Navigator.pushReplacementNamed(context, RouteNames.settings);
+  }
+
+  void onHomeClicked() {
+    Navigator.pushReplacementNamed(context, RouteNames.homePage);
+  }
+
+  Future<void> onLogOut() async {
+    await Helper.removeAllPreference();
+    await Navigator.pushReplacementNamed(context, RouteNames.login);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
@@ -248,7 +267,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               value: Menu.itemProfile,
                               child: Text('Profile'),
                             ),
-                            const PopupMenuItem<Menu>(
+                            PopupMenuItem<Menu>(
+                              onTap: () => onSettingClicked(),
                               value: Menu.itemSettings,
                               child: Text('Settings'),
                             ),
@@ -262,13 +282,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               child: GestureDetector(
                                   onTap: () {
                                     Navigator.pushReplacementNamed(
-                                        context, RouteNames.admin);
+                                        context, RouteNames.adp);
                                     print(1123);
                                   },
                                   child: Text('AdminPanel')),
                             ),
                             PopupMenuDivider(),
                             PopupMenuItem<Menu>(
+                                onTap: () => {onLogOut()},
                                 value: Menu.itemLogout,
                                 child: Row(children: [
                                   Icon(Icons.logout),
@@ -344,7 +365,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     Container(
                         padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            onHomeClicked();
+                          },
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.black),
@@ -449,7 +472,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               value: Menu.itemProfile,
                               child: Text('Profile'),
                             ),
-                            const PopupMenuItem<Menu>(
+                            PopupMenuItem<Menu>(
+                              onTap: () => onSettingClicked(),
                               value: Menu.itemSettings,
                               child: Text('Settings'),
                             ),
@@ -463,17 +487,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               child: GestureDetector(
                                   onTap: () {
                                     Navigator.pushReplacementNamed(
-                                        context, RouteNames.admin);
+                                        context, RouteNames.adp);
                                   },
                                   child: const Text('AdminPanel')),
                             ),
                             const PopupMenuDivider(),
                             PopupMenuItem<Menu>(
-                                onTap: () async {
-                                  await Helper.removeAllPreference();
-                                  // ignore: use_build_context_synchronously
-                                  await Navigator.pushReplacementNamed(
-                                      context, RouteNames.login);
+                                onTap: () {
+                                  onLogOut();
                                 },
                                 value: Menu.itemLogout,
                                 child: Row(children: const [

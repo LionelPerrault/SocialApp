@@ -12,7 +12,7 @@ import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
-import 'package:shnatter/src/widget/primaryInput.dart';
+import 'package:shnatter/src/widget/startedInput.dart';
 
 import '../controllers/UserController.dart';
 import '../utils/size_config.dart';
@@ -56,6 +56,10 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   //
   @override
   void initState() {
+    profileInfo['jew'] = false;
+    profileInfo['policy1'] = false;
+    profileInfo['policy2'] = false;
+    profileInfo['policy3'] = false;
     add(widget.userCon);
     super.initState();
     userCon = controller as UserController;
@@ -343,128 +347,936 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                   padding: EdgeInsets.only(bottom: 20))
                             ],
                           )
-                        : Column(
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    'Update your info',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 22),
-                                  ),
-                                  Padding(padding: EdgeInsets.only(left: 10)),
-                                  Text(
-                                    'Share your information with our community',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 13),
-                                  ),
-                                ],
-                              ),
-                              const Padding(padding: EdgeInsets.only(top: 30)),
-                              Row(
-                                children: const [
-                                  Padding(padding: EdgeInsets.only(left: 30)),
-                                  Text('LOCATION',
+                        : SizedBox(
+                            width: double.infinity * 0.6,
+                            child: Column(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Update your info',
                                       style: TextStyle(
-                                          color: Colors.black, fontSize: 11)),
-                                  Flexible(
-                                      fit: FlexFit.tight, child: SizedBox()),
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 30),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: const [
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 40)),
-                                      Text('Country',
+                                          color: Colors.black, fontSize: 22),
+                                    ),
+                                    Padding(padding: EdgeInsets.only(left: 10)),
+                                    Text(
+                                      'Share your information with our community',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 13),
+                                    ),
+                                  ],
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 30)),
+                                Row(
+                                  children: const [
+                                    Padding(padding: EdgeInsets.only(left: 30)),
+                                    Text('LOCATION',
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 11)),
+                                    Flexible(
+                                        fit: FlexFit.tight, child: SizedBox()),
+                                    const Padding(
+                                      padding: EdgeInsets.only(top: 30),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: const [
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 30)),
+                                        Text('Country',
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 82, 95, 127),
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.bold)),
+                                        Flexible(
+                                            fit: FlexFit.tight,
+                                            child: SizedBox()),
+                                        const Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                        )
+                                      ],
+                                    ),
+                                    Container(
+                                      width: 680,
+                                      decoration: BoxDecoration(
+                                          color: Color.fromARGB(
+                                              255, 250, 250, 250),
+                                          border:
+                                              Border.all(color: Colors.grey)),
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: DropdownButton(
+                                        value: country,
+                                        items: const [
+                                          //add items in the dropdown
+                                          DropdownMenuItem(
+                                            value: "Select Country",
+                                            child: Text("Select Country"),
+                                          ),
+                                          DropdownMenuItem(
+                                              value: "Female",
+                                              child: Text("Female")),
+                                          DropdownMenuItem(
+                                            value: "Other",
+                                            child: Text("Other"),
+                                          )
+                                        ],
+                                        onChanged: (String? value) {
+                                          //get value when changed
+                                          profileInfo['country'] = value;
+                                          country = value!;
+                                          setState(() {});
+                                        },
+                                        style: const TextStyle(
+                                            //te
+                                            color: Colors.black, //Font color
+                                            fontSize:
+                                                12 //font size on dropdown button
+                                            ),
+
+                                        dropdownColor: Colors.white,
+                                        underline:
+                                            Container(), //remove underline
+                                        isExpanded: true,
+                                        isDense: true,
+                                      ),
+                                    ),
+                                    const Padding(
+                                        padding: EdgeInsets.only(bottom: 10))
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text(
+                                              'Current City',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 82, 95, 127),
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 35),
+                                          width: 300,
+                                          child:
+                                              input(validator: (value) async {
+                                            print(value);
+                                          }, onchange: (value) async {
+                                            profileInfo['stName'] = value;
+                                            setState(() {});
+                                          }),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text('Hometown',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 82, 95, 127),
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 30),
+                                          width: 300,
+                                          child:
+                                              input(validator: (value) async {
+                                            print(value);
+                                          }, onchange: (value) async {
+                                            profileInfo['stName'] = value;
+                                            setState(() {});
+                                          }),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text('Relationship Status',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 82, 95, 127),
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 35)),
+                                            Container(
+                                              width: 250,
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 250, 250, 250),
+                                                  border: Border.all(
+                                                      color: Colors.grey)),
+                                              padding: const EdgeInsets.only(
+                                                  left: 70),
+                                              child: DropdownButton(
+                                                value: country,
+                                                items: const [
+                                                  //add items in the dropdown
+                                                  DropdownMenuItem(
+                                                    value: "Select Country",
+                                                    child:
+                                                        Text("Select Country"),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                      value: "Female",
+                                                      child: Text("Female")),
+                                                  DropdownMenuItem(
+                                                    value: "Other",
+                                                    child: Text("Other"),
+                                                  )
+                                                ],
+                                                onChanged: (String? value) {
+                                                  //get value when changed
+                                                  profileInfo['country'] =
+                                                      value;
+                                                  country = value!;
+                                                  setState(() {});
+                                                },
+                                                style: const TextStyle(
+                                                    //te
+                                                    color: Colors
+                                                        .black, //Font color
+                                                    fontSize:
+                                                        12 //font size on dropdown button
+                                                    ),
+
+                                                dropdownColor: Colors.white,
+                                                underline:
+                                                    Container(), //remove underline
+                                                isExpanded: true,
+                                                isDense: true,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text('Current City',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 82, 95, 127),
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 20)),
+                                            SizedBox(
+                                              height: 20,
+                                              child: Transform.scale(
+                                                scaleX: 0.55,
+                                                scaleY: 0.55,
+                                                child: CupertinoSwitch(
+                                                  //thumbColor: kprimaryColor,
+                                                  activeColor: Colors.grey,
+                                                  value: profileInfo['jew'],
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      profileInfo['jew'] =
+                                                          value;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text('Relationship Status',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 82, 95, 127),
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 35)),
+                                            Container(
+                                              width: 180,
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 250, 250, 250),
+                                                  border: Border.all(
+                                                      color: Colors.grey)),
+                                              padding: const EdgeInsets.only(
+                                                  left: 70),
+                                              child: DropdownButton(
+                                                value: country,
+                                                items: const [
+                                                  //add items in the dropdown
+                                                  DropdownMenuItem(
+                                                    value: "Select Country",
+                                                    child:
+                                                        Text("Select Country"),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                      value: "Female",
+                                                      child: Text("Female")),
+                                                  DropdownMenuItem(
+                                                    value: "Other",
+                                                    child: Text("Other"),
+                                                  )
+                                                ],
+                                                onChanged: (String? value) {
+                                                  //get value when changed
+                                                  profileInfo['country'] =
+                                                      value;
+                                                  country = value!;
+                                                  setState(() {});
+                                                },
+                                                style: const TextStyle(
+                                                    //te
+                                                    color: Colors
+                                                        .black, //Font color
+                                                    fontSize:
+                                                        12 //font size on dropdown button
+                                                    ),
+
+                                                dropdownColor: Colors.white,
+                                                underline:
+                                                    Container(), //remove underline
+                                                isExpanded: true,
+                                                isDense: true,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text('Relationship Status',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 82, 95, 127),
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 35)),
+                                            Container(
+                                              width: 180,
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 250, 250, 250),
+                                                  border: Border.all(
+                                                      color: Colors.grey)),
+                                              padding: const EdgeInsets.only(
+                                                  left: 70),
+                                              child: DropdownButton(
+                                                value: country,
+                                                items: const [
+                                                  //add items in the dropdown
+                                                  DropdownMenuItem(
+                                                    value: "Select Country",
+                                                    child:
+                                                        Text("Select Country"),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                      value: "Female",
+                                                      child: Text("Female")),
+                                                  DropdownMenuItem(
+                                                    value: "Other",
+                                                    child: Text("Other"),
+                                                  )
+                                                ],
+                                                onChanged: (String? value) {
+                                                  //get value when changed
+                                                  profileInfo['country'] =
+                                                      value;
+                                                  country = value!;
+                                                  setState(() {});
+                                                },
+                                                style: const TextStyle(
+                                                    //te
+                                                    color: Colors
+                                                        .black, //Font color
+                                                    fontSize:
+                                                        12 //font size on dropdown button
+                                                    ),
+
+                                                dropdownColor: Colors.white,
+                                                underline:
+                                                    Container(), //remove underline
+                                                isExpanded: true,
+                                                isDense: true,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text('Relationship Status',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 82, 95, 127),
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 35)),
+                                            Container(
+                                              width: 180,
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 250, 250, 250),
+                                                  border: Border.all(
+                                                      color: Colors.grey)),
+                                              padding: const EdgeInsets.only(
+                                                  left: 70),
+                                              child: DropdownButton(
+                                                value: country,
+                                                items: const [
+                                                  //add items in the dropdown
+                                                  DropdownMenuItem(
+                                                    value: "Select Country",
+                                                    child:
+                                                        Text("Select Country"),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                      value: "Female",
+                                                      child: Text("Female")),
+                                                  DropdownMenuItem(
+                                                    value: "Other",
+                                                    child: Text("Other"),
+                                                  )
+                                                ],
+                                                onChanged: (String? value) {
+                                                  //get value when changed
+                                                  profileInfo['country'] =
+                                                      value;
+                                                  country = value!;
+                                                  setState(() {});
+                                                },
+                                                style: const TextStyle(
+                                                    //te
+                                                    color: Colors
+                                                        .black, //Font color
+                                                    fontSize:
+                                                        12 //font size on dropdown button
+                                                    ),
+
+                                                dropdownColor: Colors.white,
+                                                underline:
+                                                    Container(), //remove underline
+                                                isExpanded: true,
+                                                isDense: true,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: const [
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 30)),
+                                        Text('About Me',
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 82, 95, 127),
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.bold)),
+                                        Flexible(
+                                            fit: FlexFit.tight,
+                                            child: SizedBox()),
+                                        const Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                        )
+                                      ],
+                                    ),
+                                    Container(
+                                      width: 680,
+                                      decoration: BoxDecoration(
+                                          color: Color.fromARGB(
+                                              255, 250, 250, 250),
+                                          border:
+                                              Border.all(color: Colors.grey)),
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: DropdownButton(
+                                        value: country,
+                                        items: const [
+                                          //add items in the dropdown
+                                          DropdownMenuItem(
+                                            value: "Select Country",
+                                            child: Text("Select Country"),
+                                          ),
+                                          DropdownMenuItem(
+                                              value: "Female",
+                                              child: Text("Female")),
+                                          DropdownMenuItem(
+                                            value: "Other",
+                                            child: Text("Other"),
+                                          )
+                                        ],
+                                        onChanged: (String? value) {
+                                          //get value when changed
+                                          profileInfo['country'] = value;
+                                          country = value!;
+                                          setState(() {});
+                                        },
+                                        style: const TextStyle(
+                                            //te
+                                            color: Colors.black, //Font color
+                                            fontSize:
+                                                12 //font size on dropdown button
+                                            ),
+
+                                        dropdownColor: Colors.white,
+                                        underline:
+                                            Container(), //remove underline
+                                        isExpanded: true,
+                                        isDense: true,
+                                      ),
+                                    ),
+                                    const Padding(
+                                        padding: EdgeInsets.only(bottom: 10))
+                                  ],
+                                ),
+                                new Divider(
+                                  height: 1,
+                                  indent: 10,
+                                  endIndent: 10,
+                                ),
+                                Row(
+                                  children: const [
+                                    Padding(padding: EdgeInsets.only(left: 30)),
+                                    Text('WORK',
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 11)),
+                                    Flexible(
+                                        fit: FlexFit.tight, child: SizedBox()),
+                                    const Padding(
+                                      padding: EdgeInsets.only(top: 30),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: const [
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 30)),
+                                        Text(
+                                          'Work Title',
                                           style: TextStyle(
                                               color: Color.fromARGB(
                                                   255, 82, 95, 127),
-                                              fontSize: 11)),
-                                      Flexible(
-                                          fit: FlexFit.tight,
-                                          child: SizedBox()),
-                                      const Padding(
-                                        padding: EdgeInsets.only(top: 30),
-                                      )
-                                    ],
-                                  ),
-                                  Container(
-                                    width: 680,
-                                    decoration: BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 250, 250, 250),
-                                        border: Border.all(color: Colors.grey)),
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: DropdownButton(
-                                      value: country,
-                                      items: const [
-                                        //add items in the dropdown
-                                        DropdownMenuItem(
-                                          value: "Select Country",
-                                          child: Text("Select Country"),
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                        DropdownMenuItem(
-                                            value: "Female",
-                                            child: Text("Female")),
-                                        DropdownMenuItem(
-                                          value: "Other",
-                                          child: Text("Other"),
+                                      ],
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(left: 35),
+                                      width: 680,
+                                      child: input(validator: (value) async {
+                                        print(value);
+                                      }, onchange: (value) async {
+                                        profileInfo['stName'] = value;
+                                        setState(() {});
+                                      }),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text(
+                                              'Work Place',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 82, 95, 127),
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 35),
+                                          width: 300,
+                                          child:
+                                              input(validator: (value) async {
+                                            print(value);
+                                          }, onchange: (value) async {
+                                            profileInfo['stName'] = value;
+                                            setState(() {});
+                                          }),
                                         )
                                       ],
-                                      onChanged: (String? value) {
-                                        //get value when changed
-                                        profileInfo['country'] = value;
-                                        country = value!;
-                                        setState(() {});
-                                      },
-                                      style: const TextStyle(
-                                          //te
-                                          color: Colors.black, //Font color
-                                          fontSize:
-                                              12 //font size on dropdown button
-                                          ),
-
-                                      dropdownColor: Colors.white,
-                                      underline: Container(), //remove underline
-                                      isExpanded: true,
-                                      isDense: true,
                                     ),
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(bottom: 10))
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: const [
-                                          Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 30)),
-                                          Text('Current City',
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text('Work Website',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 82, 95, 127),
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 30),
+                                          width: 300,
+                                          child:
+                                              input(validator: (value) async {
+                                            print(value);
+                                          }, onchange: (value) async {
+                                            profileInfo['stName'] = value;
+                                            setState(() {});
+                                          }),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                new Divider(
+                                  height: 1,
+                                  indent: 10,
+                                  endIndent: 10,
+                                ),
+                                Row(
+                                  children: const [
+                                    Padding(padding: EdgeInsets.only(left: 30)),
+                                    Text('EDUCATION',
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 11)),
+                                    Flexible(
+                                        fit: FlexFit.tight, child: SizedBox()),
+                                    const Padding(
+                                      padding: EdgeInsets.only(top: 30),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: const [
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 30)),
+                                        Text(
+                                          'Major',
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 82, 95, 127),
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(left: 35),
+                                      width: 680,
+                                      child: input(validator: (value) async {
+                                        print(value);
+                                      }, onchange: (value) async {
+                                        profileInfo['stName'] = value;
+                                        setState(() {});
+                                      }),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text(
+                                              'School',
                                               style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 11)),
-                                          const Padding(
-                                            padding: EdgeInsets.only(top: 30),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
+                                                  color: Color.fromARGB(
+                                                      255, 82, 95, 127),
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 35),
+                                          width: 300,
+                                          child:
+                                              input(validator: (value) async {
+                                            print(value);
+                                          }, onchange: (value) async {
+                                            profileInfo['stName'] = value;
+                                            setState(() {});
+                                          }),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 30)),
+                                            Text('Class',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 82, 95, 127),
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 30),
+                                          width: 300,
+                                          child:
+                                              input(validator: (value) async {
+                                            print(value);
+                                          }, onchange: (value) async {
+                                            profileInfo['stName'] = value;
+                                            setState(() {});
+                                          }),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                new Divider(
+                                  height: 1,
+                                  indent: 10,
+                                  endIndent: 10,
+                                ),
+                                Checkbox(
+                                  fillColor: MaterialStateProperty.all<Color>(
+                                      Colors.white),
+                                  checkColor: Colors.greenAccent,
+                                  activeColor:
+                                      const Color.fromRGBO(0, 123, 255, 1),
+                                  value: profileInfo['policy1'],
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              5.0))), // Rounded Checkbox
+                                  onChanged: (value) {
+                                    setState(() {
+                                      profileInfo['policy1'] =
+                                          profileInfo['policy1'] ? false : true;
+                                    });
+                                  },
+                                ),
+                                Checkbox(
+                                  fillColor: MaterialStateProperty.all<Color>(
+                                      Colors.white),
+                                  checkColor: Colors.greenAccent,
+                                  activeColor:
+                                      const Color.fromRGBO(0, 123, 255, 1),
+                                  value: profileInfo['policy2'],
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              5.0))), // Rounded Checkbox
+                                  onChanged: (value) {
+                                    setState(() {
+                                      profileInfo['policy2'] =
+                                          profileInfo['policy2'] ? false : true;
+                                    });
+                                  },
+                                ),
+                                Checkbox(
+                                  fillColor: MaterialStateProperty.all<Color>(
+                                      Colors.white),
+                                  checkColor: Colors.greenAccent,
+                                  activeColor:
+                                      const Color.fromRGBO(0, 123, 255, 1),
+                                  value: profileInfo['policy3'],
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              5.0))), // Rounded Checkbox
+                                  onChanged: (value) {
+                                    setState(() {
+                                      profileInfo['policy3'] =
+                                          profileInfo['policy3'] ? false : true;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
                   ],
                 ),
               ),
@@ -559,11 +1371,11 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
         ));
   }
 
-  Widget input({label, icon, onchange, obscureText = false, validator}) {
+  Widget input({label, onchange, obscureText = false, validator}) {
     return Container(
       height: 38,
       padding: const EdgeInsets.only(top: 10),
-      child: PrimaryInput(
+      child: StartedInput(
         validator: (val) async {
           validator(val);
         },
@@ -571,8 +1383,6 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
         onChange: (val) async {
           onchange(val);
         },
-        icon: icon,
-        label: label,
       ),
     );
   }

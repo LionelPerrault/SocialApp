@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/admin/navigationbar.dart';
 import 'package:shnatter/src/views/admin/admin_panel/adminbodypanel.dart';
@@ -16,49 +17,52 @@ class AdminScreen extends StatefulWidget {
   State createState() => AdminScreenState();
 }
 
-class AdminScreenState extends mvc.StateMVC<AdminScreen> {
+class AdminScreenState extends mvc.StateMVC<AdminScreen>
+    with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
-  bool showSearch = false;
-  late FocusNode searchFocusNode;
-  bool showMenu = false;
-  var suggest = <String, bool>{
-    'friends': true,
-    'pages': true,
-    'groups': true,
-    'events': true
-  };
+
+  late AnimationController _drawerSlideController;
+
+  bool _isDrawerOpen() {
+    return _drawerSlideController.value == 1.0;
+  }
+
+  bool _isDrawerOpening() {
+    return _drawerSlideController.status == AnimationStatus.forward;
+  }
+
+  bool _isDrawerClosed() {
+    return _drawerSlideController.value == 0.0;
+  }
+
   //
   @override
   void initState() {
     super.initState();
-    searchFocusNode = FocusNode();
-  }
-
-  void onSearchBarFocus() {
-    searchFocusNode.requestFocus();
-    setState(() {
-      showSearch = true;
-    });
+    _drawerSlideController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+    );
   }
 
   void clickMenu() {
-    setState(() {
-      showMenu = !showMenu;
-    });
-  }
-
-  void onSearchBarDismiss() {
-    if (showSearch)
-      setState(() {
-        showSearch = false;
-      });
+    //setState(() {
+    //  showMenu = !showMenu;
+    //});
+    //Scaffold.of(context).openDrawer();
+    //print("showmenu is {$showMenu}");
+    if (_isDrawerOpen() || _isDrawerOpening()) {
+      _drawerSlideController.reverse();
+    } else {
+      _drawerSlideController.forward();
+    }
   }
 
   @override
   void dispose() {
-    searchFocusNode.dispose();
+    _drawerSlideController.dispose();
     super.dispose();
   }
 
@@ -66,76 +70,63 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
+        drawerEnableOpenDragGesture: false,
+        drawer: Drawer(),
         body: Stack(
           fit: StackFit.expand,
           children: [
             AdminShnatterNavigation(
-              searchController: searchController,
-              onSearchBarFocus: onSearchBarFocus,
-              onSearchBarDismiss: onSearchBarDismiss,
               drawClicked: clickMenu,
             ),
-            Row(
-              children: [
-                const AdminLeftPanel(),
-                const AdminBodyPanel(),
-              ],
-            ),
-            showSearch
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showSearch = false;
-                      });
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        color: const Color.fromARGB(0, 214, 212, 212),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.only(right: 20.0),
-                                    child: const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                    )),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10, right: 9),
-                                  width: SizeConfig(context).screenWidth * 0.4,
-                                  child: TextField(
-                                    focusNode: searchFocusNode,
-                                    controller: searchController,
-                                    cursorColor: Colors.white,
-                                    style: const TextStyle(color: Colors.white),
-                                    decoration: const InputDecoration(
-                                      prefixIcon: Icon(Icons.search,
-                                          color: Color.fromARGB(
-                                              150, 170, 212, 255),
-                                          size: 20),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0)),
-                                      ),
-                                      filled: true,
-                                      fillColor: Color(0xff202020),
-                                      hintText: 'Search',
-                                      hintStyle: TextStyle(
-                                          fontSize: 15.0, color: Colors.white),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            ShnatterNotification()
-                          ],
-                        )),
-                  )
-                : const SizedBox()
+            Padding(
+                padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  physics: ClampingScrollPhysics(),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizeConfig(context).screenWidth <
+                                SizeConfig.smallScreenSize
+                            ? const SizedBox()
+                            : AdminLeftPanel(),
+                        //    : SizedBox(width: 0),
+                        Expanded(child: AdminBodyPanel()),
+                        //MainPanel(),
+                      ]),
+                )),
+            AnimatedBuilder(
+                animation: _drawerSlideController,
+                builder: (context, child) {
+                  return FractionalTranslation(
+                      translation: SizeConfig(context).screenWidth >
+                              SizeConfig.smallScreenSize
+                          ? Offset(0, 0)
+                          : Offset(_drawerSlideController.value * 0.001, 0.0),
+                      child: SizeConfig(context).screenWidth >
+                                  SizeConfig.smallScreenSize ||
+                              _isDrawerClosed()
+                          ? const SizedBox()
+                          : Padding(
+                              padding:
+                                  EdgeInsets.only(top: SizeConfig.navbarHeight),
+                              child: Container(
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        color: Colors.white,
+                                        width: SizeConfig.leftBarWidth,
+                                        child: SingleChildScrollView(
+                                          child: AdminLeftPanel(),
+                                        ),
+                                      )
+                                    ]),
+                              )));
+                }),
           ],
         ));
   }
