@@ -40,7 +40,7 @@ class LeftPanel extends StatelessWidget {
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter_token.svg?alt=media&token=48ac103d-10fc-4847-943e-33ea5d6281bc'),
           ListText(
               onTap: () =>
-                  {Navigator.pushReplacementNamed(context, RouteNames.admin)},
+                  {Navigator.pushReplacementNamed(context, RouteNames.adp)},
               label: 'Admin Panel',
               image: ''),
           Row(children: const [

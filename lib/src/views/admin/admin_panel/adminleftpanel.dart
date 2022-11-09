@@ -12,11 +12,11 @@ class AdminLeftPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     Container(
-      width: SizeConfig.leftBarWidth,
+      width: SizeConfig.leftBarAdminWidth,
       child: 
-       Padding(padding: const EdgeInsets.only(top: 90.0),
+       Padding(padding: const EdgeInsets.only(top: 5.0),
             child: 
-            ListView(
+            Column(
             children: [
               Row(children: const [
                 Padding(padding: EdgeInsets.only(left: 30.0)),
