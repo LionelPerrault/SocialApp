@@ -25,6 +25,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/gestures.dart';
 import 'box/notification.dart';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+
 class StartedScreen extends StatefulWidget {
   StartedScreen({Key? key})
       : userCon = UserController(),
@@ -45,6 +51,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   bool showMenu = false;
   bool stepflag = true;
   String country = 'Select Country';
+  var imageUrl = '';
   var profileInfo = {};
   late AnimationController _drawerSlideController;
   var suggest = <String, bool>{
@@ -272,6 +279,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               child: SvgPicture.network(
                                                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82'),
                                             ),
+                                            // ImageUpload(),
                                             Container(
                                               width: 26,
                                               height: 26,
@@ -292,7 +300,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                   maximumSize: const Size(26, 26),
                                                 ),
                                                 onPressed: () {
-                                                  () => {};
+                                                  uploadImage();
                                                 },
                                                 child: const Icon(
                                                     Icons.camera_enhance_rounded,

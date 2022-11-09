@@ -35,16 +35,16 @@ class StartedInputState extends State<StartedInput> {
         widget.onChange(newIndex);
       },
       obscureText: widget.obscureText,
-      style: const TextStyle(color: Colors.white, fontSize: 11),
-      cursorColor: Colors.white,
+      style: const TextStyle(color: Colors.black, fontSize: 11),
+      cursorColor: Colors.black,
       decoration: InputDecoration(
         filled: true,
 
         fillColor: Colors.white, //<-- SEE HERE
         focusColor: Colors.white,
         //add prefix icon
-        contentPadding: const EdgeInsets.symmetric(vertical: 3), // <-- SEE HERE
-        prefixIcon: widget.icon,
+        // contentPadding: const EdgeInsets.symmetric(vertical: 3), // <-- SEE HERE
+        // prefixIcon: widget.icon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(0.0),
           borderSide: const BorderSide(color: Colors.grey, width: 1),
