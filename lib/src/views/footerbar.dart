@@ -65,7 +65,7 @@ class footbar extends StatefulWidget {
   State createState() => footbarState();
 }
 class footbarState extends State<footbar>{
-  var dropdownValue = '';
+  var dropdownValue = 'English';
   Widget build(BuildContext context) {
     return Container(
         height: 70,
@@ -78,58 +78,54 @@ class footbarState extends State<footbar>{
             const Padding(padding: EdgeInsets.only(left: 10)),
             text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 11),
             const Padding(padding: EdgeInsets.only(left: 20)),
-            Expanded(
-            child: Container(
-              width: 50,
-              height: 38,
-              padding: const EdgeInsets.only(right: 120,left: 5),
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                        color: Colors.black,
-                        width: 0.1), //bordrder raiuds of dropdown button
-                  ),
-                  child: Padding(
-                      padding: const EdgeInsets.only(top: 7, left: 10),
-                      child: DropdownButton(
-                        value: 'English',
-                        items: language.map((items) {
-                          return DropdownMenuItem(
-                            value: items['langText'],
-                            child: Container(child: Row(children: [
-                              SizedBox(
-                                width: 20,
-                                child: Image.network(items['png']!),
+             Container(
+                width: 130,
+                child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                          color: Colors.black,
+                          width: 0.1), //bordrder raiuds of dropdown button
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.only(top: 7, left: 10),
+                        child: DropdownButton(
+                          value: dropdownValue,
+                          items: language.map((items) {
+                            return DropdownMenuItem(
+                              value: items['langText'],
+                              child: Container(child: Row(children: [
+                                SizedBox(
+                                  width: 20,
+                                  child: Image.network(items['png']!),
+                                ),
+                                const Padding(padding: EdgeInsets.only(left: 15)),
+                                Text(items['langText']!,style: TextStyle(color: Color.fromARGB(255, 60, 60, 60)),)
+                              ],)
                               ),
-                              const Padding(padding: EdgeInsets.only(left: 15)),
-                              Text(items['langText']!,style: TextStyle(color: Color.fromARGB(255, 60, 60, 60)),)
-                            ],)
-                            ),
-                          );
-                        }).toList(),
-                         onChanged: (String? value) {
-                          //get value when changed
-                          dropdownValue = value!;
-                          setState(() {});
-                        },
-                        icon: const Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Icon(Icons.arrow_drop_down)),
-                        iconEnabledColor: Colors.white, //Icon color
-                        style: const TextStyle(
-                          color: Colors.black, //Font color
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        dropdownColor: Colors.white,
-                        underline: Container(), //remove underline
-                        isExpanded: true,
-                        isDense: true,
-                      ))),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            //get value when changed
+                            dropdownValue = value!;
+                            setState(() {});
+                          },
+                          icon: const Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Icon(Icons.arrow_drop_down)),
+                          iconEnabledColor: Colors.white, //Icon color
+                          style: const TextStyle(
+                            color: Colors.black, //Font color
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          dropdownColor: Colors.white,
+                          underline: Container(), //remove underline
+                          isExpanded: true,
+                          isDense: true,
+                        ))),
               ),
-            ),
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Container(
               margin: const EdgeInsets.only(right: 20),
@@ -154,140 +150,72 @@ class footbarM extends StatefulWidget {
   State createState() => footbarMState();
 }
 class footbarMState extends State<footbarM>{
-  var dropdownValue = 'Public';
+  var dropdownValue = 'English';
   Widget build(BuildContext context) {
     return Container(
-        height: 70,
+        height: 75,
         decoration: const BoxDecoration(
           color: Color.fromRGBO(0, 0, 0, 1),
         ),
         child: Column(
           children: [
-            const Padding(padding: EdgeInsets.only(top: 20)),
+            const Padding(padding: EdgeInsets.only(top: 10)),
             Row(children: [
               const Padding(padding: EdgeInsets.only(left: 10)),
               text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 13),
-              const Padding(padding: EdgeInsets.only(left: 20)),
-              Image.network(
-                'https://test-file.shnatter.com/uploads/flags/en_us.png',
-                width: 11,
-              ),
-              const Padding(padding: EdgeInsets.only(left: 5)),
-              text('English', const Color.fromRGBO(150, 150, 150, 1), 13),
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
+              const Padding(padding: EdgeInsets.only(left: 15)),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(right: 120,left: 5),
+                  child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                            color: Colors.black,
+                            width: 0.1), //bordrder raiuds of dropdown button
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 7, left: 10),
+                          child: DropdownButton(
+                            value: dropdownValue,
+                            items: language.map((items) {
+                              return DropdownMenuItem(
+                                value: items['langText'],
+                                child: Container(child: Row(children: [
+                                  SizedBox(
+                                    width: 20,
+                                    child: Image.network(items['png']!),
+                                  ),
+                                  const Padding(padding: EdgeInsets.only(left: 15)),
+                                  Text(items['langText']!,style: TextStyle(color: Color.fromARGB(255, 60, 60, 60)),)
+                                ],)
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {
+                              //get value when changed
+                              dropdownValue = value!;
+                              setState(() {});
+                            },
+                            icon: const Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Icon(Icons.arrow_drop_down)),
+                            iconEnabledColor: Colors.white, //Icon color
+                            style: const TextStyle(
+                              color: Colors.black, //Font color
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            dropdownColor: Colors.white,
+                            underline: Container(), //remove underline
+                            isExpanded: true,
+                            isDense: true,
+                          ))),
+                  ),
+                ),
             ],),
             const Padding(padding: EdgeInsets.only(top: 5)),
-            Expanded(
-              child: SizedBox(
-                width: 100,
-                height: 38,
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 17, 205, 239),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 17, 205, 239),
-                          width: 0.1), //bordrder raiuds of dropdown button
-                    ),
-                    child: Padding(
-                        padding: const EdgeInsets.only(top: 7, left: 15),
-                        child: DropdownButton(
-                          value: dropdownValue,
-                          hint: Row(
-                            children: const [
-                              Icon(
-                                Icons.language,
-                                color: Colors.white,
-                              ),
-                              Padding(padding: EdgeInsets.only(left: 5)),
-                              Text(
-                                'Public',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          items: [
-                            DropdownMenuItem(
-                              value: "Public",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.language,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Public",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                            DropdownMenuItem(
-                              value: "Friends",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.groups,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Friends",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                            DropdownMenuItem(
-                              value: "Friends of Friends",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.groups,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Friends of Friends",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                            DropdownMenuItem(
-                              value: "Only Me",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Only Me",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                          ],
-                          onChanged: (String? value) {
-                            //get value when changed
-                            dropdownValue = value!;
-                            setState(() {});
-                          },
-                          icon: const Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Icon(Icons.arrow_drop_down)),
-                          iconEnabledColor: Colors.white, //Icon color
-                          style: const TextStyle(
-                            color: Colors.black, //Font color
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          dropdownColor: Colors.white,
-                          underline: Container(), //remove underline
-                          isExpanded: true,
-                          isDense: true,
-                        ))),
-              ),
-            ),
             Container(
               margin: const EdgeInsets.only(right: 20),
               child: Row(children: [
