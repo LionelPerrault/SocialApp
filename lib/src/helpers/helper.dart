@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,11 +8,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/setting.dart';
 import 'package:crypto/crypto.dart';
 
+import '../models/userModel.dart';
+
 class Helper {
   static ValueNotifier<Setting> setting = ValueNotifier(Setting());
   //BuildContext context;
   // for mapping data retrieved form json array
-  static var authdata = null;
+  static var authdata = FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .withConverter<TokenLogin>(
+          fromFirestore: (snapshots, _) =>
+              TokenLogin.fromJSON(snapshots.data()!),
+          toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
+        );
   static var userField = 'user';
   static var balance = 0;
   static bool isUuid(String input) {

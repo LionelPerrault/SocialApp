@@ -7,6 +7,7 @@ class RouteNames {
   static const reset = '/reset';
   static const terms = '/terms';
   static const privacy = '/privacy';
-  static const admin = '/adminp';
+  static const adp = '/adminpanel';
   static const started = '/started';
+  static const settings = "/settings";
 }

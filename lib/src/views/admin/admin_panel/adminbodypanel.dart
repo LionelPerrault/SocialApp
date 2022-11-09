@@ -8,10 +8,9 @@ class AdminBodyPanel extends StatelessWidget {
       {super.key});
   @override
   Widget build(BuildContext context) {
-    return Container(padding: EdgeInsets.only(top: SizeConfig.navbarHeight,left: 10),
-            width:800,
+    return Container(padding: EdgeInsets.only(top: 0, left: 10),
             child: 
-            ListView(children: [
+            Column(children: [
               const Padding(padding: EdgeInsets.only(top: 15.0),),
               Row(children: [
                   Container(
