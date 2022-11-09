@@ -23,7 +23,7 @@ class ShnatterGroupSuggest extends StatefulWidget {
 
 class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
   //
-  bool isSound = false;
+  bool isSound = true;
   List<Map> sampleData = [
     {
       'avatarImg': '',
@@ -113,7 +113,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                 //endIndent: 0,
                 //color: Colors.black,
               ),
-              SizedBox(
+              isSound ? SizedBox(
                 height: 260,
                 //size: Size(100,100),
                 child: ListView.separated(
@@ -190,6 +190,8 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                   ),
                 ),
               )
+              :
+              Column()
             ],
           )),
     );
