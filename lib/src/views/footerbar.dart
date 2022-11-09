@@ -89,7 +89,7 @@ class footbarState extends State<footbar>{
                           width: 0.1), //bordrder raiuds of dropdown button
                     ),
                     child: Padding(
-                        padding: const EdgeInsets.only(top: 7, left: 10),
+                        padding: const EdgeInsets.only(top: 7, left: 5),
                         child: DropdownButton(
                           value: dropdownValue,
                           items: language.map((items) {
