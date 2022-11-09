@@ -300,7 +300,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                   maximumSize: const Size(26, 26),
                                                 ),
                                                 onPressed: () {
-                                                  uploadImage();
+                                                  // uploadImage();
+                                                  ()=>{};
                                                 },
                                                 child: const Icon(
                                                     Icons.camera_enhance_rounded,
