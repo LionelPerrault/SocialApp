@@ -11,7 +11,7 @@ class ChatController extends ControllerMVC {
   factory ChatController() => _this ??= ChatController._();
   ChatController._();
   static ChatController? _this;
-
+  var chatBoxs = [];
   get SharedPreferences => null;
 
   @override

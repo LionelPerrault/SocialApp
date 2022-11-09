@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
@@ -79,6 +80,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   }
 
   Future<void> onLogOut() async {
+    UserManager.isLogined = false;
+    UserManager.userInfo = {};
     await Helper.removeAllPreference();
     await Navigator.pushReplacementNamed(context, RouteNames.login);
   }

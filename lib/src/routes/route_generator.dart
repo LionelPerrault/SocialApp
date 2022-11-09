@@ -25,12 +25,13 @@ class RouteGenerator {
     final args = settings.arguments;
     var url = settings.name;
     bool islogined = UserManager.isLogined;
+    print(islogined);
     if (islogined == true) {
       if (url == '/login' || url == '/register') {
         url = RouteNames.homePage;
       }
     } else {
-      if (url != '/register' && url != '/login') {
+      if (url != '/register' && url != '/login' && url != '/reset') {
         url = RouteNames.login;
       }
     }
