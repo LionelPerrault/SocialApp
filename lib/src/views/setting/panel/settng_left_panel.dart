@@ -137,7 +137,11 @@ class SettingsLeftPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {Navigator
+                                          .pushReplacementNamed(
+                                              context,
+                                              RouteNames
+                                                  .security_password)},
                             label: 'Password',
                             icon:
                                 const Icon(null)),

@@ -25,7 +25,7 @@ class SettingMainPanelState extends State<SettingMainPanel> {
     return Container(padding: const EdgeInsets.only(top: 20, left:30),
       child: 
         Column(children: [
-          SettingHeader(icon: Icon(Icons.work, color: Color.fromARGB(255, 43, 83, 164),), pagename: 'Work',
+          SettingHeader(icon: Icon(Icons.brush, color: Color.fromARGB(255, 43, 83, 164),), pagename: 'Design',
             button: {'buttoncolor': Color.fromARGB(255, 17, 205, 239),
                       'icon': Icon(Icons.person),
                       'text': 'View Profile',

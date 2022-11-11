@@ -53,6 +53,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   bool stepflag = true;
   String country = 'Select Country';
   var imageUrl = '';
+  var progress;
   var profileInfo = {};
   late AnimationController _drawerSlideController;
   var suggest = <String, bool>{
@@ -64,10 +65,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   //
   @override
   void initState() {
+    progress = 0;
     profileInfo['jew'] = false;
     profileInfo['policy1'] = false;
     profileInfo['policy2'] = false;
     profileInfo['policy3'] = false;
+    profileInfo['avatar'] = '';
     add(widget.userCon);
     super.initState();
     userCon = controller as UserController;
@@ -278,9 +281,19 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                   borderRadius: BorderRadius.circular(60),
                                                   border: Border.all(color: Colors.grey)),
                                               child: SvgPicture.network(
-                                                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82'),
+                                                  profileInfo['avatar'] == '' ? 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82': profileInfo['avatar']),
                                             ),
-                                            // ImageUpload(),
+                                            // (progress !=0&&progress !=100) ? LinearProgressIndicator(
+                                            //   value: progress,
+                                            //   semanticsLabel: 'Linear progress indicator',
+                                            // ), : SizedBox(),
+                                            (progress !=0&&progress !=100) ? Container(
+                                              margin: EdgeInsets.only(top: 70, left: 10),
+                                              width: 100,
+                                              child: LinearProgressIndicator(
+                                              value: 10,
+                                              semanticsLabel: 'Linear progress indicator',
+                                            ),) : SizedBox(),
                                             Container(
                                               width: 26,
                                               height: 26,
@@ -1631,9 +1644,11 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
           uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
                       switch (taskSnapshot.state) {
                         case TaskState.running:
-                          final progress =
+                          progress =
                               100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                          print("Upload is $progress% complete.");
+                              setState(() {});
+                              print("Upload is $progress% complete.");
+
                           break;
                         case TaskState.paused:
                           print("Upload is paused.");
@@ -1667,9 +1682,10 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
         )
         .whenComplete(() async {
           var downloadUrl = await _reference.getDownloadURL();
-          //await _reference.getDownloadURL().then((value) {
-          //  uploadedPhotoUrl = value;
-          //});
+          await _reference.getDownloadURL().then((value) {
+           profileInfo['avatar'] = value;
+           setState(() {});
+          });
         });
     }
 
