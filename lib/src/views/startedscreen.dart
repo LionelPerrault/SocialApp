@@ -1649,7 +1649,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                          print("Upload is completed");
                         // Handle successful uploads on complete
                         // ...
-                         var downloadUrl = await _reference.getDownloadURL();
+                        //  var downloadUrl = await _reference.getDownloadURL();
                           break;
                       }
                     });
