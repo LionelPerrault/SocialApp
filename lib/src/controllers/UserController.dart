@@ -36,6 +36,7 @@ class UserController extends ControllerMVC {
   bool isLogined = false;
   String failLogin = '';
   String failRegister = '';
+  String userAvatar = '';
   var resData = {};
   var userInfo = {};
   // ignore: prefer_typing_uninitialized_variables
@@ -160,6 +161,7 @@ class UserController extends ControllerMVC {
       'isStarted': 'false',
       'isVerify': 'false',
       'isRememberme': 'false',
+      'uid': uuid,
       'expirationPeriod': DateTime.now().toString()
     });
   }
@@ -198,6 +200,8 @@ class UserController extends ControllerMVC {
       setState(() {});
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      var uid = userCredential.user!.uid;
+      print(uid);
       failLogin = '';
       setState(() {});
       QuerySnapshot<TokenLogin> querySnapshot =
@@ -220,6 +224,7 @@ class UserController extends ControllerMVC {
           'isStarted': user.isStarted.toString(),
           'isVerify': isVerify.toString(),
           'isRememberme': isRememberme.toString(),
+          'uid': uid,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
@@ -402,4 +407,25 @@ class UserController extends ControllerMVC {
             },
         });
   }
+  Future<void> resetGetUserInfo() async {
+    var info;
+    FirebaseFirestore.instance.collection(Helper.userField).doc(UserManager.userInfo['uid']).get()
+    .then((value) async => {
+      userInfo = await Helper.getJSONPreference(Helper.userField),
+      info = UserManager.userInfo.toString(),
+      await Helper.saveJSONPreference(Helper.userField,{
+        ...userInfo,
+        'avatar':value.data()!['avatar']
+      })
+    });
+  }
+  Future<void> changeAvatar() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .doc(UserManager.userInfo['uid']).update({
+          'avatar': userAvatar
+        });
+    resetGetUserInfo();
+  }
+
 }

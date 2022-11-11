@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
@@ -79,6 +80,9 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    userCon.userAvatar = UserManager.userInfo['avatar'] ?? '';
+    userCon.setState(() {});
+    print(UserManager.userInfo['avatar']);
   }
 
   void onSearchBarFocus() {
@@ -271,6 +275,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                         const Padding(padding: EdgeInsets.only(top: 20)),
                                         Stack(
                                           children: [
+                                            userCon.userAvatar != '' ? 
                                             Container(
                                               width: 120,
                                               height: 120,
@@ -280,8 +285,22 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                       Color.fromARGB(255, 250, 250, 250),
                                                   borderRadius: BorderRadius.circular(60),
                                                   border: Border.all(color: Colors.grey)),
+                                              child: CircleAvatar(
+                                                  radius: 60,
+                                                  backgroundImage: NetworkImage(userCon.userAvatar),
+                                                ) 
+                                            )
+                                            : Container(
+                                              width: 120,
+                                              height: 120,
+                                              padding: const EdgeInsets.all(2),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      Color.fromARGB(255, 250, 250, 250),
+                                                  borderRadius: BorderRadius.circular(60),
+                                                  border: Border.all(color: Colors.grey)),
                                               child: SvgPicture.network(
-                                                  profileInfo['avatar'] == '' ? 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82': profileInfo['avatar']),
+                                                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82'),
                                             ),
                                             // (progress !=0&&progress !=100) ? LinearProgressIndicator(
                                             //   value: progress,
@@ -1635,12 +1654,15 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
             bytes,
             SettableMetadata(contentType: 'image/jpeg'),
           );
-          // .whenComplete(() async {
-          //   var downloadUrl = await _reference.getDownloadURL();
-          //   //await _reference.getDownloadURL().then((value) {
-          //   //  uploadedPhotoUrl = value;
-          //   //});
-          // });
+          uploadTask.whenComplete(() async {
+            var downloadUrl = await _reference.getDownloadURL();
+            userCon.userAvatar = downloadUrl;
+            userCon.setState(() {});
+            userCon.changeAvatar();
+            //await _reference.getDownloadURL().then((value) {
+            //  uploadedPhotoUrl = value;
+            //});
+          });
           uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
                       switch (taskSnapshot.state) {
                         case TaskState.running:
@@ -1670,7 +1692,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                     });
         }catch(e)
         {
-          print("Exception $e");
+          // print("Exception $e");
         }
     }else{
       var file = File(pickedFile!.path);
@@ -1681,17 +1703,18 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
           file
         )
         .whenComplete(() async {
+            print('value');
           var downloadUrl = await _reference.getDownloadURL();
           await _reference.getDownloadURL().then((value) {
-           profileInfo['avatar'] = value;
-           setState(() {});
+            // userCon.userAvatar = value;
+            // userCon.setState(() {});
+            // print(value);
           });
         });
     }
 
   }
   uploadImage() async {
-    print(FirebaseAuth.instance.currentUser);
     XFile? pickedFile = await chooseImage();
     uploadFile(pickedFile);   
   }
