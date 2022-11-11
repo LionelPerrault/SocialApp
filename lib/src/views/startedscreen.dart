@@ -1,6 +1,6 @@
-import 'dart:html';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,13 +13,14 @@ import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
+import 'package:path/path.dart' as PPath;
 
 import '../controllers/UserController.dart';
 import '../utils/size_config.dart';
 import '../widget/mprimary_button.dart';
 import '../widget/list_text.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io' show File, Platform;
+import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/gestures.dart';
@@ -300,7 +301,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                   maximumSize: const Size(26, 26),
                                                 ),
                                                 onPressed: () {
-                                                  // uploadImage();
+                                                 uploadImage();
                                                   ()=>{};
                                                 },
                                                 child: const Icon(
@@ -1584,5 +1585,98 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
         },
       ),
     );
+  }
+  Future<XFile> chooseImage() async {
+    final _imagePicker = ImagePicker();
+    XFile? pickedFile;
+    if (kIsWeb){
+      pickedFile = await _imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+    }
+    else{
+      //Check Permissions
+      await Permission.photos.request();
+
+      var permissionStatus = await Permission.photos.status;
+
+      if (permissionStatus.isGranted){
+      }
+      else{
+        print('Permission not granted. Try Again with permission access');
+      }
+    }
+    return pickedFile!;
+  }
+  uploadFile(XFile? pickedFile) async {
+    final _firebaseStorage = FirebaseStorage.instance;
+    if(kIsWeb){
+        try{
+          
+          //print("read bytes");
+          Uint8List bytes  = await pickedFile!.readAsBytes();
+          //print(bytes);
+          Reference _reference = await _firebaseStorage.ref()
+            .child('images/${PPath.basename(pickedFile!.path)}');
+          final uploadTask = _reference.putData(
+            bytes,
+            SettableMetadata(contentType: 'image/jpeg'),
+          );
+          // .whenComplete(() async {
+          //   var downloadUrl = await _reference.getDownloadURL();
+          //   //await _reference.getDownloadURL().then((value) {
+          //   //  uploadedPhotoUrl = value;
+          //   //});
+          // });
+          uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+                      switch (taskSnapshot.state) {
+                        case TaskState.running:
+                          final progress =
+                              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                          print("Upload is $progress% complete.");
+                          break;
+                        case TaskState.paused:
+                          print("Upload is paused.");
+                          break;
+                        case TaskState.canceled:
+
+                          print("Upload was canceled");
+                          break;
+                        case TaskState.error:
+                        // Handle unsuccessful uploads
+                          break;
+                        case TaskState.success:
+                         print("Upload is completed");
+                        // Handle successful uploads on complete
+                        // ...
+                         var downloadUrl = await _reference.getDownloadURL();
+                          break;
+                      }
+                    });
+        }catch(e)
+        {
+          print("Exception $e");
+        }
+    }else{
+      var file = File(pickedFile!.path);
+      //write a code for android or ios
+      Reference _reference = await _firebaseStorage.ref()
+          .child('images/${PPath.basename(pickedFile!.path)}');
+        _reference.putFile(
+          file
+        )
+        .whenComplete(() async {
+          var downloadUrl = await _reference.getDownloadURL();
+          //await _reference.getDownloadURL().then((value) {
+          //  uploadedPhotoUrl = value;
+          //});
+        });
+    }
+
+  }
+  uploadImage() async {
+    print(FirebaseAuth.instance.currentUser);
+    XFile? pickedFile = await chooseImage();
+    uploadFile(pickedFile);   
   }
 }
