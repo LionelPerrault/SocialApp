@@ -43,8 +43,33 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
       child: Column(
         children: [
           const Padding(
-            padding: EdgeInsets.only(top: 60.0),
+            padding: EdgeInsets.only(top: 10.0),
           ),
+          Row(
+            children: [
+              const Padding(padding: EdgeInsets.only(left: 20)),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(3),
+                  backgroundColor: Colors.white,
+                  // elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0)),
+                  minimumSize: const Size(30, 30),
+                  maximumSize: const Size(30, 30),
+                ),
+                onPressed: () {
+                  Navigator
+                    .pushReplacementNamed(
+                        context,
+                        RouteNames
+                            .login);
+                },
+                child: const Icon(Icons.logout, size: 24, color: Colors.grey,)),
+              const Flexible(fit: FlexFit.tight, child: SizedBox()),
+            ],
+          ),
+          const Padding(padding: EdgeInsets.only(top: 10)),
           Container(
             color: Colors.blue,
             alignment: Alignment.center,

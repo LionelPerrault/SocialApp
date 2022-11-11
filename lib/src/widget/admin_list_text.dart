@@ -23,7 +23,7 @@ class ListText extends StatelessWidget {
           children: [
             const Padding(padding: EdgeInsets.only(left: 45.0)),
             icon,
-            const Padding(padding: EdgeInsets.only(left: 15.0)),
+            const Padding(padding: EdgeInsets.only(left: 10.0)),
             RichText(
               text: TextSpan(
                   children: <TextSpan>[
@@ -34,7 +34,7 @@ class ListText extends StatelessWidget {
                             fontSize: 13),
                         recognizer:
                             TapGestureRecognizer()
-                              ..onTap = () {onTap;})
+                              ..onTap = () {onTap();})
                   ]),
             ),
           ],

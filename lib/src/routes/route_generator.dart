@@ -8,10 +8,18 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
+import 'package:shnatter/src/views/setting/settings_account.dart';
+import 'package:shnatter/src/views/setting/settings_profile_basic.dart';
+import 'package:shnatter/src/views/setting/settings_profile_design.dart';
+import 'package:shnatter/src/views/setting/settings_profile_education.dart';
+import 'package:shnatter/src/views/setting/settings_profile_location.dart';
+import 'package:shnatter/src/views/setting/settings_profile_social.dart';
+import 'package:shnatter/src/views/setting/settings_profile_work.dart';
 import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
 import 'package:shnatter/src/views/resetpassword.dart';
 import 'package:shnatter/src/views/admin/adminscreen.dart';
+import 'package:shnatter/src/views/startedscreen.dart';
 import 'package:shnatter/src/views/startedscreen.dart';
 
 import '../managers/user_manager.dart';
@@ -69,7 +77,28 @@ class RouteGenerator {
             builder: (context) => StartedScreen(), settings: settings);
       case RouteNames.settings:
         return MaterialPageRoute(
-            builder: (context) => AdminScreen(), settings: settings);
+            builder: (context) => SettingsAccount(), settings: settings);
+      case RouteNames.settings_profile_basic:
+        return MaterialPageRoute(
+            builder: (context) => SettingsProfileBasic(), settings: settings);
+      case RouteNames.settings_profile_work:
+        return MaterialPageRoute(
+            builder: (context) => SettingsProfileWork(), settings: settings);
+      case RouteNames.settings_profile_location:
+        return MaterialPageRoute(
+            builder: (context) => SettingsProfileLocation(), settings: settings);
+      case RouteNames.settings_profile_education:
+        return MaterialPageRoute(
+            builder: (context) => SettingsProfileEducation(), settings: settings);
+      case RouteNames.settings_profile_social:
+        return MaterialPageRoute(
+            builder: (context) => SettingsProfileSocial(), settings: settings);
+      case RouteNames.settings_profile_interests:
+        return MaterialPageRoute(
+            builder: (context) => SettingsAccount(), settings: settings);
+      case RouteNames.settings_profile_design:
+        return MaterialPageRoute(
+            builder: (context) => SettingsProfileDesign(), settings: settings);
 
       default:
         return MaterialPageRoute(
