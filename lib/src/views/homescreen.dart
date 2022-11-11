@@ -154,7 +154,6 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                                     SizeConfig.mediumScreenSize
                                 ? RightPanel()
                                 : SizedBox(width: 0),
-                            ChatScreen(),
 
                             // ChatScreen()
                           ],
@@ -248,7 +247,8 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                         )),
                   )
                 : const SizedBox(),
-            ChatBoxScreen(),
+              ChatScreen(),
+
           ],
         ));
   }

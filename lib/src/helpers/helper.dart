@@ -21,8 +21,12 @@ class Helper {
               TokenLogin.fromJSON(snapshots.data()!),
           toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
         );
+        static var avatar =
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82';
   static var userField = 'user';
   static var balance = 0;
+  static var message = 'messages';
+  static var newMessageSearch = 'userName';
   static bool isUuid(String input) {
     return RegExp(
             "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
