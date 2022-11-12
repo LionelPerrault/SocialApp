@@ -16,6 +16,7 @@ import 'package:shnatter/src/views/setting/settings_profile_location.dart';
 import 'package:shnatter/src/views/setting/settings_profile_social.dart';
 import 'package:shnatter/src/views/setting/settings_profile_work.dart';
 import 'package:shnatter/src/views/setting/settings_security_password.dart';
+import 'package:shnatter/src/views/setting/settings_security_sessions.dart';
 import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
 import 'package:shnatter/src/views/resetpassword.dart';
@@ -103,6 +104,9 @@ class RouteGenerator {
       case RouteNames.security_password:
         return MaterialPageRoute(
             builder: (context) => SettingsSecurityPassword(), settings: settings);
+      case RouteNames.security_sessions:
+        return MaterialPageRoute(
+            builder: (context) => SettingsSecuritySessions(), settings: settings);
 
       default:
         return MaterialPageRoute(
