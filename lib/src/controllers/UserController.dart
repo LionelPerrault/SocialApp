@@ -161,6 +161,7 @@ class UserController extends ControllerMVC {
       'isStarted': 'false',
       'isVerify': 'false',
       'isRememberme': 'false',
+      'avatar': '',
       'uid': uuid,
       'expirationPeriod': DateTime.now().toString()
     });
@@ -291,7 +292,9 @@ class UserController extends ControllerMVC {
                   else
                     {
                       Helper.showToast(resData['msg']),
-                    }
+                    },
+                  isSendLoginedInfo = true,
+                  setState(() {})
                 }
             }
           else
@@ -369,6 +372,7 @@ class UserController extends ControllerMVC {
                                               walletAddress =
                                                   response['address'],
                                               await registerUserInfo(),
+                                              await UserManager.getUserInfo(),
                                               isSendRegisterInfo = false,
                                               isLogined = true,
                                               Navigator.pushReplacementNamed(
@@ -407,25 +411,26 @@ class UserController extends ControllerMVC {
             },
         });
   }
+
   Future<void> resetGetUserInfo() async {
     var info;
-    FirebaseFirestore.instance.collection(Helper.userField).doc(UserManager.userInfo['uid']).get()
-    .then((value) async => {
-      userInfo = await Helper.getJSONPreference(Helper.userField),
-      info = UserManager.userInfo.toString(),
-      await Helper.saveJSONPreference(Helper.userField,{
-        ...userInfo,
-        'avatar':value.data()!['avatar']
-      })
-    });
+    FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .doc(UserManager.userInfo['uid'])
+        .get()
+        .then((value) async => {
+              userInfo = await Helper.getJSONPreference(Helper.userField),
+              info = UserManager.userInfo.toString(),
+              await Helper.saveJSONPreference(Helper.userField,
+                  {...userInfo, 'avatar': value.data()!['avatar']})
+            });
   }
+
   Future<void> changeAvatar() async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .doc(UserManager.userInfo['uid']).update({
-          'avatar': userAvatar
-        });
+        .doc(UserManager.userInfo['uid'])
+        .update({'avatar': userAvatar});
     resetGetUserInfo();
   }
-
 }

@@ -18,7 +18,7 @@ import '../../models/chatModel.dart';
 
 class NewMessageScreen extends StatefulWidget {
   Function onBack;
-  NewMessageScreen({Key? key,required this.onBack})
+  NewMessageScreen({Key? key, required this.onBack})
       : con = ChatController(),
         super(key: key);
   late ChatController con;
@@ -30,38 +30,62 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
   bool check2 = false;
   late ChatController con;
   var userInfo = UserManager.userInfo;
+  var allUsersList = [];
+  var searchUser = [];
   @override
   void initState() {
     add(widget.con);
+    FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .get()
+        .then((value) => {allUsersList = value.docs});
     con = controller as ChatController;
+    con.chattingUser = '';
+    con.setState(() {});
     setState(() {});
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    print(con.allUsersList.length);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'New Message',
-          style: TextStyle(fontSize: 16),
+        appBar: AppBar(
+          title: Text(
+            'New Message',
+            style: TextStyle(fontSize: 16),
+          ),
+          backgroundColor: Color.fromRGBO(51, 103, 214, 1),
+          toolbarHeight: 40,
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                widget.onBack('all-list');
+              }),
         ),
-        backgroundColor: Color.fromRGBO(51, 103, 214, 1),
-        toolbarHeight: 40,
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              widget.onBack('all-list');
-            }),
-      ),
-      body: Column(
-      children:[
+        body: Column(children: [
           TextField(
             onChanged: ((value) async {
-              await allUserSearch(value);
+              var list = [];
+              if (value == '') {
+                searchUser = [];
+                setState(() {});
+                return;
+              }
+              for (int i = 0; i < allUsersList.length; i++) {
+                if (allUsersList[i]['userName'].contains(value)) {
+                  for (int j = 0; j < con.chatUserList.length; j++) {
+                    if (allUsersList[i]['userName'] != con.chatUserList[j] &&
+                        allUsersList[i]['userName'] != userInfo['userName']) {
+                      list.add(allUsersList[i]);
+                    }
+                  }
+                }
+              }
+              searchUser = list;
+              setState(() {});
             }),
             decoration: InputDecoration(
               hintText: 'To :',
@@ -83,53 +107,50 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
             ),
           ),
           Container(
-          height: SizeConfig(context).screenHeight - 260,
-            child:
-          con.allUsersList.isNotEmpty ? 
-           userList() : Container()),
-           WriteMessageScreen(type:'new',goMessage: (value){
-            widget.onBack(value);
-            con.docId = '';
-           },)
-      ]));
-  }
-  Widget userList(){
-    print(con.allUsersList);
-    return
-    SingleChildScrollView(child:
-    Container(
-      child: Column(
-      children: con.allUsersList.map((e) => ListTile(
-        contentPadding: EdgeInsets.all(10),
-            enabled: true,
-            tileColor: con.chattingUser == e['userName'] ? Color.fromRGBO(240, 240, 240, 1) : Colors.white,
-            hoverColor: Color.fromRGBO(240, 240, 240, 1),
-            onTap: (){
-              con.chattingUser = e['userName'];
-              con.newRFirstName = e['firstName'];
-              con.newRLastName = e['lastName'];
-              con.setState(() { });
-              setState(() {
-                
-              },);
+              height: SizeConfig(context).screenHeight - 260,
+              child: searchUser.isNotEmpty ? userList() : Container()),
+          WriteMessageScreen(
+            type: 'new',
+            goMessage: (value) {
+              widget.onBack(value);
+              con.docId = '';
             },
-            leading: CircleAvatar(
-              radius: 25,
-              child: SvgPicture.network(Helper.avatar),
-            ),
-            title: Text(e['userName']),
-          )).toList(),
-    )));
+          )
+        ]));
   }
-  Future<void> allUserSearch(String value) async {
-    var list = [];
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-      .collection(Helper.userField).where(Helper.newMessageSearch, isEqualTo:value).get();
-    // ignore: unnecessary_cast
-    con.allUsersList = querySnapshot.docs;
-    con.setState(() { });
-    setState(() {
-      
-    });
+
+  Widget userList() {
+    return SingleChildScrollView(
+        child: Container(
+            child: Column(
+      children: searchUser
+          .map((e) => ListTile(
+                contentPadding: EdgeInsets.all(10),
+                enabled: true,
+                tileColor: con.chattingUser == e['userName']
+                    ? Color.fromRGBO(240, 240, 240, 1)
+                    : Colors.white,
+                hoverColor: Color.fromRGBO(240, 240, 240, 1),
+                onTap: () {
+                  con.avatar = e['avatar'];
+                  con.chattingUser = e['userName'];
+                  con.newRFirstName = e['firstName'];
+                  con.newRLastName = e['lastName'];
+                  con.setState(() {});
+                  setState(
+                    () {},
+                  );
+                },
+                leading: e['avatar'] == ''
+                    ? CircleAvatar(
+                        radius: 25,
+                        child: SvgPicture.network(Helper.avatar),
+                      )
+                    : CircleAvatar(
+                        radius: 25, backgroundImage: NetworkImage(e['avatar'])),
+                title: Text(e['userName']),
+              ))
+          .toList(),
+    )));
   }
 }

@@ -15,15 +15,14 @@ class ChatController extends ControllerMVC {
   static ChatController? _this;
   var chatBoxs = [];
   var type = 'text';
-  var allUsersList = [];
   var chatUserList = [];
   var chattingUser = '';
-  var data = '';
   var isMessageTap = 'all-list';
   var docId = '';
   var newRFirstName = '';
   var newRLastName = '';
   var chatId = '';
+  var avatar = '';
   final chatCollection = FirebaseFirestore.instance
       .collection(Helper.message)
       .withConverter<ChatModel>(
@@ -42,25 +41,31 @@ class ChatController extends ControllerMVC {
   bool onAsyncError(FlutterErrorDetails details) {
     return false;
   }
-  
-  Future<void> sendMessage(newOrNot) async {
-    print('chattingUser$chattingUser');
+
+  Future<void> sendMessage(newOrNot, data) async {
     var newChat = false;
     if (chattingUser == '' || data == '') {
       return;
     }
-    List<String> lst= [];
+    List<String> lst = [];
     lst.add(UserManager.userInfo['userName']);
     lst.add(chattingUser);
     if (newOrNot == 'new') {
       FirebaseFirestore.instance.collection(Helper.message).add({
         'users': [UserManager.userInfo['userName'], chattingUser],
-        UserManager.userInfo['userName']:
-            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
-        chattingUser: '$newRFirstName $newRLastName'
+        UserManager.userInfo['userName']: {
+          'name':
+              '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
+          'avatar': UserManager.userInfo['avatar'] ?? ''
+        },
+        chattingUser: {
+          'name': '$newRFirstName $newRLastName',
+          'avatar': avatar
+        },
+        'lastData': data
       }).then((value) {
         docId = value.id;
-        setState(() { });
+        setState(() {});
         FirebaseFirestore.instance
             .collection(Helper.message)
             .doc(value.id)
@@ -72,9 +77,12 @@ class ChatController extends ControllerMVC {
           'data': data,
           'timeStamp': DateTime.now()
         });
-        
       });
     } else {
+      FirebaseFirestore.instance
+          .collection(Helper.message)
+          .doc(docId)
+          .update({'lastData': data});
       FirebaseFirestore.instance
           .collection(Helper.message)
           .doc(docId)
@@ -88,10 +96,13 @@ class ChatController extends ControllerMVC {
       }).then((value) => print(value));
     }
   }
+
   Stream<QuerySnapshot<ChatModel>> getChatUsers() {
-    return chatCollection.where('users',
-        arrayContains: UserManager.userInfo['userName']).snapshots();
+    return chatCollection
+        .where('users', arrayContains: UserManager.userInfo['userName'])
+        .snapshots();
   }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessageList() {
     return chatCollection.doc(docId).collection('content').snapshots();
   }

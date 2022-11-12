@@ -16,7 +16,7 @@ import '../../models/chatModel.dart';
 class WriteMessageScreen extends StatefulWidget {
   String type;
   Function goMessage;
-  WriteMessageScreen({Key? key,required this.type,required this.goMessage})
+  WriteMessageScreen({Key? key, required this.type, required this.goMessage})
       : con = ChatController(),
         super(key: key);
   late ChatController con;
@@ -28,6 +28,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   bool check2 = false;
   late ChatController con;
   var userInfo = UserManager.userInfo;
+  TextEditingController content = TextEditingController();
   @override
   void initState() {
     add(widget.con);
@@ -35,83 +36,84 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
     setState(() {});
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Container(
-                height: 35,
-                child: TextFormField(
-                  onChanged: (value) {
-                    con.data = value;
-                    con.setState(() {});
-                  },
-                  minLines: 1,
-                  maxLines: 5,
-                  keyboardType: TextInputType.multiline,
-                  style: TextStyle(fontSize: 12),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    hintText: 'Write message',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    contentPadding: EdgeInsets.only(
-                        left: 15, bottom: 11, top: 0, right: 15),
-                  ),
-                ),
+    return Column(
+      children: [
+        Container(
+          height: 35,
+          child: TextFormField(
+            controller: content,
+            minLines: 1,
+            maxLines: 5,
+            keyboardType: TextInputType.multiline,
+            style: TextStyle(fontSize: 12),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              hintText: 'Write message',
+              hintStyle: TextStyle(color: Colors.grey),
+              contentPadding:
+                  EdgeInsets.only(left: 15, bottom: 11, top: 0, right: 15),
+            ),
+          ),
+        ),
+        Container(
+          child: Row(children: [
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            const Icon(
+              Icons.photo_size_select_actual_rounded,
+              size: 20,
+              color: Color.fromRGBO(175, 175, 175, 1),
+            ),
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            const Icon(
+              Icons.mic,
+              size: 20,
+              color: Color.fromRGBO(175, 175, 175, 1),
+            ),
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            const Icon(
+              Icons.emoji_emotions,
+              size: 20,
+              color: Color.fromRGBO(175, 175, 175, 1),
+            ),
+            Flexible(fit: FlexFit.tight, child: SizedBox()),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await con.sendMessage(widget.type, content.text);
+                  if (widget.type == 'new' &&
+                      content.text != '' &&
+                      con.chattingUser != '') {
+                    widget.goMessage('message-list');
+                  }
+                  if (con.chattingUser != '' && content.text != '') {
+                    content.text = '';
+                    setState(() {});
+                  }
+                } catch (e) {}
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(33, 37, 41, 1),
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2)),
+                  minimumSize: Size(60, 38),
+                  maximumSize: Size(60, 38)),
+              child: Text(
+                'Send',
+                style: TextStyle(color: Colors.white, fontSize: 11),
               ),
-              Container(
-                child: Row(children: [
-                  const Padding(padding: EdgeInsets.only(left: 10)),
-                  const Icon(
-                    Icons.photo_size_select_actual_rounded,
-                    size: 20,
-                    color: Color.fromRGBO(175, 175, 175, 1),
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 10)),
-                  const Icon(
-                    Icons.mic,
-                    size: 20,
-                    color: Color.fromRGBO(175, 175, 175, 1),
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 10)),
-                  const Icon(
-                    Icons.emoji_emotions,
-                    size: 20,
-                    color: Color.fromRGBO(175, 175, 175, 1),
-                  ),
-                  Flexible(fit: FlexFit.tight, child: SizedBox()),
-                  ElevatedButton(
-                    onPressed: () async {
-                      try{
-                        await con.sendMessage(widget.type);
-                        if(widget.type == 'new'){
-                          widget.goMessage('message-list');
-                        }
-                      }
-                      catch(e){
-
-                      }
-                      
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromRGBO(33, 37, 41, 1),
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2)),
-                        minimumSize: Size(60, 38),
-                        maximumSize: Size(60, 38)),
-                    child: Text(
-                      'Send',
-                      style: TextStyle(color: Colors.white, fontSize: 11),
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(right: 10)),
-                ]),
-              )
-            ],
-          );
+            ),
+            const Padding(padding: EdgeInsets.only(right: 10)),
+          ]),
+        )
+      ],
+    );
   }
 }
