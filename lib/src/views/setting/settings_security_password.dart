@@ -149,7 +149,7 @@ class SettingsSecurityPasswordState extends mvc.StateMVC<SettingsSecurityPasswor
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(child: SettingMainPanel()),
-                            ChatScreen(),
+                            // ChatScreen(),
                           ],
                         )),
                       ]),

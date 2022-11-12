@@ -149,7 +149,7 @@ class SettingsAccountState extends mvc.StateMVC<SettingsAccount>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(child: SettingMainPanel()),
-                            ChatScreen(),
+                            // ChatScreen(),
                           ],
                         )),
                       ]),

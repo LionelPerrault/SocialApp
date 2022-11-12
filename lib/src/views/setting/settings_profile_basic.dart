@@ -149,7 +149,7 @@ class SettingsProfileBasicState extends mvc.StateMVC<SettingsProfileBasic>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(child: SettingMainPanel()),
-                            ChatScreen(),
+                            // ChatScreen(),
                           ],
                         )),
                       ]),
