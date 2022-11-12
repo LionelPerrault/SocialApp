@@ -426,11 +426,21 @@ class UserController extends ControllerMVC {
             });
   }
 
+  //change user avatar
   Future<void> changeAvatar() async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
         .update({'avatar': userAvatar});
+    resetGetUserInfo();
+  }
+
+  //in started page, save profile function, (all save profile)
+  Future<void> saveProfile(Map<String, dynamic> data) async {
+    await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .doc(UserManager.userInfo['uid'])
+        .update(data);
     resetGetUserInfo();
   }
 }
