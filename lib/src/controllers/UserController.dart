@@ -407,6 +407,8 @@ class UserController extends ControllerMVC {
             },
         });
   }
+  
+  //reset all user info (get firebase info data again)
   Future<void> resetGetUserInfo() async {
     var info;
     FirebaseFirestore.instance.collection(Helper.userField).doc(UserManager.userInfo['uid']).get()
@@ -419,6 +421,8 @@ class UserController extends ControllerMVC {
       })
     });
   }
+
+  //change user avatar
   Future<void> changeAvatar() async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
@@ -428,4 +432,11 @@ class UserController extends ControllerMVC {
     resetGetUserInfo();
   }
 
+  //in started page, save profile function, (all save profile)
+  Future<void> saveProfile(Map<String, dynamic> data) async {
+    await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .doc(UserManager.userInfo['uid']).update(data);
+    resetGetUserInfo();
+  }
 }
