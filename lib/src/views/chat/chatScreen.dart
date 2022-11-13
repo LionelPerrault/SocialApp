@@ -35,8 +35,8 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
   bool check1 = false;
   bool check2 = false;
   late ChatController con;
-  var isMessageTap = 'all-list';
-  var hidden = false;
+  var isMessageTap = '';
+  var hidden = true;
   @override
   void initState() {
     add(widget.con);
@@ -83,29 +83,80 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
               )
             ],
           ),
-          child: isMessageTap == 'all-list'
-              ? ChatUserListScreen(onBack: (value) {
-                  print(value);
-                  if (value == 'hidden') {
-                    hidden = hidden ? false : true;
-                  } else {
-                    isMessageTap = value;
-                  }
-                  setState(() {});
-                })
-              : isMessageTap == 'new'
-                  ? NewMessageScreen(
-                      onBack: (value) {
+          child: isMessageTap == ''
+              ? firstChatComponent()
+              : isMessageTap == 'all-list'
+                  ? ChatUserListScreen(onBack: (value) {
+                      print(value);
+                      if (value == 'hidden') {
+                        hidden = hidden ? false : true;
+                      } else {
                         isMessageTap = value;
-                        setState(() {});
-                      },
-                    )
-                  : ChatMessageListScreen(
-                      onBack: (value) {
-                        isMessageTap = value;
-                        setState(() {});
-                      },
-                    ))
+                        if (hidden == true) hidden = false;
+                      }
+                      setState(() {});
+                    })
+                  : isMessageTap == 'new'
+                      ? NewMessageScreen(
+                          onBack: (value) {
+                            isMessageTap = value;
+                            setState(() {});
+                          },
+                        )
+                      : ChatMessageListScreen(
+                          onBack: (value) {
+                            isMessageTap = value;
+                            setState(() {});
+                          },
+                        ))
     ]);
+  }
+
+  Widget firstChatComponent() {
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 40,
+        backgroundColor: Color.fromRGBO(51, 103, 214, 1),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+            icon: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              hidden = false;
+              isMessageTap = 'all-list';
+              setState(() {});
+            }),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.edit_calendar_rounded,
+              size: 16,
+            ),
+            onPressed: (() {
+              isMessageTap = 'new';
+              hidden = false;
+              setState(() {});
+            }),
+            color: Colors.white,
+            focusColor: Colors.white,
+          ),
+          IconButton(
+            icon: Icon(Icons.settings, size: 16),
+            onPressed: () {},
+            color: Colors.white,
+            focusColor: Colors.white,
+          )
+        ],
+        title: !hidden
+            ? Text(
+                'Chats',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              )
+            : Container(),
+      ),
+      body: Container(),
+    );
   }
 }

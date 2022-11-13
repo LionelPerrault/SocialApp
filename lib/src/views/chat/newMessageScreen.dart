@@ -65,7 +65,8 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
                 widget.onBack('all-list');
               }),
         ),
-        body: Column(children: [
+        body: SingleChildScrollView(
+            child: Column(children: [
           TextField(
             onChanged: ((value) async {
               var list = [];
@@ -116,7 +117,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
               con.docId = '';
             },
           )
-        ]));
+        ])));
   }
 
   Widget userList() {

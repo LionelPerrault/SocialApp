@@ -93,14 +93,15 @@ class ChatController extends ControllerMVC {
         'receiver': chattingUser,
         'data': data,
         'timeStamp': DateTime.now()
-      }).then((value) => print(value));
+      }).then((value) => {});
     }
   }
 
   Stream<QuerySnapshot<ChatModel>> getChatUsers() {
-    return chatCollection
+    var stream = chatCollection
         .where('users', arrayContains: UserManager.userInfo['userName'])
         .snapshots();
+    return stream;
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessageList() {
