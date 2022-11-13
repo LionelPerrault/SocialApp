@@ -56,7 +56,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
         .snapshots();
     stream.listen((event) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        print(123);
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 120),

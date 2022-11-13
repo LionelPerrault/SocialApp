@@ -44,18 +44,6 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
     super.initState();
   }
 
-  final chatCollection = FirebaseFirestore.instance
-      .collection(Helper.message)
-      .withConverter<ChatModel>(
-        fromFirestore: (snapshots, _) => ChatModel.fromJSON(snapshots.data()!),
-        toFirestore: (value, _) => value.toMap(),
-      );
-  Stream<QuerySnapshot<ChatModel>> getChatUsers() {
-    return chatCollection
-        .where('users', arrayContains: UserManager.userInfo['userName'])
-        .snapshots();
-  }
-
   String dropdownValue = 'Male';
   @override
   Widget build(BuildContext context) {
@@ -115,47 +103,44 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
   Widget firstChatComponent() {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 40,
-        backgroundColor: Color.fromRGBO(51, 103, 214, 1),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-            icon: Icon(
-              Icons.add,
+          toolbarHeight: 40,
+          backgroundColor: Color.fromRGBO(51, 103, 214, 1),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              icon: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                hidden = false;
+                isMessageTap = 'all-list';
+                setState(() {});
+              }),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.edit_calendar_rounded,
+                size: 16,
+              ),
+              onPressed: (() {
+                isMessageTap = 'new';
+                hidden = false;
+                setState(() {});
+              }),
               color: Colors.white,
+              focusColor: Colors.white,
             ),
-            onPressed: () {
-              hidden = false;
-              isMessageTap = 'all-list';
-              setState(() {});
-            }),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.edit_calendar_rounded,
-              size: 16,
-            ),
-            onPressed: (() {
-              isMessageTap = 'new';
-              hidden = false;
-              setState(() {});
-            }),
-            color: Colors.white,
-            focusColor: Colors.white,
-          ),
-          IconButton(
-            icon: Icon(Icons.settings, size: 16),
-            onPressed: () {},
-            color: Colors.white,
-            focusColor: Colors.white,
-          )
-        ],
-        title: !hidden
-            ? Text(
-                'Chats',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              )
-            : Container(),
-      ),
+            IconButton(
+              icon: Icon(Icons.settings, size: 16),
+              onPressed: () {},
+              color: Colors.white,
+              focusColor: Colors.white,
+            )
+          ],
+          title: Text(
+            'Chats',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          )),
       body: Container(),
     );
   }
