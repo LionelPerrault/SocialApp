@@ -59,12 +59,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    searchFocusNode.dispose();
-    super.dispose();
-  }
-
   Future<void> onAdminClicked() async {
     Helper.showToast("go to admin");
     print("go to login");

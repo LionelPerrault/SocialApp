@@ -146,7 +146,11 @@ class SettingsLeftPanel extends StatelessWidget {
                             icon:
                                 const Icon(null)),
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {Navigator
+                                          .pushReplacementNamed(
+                                              context,
+                                              RouteNames
+                                                  .security_sessions)},
                             label: 'Manage Sessions',
                             icon:
                                 const Icon(null)),

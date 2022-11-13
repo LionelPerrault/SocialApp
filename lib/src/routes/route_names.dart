@@ -18,4 +18,5 @@ class RouteNames {
   static const settings_profile_interests = "/settings/profile/interests";
   static const settings_profile_design = "/settings/profile/design";
   static const security_password = "/settings/security/password";
+  static const security_sessions = "/settings/security/sessions";
 }
