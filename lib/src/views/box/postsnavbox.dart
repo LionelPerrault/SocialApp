@@ -3,6 +3,8 @@ import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/HomeController.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
@@ -21,7 +23,7 @@ class PostsNavBox extends StatefulWidget {
   State createState() => PostsNavBoxState();
 }
 
-class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
+class PostsNavBoxState extends State<PostsNavBox> {
   //
   bool isSound = false;
   List<Map> sampleData = [
@@ -57,6 +59,8 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
     },
   ];
   var eventInfo = {};
+  var privacy = 'public';
+  var interest = 'none';
 
   @override
   void initState() {
@@ -65,6 +69,7 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
 
   @override
   Widget build(BuildContext context) {
+    print(privacy);
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Container(
@@ -222,10 +227,21 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                     ),
                     ListTile(
                       onTap: () {
+                        Navigator.of(context).pop(true);
                         showDialog(
                           context: context,
                           builder: (BuildContext context) =>
-                              createEvent(context),
+                              AlertDialog(
+                                title: Row(children: const [
+                                  Icon(Icons.event,color: Color.fromARGB(255, 247, 159, 88),),
+                                  Text('Create New Event',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontStyle: FontStyle.italic
+                                  ),),
+                                ],),
+                                content: PostNavModal(context: context)
+                              )
                         );},
                       hoverColor: Colors.grey[100],
                       tileColor: Colors.white,
@@ -255,19 +271,30 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
           )),
     );
   }
-
+    
+}
+class PostNavModal extends StatefulWidget {
+  BuildContext context;
+  late PostController Postcon;
+  PostNavModal({Key? key,required this.context}) :Postcon = PostController(), super(key: key);
   @override
-    Widget createEvent(BuildContext context) {
-      return AlertDialog(
-        title: Row(children: const [
-          Icon(Icons.event,color: Color.fromARGB(255, 247, 159, 88),),
-          Text('Create New Event',
-          style: TextStyle(
-            fontSize: 15,
-            fontStyle: FontStyle.italic
-          ),),
-        ],),
-        content: Column(
+  State createState() => PostNavModalState();
+}
+class PostNavModalState extends mvc.StateMVC<PostNavModal> {
+  bool isSound = false;
+  late PostController Postcon;
+  Map<String, dynamic> eventInfo = {};
+  var privacy = 'public';
+  var interest = 'none';
+  @override
+  void initState(){
+    add(widget.Postcon);
+    Postcon = controller as PostController;
+    super.initState();
+  }
+@override
+  Widget build(BuildContext context) {
+    return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -276,6 +303,7 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
               indent: 0,
               endIndent: 0,
             ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
                   MainAxisAlignment.start,
@@ -301,11 +329,12 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                     print(value);
                   }, onchange: (value) async {
                     eventInfo['eventName'] = value;
-                    setState(() {});
+                    // setState(() {});
                   }),
                 )
               ],
             ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
                   MainAxisAlignment.start,
@@ -330,11 +359,12 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                     print(value);
                   }, onchange: (value) async {
                     eventInfo['eventLocation'] = value;
-                    setState(() {});
+                    // setState(() {});
                   }),
                 )
               ],
             ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
                   MainAxisAlignment.start,
@@ -353,17 +383,18 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                   ],
                 ),
                 Container(
-                  width: 370,
+                  width: 400,
                   child:
                       input(validator: (value) async {
                     print(value);
                   }, onchange: (value) async {
                     eventInfo['eventStartDate'] = value;
-                    setState(() {});
+                    // setState(() {});
                   }),
                 )
               ],
             ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
                   MainAxisAlignment.start,
@@ -382,17 +413,18 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                   ],
                 ),
                 Container(
-                  width: 370,
+                  width: 400,
                   child:
                       input(validator: (value) async {
                     print(value);
                   }, onchange: (value) async {
                     eventInfo['eventEndDate'] = value;
-                    setState(() {});
+                    // setState(() {});
                   }),
                 )
               ],
             ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
                   MainAxisAlignment.start,
@@ -412,116 +444,107 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                 ),
               ],
             ),
-            Expanded(
-              child: SizedBox(
-                width: 400,
-                height: 70,
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 17, 205, 239),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 17, 205, 239),
-                          width: 0.1), //bordrder raiuds of dropdown button
-                    ),
-                    child: Padding(
-                        padding: const EdgeInsets.only(top: 7, left: 15),
-                        child: DropdownButton(
-                          hint: Row(
-                            children: const [
-                              Icon(
-                                Icons.language,
-                                color: Colors.white,
+            Row(children: [
+              Expanded(
+                child: SizedBox(
+                  width: 400,
+                  height: 40,
+                  child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 17, 205, 239),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 17, 205, 239),
+                            width: 0.1), //bordrder raiuds of dropdown button
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 7, left: 15),
+                          child: DropdownButton(
+                            value: privacy,
+                            items: [
+                              DropdownMenuItem(
+                                value: "public",
+                                child: Row(children: const [
+                                  Icon(
+                                    Icons.language,
+                                    color: Colors.black,
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(
+                                    "Public",
+                                    style: TextStyle(fontSize: 13),
+                                  )
+                                ]),
                               ),
-                              Padding(padding: EdgeInsets.only(left: 5)),
-                              Text(
-                                'Public',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                ),
+                              DropdownMenuItem(
+                                value: "friends",
+                                child: Row(children: const [
+                                  Icon(
+                                    Icons.groups,
+                                    color: Colors.black,
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(
+                                    "Friends",
+                                    style: TextStyle(fontSize: 13),
+                                  )
+                                ]),
+                              ),
+                              DropdownMenuItem(
+                                value: "friendsof",
+                                child: Row(children: const [
+                                  Icon(
+                                    Icons.groups,
+                                    color: Colors.black,
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(
+                                    "Friends of Friends",
+                                    style: TextStyle(fontSize: 13),
+                                  )
+                                ]),
+                              ),
+                              DropdownMenuItem(
+                                value: "onlyme",
+                                child: Row(children: const [
+                                  Icon(
+                                    Icons.lock_outline,
+                                    color: Colors.black,
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(
+                                    "Only Me",
+                                    style: TextStyle(fontSize: 13),
+                                  )
+                                ]),
                               ),
                             ],
-                          ),
-                          items: [
-                            DropdownMenuItem(
-                              value: "Public",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.language,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Public",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
+                            onChanged: (value) {
+                              //get value when changed
+                              // eventInfo['privacy'] = value;
+                              privacy = value.toString();
+                              print(privacy);
+                              // click(value);
+                              setState(() {});
+                            },
+                            icon: const Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Icon(Icons.arrow_drop_down)),
+                            iconEnabledColor: Colors.white, //Icon color
+                            style: const TextStyle(
+                              color: Colors.black, //Font color
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
                             ),
-                            DropdownMenuItem(
-                              value: "Friends",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.groups,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Friends",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                            DropdownMenuItem(
-                              value: "Friends of Friends",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.groups,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Friends of Friends",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                            DropdownMenuItem(
-                              value: "Only Me",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Only Me",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                          ],
-                          onChanged: (String? value) {
-                            //get value when changed
-                            eventInfo['privacy'] = value!;
-                            setState(() {});
-                          },
-                          icon: const Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Icon(Icons.arrow_drop_down)),
-                          iconEnabledColor: Colors.white, //Icon color
-                          style: const TextStyle(
-                            color: Colors.black, //Font color
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          dropdownColor: Colors.white,
-                          underline: Container(), //remove underline
-                          isExpanded: true,
-                          isDense: true,
-                        ))),
+                            dropdownColor: Colors.white,
+                            underline: Container(), //remove underline
+                            isExpanded: true,
+                            isDense: true,
+                          ))),
+                ),
               ),
-            ),
+            ],),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
                   MainAxisAlignment.start,
@@ -529,30 +552,131 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                   CrossAxisAlignment.start,
               children: [
                 Row(
-                  children: const [
-                    Text('About',
-                        style: TextStyle(
-                            color: Color.fromARGB(
-                                255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight:
-                                FontWeight.bold)),
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                        Text('About',
+                            style: TextStyle(
+                                color: Color.fromARGB(
+                                    255, 82, 95, 127),
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold)),
+                        Container(
+                          width: 400,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 250, 250, 250),
+                              border:
+                                  Border.all(color: Colors.grey)),
+                          child: TextFormField(
+                                minLines: 1,
+                                maxLines: 4,
+                                onChanged: (value) async {
+                                  eventInfo['about'] = value;
+                                  // setState(() {});
+                                },
+                                keyboardType: TextInputType.multiline,
+                                style: TextStyle(fontSize: 12),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  hintText: '',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                        ),
+                      ],)
+                    ),
                   ],
                 ),
-                Container(
-                  width: 370,
-                  child:
-                      input(validator: (value) async {
-                    print(value);
-                  }, onchange: (value) async {
-                    eventInfo['eventAbout'] = value;
-                    setState(() {});
-                  }),
-                )
               ],
             ),
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                              Row(
+                      children: const [
+                        Text('INTERESTS',
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 11)),
+                        Flexible(
+                            fit: FlexFit.tight, child: SizedBox()),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 30),
+                        )
+                      ],
+                    ),
+                    Column(children: [
+                      Column(
+                        children: [
+                          Container(
+                            width: 400,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(
+                                    255, 250, 250, 250),
+                                border:
+                                    Border.all(color: Colors.grey)),
+                            padding: const EdgeInsets.only(left: 20),
+                            child: DropdownButton(
+                              value: interest,
+                              items: const [
+                                //add items in the dropdown
+                                DropdownMenuItem(
+                                  value: "none",
+                                  child: Text("Select Category"),
+                                ),
+                                DropdownMenuItem(
+                                    value: "automotive",
+                                    child: Text("Automotive")),
+                                DropdownMenuItem(
+                                  value: "beauty",
+                                  child: Text("Beauty"),
+                                )
+                              ],
+                              onChanged: (String? value) {
+                                //get value when changed
+                                interest= value!;
+                                eventInfo['interests'] = value;
+                                setState(() {});
+                              },
+                              style: const TextStyle(
+                                  //te
+                                  color: Colors.black, //Font color
+                                  fontSize:
+                                      12 //font size on dropdown button
+                                  ),
+
+                              dropdownColor: Colors.white,
+                              underline:
+                                  Container(), //remove underline
+                              isExpanded: true,
+                              isDense: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]),
+                  ],)
+                ),
+              ],
+            ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             Container(
-              margin: const EdgeInsets.only(top: 20, right: 0),
+              width: 400,
+              margin: const EdgeInsets.only(right: 0),
               child: Row(children: [
                 const Flexible(
                   fit: FlexFit.tight, child: SizedBox()),
@@ -566,7 +690,8 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
-                  ()=>{};
+                    print(widget.context);
+                    Navigator.of(widget.context).pop(true);
                   },
                   child: const Text('Cancel',
                       style: TextStyle(
@@ -583,22 +708,21 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
-                  ()=>{};
+                    Postcon.createEvent(eventInfo);
                   },
                   child: const Text('Create',
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold)),
                 )
               ],),
-            )
+            ),
           ],
-        ),
-      );
-    }
-    Widget input({label, onchange, obscureText = false, validator}) {
+        );
+  }
+}
+Widget input({label, onchange, obscureText = false, validator}) {
     return Container(
-      height: 38,
-      padding: const EdgeInsets.only(top: 10),
+      height: 28,
       child: StartedInput(
         validator: (val) async {
           validator(val);
@@ -610,4 +734,3 @@ class PostsNavBoxState extends mvc.StateMVC<PostsNavBox> {
       ),
     );
   }
-}
