@@ -143,7 +143,6 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 ),
               ),
               Container(
-              height: 22,
               color: Colors.grey[400],
               alignment: Alignment.center,
               child: Flexible(
