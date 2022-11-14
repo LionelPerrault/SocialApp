@@ -90,19 +90,24 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
             Container(
                 width: 400,
                 color: Color.fromARGB(255, 255, 255, 255),
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          "Search Results",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    SizedBox(
+                      height: 10,
                     ),
+                    Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text(
+                              "Search Results",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )),
                     const SizedBox(
                       height: 5,
                     ),
@@ -199,35 +204,22 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                           endIndent: 10,
                         ),
                       ),
-                    )
+                    ),
+                    Divider(height: 1, indent: 0),
+                    Container(
+                        color: Colors.grey[300],
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                                child: Text('Search All Result',
+                                    style: TextStyle(fontSize: 11)),
+                                onPressed: () {}),
+                          ],
+                        ))
                   ],
                 )),
-            Container(
-              width: 400,
-              height: 22,
-              color: Colors.grey[400],
-              alignment: Alignment.center,
-              child: Flexible(
-                      child: RichText(
-                        text: TextSpan(
-                            style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'See All Result',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10),
-                                  recognizer:
-                                      TapGestureRecognizer()
-                                        ..onTap = () {
-                                          ()=>{};
-                                        }),
-                            ]),
-                      ),
-                    )
-            )
           ],
         ));
   }
