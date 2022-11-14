@@ -23,12 +23,7 @@ class ChatController extends ControllerMVC {
   var newRLastName = '';
   var chatId = '';
   var avatar = '';
-  final chatCollection = FirebaseFirestore.instance
-      .collection(Helper.message)
-      .withConverter<ChatModel>(
-        fromFirestore: (snapshots, _) => ChatModel.fromJSON(snapshots.data()!),
-        toFirestore: (value, _) => value.toMap(),
-      );
+
   @override
   Future<bool> initAsync() async {
     await Firebase.initializeApp(
@@ -93,17 +88,7 @@ class ChatController extends ControllerMVC {
         'receiver': chattingUser,
         'data': data,
         'timeStamp': DateTime.now()
-      }).then((value) => print(value));
+      }).then((value) => {});
     }
-  }
-
-  Stream<QuerySnapshot<ChatModel>> getChatUsers() {
-    return chatCollection
-        .where('users', arrayContains: UserManager.userInfo['userName'])
-        .snapshots();
-  }
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> getMessageList() {
-    return chatCollection.doc(docId).collection('content').snapshots();
   }
 }

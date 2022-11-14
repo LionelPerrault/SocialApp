@@ -11,9 +11,7 @@ class ChatModel {
     try {
       chatInfo = json;
       users = json['users'];
-      chatId = json['id'];
       lastData = json['lastData'];
-      avatar = json['avatar'];
     } catch (e) {
       print("error occurs =============== {$e}");
     }

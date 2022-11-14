@@ -25,10 +25,17 @@ class ChatUserListScreen extends StatefulWidget {
   State createState() => ChatUserListScreenState();
 }
 
-class ChatMessage {
-  String messageContent;
-  String messageType;
-  ChatMessage({required this.messageContent, required this.messageType});
+final chatCollection = FirebaseFirestore.instance
+    .collection(Helper.message)
+    .withConverter<ChatModel>(
+      fromFirestore: (snapshots, _) => ChatModel.fromJSON(snapshots.data()!),
+      toFirestore: (value, _) => value.toMap(),
+    );
+Stream<QuerySnapshot<ChatModel>> getChatUsers() {
+  var stream = chatCollection
+      .where('users', arrayContains: UserManager.userInfo['userName'])
+      .snapshots();
+  return stream;
 }
 
 class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
@@ -91,7 +98,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
           ),
         ),
         body: StreamBuilder(
-            stream: con.getChatUsers(),
+            stream: getChatUsers(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
                 List<QueryDocumentSnapshot<ChatModel>>? listUsers =

@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
@@ -37,13 +40,29 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
   late ChatController con;
   late ScrollController _scrollController;
   var isMessageTap = 'all-list';
-  var s;
+  var r = 0;
+  late Stream stream;
   @override
   void initState() {
     add(widget.con);
     con = controller as ChatController;
     super.initState();
     _scrollController = ScrollController();
+    stream = FirebaseFirestore.instance
+        .collection(Helper.message)
+        .doc(con.docId)
+        .collection('content')
+        .orderBy('timeStamp', descending: false)
+        .snapshots();
+    stream.listen((event) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 120),
+          curve: Curves.easeOut,
+        );
+      });
+    });
   }
 
   String dropdownValue = 'Male';
@@ -90,12 +109,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
             child: con.docId == ''
                 ? const Center(child: CircularProgressIndicator())
                 : StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection(Helper.message)
-                        .doc(con.docId)
-                        .collection('content')
-                        .orderBy('timeStamp', descending: false)
-                        .snapshots(),
+                    stream: stream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data != null) {
                         var messageList = snapshot.data!.docs;
@@ -103,85 +117,74 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                           Container(
                               height: SizeConfig(context).screenHeight - 220,
                               padding: EdgeInsets.only(top: 15, bottom: 15),
-                              child: Scrollbar(
-                                  controller: _scrollController,
-                                  child: ListView.builder(
-                                    itemCount: messageList.length,
-                                    controller: _scrollController,
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    padding:
-                                        EdgeInsets.only(top: 10, bottom: 10),
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      var list = messageList[index].data();
-                                      var chatUserName = '';
-                                      var me = UserManager.userInfo['userName'];
-                                      return Container(
-                                        padding: EdgeInsets.only(
-                                            top: 5,
-                                            bottom: 5,
-                                            left: 15,
-                                            right: 15),
-                                        child: Align(
-                                          alignment: (list['sender'] != me
-                                              ? Alignment.topLeft
-                                              : Alignment.topRight),
-                                          child: list['sender'] != me
-                                              ? Row(children: [
-                                                  con.avatar == ''
-                                                      ? CircleAvatar(
-                                                          radius: 25,
-                                                          child: SvgPicture
-                                                              .network(Helper
-                                                                  .avatar),
-                                                        )
-                                                      : CircleAvatar(
-                                                          radius: 25,
-                                                          backgroundImage:
-                                                              NetworkImage(
-                                                                  con.avatar),
-                                                        ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 10, top: 5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      color: (list['sender'] ==
-                                                              me
-                                                          ? Colors.grey.shade200
-                                                          : Colors.blue[200]),
+                              child: ListView.builder(
+                                itemCount: messageList.length,
+                                controller: _scrollController,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                padding: EdgeInsets.only(top: 10, bottom: 10),
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  var list = messageList[index].data();
+                                  var chatUserName = '';
+                                  var me = UserManager.userInfo['userName'];
+                                  return Container(
+                                    padding: EdgeInsets.only(
+                                        top: 5, bottom: 5, left: 15, right: 15),
+                                    child: Align(
+                                      alignment: (list['sender'] != me
+                                          ? Alignment.topLeft
+                                          : Alignment.topRight),
+                                      child: list['sender'] != me
+                                          ? Row(children: [
+                                              con.avatar == ''
+                                                  ? CircleAvatar(
+                                                      radius: 25,
+                                                      child: SvgPicture.network(
+                                                          Helper.avatar),
+                                                    )
+                                                  : CircleAvatar(
+                                                      radius: 25,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              con.avatar),
                                                     ),
-                                                    padding: EdgeInsets.all(10),
-                                                    child: Text(
-                                                      list['data'],
-                                                      style: TextStyle(
-                                                          fontSize: 13),
-                                                    ),
-                                                  )
-                                                ])
-                                              : Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    color: (list['sender'] == me
-                                                        ? Colors.grey.shade200
-                                                        : Colors.blue[200]),
-                                                  ),
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Text(
-                                                    list['data'],
-                                                    style:
-                                                        TextStyle(fontSize: 13),
-                                                  ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    left: 10, top: 5),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  color: (list['sender'] == me
+                                                      ? Colors.grey.shade200
+                                                      : Colors.blue[200]),
                                                 ),
-                                        ),
-                                      );
-                                    },
-                                  ))),
+                                                padding: EdgeInsets.all(10),
+                                                child: Text(
+                                                  list['data'],
+                                                  style:
+                                                      TextStyle(fontSize: 13),
+                                                ),
+                                              )
+                                            ])
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color: (list['sender'] == me
+                                                    ? Colors.grey.shade200
+                                                    : Colors.blue[200]),
+                                              ),
+                                              padding: EdgeInsets.all(10),
+                                              child: Text(
+                                                list['data'],
+                                                style: TextStyle(fontSize: 13),
+                                              ),
+                                            ),
+                                    ),
+                                  );
+                                },
+                              )),
                           WriteMessageScreen(
                             type: 'notnew',
                             goMessage: () {},
