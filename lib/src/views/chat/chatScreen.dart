@@ -71,32 +71,116 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
               )
             ],
           ),
-          child: isMessageTap == ''
-              ? firstChatComponent()
-              : isMessageTap == 'all-list'
-                  ? ChatUserListScreen(onBack: (value) {
-                      print(value);
-                      if (value == 'hidden') {
-                        hidden = hidden ? false : true;
+          child: Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 40,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    topRight: Radius.circular(5),
+                  ),
+                ),
+                backgroundColor: Color.fromRGBO(51, 103, 214, 1),
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                    icon: Icon(
+                      !hidden
+                          ? isMessageTap != 'all-list'
+                              ? Icons.arrow_back
+                              : Icons.arrow_downward
+                          : Icons.arrow_upward,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    onPressed: () {
+                      if (isMessageTap == 'all-list') {
+                        hidden = !hidden ? true : false;
                       } else {
-                        isMessageTap = value;
-                        if (hidden == true) hidden = false;
+                        isMessageTap = 'all-list';
                       }
                       setState(() {});
-                    })
-                  : isMessageTap == 'new'
-                      ? NewMessageScreen(
-                          onBack: (value) {
-                            isMessageTap = value;
-                            setState(() {});
-                          },
+                      // widget.onBack('hidden');
+                    }),
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.add,
+                      size: 16,
+                    ),
+                    onPressed: (() {
+                      // widget.onBack('new');
+                      isMessageTap = 'new';
+                      setState(() {});
+                    }),
+                    color: Colors.white,
+                    focusColor: Colors.white,
+                  ),
+                  PopupMenuButton(
+                    onSelected: (value) {
+                      // your logic
+                    },
+                    icon: Icon(
+                      Icons.settings,
+                      size: 16,
+                    ),
+                    itemBuilder: (BuildContext bc) {
+                      return const [
+                        PopupMenuItem(
+                          value: 'block',
+                          child: Text(
+                            "Manage Blocking",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 'privacy',
+                          child: Text(
+                            "Privacy Settings",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 'turn_off',
+                          child: Text(
+                            "Turn Off Chat",
+                            style: TextStyle(fontSize: 14),
+                          ),
                         )
-                      : ChatMessageListScreen(
-                          onBack: (value) {
+                      ];
+                    },
+                  )
+                ],
+                title: Text(
+                  'Chats',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              body: isMessageTap == ''
+                  ? Container()
+                  : isMessageTap == 'all-list'
+                      ? ChatUserListScreen(onBack: (value) {
+                          print(value);
+                          if (value == 'hidden') {
+                            hidden = hidden ? false : true;
+                          } else {
                             isMessageTap = value;
-                            setState(() {});
-                          },
-                        ))
+                            if (hidden == true) hidden = false;
+                          }
+                          setState(() {});
+                        })
+                      : isMessageTap == 'new'
+                          ? NewMessageScreen(
+                              onBack: (value) {
+                                isMessageTap = value;
+                                setState(() {});
+                              },
+                            )
+                          : ChatMessageListScreen(
+                              onBack: (value) {
+                                isMessageTap = value;
+                                setState(() {});
+                              },
+                            )))
     ]);
   }
 
@@ -108,35 +192,15 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
           automaticallyImplyLeading: false,
           leading: IconButton(
               icon: Icon(
-                Icons.add,
+                Icons.arrow_upward,
                 color: Colors.white,
+                size: 16,
               ),
               onPressed: () {
                 hidden = false;
                 isMessageTap = 'all-list';
                 setState(() {});
               }),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.edit_calendar_rounded,
-                size: 16,
-              ),
-              onPressed: (() {
-                isMessageTap = 'new';
-                hidden = false;
-                setState(() {});
-              }),
-              color: Colors.white,
-              focusColor: Colors.white,
-            ),
-            IconButton(
-              icon: Icon(Icons.settings, size: 16),
-              onPressed: () {},
-              color: Colors.white,
-              focusColor: Colors.white,
-            )
-          ],
           title: Text(
             'Chats',
             style: TextStyle(color: Colors.white, fontSize: 16),
