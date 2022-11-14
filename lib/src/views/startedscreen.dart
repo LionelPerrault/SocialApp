@@ -63,6 +63,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   var birthY = "none";
   var interests = "none";
   var isShowProgressive = false;
+  var fullName = '';
   late AnimationController _drawerSlideController;
   var suggest = <String, bool>{
     'friends': true,
@@ -73,6 +74,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   //
   @override
   void initState() {
+    fullName = UserManager.userInfo['firstName'] + ' ' + UserManager.userInfo['lastName'];
     progress = 0;
     selectFlag['jew'] = false;
     selectFlag['policy1'] = false;
@@ -87,9 +89,10 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    userCon.userAvatar = UserManager.userInfo['avatar'] ?? '';
+    userCon.userAvatar = UserManager.userInfo['avatar'] == null ? '' : UserManager.userInfo['avatar'];
+    print(UserManager.userInfo);
+    print('avatar');
     userCon.setState(() {});
-    print(UserManager.userInfo['avatar']);
   }
 
   void onSearchBarFocus() {
@@ -157,7 +160,20 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
               child: 
                 SingleChildScrollView(
                 child: Column(children: [
-                        const Padding(padding: EdgeInsets.only(top: 190)),
+                        const Padding(padding: EdgeInsets.only(top:50)),
+                        Column(children: const [
+                          Text('Getting Started', style:TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          )),
+                          Padding(padding: EdgeInsets.only(top: 15)),
+                          Text('This information will let us know more about you', style:TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ))
+                        ],),
+                        const Padding(padding: EdgeInsets.only(top: 50)),
                         Container(
                           padding: const EdgeInsets.only(left: 30, right: 30),
                           width: 760,
@@ -269,7 +285,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: const [
+                                          children: [
                                             Text(
                                               'Welcome',
                                               style: TextStyle(
@@ -277,7 +293,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                             ),
                                             Padding(padding: EdgeInsets.only(left: 10)),
                                             Text(
-                                              'username',
+                                              fullName,
                                               style: TextStyle(
                                                   color: Color.fromARGB(255, 0, 123, 255),
                                                   fontSize: 22),

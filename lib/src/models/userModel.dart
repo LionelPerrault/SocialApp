@@ -9,6 +9,7 @@ class TokenLogin {
   late String documentId = '';
   late String relysiaPassword = '';
   late String userName = '';
+  late String userAvatar = '';
   late bool isStarted = false;
   TokenLogin();
 
@@ -24,6 +25,7 @@ class TokenLogin {
       walletAddress = json['walletAddress'] as String;
       password = json['password'] as String;
       isStarted = json['isStarted'] as bool;
+      userAvatar = json['avatar'] as String;
     } catch (e) {}
   }
 
