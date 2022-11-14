@@ -62,12 +62,13 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
           padding: EdgeInsets.all(0),
           child: Column(
             children: [
+              SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(padding: EdgeInsets.only(left:10),
+                  const Padding(padding: EdgeInsets.only(left:10),
                   child:
-                  Text(
+                  const Text(
                     "Notifications",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   )),
