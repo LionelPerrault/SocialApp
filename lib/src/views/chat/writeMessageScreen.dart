@@ -19,7 +19,7 @@ class WriteMessageScreen extends StatefulWidget {
   WriteMessageScreen({Key? key, required this.type, required this.goMessage})
       : con = ChatController(),
         super(key: key);
-  late ChatController con;
+  final ChatController con;
   State createState() => WriteMessageScreenState();
 }
 
@@ -35,26 +35,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   void initState() {
     add(widget.con);
     con = controller as ChatController;
-    FirebaseFirestore.instance.collection(Helper.emoticons).get().then(
-      (value) {
-        for (int i = 0; i < value.docs.length; i++) {
-          if ((i + 1) % 5 != 0) {
-            t.add(value.docs[i]['emoticon']);
-          }
-          if ((i + 1) % 5 == 0 || i == value.docs.length - 1) {
-            emojiList.add(Row(
-              children: t
-                  .map((value) => Container(
-                        child: Image.network(value.toString()),
-                      ))
-                  .toList(),
-            ));
-            t = [];
-          }
-        }
-        setState(() {});
-      },
-    );
+
     setState(() {});
     super.initState();
   }
@@ -101,41 +82,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             const Padding(padding: EdgeInsets.only(left: 10)),
             GestureDetector(
                 onTap: () {
-                  // PopupMenuButton(
-                  //   onSelected: (value) {
-                  //     // your logic
-                  //   },
-                  //   icon: Icon(
-                  //     Icons.settings,
-                  //     size: 16,
-                  //   ),
-                  //   position: PopupMenuPosition.under,
-                  //   itemBuilder: (BuildContext bc) {
-                  //     return const [
-                  //       PopupMenuItem(
-                  //         value: 'block',
-                  //         child: Text(
-                  //           "Manage Blocking",
-                  //           style: TextStyle(fontSize: 14),
-                  //         ),
-                  //       ),
-                  //       PopupMenuItem(
-                  //         value: 'privacy',
-                  //         child: Text(
-                  //           "Privacy Settings",
-                  //           style: TextStyle(fontSize: 14),
-                  //         ),
-                  //       ),
-                  //       PopupMenuItem(
-                  //         value: 'turn_off',
-                  //         child: Text(
-                  //           "Turn Off Chat",
-                  //           style: TextStyle(fontSize: 14),
-                  //         ),
-                  //       )
-                  //     ];
-                  //   },
-                  // )
+                  widget.goMessage(true);
                 },
                 child: Icon(
                   Icons.emoji_emotions,
@@ -175,12 +122,6 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
           ]),
         )
       ],
-    );
-  }
-
-  Widget EmojiList() {
-    return Column(
-      children: emojiList.map((e) => e).toList(),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/chat/chatUserListScreen.dart';
+import 'package:shnatter/src/views/chat/emoticonScreen.dart';
 import 'package:shnatter/src/views/chat/newMessageScreen.dart';
 import 'package:shnatter/src/widget/primaryInput.dart';
 
@@ -20,7 +21,7 @@ class ChatScreen extends StatefulWidget {
   ChatScreen({Key? key})
       : con = ChatController(),
         super(key: key);
-  late ChatController con;
+  final ChatController con;
   @override
   State createState() => ChatScreenState();
 }
@@ -37,10 +38,12 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
   late ChatController con;
   var isMessageTap = '';
   var hidden = true;
+
   @override
   void initState() {
     add(widget.con);
     con = controller as ChatController;
+
     super.initState();
   }
 
@@ -93,13 +96,14 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                       size: 16,
                     ),
                     onPressed: () {
-                      if (isMessageTap == 'all-list') {
+                      if (isMessageTap == '') {
+                        hidden = false;
+                      } else if (isMessageTap == 'all-list') {
                         hidden = !hidden ? true : false;
                       } else {
                         isMessageTap = 'all-list';
                       }
                       setState(() {});
-                      // widget.onBack('hidden');
                     }),
                 actions: [
                   IconButton(
@@ -108,7 +112,9 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                       size: 16,
                     ),
                     onPressed: (() {
-                      // widget.onBack('new');
+                      if (isMessageTap == '') {
+                        hidden = false;
+                      }
                       isMessageTap = 'new';
                       setState(() {});
                     }),
@@ -177,10 +183,13 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                             )
                           : ChatMessageListScreen(
                               onBack: (value) {
-                                isMessageTap = value;
+                                con.isShowEmoticon = value;
                                 setState(() {});
                               },
-                            )))
+                            ))),
+      !hidden && con.isShowEmoticon
+          ? EmoticonScreen(onBack: () {})
+          : Container()
     ]);
   }
 

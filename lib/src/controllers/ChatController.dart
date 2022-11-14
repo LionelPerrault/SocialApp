@@ -27,7 +27,7 @@ class ChatController extends ControllerMVC {
   var newRLastName = '';
   var chatId = '';
   var avatar = '';
-
+  bool isShowEmoticon = false;
   @override
   Future<bool> initAsync() async {
     await Firebase.initializeApp(

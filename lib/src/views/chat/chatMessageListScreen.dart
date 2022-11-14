@@ -149,7 +149,9 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                           )),
                       WriteMessageScreen(
                         type: 'notnew',
-                        goMessage: () {},
+                        goMessage: (value) {
+                          widget.onBack(value);
+                        },
                       )
                     ]);
                   } else {
