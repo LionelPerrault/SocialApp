@@ -9,8 +9,8 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import 'package:shnatter/src/widget/primaryInput.dart';
-
 import '../../controllers/ChatController.dart';
+import '../../helpers/helper.dart';
 import '../../models/chatModel.dart';
 
 class WriteMessageScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class WriteMessageScreen extends StatefulWidget {
   WriteMessageScreen({Key? key, required this.type, required this.goMessage})
       : con = ChatController(),
         super(key: key);
-  late ChatController con;
+  final ChatController con;
   State createState() => WriteMessageScreenState();
 }
 
@@ -28,11 +28,14 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   bool check2 = false;
   late ChatController con;
   var userInfo = UserManager.userInfo;
+  var emojiList = <Widget>[];
+  var t = [];
   TextEditingController content = TextEditingController();
   @override
   void initState() {
     add(widget.con);
     con = controller as ChatController;
+
     setState(() {});
     super.initState();
   }
@@ -77,25 +80,30 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               color: Color.fromRGBO(175, 175, 175, 1),
             ),
             const Padding(padding: EdgeInsets.only(left: 10)),
-            const Icon(
-              Icons.emoji_emotions,
-              size: 20,
-              color: Color.fromRGBO(175, 175, 175, 1),
-            ),
+            GestureDetector(
+                onTap: () {
+                  widget.goMessage(true);
+                },
+                child: Icon(
+                  Icons.emoji_emotions,
+                  size: 20,
+                  color: Color.fromRGBO(175, 175, 175, 1),
+                )),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await con.sendMessage(widget.type, content.text);
-                  if (widget.type == 'new' &&
-                      content.text != '' &&
-                      con.chattingUser != '') {
+                  bool success =
+                      await con.sendMessage(widget.type, content.text);
+                  if (widget.type == 'new' && success) {
+                    print(con.docId);
                     widget.goMessage('message-list');
                   }
                   if (con.chattingUser != '' && content.text != '') {
                     content.text = '';
                     setState(() {});
                   }
+                  // ignore: empty_catches
                 } catch (e) {}
               },
               style: ElevatedButton.styleFrom(

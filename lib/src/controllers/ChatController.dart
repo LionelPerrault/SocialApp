@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../firebase_options.dart';
@@ -23,7 +27,7 @@ class ChatController extends ControllerMVC {
   var newRLastName = '';
   var chatId = '';
   var avatar = '';
-
+  bool isShowEmoticon = false;
   @override
   Future<bool> initAsync() async {
     await Firebase.initializeApp(
@@ -37,16 +41,17 @@ class ChatController extends ControllerMVC {
     return false;
   }
 
-  Future<void> sendMessage(newOrNot, data) async {
+  Future<bool> sendMessage(newOrNot, data) async {
     var newChat = false;
+    bool success = false;
     if (chattingUser == '' || data == '') {
-      return;
+      success = false;
     }
-    List<String> lst = [];
-    lst.add(UserManager.userInfo['userName']);
-    lst.add(chattingUser);
+    Response res = await get(
+        Uri.http('worldtimeapi.org', '/api/timezone/America/Los_Angeles'));
+    var d = jsonDecode(res.body);
     if (newOrNot == 'new') {
-      FirebaseFirestore.instance.collection(Helper.message).add({
+      await FirebaseFirestore.instance.collection(Helper.message).add({
         'users': [UserManager.userInfo['userName'], chattingUser],
         UserManager.userInfo['userName']: {
           'name':
@@ -58,10 +63,11 @@ class ChatController extends ControllerMVC {
           'avatar': avatar
         },
         'lastData': data
-      }).then((value) {
+      }).then((value) async {
         docId = value.id;
+        success = true;
         setState(() {});
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection(Helper.message)
             .doc(value.id)
             .collection('content')
@@ -70,10 +76,11 @@ class ChatController extends ControllerMVC {
           'sender': UserManager.userInfo['userName'],
           'receiver': chattingUser,
           'data': data,
-          'timeStamp': DateTime.now()
+          'timeStamp': DateTime.parse(d['datetime'])
         });
       });
     } else {
+      success = true;
       FirebaseFirestore.instance
           .collection(Helper.message)
           .doc(docId)
@@ -87,8 +94,9 @@ class ChatController extends ControllerMVC {
         'sender': UserManager.userInfo['userName'],
         'receiver': chattingUser,
         'data': data,
-        'timeStamp': DateTime.now()
+        'timeStamp': DateTime.parse(d['datetime'])
       }).then((value) => {});
     }
+    return success;
   }
 }
