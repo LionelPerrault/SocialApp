@@ -98,6 +98,7 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                     onPressed: () {
                       if (isMessageTap == '') {
                         hidden = false;
+                        isMessageTap = 'all-list';
                       } else if (isMessageTap == 'all-list') {
                         hidden = !hidden ? true : false;
                       } else {
