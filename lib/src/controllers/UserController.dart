@@ -221,6 +221,7 @@ class UserController extends ControllerMVC {
           'relysiaEmail': user.relysiaEmail,
           'relysiaPassword': user.relysiaPassword,
           'paymail': user.paymail,
+          'avatar': user.userAvatar,
           'walletAddress': user.walletAddress,
           'isStarted': user.isStarted.toString(),
           'isVerify': isVerify.toString(),
@@ -440,7 +441,10 @@ class UserController extends ControllerMVC {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
-        .update(data);
+        .update({
+          ...data,
+          'isStarted' : true,
+        });
     resetGetUserInfo();
   }
 }

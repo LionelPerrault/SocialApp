@@ -141,7 +141,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                           .pushReplacementNamed(
                                               context,
                                               RouteNames
-                                                  .security_password)},
+                                                  .settings_security_password)},
                             label: 'Password',
                             icon:
                                 const Icon(null)),
@@ -150,7 +150,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                           .pushReplacementNamed(
                                               context,
                                               RouteNames
-                                                  .security_sessions)},
+                                                  .settings_security_sessions)},
                             label: 'Manage Sessions',
                             icon:
                                 const Icon(null)),
@@ -167,32 +167,56 @@ class SettingsLeftPanel extends StatelessWidget {
                 ),
               ),
               ListText(
-                  onTap: () => {},
+                  onTap: () => {Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .settings_privacy)},
                   label: 'Privacy',
                   icon:
                       const Icon(Icons.privacy_tip_rounded, color: Color.fromARGB(255, 255, 179, 7),)),
               ListText(
-                  onTap: () => {},
+                  onTap: () => {Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .settings_notifications)},
                   label: 'Notification',
                   icon:
                       const Icon(Icons.notifications, color: Color.fromARGB(255, 103, 58, 183),)),
               ListText(
-                onTap: () => {},
+                onTap: () => {Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .settings_token)},
                 label: 'Shnatter Token',
                 icon:
                     const Icon(Icons.money, color: Color.fromARGB(255, 76, 175, 80))),
               ListText(
-                onTap: () => {},
+                onTap: () => {Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .settings_verification)},
                 label: 'Verification',
                 icon:
                     const Icon(Icons.check_circle, color: Color.fromARGB(255, 33, 150, 243),)),
               ListText(
-                onTap: () => {},
+                onTap: () => {Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .settings_information)},
                 label: 'Your Information',
                 icon:
                     const Icon(Icons.file_present, color: Color.fromARGB(255, 40, 167, 69),)),
               ListText(
-                onTap: () => {},
+                onTap: () => {Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .settings_delete)},
                 label: 'Delete Account',
                 icon:
                     const Icon(Icons.delete,color: Color.fromARGB(255, 244, 67, 54),)),

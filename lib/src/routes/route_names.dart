@@ -17,6 +17,12 @@ class RouteNames {
   static const settings_profile_social = "/settings/profile/social";
   static const settings_profile_interests = "/settings/profile/interests";
   static const settings_profile_design = "/settings/profile/design";
-  static const security_password = "/settings/security/password";
-  static const security_sessions = "/settings/security/sessions";
+  static const settings_security_password = "/settings/security/password";
+  static const settings_security_sessions = "/settings/security/sessions";
+  static const settings_privacy = "/settings/privacy";
+  static const settings_notifications = "/settings/notifications";
+  static const settings_token = "/settings/shnatter_token";
+  static const settings_verification = "/settings/verification";
+  static const settings_information = "/settings/information";
+  static const settings_delete = "/settings/delete";
 }

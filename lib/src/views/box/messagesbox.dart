@@ -59,10 +59,11 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
       child: Container(
           width: 400,
           color: Color.fromARGB(255, 255, 255, 255),
-          padding: EdgeInsets.all(10),
           child: Column(
             children: [
-              Row(
+              SizedBox(height: 10,),
+              Padding(padding:  EdgeInsets.only(left: 10),
+              child:Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -76,7 +77,7 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                         onPressed: () {}),
                   ])
                 ],
-              ),
+              )),
               SizedBox(
                 height: 5,
               ),
@@ -125,30 +126,21 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                   ),
                 ),
               ),
+              Divider(
+                height: 1,
+                indent: 0
+              ),
               Container(
-              height: 22,
-              color: Colors.grey[400],
+              color: Colors.grey[300],
               alignment: Alignment.center,
-              child: Flexible(
-                      child: RichText(
-                        text: TextSpan(
-                            style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'See All',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10),
-                                  recognizer:
-                                      TapGestureRecognizer()
-                                        ..onTap = () {
-                                          ()=>{};
-                                        }),
-                            ]),
-                      ),
-                    )
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   TextButton(
+                        child: Text('See All',
+                            style: TextStyle(fontSize: 11)),
+                        onPressed: () {}),
+              ],)
               )
             ],
           )),

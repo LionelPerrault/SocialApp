@@ -242,7 +242,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                                 )
                               ],
                             ),
-                            ShnatterNotification()
+                            ShnatterSearchBox()
                           ],
                         )),
                   )
