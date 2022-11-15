@@ -95,13 +95,15 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
       SizedBox(
           height: SizeConfig(context).screenHeight - 260,
           child: searchUser.isNotEmpty ? userList() : Container()),
-      WriteMessageScreen(
-        type: 'new',
-        goMessage: (value) {
-          widget.onBack(value);
-          // con.docId = '';
-        },
-      )
+      con.chattingUser == ''
+          ? Container()
+          : WriteMessageScreen(
+              type: 'new',
+              goMessage: (value) {
+                widget.onBack(value);
+                // con.docId = '';
+              },
+            )
     ]));
   }
 

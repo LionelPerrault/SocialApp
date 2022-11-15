@@ -96,54 +96,71 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                 padding: EdgeInsets.only(
                                     top: 5, bottom: 5, left: 15, right: 15),
                                 child: Align(
-                                  alignment: (list['sender'] != me
-                                      ? Alignment.topLeft
-                                      : Alignment.topRight),
-                                  child: list['sender'] != me
-                                      ? Row(children: [
-                                          con.avatar == ''
-                                              ? CircleAvatar(
-                                                  radius: 25,
-                                                  child: SvgPicture.network(
-                                                      Helper.avatar),
-                                                )
-                                              : CircleAvatar(
-                                                  radius: 25,
-                                                  backgroundImage:
-                                                      NetworkImage(con.avatar),
+                                    alignment: (list['sender'] != me
+                                        ? Alignment.topLeft
+                                        : Alignment.topRight),
+                                    child: list['sender'] != me
+                                        ? Row(children: [
+                                            con.avatar == ''
+                                                ? CircleAvatar(
+                                                    radius: 25,
+                                                    child: SvgPicture.network(
+                                                        Helper.avatar),
+                                                  )
+                                                : CircleAvatar(
+                                                    radius: 25,
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                            con.avatar),
+                                                  ),
+                                            list['type'] == 'text'
+                                                ? Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 10, top: 5),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      color: (list['sender'] ==
+                                                              me
+                                                          ? Colors.grey.shade200
+                                                          : Colors.blue[200]),
+                                                    ),
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Text(
+                                                      list['data'],
+                                                      style: TextStyle(
+                                                          fontSize: 13),
+                                                    ))
+                                                : ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    child: Image.network(
+                                                        list['data']),
+                                                  )
+                                          ])
+                                        : list['type'] == 'text'
+                                            ? Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  color: (list['sender'] == me
+                                                      ? Colors.grey.shade200
+                                                      : Colors.blue[200]),
                                                 ),
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                left: 10, top: 5),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: (list['sender'] == me
-                                                  ? Colors.grey.shade200
-                                                  : Colors.blue[200]),
-                                            ),
-                                            padding: EdgeInsets.all(10),
-                                            child: Text(
-                                              list['data'],
-                                              style: TextStyle(fontSize: 13),
-                                            ),
-                                          )
-                                        ])
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            color: (list['sender'] == me
-                                                ? Colors.grey.shade200
-                                                : Colors.blue[200]),
-                                          ),
-                                          padding: EdgeInsets.all(10),
-                                          child: Text(
-                                            list['data'],
-                                            style: TextStyle(fontSize: 13),
-                                          ),
-                                        ),
-                                ),
+                                                padding: EdgeInsets.all(10),
+                                                child: Text(
+                                                  list['data'],
+                                                  style:
+                                                      TextStyle(fontSize: 13),
+                                                ))
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                child:
+                                                    Image.network(list['data']),
+                                              )),
                               );
                             },
                           )),

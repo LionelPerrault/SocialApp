@@ -18,7 +18,6 @@ class ChatController extends ControllerMVC {
   ChatController._();
   static ChatController? _this;
   var chatBoxs = [];
-  var type = 'text';
   var chatUserList = [];
   var chattingUser = '';
   var isMessageTap = 'all-list';
@@ -27,6 +26,8 @@ class ChatController extends ControllerMVC {
   var newRLastName = '';
   var chatId = '';
   var avatar = '';
+  var emojiList = <Widget>[];
+  TextEditingController textController = TextEditingController();
   bool isShowEmoticon = false;
   @override
   Future<bool> initAsync() async {
@@ -41,15 +42,30 @@ class ChatController extends ControllerMVC {
     return false;
   }
 
-  Future<bool> sendMessage(newOrNot, data) async {
+  getTimeandSendMessage(newOrNot, messageType, data) async {
+    DateTime time;
+    Response res;
+    try {
+      res = await get(
+          Uri.http('worldtimeapi.org', '/api/timezone/America/Los_Angeles'));
+      var d = jsonDecode(res.body);
+      time = DateTime.parse(d['datetime']);
+      sendMessage(newOrNot, messageType, data, time);
+    } catch (e) {
+      getTimeandSendMessage(newOrNot, messageType, data);
+    }
+    return false;
+    // return time;
+  }
+
+  Future<bool> sendMessage(newOrNot, messageType, data, time) async {
     var newChat = false;
     bool success = false;
+    print(chattingUser);
+    print(data);
     if (chattingUser == '' || data == '') {
       success = false;
     }
-    Response res = await get(
-        Uri.http('worldtimeapi.org', '/api/timezone/America/Los_Angeles'));
-    var d = jsonDecode(res.body);
     if (newOrNot == 'new') {
       await FirebaseFirestore.instance.collection(Helper.message).add({
         'users': [UserManager.userInfo['userName'], chattingUser],
@@ -72,11 +88,11 @@ class ChatController extends ControllerMVC {
             .doc(value.id)
             .collection('content')
             .add({
-          'type': type,
+          'type': messageType,
           'sender': UserManager.userInfo['userName'],
           'receiver': chattingUser,
           'data': data,
-          'timeStamp': DateTime.parse(d['datetime'])
+          'timeStamp': time
         });
       });
     } else {
@@ -90,11 +106,11 @@ class ChatController extends ControllerMVC {
           .doc(docId)
           .collection('content')
           .add({
-        'type': type,
+        'type': messageType,
         'sender': UserManager.userInfo['userName'],
         'receiver': chattingUser,
         'data': data,
-        'timeStamp': DateTime.parse(d['datetime'])
+        'timeStamp': time
       }).then((value) => {});
     }
     return success;

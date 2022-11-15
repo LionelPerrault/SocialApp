@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
@@ -47,7 +48,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
         Container(
           height: 35,
           child: TextFormField(
-            controller: content,
+            controller: con.textController,
+            onChanged: ((value) {}),
             minLines: 1,
             maxLines: 5,
             keyboardType: TextInputType.multiline,
@@ -68,10 +70,21 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
         Container(
           child: Row(children: [
             const Padding(padding: EdgeInsets.only(left: 10)),
-            const Icon(
-              Icons.photo_size_select_actual_rounded,
-              size: 20,
-              color: Color.fromRGBO(175, 175, 175, 1),
+            MouseRegion(
+              child: GestureDetector(
+                onTap: () {
+                  FileManager.uploadImage().then((res) {
+                    if (res['success']) {
+                      con.sendMessage('old', 'image', res['url']);
+                    }
+                  });
+                },
+                child: const Icon(
+                  Icons.photo_size_select_actual_rounded,
+                  size: 20,
+                  color: Color.fromRGBO(175, 175, 175, 1),
+                ),
+              ),
             ),
             const Padding(padding: EdgeInsets.only(left: 10)),
             const Icon(
@@ -80,27 +93,29 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               color: Color.fromRGBO(175, 175, 175, 1),
             ),
             const Padding(padding: EdgeInsets.only(left: 10)),
-            GestureDetector(
-                onTap: () {
-                  widget.goMessage(true);
-                },
-                child: Icon(
-                  Icons.emoji_emotions,
-                  size: 20,
-                  color: Color.fromRGBO(175, 175, 175, 1),
-                )),
+            MouseRegion(
+              child: GestureDetector(
+                  onTap: () {
+                    widget.goMessage(true);
+                  },
+                  child: Icon(
+                    Icons.emoji_emotions,
+                    size: 20,
+                    color: Color.fromRGBO(175, 175, 175, 1),
+                  )),
+            ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             ElevatedButton(
               onPressed: () async {
                 try {
-                  bool success =
-                      await con.sendMessage(widget.type, content.text);
+                  bool success = await con.getTimeandSendMessage(
+                      widget.type, 'text', con.textController.text);
                   if (widget.type == 'new' && success) {
                     print(con.docId);
                     widget.goMessage('message-list');
                   }
-                  if (con.chattingUser != '' && content.text != '') {
-                    content.text = '';
+                  if (con.chattingUser != '' && con.textController.text != '') {
+                    con.textController.text = '';
                     setState(() {});
                   }
                   // ignore: empty_catches
