@@ -198,6 +198,16 @@ class UserController extends ControllerMVC {
     password = pass;
     try {
       isSendLoginedInfo = true;
+      if (!email.contains('@')) {
+        QuerySnapshot<TokenLogin> checkUsername =
+            await Helper.authdata.where('userName', isEqualTo: email).get();
+        if (checkUsername.size > 0) {
+          TokenLogin getInfo = checkUsername.docs[0].data();
+          email = getInfo.email;
+        }else {
+          failLogin = 'The username you entered does not belong to any account';
+        }
+      }
       setState(() {});
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
@@ -232,14 +242,11 @@ class UserController extends ControllerMVC {
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
         UserManager.getUserInfo();
         loginRelysia(context);
-      } else {
-        Helper.showToast(
-            'The email you entered does not belong to any account');
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
       if (e.code == 'invalid-email' || e.code == 'user-not-found') {
-        failLogin = 'The username you entered does not belong to any account';
+        failLogin = 'The email you entered does not belong to any account';
         setState(
           () {},
         );
