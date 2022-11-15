@@ -48,7 +48,6 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
       TextField(
         onChanged: ((value) async {
           var list = [];
-          var flag = 0;
           if (value == '') {
             searchUser = [];
             setState(() {});
@@ -56,21 +55,21 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
           }
           for (int i = 0; i < allUsersList.length; i++) {
             if (allUsersList[i]['userName'].contains(value)) {
+              var flag = 0;
+
               if (con.chatUserList.isEmpty) {
                 if (allUsersList[i]['userName'] != userInfo['userName']) {
                   list.add(allUsersList[i]);
                 }
               } else {
                 for (int j = 0; j < con.chatUserList.length; j++) {
-                  print(con.chatUserList[j]);
                   if (allUsersList[i]['userName'] == con.chatUserList[j] ||
                       allUsersList[i]['userName'] == userInfo['userName']) {
-                    // print(
-                    //     "${con.chatUserList[j]},${allUsersList[i]['userName']}");
                     flag = 1;
                   }
                   if (con.chatUserList.length - 1 == j && flag != 1) {
                     list.add(allUsersList[i]);
+                    print(allUsersList[i]['userName']);
                   }
                 }
               }
