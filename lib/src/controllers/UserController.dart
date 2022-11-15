@@ -333,6 +333,7 @@ class UserController extends ControllerMVC {
   void createRelysiaAccount() async {
     relysiaEmail = createRandEmail();
     relysiaPassword = createPassword();
+    print(1);
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
     if (responseData['data'] != null) {
@@ -442,9 +443,9 @@ class UserController extends ControllerMVC {
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
         .update({
-          ...data,
-          'isStarted' : true,
-        });
+      ...data,
+      'isStarted': true,
+    });
     resetGetUserInfo();
   }
 }

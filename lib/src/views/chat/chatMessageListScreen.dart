@@ -70,6 +70,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        color: Colors.white,
         child: con.docId == ''
             ? const Center(child: CircularProgressIndicator())
             : StreamBuilder(
@@ -103,12 +104,12 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                         ? Row(children: [
                                             con.avatar == ''
                                                 ? CircleAvatar(
-                                                    radius: 25,
+                                                    radius: 22,
                                                     child: SvgPicture.network(
                                                         Helper.avatar),
                                                   )
                                                 : CircleAvatar(
-                                                    radius: 25,
+                                                    radius: 22,
                                                     backgroundImage:
                                                         NetworkImage(
                                                             con.avatar),
@@ -119,12 +120,20 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                         left: 10, top: 5),
                                                     decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
+                                                          BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(15),
+                                                        bottomLeft:
+                                                            Radius.circular(15),
+                                                        bottomRight:
+                                                            Radius.circular(15),
+                                                      ),
                                                       color: (list['sender'] ==
                                                               me
-                                                          ? Colors.grey.shade200
-                                                          : Colors.blue[200]),
+                                                          ? Color.fromRGBO(
+                                                              219, 241, 255, 1)
+                                                          : Color.fromRGBO(242,
+                                                              246, 249, 1)),
                                                     ),
                                                     padding: EdgeInsets.all(10),
                                                     child: Text(
@@ -134,8 +143,14 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                     ))
                                                 : ClipRRect(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
+                                                        BorderRadius.only(
+                                                      topRight:
+                                                          Radius.circular(15),
+                                                      bottomLeft:
+                                                          Radius.circular(15),
+                                                      bottomRight:
+                                                          Radius.circular(15),
+                                                    ),
                                                     child: Image.network(
                                                         list['data']),
                                                   )
@@ -144,10 +159,19 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                             ? Container(
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(15),
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(15),
+                                                    topRight:
+                                                        Radius.circular(15),
+                                                    bottomLeft:
+                                                        Radius.circular(15),
+                                                  ),
                                                   color: (list['sender'] == me
-                                                      ? Colors.grey.shade200
-                                                      : Colors.blue[200]),
+                                                      ? Color.fromRGBO(
+                                                          219, 241, 255, 1)
+                                                      : Color.fromRGBO(
+                                                          242, 246, 249, 1)),
                                                 ),
                                                 padding: EdgeInsets.all(10),
                                                 child: Text(
@@ -156,8 +180,12 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                       TextStyle(fontSize: 13),
                                                 ))
                                             : ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(15),
+                                                  topRight: Radius.circular(15),
+                                                  bottomLeft:
+                                                      Radius.circular(15),
+                                                ),
                                                 child:
                                                     Image.network(list['data']),
                                               )),

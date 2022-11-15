@@ -25,19 +25,6 @@ class ChatUserListScreen extends StatefulWidget {
   State createState() => ChatUserListScreenState();
 }
 
-final chatCollection = FirebaseFirestore.instance
-    .collection(Helper.message)
-    .withConverter<ChatModel>(
-      fromFirestore: (snapshots, _) => ChatModel.fromJSON(snapshots.data()!),
-      toFirestore: (value, _) => value.toMap(),
-    );
-Stream<QuerySnapshot<ChatModel>> getChatUsers() {
-  var stream = chatCollection
-      .where('users', arrayContains: UserManager.userInfo['userName'])
-      .snapshots();
-  return stream;
-}
-
 class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
   bool check1 = false;
   bool check2 = false;
@@ -45,6 +32,8 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
   late ScrollController scrollController;
   var isMessageTap = 'all-list';
   var hidden = false;
+  var arr = [];
+
   @override
   void initState() {
     add(widget.con);
@@ -57,7 +46,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: getChatUsers(),
+        stream: con.getChatUsers(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             List<QueryDocumentSnapshot<ChatModel>>? listUsers =
@@ -81,8 +70,9 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                         break;
                       }
                     }
-                    if (con.chatUserList.isEmpty) {
-                      con.chatUserList.add(chatUserName);
+                    arr.add(chatUserName);
+                    if (index == listUsers.length - 1) {
+                      con.chatUserList = arr;
                     }
                     var lastData = '';
                     if (t.chatInfo['lastData'].length > 18) {
@@ -94,37 +84,53 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                       lastData = t.chatInfo['lastData'];
                     }
                     var chatUserFullName = t.chatInfo[chatUserName]['name'];
-                    return ListTile(
-                      enabled: true,
-                      tileColor: con.chattingUser == chatUserName
-                          ? Color.fromRGBO(240, 240, 240, 1)
-                          : Colors.white,
-                      onTap: () {
-                        con.avatar = t.chatInfo[chatUserName]['avatar'];
-                        widget.onBack('message-list');
-                        con.chattingUser = chatUserName;
-                        con.docId = docId;
-                        con.chatId = t.chatId;
+                    return Column(children: [
+                      ListTile(
+                        enabled: true,
+                        contentPadding: EdgeInsets.only(
+                            top: 5, bottom: 5, left: 20, right: 10),
+                        tileColor: con.chattingUser == chatUserName
+                            ? Color.fromRGBO(240, 240, 240, 1)
+                            : Colors.white,
+                        onTap: () {
+                          con.avatar = t.chatInfo[chatUserName]['avatar'];
+                          widget.onBack('message-list');
+                          con.chattingUser = chatUserName;
+                          con.docId = docId;
+                          con.chatId = t.chatId;
 
-                        con.setState(() {});
-                      },
-                      hoverColor: Color.fromRGBO(240, 240, 240, 1),
-                      leading: t.chatInfo[chatUserName]['avatar'] == ''
-                          ? CircleAvatar(
-                              radius: 25,
-                              child: SvgPicture.network(Helper.avatar),
-                            )
-                          : CircleAvatar(
-                              radius: 25,
-                              backgroundImage: NetworkImage(
-                                  t.chatInfo[chatUserName]['avatar']),
-                            ),
-                      title: Text(chatUserFullName),
-                      subtitle: Text(
-                        lastData,
-                        style: TextStyle(fontSize: 12),
+                          con.setState(() {});
+                        },
+                        hoverColor: Color.fromRGBO(240, 240, 240, 1),
+                        leading: t.chatInfo[chatUserName]['avatar'] == ''
+                            ? CircleAvatar(
+                                radius: 22,
+                                backgroundColor: Colors.blue,
+                                child: SvgPicture.network(Helper.avatar))
+                            : CircleAvatar(
+                                radius: 22,
+                                backgroundColor: Colors.blue,
+                                backgroundImage: NetworkImage(
+                                    t.chatInfo[chatUserName]['avatar']),
+                              ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 5.0),
+                          child: Text(
+                            chatUserFullName,
+                            style: TextStyle(color: Colors.blue, fontSize: 14),
+                          ),
+                        ),
+                        subtitle: Text(
+                          lastData,
+                          style: TextStyle(fontSize: 11),
+                        ),
                       ),
-                    );
+                      Container(
+                        width: double.infinity,
+                        height: 0.5,
+                        color: Color.fromRGBO(240, 240, 240, 1),
+                      )
+                    ]);
                   },
                 ));
           } else {

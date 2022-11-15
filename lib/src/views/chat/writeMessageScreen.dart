@@ -107,19 +107,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             ElevatedButton(
               onPressed: () async {
-                try {
-                  bool success = await con.getTimeandSendMessage(
-                      widget.type, 'text', con.textController.text);
-                  if (widget.type == 'new' && success) {
-                    print(con.docId);
-                    widget.goMessage('message-list');
-                  }
-                  if (con.chattingUser != '' && con.textController.text != '') {
-                    con.textController.text = '';
-                    setState(() {});
-                  }
-                  // ignore: empty_catches
-                } catch (e) {}
+                sendMessage();
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(33, 37, 41, 1),
@@ -138,5 +126,23 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
         )
       ],
     );
+  }
+
+  sendMessage() async {
+    bool success = await con.getTimeandSendMessage(
+        widget.type, 'text', con.textController.text);
+    if (!success) {
+      sendMessage();
+      return;
+    }
+    if (widget.type == 'new' && success) {
+      print(con.docId);
+      widget.goMessage('message-list');
+    }
+    if (con.chattingUser != '' && con.textController.text != '') {
+      con.textController.text = '';
+      setState(() {});
+    }
+    // ignore: empty_catches
   }
 }

@@ -65,7 +65,7 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
               height: !hidden ? SizeConfig(context).screenHeight - 85 : 40,
               curve: Curves.fastOutSlowIn,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.red,
                 borderRadius: BorderRadius.circular(3),
                 boxShadow: const [
                   BoxShadow(
@@ -88,7 +88,7 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                         topRight: Radius.circular(5),
                       ),
                     ),
-                    backgroundColor: Color.fromRGBO(51, 103, 214, 1),
+                    backgroundColor: Colors.blue,
                     automaticallyImplyLeading: false,
                     leading: IconButton(
                         icon: Icon(
@@ -181,7 +181,7 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                           : isMessageTap == 'new'
                               ? NewMessageScreen(
                                   onBack: (value) {
-                                    if (value) {
+                                    if (value == true) {
                                       con.isShowEmoticon = value;
                                     } else {
                                       isMessageTap = value;

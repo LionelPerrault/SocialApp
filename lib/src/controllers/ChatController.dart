@@ -45,16 +45,17 @@ class ChatController extends ControllerMVC {
   getTimeandSendMessage(newOrNot, messageType, data) async {
     DateTime time;
     Response res;
+    bool success = false;
     try {
       res = await get(
           Uri.http('worldtimeapi.org', '/api/timezone/America/Los_Angeles'));
       var d = jsonDecode(res.body);
       time = DateTime.parse(d['datetime']);
-      sendMessage(newOrNot, messageType, data, time);
+      success = await sendMessage(newOrNot, messageType, data, time);
     } catch (e) {
-      getTimeandSendMessage(newOrNot, messageType, data);
+      success = false;
     }
-    return false;
+    return success;
     // return time;
   }
 
@@ -114,5 +115,18 @@ class ChatController extends ControllerMVC {
       }).then((value) => {});
     }
     return success;
+  }
+
+  final chatCollection = FirebaseFirestore.instance
+      .collection(Helper.message)
+      .withConverter<ChatModel>(
+        fromFirestore: (snapshots, _) => ChatModel.fromJSON(snapshots.data()!),
+        toFirestore: (value, _) => value.toMap(),
+      );
+  Stream<QuerySnapshot<ChatModel>> getChatUsers() {
+    var stream = chatCollection
+        .where('users', arrayContains: UserManager.userInfo['userName'])
+        .snapshots();
+    return stream;
   }
 }
