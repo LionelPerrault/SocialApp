@@ -19,6 +19,9 @@ class PostController extends ControllerMVC {
   PostController._(StateMVC? state) : super(state);
   static PostController? _this;
 
+  //variable
+  List events = [];
+
   @override
   Future<bool> initAsync() async {
     //
@@ -32,7 +35,15 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  
+  Future<void> getEvent() async {
+    QuerySnapshot<TokenLogin> querySnapshot =
+          await Helper.postData.where('eventAdmin', isEqualTo: UserManager.userInfo['uid']).get();
+    events = querySnapshot.docs;
+    print(events);
+    print('controller');
+    setState(() { });
+  }
+
   Future<void> createEvent(Map<String, dynamic> eventData) async {
     eventData = {
       ...eventData,

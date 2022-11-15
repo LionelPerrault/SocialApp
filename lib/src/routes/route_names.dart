@@ -25,4 +25,6 @@ class RouteNames {
   static const settings_verification = "/settings/verification";
   static const settings_information = "/settings/information";
   static const settings_delete = "/settings/delete";
+  static const events = "/events";
+  static const events_manage = "/events/manage";
 }

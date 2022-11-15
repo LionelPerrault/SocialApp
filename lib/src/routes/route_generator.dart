@@ -5,6 +5,7 @@ import 'package:shnatter/src/controllers/AppController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
@@ -131,6 +132,12 @@ class RouteGenerator {
       case RouteNames.settings_token:
         return MaterialPageRoute(
             builder: (context) => SettingsShnatterToken(), settings: settings);
+      case RouteNames.events:
+        return MaterialPageRoute(
+            builder: (context) => EventsScreen(), settings: settings);
+      case RouteNames.events_manage:
+        return MaterialPageRoute(
+            builder: (context) => EventsScreen(), settings: settings);
 
       default:
         return MaterialPageRoute(
