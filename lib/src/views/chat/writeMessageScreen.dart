@@ -75,7 +75,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
                 onTap: () {
                   FileManager.uploadImage().then((res) {
                     if (res['success']) {
-                      con.sendMessage('old', 'image', res['url']);
+                      con.getTimeandSendMessage('old', 'image', res['url']);
                     }
                   });
                 },
