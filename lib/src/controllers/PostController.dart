@@ -49,6 +49,9 @@ class PostController extends ControllerMVC {
       ...eventData,
       'eventAdmin': UserManager.userInfo['uid'],
       'eventDate': DateTime.now().toString(),
+      'eventGoing': false,
+      'eventInterested': 0,
+      'eventInvited': 0,
     };
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)

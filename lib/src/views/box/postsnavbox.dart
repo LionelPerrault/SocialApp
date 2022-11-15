@@ -292,7 +292,7 @@ class PostNavModalState extends mvc.StateMVC<PostNavModal> {
     Postcon = controller as PostController;
     super.initState();
   }
-@override
+  @override
   Widget build(BuildContext context) {
     return Column(
           mainAxisSize: MainAxisSize.min,
@@ -521,7 +521,7 @@ class PostNavModalState extends mvc.StateMVC<PostNavModal> {
                             ],
                             onChanged: (value) {
                               //get value when changed
-                              // eventInfo['privacy'] = value;
+                              eventInfo['eventPrivacy'] = value;
                               privacy = value.toString();
                               print(privacy);
                               // click(value);
@@ -576,7 +576,7 @@ class PostNavModalState extends mvc.StateMVC<PostNavModal> {
                                 minLines: 1,
                                 maxLines: 4,
                                 onChanged: (value) async {
-                                  eventInfo['about'] = value;
+                                  eventInfo['eventAbout'] = value;
                                   // setState(() {});
                                 },
                                 keyboardType: TextInputType.multiline,
@@ -649,7 +649,7 @@ class PostNavModalState extends mvc.StateMVC<PostNavModal> {
                               onChanged: (String? value) {
                                 //get value when changed
                                 interest= value!;
-                                eventInfo['interests'] = value;
+                                eventInfo['eventInterests'] = value;
                                 setState(() {});
                               },
                               style: const TextStyle(
