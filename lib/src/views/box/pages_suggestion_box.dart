@@ -113,7 +113,11 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                 //endIndent: 0,
                 //color: Colors.black,
               ),
-              isSound?SizedBox(
+               AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  height: isSound ? 260 : 0,
+                  curve: Curves.fastOutSlowIn,
+                  child:SizedBox(
                 height: 260,
                 //size: Size(100,100),
                 child: ListView.separated(
@@ -191,9 +195,7 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                     endIndent: 10,
                   ),
                 ),
-              )
-              :
-              Column()
+              ))
             ],
           )),
     );

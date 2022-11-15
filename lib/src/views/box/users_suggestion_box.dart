@@ -88,81 +88,86 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                 //endIndent: 0,
                 //color: Colors.black,
               ),
-              isSound ? SizedBox(
-                height: 260,
-                //size: Size(100,100),
-                child: ListView.separated(
-                  itemCount: sampleData.length,
-                  itemBuilder: (context, index) => Material(
-                      child: ListTile(
-                          onTap: () {
-                            print("tap!");
-                          },
-                          hoverColor: const Color.fromARGB(255, 243, 243, 243),
-                          // tileColor: Colors.white,
-                          enabled: true,
-                          leading: const CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
-                          ),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+              AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  height: isSound ? 260 : 0,
+                  curve: Curves.fastOutSlowIn,
+                  child: SizedBox(
+                    //size: Size(100,100),
+                    child: ListView.separated(
+                      itemCount: sampleData.length,
+                      itemBuilder: (context, index) => Material(
+                          child: ListTile(
+                              onTap: () {
+                                print("tap!");
+                              },
+                              hoverColor:
+                                  const Color.fromARGB(255, 243, 243, 243),
+                              // tileColor: Colors.white,
+                              enabled: true,
+                              leading: const CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
+                              ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    width: 100,
-                                    child: Text(
-                                      sampleData[index]['name'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12),
-                                    ),
-                                  ),
-                                  Container(
-                                      child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  const Color.fromARGB(
-                                                      255, 33, 37, 41),
-                                              elevation: 3,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          2.0)),
-                                              minimumSize: const Size(70, 35),
-                                              maximumSize: const Size(70, 35)),
-                                          onPressed: () {
-                                            () => {};
-                                          },
-                                          child: Row(
-                                            children: const [
-                                              Icon(
-                                                Icons.person_add_alt_rounded,
-                                                color: Colors.white,
-                                                size: 18.0,
-                                              ),
-                                              Text('Add',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ],
-                                          ))),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        child: Text(
+                                          sampleData[index]['name'],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
+                                        ),
+                                      ),
+                                      Container(
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color.fromARGB(
+                                                          255, 33, 37, 41),
+                                                  elevation: 3,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              2.0)),
+                                                  minimumSize:
+                                                      const Size(70, 35),
+                                                  maximumSize:
+                                                      const Size(70, 35)),
+                                              onPressed: () {
+                                                () => {};
+                                              },
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                    Icons
+                                                        .person_add_alt_rounded,
+                                                    color: Colors.white,
+                                                    size: 18.0,
+                                                  ),
+                                                  Text('Add',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 11,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
+                                              ))),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          ))),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                    height: 1,
-                    endIndent: 10,
-                  ),
-                ),
-              )
-              :
-              Column()
+                              ))),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
+                        height: 1,
+                        endIndent: 10,
+                      ),
+                    ),
+                  ))
             ],
           )),
     );
