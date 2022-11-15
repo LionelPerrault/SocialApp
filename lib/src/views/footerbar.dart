@@ -79,7 +79,7 @@ class footbarState extends State<footbar>{
             text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 11),
             const Padding(padding: EdgeInsets.only(left: 20)),
              Container(
-                width: 130,
+                width: 200,
                 child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: Colors.black,
@@ -164,9 +164,9 @@ class footbarMState extends State<footbarM>{
               const Padding(padding: EdgeInsets.only(left: 10)),
               text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 13),
               const Padding(padding: EdgeInsets.only(left: 15)),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.only(right: 120,left: 5),
+              Container(
+                  width: 190,
+                  padding: const EdgeInsets.only(left: 5),
                   child: DecoratedBox(
                       decoration: BoxDecoration(
                         color: Colors.black,
@@ -213,7 +213,6 @@ class footbarMState extends State<footbarM>{
                             isDense: true,
                           ))),
                   ),
-                ),
             ],),
             const Padding(padding: EdgeInsets.only(top: 5)),
             Container(
