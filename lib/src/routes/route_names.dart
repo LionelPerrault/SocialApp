@@ -27,4 +27,5 @@ class RouteNames {
   static const settings_delete = "/settings/delete";
   static const events = "/events";
   static const events_manage = "/events/manage";
+  static var userName = "";
 }

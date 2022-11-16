@@ -8,7 +8,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatBox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
@@ -247,8 +246,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                         )),
                   )
                 : const SizedBox(),
-              ChatScreen(),
-
+            ChatScreen(),
           ],
         ));
   }

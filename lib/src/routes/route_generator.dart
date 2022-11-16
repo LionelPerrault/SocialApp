@@ -32,6 +32,7 @@ import 'package:shnatter/src/views/startedscreen.dart';
 import 'package:shnatter/src/views/startedscreen.dart';
 
 import '../managers/user_manager.dart';
+import '../views/profile/profilescreen.dart';
 
 class RouteGenerator {
   static Future<void> checkRoute(RouteSettings settings) async {
@@ -42,7 +43,6 @@ class RouteGenerator {
     final args = settings.arguments;
     var url = settings.name;
     bool islogined = UserManager.isLogined;
-    print(islogined);
     if (islogined == true) {
       if (url == '/login' || url == '/register') {
         url = RouteNames.homePage;
@@ -51,6 +51,10 @@ class RouteGenerator {
       if (url != '/register' && url != '/login' && url != '/reset') {
         url = RouteNames.login;
       }
+    }
+    if (url == RouteNames.userName) {
+      return MaterialPageRoute(
+          builder: (context) => UserProfileScreen(), settings: settings);
     }
     switch (url) {
       case RouteNames.splashScreen:
@@ -95,10 +99,12 @@ class RouteGenerator {
             builder: (context) => SettingsProfileWork(), settings: settings);
       case RouteNames.settings_profile_location:
         return MaterialPageRoute(
-            builder: (context) => SettingsProfileLocation(), settings: settings);
+            builder: (context) => SettingsProfileLocation(),
+            settings: settings);
       case RouteNames.settings_profile_education:
         return MaterialPageRoute(
-            builder: (context) => SettingsProfileEducation(), settings: settings);
+            builder: (context) => SettingsProfileEducation(),
+            settings: settings);
       case RouteNames.settings_profile_social:
         return MaterialPageRoute(
             builder: (context) => SettingsProfileSocial(), settings: settings);
@@ -110,10 +116,12 @@ class RouteGenerator {
             builder: (context) => SettingsProfileDesign(), settings: settings);
       case RouteNames.settings_security_password:
         return MaterialPageRoute(
-            builder: (context) => SettingsSecurityPassword(), settings: settings);
+            builder: (context) => SettingsSecurityPassword(),
+            settings: settings);
       case RouteNames.settings_security_sessions:
         return MaterialPageRoute(
-            builder: (context) => SettingsSecuritySessions(), settings: settings);
+            builder: (context) => SettingsSecuritySessions(),
+            settings: settings);
       case RouteNames.settings_privacy:
         return MaterialPageRoute(
             builder: (context) => SettingsPrivacy(), settings: settings);

@@ -1,19 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/widget/mprimary_button.dart';
-import 'package:shnatter/src/widget/primaryInput.dart';
 import '../../controllers/ChatController.dart';
-import '../../helpers/helper.dart';
-import '../../models/chatModel.dart';
 
+// ignore: must_be_immutable
 class WriteMessageScreen extends StatefulWidget {
   String type;
   Function goMessage;
@@ -21,6 +14,7 @@ class WriteMessageScreen extends StatefulWidget {
       : con = ChatController(),
         super(key: key);
   final ChatController con;
+  @override
   State createState() => WriteMessageScreenState();
 }
 
@@ -75,7 +69,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
                 onTap: () {
                   FileManager.uploadImage().then((res) {
                     if (res['success']) {
-                      con.getTimeandSendMessage('old', 'image', res['url']);
+                      con.sendMessage('old', 'image', res['url']);
                     }
                   });
                 },
@@ -129,12 +123,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   }
 
   sendMessage() async {
-    bool success = await con.getTimeandSendMessage(
-        widget.type, 'text', con.textController.text);
-    if (!success) {
-      sendMessage();
-      return;
-    }
+    bool success =
+        await con.sendMessage(widget.type, 'text', con.textController.text);
     if (widget.type == 'new' && success) {
       print(con.docId);
       widget.goMessage('message-list');

@@ -1,41 +1,30 @@
 import 'dart:html';
 
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/setting/panel/settng_left_panel.dart';
-import 'package:shnatter/src/views/setting/panel/pages/security_password.dart';
-
+import 'package:firebase/firebase.dart';
 import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
-import '../../widget/mprimary_button.dart';
-import '../../widget/list_text.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/gestures.dart';
-import '../box/notification.dart';
 
-class SettingsSecurityPassword extends StatefulWidget {
-  SettingsSecurityPassword({Key? key})
+class UserProfileScreen extends StatefulWidget {
+  UserProfileScreen({Key? key})
       : con = HomeController(),
         super(key: key);
   final HomeController con;
 
   @override
-  State createState() => SettingsSecurityPasswordState();
+  State createState() => UserProfileScreenState();
 }
 
-class SettingsSecurityPasswordState extends mvc
-    .StateMVC<SettingsSecurityPassword> with SingleTickerProviderStateMixin {
+class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
+    with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
@@ -43,6 +32,8 @@ class SettingsSecurityPasswordState extends mvc
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
+  var url = window.location.href;
+  var subUrl = '';
   var suggest = <String, bool>{
     'friends': true,
     'pages': true,
@@ -50,8 +41,12 @@ class SettingsSecurityPasswordState extends mvc
     'events': true
   };
   //
+  var userInfo = UserManager.userInfo;
   @override
   void initState() {
+    subUrl = url.split('/')[url.split('/').length - 1];
+    print(FieldValue.serverTimestamp());
+    print(subUrl);
     add(widget.con);
     con = controller as HomeController;
     super.initState();
@@ -125,7 +120,7 @@ class SettingsSecurityPasswordState extends mvc
               drawClicked: clickMenu,
             ),
             Padding(
-                padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child:
                     //AnimatedPositioned(
                     //top: showMenu ? 0 : -150.0,
@@ -137,53 +132,28 @@ class SettingsSecurityPasswordState extends mvc
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize
-                            ? const SizedBox()
-                            : SettingsLeftPanel(),
-                        //    : SizedBox(width: 0),
-                        Expanded(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(child: SettingMainPanel()),
-                            // ChatScreen(),
-                          ],
-                        )),
+                        Container(
+                          width: SizeConfig(context).screenWidth - 310,
+                          padding: const EdgeInsets.only(left: 60, right: 10),
+                          margin: const EdgeInsets.only(top: 200),
+                          child: Row(children: [
+                            CircleAvatar(
+                              radius: 80,
+                              backgroundColor: Colors.white,
+                              child: userInfo['avatar'] != null
+                                  ? CircleAvatar(
+                                      radius: 75,
+                                      backgroundImage:
+                                          NetworkImage(userInfo['avatar']))
+                                  : CircleAvatar(
+                                      radius: 75,
+                                      child: SvgPicture.network(Helper.avatar),
+                                    ),
+                            )
+                          ]),
+                        ),
                       ]),
                 )),
-            AnimatedBuilder(
-                animation: _drawerSlideController,
-                builder: (context, child) {
-                  return FractionalTranslation(
-                      translation: SizeConfig(context).screenWidth >
-                              SizeConfig.smallScreenSize
-                          ? Offset(0, 0)
-                          : Offset(_drawerSlideController.value * 0.001, 0.0),
-                      child: SizeConfig(context).screenWidth >
-                                  SizeConfig.smallScreenSize ||
-                              _isDrawerClosed()
-                          ? const SizedBox()
-                          : Padding(
-                              padding:
-                                  EdgeInsets.only(top: SizeConfig.navbarHeight),
-                              child: Container(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: Colors.white,
-                                        width: SizeConfig.leftBarWidth,
-                                        child: SingleChildScrollView(
-                                          child: SettingsLeftPanel(),
-                                        ),
-                                      )
-                                    ]),
-                              )));
-                }),
             showSearch
                 ? GestureDetector(
                     onTap: () {
@@ -234,11 +204,20 @@ class SettingsSecurityPasswordState extends mvc
                                 )
                               ],
                             ),
-                            ShnatterNotification()
+                            ShnatterSearchBox()
                           ],
                         )),
                   )
                 : const SizedBox(),
+            ChatScreen(),
+            Stack(
+              children: [
+                Container(
+                  width: SizeConfig(context).screenWidth - 310,
+                  height: SizeConfig(context).screenHeight * 0.6,
+                )
+              ],
+            )
           ],
         ));
   }
