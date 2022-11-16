@@ -1,52 +1,26 @@
-// ignore_for_file: prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/UserController.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/widget/mprimary_button.dart';
-import 'package:shnatter/src/widget/primaryInput.dart';
 
-import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
-class MyEvents extends StatefulWidget {
-  MyEvents({Key? key})
-      : con = PostController(),
-        super(key: key);
-  late PostController con;
-  State createState() => MyEventsState();
-}
-
-class MyEventsState extends mvc.StateMVC<MyEvents> {
-  late PostController con;
-  var userInfo = UserManager.userInfo;
-  var events = [];
-  @override
-  void initState() {
-    add(widget.con);
-    con = controller as PostController;
-    // con.getEvent();
-    setState(() {});
-    super.initState();
-  }
-
-  // Stream<QuerySnapshot<ChatModel>> getLoginedUsers() {
-  //   return transactionCollection
-  //       .where('from-to', arrayContains: con.paymail)
-  //       //.orderBy("date")
-  //       .snapshots();
-  // }
+// ignore: must_be_immutable
+class EventCell extends StatelessWidget {
+  EventCell(
+      {super.key,
+      required this.eventTap,
+      required this.picture,
+      required this.interests,
+      required this.header,
+      required this.interested});
+Function eventTap;
+  String picture;
+  int interests;
+  String header;
+  bool interested;
   @override
   Widget build(BuildContext context) {
-    
-    // events = con.getEvent({'':''}) as List;
-
     return Container(
       child: Stack(children: [
         Container(
@@ -61,22 +35,19 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
             RichText(
               text: TextSpan(children: <TextSpan>[
                 TextSpan(
-                  text: 'My Events',
+                  text: header,
                   style: const TextStyle(
                       color: Colors.black, fontSize: 13,
                       fontWeight: FontWeight.bold),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      Navigator
-                        .pushReplacementNamed(
-                            context,
-                            RouteNames.events_manage);
+                      eventTap();
                     }
                 ),
               ]),
             ),
             Padding(padding: EdgeInsets.only(top: 5)),
-            Text('1 Interested', style: TextStyle(
+            Text('${interests} Interested', style: TextStyle(
                       color: Colors.black, fontSize: 13),),
             Padding(padding: EdgeInsets.only(top: 20)),
             ElevatedButton(
@@ -90,14 +61,20 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
                     minimumSize: const Size(120, 35),
                     maximumSize: const Size(120, 35)),
                 onPressed: () {
-                  () => {};
+                  interested ? () {}:()=>{};
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(
+                  children: [
+                    interested ? Icon(
                       Icons.star,
+                      color: Colors.black,
+                      size: 18.0,
+                    )
+                    :
+                    Icon(
+                      Icons.check,
                       color: Colors.black,
                       size: 18.0,
                     ),
@@ -123,10 +100,9 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
               borderRadius: BorderRadius.circular(60),
               border: Border.all(color: Colors.grey)),
           child: SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82'),
+              picture),
         ),
       ],),
     );
   }
-
 }

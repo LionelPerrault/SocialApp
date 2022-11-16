@@ -59,7 +59,6 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
   @override
   void initState() {
     subUrl = url.split('/')[url.split('/').length-1];
-    print(subUrl);
     add(widget.con);
     con = controller as HomeController;
     super.initState();
@@ -142,6 +141,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                     //child:
                     SingleChildScrollView(
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -158,7 +158,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                             Expanded(child: Column(children: [
                               EventsHeaderPanel(),
                               const Padding(padding: EdgeInsets.only(top: 20)),
-                              subUrl == 'events' ? AllEvents() : const SizedBox(),
+                              
                               subUrl == 'manage' ? MyEvents() : const SizedBox(),
                             ],)),
                           ],

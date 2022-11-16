@@ -20,7 +20,7 @@ class PostController extends ControllerMVC {
   static PostController? _this;
 
   //variable
-  List events = [];
+  List events=[];
 
   @override
   Future<bool> initAsync() async {
@@ -37,10 +37,8 @@ class PostController extends ControllerMVC {
 
   Future<void> getEvent() async {
     QuerySnapshot<TokenLogin> querySnapshot =
-          await Helper.postData.where('eventAdmin', isEqualTo: UserManager.userInfo['uid']).get();
+          await Helper.postData.where('eventPost', isEqualTo: true).get();
     events = querySnapshot.docs;
-    print(events);
-    print('controller');
     setState(() { });
   }
 
@@ -50,8 +48,10 @@ class PostController extends ControllerMVC {
       'eventAdmin': UserManager.userInfo['uid'],
       'eventDate': DateTime.now().toString(),
       'eventGoing': false,
-      'eventInterested': 0,
+      'eventInterested': false,
+      'eventInterests': 0,
       'eventInvited': 0,
+      'eventPost': false,
     };
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)

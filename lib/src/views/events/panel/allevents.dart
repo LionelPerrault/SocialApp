@@ -7,6 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/events/widget/eventcell.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import 'package:shnatter/src/widget/primaryInput.dart';
 
@@ -27,11 +28,14 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var events = [];
+  int arrayLength = 0;
   @override
   void initState() {
     add(widget.con);
     con = controller as PostController;
     setState(() {});
+    con.getEvent();
+    con.setState(() { });
     super.initState();
   }
 
@@ -43,13 +47,16 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   // }
   @override
   Widget build(BuildContext context) {
-    
-    // events = con.getEvent({'':''}) as List;
-    print(events);
-
     return Container(
-      // child: ,
+      child: Row(children: 
+        
+        con.events.map((event) => EventCell(
+              eventTap: (){},
+              picture: event['eventAdmin'],
+              interests: 1,
+              header: event['eventName'],
+              interested: false)).toList(),
+      ),
     );
   }
-
 }

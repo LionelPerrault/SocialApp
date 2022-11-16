@@ -649,7 +649,7 @@ class PostNavModalState extends mvc.StateMVC<PostNavModal> {
                               onChanged: (String? value) {
                                 //get value when changed
                                 interest= value!;
-                                eventInfo['eventInterests'] = value;
+                                eventInfo['eventCategory'] = value;
                                 setState(() {});
                               },
                               style: const TextStyle(

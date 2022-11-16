@@ -52,7 +52,10 @@ class EventsHeaderPanel extends StatelessWidget {
                                   color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  ()=>{};
+                                  Navigator
+                                    .pushReplacementNamed(
+                                        context,
+                                        RouteNames.events);
                                 }
                             ),
                           ]),
