@@ -42,7 +42,7 @@ class PostController extends ControllerMVC {
     setState(() { });
   }
 
-  Future<void> createEvent(Map<String, dynamic> eventData) async {
+  Future<void> createEvent(context,Map<String, dynamic> eventData) async {
     eventData = {
       ...eventData,
       'eventAdmin': UserManager.userInfo['uid'],
@@ -56,5 +56,11 @@ class PostController extends ControllerMVC {
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .add(eventData);
+        
+    Navigator
+      .pushReplacementNamed(
+          context,
+          RouteNames
+              .settings);
   }
 }

@@ -8,6 +8,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
+import 'package:shnatter/src/widget/createEventWidget.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 
 // ignore: must_be_immutable
@@ -145,7 +146,21 @@ class EventsHeaderPanel extends StatelessWidget {
                           maximumSize: const Size(120, 50),
                         ),
                         onPressed: () {
-                          (()=>{});
+                          (showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: Row(children: const [
+                                  Icon(Icons.event,color: Color.fromARGB(255, 247, 159, 88),),
+                                  Text('Create New Event',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontStyle: FontStyle.italic
+                                  ),),
+                                ],),
+                                content: CreateEventModal(context: context)
+                              )
+                        ));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
