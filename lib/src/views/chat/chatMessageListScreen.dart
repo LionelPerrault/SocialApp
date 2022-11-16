@@ -35,7 +35,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
   late ScrollController _scrollController;
   var isMessageTap = 'all-list';
   var r = 0;
-  String avatar = '';
   late Stream stream;
   @override
   void initState() {
@@ -43,12 +42,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
     con = controller as ChatController;
     super.initState();
     _scrollController = ScrollController();
-    FirebaseFirestore.instance.collection(Helper.userField).
-    where('userName',isEqualTo:con.chattingUser).get().then((value) => {
-      avatar = value.docs[0]['avatar'] ?? Helper.avatar,
-      print(value.docs[0]['avatar']),
-      setState(() {})
-    });
     stream = FirebaseFirestore.instance
         .collection(Helper.message)
         .doc(con.docId)
@@ -112,7 +105,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                     radius: 22,
                                                     backgroundImage:
                                                         NetworkImage(
-                                                            avatar),
+                                                            con.avatar),
                                                   ),
                                             list['type'] == 'text'
                                                 ? Container(
