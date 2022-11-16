@@ -11,17 +11,17 @@ import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ProfileAvatarandTabScreen extends StatefulWidget {
-  ProfileAvatarandTabScreen({Key? key})
+class ProfileInfoScreen extends StatefulWidget {
+  ProfileInfoScreen({Key? key})
       : con = HomeController(),
         super(key: key);
   final HomeController con;
 
   @override
-  State createState() => ProfileAvatarandTabScreenState();
+  State createState() => ProfileInfoScreenState();
 }
 
-class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScreen>
+class ProfileInfoScreenState extends mvc.StateMVC<ProfileInfoScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -37,14 +37,15 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
   //
   var userInfo = UserManager.userInfo;
   List<Map> mainTabList = [
-    {'title':'Timeline','icon':Icons.tab},
-    {'title':'Friends','icon':Icons.group_sharp},
-    {'title':'Photos','icon':Icons.photo},
-    {'title':'Videos','icon':Icons.video_call},
-    {'title':'Likes','icon':Icons.flag},
-    {'title':'Groups','icon':Icons.group_sharp},
-    {'title':'Events','icon':Icons.gif_box},
-
+    {'title':'Add your profile picture','add': UserManager.userInfo['avatar'] ==null ? false : true},
+    {'title':'Add your profile cover','add':UserManager.userInfo['profile_cover'] == null ? false : true},
+    {'title':'Add your biography','add':UserManager.userInfo['about'] == null ? false : true},
+    {'title':'Add your birthdate','add':UserManager.userInfo['birthY'] == null ? false : true},
+    {'title':'Add your relationship','add':Icons.flag},
+    {'title':'Add your work info','add':UserManager.userInfo['school'] == null ? false : true},
+    {'title':'Add your location info','add':UserManager.userInfo['current'] == null ? false : true},
+    {'title':'Add your education info','add':
+      UserManager.userInfo['school'] == null && UserManager.userInfo['class'] == null && UserManager.userInfo['major'] == null ? false : true},
   ];
   @override
   void initState() {
@@ -66,40 +67,23 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
     return Container(
             width: SizeConfig(context).screenWidth,
             padding: const EdgeInsets.only(left: 60, right: 10),
-            margin: const EdgeInsets.only(top: 195),
-            child: Row(children: [
-              CircleAvatar(
-                radius: 80,
-                backgroundColor: Colors.white,
-                child: userInfo['avatar'] != null
-                    ? CircleAvatar(
-                        radius: 75,
-                        backgroundImage:
-                            NetworkImage(userInfo['avatar']))
-                    : CircleAvatar(
-                        radius: 75,
-                        child: SvgPicture.network(Helper.avatar),
-                      ),
-
-              ),
-            // mainTabWidget(),
-            Container(
-              width: width,
-              padding: const EdgeInsets.only(left: 50,top: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${userInfo['firstName']} ${userInfo['lastName']}'
-                  ,style: const TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
-                  ),),
-                  mainTabWidget()
-                ],
-            )),
-            ]),
+            child: Row(
+              children: [
+              Container(
+              margin:EdgeInsets.only(left: 70),
+                width: SizeConfig(context).screenWidth*0.2,
+                child: profileCompletion(),
+              )
+            ])
           );
+  }
+  Widget profileCompletion(){
+    return Row(
+    children: <Widget>[
+        Text('\$8.99', style: TextStyle(decoration: TextDecoration.lineThrough))
+
+    ]
+);
   }
   Widget mainTabWidget(){
     return Container(

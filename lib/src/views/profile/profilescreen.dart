@@ -9,6 +9,7 @@ import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/profile/profileAvatarandTabscreen.dart';
+import 'package:shnatter/src/views/profile/profileInfoscreen.dart';
 import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -113,6 +114,16 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
         body: Stack(
           fit: StackFit.expand,
           children: [
+            Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: SizeConfig.navbarHeight,left: 30,right: 30),
+                  width: SizeConfig(context).screenWidth,
+                  height: SizeConfig(context).screenHeight * 0.5,
+                  color: const Color.fromRGBO(66, 66, 66, 1),
+                )
+              ],
+            ),
             ShnatterNavigation(
               searchController: searchController,
               onSearchBarFocus: onSearchBarFocus,
@@ -128,12 +139,12 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                     //curve: Curves.fastOutSlowIn,
                     //child:
                     SingleChildScrollView(
-                  child: Row(
+                  child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ProfileAvatarandTabScreen()
-                        
+                        ProfileAvatarandTabScreen(),
+                        ProfileInfoScreen(),
                       ]),
                 )),
             showSearch
@@ -192,14 +203,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                   )
                 : const SizedBox(),
             ChatScreen(),
-            Stack(
-              children: [
-                Container(
-                  width: SizeConfig(context).screenWidth - 310,
-                  height: SizeConfig(context).screenHeight * 0.6,
-                )
-              ],
-            )
+            
           ],
         ));
   }

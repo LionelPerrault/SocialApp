@@ -260,7 +260,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         child: PopupMenuButton(
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
-                            const PopupMenuItem<Menu>(
+                            PopupMenuItem<Menu>(
+                              onTap: (){
+                                print(2);
+                                Navigator.pushReplacementNamed(context, UserManager.userInfo['userName']);
+                              },
                               value: Menu.itemProfile,
                               child: Text('Profile'),
                             ),
@@ -465,8 +469,12 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         child: PopupMenuButton(
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
-                            const PopupMenuItem<Menu>(
+                            PopupMenuItem<Menu>(
                               value: Menu.itemProfile,
+                              onTap: (){
+                                print(UserManager.userInfo['userName']);
+                                Navigator.pushReplacementNamed(context, '/${UserManager.userInfo['userName']}');
+                              },
                               child: Text('Profile'),
                             ),
                             PopupMenuItem<Menu>(
