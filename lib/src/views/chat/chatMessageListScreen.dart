@@ -35,6 +35,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
   late ScrollController _scrollController;
   var isMessageTap = 'all-list';
   var r = 0;
+  String avatar = '';
   late Stream stream;
   @override
   void initState() {
@@ -42,7 +43,12 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
     con = controller as ChatController;
     super.initState();
     _scrollController = ScrollController();
-    print(con.docId);
+    FirebaseFirestore.instance.collection(Helper.userField).
+    where('userName',isEqualTo:con.chattingUser).get().then((value) => {
+      avatar = value.docs[0]['avatar'] ?? Helper.avatar,
+      print(value.docs[0]['avatar']),
+      setState(() {})
+    });
     stream = FirebaseFirestore.instance
         .collection(Helper.message)
         .doc(con.docId)
@@ -106,7 +112,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                     radius: 22,
                                                     backgroundImage:
                                                         NetworkImage(
-                                                            con.avatar),
+                                                            avatar),
                                                   ),
                                             list['type'] == 'text'
                                                 ? Container(
@@ -135,7 +141,10 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                       style: TextStyle(
                                                           fontSize: 13),
                                                     ))
-                                                : ClipRRect(
+                                                : Container(
+                                                  margin: EdgeInsets.only(
+                                                        left: 10, top: 5),
+                                                  child: ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.only(
                                                       topRight:
@@ -146,8 +155,10 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                           Radius.circular(15),
                                                     ),
                                                     child: Image.network(
-                                                        list['data']),
-                                                  )
+                                                        list['data'],width: 150,),
+                                                  ),
+                                                ) 
+                                                
                                           ])
                                         : list['type'] == 'text'
                                             ? Container(
@@ -181,7 +192,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                       Radius.circular(15),
                                                 ),
                                                 child:
-                                                    Image.network(list['data']),
+                                                    Image.network(list['data'],width: 150,),
                                               )),
                               );
                             },

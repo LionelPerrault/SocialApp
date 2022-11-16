@@ -54,6 +54,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
+                    
                     ChatModel t = listUsers[index].data();
                     var docId = snapshot.data!.docs[index].id;
                     var chatUserName = '';

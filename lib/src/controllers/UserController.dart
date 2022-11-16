@@ -441,6 +441,8 @@ class UserController extends ControllerMVC {
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
         .update({'avatar': userAvatar});
+    // FirebaseFirestore.instance
+    //     .collection(Helper.userField)
     resetGetUserInfo();
   }
 

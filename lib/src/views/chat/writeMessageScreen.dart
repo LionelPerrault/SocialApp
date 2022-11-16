@@ -5,7 +5,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../../controllers/ChatController.dart';
-
 // ignore: must_be_immutable
 class WriteMessageScreen extends StatefulWidget {
   String type;
@@ -43,7 +42,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
           height: 35,
           child: TextFormField(
             controller: con.textController,
-            onChanged: ((value) {}),
+            onChanged: ((value) {
+            }),
             minLines: 1,
             maxLines: 5,
             keyboardType: TextInputType.multiline,
