@@ -62,6 +62,10 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   var birthD = "none";
   var birthY = "none";
   var interests = "none";
+  List years = [];
+  List days = [];
+  List months = [];
+  List allInterests = [];
   var isShowProgressive = false;
   var fullName = '';
   late AnimationController _drawerSlideController;
@@ -81,6 +85,18 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     selectFlag['policy2'] = false;
     selectFlag['policy3'] = false;
     selectFlag['avatar'] = '';
+    years.add('none');
+    for(int i = 1905; i<2023; i++){
+      years.add('$i');
+    }
+    days.add('none');
+    for(int i = 1; i<32; i++){
+      days.add('$i');
+    }
+    months.add('none');
+    for(int i = 1; i<13; i++){
+      months.add('$i');
+    }
     add(widget.userCon);
     super.initState();
     userCon = controller as UserController;
@@ -90,9 +106,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
       duration: const Duration(milliseconds: 150),
     );
     userCon.userAvatar = UserManager.userInfo['avatar'] == null ? '' : UserManager.userInfo['avatar'];
-    print(UserManager.userInfo);
-    print('avatar');
     userCon.setState(() {});
+    // allInterests = userCon.interests() as <List>;
   }
 
   void onSearchBarFocus() {
@@ -738,61 +753,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     padding: const EdgeInsets.only(left: 20),
                                                     child: DropdownButton(
                                                       value: birthM,
-                                                      items: const [
-                                                        //add items in the dropdown
-                                                        DropdownMenuItem(
-                                                          value: "none",
-                                                          child: Text("Select Month"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                            value: "1",
-                                                            child: Text("Jan")),
-                                                        DropdownMenuItem(
-                                                          value: "2",
-                                                          child: Text("Feb"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "3",
-                                                          child: Text("Mar"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "4",
-                                                          child: Text("Apr"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "5",
-                                                          child: Text("May"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "6",
-                                                          child: Text("Jun"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "7",
-                                                          child: Text("Jul"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "8",
-                                                          child: Text("Aug"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "9",
-                                                          child: Text("Sep"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "10",
-                                                          child: Text("Oct"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "11",
-                                                          child: Text("Nov"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "12",
-                                                          child: Text("Dec"),
-                                                        ),
-                                                      ],
-                                                      onChanged: (String? value) {
+                                                      items: 
+                                                      months.map((year) => DropdownMenuItem(
+                                                              value: year,
+                                                              child: Text(year == 'none'? "Select Month": year),
+                                                            )).toList(),
+                                                      onChanged: (dynamic? value) {
                                                         //get value when changed
                                                         saveData['birthM'] = value;
                                                         birthM = value!;
@@ -836,137 +802,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     padding: const EdgeInsets.only(left: 20),
                                                     child: DropdownButton(
                                                       value: birthD,
-                                                      items: const [
-                                                        //add items in the dropdown
-                                                        DropdownMenuItem(
-                                                          value: "none",
-                                                          child: Text("Select Day"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                            value: "1",
-                                                            child: Text("1")),
-                                                        DropdownMenuItem(
-                                                          value: "2",
-                                                          child: Text("2"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "3",
-                                                          child: Text("3"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "4",
-                                                          child: Text("4"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "5",
-                                                          child: Text("5"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "6",
-                                                          child: Text("6"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "7",
-                                                          child: Text("7"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "8",
-                                                          child: Text("8"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "9",
-                                                          child: Text("9"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "10",
-                                                          child: Text("10"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "11",
-                                                          child: Text("11"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "12",
-                                                          child: Text("12"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "13",
-                                                          child: Text("13"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "14",
-                                                          child: Text("14"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "15",
-                                                          child: Text("15"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "16",
-                                                          child: Text("16"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "17",
-                                                          child: Text("17"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "18",
-                                                          child: Text("18"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "19",
-                                                          child: Text("19"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "20",
-                                                          child: Text("20"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "21",
-                                                          child: Text("21"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "22",
-                                                          child: Text("22"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "23",
-                                                          child: Text("23"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "24",
-                                                          child: Text("24"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "25",
-                                                          child: Text("25"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "26",
-                                                          child: Text("26"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "27",
-                                                          child: Text("27"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "28",
-                                                          child: Text("28"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "29",
-                                                          child: Text("29"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "30",
-                                                          child: Text("30"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "31",
-                                                          child: Text("31"),
-                                                        ),
-                                                      ],
-                                                      onChanged: (String? value) {
+                                                      items: 
+                                                      days.map((year) => DropdownMenuItem(
+                                                              value: year,
+                                                              child: Text(year == 'none'? "Select Day": year),
+                                                            )).toList(),
+                                                      onChanged: (dynamic? value) {
                                                         //get value when changed
                                                         saveData['birthD'] = value;
                                                         birthD = value!;
@@ -1010,25 +851,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     padding: const EdgeInsets.only(left: 20),
                                                     child: DropdownButton(
                                                       value: birthY,
-                                                      items: const [
-                                                        //add items in the dropdown
-                                                        DropdownMenuItem(
-                                                          value: "none",
-                                                          child: Text("Select Year"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                            value: "1989",
-                                                            child: Text("1989")),
-                                                        DropdownMenuItem(
-                                                          value: "1990",
-                                                          child: Text("1990"),
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          value: "1991",
-                                                          child: Text("1991"),
-                                                        ),
-                                                      ],
-                                                      onChanged: (String? value) {
+                                                      items: 
+                                                      years.map((year) => DropdownMenuItem(
+                                                              value: year,
+                                                              child: Text(year == 'none'? "Select Year": year),
+                                                            )).toList(),
+                                                      onChanged: (dynamic? value) {
                                                         saveData['birthY'] = value;
                                                         birthY = value!;
                                                         setState(() {});
@@ -1506,6 +1334,14 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                 ],)
                                               ),
                                             ],
+                                          ),
+                                          //all interests
+                                          Container(
+                                            child: SingleChildScrollView(
+                                              child: Column(children: [
+
+                                              ]),
+                                            ),
                                           ),
                                           const Padding(padding: EdgeInsets.only(top: 20)),
                                           //save button
