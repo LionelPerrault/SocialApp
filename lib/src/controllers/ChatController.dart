@@ -1,17 +1,15 @@
+// ignore: file_names
 import 'dart:convert';
-
+import 'package:firebase/firebase.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../firebase_options.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
 import '../models/chatModel.dart';
-import '../models/userModel.dart';
 
 class ChatController extends ControllerMVC {
   factory ChatController() => _this ??= ChatController._();
@@ -42,24 +40,7 @@ class ChatController extends ControllerMVC {
     return false;
   }
 
-  getTimeandSendMessage(newOrNot, messageType, data) async {
-    DateTime time;
-    Response res;
-    bool success = false;
-    try {
-      res = await get(
-          Uri.http('worldtimeapi.org', '/api/timezone/America/Los_Angeles'));
-      var d = jsonDecode(res.body);
-      time = DateTime.parse(d['datetime']);
-      success = await sendMessage(newOrNot, messageType, data, time);
-    } catch (e) {
-      success = false;
-    }
-    return success;
-    // return time;
-  }
-
-  Future<bool> sendMessage(newOrNot, messageType, data, time) async {
+  Future<bool> sendMessage(newOrNot, messageType, data) async {
     var newChat = false;
     bool success = false;
     print(chattingUser);
@@ -93,7 +74,7 @@ class ChatController extends ControllerMVC {
           'sender': UserManager.userInfo['userName'],
           'receiver': chattingUser,
           'data': data,
-          'timeStamp': time
+          'timeStamp': ServerValue.TIMESTAMP
         });
       });
     } else {
@@ -111,7 +92,7 @@ class ChatController extends ControllerMVC {
         'sender': UserManager.userInfo['userName'],
         'receiver': chattingUser,
         'data': data,
-        'timeStamp': time
+        'timeStamp': ServerValue.TIMESTAMP
       }).then((value) => {});
     }
     return success;

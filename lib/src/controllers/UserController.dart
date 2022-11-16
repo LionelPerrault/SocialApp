@@ -204,7 +204,7 @@ class UserController extends ControllerMVC {
         if (checkUsername.size > 0) {
           TokenLogin getInfo = checkUsername.docs[0].data();
           email = getInfo.email;
-        }else {
+        } else {
           failLogin = 'The username you entered does not belong to any account';
         }
       }
@@ -212,7 +212,6 @@ class UserController extends ControllerMVC {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       var uid = userCredential.user!.uid;
-      print(uid);
       failLogin = '';
       setState(() {});
       QuerySnapshot<TokenLogin> querySnapshot =
@@ -241,6 +240,7 @@ class UserController extends ControllerMVC {
         };
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
         UserManager.getUserInfo();
+        RouteNames.userName = user.userName;
         loginRelysia(context);
       }
     } on FirebaseAuthException catch (e) {

@@ -1,24 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/chat/newMessageScreen.dart';
-import 'package:shnatter/src/views/chat/writeMessageScreen.dart';
-import 'package:shnatter/src/widget/primaryInput.dart';
-
 import '../../controllers/ChatController.dart';
-import '../../managers/user_manager.dart';
-import '../../models/chatModel.dart';
 
 class EmoticonScreen extends StatefulWidget {
   Function onBack;

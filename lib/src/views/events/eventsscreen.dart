@@ -8,7 +8,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatBox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/events/panel/allevents.dart';
 import 'package:shnatter/src/views/events/panel/myevents.dart';
@@ -58,7 +57,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
   //
   @override
   void initState() {
-    subUrl = url.split('/')[url.split('/').length-1];
+    subUrl = url.split('/')[url.split('/').length - 1];
     print(subUrl);
     add(widget.con);
     con = controller as HomeController;
@@ -155,12 +154,20 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: Column(children: [
-                              EventsHeaderPanel(),
-                              const Padding(padding: EdgeInsets.only(top: 20)),
-                              subUrl == 'events' ? AllEvents() : const SizedBox(),
-                              subUrl == 'manage' ? MyEvents() : const SizedBox(),
-                            ],)),
+                            Expanded(
+                                child: Column(
+                              children: [
+                                EventsHeaderPanel(),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 20)),
+                                subUrl == 'events'
+                                    ? AllEvents()
+                                    : const SizedBox(),
+                                subUrl == 'manage'
+                                    ? MyEvents()
+                                    : const SizedBox(),
+                              ],
+                            )),
                           ],
                         )),
                       ]),
@@ -220,8 +227,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                         )),
                   )
                 : const SizedBox(),
-              ChatScreen(),
-
+            ChatScreen(),
           ],
         ));
   }
