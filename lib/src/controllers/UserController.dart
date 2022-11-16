@@ -442,6 +442,20 @@ class UserController extends ControllerMVC {
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
         .update({'avatar': userAvatar});
+    FirebaseFirestore.instance
+        .collection(Helper.message).
+        where('users', arrayContains: UserManager.userInfo['userName'])
+        .get().then((value) async{
+          for(int i = 0;i< value.docs.length;i++){
+            await FirebaseFirestore.instance.collection(Helper.message)
+            .doc(value.docs[i].id).update({
+              UserManager.userInfo['userName']:{
+                'avatar':userAvatar,
+                'name':"${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}"
+              }
+            });
+          }
+        });
     resetGetUserInfo();
   }
 

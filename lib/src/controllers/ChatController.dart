@@ -1,15 +1,18 @@
 // ignore: file_names
 import 'dart:convert';
-import 'package:firebase/firebase.dart';
+// ignore: deprecated_member_use
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../firebase_options.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
 import '../models/chatModel.dart';
+import 'package:firebase_database/firebase_database.dart';
+
 
 class ChatController extends ControllerMVC {
   factory ChatController() => _this ??= ChatController._();
@@ -39,12 +42,10 @@ class ChatController extends ControllerMVC {
   bool onAsyncError(FlutterErrorDetails details) {
     return false;
   }
-
   Future<bool> sendMessage(newOrNot, messageType, data) async {
     var newChat = false;
     bool success = false;
     print(chattingUser);
-    print(data);
     if (chattingUser == '' || data == '') {
       success = false;
     }
@@ -74,7 +75,7 @@ class ChatController extends ControllerMVC {
           'sender': UserManager.userInfo['userName'],
           'receiver': chattingUser,
           'data': data,
-          'timeStamp': ServerValue.TIMESTAMP
+          'timeStamp': FieldValue.serverTimestamp()
         });
       });
     } else {
@@ -92,7 +93,7 @@ class ChatController extends ControllerMVC {
         'sender': UserManager.userInfo['userName'],
         'receiver': chattingUser,
         'data': data,
-        'timeStamp': ServerValue.TIMESTAMP
+        'timeStamp': FieldValue.serverTimestamp(),
       }).then((value) => {});
     }
     return success;

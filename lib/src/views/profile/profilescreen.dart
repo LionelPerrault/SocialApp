@@ -8,7 +8,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:firebase/firebase.dart';
+import 'package:shnatter/src/views/profile/profileAvatarandTabscreen.dart';
 import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -132,26 +132,8 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: SizeConfig(context).screenWidth - 310,
-                          padding: const EdgeInsets.only(left: 60, right: 10),
-                          margin: const EdgeInsets.only(top: 200),
-                          child: Row(children: [
-                            CircleAvatar(
-                              radius: 80,
-                              backgroundColor: Colors.white,
-                              child: userInfo['avatar'] != null
-                                  ? CircleAvatar(
-                                      radius: 75,
-                                      backgroundImage:
-                                          NetworkImage(userInfo['avatar']))
-                                  : CircleAvatar(
-                                      radius: 75,
-                                      child: SvgPicture.network(Helper.avatar),
-                                    ),
-                            )
-                          ]),
-                        ),
+                        ProfileAvatarandTabScreen()
+                        
                       ]),
                 )),
             showSearch
