@@ -63,4 +63,11 @@ class PostController extends ControllerMVC {
           RouteNames
               .settings);
   }
+  //get all interests from firebase
+  Future<List> getAllInterests() async {
+    QuerySnapshot querySnapshot =
+          await Helper.allInterests.orderBy('title').get();
+    var doc = querySnapshot.docs;
+    return doc;
+  }
 }

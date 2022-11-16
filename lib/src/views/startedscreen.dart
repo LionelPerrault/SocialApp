@@ -62,10 +62,17 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   var birthD = "none";
   var birthY = "none";
   var interests = "none";
+  var interestsCheck = [];
+  var parent;
   List years = [];
   List days = [];
   List months = [];
-  List allInterests = [];
+  List category = [
+    {
+      'title' : 'none'
+    }
+  ];
+  List subCategory = [];
   var isShowProgressive = false;
   var fullName = '';
   late AnimationController _drawerSlideController;
@@ -107,7 +114,18 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     );
     userCon.userAvatar = UserManager.userInfo['avatar'] == null ? '' : UserManager.userInfo['avatar'];
     userCon.setState(() {});
-    // allInterests = userCon.interests() as <List>;
+    userCon.getAllInterests().then((allInterests) =>
+    {
+      for(int i = 0; i<allInterests.length; i++){
+        if (allInterests[i]['parentId'] == '0') {
+          category.add(allInterests[i])
+        },
+        subCategory.add(allInterests[i]),
+        parent = allInterests.where((inte) => inte['id'] == allInterests[i]['parentId']).toList(),
+        interestsCheck.add({'title' : allInterests[i]['title'], 'interested' : false, 'parentId' : parent.length == 0 ? allInterests[i]['title'] : parent[0]['title']})
+      }
+    });
+    
   }
 
   void onSearchBarFocus() {
@@ -1276,7 +1294,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                           fit: FlexFit.tight, child: SizedBox()),
                                                       const Padding(
                                                         padding: EdgeInsets.only(top: 30),
-                                                      )
+                                                      ),
                                                     ],
                                                   ),
                                                   Column(children: [
@@ -1292,24 +1310,21 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                           padding: const EdgeInsets.only(left: 20),
                                                           child: DropdownButton(
                                                             value: interests,
-                                                            items: const [
-                                                              //add items in the dropdown
+                                                            items: 
+                                                            category.map((inte) => 
                                                               DropdownMenuItem(
-                                                                value: "none",
-                                                                child: Text("Select Category"),
-                                                              ),
-                                                              DropdownMenuItem(
-                                                                  value: "automotive",
-                                                                  child: Text("Automotive")),
-                                                              DropdownMenuItem(
-                                                                value: "beauty",
-                                                                child: Text("Beauty"),
+                                                                value: inte['title'],
+                                                                child: Text(inte['title'] == 'none'? "Select Interests": inte['title']),
                                                               )
-                                                            ],
-                                                            onChanged: (String? value) {
+                                                            ).toList(),
+                                                            onChanged: (dynamic? value) {
                                                               //get value when changed
                                                               interests = value!;
-                                                              saveData['interests'] = value;
+                                                              for (var i = 0; i < interestsCheck.length; i++) {
+                                                                if (interestsCheck[i]['parentId'] == interests) {
+                                                                  interestsCheck[i]['interested'] = true;
+                                                                }
+                                                              }
                                                               setState(() {});
                                                             },
                                                             style: const TextStyle(
@@ -1337,9 +1352,72 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                           ),
                                           //all interests
                                           Container(
+                                            height: 300,
                                             child: SingleChildScrollView(
                                               child: Column(children: [
-
+                                                Column(children: [
+                                                    const Divider(
+                                                      thickness: 0.1,
+                                                      color: Colors.black,
+                                                    ),
+                                                    Row(children: const [
+                                                    Padding(padding: EdgeInsets.only(left: 10)),
+                                                    Text('Title',style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.black
+                                                    ),),
+                                                    Flexible(fit: FlexFit.tight, child: SizedBox()),
+                                                    Text('Check',style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.black
+                                                    ),),
+                                                    Padding(padding: EdgeInsets.only(left: 30))
+                                                  ],),
+                                                  const Divider(
+                                                    thickness: 0.1,
+                                                    color: Colors.black,
+                                                  )
+                                                ]),
+                                                Column(
+                                                  children: 
+                                                  subCategory.asMap().entries.map((inte) => 
+                                                    Column(children: [ Row(children: [
+                                                      const Padding(padding: EdgeInsets.only(left: 10)),
+                                                      Text(inte.value['title'],style: const TextStyle(
+                                                        fontSize: 11,
+                                                        color: Colors.black
+                                                      ),),
+                                                      const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                                                      Transform.scale(
+                                                          scale: 0.7,
+                                                          child: Checkbox(
+                                                            fillColor:
+                                                                MaterialStateProperty.all<Color>(
+                                                                    Colors.black),
+                                                            checkColor: Colors.blue,
+                                                            activeColor: const Color.fromRGBO(
+                                                                0, 123, 255, 1),
+                                                            value: interestsCheck[inte.key]['interested'],
+                                                            shape: const RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        5.0))), // Rounded Checkbox
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                interestsCheck[inte.key]['interested'] = !interestsCheck[inte.key]['interested'];
+                                                              });
+                                                            },
+                                                          )),
+                                                      const Padding(padding: EdgeInsets.only(left: 30))
+                                                    ],),
+                                                    Divider(
+                                                      thickness: 0.1,
+                                                      color: Colors.black,
+                                                    )])
+                                                            ).toList(),
+                                                )
                                               ]),
                                             ),
                                           ),
@@ -1362,6 +1440,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                   onPressed: () {
                                                     isShowProgressive = true;
                                                     setState(() {});
+                                                    saveData['interests'] = [];
+                                                    for(int i = 0; i<interestsCheck.length; i++){
+                                                      if (interestsCheck[i]['interested'] == true) {
+                                                        saveData['interests'].add(interestsCheck[i]['title']);
+                                                      }
+                                                    }
                                                     userCon.saveProfile(saveData);
                                                     Timer(const Duration(milliseconds: 1300), () {
                                                       Navigator
