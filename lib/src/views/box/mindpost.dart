@@ -110,8 +110,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         child:
         AnimatedContainer(
           duration: Duration(milliseconds: 500),
-          height: show ? 320 : 0,
-          child: ListView(
+          height: show ? 360 : 0,
+          child:ListView(children: [
+            ListView(
             shrinkWrap:true,
             controller: _scrollController,
             children: [
@@ -260,8 +261,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         ),
             ],
           ),
-        )),
-        SizedBox(height: 10),
+          SizedBox(height: 10),
         Row(
           children: [
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
@@ -396,6 +396,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             )
           ],
         )
+          ], 
+        ))),
+        
       ])
         :
         Column(children: [

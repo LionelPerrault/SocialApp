@@ -372,10 +372,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                             (progress !=0&&progress !=100) ? Container(
                                               margin: EdgeInsets.only(top: 70, left: 10),
                                               width: 100,
-                                              child: LinearProgressIndicator(
+                                              padding: EdgeInsets.only(right:100 - (100 * progress/100)),
+                                              child: const LinearProgressIndicator(
+                                                color: Colors.blue,
                                               value: 10,
                                               semanticsLabel: 'Linear progress indicator',
-                                            ),) : SizedBox(),
+                                            ),) : const SizedBox(),
                                             Container(
                                               width: 26,
                                               height: 26,

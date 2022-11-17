@@ -25,76 +25,117 @@ class ProfilePhotosScreen extends StatefulWidget {
 }
 
 class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen>{
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final TextEditingController searchController = TextEditingController();
-  bool showSearch = false;
-  late FocusNode searchFocusNode;
-  bool showMenu = false;
-  late AnimationController _drawerSlideController;
-  var url = window.location.href;
-  var subUrl = '';
-  double width = 0;
-  double itemWidth = 0;
-  //
   var userInfo = UserManager.userInfo;
-  List<Map> mainInfoList = [];
+  String tab = 'Photos';
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
-    mainInfoList = [
-      {'title':'Add your profile picture','add': UserManager.userInfo['avatar'] ==null ? false : true},
-      {'title':'Add your profile cover','add':con.profile_cover == '' ? false : true},
-      {'title':'Add your biography','add':UserManager.userInfo['about'] == null ? false : true},
-      {'title':'Add your birthdate','add':UserManager.userInfo['birthY'] == null ? false : true},
-      {'title':'Add your relationship','add':UserManager.userInfo['school'] == null ? false : true},
-      {'title':'Add your work info','add':UserManager.userInfo['workTitle'] == null ? false : true},
-      {'title':'Add your location info','add':UserManager.userInfo['current'] == null ? false : true},
-      {'title':'Add your education info','add':
-        UserManager.userInfo['school'] == null && UserManager.userInfo['class'] == null && UserManager.userInfo['major'] == null ? false : true},
-    ];
-    _gotoHome();
   }
   late ProfileController con;
-  void _gotoHome(){
-    Future.delayed(Duration.zero, () {
-      width = SizeConfig(context).screenWidth - 260;
-      itemWidth = width/7.5;
-      setState(() {});
-    });
-  }
+  
   @override
   Widget build(BuildContext context) {
-    return Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.only(right: 10,left: 70,top: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:[
-                profileCompletion(),
-                MindPost()
-            ]),
-        );
+    return Column(children: [
+      mainTabs(),
+      tab == 'Photos' ? 
+      PhotosData() :
+      AlbumsData()
+    ]);
   }
-  Widget profileCompletion(){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-    // children: <Widget>[
-    //     Text('\$', style: TextStyle(decoration: TextDecoration.lineThrough))
-    children: mainInfoList.map((e) =>Container(
-      padding: const EdgeInsets.only(top: 5),
-      child:
-       Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-      const Icon(Icons.add,size:15),
-      const Padding(padding: EdgeInsets.only(left: 5),),
-       Text(e['title'],style: e['add'] ? const TextStyle(decoration: TextDecoration.lineThrough) : const TextStyle(),)  
-    ],))).toList(),
-    
-);
+  Widget mainTabs(){
+    return Container(
+          width: SizeConfig(context).screenWidth ,
+          height: 100,
+          margin: const EdgeInsets.only(left: 30,right: 30),
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(240, 240, 240, 1),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          alignment: Alignment.topLeft,
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left:20,top: 20),
+                child: Row(children: const [
+                  Icon(Icons.photo,size: 15,),
+                  Padding(padding: EdgeInsets.only(left: 5)),
+                  Text('Photos',style: TextStyle(
+                    fontSize: 15
+                  ),)
+                ],)
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 22),
+                child: Row(
+                  children: [
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () {
+                          tab = 'Photos';
+                          setState(() { });
+                        },
+                        child: Container(
+                      alignment: Alignment.center,
+                      width: 100,
+                      height: 40,
+                      color: tab == 'Photos' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                      child: const Text(
+                        'Photos',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black
+                        ),
+                      ),
+                    ),),
+                    ),
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () {
+                          tab = 'Albums';
+                          setState(() { });
+                        },
+                        child: Container(
+                      alignment: Alignment.center,
+                      width: 100,
+                      height: 40,
+                      color: tab == 'Albums' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                      child: const Text(
+                        'Albums',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black
+                        ),
+                      ),
+                    ),
+                      ),
+                    ),
+                    
+                ]),
+              )
+            ],
+          ),
+      );
+  }
+  Widget PhotosData(){
+    return userInfo['photos'] == null ? Container(
+      padding: const EdgeInsets.only(top: 40),
+      alignment: Alignment.center,
+      child: Text('${userInfo['fullName']} doesn`t have photos',style:const TextStyle(
+        color: Color.fromRGBO(108, 117, 125, 1)
+      )),
+    ) : Container();
+  }
+  Widget AlbumsData(){
+    return userInfo['albums'] == null ? Container(
+      padding: const EdgeInsets.only(top: 40),
+      alignment: Alignment.center,
+      child: Text('${userInfo['fullName']} doesn`t have albums',style:const TextStyle(
+        color: Color.fromRGBO(108, 117, 125, 1)
+      )),
+    ) : Container();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,10 +17,16 @@ import '../models/userModel.dart';
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File, Platform;
 
-class FileManager {
+class FileController extends ControllerMVC{
+  factory FileController([StateMVC? state]) =>
+      _this ??= FileController._(state);
+  FileController._(StateMVC? state) : 
+    progress = 0,
+    super(state);
+  static FileController? _this;
+  double progress;
   get SharedPreferences => null;
   static var userCon = UserController();
-  static var progress;
   static var downloadUrl;
   @override
   Future<bool> initAsync() async {
@@ -54,80 +62,84 @@ class FileManager {
     return pickedFile!;
   }
 
-  static uploadFile(XFile? pickedFile) async {
+  uploadFile(XFile? pickedFile) async {
     final _firebaseStorage = FirebaseStorage.instance;
-    print(23);
-    bool success = false;
-    if (kIsWeb) {
-      try {
-        //print("read bytes");
-        Uint8List bytes = await pickedFile!.readAsBytes();
-        //print(bytes);
-        Reference _reference = await _firebaseStorage
-            .ref()
+    if(kIsWeb){
+        try{
+          
+          //print("read bytes");
+          Uint8List bytes  = await pickedFile!.readAsBytes();
+          //print(bytes);
+          Reference _reference = await _firebaseStorage.ref()
             .child('chat-assets/${PPath.basename(pickedFile!.path)}');
-        final uploadTask = _reference.putData(
-          bytes,
-          SettableMetadata(contentType: 'image/jpeg'),
-        );
-        await uploadTask.whenComplete(() async {
-          downloadUrl = await _reference.getDownloadURL();
-          userCon.userAvatar = downloadUrl;
-          success = true;
-          //await _reference.getDownloadURL().then((value) {
-          //  uploadedPhotoUrl = value;
-          //});
-        });
-        // ignore: await_only_futures
-        await uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-          switch (taskSnapshot.state) {
-            case TaskState.running:
-              progress = 100.0 *
-                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-              print("Upload is $progress% complete.");
-              break;
-            case TaskState.paused:
-              print("Upload is paused.");
-              break;
-            case TaskState.canceled:
-              print("Upload was canceled");
-              break;
-            case TaskState.error:
-              // Handle unsuccessful uploads
-              break;
-            case TaskState.success:
-              print("Upload is completed");
-              // Handle successful uploads on complete
-              // ...
-              //  var downloadUrl = await _reference.getDownloadURL();
-              break;
-          }
-        });
-      } catch (e) {
-        // print("Exception $e");
-      }
-    } else {
+          final uploadTask = _reference.putData(
+            bytes,
+            SettableMetadata(contentType: 'image/jpeg'),
+          );
+          uploadTask.whenComplete(() async {
+            var downloadUrl = await _reference.getDownloadURL();
+            userCon.userAvatar = downloadUrl;
+            userCon.setState(() {});
+            userCon.changeAvatar();
+            //await _reference.getDownloadURL().then((value) {
+            //  uploadedPhotoUrl = value;
+            //});
+          });
+          uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+                      switch (taskSnapshot.state) {
+                        case TaskState.running:
+                          progress =
+                              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                              setState(() {});
+                              print("Upload is $progress% complete.");
+
+                          break;
+                        case TaskState.paused:
+                          print("Upload is paused.");
+                          break;
+                        case TaskState.canceled:
+
+                          print("Upload was canceled");
+                          break;
+                        case TaskState.error:
+                        // Handle unsuccessful uploads
+                          break;
+                        case TaskState.success:
+                         print("Upload is completed");
+                        // Handle successful uploads on complete
+                        // ...
+                        //  var downloadUrl = await _reference.getDownloadURL();
+                          break;
+                      }
+                    });
+        }catch(e)
+        {
+          // print("Exception $e");
+        }
+    }else{
       var file = File(pickedFile!.path);
       //write a code for android or ios
-      Reference _reference = await _firebaseStorage
-          .ref()
+      Reference _reference = await _firebaseStorage.ref()
           .child('chat-assets/${PPath.basename(pickedFile!.path)}');
-      _reference.putFile(file).whenComplete(() async {
-        print('value');
-        var downloadUrl = await _reference.getDownloadURL();
-        await _reference.getDownloadURL().then((value) {
-          // userCon.userAvatar = value;
-          // userCon.setState(() {});
-          // print(value);
+        _reference.putFile(
+          file
+        )
+        .whenComplete(() async {
+            print('value');
+          var downloadUrl = await _reference.getDownloadURL();
+          await _reference.getDownloadURL().then((value) {
+            // userCon.userAvatar = value;
+            // userCon.setState(() {});
+            // print(value);
+          });
         });
-      });
     }
-    return success;
+
   }
 
-  static Future<Map> uploadImage() async {
+   Future<Map> uploadImage({callBack}) async {
     XFile? pickedFile = await chooseImage();
-    var s = await uploadFile(pickedFile);
-    return {'success': s, 'url': downloadUrl};
+    uploadFile(pickedFile);
+    return {'success': true, 'url': downloadUrl};
   }
 }

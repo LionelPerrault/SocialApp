@@ -8,6 +8,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import '../../controllers/ChatController.dart';
 import '../../managers/user_manager.dart';
 import '../../models/chatModel.dart';
+import '../../utils/size_config.dart';
 
 class ChatUserListScreen extends StatefulWidget {
   Function onBack;
@@ -51,10 +52,10 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                   itemCount: listUsers.length,
                   controller: scrollController,
                   shrinkWrap: true,
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  padding: EdgeInsets.only(bottom: 10),
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    
+                    con.takedata = true;
                     ChatModel t = listUsers[index].data();
                     var docId = snapshot.data!.docs[index].id;
                     var chatUserName = '';
@@ -129,7 +130,9 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                   },
                 ));
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return con.takedata ? Container() : SizedBox(
+              height:SizeConfig(context).screenHeight - 220,
+              child:Center(child:CircularProgressIndicator()));
           }
         });
   }

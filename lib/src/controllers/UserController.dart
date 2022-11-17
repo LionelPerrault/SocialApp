@@ -162,6 +162,7 @@ class UserController extends ControllerMVC {
         .set({
       ...signUpUserInfo,
       'paymail': paymail,
+      'avatar':'',
       'walletAddress': walletAddress,
       'relysiaEmail': relysiaEmail,
       'relysiaPassword': relysiaPassword,
@@ -170,6 +171,7 @@ class UserController extends ControllerMVC {
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
       'paymail': paymail,
+      'fullName': '${signUpUserInfo['firstName']} ${signUpUserInfo['lastName']}',
       'walletAddress': walletAddress,
       'relysiaEmail': relysiaEmail,
       'relysiaPassword': relysiaPassword,
@@ -244,16 +246,7 @@ class UserController extends ControllerMVC {
         });
         userInfo = {
           ...j,
-          'firstName': user.firstName,
-          'lastName': user.lastName,
-          'userName': user.userName,
-          'password': password,
-          'relysiaEmail': user.relysiaEmail,
-          'relysiaPassword': user.relysiaPassword,
-          'paymail': user.paymail,
-          'avatar': user.userAvatar,
-          'walletAddress': user.walletAddress,
-          'isStarted': user.isStarted.toString(),
+          'fullName':'${j['firstName']} ${j['lastName']}',
           'isVerify': isVerify.toString(),
           'isRememberme': isRememberme.toString(),
           'uid': uid,
@@ -403,6 +396,7 @@ class UserController extends ControllerMVC {
                                                   response['address'],
                                               await registerUserInfo(),
                                               await UserManager.getUserInfo(),
+                                              RouteNames.userName = signUpUserInfo['userName'],
                                               isSendRegisterInfo = false,
                                               isLogined = true,
                                               Navigator.pushReplacementNamed(

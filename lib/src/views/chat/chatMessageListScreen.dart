@@ -14,10 +14,11 @@ import '../../managers/user_manager.dart';
 
 class ChatMessageListScreen extends StatefulWidget {
   Function onBack;
-  ChatMessageListScreen({Key? key, required this.onBack})
+  ChatMessageListScreen({Key? key, required this.onBack, required this.showWriteMessage})
       : con = ChatController(),
         super(key: key);
   late ChatController con;
+  bool showWriteMessage;
   @override
   State createState() => ChatMessageListScreenState();
 }
@@ -74,7 +75,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                     return Column(children: [
                       Container(
                           height: SizeConfig(context).screenHeight - 220,
-                          padding: EdgeInsets.only(top: 15, bottom: 15),
+                          padding: EdgeInsets.only(bottom: 15),
                           child: ListView.builder(
                             itemCount: messageList.length,
                             controller: _scrollController,
@@ -190,15 +191,19 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                               );
                             },
                           )),
-                      WriteMessageScreen(
-                        type: 'notnew',
-                        goMessage: (value) {
-                          widget.onBack(value);
-                        },
-                      )
+                          widget.showWriteMessage ? 
+                           WriteMessageScreen(
+                              type: 'old',
+                              goMessage: (value) {
+                                widget.onBack(value);
+                              },
+                            ) : Container()
+                      
                     ]);
                   } else {
-                    return const Center(child: CircularProgressIndicator());
+                    return SizedBox(
+                      height:SizeConfig(context).screenHeight - 220,
+                      child:Center(child:CircularProgressIndicator()));;
                   }
                 }));
   }
