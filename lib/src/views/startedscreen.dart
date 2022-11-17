@@ -1444,7 +1444,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     saveData['interests'] = [];
                                                     for(int i = 0; i<interestsCheck.length; i++){
                                                       if (interestsCheck[i]['interested'] == true) {
-                                                        saveData['interests'].add(interestsCheck[i]['title']);
+                                                        saveData['interests'].add(interestsCheck[i]['id']);
                                                       }
                                                     }
                                                     userCon.saveProfile(saveData);

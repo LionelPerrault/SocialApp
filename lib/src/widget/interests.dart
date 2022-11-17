@@ -18,8 +18,7 @@ import 'package:shnatter/src/widget/startedInput.dart';
 class CreateEventModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
-  Function onClick;
-  CreateEventModal({Key? key,required this.context,required this.onClick}) :Postcon = PostController(), super(key: key);
+  CreateEventModal({Key? key,required this.context}) :Postcon = PostController(), super(key: key);
   @override
   State createState() => CreateEventModalState();
 }
@@ -57,6 +56,12 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   }
   @override
   Widget build(BuildContext context) {
+    // for(int i = 0; i<interestsCheck.length; i++){
+    //   if (interestsCheck[i]['interested'] == true) {
+    //     Postcon.createEventData['interests'].add(interestsCheck[i]['id']);
+    //   }
+    // }
+    // Postcon.setState((){});
     return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +141,6 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
             ),
             //all interests
             Container(
-              height: 300,
               child: SingleChildScrollView(
                 child: Column(children: [
                   Column(children: [
@@ -164,12 +168,14 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                       color: Colors.black,
                     )
                   ]),
-                  Column(
-                    children: 
-                    subCategory.asMap().entries.map((inte) => 
-                      Column(children: [ Row(children: [
+                  Container(
+                    height: 300,
+                    child: ListView.builder(
+                      itemCount: subCategory.length,
+                      itemBuilder: (BuildContext context, int index) {
+                      return Column(children: [ Row(children: [
                         const Padding(padding: EdgeInsets.only(left: 10)),
-                        Text(inte.value['title'],style: const TextStyle(
+                        Text(subCategory[index]['title'],style: const TextStyle(
                           fontSize: 11,
                           color: Colors.black
                         ),),
@@ -183,14 +189,14 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                               checkColor: Colors.blue,
                               activeColor: const Color.fromRGBO(
                                   0, 123, 255, 1),
-                              value: interestsCheck[inte.key]['interested'],
+                              value: interestsCheck[index]['interested'],
                               shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(
                                           5.0))), // Rounded Checkbox
                               onChanged: (value) {
                                 setState(() {
-                                  interestsCheck[inte.key]['interested'] = !interestsCheck[inte.key]['interested'];
+                                  interestsCheck[index]['interested'] = !interestsCheck[index]['interested'];
                                 });
                               },
                             )),
@@ -199,8 +205,8 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                       Divider(
                         thickness: 0.1,
                         color: Colors.black,
-                      )])
-                              ).toList(),
+                      )]);
+                    }),
                   )
                 ]),
               ),

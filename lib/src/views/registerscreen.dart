@@ -33,9 +33,6 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
     super.initState();
     add(widget.con);
     con = controller as UserController;
-    if (con.isLogined) {
-      Navigator.pushReplacementNamed(context, RouteNames.homePage);
-    }
   }
 
   var signUpUserInfo = {};
