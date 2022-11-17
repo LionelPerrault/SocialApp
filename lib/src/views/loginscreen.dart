@@ -202,7 +202,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                           isShowProgressive: con.isSendLoginedInfo,
                           buttonName: "login",
                           onPressed: () => {
-                            con.loginWithEmail(
+                            if(!con.isSendLoginedInfo)
+                              con.loginWithEmail(
                                 context, email, password, isRememberme)
                             // con.createPassword()
                           },

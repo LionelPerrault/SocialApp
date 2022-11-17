@@ -353,7 +353,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                         }
                                       else
                                         {
-                                          con.validate(context, signUpUserInfo),
+                                          if(!con.isSendRegisterInfo){
+                                            con.validate(context, signUpUserInfo),
+                                          }
                                         }
                                       // con.createPassword()
                                     },
