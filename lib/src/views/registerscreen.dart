@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -21,13 +19,11 @@ class RegisterScreen extends StatefulWidget {
   State createState() => RegisterScreenState();
   late UserController con;
 }
-
 class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   bool check1 = false;
   bool check2 = false;
   late UserController con;
   final _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     super.initState();
@@ -353,7 +349,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                         }
                                       else
                                         {
-                                          con.validate(context, signUpUserInfo),
+                                          if(!con.isSendRegisterInfo){
+                                            con.validate(context, signUpUserInfo),
+                                          }
                                         }
                                       // con.createPassword()
                                     },

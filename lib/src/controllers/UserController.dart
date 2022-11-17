@@ -118,6 +118,8 @@ class UserController extends ControllerMVC {
     print("------4--------");
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
+    QuerySnapshot<TokenLogin> querySnapshot1 =
+        await Helper.authdata.where('userName', isEqualTo: signUpUserInfo['userName']).get();
     if (querySnapshot.size > 0) {
       failRegister =
           'Sorry, it looks like $email belongs to an existing account';
@@ -125,8 +127,15 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
+    if(querySnapshot1.size > 0){
+      failRegister =
+          'Sorry, it looks like ${signUpUserInfo['userName']} belongs to an existing account';
+      isSendRegisterInfo = false;
+      setState(() {});
+      return;
+    }
     print("------5--------");
-    if (failRegister == '') createRelysiaAccount();
+    createRelysiaAccount();
   }
 
   String createActivationCode() {
@@ -397,7 +406,7 @@ class UserController extends ControllerMVC {
                                               isSendRegisterInfo = false,
                                               isLogined = true,
                                               Navigator.pushReplacementNamed(
-                                                  context, RouteNames.homePage),
+                                                  context, RouteNames.started),
                                               setState(() {}),
                                             }
                                         })
