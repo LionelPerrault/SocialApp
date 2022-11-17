@@ -71,33 +71,44 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
           ),
           const Padding(padding: EdgeInsets.only(top: 10)),
           Container(
-            color: Colors.blue,
+            height: 200,
             alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(3),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.topRight,
+                colors: <Color>[
+                  Color.fromARGB(255, 102, 125, 182),
+                  Color.fromARGB(255, 0, 130, 200),
+                  Color.fromARGB(255, 0, 130, 200),
+                  Color.fromARGB(255, 102, 125, 182),
+                ],
+                tileMode: TileMode.mirror,
+              ),
+            ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 45.0),
-                ),
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: SvgPicture.network(
-                      'https://test.shnatter.com/content/themes/default/images/headers/undraw_message_sent_1030.svg'),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.only(left: 60.0),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    alignment: Alignment.center,
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Text('Reset Password',
+                            style: TextStyle(color: Colors.white, fontSize: 30)),
+                        Padding(padding: EdgeInsets.only(top: 10)),
+                        Text(
+                            'Enter the email address you signed up with and we\'ll email you a reset link',
+                            style: TextStyle(color: Colors.white, fontSize: 14)),
+                      ],
                     ),
-                    Text('Reset Password',
-                        style: TextStyle(color: Colors.white, fontSize: 22)),
-                    Text(
-                        'Enter the email address you signed up with and we\'ll email you a reset link',
-                        style: TextStyle(color: Colors.white, fontSize: 12)),
-                  ],
-                ),
-                // SvgPicture.network('https://test.shnatter.com/content/themes/default/images/headers/undraw_message_sent_1030.svg'),
+                  ),)
               ],
             ),
           ),
@@ -107,8 +118,8 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
               borderRadius: BorderRadius.circular(2),
               boxShadow: const [
                 BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 7.0,
+                  color: Colors.grey,
+                  blurRadius: 1.0,
                   spreadRadius: 0.1,
                   offset: Offset(
                     1,
@@ -119,7 +130,10 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
             ),
             width: 340,
             height: 180,
-            child: Column(children: [
+            child: Row(children: [
+              Expanded(
+                flex: 1,
+                child: Column(children: [
               const Padding(
                 padding: EdgeInsets.only(top: 35),
               ),
@@ -169,12 +183,12 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: const [
                     BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 10,
+                      color: Colors.grey,
+                      blurRadius: 1,
                       spreadRadius: 0.01,
                       offset: Offset(
-                        2,
-                        2,
+                        1,
+                        1,
                       ),
                     )
                   ],
@@ -198,6 +212,7 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                   },
                 ),
               ),
+            ]))
             ]),
           ),
           const Padding(
