@@ -88,7 +88,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize
+                                SizeConfig.mediumScreenSize
                             ? const SizedBox()
                             : AdminLeftPanel(),
                         //    : SizedBox(width: 0),
@@ -101,11 +101,11 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                 builder: (context, child) {
                   return FractionalTranslation(
                       translation: SizeConfig(context).screenWidth >
-                              SizeConfig.smallScreenSize
+                              SizeConfig.mediumScreenSize
                           ? Offset(0, 0)
                           : Offset(_drawerSlideController.value * 0.001, 0.0),
                       child: SizeConfig(context).screenWidth >
-                                  SizeConfig.smallScreenSize ||
+                                  SizeConfig.mediumScreenSize ||
                               _isDrawerClosed()
                           ? const SizedBox()
                           : Padding(

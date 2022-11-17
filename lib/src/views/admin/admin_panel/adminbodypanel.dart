@@ -12,6 +12,7 @@ class AdminBodyPanel extends StatelessWidget {
     SizeConfig(context).screenWidth >
                                 SizeConfig.smallScreenSize ? 
           Container(margin: EdgeInsets.only(top: 0, left: 60, right: 60),
+            alignment: Alignment.center,
             child: 
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -37,12 +38,12 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('76', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -51,7 +52,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Users', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 100.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 100,
                             height: 100,
@@ -62,7 +63,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(left: 20.0),),
@@ -84,10 +84,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('3', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -96,7 +96,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Online', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 100.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 80,
                             height: 80,
@@ -107,7 +107,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                 ],
@@ -132,10 +131,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('0', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -144,7 +143,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Banned', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 100.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 100,
                             height: 100,
@@ -155,7 +154,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                   const Padding(padding: EdgeInsets.only(left: 20.0),),
@@ -177,10 +175,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('3', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -189,7 +187,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Online', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 100.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 80,
                             height: 80,
@@ -200,7 +198,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                 ],
@@ -225,10 +222,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('277', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -237,7 +234,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Posts', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 100.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 100,
                             height: 100,
@@ -248,7 +245,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                   const Padding(padding: EdgeInsets.only(left: 4.0),),
@@ -270,10 +266,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('3', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -282,7 +278,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Online', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 100.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 80,
                             height: 80,
@@ -293,7 +289,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                 ],
@@ -318,10 +313,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('11', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -330,7 +325,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Pages', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 15.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 100,
                             height: 100,
@@ -341,7 +336,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                   const Padding(padding: EdgeInsets.only(left: 5.0),),
@@ -363,10 +357,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('65', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -375,7 +369,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Groups', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 15.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 80,
                             height: 100,
@@ -386,7 +380,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                   ),
                   const Padding(padding: EdgeInsets.only(left: 5.0),),
@@ -408,10 +401,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('73', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -420,7 +413,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Events', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 15.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 80,
                             height: 80,
@@ -431,7 +424,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                 ],
@@ -456,10 +448,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('277', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -468,7 +460,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Posts', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 100.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 100,
                             height: 100,
@@ -479,7 +471,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                   const Padding(padding: EdgeInsets.only(left: 4.0),),
@@ -501,10 +492,10 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('3', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -513,7 +504,7 @@ class AdminBodyPanel extends StatelessWidget {
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Manage Online', style: TextStyle(color: Colors.white, fontSize: 10)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 100.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           SizedBox(
                             width: 80,
                             height: 80,
@@ -524,7 +515,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                 ],
@@ -549,17 +539,17 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Row(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('230470', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Treasure balance', style: TextStyle(color: Colors.white, fontSize: 11)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 30.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
@@ -576,7 +566,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
                 ),
                 ],
@@ -585,7 +574,8 @@ class AdminBodyPanel extends StatelessWidget {
             ],),
           )
           :
-          Container(margin: EdgeInsets.only(top: 0, left: 60, right: 60),
+          Container(margin: EdgeInsets.only(top: 0, left: 30, right: 30),
+            alignment: Alignment.center,
             child: 
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -607,12 +597,12 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10),),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('76', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -621,7 +611,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Users', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 60.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 100,
                               height: 100,
@@ -632,7 +622,6 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
                     const Padding(padding: EdgeInsets.only(top: 20.0),),
                     Container(
@@ -650,10 +639,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('3', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -662,7 +651,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Online', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 60.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 80,
                               height: 80,
@@ -673,7 +662,6 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
@@ -691,10 +679,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('0', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -703,7 +691,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Banned', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 60.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 100,
                               height: 100,
@@ -714,7 +702,6 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
                     const Padding(padding: EdgeInsets.only(top: 20.0),),
                     Container(
@@ -732,10 +719,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('3', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -744,7 +731,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Online', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 60.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 80,
                               height: 80,
@@ -755,7 +742,6 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
@@ -773,10 +759,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('277', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -785,7 +771,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Posts', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 60.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 100,
                               height: 100,
@@ -796,9 +782,8 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 4.0),),
+                    const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
                       width: 288,
                       height: 85,
@@ -814,10 +799,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('3', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -826,7 +811,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Online', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 60.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 80,
                               height: 80,
@@ -837,11 +822,10 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
-                      width: 190,
+                      width: 288,
                       height: 85,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(3),
@@ -855,10 +839,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10),),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('11', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -867,7 +851,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Pages', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 15.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 100,
                               height: 100,
@@ -878,11 +862,10 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 5.0),),
+                    const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
-                      width: 190,
+                      width: 288,
                       height: 85,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(3),
@@ -896,10 +879,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('65', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -908,7 +891,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Groups', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 15.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 80,
                               height: 100,
@@ -916,14 +899,14 @@ class AdminBodyPanel extends StatelessWidget {
                                     Icons.groups_rounded,
                                     color: Colors.deepPurple[100],
                                   ),)
-                            )
+                            ),
+                            const Padding(padding: EdgeInsets.only(left: 7))
                           ]
                         ),
-                      ],)
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 5.0),),
+                    const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
-                      width: 190,
+                      width: 288,
                       height: 85,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(3),
@@ -937,10 +920,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('73', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -949,7 +932,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Events', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 15.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 80,
                               height: 80,
@@ -960,7 +943,6 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
@@ -978,10 +960,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('277', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -990,7 +972,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Posts', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 60.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 100,
                               height: 100,
@@ -1001,9 +983,8 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 4.0),),
+                    const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
                       width: 288,
                       height: 85,
@@ -1019,10 +1000,10 @@ class AdminBodyPanel extends StatelessWidget {
                           tileMode: TileMode.mirror,
                         ),
                       ),
-                      child: Row(children: [
-                        const Padding(padding: EdgeInsets.only(left: 7.0),),
+                      child: 
                         Row(
                           children: [
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             Column(children: const [
                               Padding(padding: EdgeInsets.only(top: 7.0),),
                               Text('3', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
@@ -1031,7 +1012,7 @@ class AdminBodyPanel extends StatelessWidget {
                               Padding(padding: EdgeInsets.only(top: 5.0),),
                               Text('Manage Online', style: TextStyle(color: Colors.white, fontSize: 10)),
                             ],),
-                            const Padding(padding: EdgeInsets.only(left: 60.0),),
+                            const Flexible(fit: FlexFit.tight, child: SizedBox()),
                             SizedBox(
                               width: 80,
                               height: 80,
@@ -1042,11 +1023,10 @@ class AdminBodyPanel extends StatelessWidget {
                             )
                           ]
                         ),
-                      ],)
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15.0),),
                     Container(
-                    width: 580,
+                    width: 288,
                     height: 70,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3),
@@ -1060,17 +1040,17 @@ class AdminBodyPanel extends StatelessWidget {
                         tileMode: TileMode.mirror,
                       ),
                     ),
-                    child: Row(children: [
-                      const Padding(padding: EdgeInsets.only(left: 7.0),),
+                    child: 
                       Row(
                         children: [
+                          const Padding(padding: EdgeInsets.only(left: 10)),
                           Row(children: const [
                             Padding(padding: EdgeInsets.only(top: 7.0),),
                             Text('230470', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900)),
                             Padding(padding: EdgeInsets.only(top: 5.0),),
                             Text('Treasure balance', style: TextStyle(color: Colors.white, fontSize: 11)),
                           ],),
-                          const Padding(padding: EdgeInsets.only(left: 30.0),),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
@@ -1087,7 +1067,6 @@ class AdminBodyPanel extends StatelessWidget {
                           )
                         ]
                       ),
-                    ],)
                   ),
           ],),
           );
