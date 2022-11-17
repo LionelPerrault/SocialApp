@@ -16,10 +16,10 @@ class UserManager {
     //await removeAllPreference();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user = prefs.getString(Helper.userField);
-    userInfo = await Helper.getJSONPreference(Helper.userField);
     if (user == null) {
       isLogined = false;
     } else {
+      userInfo = await Helper.getJSONPreference(Helper.userField);
       isLogined = true;
       RouteNames.userName = '/${userInfo['userName']}';
     }

@@ -25,20 +25,34 @@ class MindPost extends StatefulWidget {
 // ignore: must_be_immutable
 class MindPostState extends mvc.StateMVC<MindPost> {
   String dropdownValue = 'Public';
+    final _focus = FocusNode();
+  ScrollController _scrollController = ScrollController();
+  var show = false;
   @override
   void initState() {
     super.initState();
+    _focus.addListener(_onFocusChange);
   }
-
+@override
+  void dispose() {
+    super.dispose();
+    _focus.removeListener(_onFocusChange);
+    _focus.dispose();
+  }
+  void _onFocusChange() {
+    show = !show;
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+     Container(
       width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 : SizeConfig(context).screenWidth*0.9,
-      padding: EdgeInsets.only(left: 30, right: 30),
+      padding: const EdgeInsets.only(left: 30, right: 30),
       child: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? Column(children: [
         Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 250, 250, 250),
+            color: const Color.fromARGB(255, 250, 250, 250),
             borderRadius: BorderRadius.circular(2),
             boxShadow: const [
               BoxShadow(
@@ -67,12 +81,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               Expanded(
                   child: Container(
                 padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
-                child: const TextField(
+                child:
+                  TextField(
                   controller: null,
                   // cursorColor: Colors.white,
-                  focusNode: null,
-                  style: TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
-                  decoration: InputDecoration(
+                  focusNode: _focus,
+                  style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
+                  decoration: const InputDecoration(
                     hoverColor: Color.fromARGB(255, 250, 250, 250),
                     filled: true,
                     fillColor: Color.fromARGB(255, 250, 250, 250),
@@ -91,6 +106,15 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           ),
         ),
         const Padding(padding: EdgeInsets.only(top: 15)),
+        SingleChildScrollView(
+        child:
+        AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          height: show ? 320 : 0,
+          child: ListView(
+            shrinkWrap:true,
+            controller: _scrollController,
+            children: [
         Row(
           children: [
             Expanded(
@@ -234,6 +258,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             ),
           ],
         ),
+            ],
+          ),
+        )),
         SizedBox(height: 10),
         Row(
           children: [

@@ -73,6 +73,7 @@ class UserController extends ControllerMVC {
   }
 
   void validate(cont, info) async {
+    print("------1--------");
     isSendRegisterInfo = true;
     setState(() {});
     var fill = true;
@@ -89,12 +90,14 @@ class UserController extends ControllerMVC {
         break;
       }
     }
+    print("------2--------");
     if (!fill) {
       failRegister = 'You must fill all field';
       isSendRegisterInfo = false;
       setState(() {});
       return;
     }
+    print("------3--------");
     context = cont;
     signUpUserInfo = info;
     email = signUpUserInfo['email'];
@@ -112,6 +115,7 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
+    print("------4--------");
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
     if (querySnapshot.size > 0) {
@@ -121,6 +125,7 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
+    print("------5--------");
     if (failRegister == '') createRelysiaAccount();
   }
 
@@ -223,7 +228,13 @@ class UserController extends ControllerMVC {
         relysiaPassword = user.relysiaPassword;
         isStarted = user.isStarted;
         isVerify = userCredential.user!.emailVerified;
+        var b = user.userInfo;
+        var j = {};
+        b.forEach((key, value) {
+          j = {...j,key.toString():value.toString()};
+        });
         userInfo = {
+          ...j,
           'firstName': user.firstName,
           'lastName': user.lastName,
           'userName': user.userName,
