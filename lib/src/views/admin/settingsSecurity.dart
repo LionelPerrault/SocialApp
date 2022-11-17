@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/admin/navigationbar.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel.dart';
 
 import '../../controllers/UserController.dart';
 import '../../utils/size_config.dart';
@@ -10,14 +10,14 @@ import '../box/notification.dart';
 import '../box/admin_dash_chart.dart';
 import 'admin_panel/adminleftpanel.dart';
 
-class AdminScreen extends StatefulWidget {
-  AdminScreen({Key? key}) : super(key: key);
+class AdminSettingsSecurity extends StatefulWidget {
+  AdminSettingsSecurity({Key? key}) : super(key: key);
 
   @override
-  State createState() => AdminScreenState();
+  State createState() => AdminSettingsSecurityState();
 }
 
-class AdminScreenState extends mvc.StateMVC<AdminScreen>
+class AdminSettingsSecurityState extends mvc.StateMVC<AdminSettingsSecurity>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

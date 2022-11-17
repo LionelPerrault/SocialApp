@@ -5,6 +5,8 @@ import 'package:shnatter/src/controllers/AppController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/admin/settingsAnalytics.dart';
+import 'package:shnatter/src/views/admin/settingsLimits.dart';
 import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
@@ -81,13 +83,11 @@ class RouteGenerator {
       case RouteNames.login:
         return MaterialPageRoute(
             builder: (context) => LoginScreen(), settings: settings);
-      case RouteNames.adp:
-        Helper.showToast("ok now to admin");
-        return MaterialPageRoute(
-            builder: (context) => AdminScreen(), settings: settings);
       case RouteNames.started:
         return MaterialPageRoute(
             builder: (context) => StartedScreen(), settings: settings);
+
+      //settings route generators
       case RouteNames.settings:
         return MaterialPageRoute(
             builder: (context) => SettingsAccount(), settings: settings);
@@ -140,12 +140,28 @@ class RouteGenerator {
       case RouteNames.settings_token:
         return MaterialPageRoute(
             builder: (context) => SettingsShnatterToken(), settings: settings);
+
+      //event route generators
       case RouteNames.events:
         return MaterialPageRoute(
             builder: (context) => EventsScreen(), settings: settings);
-      case RouteNames.events_manage:
+
+      //admin routes generators
+      case RouteNames.adp:
+        Helper.showToast("ok now to admin");
         return MaterialPageRoute(
-            builder: (context) => EventsScreen(), settings: settings);
+            builder: (context) => AdminScreen(), settings: settings);
+      case RouteNames.adp_settings_analytics:
+        Helper.showToast("ok now to admin");
+        return MaterialPageRoute(
+            builder: (context) => AdminSettingsAnalytics(), settings: settings);
+      case RouteNames.adp_settings_limits:
+        return MaterialPageRoute(
+            builder: (context) => AdminSettingsLimits(), settings: settings);
+      case RouteNames.adp:
+        return MaterialPageRoute(
+            builder: (context) => AdminScreen(), settings: settings);
+
 
       default:
         return MaterialPageRoute(

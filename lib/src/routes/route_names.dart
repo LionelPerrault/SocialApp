@@ -7,8 +7,8 @@ class RouteNames {
   static const reset = '/reset';
   static const terms = '/terms';
   static const privacy = '/privacy';
-  static const adp = '/adminpanel';
   static const started = '/started';
+  //settings route
   static const settings = "/settings";
   static const settings_profile_basic = "/settings/profile";
   static const settings_profile_work = "/settings/profile/work";
@@ -26,6 +26,10 @@ class RouteNames {
   static const settings_information = "/settings/information";
   static const settings_delete = "/settings/delete";
   static const events = "/events";
-  static const events_manage = "/events/manage";
   static var userName = "";
+
+  //admin routes
+  static const adp = '/adminpanel';
+  static const adp_settings_analytics = '/adminpanel/settings/analytics';
+  static const adp_settings_limits = '/adminpanel/settings/limits';
 }

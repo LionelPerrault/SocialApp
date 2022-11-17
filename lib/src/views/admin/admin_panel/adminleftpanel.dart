@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../../widget/admin_list_text.dart';
@@ -109,12 +110,24 @@ class AdminLeftPanel extends StatelessWidget {
                             icon:
                                 const Icon(Icons.security_rounded)),
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {
+                              Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .adp_settings_limits)
+                            },
                             label: 'Limits Settings',
                             icon:
                                 const Icon(Icons.iso_rounded)),
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {
+                              Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .adp_settings_analytics)
+                            },
                             label: 'Analytics Settings',
                             icon:
                                 const Icon(Icons.pie_chart)),
