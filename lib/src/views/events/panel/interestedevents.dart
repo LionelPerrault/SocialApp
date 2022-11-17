@@ -9,20 +9,20 @@ import 'package:shnatter/src/views/events/widget/eventcell.dart';
 import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
-class AllEvents extends StatefulWidget {
-  AllEvents({Key? key})
+class InterestedEvents extends StatefulWidget {
+  InterestedEvents({Key? key})
       : con = PostController(),
         super(key: key);
   late PostController con;
-  State createState() => AllEventsState();
+  State createState() => InterestedEventsState();
 }
 
-class AllEventsState extends mvc.StateMVC<AllEvents> {
+class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   bool check1 = false;
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
-  var realAllEvents = [];
+  var interestedEvents = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -33,9 +33,11 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
     super.initState();
     con.getEvent().then((value) => {
       for (int i = 0; i<value.length; i++) {
-        if (value[i]['eventPost'] == true) {
-          realAllEvents.add(value[i]),
-          setState(() { })
+        for (int j = 0; j<value[i]['eventInterested'].length; j++) {
+          if (value[i]['eventInterested'][j] == UserManager.userInfo['userName']) {
+            interestedEvents.add(value[i]),
+            setState(() { })
+          }
         }
       },
     });
@@ -57,7 +59,7 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
                 shrinkWrap: true,
                 crossAxisSpacing: 4.0,
                 children: 
-                  realAllEvents.map((event) => 
+                  interestedEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
                       picture: 'null',

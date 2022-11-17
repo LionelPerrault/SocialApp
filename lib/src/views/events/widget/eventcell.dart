@@ -21,8 +21,17 @@ Function eventTap;
   bool interested;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(children: [
+    return 
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+ Container(
+      alignment: Alignment.center,
+      width: 200,
+      height: 300,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
         Container(
           width: 200,
           margin: EdgeInsets.only(top: 60),
@@ -90,19 +99,21 @@ Function eventTap;
           ],),
         ),
         Container(
+          alignment: Alignment.topCenter,
           width: 120,
           height: 120,
           padding: const EdgeInsets.all(2),
-          margin: EdgeInsets.only(left: 40),
           decoration: BoxDecoration(
               color:
-                  Color.fromARGB(255, 250, 250, 250),
+                  Color.fromARGB(255, 150, 99, 99),
               borderRadius: BorderRadius.circular(60),
               border: Border.all(color: Colors.grey)),
           child: SvgPicture.network(
               picture),
         ),
       ],),
-    );
+    )
+    ],)
+    ;
   }
 }

@@ -16,11 +16,16 @@ import 'package:time_elapsed/time_elapsed.dart';
 class PostController extends ControllerMVC {
   factory PostController([StateMVC? state]) =>
       _this ??= PostController._(state);
-  PostController._(StateMVC? state) : super(state);
+  PostController._(StateMVC? state) : 
+    eventSubRoute = '',
+    super(state);
   static PostController? _this;
 
   //variable
   List events=[];
+
+  //sub route
+  String eventSubRoute;
 
   @override
   Future<bool> initAsync() async {
@@ -35,22 +40,26 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  Future<void> getEvent() async {
-    QuerySnapshot<TokenLogin> querySnapshot =
-          await Helper.postData.where('eventPost', isEqualTo: true).get();
-    events = querySnapshot.docs;
-    setState(() { });
+  Future<List> getEvent() async {
+    // QuerySnapshot<TokenLogin> querySnapshot =
+    //       await Helper.postData.where('eventPost', isEqualTo: true).get();
+    // events = querySnapshot.docs;
+    // setState(() { });
+    QuerySnapshot querySnapshot =
+          await Helper.postData.get();
+    var doc = querySnapshot.docs;
+    return doc;
   }
 
   Future<void> createEvent(context,Map<String, dynamic> eventData) async {
     eventData = {
       ...eventData,
-      'eventAdmin': UserManager.userInfo['uid'],
+      'eventAdmin': UserManager.userInfo['userName'],
       'eventDate': DateTime.now().toString(),
       'eventGoing': false,
-      'eventInterested': false,
+      'eventInterested': [],
       'eventInterests': 0,
-      'eventInvited': 0,
+      'eventInvited': [],
       'eventPost': false,
     };
     await FirebaseFirestore.instance

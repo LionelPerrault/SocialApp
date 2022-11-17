@@ -9,20 +9,20 @@ import 'package:shnatter/src/views/events/widget/eventcell.dart';
 import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
-class AllEvents extends StatefulWidget {
-  AllEvents({Key? key})
+class GoingEvents extends StatefulWidget {
+  GoingEvents({Key? key})
       : con = PostController(),
         super(key: key);
   late PostController con;
-  State createState() => AllEventsState();
+  State createState() => GoingEventsState();
 }
 
-class AllEventsState extends mvc.StateMVC<AllEvents> {
+class GoingEventsState extends mvc.StateMVC<GoingEvents> {
   bool check1 = false;
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
-  var realAllEvents = [];
+  var goingEvents = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -33,8 +33,8 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
     super.initState();
     con.getEvent().then((value) => {
       for (int i = 0; i<value.length; i++) {
-        if (value[i]['eventPost'] == true) {
-          realAllEvents.add(value[i]),
+        if (value[i]['eventGoing'] == true) {
+          goingEvents.add(value[i]),
           setState(() { })
         }
       },
@@ -57,7 +57,7 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
                 shrinkWrap: true,
                 crossAxisSpacing: 4.0,
                 children: 
-                  realAllEvents.map((event) => 
+                  goingEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
                       picture: 'null',

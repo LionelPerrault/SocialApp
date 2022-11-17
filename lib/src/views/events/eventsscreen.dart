@@ -10,13 +10,16 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/events/panel/allevents.dart';
+import 'package:shnatter/src/views/events/panel/goingevents.dart';
+import 'package:shnatter/src/views/events/panel/interestedevents.dart';
+import 'package:shnatter/src/views/events/panel/invitedevents.dart';
 import 'package:shnatter/src/views/events/panel/myevents.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
-import 'package:shnatter/src/views/events/panel/eventsHeaderpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
+import 'package:shnatter/src/widget/createEventWidget.dart';
 
-import '../../controllers/HomeController.dart';
+import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
 import '../../widget/mprimary_button.dart';
 import '../../widget/list_text.dart';
@@ -29,9 +32,9 @@ import '../box/notification.dart';
 
 class EventsScreen extends StatefulWidget {
   EventsScreen({Key? key})
-      : con = HomeController(),
+      : con = PostController(),
         super(key: key);
-  final HomeController con;
+  final PostController con;
 
   @override
   State createState() => EventsScreenState();
@@ -46,21 +49,20 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var url = window.location.href;
-  var subUrl = '';
   var suggest = <String, bool>{
     'friends': true,
     'pages': true,
     'groups': true,
     'events': true
   };
-  //
+  //route variable
+  String eventSubRoute = '';
+
+
   @override
   void initState() {
-    subUrl = url.split('/')[url.split('/').length - 1];
-    print(subUrl);
     add(widget.con);
-    con = controller as HomeController;
+    con = controller as PostController;
     super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
@@ -69,7 +71,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
     );
   }
 
-  late HomeController con;
+  late PostController con;
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
     setState(() {
@@ -158,13 +160,177 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                             Expanded(
                                 child: Column(
                               children: [
-                                EventsHeaderPanel(),
+                                Container(padding: const EdgeInsets.only(top: 20, left:0),
+                                  child: 
+                                    Column(children: [
+                                      Container(
+                                        width: SizeConfig(context).screenWidth*0.6,
+                                        height: 70,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey,
+                                              blurRadius: 1.0,
+                                              spreadRadius: 0.1,
+                                              offset: Offset(
+                                                0.1,
+                                                0.11,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        child: Row(children: [
+                                          Container(
+                                            width: SizeConfig(context).screenWidth*0.4,
+                                            child: Row(
+                                              children: [
+                                                const Padding(padding: EdgeInsets.only(left: 30)),
+                                                Expanded(
+                                                  child: RichText(
+                                                      text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: 'Discover',
+                                                          style: const TextStyle(
+                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
+                                                          recognizer: TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              eventSubRoute = '';
+                                                              setState(() { });
+                                                            }
+                                                        ),
+                                                      ]),
+                                                    ),
+                                                ),
+                                                const Padding(padding: EdgeInsets.only(left: 5)),
+                                                Expanded(
+                                                  child: RichText(
+                                                      text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: 'Going',
+                                                          style: const TextStyle(
+                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
+                                                          recognizer: TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              eventSubRoute = 'going';
+                                                              setState(() { });
+                                                            }
+                                                        ),
+                                                      ]),
+                                                    ),
+                                                ),
+                                                const Padding(padding: EdgeInsets.only(left: 5)),
+                                                Expanded(
+                                                  child: RichText(
+                                                      text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: 'Interested',
+                                                          style: const TextStyle(
+                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
+                                                          recognizer: TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              eventSubRoute = 'interested';
+                                                              setState(() { });
+                                                            }
+                                                        ),
+                                                      ]),
+                                                    ),
+                                                ),
+                                                const Padding(padding: EdgeInsets.only(left: 5)),
+                                                Expanded(
+                                                  child: RichText(
+                                                      text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: 'Invited',
+                                                          style: const TextStyle(
+                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
+                                                          recognizer: TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              eventSubRoute = 'invited';
+                                                              setState(() { });
+                                                            }
+                                                        ),
+                                                      ]),
+                                                    ),
+                                                ),
+                                                const Padding(padding: EdgeInsets.only(left: 5)),
+                                                Expanded(
+                                                  child: RichText(
+                                                      text: TextSpan(children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: 'My Events',
+                                                          style: const TextStyle(
+                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
+                                                          recognizer: TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              eventSubRoute = 'manage';
+                                                              setState(() { });
+                                                            }
+                                                        ),
+                                                      ]),
+                                                    ),
+                                                ),
+                                            ]),
+                                          ),
+                                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                                          Container(
+                                            width: 120,
+                                            margin: const EdgeInsets.only(right: 20),
+                                            child: ElevatedButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                      padding: EdgeInsets.all(3),
+                                                      backgroundColor: Color.fromARGB(255, 45, 206, 137),
+                                                      // elevation: 3,
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(3.0)),
+                                                      minimumSize: const Size(120, 50),
+                                                      maximumSize: const Size(120, 50),
+                                                    ),
+                                                    onPressed: () {
+                                                      (showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) =>
+                                                          AlertDialog(
+                                                            title: Row(children: const [
+                                                              Icon(Icons.event,color: Color.fromARGB(255, 247, 159, 88),),
+                                                              Text('Create New Event',
+                                                              style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontStyle: FontStyle.italic
+                                                              ),),
+                                                            ],),
+                                                            content: CreateEventModal(context: context)
+                                                          )
+                                                    ));
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: const [
+                                                      Icon(Icons.add_circle),
+                                                      Padding(padding: EdgeInsets.only(left: 4)),
+                                                      Text('Create Event', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold))
+                                                    ],)),
+                                          )
+                                        ],)
+                                      )
+                                    ],),
+                                  ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                subUrl == 'events'
+                                eventSubRoute == ''
                                     ? AllEvents()
                                     : const SizedBox(),
-                                subUrl == 'manage'
+                                eventSubRoute == 'going'
+                                    ? GoingEvents()
+                                    : const SizedBox(),
+                                eventSubRoute == 'interested'
+                                    ? InterestedEvents()
+                                    : const SizedBox(),
+                                eventSubRoute == 'invited'
+                                    ? InvitedEvents()
+                                    : const SizedBox(),
+                                eventSubRoute == 'manage'
                                     ? MyEvents()
                                     : const SizedBox(),
                               ],
