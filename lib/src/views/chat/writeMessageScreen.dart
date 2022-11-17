@@ -29,15 +29,26 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   void initState() {
     add(widget.con);
     con = controller as ChatController;
-
     setState(() {});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    print(con.progress);
+    return
+      
+     Column(
       children: [
+        con.progress == 0 ? Container() :
+        Container(
+          width: double.infinity,
+          margin: EdgeInsets.only(right: 300 - (300*con.progress/100)),
+          height: 2,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.all(Radius.circular(2))),
+        ),
         Container(
           height: 35,
           child: TextFormField(
@@ -67,11 +78,10 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             MouseRegion(
               child: GestureDetector(
                 onTap: () {
-                  FileManager.uploadImage().then((res) {
-                    if (res['success']) {
-                      con.sendMessage('old', 'image', res['url']);
-                    }
-                  });
+                  con.uploadImage(widget.type,'image');
+                  if(widget.type == 'new') {
+                    widget.goMessage('message-list');
+                  }
                 },
                 child: const Icon(
                   Icons.photo_size_select_actual_rounded,
@@ -126,7 +136,6 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
     bool success =
         await con.sendMessage(widget.type, 'text', con.textController.text);
     if (widget.type == 'new' && success) {
-      print(con.docId);
       widget.goMessage('message-list');
     }
     if (con.chattingUser != '' && con.textController.text != '') {

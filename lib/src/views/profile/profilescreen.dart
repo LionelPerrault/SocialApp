@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -21,6 +19,17 @@ import 'package:shnatter/src/views/profile/profileVideosScreen.dart';
 import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path/path.dart' as PPath;
+import 'dart:io' show File, Platform;
 
 class UserProfileScreen extends StatefulWidget {
   UserProfileScreen({Key? key})
@@ -39,27 +48,20 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
   late FocusNode searchFocusNode;
+  late FileController filecon;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var url = window.location.href;
-  var subUrl = '';
-  var suggest = <String, bool>{
-    'friends': true,
-    'pages': true,
-    'groups': true,
-    'events': true
-  };
+  double progress = 0;
   //
   var userInfo = UserManager.userInfo;
   @override
   void initState() {
-    subUrl = url.split('/')[url.split('/').length - 1];
     add(widget.con);
     con = controller as ProfileController;
+    filecon = FileController();
     con.profile_cover = UserManager.userInfo['profile_cover'] ?? '';
     setState(() { });
     super.initState();
-    print(userInfo);
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
       vsync: this,
@@ -76,11 +78,6 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   }
 
   void clickMenu() {
-    //setState(() {
-    //  showMenu = !showMenu;
-    //});
-    //Scaffold.of(context).openDrawer();
-    //print("showmenu is {$showMenu}");
     if (_isDrawerOpen() || _isDrawerOpening()) {
       _drawerSlideController.reverse();
     } else {
@@ -248,23 +245,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                     margin: const EdgeInsets.only(left: 50,top: SizeConfig.navbarHeight + 30),
                     child: GestureDetector(
                       onTap: () {
-                        print(123);
-
-                        FileManager.uploadImage().then((value) {
-                          print(value['success']);
-                          if(value['success']){
-                            FirebaseFirestore.instance.collection(Helper.userField).doc(userInfo['uid']).update({
-                              'profile_cover': value['url']
-                            }).then((e) async {
-                                con.profile_cover = value['url'];
-                                await Helper.saveJSONPreference(Helper.userField,
-                                  {...userInfo, 'profile_cover': value['url']});
-                            setState(() { });
-                            con.setState(() { });
-
-                            } );
-                          }
-                        });
+                        uploadImage();
                       },
                       child: const Icon(Icons.photo_camera,size: 25,),)
                   ),
@@ -272,5 +253,107 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
             
           ],
         ));
+  }
+  Future<XFile> chooseImage() async {
+    final _imagePicker = ImagePicker();
+    XFile? pickedFile;
+    if (kIsWeb){
+      pickedFile = await _imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+    }
+    else{
+      //Check Permissions
+      await Permission.photos.request();
+
+      var permissionStatus = await Permission.photos.status;
+
+      if (permissionStatus.isGranted){
+      }
+      else{
+        print('Permission not granted. Try Again with permission access');
+      }
+    }
+    return pickedFile!;
+  }
+  uploadFile(XFile? pickedFile) async {
+    final _firebaseStorage = FirebaseStorage.instance;
+    if(kIsWeb){
+        try{
+          
+          //print("read bytes");
+          Uint8List bytes  = await pickedFile!.readAsBytes();
+          //print(bytes);
+          Reference _reference = await _firebaseStorage.ref()
+            .child('images/${PPath.basename(pickedFile!.path)}');
+          final uploadTask = _reference.putData(
+            bytes,
+            SettableMetadata(contentType: 'image/jpeg'),
+          );
+          uploadTask.whenComplete(() async {
+            var downloadUrl = await _reference.getDownloadURL();
+            FirebaseFirestore.instance.collection(Helper.userField).doc(UserManager.userInfo['uid']).update({
+                'profile_cover': downloadUrl
+              }).then((e) async {
+                  con.profile_cover = downloadUrl;
+                  await Helper.saveJSONPreference(Helper.userField,
+                    {...userInfo, 'profile_cover': downloadUrl});
+              setState(() { });
+            } );
+          });
+          uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+                      switch (taskSnapshot.state) {
+                        case TaskState.running:
+                          progress =
+                              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                              setState(() {});
+                              print("Upload is $progress% complete.");
+
+                          break;
+                        case TaskState.paused:
+                          print("Upload is paused.");
+                          break;
+                        case TaskState.canceled:
+
+                          print("Upload was canceled");
+                          break;
+                        case TaskState.error:
+                        // Handle unsuccessful uploads
+                          break;
+                        case TaskState.success:
+                         print("Upload is completed");
+                        // Handle successful uploads on complete
+                        // ...
+                        //  var downloadUrl = await _reference.getDownloadURL();
+                          break;
+                      }
+                    });
+        }catch(e)
+        {
+          // print("Exception $e");
+        }
+    }else{
+      var file = File(pickedFile!.path);
+      //write a code for android or ios
+      Reference _reference = await _firebaseStorage.ref()
+          .child('images/${PPath.basename(pickedFile!.path)}');
+        _reference.putFile(
+          file
+        )
+        .whenComplete(() async {
+            print('value');
+          var downloadUrl = await _reference.getDownloadURL();
+          await _reference.getDownloadURL().then((value) {
+            // userCon.userAvatar = value;
+            // userCon.setState(() {});
+            // print(value);
+          });
+        });
+    }
+
+  }
+  uploadImage() async {
+    XFile? pickedFile = await chooseImage();
+    uploadFile(pickedFile);   
   }
 }

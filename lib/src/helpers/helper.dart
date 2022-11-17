@@ -41,6 +41,7 @@ class Helper {
   static var message = 'messages';
   static var newMessageSearch = 'userName';
   static var emoticons = 'emoticons';
+  static var emptySVG = 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fnodaa.svg?alt=media&token=ebfb99db-2cf6-4dd4-ba96-2ca150ba1352';
   static bool isUuid(String input) {
     return RegExp(
             "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")

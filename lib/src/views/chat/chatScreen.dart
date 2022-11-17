@@ -73,51 +73,79 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                 ],
               ),
               child: Scaffold(
-                  appBar: AppBar(
-                    toolbarHeight: 40,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
+                  body: ListView(children: [
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                        )
                       ),
-                    ),
-                    backgroundColor: Colors.blue,
-                    automaticallyImplyLeading: false,
-                    leading: IconButton(
-                        icon: Icon(
-                          !hidden
-                              ? isMessageTap != 'all-list'
-                                  ? Icons.arrow_back
-                                  : Icons.arrow_downward
-                              : Icons.arrow_upward,
-                          color: Colors.white,
-                          size: 16,
+                      child: Row(
+                        children: [
+                          MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (isMessageTap == '') {
+                                isMessageTap = 'all-list';
+                              }
+                              hidden = !hidden;
+                              setState(() {});
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.only(left: 5),
+                              width: 50,
+                              child: hidden ? Icon(Icons.arrow_drop_down,color: Colors.white,) : Icon(
+                                Icons.arrow_drop_up,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                          
                         ),
-                        onPressed: () {
-                          if (isMessageTap == '') {
-                            hidden = false;
-                            isMessageTap = 'all-list';
-                          } else if (isMessageTap == 'all-list') {
-                            hidden = !hidden ? true : false;
-                          } else {
-                            isMessageTap = 'all-list';
-                          }
-                          setState(() {});
-                        }),
-                    actions: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.add,
-                          size: 16,
+                          MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              if(isMessageTap != 'all-list'){
+                                isMessageTap = 'all-list';
+                              }
+                              setState(() { });
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.only(left: 5),
+                              width: 50,
+                              child: Icon(Icons.arrow_back,size: 16,color: Colors.white,)
+                            ),
+                          )
+                          
                         ),
-                        onPressed: (() {
-                          if (hidden) hidden = false;
-                          isMessageTap = 'new';
-                          setState(() {});
-                        }),
-                        color: Colors.white,
-                        focusColor: Colors.white,
-                      ),
+                          Text(
+                            'Chats',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                          Flexible(fit: FlexFit.tight,child: SizedBox(),),
+                          MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (hidden) hidden = false;
+                              isMessageTap = 'new';
+                              setState(() {});
+                            },
+                            child: Icon(
+                                Icons.add,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                       PopupMenuButton(
                         onSelected: (value) {
                           // your logic
@@ -125,6 +153,7 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                         icon: Icon(
                           Icons.settings,
                           size: 16,
+                          color: Colors.white,
                         ),
                         itemBuilder: (BuildContext bc) {
                           return const [
@@ -152,13 +181,9 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                           ];
                         },
                       )
-                    ],
-                    title: Text(
-                      'Chats',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      ]),
                     ),
-                  ),
-                  body: isMessageTap == ''
+                    isMessageTap == ''
                       ? Container()
                       : isMessageTap == 'all-list'
                           ? ChatUserListScreen(onBack: (value) {
@@ -183,11 +208,12 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                                   },
                                 )
                               : ChatMessageListScreen(
+                                  showWriteMessage: !hidden,
                                   onBack: (value) {
                                     con.isShowEmoticon = value;
                                     setState(() {});
                                   },
-                                ))),
+                                )]))),
           !hidden && con.isShowEmoticon
               ? Container(
                   margin: EdgeInsets.only(

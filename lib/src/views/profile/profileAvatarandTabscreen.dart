@@ -24,18 +24,10 @@ class ProfileAvatarandTabScreen extends StatefulWidget {
 
 class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScreen>
     with SingleTickerProviderStateMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final TextEditingController searchController = TextEditingController();
-  bool showSearch = false;
-  late FocusNode searchFocusNode;
-  bool showMenu = false;
-  late AnimationController _drawerSlideController;
   ScrollController _scrollController = ScrollController();
   double width = 0;
   double itemWidth = 0;
   var tap = 'Timeline';
-  //
   var userInfo = UserManager.userInfo;
   List<Map> mainTabList = [
     {'title':'Timeline','icon':Icons.tab},
