@@ -55,8 +55,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen>{
   Widget build(BuildContext context) {
     return Column(children: [
       mainTabs(),
-
-    ])
+    ]);
   }
   Widget mainTabs(){
     return Container(
