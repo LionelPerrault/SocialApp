@@ -2,6 +2,7 @@ import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
@@ -12,11 +13,11 @@ import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
-  ProfileAvatarandTabScreen({Key? key})
-      : con = HomeController(),
+  Function onClick;
+  ProfileAvatarandTabScreen({Key? key,required this.onClick})
+      : con = ProfileController(),
         super(key: key);
-  final HomeController con;
-
+  final ProfileController con;
   @override
   State createState() => ProfileAvatarandTabScreenState();
 }
@@ -30,10 +31,10 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var url = window.location.href;
-  var subUrl = '';
+  ScrollController _scrollController = ScrollController();
   double width = 0;
   double itemWidth = 0;
+  var tap = 'Timeline';
   //
   var userInfo = UserManager.userInfo;
   List<Map> mainTabList = [
@@ -50,14 +51,14 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
   void initState() {
     super.initState();
     add(widget.con);
-    con = controller as HomeController;
+    con = controller as ProfileController;
     _gotoHome();
   }
-  late HomeController con;
+  late ProfileController con;
   void _gotoHome(){
     Future.delayed(Duration.zero, () {
       width = SizeConfig(context).screenWidth - 260;
-      itemWidth = width/7.5;
+      itemWidth = 100;
       setState(() {});
     });
   }
@@ -82,7 +83,6 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
                       ),
 
               ),
-            // mainTabWidget(),
             Container(
               width: width,
               padding: const EdgeInsets.only(left: 50,top: 40),
@@ -95,14 +95,22 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
                     fontWeight: FontWeight.bold,
                     color: Colors.white
                   ),),
-                  mainTabWidget()
+                  Container(
+                    child:  mainTabWidget(),
+                  )
+                 
                 ],
             )),
             ]),
           );
   }
   Widget mainTabWidget(){
-    return Container(
+    return 
+    SingleChildScrollView(
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      child:
+    Container(
       width: width,
       margin: const EdgeInsets.only(top: 15),
       height: 70,
@@ -110,20 +118,45 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
         color: Colors.white,
         borderRadius: BorderRadius.circular(3),
       ),
-      child:Row(children: mainTabList.map((e) => Container(
+      child:Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: mainTabList.map((e) => 
+      MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+        onTap: (){
+          widget.onClick(e['title']);
+          setState(() {});
+        },
+        child: 
+      Container(
+        padding: const EdgeInsets.only(top: 30),
         width: itemWidth,
-        child: Row(
+        child: 
+        Column(
+          children: [
+          Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(e['icon'],size: 15,color: Color.fromRGBO(76, 76, 76, 1),),
-            Padding(padding:EdgeInsets.only(left:5)),
-            Text(e['title'],style:TextStyle(
+            const Padding(padding:EdgeInsets.only(left:5)),
+            Text(e['title'],style:const TextStyle(
               fontSize:13,
               color: Color.fromRGBO(76, 76, 76, 1),
               fontWeight: FontWeight.bold
             ))
-        ]),
-      )).toList()),
-    );
+          ]),
+          e['title'] == con.tab ? 
+          Container(
+            margin: const EdgeInsets.only(top: 23),
+            height: 2,
+            color: Colors.grey,
+          ) : Container()
+        ],)
+        
+      )),
+      )
+      ).toList()),
+    ));
   }
 }

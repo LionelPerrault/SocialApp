@@ -1,5 +1,11 @@
 class TokenLogin {
   late String email = '';
+  late String about = '';
+  late String birthD = '';
+  late String birthY = '';
+  late String birthM = '';
+  late String u_class = '';
+  late String country = '';
   late String relysiaEmail = '';
   late String firstName = '';
   late String lastName = '';
@@ -11,6 +17,7 @@ class TokenLogin {
   late String userName = '';
   late String userAvatar = '';
   late bool isStarted = false;
+  late var userInfo = {};
   TokenLogin();
 
   TokenLogin.fromJSON(Map<String, dynamic> json) {
@@ -26,12 +33,14 @@ class TokenLogin {
       password = json['password'] as String;
       isStarted = json['isStarted'] as bool;
       userAvatar = json['avatar'] as String;
+      userInfo = json;
     } catch (e) {}
   }
 
   Map<String, Object?> toMap() {
     return {
       'email': email,
+      'userInfo': userInfo,
       'firstName': firstName,
       'lastName': lastName,
       'userName': userName,

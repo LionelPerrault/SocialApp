@@ -3,22 +3,30 @@ import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/profile/profileAvatarandTabscreen.dart';
-import 'package:shnatter/src/views/profile/profileInfoscreen.dart';
+import 'package:shnatter/src/views/profile/profileEventsScreen.dart';
+import 'package:shnatter/src/views/profile/profileFriendsScreen.dart';
+import 'package:shnatter/src/views/profile/profileGroupsScreen.dart';
+import 'package:shnatter/src/views/profile/profileLikesScreen.dart';
+import 'package:shnatter/src/views/profile/profilePhotosScreen.dart';
+import 'package:shnatter/src/views/profile/profileTimelineScreen.dart';
+import 'package:shnatter/src/views/profile/profileVideosScreen.dart';
 import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class UserProfileScreen extends StatefulWidget {
   UserProfileScreen({Key? key})
-      : con = HomeController(),
+      : con = ProfileController(),
         super(key: key);
-  final HomeController con;
+  final ProfileController con;
 
   @override
   State createState() => UserProfileScreenState();
@@ -46,11 +54,12 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   @override
   void initState() {
     subUrl = url.split('/')[url.split('/').length - 1];
-    print(FieldValue.serverTimestamp());
-    print(subUrl);
     add(widget.con);
-    con = controller as HomeController;
+    con = controller as ProfileController;
+    con.profile_cover = UserManager.userInfo['profile_cover'] ?? '';
+    setState(() { });
     super.initState();
+    print(userInfo);
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
       vsync: this,
@@ -58,7 +67,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
     );
   }
 
-  late HomeController con;
+  late ProfileController con;
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
     setState(() {
@@ -117,10 +126,13 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
             Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: SizeConfig.navbarHeight,left: 30,right: 30),
+                  margin: const EdgeInsets.only(top: SizeConfig.navbarHeight,left: 30,right: 30),
                   width: SizeConfig(context).screenWidth,
                   height: SizeConfig(context).screenHeight * 0.5,
-                  color: const Color.fromRGBO(66, 66, 66, 1),
+                  decoration: con.profile_cover == '' ? const BoxDecoration(
+                  color: Color.fromRGBO(66, 66, 66, 1),
+                  ) : const BoxDecoration(),
+                  child: con.profile_cover == '' ? Container() : Image.network(con.profile_cover,fit:BoxFit.cover),
                 )
               ],
             ),
@@ -143,8 +155,37 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ProfileAvatarandTabScreen(),
-                        ProfileInfoScreen(),
+                        ProfileAvatarandTabScreen(onClick: (value) {
+                          print(value);
+                          con.tab = value;
+                          setState(() { });
+                        },),
+                        con.tab == 'Timeline' ? ProfielTimelineScreen(onClick:(value){
+                          con.tab = value;
+                          setState(() { });
+                        }) :
+                        con.tab == 'Friends' ? ProfileFriendScreen(onClick:(value){
+                          con.tab = value;
+                          setState(() { });
+                        }) :
+                        con.tab == 'Photos' ? ProfilePhotosScreen(onClick:(value){
+                          con.tab = value;
+                          setState(() { });
+                        }) :
+                        con.tab == 'Videos' ? ProfileVideosScreen(onClick:(value){
+                          con.tab = value;
+                          setState(() { });
+                        }) :
+                        con.tab == 'Likes' ? ProfileLikesScreen(onClick:(value){
+                          con.tab = value;
+                          setState(() { });
+                        }) :
+                        con.tab == 'Groups' ? ProfileGroupsScreen(onClick:(value){
+                          con.tab = value;
+                          setState(() { });
+                        }) :
+                        ProfileEventsScreen()
+                        // ProfileFriendScreen(),
                       ]),
                 )),
             showSearch
@@ -202,6 +243,31 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                         )),
                   )
                 : const SizedBox(),
+                Container(
+                    alignment: Alignment.topLeft,
+                    margin: const EdgeInsets.only(left: 50,top: SizeConfig.navbarHeight + 30),
+                    child: GestureDetector(
+                      onTap: () {
+                        print(123);
+
+                        FileManager.uploadImage().then((value) {
+                          print(value['success']);
+                          if(value['success']){
+                            FirebaseFirestore.instance.collection(Helper.userField).doc(userInfo['uid']).update({
+                              'profile_cover': value['url']
+                            }).then((e) async {
+                                con.profile_cover = value['url'];
+                                await Helper.saveJSONPreference(Helper.userField,
+                                  {...userInfo, 'profile_cover': value['url']});
+                            setState(() { });
+                            con.setState(() { });
+
+                            } );
+                          }
+                        });
+                      },
+                      child: const Icon(Icons.photo_camera,size: 25,),)
+                  ),
             ChatScreen(),
             
           ],

@@ -37,7 +37,7 @@ class ChatController extends ControllerMVC {
     );
     return true;
   }
-
+ 
   @override
   bool onAsyncError(FlutterErrorDetails details) {
     return false;

@@ -56,6 +56,7 @@ class FileManager {
 
   static uploadFile(XFile? pickedFile) async {
     final _firebaseStorage = FirebaseStorage.instance;
+    print(23);
     bool success = false;
     if (kIsWeb) {
       try {

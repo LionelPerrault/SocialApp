@@ -15,6 +15,7 @@ import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 
 import '../controllers/HomeController.dart';
+import '../managers/user_manager.dart';
 import '../utils/size_config.dart';
 import '../widget/mprimary_button.dart';
 import '../widget/list_text.dart';
@@ -55,6 +56,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
   void initState() {
     add(widget.con);
     con = controller as HomeController;
+    print(UserManager.userInfo);
     super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
