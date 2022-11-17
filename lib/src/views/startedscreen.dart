@@ -1352,7 +1352,6 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                           ),
                                           //all interests
                                           Container(
-                                            height: 300,
                                             child: SingleChildScrollView(
                                               child: Column(children: [
                                                 Column(children: [
@@ -1380,12 +1379,14 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     color: Colors.black,
                                                   )
                                                 ]),
-                                                Column(
-                                                  children: 
-                                                  subCategory.asMap().entries.map((inte) => 
-                                                    Column(children: [ Row(children: [
+                                                Container(
+                                                  height: 300,
+                                                  child: ListView.builder(
+                                                    itemCount: subCategory.length,
+                                                    itemBuilder: (BuildContext context, int index) {
+                                                    return Column(children: [ Row(children: [
                                                       const Padding(padding: EdgeInsets.only(left: 10)),
-                                                      Text(inte.value['title'],style: const TextStyle(
+                                                      Text(subCategory[index]['title'],style: const TextStyle(
                                                         fontSize: 11,
                                                         color: Colors.black
                                                       ),),
@@ -1399,14 +1400,14 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                             checkColor: Colors.blue,
                                                             activeColor: const Color.fromRGBO(
                                                                 0, 123, 255, 1),
-                                                            value: interestsCheck[inte.key]['interested'],
+                                                            value: interestsCheck[index]['interested'],
                                                             shape: const RoundedRectangleBorder(
                                                                 borderRadius: BorderRadius.all(
                                                                     Radius.circular(
                                                                         5.0))), // Rounded Checkbox
                                                             onChanged: (value) {
                                                               setState(() {
-                                                                interestsCheck[inte.key]['interested'] = !interestsCheck[inte.key]['interested'];
+                                                                interestsCheck[index]['interested'] = !interestsCheck[index]['interested'];
                                                               });
                                                             },
                                                           )),
@@ -1415,8 +1416,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     Divider(
                                                       thickness: 0.1,
                                                       color: Colors.black,
-                                                    )])
-                                                            ).toList(),
+                                                    )]);
+                                                  }),
                                                 )
                                               ]),
                                             ),
