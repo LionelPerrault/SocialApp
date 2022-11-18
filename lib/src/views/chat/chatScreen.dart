@@ -43,7 +43,7 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
   String dropdownValue = 'Male';
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return SizeConfig(context).screenWidth < 700 ? Container() : GestureDetector(
         onTap: () {
           con.isShowEmoticon = false;
           setState(() {});
@@ -120,8 +120,8 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                             child: Container(
                               alignment: Alignment.center,
                               padding: EdgeInsets.only(left: 5),
-                              width: 50,
-                              child: Icon(Icons.arrow_back,size: 16,color: Colors.white,)
+                              width: 30,
+                              child: isMessageTap != 'all-list' && isMessageTap != '' ? Icon(Icons.arrow_back,size: 16,color: Colors.white) : Container()
                             ),
                           )
                           

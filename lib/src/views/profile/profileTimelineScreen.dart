@@ -71,7 +71,15 @@ class ProfielTimelineScreenState extends mvc.StateMVC<ProfielTimelineScreen>
     return Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(right: 10,left: 70,top: 15),
-            child: Row(
+            child:SizeConfig(context).screenWidth < 800 ? 
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children:[
+                profileCompletion(),
+                MindPost()
+            ]
+              )
+            : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children:[
