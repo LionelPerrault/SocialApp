@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/routes/admin_router.dart';
 import 'package:shnatter/src/views/admin/navigationbar.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
+import 'package:shnatter/src/routes/setting_router.dart';
 
 import '../../controllers/UserController.dart';
 import '../../utils/size_config.dart';
@@ -37,6 +39,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
     return _drawerSlideController.value == 0.0;
   }
 
+  String adminAllRouter = '';
   //
   @override
   void initState() {
@@ -90,9 +93,12 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                         SizeConfig(context).screenWidth <
                                 SizeConfig.mediumScreenSize
                             ? const SizedBox()
-                            : AdminLeftPanel(),
+                            : AdminLeftPanel(onClick: (value){
+                              adminAllRouter = value;
+                              setState(() {});
+                            },),
                         //    : SizedBox(width: 0),
-                        Expanded(child: AdminBodyPanel()),
+                        Expanded(child: AdminRouter.adminRouter(adminAllRouter)),
                         //MainPanel(),
                       ]),
                 )),
@@ -121,7 +127,10 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                                         color: Colors.white,
                                         width: SizeConfig.leftBarWidth,
                                         child: SingleChildScrollView(
-                                          child: AdminLeftPanel(),
+                                          child: AdminLeftPanel(onClick: (value){
+                                            adminAllRouter = value;
+                                            setState(() {});
+                                          },),
                                         ),
                                       )
                                     ]),

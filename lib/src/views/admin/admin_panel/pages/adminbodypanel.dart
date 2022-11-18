@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
-class AdminBodyPanel extends StatelessWidget {
-  const AdminBodyPanel(
+class AdminMainPanel extends StatelessWidget {
+  const AdminMainPanel(
       {super.key});
   @override
   Widget build(BuildContext context) {

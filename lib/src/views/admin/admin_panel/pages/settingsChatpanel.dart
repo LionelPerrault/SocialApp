@@ -7,8 +7,8 @@ import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart'
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 
 // ignore: must_be_immutable
-class AdminBodyPanel extends StatelessWidget {
-  const AdminBodyPanel(
+class AdminSettingsChat extends StatelessWidget {
+  const AdminSettingsChat(
       {super.key});
   @override
   Widget build(BuildContext context) {

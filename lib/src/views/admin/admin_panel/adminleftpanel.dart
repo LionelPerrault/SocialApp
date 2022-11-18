@@ -7,8 +7,9 @@ import '../../../widget/admin_list_text.dart';
 
 // ignore: must_be_immutable
 class AdminLeftPanel extends StatelessWidget {
-  const AdminLeftPanel(
-      {super.key});
+  AdminLeftPanel(
+      {super.key,required this.onClick});
+  Function onClick;
   @override
   Widget build(BuildContext context) {
     return 
@@ -35,12 +36,15 @@ class AdminLeftPanel extends StatelessWidget {
                 data:const ExpansionTileThemeData(),
                 child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                  onTap: () => {},
-                  label: 'Settings',
-                  icon:
-                      const Icon(Icons.settings)),
-            
+                title: 
+                Row(children: const [
+                  Padding(padding: EdgeInsets.only(left: 43)),
+                  Icon(Icons.settings, size: 28,),
+                  Padding(padding: EdgeInsets.only(left: 10)),
+                  Text('Settings', style: TextStyle(
+                    fontSize: 13,
+                  ),)
+                ],),
                 children: <Widget>[
                   Row(
                     children: [
@@ -86,22 +90,14 @@ class AdminLeftPanel extends StatelessWidget {
                                 const Icon(Icons.notifications)),
                           ListText(
                             onTap: () => {
-                              Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .adp_settings_chat)
+                              onClick('/settings/chat')
                             },
                             label: 'Chat Settings',
                             icon:
                                 const Icon(Icons.message_rounded)),
                           ListText(
                             onTap: () => {
-                              Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .adp_settings_live)
+                              onClick('/settings/live')
                             },
                             label: 'Live Stream Settings',
                             icon:
@@ -118,33 +114,21 @@ class AdminLeftPanel extends StatelessWidget {
                                 const Icon(Icons.credit_card)),
                           ListText(
                             onTap: () => {
-                              Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .adp_settings_security)
+                              onClick('/settings/security')
                             },
                             label: 'Security Settings',
                             icon:
                                 const Icon(Icons.security_rounded)),
                           ListText(
                             onTap: () => {
-                              Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .adp_settings_limits)
+                              onClick('/settings/limits')
                             },
                             label: 'Limits Settings',
                             icon:
                                 const Icon(Icons.iso_rounded)),
                           ListText(
                             onTap: () => {
-                              Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .adp_settings_analytics)
+                              onClick('/settings/analystics')
                             },
                             label: 'Analytics Settings',
                             icon:

@@ -5,8 +5,8 @@ import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart'
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 
 // ignore: must_be_immutable
-class AdminBodyPanel extends StatelessWidget {
-  const AdminBodyPanel(
+class AdminSettingsLimits extends StatelessWidget {
+  const AdminSettingsLimits(
       {super.key});
   @override
   Widget build(BuildContext context) {

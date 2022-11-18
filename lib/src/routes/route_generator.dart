@@ -5,11 +5,6 @@ import 'package:shnatter/src/controllers/AppController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/views/admin/settingsAnalytics.dart';
-import 'package:shnatter/src/views/admin/settingsChat.dart';
-import 'package:shnatter/src/views/admin/settingsLimits.dart';
-import 'package:shnatter/src/views/admin/settingsLive.dart';
-import 'package:shnatter/src/views/admin/settingsSecurity.dart';
 import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
@@ -86,23 +81,6 @@ class RouteGenerator {
         Helper.showToast("ok now to admin");
         return MaterialPageRoute(
             builder: (context) => AdminScreen(), settings: settings);
-      case RouteNames.adp_settings_analytics:
-        Helper.showToast("ok now to admin");
-        return MaterialPageRoute(
-            builder: (context) => AdminSettingsAnalytics(), settings: settings);
-      case RouteNames.adp_settings_limits:
-        return MaterialPageRoute(
-            builder: (context) => AdminSettingsLimits(), settings: settings);
-      case RouteNames.adp_settings_security:
-        return MaterialPageRoute(
-            builder: (context) => AdminSettingsSecurity(), settings: settings);
-      case RouteNames.adp_settings_live:
-        return MaterialPageRoute(
-            builder: (context) => AdminSettingsLive(), settings: settings);
-      case RouteNames.adp_settings_chat:
-        return MaterialPageRoute(
-            builder: (context) => AdminSettingsChat(), settings: settings);
-
 
       default:
         return MaterialPageRoute(
