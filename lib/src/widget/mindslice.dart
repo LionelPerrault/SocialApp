@@ -11,7 +11,7 @@ class MindSlice extends StatelessWidget {
       required this.onTap,
       required this.label,
       required this.image});
-  final GestureTapCallback onTap;
+  Function onTap;
   String label;
   String image;
   @override
@@ -24,7 +24,11 @@ class MindSlice extends StatelessWidget {
         borderRadius: BorderRadius.circular(21),
         
       ),
-      child: Column(
+      child:GestureDetector(
+        onTap: () {
+          onTap();
+        },
+        child:Column(
         children: [
           const Padding(padding: EdgeInsets.only(top: 11.0)),
           Row(
@@ -44,7 +48,7 @@ class MindSlice extends StatelessWidget {
                               fontSize: 15),
                           recognizer:
                               TapGestureRecognizer()
-                                ..onTap = () {onTap;})
+                                ..onTap = () {onTap();})
                     ]),
               ),
             ],
@@ -52,6 +56,7 @@ class MindSlice extends StatelessWidget {
           const Padding(padding: EdgeInsets.only(top: 8.0)),
         ],
       ),
+      ) 
     );
   }
 }

@@ -256,17 +256,21 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                         ),
                     Container(
-                        padding: EdgeInsets.all(9.0),
+                        padding: const EdgeInsets.all(9.0),
                         child: PopupMenuButton(
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
                             PopupMenuItem<Menu>(
                               onTap: (){
-                                print(2);
                                 Navigator.pushReplacementNamed(context, UserManager.userInfo['userName']);
                               },
                               value: Menu.itemProfile,
-                              child: Text('Profile'),
+                              child: GestureDetector(
+                                onTap: () {
+                                  print(34);
+                                },
+                                child: const Text('Profile')
+                              )
                             ),
                             PopupMenuItem<Menu>(
                               value: Menu.itemSettings,
@@ -468,17 +472,19 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       ),
                     ),
                     Container(
-                        padding: EdgeInsets.all(9.0),
+                        padding: const EdgeInsets.all(9.0),
                         child: PopupMenuButton(
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
                             PopupMenuItem<Menu>(
                               value: Menu.itemProfile,
-                              onTap: (){
-                                print(UserManager.userInfo['userName']);
-                                Navigator.pushReplacementNamed(context, '/${UserManager.userInfo['userName']}');
-                              },
-                              child: Text('Profile'),
+                              
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(context, '/${UserManager.userInfo['userName']}');
+                                },
+                                child: const Text('Profile')
+                              )
                             ),
                             PopupMenuItem<Menu>(
                               value: Menu.itemSettings,

@@ -7,8 +7,9 @@ import '../../../widget/admin_list_text.dart';
 
 // ignore: must_be_immutable
 class SettingsLeftPanel extends StatelessWidget {
-  const SettingsLeftPanel(
-      {super.key});
+  SettingsLeftPanel(
+      {super.key,required this.onClick});
+  Function onClick;
   @override
   Widget build(BuildContext context) {
     return 
@@ -21,11 +22,9 @@ class SettingsLeftPanel extends StatelessWidget {
             Column(
             children: [
               ListText(
-                  onTap: () => {Navigator
-                    .pushReplacementNamed(
-                        context,
-                        RouteNames
-                            .settings)},
+                  onTap: () => {
+                      onClick('account_page')
+                    },
                   label: 'Account Settings',
                   icon:
                       const Icon(Icons.settings, color: Color.fromARGB(255, 94, 114, 228),)),
@@ -48,53 +47,44 @@ class SettingsLeftPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_profile_basic)},
+                            onTap: () => {
+                              onClick('basic')
+                            },
                             label: 'Basic',
                             icon:
                                 const Icon(null)),
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_profile_work)},
+                            onTap: () => {
+                              onClick('work')
+                            },
                             label: 'Work',
                             icon:
                                 const Icon(null)),
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_profile_location)},
+                            onTap: () => {
+                              onClick('location')
+                            },
                             label: 'Location',
                             icon:
                                 const Icon(null)),
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_profile_education)},
+                            onTap: () => {
+                              onClick('education')
+                            },
                             label: 'Education',
                             icon:
                                 const Icon(null)),
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_profile_social)},
+                            onTap: () => {
+                              onClick('social')
+                            },
                             label: 'Social Links',
                             icon:
                                 const Icon(null)),
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
+                            onTap: () => {
+                              Navigator.of(context).pop(true),
+                              Navigator.pushNamed(
                                               context,
                                               RouteNames
                                                   .settings_profile_interests)},
@@ -102,11 +92,10 @@ class SettingsLeftPanel extends StatelessWidget {
                             icon:
                                 const Icon(null)),
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_profile_design)},
+                            onTap: () => {
+                              onClick('design')
+                                
+                            },
                             label: 'Design',
                             icon:
                                 const Icon(null)),
@@ -137,20 +126,16 @@ class SettingsLeftPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_security_password)},
+                            onTap: () => {
+                              onClick('security_password')
+                            },
                             label: 'Password',
                             icon:
                                 const Icon(null)),
                           ListText(
-                            onTap: () => {Navigator
-                                          .pushReplacementNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_security_sessions)},
+                            onTap: () => {
+                              onClick('security_session')
+                            },
                             label: 'Manage Sessions',
                             icon:
                                 const Icon(null)),
@@ -167,56 +152,45 @@ class SettingsLeftPanel extends StatelessWidget {
                 ),
               ),
               ListText(
-                  onTap: () => {Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .settings_privacy)},
+                  onTap: () => {
+                    onClick('privacy')
+                  },
                   label: 'Privacy',
                   icon:
                       const Icon(Icons.privacy_tip_rounded, color: Color.fromARGB(255, 255, 179, 7),)),
               ListText(
-                  onTap: () => {Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .settings_notifications)},
+                  onTap: () => {
+                    // Navigator.of(context).pop(true),
+                    onClick('notification')
+                  },
                   label: 'Notification',
                   icon:
                       const Icon(Icons.notifications, color: Color.fromARGB(255, 103, 58, 183),)),
               ListText(
-                onTap: () => {Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .settings_token)},
+                onTap: () => {
+                  onClick('shnatter_token')
+                },
                 label: 'Shnatter Token',
                 icon:
                     const Icon(Icons.money, color: Color.fromARGB(255, 76, 175, 80))),
               ListText(
-                onTap: () => {Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .settings_verification)},
+                onTap: () => {
+                  onClick('verification')
+                },
                 label: 'Verification',
                 icon:
                     const Icon(Icons.check_circle, color: Color.fromARGB(255, 33, 150, 243),)),
               ListText(
-                onTap: () => {Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .settings_information)},
+                onTap: () => {
+                  onClick('information')
+                },
                 label: 'Your Information',
                 icon:
                     const Icon(Icons.file_present, color: Color.fromARGB(255, 40, 167, 69),)),
               ListText(
-                onTap: () => {Navigator
-                                  .pushReplacementNamed(
-                                      context,
-                                      RouteNames
-                                          .settings_delete)},
+                onTap: () => {
+                  onClick('delete')
+                },
                 label: 'Delete Account',
                 icon:
                     const Icon(Icons.delete,color: Color.fromARGB(255, 244, 67, 54),)),

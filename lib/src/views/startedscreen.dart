@@ -369,7 +369,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                             //   value: progress,
                                             //   semanticsLabel: 'Linear progress indicator',
                                             // ), : SizedBox(),
-                                            (progress !=0&&progress !=100) ? Container(
+                                            (progress !=0&&progress !=100) ? AnimatedContainer(
+                                              duration: const Duration(milliseconds: 500),
                                               margin: EdgeInsets.only(top: 70, left: 10),
                                               width: 100,
                                               padding: EdgeInsets.only(right:100 - (100 * progress/100)),

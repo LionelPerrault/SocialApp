@@ -10,8 +10,23 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/setting/panel/settng_left_panel.dart';
+import 'package:shnatter/src/views/setting/panel/pages/delete.dart';
+import 'package:shnatter/src/views/setting/panel/pages/information.dart';
+import 'package:shnatter/src/views/setting/panel/pages/notifications.dart';
+import 'package:shnatter/src/views/setting/panel/pages/privacy.dart';
+import 'package:shnatter/src/views/setting/panel/pages/profile_basic_page.dart';
+import 'package:shnatter/src/views/setting/panel/pages/profile_design_page.dart';
+import 'package:shnatter/src/views/setting/panel/pages/profile_education_page.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_location_page.dart';
+import 'package:shnatter/src/views/setting/panel/pages/profile_social_page.dart';
+import 'package:shnatter/src/views/setting/panel/pages/profile_work_page.dart';
+import 'package:shnatter/src/views/setting/panel/pages/security_password.dart';
+import 'package:shnatter/src/views/setting/panel/pages/security_sessions.dart';
+import 'package:shnatter/src/views/setting/panel/pages/shnatter_token.dart';
+import 'package:shnatter/src/views/setting/panel/pages/verification.dart';
+import 'package:shnatter/src/views/setting/panel/settng_left_panel.dart';
+import 'package:shnatter/src/views/setting/panel/pages/account_page.dart';
+import 'package:shnatter/src/views/setting/setting_router.dart';
 
 import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
@@ -24,17 +39,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/gestures.dart';
 import '../box/notification.dart';
 
-class SettingsProfileLocation extends StatefulWidget {
-  SettingsProfileLocation({Key? key})
+class SettingMainScreen extends StatefulWidget {
+  SettingMainScreen({Key? key})
       : con = HomeController(),
         super(key: key);
   final HomeController con;
 
   @override
-  State createState() => SettingsProfileLocationState();
+  State createState() => SettingMainScreenState();
 }
 
-class SettingsProfileLocationState extends mvc.StateMVC<SettingsProfileLocation>
+class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -43,12 +58,7 @@ class SettingsProfileLocationState extends mvc.StateMVC<SettingsProfileLocation>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var suggest = <String, bool>{
-    'friends': true,
-    'pages': true,
-    'groups': true,
-    'events': true
-  };
+  String settingPage = 'account_page';
   //
   @override
   void initState() {
@@ -140,14 +150,19 @@ class SettingsProfileLocationState extends mvc.StateMVC<SettingsProfileLocation>
                         SizeConfig(context).screenWidth <
                                 SizeConfig.smallScreenSize
                             ? const SizedBox()
-                            : SettingsLeftPanel(),
+                            : SettingsLeftPanel(onClick:(value) {
+                                settingPage = value;
+                                setState(() { });
+                            }),
                         //    : SizedBox(width: 0),
                         Expanded(
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: SettingMainPanel()),
+                            Expanded(child: 
+                              SettingRouter.settingRouter(settingPage)
+                            ),
                             // ChatScreen(),
                           ],
                         )),
@@ -178,7 +193,12 @@ class SettingsProfileLocationState extends mvc.StateMVC<SettingsProfileLocation>
                                         color: Colors.white,
                                         width: SizeConfig.leftBarWidth,
                                         child: SingleChildScrollView(
-                                          child: SettingsLeftPanel(),
+                                          child: SettingsLeftPanel(
+                                            onClick: (value){
+                                              settingPage = value;
+                                              setState(() { });
+                                            },
+                                          ),
                                         ),
                                       )
                                     ]),

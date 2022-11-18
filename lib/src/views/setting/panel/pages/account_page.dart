@@ -11,13 +11,13 @@ import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 
-class SettingMainPanel extends StatefulWidget {
-  SettingMainPanel({Key? key}) : super(key: key);
+class SettingAccountScreen extends StatefulWidget {
+  SettingAccountScreen({Key? key}) : super(key: key);
   @override
-  State createState() => SettingMainPanelState();
+  State createState() => SettingAccountScreenState();
 }
 // ignore: must_be_immutable
-class SettingMainPanelState extends State<SettingMainPanel> {
+class SettingAccountScreenState extends State<SettingAccountScreen> {
   bool showMind = false;
   var user_email = '';
   var user_name = '';

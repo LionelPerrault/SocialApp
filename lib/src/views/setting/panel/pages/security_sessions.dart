@@ -12,13 +12,13 @@ import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
-class SettingMainPanel extends StatefulWidget {
-  SettingMainPanel({Key? key}) : super(key: key);
+class SettingSecuritySessScreen extends StatefulWidget {
+  SettingSecuritySessScreen({Key? key}) : super(key: key);
   @override
-  State createState() => SettingMainPanelState();
+  State createState() => SettingSecuritySessScreenState();
 }
 // ignore: must_be_immutable
-class SettingMainPanelState extends State<SettingMainPanel> {
+class SettingSecuritySessScreenState extends State<SettingSecuritySessScreen> {
   var setting_security = {};
   @override
   Widget build(BuildContext context) {

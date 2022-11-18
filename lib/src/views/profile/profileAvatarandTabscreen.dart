@@ -33,7 +33,8 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
   var tap = 'Timeline';
   var userInfo = UserManager.userInfo;
   late String avatar;
-  double progress = 0;
+  double avatarProgress = 0;
+  double coverProgress = 0;
   List<Map> mainTabList = [
     {'title':'Timeline','icon':Icons.tab},
     {'title':'Friends','icon':Icons.group_sharp},
@@ -65,6 +66,7 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
   Widget build(BuildContext context) {
     return Stack(
             children:[
+              
               Container(
                   margin: const EdgeInsets.only(left: 30,right: 30),
                   width: SizeConfig(context).screenWidth,
@@ -108,7 +110,20 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
                     child: mainTabWidget()
                   )
                 ]),
-                )
+                ),
+                coverProgress == 0 ? Container() :
+              
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 1000),
+                margin: const EdgeInsets.only(left: 30,right: 30),
+                width: SizeConfig(context).screenWidth-60,
+                padding: EdgeInsets.only(right:(SizeConfig(context).screenWidth - 60)-((SizeConfig(context).screenWidth - 60)*coverProgress / 100)),
+                child: Container(
+                  color: Colors.blue,
+                  width: SizeConfig(context).screenWidth-60,
+                  height: 3,
+                ),
+              ),
               ],
           );
   }
@@ -135,10 +150,11 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
           ),
         ),
         
-        (progress !=0&&progress !=100) ? Container(
-          margin: EdgeInsets.only(top: 78, left: 10),
+        (avatarProgress !=0 && avatarProgress !=100) ? AnimatedContainer(
+          duration: const Duration(milliseconds: 500),
+          margin: const EdgeInsets.only(top: 78, left: 10),
           width: 130,
-          padding: EdgeInsets.only(right:130 - (130 * progress/100)),
+          padding: EdgeInsets.only(right:130 - (130 * avatarProgress/100)),
           child: const LinearProgressIndicator(
             color: Colors.blue,
           value: 10,
@@ -297,17 +313,24 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
           uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
                       switch (taskSnapshot.state) {
                         case TaskState.running:
-                          progress =
-                              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                              setState(() {});
-                              print("Upload is $progress% complete.");
+                        if(type == 'avatar'){
+                          avatarProgress =
+                            100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                            setState(() {});
+                            print("Upload is $avatarProgress% complete.");
+                        }
+                        else{
+                          coverProgress =
+                            100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                            setState(() {});
+                            print("Upload is $coverProgress% complete.");
+                        }
 
                           break;
                         case TaskState.paused:
                           print("Upload is paused.");
                           break;
                         case TaskState.canceled:
-
                           print("Upload was canceled");
                           break;
                         case TaskState.error:
@@ -315,6 +338,8 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
                           break;
                         case TaskState.success:
                          print("Upload is completed");
+                         coverProgress = 0;
+                         setState(() { });
                         // Handle successful uploads on complete
                         // ...
                         //  var downloadUrl = await _reference.getDownloadURL();

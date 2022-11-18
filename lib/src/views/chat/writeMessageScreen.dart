@@ -41,7 +41,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
      Column(
       children: [
         con.progress == 0 ? Container() :
-        Container(
+        AnimatedContainer(
+          duration: Duration(milliseconds: 500),
           width: double.infinity,
           margin: EdgeInsets.only(right: 300 - (300*con.progress/100)),
           height: 2,

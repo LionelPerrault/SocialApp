@@ -14,21 +14,6 @@ import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
-import 'package:shnatter/src/views/setting/settings_account.dart';
-import 'package:shnatter/src/views/setting/settings_delete.dart';
-import 'package:shnatter/src/views/setting/settings_information.dart';
-import 'package:shnatter/src/views/setting/settings_notifications.dart';
-import 'package:shnatter/src/views/setting/settings_privacy.dart';
-import 'package:shnatter/src/views/setting/settings_profile_basic.dart';
-import 'package:shnatter/src/views/setting/settings_profile_design.dart';
-import 'package:shnatter/src/views/setting/settings_profile_education.dart';
-import 'package:shnatter/src/views/setting/settings_profile_location.dart';
-import 'package:shnatter/src/views/setting/settings_profile_social.dart';
-import 'package:shnatter/src/views/setting/settings_profile_work.dart';
-import 'package:shnatter/src/views/setting/settings_security_password.dart';
-import 'package:shnatter/src/views/setting/settings_security_sessions.dart';
-import 'package:shnatter/src/views/setting/settings_shnatter_token.dart';
-import 'package:shnatter/src/views/setting/settings_verification.dart';
 import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
 import 'package:shnatter/src/views/resetpassword.dart';
@@ -38,12 +23,9 @@ import 'package:shnatter/src/views/startedscreen.dart';
 
 import '../managers/user_manager.dart';
 import '../views/profile/profilescreen.dart';
+import '../views/setting/settings_main.dart';
 
 class RouteGenerator {
-  static Future<void> checkRoute(RouteSettings settings) async {
-    generateRoute(settings);
-  }
-
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
     var url = settings.name;
@@ -93,57 +75,7 @@ class RouteGenerator {
       //settings route generators
       case RouteNames.settings:
         return MaterialPageRoute(
-            builder: (context) => SettingsAccount(), settings: settings);
-      case RouteNames.settings_profile_basic:
-        return MaterialPageRoute(
-            builder: (context) => SettingsProfileBasic(), settings: settings);
-      case RouteNames.settings_profile_work:
-        return MaterialPageRoute(
-            builder: (context) => SettingsProfileWork(), settings: settings);
-      case RouteNames.settings_profile_location:
-        return MaterialPageRoute(
-            builder: (context) => SettingsProfileLocation(),
-            settings: settings);
-      case RouteNames.settings_profile_education:
-        return MaterialPageRoute(
-            builder: (context) => SettingsProfileEducation(),
-            settings: settings);
-      case RouteNames.settings_profile_social:
-        return MaterialPageRoute(
-            builder: (context) => SettingsProfileSocial(), settings: settings);
-      case RouteNames.settings_profile_interests:
-        return MaterialPageRoute(
-            builder: (context) => SettingsAccount(), settings: settings);
-      case RouteNames.settings_profile_design:
-        return MaterialPageRoute(
-            builder: (context) => SettingsProfileDesign(), settings: settings);
-      case RouteNames.settings_security_password:
-        return MaterialPageRoute(
-            builder: (context) => SettingsSecurityPassword(),
-            settings: settings);
-      case RouteNames.settings_security_sessions:
-        return MaterialPageRoute(
-            builder: (context) => SettingsSecuritySessions(),
-            settings: settings);
-      case RouteNames.settings_privacy:
-        return MaterialPageRoute(
-            builder: (context) => SettingsPrivacy(), settings: settings);
-      case RouteNames.settings_notifications:
-        return MaterialPageRoute(
-            builder: (context) => SettingsNotifications(), settings: settings);
-      case RouteNames.settings_delete:
-        return MaterialPageRoute(
-            builder: (context) => SettingsDelete(), settings: settings);
-      case RouteNames.settings_information:
-        return MaterialPageRoute(
-            builder: (context) => SettingsInformation(), settings: settings);
-      case RouteNames.settings_verification:
-        return MaterialPageRoute(
-            builder: (context) => SettingsVerification(), settings: settings);
-      case RouteNames.settings_token:
-        return MaterialPageRoute(
-            builder: (context) => SettingsShnatterToken(), settings: settings);
-
+            builder: (context) => SettingMainScreen(), settings: settings);
       //event route generators
       case RouteNames.events:
         return MaterialPageRoute(

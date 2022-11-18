@@ -14,13 +14,13 @@ import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
-class SettingMainPanel extends StatefulWidget {
-  SettingMainPanel({Key? key}) : super(key: key);
+class SettingNotificationScreen extends StatefulWidget {
+  SettingNotificationScreen({Key? key}) : super(key: key);
   @override
-  State createState() => SettingMainPanelState();
+  State createState() => SettingNotificationScreenState();
 }
 // ignore: must_be_immutable
-class SettingMainPanelState extends State<SettingMainPanel> {
+class SettingNotificationScreenState extends State<SettingNotificationScreen> {
   Map<String, String> privacyInfo = {
     'poke' : 'every',
     'postWall' : 'every',
