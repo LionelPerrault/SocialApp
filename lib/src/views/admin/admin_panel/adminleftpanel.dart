@@ -85,12 +85,24 @@ class AdminLeftPanel extends StatelessWidget {
                             icon:
                                 const Icon(Icons.notifications)),
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {
+                              Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .adp_settings_chat)
+                            },
                             label: 'Chat Settings',
                             icon:
                                 const Icon(Icons.message_rounded)),
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {
+                              Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .adp_settings_live)
+                            },
                             label: 'Live Stream Settings',
                             icon:
                                 const Icon(Icons.network_cell_rounded)),
@@ -105,7 +117,13 @@ class AdminLeftPanel extends StatelessWidget {
                             icon:
                                 const Icon(Icons.credit_card)),
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {
+                              Navigator
+                                  .pushReplacementNamed(
+                                      context,
+                                      RouteNames
+                                          .adp_settings_security)
+                            },
                             label: 'Security Settings',
                             icon:
                                 const Icon(Icons.security_rounded)),

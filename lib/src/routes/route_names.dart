@@ -32,4 +32,7 @@ class RouteNames {
   static const adp = '/adminpanel';
   static const adp_settings_analytics = '/adminpanel/settings/analytics';
   static const adp_settings_limits = '/adminpanel/settings/limits';
+  static const adp_settings_security = '/adminpanel/settings/security';
+  static const adp_settings_live = '/adminpanel/settings/live';
+  static const adp_settings_chat = '/adminpanel/settings/chat';
 }
