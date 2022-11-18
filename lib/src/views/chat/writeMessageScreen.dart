@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../../controllers/ChatController.dart';
 // ignore: must_be_immutable
@@ -20,24 +20,37 @@ class WriteMessageScreen extends StatefulWidget {
 class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   bool check1 = false;
   bool check2 = false;
+  bool isShift = false;
+  bool isEnter = false;
+  String data = '';
   late ChatController con;
   var userInfo = UserManager.userInfo;
   var emojiList = <Widget>[];
+  late FocusNode _focusNode;
   var t = [];
   TextEditingController content = TextEditingController();
   @override
   void initState() {
     add(widget.con);
     con = controller as ChatController;
-    setState(() {});
+    _focusNode = FocusNode(
+      onKey: (FocusNode node, RawKeyEvent evt) {
+        if (!evt.isShiftPressed && evt.logicalKey.keyLabel == 'Enter') {
+          if (evt is RawKeyDownEvent) {
+            sendMessage();
+          }
+          return KeyEventResult.handled;
+        }
+        else {
+          return KeyEventResult.ignored;
+        }
+      },
+    );
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
-    print(con.progress);
     return
-      
      Column(
       children: [
         con.progress == 0 ? Container() :
@@ -50,11 +63,14 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             color: Colors.blue,
             borderRadius: BorderRadius.all(Radius.circular(2))),
         ),
-        Container(
+        SizedBox(
           height: 35,
-          child: TextFormField(
+          child:
+            TextFormField(
+            focusNode: _focusNode,
             controller: con.textController,
             onChanged: ((value) {
+              data = value;
             }),
             minLines: 1,
             maxLines: 5,
@@ -71,8 +87,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               contentPadding:
                   EdgeInsets.only(left: 15, bottom: 11, top: 0, right: 15),
             ),
-          ),
-        ),
+          ),)
+        ,
         Container(
           child: Row(children: [
             const Padding(padding: EdgeInsets.only(left: 10)),
@@ -134,6 +150,10 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   }
 
   sendMessage() async {
+    if(con.textController.text.isEmpty){
+      setState(() { });
+      return;
+    }
     bool success =
         await con.sendMessage(widget.type, 'text', con.textController.text);
     if (widget.type == 'new' && success) {
