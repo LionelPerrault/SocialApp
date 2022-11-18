@@ -6,13 +6,18 @@ import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart'
 
 // ignore: must_be_immutable
 class AdminSettingsAnalytics extends StatelessWidget {
-  const AdminSettingsAnalytics(
+  AdminSettingsAnalytics(
       {super.key});
+  var headerTab = [
+    {'icon':Icons.track_changes,'title':'General','onClick':(value) {print(value);}},
+    {'icon':Icons.time_to_leave,'title':'SEO','onClick':(value) {print(value);}},
+    {'icon':Icons.mode,'title':'Modules','onClick':(value) {print(value);}}
+  ];
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(children: [
-        AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Analytics', button: const {'flag': false},),
+        AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Analytics', button: const {'flag': false},headerTab: headerTab,),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           width: SizeConfig(context).screenWidth*0.5,

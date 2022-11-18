@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
-
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
-class AdminSettingHeader extends StatelessWidget {
-  AdminSettingHeader({super.key, required this.icon, required this.pagename, this.button});
+class AdminSettingHeader extends StatefulWidget {
+  AdminSettingHeader({super.key, required this.icon, required this.pagename, this.button, this.headerTab = const []});
   Icon icon;
+  // ignore: prefer_typing_uninitialized_variables
+  List<Map> headerTab = [];
   String pagename;
   var button;
+  State createState() => AdminSettingHeaderState();
+}
+class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader>{
+  late String subTabname;
+  void initState(){
+    subTabname = widget.headerTab.isEmpty ? '' : widget.headerTab[0]['title'];
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
-      child: Container(
-        height: 65,
+    return 
+      Container(
+        padding: const EdgeInsets.only(right: 20,left: 15),
+        height: widget.headerTab.isNotEmpty ? 100 :65,
         decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -26,16 +36,56 @@ class AdminSettingHeader extends StatelessWidget {
           color: Color.fromARGB(255, 240, 243, 246),
           // borderRadius: BorderRadius.all(Radius.circular(3)),
         ),
-        padding: const EdgeInsets.only(top: 5, left: 15),
-        child: Row(children: [
-          icon,
+        child: widget.headerTab.isEmpty ? 
+          Container(
+            height: double.infinity,
+            alignment: Alignment.center,
+            child:mainHeaderWidget()  ,
+          )
+          : 
+          Column(
+            children: [
+              Container(
+                height: 60,
+                child: mainHeaderWidget(),
+              ),
+              Row(
+                children: widget.headerTab.map((value)=>
+                InkWell(
+                  onTap: () {
+                    subTabname = value['title'];
+                    value['onClick'](value['title']);
+                    setState(() {});
+                  },
+                  child: Container(
+                  color: subTabname == value['title'] ?Colors.white : null,
+                  alignment: Alignment.center,
+                  height: 39,
+                  width: 100,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(value['icon']),
+                      Text(value['title'])
+                  ]),
+                ))
+                ).toList()
+              )
+              
+            ],
+        ),
+        );
+  }
+  Widget mainHeaderWidget() {
+    return Row(children: [
+          widget.icon,
           const Padding(padding: EdgeInsets.only(left: 10)),
-          Text(pagename),
+          Text(widget.pagename),
           const Flexible(fit: FlexFit.tight, child: SizedBox()),
-          button['flag'] ? ElevatedButton(
+          widget.button['flag'] ? ElevatedButton(
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.all(3),
-              backgroundColor: button['buttoncolor'],
+              backgroundColor: widget.button['buttoncolor'],
               // elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(3.0)),
@@ -49,14 +99,12 @@ class AdminSettingHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-              button['icon'],
-              Text(button['text'], style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold))
+              widget.button['icon'],
+              Text(widget.button['text'], style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold))
             ],))
             :
             SizedBox(),
             const Padding(padding: EdgeInsets.only(right: 30))
-        ],),
-        ),
-    );
+        ],);
   }
 }
