@@ -4,7 +4,9 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAnalyticspane
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsChatpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsLimitspanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsLivepanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsPostpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
 
 
 class AdminRouter{
@@ -23,6 +25,10 @@ class AdminRouter{
         return AdminSettingsLive();
       case '/settings/security': 
         return AdminSettingsSecurity();
+      case '/settings': 
+        return AdminSettingsSystem();
+      case '/settings/posts': 
+        return AdminSettingsPosts();
 
     } 
   }
