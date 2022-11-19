@@ -78,7 +78,9 @@ class AdminLeftPanel extends StatelessWidget {
                             icon:
                                 const Icon(Icons.manage_accounts)),
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {
+                              onClick('/settings/email')
+                            },
                             label: 'Email Settings',
                             icon:
                                 const Icon(Icons.mail)),
