@@ -6,6 +6,7 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsEmailpanel.da
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsLimitspanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsLivepanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsPostpanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSMSpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
 
@@ -36,6 +37,8 @@ class AdminRouter{
         return AdminSettingsPosts();
       case '/settings/email': 
         return AdminSettingsEmail();
+      case '/settings/sms': 
+        return AdminSettingsSMS();
 
     } 
   }
