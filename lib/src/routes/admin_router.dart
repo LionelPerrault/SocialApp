@@ -9,6 +9,8 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsPostpanel.dar
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
 
+import '../views/admin/admin_panel/pages/settingsSystempanel.dart';
+
 
 class AdminRouter{
   AdminRouter(String settingPage);
@@ -24,6 +26,8 @@ class AdminRouter{
         return AdminSettingsLimits();
       case '/settings/live': 
         return AdminSettingsLive();
+      case '/settings/system':
+        return AdminSettingsSystem();
       case '/settings/security': 
         return AdminSettingsSecurity();
       case '/settings': 

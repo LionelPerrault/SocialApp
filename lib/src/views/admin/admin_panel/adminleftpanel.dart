@@ -55,7 +55,7 @@ class AdminLeftPanel extends StatelessWidget {
                         children: [
                           ListText(
                             onTap: () => {
-                              onClick('/settings')
+                              onClick('/settings/system')
                             },
                             label: 'System Settings',
                             icon:

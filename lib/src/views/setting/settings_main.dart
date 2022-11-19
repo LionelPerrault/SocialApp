@@ -1,11 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/setting/panel/settng_left_panel.dart';
 import 'package:shnatter/src/routes/setting_router.dart';
-
 import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import '../box/notification.dart';

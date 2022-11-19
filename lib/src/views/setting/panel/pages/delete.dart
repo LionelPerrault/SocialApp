@@ -1,24 +1,17 @@
 
 import 'package:flutter/material.dart';
-
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/daytimeM.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingDeleteScreen extends StatefulWidget {
-  SettingDeleteScreen({Key? key}) : super(key: key);
+  const SettingDeleteScreen({Key? key}) : super(key: key);
   @override
   State createState() => SettingDeleteScreenState();
 }
 // ignore: must_be_immutable
 class SettingDeleteScreenState extends State<SettingDeleteScreen> {
+  // ignore: non_constant_identifier_names
   var setting_security = {};
   @override
   Widget build(BuildContext context) {
@@ -28,7 +21,7 @@ class SettingDeleteScreenState extends State<SettingDeleteScreen> {
           SettingHeader(icon: const Icon(Icons.delete,color: Color.fromARGB(255, 244, 67, 54),), pagename: 'Delete Account',
             button: {'flag': false},),
           const Padding(padding: EdgeInsets.only(top: 20)),
-          Container(
+          SizedBox(
             width: SizeConfig(context).screenWidth * 0.5,
             child: Column(children: [
               Container(
@@ -51,12 +44,12 @@ class SettingDeleteScreenState extends State<SettingDeleteScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       width: 145,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(3),
-                          backgroundColor: Color.fromARGB(255, 245, 54, 92),
+                          padding: const EdgeInsets.all(3),
+                          backgroundColor: const Color.fromARGB(255, 245, 54, 92),
                           // elevation: 3,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(3.0)),
@@ -83,7 +76,7 @@ class SettingDeleteScreenState extends State<SettingDeleteScreen> {
       );
   }
   Widget input({label, onchange, obscureText = false, validator}) {
-    return Container(
+    return SizedBox(
       height: 28,
       child: StartedInput(
         validator: (val) async {

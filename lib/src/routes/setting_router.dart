@@ -1,4 +1,3 @@
-
 import 'package:shnatter/src/views/setting/panel/pages/delete.dart';
 import 'package:shnatter/src/views/setting/panel/pages/information.dart';
 import 'package:shnatter/src/views/setting/panel/pages/notifications.dart';
@@ -49,7 +48,7 @@ class SettingRouter{
       case 'information': 
         return  SettingInfoScreen();
       case 'delete':
-       return SettingDeleteScreen();
+       return const SettingDeleteScreen();
     } 
   }
 }
