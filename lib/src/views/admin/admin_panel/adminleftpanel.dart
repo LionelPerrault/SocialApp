@@ -54,7 +54,9 @@ class AdminLeftPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListText(
-                            onTap: () => {},
+                            onTap: () => {
+                              onClick('/settings/system')
+                            },
                             label: 'System Settings',
                             icon:
                                 const Icon(Icons.settings_suggest_outlined)),

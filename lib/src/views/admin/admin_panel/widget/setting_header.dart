@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
 class AdminSettingHeader extends StatefulWidget {
@@ -12,6 +9,7 @@ class AdminSettingHeader extends StatefulWidget {
   List<Map> headerTab = [];
   String pagename;
   var button;
+  @override
   State createState() => AdminSettingHeaderState();
 }
 class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader>{

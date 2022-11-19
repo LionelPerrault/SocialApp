@@ -17,7 +17,7 @@ class AdminSettingsAnalytics extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(children: [
-        AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Analytics', button: const {'flag': false},headerTab: headerTab,),
+        AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Analytics', button: const {'flag': false}),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           width: SizeConfig(context).screenWidth*0.5,
