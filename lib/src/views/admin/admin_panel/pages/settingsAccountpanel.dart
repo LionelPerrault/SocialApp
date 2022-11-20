@@ -41,7 +41,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
 
   bool check1 = false;
   Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
-  double fontSize = 14;
+  double fontSize = 13;
   String tabTitle = 'General';
   late var headerTab;
   @override
@@ -158,7 +158,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Max Friends/User', 30, 1,
+        titleAndsubtitleInput('Max Friends/User', 30, 1,
             'The Maximum number of friends allowed per User (0 for unlimited)'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
@@ -275,7 +275,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ));
   }
 
-  Widget systemDropDown(title, List<Map> dropDownItems, subtitle) {
+  Widget titleAndsubtitleDropdown(title, List<Map> dropDownItems, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,7 +347,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
     );
   }
 
-  Widget systemInput(title, height, line, subtitle) {
+  Widget titleAndsubtitleInput(title, height, line, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -394,7 +394,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
                 const Padding(padding: EdgeInsets.only(top: 5)),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: fontSize),
+                  style: TextStyle(fontSize: 12),
                 )
               ],
             ))
@@ -423,7 +423,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
                     title,
                     style: TextStyle(
                         color: fontColor,
-                        fontSize: 18,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(content,

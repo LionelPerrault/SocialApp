@@ -166,28 +166,31 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 20),
         ),
-        systemInput('Bank Name', 30, 1, 'Your Bank Name'),
+        titleAndsubtitleInput('Bank Name', 30, 1, 'Your Bank Name'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('Bank Account Number', 30, 1, 'Your Bank Account Number'),
+        titleAndsubtitleInput(
+            'Bank Account Number', 30, 1, 'Your Bank Account Number'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('Bank Account Name', 30, 1, 'Your Bank Account Name'),
+        titleAndsubtitleInput(
+            'Bank Account Name', 30, 1, 'Your Bank Account Name'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('Bank Account Routing Code', 30, 1,
+        titleAndsubtitleInput('Bank Account Routing Code', 30, 1,
             'Your Bank Account Routing Code or SWIFT Code'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('Bank Account Country', 30, 1, 'Your Bank Account Country'),
+        titleAndsubtitleInput(
+            'Bank Account Country', 30, 1, 'Your Bank Account Country'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('Transfer Note', 100, 7,
+        titleAndsubtitleInput('Transfer Note', 100, 7,
             'This note will be displayed to the user while upload his bank transfer receipt'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -218,15 +221,15 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('Merchant Code', 30, 1, ''),
+        titleAndsubtitleInput('Merchant Code', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('API Publishable Key', 30, 1, ''),
+        titleAndsubtitleInput('API Publishable Key', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('API Private Key', 30, 1, ''),
+        titleAndsubtitleInput('API Private Key', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 20),
         ),
@@ -252,11 +255,11 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Merchant ID', 30, 1, ''),
+        titleAndsubtitleInput('Merchant ID', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        systemInput('IPN Secret', 30, 1, ''),
+        titleAndsubtitleInput('IPN Secret', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -282,7 +285,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Secret Key', 30, 1, 'Paystack secret key that starts with sk_'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -313,11 +316,11 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('PayPal Client ID', 30, 1, ''),
+        titleAndsubtitleInput('PayPal Client ID', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        systemInput('PayPal Secret Key', 30, 1, ''),
+        titleAndsubtitleInput('PayPal Secret Key', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
@@ -354,22 +357,22 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Test Secret Key', 30, 1, 'Stripe secret key that starts with sk_'),
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        systemInput('Test Publishable Key', 30, 1,
+        titleAndsubtitleInput('Test Publishable Key', 30, 1,
             'Stripe publishable key that starts with pk_'),
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Live Secret Key', 30, 1, 'Stripe secret key that starts with sk_'),
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        systemInput('Live Publishable Key', 30, 1,
+        titleAndsubtitleInput('Live Publishable Key', 30, 1,
             'Stripe publishable key that starts with pk_'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
@@ -421,18 +424,19 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
-        systemInput('Bucket Name', 30, 1, 'Your Wasabi bucket name'),
+        titleAndsubtitleInput('Bucket Name', 30, 1, 'Your Wasabi bucket name'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Access Key ID', 30, 1, 'Your Wasabi Access Key ID'),
+        titleAndsubtitleInput(
+            'Access Key ID', 30, 1, 'Your Wasabi Access Key ID'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Access Key Secret', 30, 1, 'Your Wasabi Access Key Secret'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
@@ -532,18 +536,20 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
-        systemInput('Space Name', 30, 1, 'Your DigitalOcean space name'),
+        titleAndsubtitleInput(
+            'Space Name', 30, 1, 'Your DigitalOcean space name'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Access Key ID', 30, 1, 'Your DigitalOcean Access Key ID'),
+        titleAndsubtitleInput(
+            'Access Key ID', 30, 1, 'Your DigitalOcean Access Key ID'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Access Key Secret', 30, 1, 'Your DigitalOcean Access Key Secret'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
@@ -636,17 +642,17 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Uploads Directory', 30, 1, 'The path of uploads local directory'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Uploads Prefix', 30, 1,
+        titleAndsubtitleInput('Uploads Prefix', 30, 1,
             'Add a prefix to the uploaded files (No spaces or special characters only like mysite or my_site)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Uploads CDN Endpoint', 30, 1, 'Your CDN URL like AWS CloudFront'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -673,7 +679,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Max Photo Size', 30, 1,
+        titleAndsubtitleInput('Max Photo Size', 30, 1,
             'The Maximum size of uploaded photo in posts in kilobytes (1M = 1024KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -695,12 +701,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Max Cover Photo Size', 30, 1,
+        titleAndsubtitleInput('Max Cover Photo Size', 30, 1,
             'The Maximum size of cover photo in kilobytes (1 M = 1024 KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Max Profile Photo Size', 30, 1,
+        titleAndsubtitleInput('Max Profile Photo Size', 30, 1,
             'The Maximum size of profile photo in kilobytes (1 M = 1024 KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -753,21 +759,23 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Watermark Position', 30, 1,
+        titleAndsubtitleInput('Watermark Position', 30, 1,
             'Select the position (the anchor point) of your watermark icon'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Watermark Opacity', 30, 1,
+        titleAndsubtitleInput('Watermark Opacity', 30, 1,
             'The opacity level of the watermark icon (value between 0 - 1)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Watermark X Offset', 30, 1, 'Horizontal offset in pixels'),
+        titleAndsubtitleInput(
+            'Watermark X Offset', 30, 1, 'Horizontal offset in pixels'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Watermark Y Offset', 30, 1, 'Vertical offset in pixels'),
+        titleAndsubtitleInput(
+            'Watermark Y Offset', 30, 1, 'Vertical offset in pixels'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -839,7 +847,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Google Vision API Key', 30, 1, 'Your Cloud Vision API Key'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -858,12 +866,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Max video size', 30, 1,
+        titleAndsubtitleInput('Max video size', 30, 1,
             'The Maximum size of uploaded video in posts in kilobytes (1M = 1024KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Video extensions', 30, 1,
+        titleAndsubtitleInput('Video extensions', 30, 1,
             'Allowed video extensions (separated with comma)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -882,12 +890,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Max audio size', 30, 1,
+        titleAndsubtitleInput('Max audio size', 30, 1,
             'The Maximum size of uploaded audio in posts in kilobytes (1M = 1024KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Audio extensions', 30, 1,
+        titleAndsubtitleInput('Audio extensions', 30, 1,
             'Allowed audio extensions (separated with comma )'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -906,12 +914,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Max file size', 30, 1,
+        titleAndsubtitleInput('Max file size', 30, 1,
             'The Maximum size of uploaded file in posts in kilobytes (1M = 1024KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('File extensions', 30, 1,
+        titleAndsubtitleInput('File extensions', 30, 1,
             'Allowed file extensions (separated with comma `,)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -1051,19 +1059,22 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
-        systemInput('Bucket Name', 30, 1, 'Your Amazon S3 bucket name'),
+        titleAndsubtitleInput(
+            'Bucket Name', 30, 1, 'Your Amazon S3 bucket name'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Bucket Region', 30, 1, 'Your Amazon S3 bucket region'),
+        titleAndsubtitleInput(
+            'Bucket Region', 30, 1, 'Your Amazon S3 bucket region'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Access Key ID', 30, 1, 'Your Amazon S3 Access Key ID'),
+        titleAndsubtitleInput(
+            'Access Key ID', 30, 1, 'Your Amazon S3 Access Key ID'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput(
+        titleAndsubtitleInput(
             'Access Key Secret', 30, 1, 'Your Amazon S3 Access Key Secret'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
@@ -1152,7 +1163,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         ));
   }
 
-  Widget systemDropDown(title, List<Map> dropDownItems, subtitle) {
+  Widget titleAndsubtitleDropdown(title, List<Map> dropDownItems, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1224,7 +1235,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
     );
   }
 
-  Widget systemInput(title, height, line, subtitle) {
+  Widget titleAndsubtitleInput(title, height, line, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1235,9 +1246,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           child: Text(
             title,
             style: TextStyle(
-                color: fontColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold),
+                color: fontColor, fontSize: 13, fontWeight: FontWeight.bold),
           ),
         )),
         Flexible(fit: FlexFit.tight, child: SizedBox()),
@@ -1271,7 +1280,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                 const Padding(padding: EdgeInsets.only(top: 5)),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: fontSize),
+                  style: TextStyle(fontSize: 12),
                 )
               ],
             ))
@@ -1304,7 +1313,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                     title,
                     style: TextStyle(
                         color: fontColor,
-                        fontSize: 18,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(content,

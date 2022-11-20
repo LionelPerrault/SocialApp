@@ -621,56 +621,57 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput('Website Title', 30, 1, 'Title of your website'),
+          titleAndsubtitleInput(
+              'Website Title', 30, 1, 'Title of your website'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput(
+          titleAndsubtitleInput(
               'Website Description', 100, 7, 'Description of your website'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput('Website Keywords', 100, 7,
+          titleAndsubtitleInput('Website Keywords', 100, 7,
               'Example: social, sngine, social site'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput(
+          titleAndsubtitleInput(
               'Directory Description', 100, 7, 'Description of your Directory'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput(
+          titleAndsubtitleInput(
               'News Description', 100, 1, 'Description of your news module'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput('Marketplace Description', 100, 1,
+          titleAndsubtitleInput('Marketplace Description', 100, 1,
               'Description of your marketplace module'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput('Funding Description', 100, 1,
+          titleAndsubtitleInput('Funding Description', 100, 1,
               'Description of your funding module'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput(
+          titleAndsubtitleInput(
               'Offers Description', 100, 1, 'Description of your offer module'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput(
+          titleAndsubtitleInput(
               'Jobs Description', 100, 1, 'Description of your jobs module'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput('Forums Description', 100, 1,
+          titleAndsubtitleInput('Forums Description', 100, 1,
               'Description of your forums module'),
           const Padding(
             padding: EdgeInsets.only(top: 30),
           ),
-          systemInput('Movies Description', 100, 1,
+          titleAndsubtitleInput('Movies Description', 100, 1,
               'Description of your movies module'),
           const Padding(padding: EdgeInsets.only(top: 30)),
           Container(
@@ -980,22 +981,22 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('Shutdown Message', 150, 7,
+        titleAndsubtitleInput('Shutdown Message', 150, 7,
             'The text that is presented when the site is closed'),
         const Padding(padding: EdgeInsets.only(top: 30)),
-        systemInput('System Email', 30, 1,
+        titleAndsubtitleInput('System Email', 30, 1,
             'The contact email that all messages send to'),
         const Padding(padding: EdgeInsets.only(top: 30)),
-        systemDropDown('System Datetime Format', dateTimeArr,
+        titleAndsubtitleDropdown('System Datetime Format', dateTimeArr,
             'Select the datetime format of the datetime picker'),
         const Padding(padding: EdgeInsets.only(top: 30)),
-        systemDropDown('System Distance Unit', distanceArr,
+        titleAndsubtitleDropdown('System Distance Unit', distanceArr,
             'Select the distance measure unit of your website'),
         const Padding(padding: EdgeInsets.only(top: 30)),
-        systemDropDown('System Currency', currency,
+        titleAndsubtitleDropdown('System Currency', currency,
             'You can add, edit or delete currencies from Currencies'),
         const Padding(padding: EdgeInsets.only(top: 30)),
-        systemDropDown('System Currency Direction', directionCurrency,
+        titleAndsubtitleDropdown('System Currency Direction', directionCurrency,
             'Where to add the currency symbol relative to the money value'),
         const Padding(padding: EdgeInsets.only(top: 30)),
         footer()
@@ -1031,7 +1032,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
         ));
   }
 
-  Widget systemDropDown(title, List<Map> dropDownItems, subtitle) {
+  Widget titleAndsubtitleDropdown(title, List<Map> dropDownItems, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1103,7 +1104,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
     );
   }
 
-  Widget systemInput(title, height, line, subtitle) {
+  Widget titleAndsubtitleInput(title, height, line, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1114,9 +1115,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
           child: Text(
             title,
             style: TextStyle(
-                color: fontColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold),
+                color: fontColor, fontSize: 13, fontWeight: FontWeight.bold),
           ),
         )),
         Flexible(fit: FlexFit.tight, child: SizedBox()),
@@ -1150,7 +1149,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
                 const Padding(padding: EdgeInsets.only(top: 5)),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: fontSize),
+                  style: TextStyle(fontSize: 12),
                 )
               ],
             ))
@@ -1179,7 +1178,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
                     title,
                     style: TextStyle(
                         color: fontColor,
-                        fontSize: 18,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(content,

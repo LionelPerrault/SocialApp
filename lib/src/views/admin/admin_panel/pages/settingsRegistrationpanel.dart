@@ -140,9 +140,9 @@ class AdminSettingsRegistrationState
             'color': const Color.fromRGBO(59, 87, 157, 1)
           }),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Facebook App ID', 30, 1, ''),
+      titleAndsubtitleInput('Facebook App ID', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Facebook App Secret', 30, 1, ''),
+      titleAndsubtitleInput('Facebook App Secret', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
       Container(
         color: const Color.fromRGBO(240, 240, 240, 1),
@@ -154,9 +154,9 @@ class AdminSettingsRegistrationState
           content: 'Turn registration/login via Google On and Off',
           icon: {'icon': Icons.g_mobiledata_rounded, 'color': Colors.red}),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Google App ID', 30, 1, ''),
+      titleAndsubtitleInput('Google App ID', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Google App Secret', 30, 1, ''),
+      titleAndsubtitleInput('Google App Secret', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
       Container(
         color: const Color.fromRGBO(240, 240, 240, 1),
@@ -171,9 +171,9 @@ class AdminSettingsRegistrationState
             'color': const Color.fromRGBO(59, 87, 157, 1)
           }),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Twitter App ID', 30, 1, ''),
+      titleAndsubtitleInput('Twitter App ID', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Twitter App Secret', 30, 1, ''),
+      titleAndsubtitleInput('Twitter App Secret', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
       Container(
         color: const Color.fromRGBO(240, 240, 240, 1),
@@ -188,9 +188,9 @@ class AdminSettingsRegistrationState
             'color': const Color.fromRGBO(59, 87, 157, 1)
           }),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Linkedin App ID', 30, 1, ''),
+      titleAndsubtitleInput('Linkedin App ID', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Linkedin App Secret', 30, 1, ''),
+      titleAndsubtitleInput('Linkedin App Secret', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
       Container(
         color: const Color.fromRGBO(240, 240, 240, 1),
@@ -205,9 +205,9 @@ class AdminSettingsRegistrationState
             'color': const Color.fromRGBO(59, 87, 157, 1)
           }),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Vkontakte App ID', 30, 1, ''),
+      titleAndsubtitleInput('Vkontakte App ID', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
-      systemInput('Vkontakte App Secret', 30, 1, ''),
+      titleAndsubtitleInput('Vkontakte App Secret', 30, 1, ''),
       const Padding(padding: EdgeInsets.only(top: 30)),
       Container(
         color: const Color.fromRGBO(240, 240, 240, 1),
@@ -645,10 +645,10 @@ class AdminSettingsRegistrationState
               height: 1,
             ),
             const Padding(padding: EdgeInsets.only(top: 30)),
-            systemInput('Max Accounts/IP', 30, 1,
+            titleAndsubtitleInput('Max Accounts/IP', 30, 1,
                 'The Maximum number of accounts allowed to register per IP (0 for unlimited)'),
             const Padding(padding: EdgeInsets.only(top: 30)),
-            systemInput('Name Minimum Length', 30, 1,
+            titleAndsubtitleInput('Name Minimum Length', 30, 1,
                 'The First and Last name minimum length'),
             const Padding(padding: EdgeInsets.only(top: 30)),
             footer()
@@ -684,7 +684,7 @@ class AdminSettingsRegistrationState
         ));
   }
 
-  Widget systemDropDown(title, List<Map> dropDownItems, subtitle) {
+  Widget titleAndsubtitleDropdown(title, List<Map> dropDownItems, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -756,7 +756,7 @@ class AdminSettingsRegistrationState
     );
   }
 
-  Widget systemInput(title, height, line, subtitle) {
+  Widget titleAndsubtitleInput(title, height, line, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -767,9 +767,7 @@ class AdminSettingsRegistrationState
           child: Text(
             title,
             style: TextStyle(
-                color: fontColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold),
+                color: fontColor, fontSize: 13, fontWeight: FontWeight.bold),
           ),
         )),
         const Flexible(fit: FlexFit.tight, child: SizedBox()),
@@ -803,7 +801,7 @@ class AdminSettingsRegistrationState
                 const Padding(padding: EdgeInsets.only(top: 5)),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: fontSize),
+                  style: TextStyle(fontSize: 12),
                 )
               ],
             ))
@@ -842,7 +840,7 @@ class AdminSettingsRegistrationState
                         title,
                         style: TextStyle(
                             color: fontColor,
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(content,

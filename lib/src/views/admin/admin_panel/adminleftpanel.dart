@@ -62,7 +62,7 @@ class AdminLeftPanel extends StatelessWidget {
                               icon:
                                   const Icon(Icons.settings_suggest_outlined)),
                           ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/settings/posts')},
                               label: 'Posts Settings',
                               icon: const Icon(Icons.message_rounded)),
                           ListText(
@@ -74,11 +74,7 @@ class AdminLeftPanel extends StatelessWidget {
                               label: 'Accounts Settings',
                               icon: const Icon(Icons.manage_accounts)),
                           ListText(
-                              onTap: () => {},
-                              label: 'Email Settings',
-                              icon: const Icon(Icons.mail)),
-                          ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/settings/sms')},
                               label: 'SMS Settings',
                               icon: const Icon(Icons.sms)),
                           ListText(
@@ -113,6 +109,10 @@ class AdminLeftPanel extends StatelessWidget {
                               onTap: () => {onClick('/settings/analystics')},
                               label: 'Analytics Settings',
                               icon: const Icon(Icons.pie_chart)),
+                          ListText(
+                              onTap: () => {onClick('/settings/email')},
+                              label: 'Email Settings',
+                              icon: const Icon(Icons.mail)),
                         ],
                       )
                     ],

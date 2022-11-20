@@ -90,11 +90,11 @@ class AdminSettingsNotificationState
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('OneSignal APP ID', 30, 1, ''),
+        titleAndsubtitleInput('OneSignal APP ID', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        systemInput('OneSignal REST API Key', 30, 1, ''),
+        titleAndsubtitleInput('OneSignal REST API Key', 30, 1, ''),
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
@@ -254,7 +254,7 @@ class AdminSettingsNotificationState
         ));
   }
 
-  Widget systemDropDown(title, List<Map> dropDownItems, subtitle) {
+  Widget titleAndsubtitleDropdown(title, List<Map> dropDownItems, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,7 +326,7 @@ class AdminSettingsNotificationState
     );
   }
 
-  Widget systemInput(title, height, line, subtitle) {
+  Widget titleAndsubtitleInput(title, height, line, subtitle) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,9 +337,7 @@ class AdminSettingsNotificationState
           child: Text(
             title,
             style: TextStyle(
-                color: fontColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold),
+                color: fontColor, fontSize: 13, fontWeight: FontWeight.bold),
           ),
         )),
         Flexible(fit: FlexFit.tight, child: SizedBox()),
@@ -373,7 +371,7 @@ class AdminSettingsNotificationState
                 const Padding(padding: EdgeInsets.only(top: 5)),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: fontSize),
+                  style: TextStyle(fontSize: 12),
                 )
               ],
             ))
@@ -402,7 +400,7 @@ class AdminSettingsNotificationState
                     title,
                     style: TextStyle(
                         color: fontColor,
-                        fontSize: 18,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(content,
