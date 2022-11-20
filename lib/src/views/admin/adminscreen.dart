@@ -39,7 +39,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
     return _drawerSlideController.value == 0.0;
   }
 
-  String adminAllRouter = '/settings/system';
+  String adminAllRouter = '/settings/payments';
   //
   @override
   void initState() {
@@ -93,12 +93,15 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                         SizeConfig(context).screenWidth <
                                 SizeConfig.mediumScreenSize
                             ? const SizedBox()
-                            : AdminLeftPanel(onClick: (value){
-                              adminAllRouter = value;
-                              setState(() {});
-                            },),
+                            : AdminLeftPanel(
+                                onClick: (value) {
+                                  adminAllRouter = value;
+                                  setState(() {});
+                                },
+                              ),
                         //    : SizedBox(width: 0),
-                        Expanded(child: AdminRouter.adminRouter(adminAllRouter)),
+                        Expanded(
+                            child: AdminRouter.adminRouter(adminAllRouter)),
                         //MainPanel(),
                       ]),
                 )),
@@ -127,10 +130,12 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                                         color: Colors.white,
                                         width: SizeConfig.leftBarWidth,
                                         child: SingleChildScrollView(
-                                          child: AdminLeftPanel(onClick: (value){
-                                            adminAllRouter = value;
-                                            setState(() {});
-                                          },),
+                                          child: AdminLeftPanel(
+                                            onClick: (value) {
+                                              adminAllRouter = value;
+                                              setState(() {});
+                                            },
+                                          ),
                                         ),
                                       )
                                     ]),

@@ -1,33 +1,45 @@
-
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAccountpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAnalyticspanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsChatpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsLimitspanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsLivepanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsNotificationpanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsPaymentpanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsRegistrationpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/settingsUploadpanel.dart';
 
 import '../views/admin/admin_panel/pages/settingsSystempanel.dart';
 
-
-class AdminRouter{
+class AdminRouter {
   AdminRouter(String settingPage);
   static adminRouter(settingPage) {
-    switch(settingPage){
-      case '': 
+    switch (settingPage) {
+      case '':
         return AdminMainPanel();
-      case '/settings/analystics': 
+      case '/settings/analystics':
         return AdminSettingsAnalytics();
-      case '/settings/chat': 
+      case '/settings/chat':
         return AdminSettingsChat();
-      case '/settings/limits': 
+      case '/settings/limits':
         return AdminSettingsLimits();
-      case '/settings/live': 
+      case '/settings/live':
         return AdminSettingsLive();
       case '/settings/system':
         return AdminSettingsSystem();
-      case '/settings/security': 
+      case '/settings/security':
         return AdminSettingsSecurity();
-
-    } 
+      case '/settings/registration':
+        return AdminSettingsRegistration();
+      case '/settings/account':
+        return AdminSettingsAccount();
+      case '/settings/notification':
+        return AdminSettingsNotification();
+      case '/settings/upload':
+        return AdminSettingsUpload();
+      case '/settings/payments':
+        return AdminSettingsPayment();
+    }
   }
 }
