@@ -76,7 +76,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                 children: [
                   Text(
                     "Suggested Events",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 45.0),
@@ -113,87 +113,88 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                 //endIndent: 0,
                 //color: Colors.black,
               ),
-              isSound ? SizedBox(
-                height: 260,
-                //size: Size(100,100),
-                child: ListView.separated(
-                  itemCount: sampleData.length,
-                  itemBuilder: (context, index) => Material(
-                      child: ListTile(
-                          onTap: () {
-                            print("tap!");
-                          },
-                          hoverColor: const Color.fromARGB(255, 243, 243, 243),
-                          enabled: true,
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                "https://test.shnatter.com/content/themes/default/images/blank_event.jpg"),
-                          ),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+              AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  height: isSound ? 260 : 0,
+                  curve: Curves.fastOutSlowIn,
+                  child: SizedBox(
+                    //size: Size(100,100),
+                    child: ListView.separated(
+                      itemCount: sampleData.length,
+                      itemBuilder: (context, index) => Material(
+                          child: ListTile(
+                              onTap: () {
+                                print("tap!");
+                              },
+                              hoverColor: const Color.fromARGB(255, 243, 243, 243),
+                              enabled: true,
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://test.shnatter.com/content/themes/default/images/blank_event.jpg"),
+                              ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    width: 65,
-                                    alignment: Alignment.topLeft,
-                                    child: Column(children: [
-                                      Text(
-                                        sampleData[index]['name'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12),
-                                      ),
-                                      Text(sampleData[index]['subname'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 10)),
-                                    ]),
-                                  ),
-                                  Container(
-                                      child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white,
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: new Size(100, 35),
-                                            maximumSize: new Size(100, 35),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 65,
+                                        alignment: Alignment.topLeft,
+                                        child: Column(children: [
+                                          Text(
+                                            sampleData[index]['name'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
                                           ),
-                                          onPressed: () {
-                                            () => {};
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.star,
-                                                color: Color.fromARGB(
-                                                    255, 33, 37, 41),
-                                                size: 18.0,
+                                          Text(sampleData[index]['subname'],
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 10)),
+                                        ]),
+                                      ),
+                                      Container(
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                                elevation: 3,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(2.0)),
+                                                minimumSize: new Size(100, 35),
+                                                maximumSize: new Size(100, 35),
                                               ),
-                                              Text('Interested',
-                                                  style: const TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 33, 37, 41),
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ],
-                                          ))),
+                                              onPressed: () {
+                                                () => {};
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Color.fromARGB(
+                                                        255, 33, 37, 41),
+                                                    size: 18.0,
+                                                  ),
+                                                  Text('Interested',
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 33, 37, 41),
+                                                          fontSize: 11,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
+                                              ))),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          ))),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                    height: 1,
-                    endIndent: 10,
-                  ),
-                ),
-              )
-              :
-              Column()
+                              ))),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
+                        height: 1,
+                        endIndent: 10,
+                      ),
+                    ),
+                  ))
             ],
           )),
     );
