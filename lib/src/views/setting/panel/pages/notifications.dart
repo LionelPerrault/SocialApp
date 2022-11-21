@@ -45,17 +45,20 @@ class SettingNotificationScreenState extends State<SettingNotificationScreen> {
     return Container(padding: const EdgeInsets.only(top: 20, left:50),
       child: 
         Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
           SettingHeader(icon: const Icon(Icons.notifications, color: Color.fromARGB(255, 103, 58, 183),), pagename: 'Notification',
             button: {'flag': false},),
           const Padding(padding: EdgeInsets.only(top: 20)),
           Row(children: const [
-            Padding(padding: EdgeInsets.only(left: 90)),
+            Padding(padding: EdgeInsets.only(left: 20)),
             Text('SYSTEM NOTIFICATIONS'),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
           ],),
           Container(
-            width: SizeConfig(context).screenWidth * 0.6,
+            padding: EdgeInsets.only(left: 20),
+            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 : SizeConfig(context).screenWidth * 0.9 - 30,
             child: Column(children: [
               Row(children: [
                 Expanded(
@@ -70,16 +73,19 @@ class SettingNotificationScreenState extends State<SettingNotificationScreen> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                        Text('Chat Message Sound', style: TextStyle(
+                        children: [
+                        const Text('Chat Message Sound', style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 13,
                           fontWeight: FontWeight.bold
                         ),),
-                        Padding(padding: EdgeInsets.only(top: 5)),
-                        Text('A sound will be played each time you receive a new message on an inactive chat window', style: TextStyle(
-                          fontSize: 11
-                        ),)
+                        const Padding(padding: EdgeInsets.only(top: 5)),
+                        SizedBox(
+                          width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.3 : SizeConfig(context).screenWidth * 0.5 - 20,
+                          child: const Text('A sound will be played each time you receive a new message on an inactive chat window', style: TextStyle(
+                                  fontSize: 11
+                                ),),
+                        )
                       ],),
                       const Flexible(fit: FlexFit.tight, child: SizedBox()),
                       SizedBox(
@@ -108,7 +114,8 @@ class SettingNotificationScreenState extends State<SettingNotificationScreen> {
           ),
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
-            width: SizeConfig(context).screenWidth * 0.6,
+            padding: EdgeInsets.only(left: 20),
+            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 : SizeConfig(context).screenWidth * 0.9 - 30,
             child: Column(children: [
               Row(children: [
                 Expanded(
@@ -123,16 +130,19 @@ class SettingNotificationScreenState extends State<SettingNotificationScreen> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                        Text('Notifications Sound', style: TextStyle(
+                        children: [
+                        const Text('Notifications Sound', style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 13,
                           fontWeight: FontWeight.bold
                         ),),
-                        Padding(padding: EdgeInsets.only(top: 5)),
-                        Text('A sound will be played each time you receive a new activity notification', style: TextStyle(
-                          fontSize: 11
-                        ),)
+                        const Padding(padding: EdgeInsets.only(top: 5)),
+                        SizedBox(
+                          width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.3 : SizeConfig(context).screenWidth * 0.5 - 20,
+                          child: const Text('A sound will be played each time you receive a new activity notification', style: TextStyle(
+                                    fontSize: 11
+                                  ),),
+                        )
                       ],),
                       const Flexible(fit: FlexFit.tight, child: SizedBox()),
                       SizedBox(

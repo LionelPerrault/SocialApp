@@ -159,7 +159,7 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                     children: [
                                       Container(
                                         color: Colors.white,
-                                        width: SizeConfig.leftBarWidth,
+                                        width: SizeConfig.leftBarWidth + 50,
                                         child: SingleChildScrollView(
                                           child: SettingsLeftPanel(
                                             onClick: (value){

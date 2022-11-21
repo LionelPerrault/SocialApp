@@ -5,6 +5,7 @@ import 'package:shnatter/src/views/setting/panel/pages/privacy.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_basic_page.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_design_page.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_education_page.dart';
+import 'package:shnatter/src/views/setting/panel/pages/profile_interests.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_location_page.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_social_page.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_work_page.dart';
@@ -31,6 +32,8 @@ class SettingRouter{
          return SettingEducationScreen();
       case 'social' :
          return SettingSocialScreen();
+      case 'interests' :
+         return SettingInterestsScreen();
       case 'design' :
          return SettingDesignScreen();
       case 'security_password': 

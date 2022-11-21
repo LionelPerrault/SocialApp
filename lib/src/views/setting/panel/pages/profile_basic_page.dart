@@ -38,7 +38,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       'flag': true},),
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
-            width: SizeConfig(context).screenWidth * 0.5,
+            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
             child: Column(children: [
               Row(
                 children: [

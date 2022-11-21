@@ -21,25 +21,31 @@ class SettingDeleteScreenState extends State<SettingDeleteScreen> {
           SettingHeader(icon: const Icon(Icons.delete,color: Color.fromARGB(255, 244, 67, 54),), pagename: 'Delete Account',
             button: {'flag': false},),
           const Padding(padding: EdgeInsets.only(top: 20)),
-          SizedBox(
-            width: SizeConfig(context).screenWidth * 0.5,
+          Container(
+            padding: const EdgeInsets.only(right: 30, left: 30),
             child: Column(children: [
-              Container(
-                width: 680,
-                height: 65,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 252, 124, 95),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+              Row(children: [
+                Expanded(
+                  child: Container(
+                  height: 65,
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 252, 124, 95),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
+                  child: Row(children: [
+                    const Padding(padding: EdgeInsets.only(left: 30)),
+                    Icon(Icons.warning_rounded, color: Colors.white, size: 30,),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
+                    Container(
+                      width: SizeConfig(context).screenWidth * 0.5,
+                      child: const Text('Once you delete your account you will no longer can access it again',
+                                  style: TextStyle(color: Colors.white,
+                                  fontSize: 11),)
+                    ),
+                  ],),
                 ),
-                child: Row(children: const [
-                  Padding(padding: EdgeInsets.only(left: 30)),
-                  Icon(Icons.warning_rounded, color: Colors.white, size: 30,),
-                  Padding(padding: EdgeInsets.only(left: 10)),
-                  Text('Once you delete your account you will no longer can access it again',
-                  style: TextStyle(color: Colors.white,
-                                    fontSize: 11),)
-                ],),
-              ),
+                )
+              ],),
               const Padding(padding: EdgeInsets.only(top: 20)),
               Row(
                 children: [

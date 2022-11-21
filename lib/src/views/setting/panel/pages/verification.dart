@@ -29,138 +29,158 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
             button: {'flag': false},),
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
-            width: SizeConfig(context).screenWidth * 0.5,
+            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 : SizeConfig(context).screenWidth * 0.9 - 30,
             child: Column(children: [
-              Row(children: [
-                Text('Chat Message Sound', style: TextStyle(
-                  color: Color.fromARGB(255, 82, 95, 127),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold
-                ),),
-                const Padding(padding: EdgeInsets.only(left: 60)),
-                Column(
-                  children: [
-                  Row(children: [
-                    Container(
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(right: 10),
+                    width: 100,
+                    child: Text('Chat Message Sound', style: TextStyle(
+                      color: Color.fromARGB(255, 82, 95, 127),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold
+                    ),),
+                  ),
+                  Expanded(
+                    child: Container(
                       width: 230,
-                      height: 30,
-                      color: Color.fromARGB(255, 235, 235, 235),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                        Icon(Icons.camera_alt),
-                        Padding(padding: EdgeInsets.only(left: 20)),
-                        Text('Your Photo', style: TextStyle(
-                          fontWeight: FontWeight.bold
-                        ),)
-                      ]),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 30)),
-                    Container(
+                      child: Column(children: [
+                      Container(
+                        width: 230,
+                        color: Color.fromARGB(255, 235, 235, 235),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                          Icon(Icons.camera_alt),
+                          Padding(padding: EdgeInsets.only(left: 20)),
+                          Expanded(child: Container(
+                            width: 100,
+                            child: Text('Your Photo',overflow: TextOverflow.clip, style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),),
+                          ))
+                          
+                          
+                        ]),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      Stack(
+                        children: [
+                          Container(
+                            width: 230,
+                            height: 200,
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                                color:
+                                    Colors.grey,
+                                border: Border.all(color: Colors.grey)),
+                          ),
+                          Container(
+                            width: 26,
+                            height: 26,
+                            margin: const EdgeInsets.only(
+                                top: 150, left: 180),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(13),
+                              color: Colors.grey[400],
+                            ),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.all(4),
+                                backgroundColor: Colors.grey[300],
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(13)),
+                                minimumSize: const Size(26, 26),
+                                maximumSize: const Size(26, 26),
+                              ),
+                              onPressed: () {
+                                ()=>{};
+                              },
+                              child: const Icon(
+                                  Icons.camera_enhance_rounded,
+                                  color: Colors.black,
+                                  size: 16.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],),
+                    )
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 30)),
+                  Expanded(
+                    child: Container(
                       width: 230,
-                      height: 30,
-                      color: Color.fromARGB(255, 235, 235, 235),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                        Icon(Icons.card_membership),
-                        Padding(padding: EdgeInsets.only(left: 20)),
-                        Text('Passport or National ID', style: TextStyle(
-                          fontWeight: FontWeight.bold
-                        ),)
-                      ]),
-                    ),
-                  ],),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  Row(children: [
-                    Stack(
-                      children: [
+                      child: Column(children: [
                         Container(
                           width: 230,
-                          height: 200,
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color:
-                                  Colors.grey,
-                              border: Border.all(color: Colors.grey)),
+                          height: 30,
+                          color: Color.fromARGB(255, 235, 235, 235),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: const [
+                            Icon(Icons.card_membership),
+                            Padding(padding: EdgeInsets.only(left: 20)),
+                            Expanded(child: 
+                            Text('Passport or National ID', style: TextStyle(
+                              fontWeight: FontWeight.bold
+                            ),)
+                            )
+                            
+                          ]),
                         ),
-                        Container(
-                          width: 26,
-                          height: 26,
-                          margin: const EdgeInsets.only(
-                              top: 150, left: 180),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(13),
-                            color: Colors.grey[400],
-                          ),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(4),
-                              backgroundColor: Colors.grey[300],
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(13)),
-                              minimumSize: const Size(26, 26),
-                              maximumSize: const Size(26, 26),
+                        const Padding(padding: EdgeInsets.only(top: 20)),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 230,
+                              height: 200,
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                  color:
+                                      Colors.grey,
+                                  border: Border.all(color: Colors.grey)),
                             ),
-                            onPressed: () {
-                              ()=>{};
-                            },
-                            child: const Icon(
-                                Icons.camera_enhance_rounded,
-                                color: Colors.black,
-                                size: 16.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 30)),
-                    Stack(
-                      children: [
-                        Container(
-                          width: 230,
-                          height: 200,
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color:
-                                  Colors.grey,
-                              border: Border.all(color: Colors.grey)),
-                        ),
-                        Container(
-                          width: 26,
-                          height: 26,
-                          margin: const EdgeInsets.only(
-                              top: 150, left: 180),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(13),
-                            color: Colors.grey[400],
-                          ),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(4),
-                              backgroundColor: Colors.grey[300],
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(13)),
-                              minimumSize: const Size(26, 26),
-                              maximumSize: const Size(26, 26),
+                            Container(
+                              width: 26,
+                              height: 26,
+                              margin: const EdgeInsets.only(
+                                  top: 150, left: 180),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(13),
+                                color: Colors.grey[400],
+                              ),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(4),
+                                  backgroundColor: Colors.grey[300],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(13)),
+                                  minimumSize: const Size(26, 26),
+                                  maximumSize: const Size(26, 26),
+                                ),
+                                onPressed: () {
+                                  ()=>{};
+                                },
+                                child: const Icon(
+                                    Icons.camera_enhance_rounded,
+                                    color: Colors.black,
+                                    size: 16.0),
+                              ),
                             ),
-                            onPressed: () {
-                              ()=>{};
-                            },
-                            child: const Icon(
-                                Icons.camera_enhance_rounded,
-                                color: Colors.black,
-                                size: 16.0),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],)
-                ],)
+                      ],),
+                    )
+                  )
               ],),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+
               Row(children: [
                 Text('Chat Message Sound', style: TextStyle(
                   color: Color.fromARGB(255, 82, 95, 127),
@@ -168,10 +188,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                   fontWeight: FontWeight.bold
                 ),),
                 const Padding(padding: EdgeInsets.only(left: 60)),
-                Column(
-                  children: [
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  Row(children: [
+                  Expanded(child: 
                     Container(
                       width: 500,
                       decoration: BoxDecoration(
@@ -198,10 +215,9 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                             ),
                           ),
                     ),
-                  ],)
+                  )
                 ],)
               ],),
-            ],),
           ),
           SettingFooter()
       ],)

@@ -32,12 +32,19 @@ class SettingsLeftPanel extends StatelessWidget {
                 data:const ExpansionTileThemeData(),
                 child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                  onTap: () => {},
-                  label: 'Edit Profile',
-                  icon:
-                      const Icon(Icons.person, color: Color.fromARGB(255, 43, 83, 164),)),
-            
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    const Icon(Icons.person, color: Color.fromARGB(255, 43, 83, 164),),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Edit Profile',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -83,11 +90,8 @@ class SettingsLeftPanel extends StatelessWidget {
                                 const Icon(null)),
                           ListText(
                             onTap: () => {
-                              Navigator.of(context).pop(true),
-                              Navigator.pushNamed(
-                                              context,
-                                              RouteNames
-                                                  .settings_profile_interests)},
+                              onClick('interests')
+                            },
                             label: 'Interests',
                             icon:
                                 const Icon(null)),
@@ -111,12 +115,19 @@ class SettingsLeftPanel extends StatelessWidget {
                 data:const ExpansionTileThemeData(),
                 child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                  onTap: () => {},
-                  label: 'Security Settings',
-                  icon:
-                      const Icon(Icons.security, color: Color.fromARGB(255, 139, 195, 74),)),
-            
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    const Icon(Icons.security, color: Color.fromARGB(255, 139, 195, 74),),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Security Settings',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
