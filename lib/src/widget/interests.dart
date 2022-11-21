@@ -15,14 +15,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 
-class CreateEventModal extends StatefulWidget {
+class InterestsWidget extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
-  CreateEventModal({Key? key,required this.context}) :Postcon = PostController(), super(key: key);
+  InterestsWidget({Key? key,required this.context}) :Postcon = PostController(), super(key: key);
   @override
-  State createState() => CreateEventModalState();
+  State createState() => InterestsWidgetState();
 }
-class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
+class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
   bool isSound = false;
   late PostController Postcon;
   Map<String, dynamic> eventInfo = {'eventPrivacy': 'public'};

@@ -12,6 +12,7 @@ import 'package:shnatter/src/utils/colors.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shnatter/src/widget/interests.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 
@@ -341,81 +342,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                              Row(
-                      children: const [
-                        Text('INTERESTS',
-                            style: TextStyle(
-                                color: Colors.black, fontSize: 11)),
-                        Flexible(
-                            fit: FlexFit.tight, child: SizedBox()),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 30),
-                        )
-                      ],
-                    ),
-                    Column(children: [
-                      Column(
-                        children: [
-                          Container(
-                            width: 400,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(
-                                    255, 250, 250, 250),
-                                border:
-                                    Border.all(color: Colors.grey)),
-                            padding: const EdgeInsets.only(left: 20),
-                            child: DropdownButton(
-                              value: interest,
-                              items: const [
-                                //add items in the dropdown
-                                DropdownMenuItem(
-                                  value: "none",
-                                  child: Text("Select Category"),
-                                ),
-                                DropdownMenuItem(
-                                    value: "automotive",
-                                    child: Text("Automotive")),
-                                DropdownMenuItem(
-                                  value: "beauty",
-                                  child: Text("Beauty"),
-                                )
-                              ],
-                              onChanged: (String? value) {
-                                //get value when changed
-                                interest= value!;
-                                eventInfo['eventCategory'] = value;
-                                setState(() {});
-                              },
-                              style: const TextStyle(
-                                  //te
-                                  color: Colors.black, //Font color
-                                  fontSize:
-                                      12 //font size on dropdown button
-                                  ),
-
-                              dropdownColor: Colors.white,
-                              underline:
-                                  Container(), //remove underline
-                              isExpanded: true,
-                              isDense: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ]),
-                  ],)
-                ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(top: 15)),
+            // InterestsWidget(context: context),
             Container(
               width: 400,
               margin: const EdgeInsets.only(right: 0),
