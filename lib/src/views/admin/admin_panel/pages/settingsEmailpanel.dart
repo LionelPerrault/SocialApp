@@ -24,14 +24,13 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.only(left: 20,right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Email', button: const {'flag': false},),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -89,8 +88,6 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -148,8 +145,6 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -207,8 +202,6 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -266,13 +259,10 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('SMTP Server', style: TextStyle(
@@ -319,13 +309,10 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('SMTP Port', style: TextStyle(
@@ -372,13 +359,10 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('SMTP Username', style: TextStyle(
@@ -425,13 +409,10 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('SMTP Password', style: TextStyle(
@@ -478,13 +459,10 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Set From', style: TextStyle(

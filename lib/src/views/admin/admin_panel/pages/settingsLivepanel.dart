@@ -13,14 +13,13 @@ class AdminSettingsLive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(left: 30,right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Live Stream', button: const {'flag': false},),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -74,7 +73,6 @@ class AdminSettingsLive extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -199,7 +197,6 @@ class AdminSettingsLive extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -250,7 +247,6 @@ class AdminSettingsLive extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -305,8 +301,6 @@ class AdminSettingsLive extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -361,7 +355,6 @@ class AdminSettingsLive extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -412,7 +405,6 @@ class AdminSettingsLive extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -463,7 +455,6 @@ class AdminSettingsLive extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),

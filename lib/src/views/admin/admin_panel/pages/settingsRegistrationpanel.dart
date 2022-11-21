@@ -99,7 +99,7 @@ class AdminSettingsRegistrationState
         children: [
           AdminSettingHeader(
             icon: const Icon(Icons.settings),
-            pagename: 'Settings › Analytics',
+            pagename: 'Settings › Registration',
             button: const {'flag': false},
             headerTab: headerTab,
           ),

@@ -24,14 +24,15 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: SizeConfig(context).screenWidth > 700 ? SizeConfig(context).screenWidth * 0.75 : SizeConfig(context).screenWidth,
+      padding: EdgeInsets.only(right: 20,left:20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Posts', button: const {'flag': false},),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -85,10 +86,9 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Story Duration', style: TextStyle(
@@ -139,10 +139,9 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Who Can Add Stories', style: TextStyle(
@@ -269,10 +268,9 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Newsfeed Posts Source', style: TextStyle(
@@ -401,8 +399,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -460,8 +458,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -519,8 +517,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -578,8 +576,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -637,8 +635,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -696,8 +694,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -755,8 +753,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -809,8 +807,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -864,12 +862,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Geolocation Google Key', style: TextStyle(
@@ -920,12 +918,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Voice Notes Encoding', style: TextStyle(
@@ -1004,8 +1002,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -1063,8 +1061,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -1118,12 +1116,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Geolocation Google Key', style: TextStyle(
@@ -1178,8 +1176,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -1233,12 +1231,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Giphy API Key', style: TextStyle(
@@ -1293,8 +1291,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -1348,12 +1346,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Yandex Key', style: TextStyle(
@@ -1408,8 +1406,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -1467,8 +1465,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -1527,12 +1525,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Max Post Characters', style: TextStyle(
@@ -1583,12 +1581,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Max Comment Characters', style: TextStyle(
@@ -1639,12 +1637,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Max Posts/Hour', style: TextStyle(
@@ -1695,12 +1693,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Max Comments/Hour', style: TextStyle(
@@ -1751,10 +1749,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Default Posts Privacy', style: TextStyle(
@@ -1880,8 +1878,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -1944,8 +1942,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -2003,8 +2001,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -2057,8 +2055,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -2116,8 +2114,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -2175,8 +2173,8 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -2230,12 +2228,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Trending Interval', style: TextStyle(
@@ -2313,12 +2311,12 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+            
             Container(
               width: 100,
               child:   const Text('Hashtags Limit', style: TextStyle(

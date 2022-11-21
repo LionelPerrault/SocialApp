@@ -1,5 +1,7 @@
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
 class AdminSettingHeader extends StatefulWidget {
@@ -20,16 +22,65 @@ class AdminSettingHeader extends StatefulWidget {
 
 class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
   late String subTabname;
+  late List<Widget> headerTab = [];
+  @override
   void initState() {
     subTabname = widget.headerTab.isEmpty ? '' : widget.headerTab[0]['title'];
+    
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) {
+          printHeaderTab();
+          setState(() { });
+        });
     super.initState();
   }
+  void addEventListener(){
 
+  }
+  void printHeaderTab(){
+    List<Widget> header = [];
+    headerTab = [];
+    int index = 0;
+    for(int i = 0;i < widget.headerTab.length; i++){
+        header.add(InkWell(
+          onTap: () {
+            subTabname = widget.headerTab[i]['title'];
+            widget.headerTab[i]['onClick'](widget.headerTab[i]['title']);
+            printHeaderTab();
+            setState(() {});
+          },
+          child: Container(
+            color: subTabname == widget.headerTab[i]['title']
+                ? Colors.white
+                : null,
+            alignment: Alignment.center,
+            width: 140,
+            padding:
+                const EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(widget.headerTab[i]['icon']),
+                  const Padding(
+                      padding: EdgeInsets.only(left: 10)),
+                      Expanded(child: 
+                        Text(widget.headerTab[i]['title'])
+                      )
+                ]),
+          )));
+      if((i + 2 - index) * 140 + 15 >= SizeConfig(context).screenWidth || i == widget.headerTab.length- 1){
+        headerTab.add(Row(
+          children: header
+              .map((value) => value).toList()));
+        header = [];
+        index = i + 1;
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(right: 20, left: 15),
-      height: widget.headerTab.isNotEmpty ? 100 : 65,
+      padding: EdgeInsets.only(right: 20, left: 15,top: 20,bottom: widget.headerTab.isEmpty ? 20 : 0),
       decoration: const BoxDecoration(
         border: Border(
             bottom: BorderSide(
@@ -41,41 +92,19 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
       ),
       child: widget.headerTab.isEmpty
           ? Container(
-              height: double.infinity,
               alignment: Alignment.center,
               child: mainHeaderWidget(),
             )
-          : Column(
+          :
+             Column(
               children: [
                 Container(
-                  height: 60,
                   child: mainHeaderWidget(),
                 ),
-                Row(
-                    children: widget.headerTab
-                        .map((value) => InkWell(
-                            onTap: () {
-                              subTabname = value['title'];
-                              value['onClick'](value['title']);
-                              setState(() {});
-                            },
-                            child: Container(
-                              color: subTabname == value['title']
-                                  ? Colors.white
-                                  : null,
-                              alignment: Alignment.center,
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 20),
-                              height: 39,
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(value['icon']),
-                                    const Padding(
-                                        padding: EdgeInsets.only(left: 10)),
-                                    Text(value['title'])
-                                  ]),
-                            )))
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Column(
+                    children: headerTab
+                        .map((value) => value)
                         .toList())
               ],
             ),
@@ -109,7 +138,7 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
                   children: [
                     widget.button['icon'],
                     Text(widget.button['text'],
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 11,
                             color: Colors.white,
                             fontWeight: FontWeight.bold))

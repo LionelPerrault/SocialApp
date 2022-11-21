@@ -11,17 +11,15 @@ class AdminSettingsLimits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.only(left: 30,right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Limits', button: const {'flag': false},),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Data Heartbeat', style: TextStyle(
@@ -71,13 +69,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Chat Heartbeat', style: TextStyle(
@@ -127,13 +122,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Offline After', style: TextStyle(
@@ -198,13 +190,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Newsfeed Results', style: TextStyle(
@@ -254,13 +243,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Pages Results', style: TextStyle(
@@ -310,13 +296,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Groups Results', style: TextStyle(
@@ -366,13 +349,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Events Results', style: TextStyle(
@@ -422,13 +402,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Marketplace Results', style: TextStyle(
@@ -478,13 +455,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Offers Results', style: TextStyle(
@@ -534,13 +508,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Jobs Results', style: TextStyle(
@@ -590,13 +561,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Games Results', style: TextStyle(
@@ -646,13 +614,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Search Results', style: TextStyle(
@@ -706,13 +671,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Minimum Results', style: TextStyle(
@@ -762,13 +724,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Maximum Results', style: TextStyle(
@@ -818,13 +777,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Minimum Even Results', style: TextStyle(
@@ -874,13 +830,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Maximum Even Results', style: TextStyle(
@@ -930,13 +883,10 @@ class AdminSettingsLimits extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Daily chat thereshold', style: TextStyle(

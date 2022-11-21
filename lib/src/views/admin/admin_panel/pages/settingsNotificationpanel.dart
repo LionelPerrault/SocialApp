@@ -60,13 +60,13 @@ class AdminSettingsNotificationState
         children: [
           AdminSettingHeader(
             icon: const Icon(Icons.settings),
-            pagename: 'Settings › Analytics',
+            pagename: 'Settings › Notifications',
             button: const {'flag': false},
             headerTab: headerTab,
           ),
           Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth * 0.75,
+              width: SizeConfig(context).screenWidth > 700 ? SizeConfig(context).screenWidth * 0.75 : SizeConfig(context).screenWidth,
               child: tabTitle == 'Website Notifications'
                   ? websiteNotificationWidget()
                   : tabTitle == 'Email Notifications'

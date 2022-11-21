@@ -97,7 +97,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           ),
           Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth * 0.75,
+              width: SizeConfig(context).screenWidth < 700 ? SizeConfig(context).screenWidth : SizeConfig(context).screenWidth * 0.75,
               child: tabTitle == 'Paypal'
                   ? paypalWidget()
                   : tabTitle == 'Stripe'
@@ -781,7 +781,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         ),
         Container(
           height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
+          color: Color.fromARGB(255, 218, 129, 129),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -963,6 +963,8 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Expanded(
+          child: 
         Container(
           width: 150,
           child: Text(
@@ -970,15 +972,13 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
             style: TextStyle(color: fontColor, fontSize: 14),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(left: 10),
         ),
+        
         const Flexible(
           fit: FlexFit.tight,
           child: SizedBox(),
         ),
         Container(
-          width: SizeConfig(context).screenWidth * 0.45,
           child: Row(children: [
             Transform.scale(
                 scale: 1,

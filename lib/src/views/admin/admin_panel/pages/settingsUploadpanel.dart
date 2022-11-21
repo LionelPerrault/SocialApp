@@ -155,13 +155,13 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
         children: [
           AdminSettingHeader(
             icon: const Icon(Icons.settings),
-            pagename: 'Settings › Analytics',
+            pagename: 'Settings › Notifications',
             button: const {'flag': false},
             headerTab: headerTab,
           ),
           Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth * 0.75,
+              width: SizeConfig(context).screenWidth < 700 ? SizeConfig(context).screenWidth : SizeConfig(context).screenWidth * 0.75,
               child: tabTitle == 'General'
                   ? generalWidget()
                   : tabTitle == 'Amazon S3'
@@ -244,54 +244,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
           height: 1,
           color: const Color.fromRGBO(240, 240, 240, 1),
         ),
-        Container(
-            height: 80,
-            decoration: const BoxDecoration(
-                color: Color.fromRGBO(240, 240, 240, 1),
-                border:
-                    Border(top: BorderSide(width: 0.5, color: Colors.grey))),
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 15),
-            child: Row(children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(200, 50),
-                  maximumSize: const Size(200, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Test Connection (Vision API)',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              ),
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(150, 50),
-                  maximumSize: const Size(150, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Save Changes',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 33, 37, 41),
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              )
-            ]))
+        uploadFotter()
       ]),
     );
   }
@@ -357,54 +310,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
           height: 1,
           color: const Color.fromRGBO(240, 240, 240, 1),
         ),
-        Container(
-            height: 80,
-            decoration: const BoxDecoration(
-                color: Color.fromRGBO(240, 240, 240, 1),
-                border:
-                    Border(top: BorderSide(width: 0.5, color: Colors.grey))),
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 15),
-            child: Row(children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(200, 50),
-                  maximumSize: const Size(200, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Test Connection (Vision API)',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              ),
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(150, 50),
-                  maximumSize: const Size(150, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Save Changes',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 33, 37, 41),
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              )
-            ]))
+        uploadFotter()
       ]),
     );
   }
@@ -432,7 +338,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
             SizedBox(
                 width: SizeConfig(context).screenWidth * 0.5,
                 child: Text(
-                  "	DigitalOcean Before enabling DigitalOcean Space, make sure you upload the whole 'uploads' folder to your space. Before disabling DigitalOcean Space, make sure you download the whole 'uploads' folder to your server.",
+                  "DigitalOcean Before enabling DigitalOcean Space, make sure you upload the whole 'uploads' folder to your space. Before disabling DigitalOcean Space, make sure you download the whole 'uploads' folder to your server.",
                   overflow: TextOverflow.clip,
                   style: TextStyle(color: Colors.white, fontSize: fontSize),
                 ))
@@ -472,7 +378,12 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
           height: 1,
           color: const Color.fromRGBO(240, 240, 240, 1),
         ),
-        Container(
+        uploadFotter()
+      ]),
+    );
+  }
+  Widget uploadFotter(){
+    return Container(
             height: 80,
             decoration: const BoxDecoration(
                 color: Color.fromRGBO(240, 240, 240, 1),
@@ -482,6 +393,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
             padding: const EdgeInsets.only(right: 15),
             child: Row(children: [
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
+              Expanded(child: 
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
@@ -500,8 +412,11 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
                         fontSize: 11.0,
                         fontWeight: FontWeight.bold)),
               ),
+              ),
+              
               const Padding(padding: EdgeInsets.only(left: 10)),
-              ElevatedButton(
+              Expanded(child: 
+               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   elevation: 3,
@@ -519,11 +434,10 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
                         fontSize: 11.0,
                         fontWeight: FontWeight.bold)),
               )
-            ]))
-      ]),
-    );
+              )
+             
+            ]));
   }
-
   Widget generalWidget() {
     return Container(
       child: Column(children: [
@@ -968,54 +882,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
           height: 1,
           color: const Color.fromRGBO(240, 240, 240, 1),
         ),
-        Container(
-            height: 80,
-            decoration: const BoxDecoration(
-                color: Color.fromRGBO(240, 240, 240, 1),
-                border:
-                    Border(top: BorderSide(width: 0.5, color: Colors.grey))),
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 15),
-            child: Row(children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(200, 50),
-                  maximumSize: const Size(200, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Test Connection (Vision API)',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              ),
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(150, 50),
-                  maximumSize: const Size(150, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Save Changes',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 33, 37, 41),
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              )
-            ]))
+        uploadFotter()
       ]),
     );
   }

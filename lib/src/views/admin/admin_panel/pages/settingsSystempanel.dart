@@ -348,13 +348,13 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
         children: [
           AdminSettingHeader(
             icon: const Icon(Icons.settings),
-            pagename: 'Settings › Analytics',
+            pagename: 'Settings',
             button: const {'flag': false},
             headerTab: headerTab,
           ),
           Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth * 0.75,
+              width: SizeConfig(context).screenWidth > 700 ? SizeConfig(context).screenWidth * 0.75 : SizeConfig(context).screenWidth,
               child: tabTitle == 'General'
                   ? generalWidget()
                   : tabTitle == 'SEO'
@@ -951,7 +951,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
                   ),
                   // const Padding(padding: EdgeInsets.only(top: 5)),
                   Container(
-                      width: SizeConfig(context).screenWidth * 0.4,
+                      width: SizeConfig(context).screenWidth * 0.5,
                       child: Text(
                         'Turn the entire website On and Off',
                         style: TextStyle(fontSize: 14),
@@ -1118,7 +1118,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
                 color: fontColor, fontSize: 13, fontWeight: FontWeight.bold),
           ),
         )),
-        Flexible(fit: FlexFit.tight, child: SizedBox()),
+        const Flexible(fit: FlexFit.tight, child: SizedBox()),
         Container(
             width: SizeConfig(context).screenWidth * 0.5,
             child: Column(

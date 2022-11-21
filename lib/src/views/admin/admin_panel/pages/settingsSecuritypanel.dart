@@ -13,14 +13,13 @@ class AdminSettingsSecurity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(left: 30,right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Limits', button: const {'flag': false},),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -53,11 +52,10 @@ class AdminSettingsSecurity extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -73,8 +71,6 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -108,10 +104,9 @@ class AdminSettingsSecurity extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
-                        child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
+                        scaleX: 1,
+                        scaleY: 1,
+                        child: CupertinoSwitch(activeColor: Colors.black,
                           // activeColor: kprimaryColor,
                           value: true,
                           onChanged: (value) {
@@ -128,11 +123,8 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Bad Login Limit', style: TextStyle(
@@ -182,11 +174,8 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Lockout Time', style: TextStyle(
@@ -241,8 +230,6 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -276,10 +263,9 @@ class AdminSettingsSecurity extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
-                        child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
+                        scaleX: 1,
+                        scaleY: 1,
+                        child: CupertinoSwitch(activeColor: Colors.black,
                           // activeColor: kprimaryColor,
                           value: true,
                           onChanged: (value) {
@@ -296,11 +282,8 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Two-Factor Authentication Via', style: TextStyle(
@@ -433,8 +416,6 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -468,10 +449,9 @@ class AdminSettingsSecurity extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
-                        child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
+                        scaleX: 1,
+                        scaleY: 1,
+                        child: CupertinoSwitch(activeColor: Colors.black,
                           // activeColor: kprimaryColor,
                           value: true,
                           onChanged: (value) {
@@ -488,11 +468,8 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('Censored Words', style: TextStyle(
@@ -548,8 +525,6 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -583,10 +558,9 @@ class AdminSettingsSecurity extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
-                        child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
+                        scaleX: 1,
+                        scaleY: 1,
+                        child: CupertinoSwitch(activeColor: Colors.black,
                           // activeColor: kprimaryColor,
                           value: true,
                           onChanged: (value) {
@@ -603,11 +577,8 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('reCAPTCHA Site Key', style: TextStyle(
@@ -654,11 +625,8 @@ class AdminSettingsSecurity extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 100,
               child:   const Text('reCAPTCHA Secret Key', style: TextStyle(

@@ -13,22 +13,23 @@ class AdminSettingsChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(left: 30,right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Chat', button: const {'flag': false},),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
                 child: Container(
                   child: Row(children: [
                     Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       child: SvgPicture.network('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fchat.svg?alt=media&token=efe43532-6cf3-4382-9691-c72ffdf40a70'),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -53,9 +54,10 @@ class AdminSettingsChat extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
+                          activeColor: Colors.black,
                           //thumbColor: kprimaryColor,
                           // activeColor: kprimaryColor,
                           value: true,
@@ -73,16 +75,16 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
                 child: Container(
                   child: Row(children: [
                     Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       child: SvgPicture.network('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fvoice_note.svg?alt=media&token=905f72cc-f9ab-4aa1-a44a-33b892b710c7'),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -107,9 +109,10 @@ class AdminSettingsChat extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
+                          activeColor: Colors.black,
                           //thumbColor: kprimaryColor,
                           // activeColor: kprimaryColor,
                           value: true,
@@ -127,16 +130,16 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
                 child: Container(
                   child: Row(children: [
                     Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       child: SvgPicture.network('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fuser_status.svg?alt=media&token=558abb2f-da0c-4222-b6b0-ffb3c0a5ff6e'),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -161,9 +164,10 @@ class AdminSettingsChat extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
+                          activeColor: Colors.black,
                           //thumbColor: kprimaryColor,
                           // activeColor: kprimaryColor,
                           value: true,
@@ -181,16 +185,16 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
                 child: Container(
                   child: Row(children: [
                     Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       child: SvgPicture.network('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Ftyping_status.svg?alt=media&token=b729925b-1cdf-4766-924f-65cb3c25457a'),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -215,9 +219,10 @@ class AdminSettingsChat extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
+                          activeColor: Colors.black,
                           //thumbColor: kprimaryColor,
                           // activeColor: kprimaryColor,
                           value: true,
@@ -235,16 +240,16 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
                 child: Container(
                   child: Row(children: [
                     Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       child: SvgPicture.network('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fseen_status.svg?alt=media&token=e2ba70ad-5d94-40e6-b0f9-5740b900480e'),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -269,9 +274,10 @@ class AdminSettingsChat extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
+                          activeColor: Colors.black,
                           //thumbColor: kprimaryColor,
                           // activeColor: kprimaryColor,
                           value: true,
@@ -289,16 +295,14 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
                 child: Container(
                   child: Row(children: [
                     Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       child: SvgPicture.network('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fdelete_for.svg?alt=media&token=ea100abb-d511-4eda-88fa-2170b59c9a22'),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -323,9 +327,10 @@ class AdminSettingsChat extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
+                          activeColor: Colors.black,
                           //thumbColor: kprimaryColor,
                           // activeColor: kprimaryColor,
                           value: true,
@@ -348,16 +353,14 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
           child: Column(children: [
             Row(children: [
               Expanded(
                 child: Container(
                   child: Row(children: [
                     Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       child: SvgPicture.network('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Faudio_call.svg?alt=media&token=3a2ca3be-a739-437b-9184-3b4885f032c7'),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -382,9 +385,10 @@ class AdminSettingsChat extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
+                          activeColor: Colors.black,
                           //thumbColor: kprimaryColor,
                           // activeColor: kprimaryColor,
                           value: true,
@@ -402,8 +406,8 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
+          
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -528,16 +532,16 @@ class AdminSettingsChat extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(top: 20)),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 50),
-          width: SizeConfig(context).screenWidth * 0.6,
+          
+          
           child: Column(children: [
             Row(children: [
               Expanded(
                 child: Container(
                   child: Row(children: [
                     Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       child: SvgPicture.network('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fvideo_call.svg?alt=media&token=181da183-967a-48b3-8cba-b554303cc770'),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -562,9 +566,10 @@ class AdminSettingsChat extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY: 1,
                         child: CupertinoSwitch(
+                          activeColor: Colors.black,
                           //thumbColor: kprimaryColor,
                           // activeColor: kprimaryColor,
                           value: true,
@@ -582,8 +587,8 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
+          
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -707,8 +712,8 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
+          
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -758,8 +763,8 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
+          
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
@@ -809,8 +814,8 @@ class AdminSettingsChat extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          margin: EdgeInsets.only(left: 30),
-          width: SizeConfig(context).screenWidth*0.5,
+          
+          
           child: Row(
             children: [
             const Padding(padding: EdgeInsets.only(left: 20)),

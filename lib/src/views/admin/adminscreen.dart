@@ -39,7 +39,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
     return _drawerSlideController.value == 0.0;
   }
 
-  String adminAllRouter = '/settings/sms';
+  String adminAllRouter = '/settings/limits';
   //
   @override
   void initState() {

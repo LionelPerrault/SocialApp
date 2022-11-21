@@ -12,7 +12,7 @@ class AdminSettingFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
+      padding: EdgeInsets.only(top: 20),
       child: Container(
         height: 65,
         decoration: const BoxDecoration(
@@ -25,7 +25,6 @@ class AdminSettingFooter extends StatelessWidget {
           color: Color.fromARGB(255, 240, 243, 246),
           // borderRadius: BorderRadius.all(Radius.circular(3)),
         ),
-        padding: const EdgeInsets.only(top: 5, left: 15),
         child: Row(children: [
           const Flexible(fit: FlexFit.tight, child: SizedBox()),
           ElevatedButton(

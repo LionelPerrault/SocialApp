@@ -16,16 +16,15 @@ class AdminSettingsAnalytics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.only(left: 30,right: 20),
       child: Column(children: [
         AdminSettingHeader(icon: Icon(Icons.settings), pagename: 'Settings › Analytics', button: const {'flag': false}),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          width: SizeConfig(context).screenWidth*0.5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
             const Text('Tracking Code', style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.bold,
