@@ -29,34 +29,41 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
             button: {'flag': false},),
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
-            width: SizeConfig(context).screenWidth * 0.5,
+            padding: EdgeInsets.only(right: 30),
             child: Column(children: [
-              Container(
-                width: 680,
-                height: 65,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 120, 137, 232),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                child: Row(children: [
-                  Padding(padding: EdgeInsets.only(left: 30)),
-                  Icon(Icons.warning_rounded, color: Colors.white, size: 30,),
-                  Padding(padding: EdgeInsets.only(left: 10)),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(padding: EdgeInsets.only(top: 20)),
-                    Text('Download Your Information',
-                    style: TextStyle(color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),),
-                    Text('You can download all of it at once, or you can select only the types of information you want',
-                    style: TextStyle(color: Colors.white,
-                                      fontSize: 11),),
-                  ],),
-                ],),
-              ),
+              Row(children: [
+                Expanded(
+                  child:     Container(
+                    width: 680,
+                    height: 65,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 120, 137, 232),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                    ),
+                    child: Row(children: [
+                      Padding(padding: EdgeInsets.only(left: 30)),
+                      Icon(Icons.warning_rounded, color: Colors.white, size: 30,),
+                      Padding(padding: EdgeInsets.only(left: 10)),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(padding: EdgeInsets.only(top: 20)),
+                        Text('Download Your Information',
+                        style: TextStyle(color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12),),
+                        Container(
+                          width: SizeConfig(context).screenWidth * 0.6,
+                          child: Text('You can download all of it at once, or you can select only the types of information you want',
+                          style: TextStyle(color: Colors.white,
+                                          fontSize: 11),),
+                        )
+                      ],),
+                    ],),
+                  ),
+                )
+              ],),
               const Padding(padding: EdgeInsets.only(top: 20)),
               Row(
                 children: [

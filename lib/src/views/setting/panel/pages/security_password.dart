@@ -29,7 +29,7 @@ class SettingSecurityPasswordScreenState extends State<SettingSecurityPasswordSc
             button: {'flag': false},),
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
-            width: SizeConfig(context).screenWidth * 0.5,
+            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
             child: Column(children: [
               Container(
                 width: 680,
@@ -38,13 +38,15 @@ class SettingSecurityPasswordScreenState extends State<SettingSecurityPasswordSc
                   color: Color.fromARGB(255, 252, 124, 95),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
-                child: Row(children: const [
-                  Padding(padding: EdgeInsets.only(left: 30)),
-                  Icon(Icons.warning_rounded, color: Colors.white, size: 30,),
-                  Padding(padding: EdgeInsets.only(left: 10)),
-                  Text('Changing password will log you out from all other sessions',
-                  style: TextStyle(color: Colors.white,
-                                    fontSize: 11),)
+                child: Row(children: [
+                  const Padding(padding: EdgeInsets.only(left: 30)),
+                  const Icon(Icons.warning_rounded, color: Colors.white, size: 30,),
+                  const Padding(padding: EdgeInsets.only(left: 10)),
+                  SizedBox(
+                          width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.3 : SizeConfig(context).screenWidth * 0.5 - 20,
+                          child: const Text('Changing password will log you out from all other sessions',
+                                    style: TextStyle(color: Colors.white,
+                                    fontSize: 11),))
                 ],),
               ),
               const Padding(padding: EdgeInsets.only(top: 20)),

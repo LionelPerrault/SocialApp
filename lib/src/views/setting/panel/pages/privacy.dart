@@ -42,7 +42,7 @@ class SettingPrivacyScreenState extends State<SettingPrivacyScreen> {
   var mailEnable = false;
   @override
   Widget build(BuildContext context) {
-    return Container(padding: const EdgeInsets.only(top: 20, left:50),
+    return Container(padding: const EdgeInsets.only(top: 20, left:20),
       child: 
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -52,7 +52,8 @@ class SettingPrivacyScreenState extends State<SettingPrivacyScreen> {
             button: {'flag': false},),
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
-            width: SizeConfig(context).screenWidth * 0.6,
+            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
+            padding: const EdgeInsets.only(left: 20),
             child: Column(children: [
               Row(children: [
                 Expanded(
@@ -67,16 +68,19 @@ class SettingPrivacyScreenState extends State<SettingPrivacyScreen> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                        Text('Chat Enabled', style: TextStyle(
+                        children: [
+                        const Text('Chat Enabled', style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 13,
                           fontWeight: FontWeight.bold
                         ),),
-                        Padding(padding: EdgeInsets.only(top: 5)),
-                        Text('If chat disabled you will appear offline and will no see who is online too', style: TextStyle(
-                          fontSize: 11
-                        ),)
+                        const Padding(padding: EdgeInsets.only(top: 5)),
+                        Container(
+                          width: SizeConfig(context).screenWidth * 0.4,
+                          child: const Text('If chat disabled you will appear offline and will no see who is online too', style: TextStyle(
+                                    fontSize: 11
+                                  ),),
+                        )
                       ],),
                       const Flexible(fit: FlexFit.tight, child: SizedBox()),
                       SizedBox(
@@ -105,7 +109,8 @@ class SettingPrivacyScreenState extends State<SettingPrivacyScreen> {
           ),
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
-            width: SizeConfig(context).screenWidth * 0.6,
+            padding: const EdgeInsets.only(left: 20),
+            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
             child: Column(children: [
               Row(children: [
                 Expanded(
@@ -120,16 +125,19 @@ class SettingPrivacyScreenState extends State<SettingPrivacyScreen> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                        Text('Email you with our newsletter', style: TextStyle(
+                        children: [
+                        const Text('Email you with our newsletter', style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 13,
                           fontWeight: FontWeight.bold
                         ),),
-                        Padding(padding: EdgeInsets.only(top: 5)),
-                        Text('From time to time we send newsletter email to all of our members', style: TextStyle(
-                          fontSize: 11
-                        ),)
+                        const Padding(padding: EdgeInsets.only(top: 5)),
+                        SizedBox(
+                          width: SizeConfig(context).screenWidth * 0.4,
+                          child: const Text('From time to time we send newsletter email to all of our members', style: TextStyle(
+                                  fontSize: 11
+                                ),),
+                        )
                       ],),
                       const Flexible(fit: FlexFit.tight, child: SizedBox()),
                       SizedBox(
@@ -157,105 +165,96 @@ class SettingPrivacyScreenState extends State<SettingPrivacyScreen> {
             ],),
           ),
           const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(children: [
-            select('Who can poke you', const Icon(Icons.clean_hands), privacyInfo['poke']!,
-              (value) async {
-              privacyInfo['poke'] = value;
-              setState(() {});
-            }),
-            select('Who can post on your wall', const Icon(Icons.newspaper), privacyInfo['postWall']!,
-              (value) async {
-              privacyInfo['postWall'] = value;
-              setState(() {});
-            })
-          ],),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(children: [
-            select('Who can see your gender', const Icon(Icons.manage_search_sharp), privacyInfo['gender']!,
-              (value) async {
-              privacyInfo['gender'] = value;
-              setState(() {});
-            }),
-            select('Who can see your relationship', const Icon(Icons.heart_broken_sharp), privacyInfo['relation']!,
-              (value) async {
-              privacyInfo['relation'] = value;
-              setState(() {});
-            })
-          ],),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(children: [
-            select('Who can see your birthdate', const Icon(Icons.cake), privacyInfo['birthday']!,
-              (value) async {
-              privacyInfo['birthday'] = value;
-              setState(() {});
-            }),
-            select('Who can see your basic info', const Icon(Icons.person), privacyInfo['basic']!,
-              (value) async {
-              privacyInfo['basic'] = value;
-              setState(() {});
-            })
-          ],),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(children: [
-            select('Who can see your work info', const Icon(Icons.work), privacyInfo['work']!,
-              (value) async {
-              privacyInfo['work'] = value;
-              setState(() {});
-            }),
-            select('Who can see your location info', const Icon(Icons.location_on_sharp), privacyInfo['location']!,
-              (value) async {
-              privacyInfo['location'] = value;
-              setState(() {});
-            })
-          ],),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(children: [
-            select('Who can see your education info', const Icon(Icons.school), privacyInfo['education']!,
-              (value) async {
-              privacyInfo['education'] = value;
-              setState(() {});
-            }),
-            select('Who can see your other info', const Icon(Icons.folder_shared), privacyInfo['other']!,
-              (value) async {
-              privacyInfo['other'] = value;
-              setState(() {});
-            })
-          ],),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(children: [
-            select('Who can see your friends', const Icon(Icons.group), privacyInfo['friends']!,
-              (value) async {
-              privacyInfo['friends'] = value;
-              setState(() {});
-            }),
-            select('Who can see your photos', const Icon(Icons.photo), privacyInfo['photos']!,
-              (value) async {
-              privacyInfo['photos'] = value;
-              setState(() {});
-            })
-          ],),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(children: [
-            select('Who can see your liked pages', const Icon(Icons.flag_rounded), privacyInfo['pages']!,
-              (value) async {
-              privacyInfo['pages'] = value;
-              setState(() {});
-            }),
-            select('Who can see your joined groups', const Icon(Icons.groups), privacyInfo['groups']!,
-              (value) async {
-              privacyInfo['groups'] = value;
-              setState(() {});
-            })
-          ],),
-          
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(children: [
-            select('Who can see your joined events', const Icon(Icons.event), privacyInfo['events']!,
+          GridView.count(
+            crossAxisCount: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? 2 : 1,
+            childAspectRatio: 5 / 1,
+            padding: const EdgeInsets.all(4.0),
+            mainAxisSpacing: 4.0,
+            shrinkWrap: true,
+            crossAxisSpacing: 4.0,
+            children: [
+              select('Who can poke you', const Icon(Icons.clean_hands), privacyInfo['poke']!,
+                (value) async {
+                privacyInfo['poke'] = value;
+                setState(() {});
+              }),
+              select('Who can post on your wall', const Icon(Icons.newspaper), privacyInfo['postWall']!,
+                (value) async {
+                privacyInfo['postWall'] = value;
+                setState(() {});
+              }),
+            
+              select('Who can see your gender', const Icon(Icons.manage_search_sharp), privacyInfo['gender']!,
+                (value) async {
+                privacyInfo['gender'] = value;
+                setState(() {});
+              }),
+              select('Who can see your relationship', const Icon(Icons.heart_broken_sharp), privacyInfo['relation']!,
+                (value) async {
+                privacyInfo['relation'] = value;
+                setState(() {});
+              }),
+            
+              select('Who can see your birthdate', const Icon(Icons.cake), privacyInfo['birthday']!,
+                (value) async {
+                privacyInfo['birthday'] = value;
+                setState(() {});
+              }),
+              select('Who can see your basic info', const Icon(Icons.person), privacyInfo['basic']!,
+                (value) async {
+                privacyInfo['basic'] = value;
+                setState(() {});
+              }),
+            
+              select('Who can see your work info', const Icon(Icons.work), privacyInfo['work']!,
+                (value) async {
+                privacyInfo['work'] = value;
+                setState(() {});
+              }),
+              select('Who can see your location info', const Icon(Icons.location_on_sharp), privacyInfo['location']!,
+                (value) async {
+                privacyInfo['location'] = value;
+                setState(() {});
+              }),
+            
+              select('Who can see your education info', const Icon(Icons.school), privacyInfo['education']!,
+                (value) async {
+                privacyInfo['education'] = value;
+                setState(() {});
+              }),
+              select('Who can see your other info', const Icon(Icons.folder_shared), privacyInfo['other']!,
+                (value) async {
+                privacyInfo['other'] = value;
+                setState(() {});
+              }),
+            
+              select('Who can see your friends', const Icon(Icons.group), privacyInfo['friends']!,
+                (value) async {
+                privacyInfo['friends'] = value;
+                setState(() {});
+              }),
+              select('Who can see your photos', const Icon(Icons.photo), privacyInfo['photos']!,
+                (value) async {
+                privacyInfo['photos'] = value;
+                setState(() {});
+              }),
+            
+              select('Who can see your liked pages', const Icon(Icons.flag_rounded), privacyInfo['pages']!,
+                (value) async {
+                privacyInfo['pages'] = value;
+                setState(() {});
+              }),
+              select('Who can see your joined groups', const Icon(Icons.groups), privacyInfo['groups']!,
+                (value) async {
+                privacyInfo['groups'] = value;
+                setState(() {});
+              }),
+              select('Who can see your joined events', const Icon(Icons.event), privacyInfo['events']!,
               (value) async {
               privacyInfo['events'] = value;
               setState(() {});
             }),
-          ],),
+          ]),
           SettingFooter()
       ],)
       );
@@ -263,7 +262,11 @@ class SettingPrivacyScreenState extends State<SettingPrivacyScreen> {
 
   @override
   Widget select(text, icon, String info, onchange) {
-    return Expanded(
+    return Container(
+      width: 300,
+      child: Row(
+        children: [
+          Expanded(
             flex: 1,
             child: 
             Column(
@@ -328,6 +331,9 @@ class SettingPrivacyScreenState extends State<SettingPrivacyScreen> {
                 ),
               ],)
             ],)
-          );
+          )
+        ],
+      ),
+    );
   }
 }
