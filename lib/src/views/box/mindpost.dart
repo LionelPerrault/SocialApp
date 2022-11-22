@@ -42,12 +42,14 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     _focus.dispose();
   }
   void _onFocusChange() {
-    var future = Future.delayed(const Duration(milliseconds: 20), (){
+    print(11);
+    var future = Future.delayed(const Duration(milliseconds: 100), (){
       if(state){
         show = true;
         state = false;
         return;
       }
+      print(22);
       if(!notActionShow)
         {show = !show;}
       else{

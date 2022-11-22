@@ -479,7 +479,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             PopupMenuItem<Menu>(
                               value: Menu.itemProfile,
                               
-                              child: GestureDetector(
+                              child: InkWell(
                                 onTap: () {
                                   Navigator.pushReplacementNamed(context, '/${UserManager.userInfo['userName']}');
                                 },
