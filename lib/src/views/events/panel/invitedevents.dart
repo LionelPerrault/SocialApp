@@ -62,6 +62,7 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
                   invitedEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
+                      buttonFun: (){},
                       picture: 'null',
                       interests: 1,
                       header: event['eventName'],

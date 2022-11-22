@@ -30,7 +30,7 @@ class AdminController extends ControllerMVC {
   @override
   Future<bool> initAsync() async {
     //
-    Helper.postData = FirebaseFirestore.instance
+    Helper.eventsData = FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .withConverter<TokenLogin>(
           fromFirestore: (snapshots, _) =>
@@ -42,11 +42,11 @@ class AdminController extends ControllerMVC {
 
   Future<List> getEvent() async {
     // QuerySnapshot<TokenLogin> querySnapshot =
-    //       await Helper.postData.where('eventPost', isEqualTo: true).get();
+    //       await Helper.eventsData.where('eventPost', isEqualTo: true).get();
     // events = querySnapshot.docs;
     // setState(() { });
     QuerySnapshot querySnapshot =
-          await Helper.postData.get();
+          await Helper.eventsData.get();
     var doc = querySnapshot.docs;
     return doc;
   }

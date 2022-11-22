@@ -37,7 +37,6 @@ class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
         subCategory.add(allInterests[i]),
         interestsCheck.add({'title' : allInterests[i]['title'], 'interested' : false})
       },
-      print(subCategory.length),
       setState(() { })
     });
     super.initState();

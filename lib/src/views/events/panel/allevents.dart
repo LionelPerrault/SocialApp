@@ -31,15 +31,16 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
     con.getEvent();
     con.setState(() { });
     super.initState();
+    getEventNow();
+  }
+
+  void getEventNow() {
     con.getEvent().then((value) => {
-      for (int i = 0; i<value.length; i++) {
-        if (value[i]['eventPost'] == true) {
-          realAllEvents.add(value[i]),
-          setState(() { })
-        }
-      },
+      realAllEvents = value,
+      setState(() {})
     });
   }
+  
   @override
   Widget build(BuildContext context) {
     var  screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
@@ -60,10 +61,11 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
                   realAllEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
+                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
                       interests: 1,
-                      header: event['eventName'],
-                      interested: false)).toList(),),
+                      header: event['data']['eventName'],
+                      interested: event['interested'])).toList(),),
           ),
         ],
       ),

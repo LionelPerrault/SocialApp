@@ -30,7 +30,7 @@ class PostController extends ControllerMVC {
   @override
   Future<bool> initAsync() async {
     //
-    Helper.postData = FirebaseFirestore.instance
+    Helper.eventsData = FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .withConverter<TokenLogin>(
           fromFirestore: (snapshots, _) =>
@@ -42,13 +42,23 @@ class PostController extends ControllerMVC {
 
   Future<List> getEvent() async {
     // QuerySnapshot<TokenLogin> querySnapshot =
-    //       await Helper.postData.where('eventPost', isEqualTo: true).get();
+    //       await Helper.eventsData.where('eventPost', isEqualTo: true).get();
     // events = querySnapshot.docs;
     // setState(() { });
-    QuerySnapshot querySnapshot =
-          await Helper.postData.get();
-    var doc = querySnapshot.docs;
-    return doc;
+    List<Map> realAllEvents = [];
+    await Helper.eventsData.get().then((value) async {
+      var doc = value.docs;
+      for (int i = 0; i<doc.length; i++) {
+          var id = doc[i].id;
+          var interested = await boolInterested(id);
+          var da = doc[i];
+          if (da['eventPost'] == true) {
+            realAllEvents.add({'data':da,'id':id, 'interested' : interested});
+          }
+        }
+    });
+    
+    return realAllEvents;
   }
 
   Future<void> createEvent(context,Map<String, dynamic> eventData) async {
@@ -78,5 +88,45 @@ class PostController extends ControllerMVC {
           await Helper.allInterests.orderBy('title').get();
     var doc = querySnapshot.docs;
     return doc;
+  }
+  
+  Future<bool> interestedEvent(String eventId) async {
+    var querySnapshot =
+          await Helper.eventsData.doc(eventId).get();
+    var doc = querySnapshot;
+    var interested = doc['eventInterested'];
+    var respon = await boolInterested(eventId);
+    if (respon) {
+      interested.removeWhere((item) => item == UserManager.userInfo['userName']);
+      await FirebaseFirestore.instance
+        .collection(Helper.eventsField)
+        .doc(eventId)
+        .update({'eventInterested': interested});
+      return true;
+    }else {
+      interested.add(UserManager.userInfo['userName']);
+      await FirebaseFirestore.instance
+        .collection(Helper.eventsField)
+        .doc(eventId)
+        .update({'eventInterested': interested});
+      return true;
+    }
+    
+  }
+
+  Future<bool> boolInterested(String eventId) async {
+    var querySnapshot =
+          await Helper.eventsData.doc(eventId).get();
+    var doc = querySnapshot;
+    var interested = doc['eventInterested'];
+    if (interested == null) {
+      return false;
+    }
+    var returnData = interested.where((eachUser) => eachUser == UserManager.userInfo['userName']);
+    if (returnData.length == 0) {
+      return false;
+    }else {
+      return true;
+    }
   }
 }

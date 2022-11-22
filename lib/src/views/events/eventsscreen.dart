@@ -164,7 +164,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                   child: 
                                     Column(children: [
                                       Container(
-                                        width: SizeConfig(context).screenWidth*0.6,
+                                        width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.6 : SizeConfig(context).screenWidth * 1,
                                         height: 70,
                                         decoration: const BoxDecoration(
                                           color: Colors.white,
@@ -182,29 +182,44 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                         ),
                                         child: Row(children: [
                                           Container(
-                                            width: SizeConfig(context).screenWidth*0.4,
+                                            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.4 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
                                             child: Row(
                                               children: [
                                                 const Padding(padding: EdgeInsets.only(left: 30)),
                                                 Expanded(
-                                                  child: RichText(
-                                                      text: TextSpan(children: <TextSpan>[
-                                                        TextSpan(
-                                                          text: 'Discover',
-                                                          style: const TextStyle(
-                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
-                                                          recognizer: TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              eventSubRoute = '';
-                                                              setState(() { });
-                                                            }
-                                                        ),
-                                                      ]),
-                                                    ),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == '' ? 26 : 0)),
+                                                      RichText(
+                                                        text: TextSpan(children: <TextSpan>[
+                                                          TextSpan(
+                                                            text: 'Discover',
+                                                            style: const TextStyle(
+                                                                color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
+                                                            recognizer: TapGestureRecognizer()
+                                                              ..onTap = () {
+                                                                eventSubRoute = '';
+                                                                setState(() { });
+                                                              }
+                                                          ),
+                                                        ]),
+                                                      ),
+                                                      eventSubRoute == '' ? Container(
+                                                        margin: EdgeInsets.only(top: 26),
+                                                        height: 1,
+                                                        color: Colors.black,
+                                                      ) : SizedBox()
+                                                    ],
+                                                  )
                                                 ),
                                                 const Padding(padding: EdgeInsets.only(left: 5)),
                                                 Expanded(
-                                                  child: RichText(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == 'going' ? 26 : 0)),
+                                                      RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
                                                           text: 'Going',
@@ -215,13 +230,24 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               eventSubRoute = 'going';
                                                               setState(() { });
                                                             }
-                                                        ),
-                                                      ]),
-                                                    ),
+                                                          ),
+                                                        ]),
+                                                      ),
+                                                      eventSubRoute == 'going' ? Container(
+                                                        margin: EdgeInsets.only(top: 26),
+                                                        height: 1,
+                                                        color: Colors.black,
+                                                      ) : SizedBox()
+                                                    ],
+                                                  )
                                                 ),
                                                 const Padding(padding: EdgeInsets.only(left: 5)),
                                                 Expanded(
-                                                  child: RichText(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == 'interested' ? 26 : 0)),
+                                                      RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
                                                           text: 'Interested',
@@ -232,13 +258,24 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               eventSubRoute = 'interested';
                                                               setState(() { });
                                                             }
-                                                        ),
-                                                      ]),
-                                                    ),
+                                                          ),
+                                                        ]),
+                                                      ),
+                                                      eventSubRoute == 'interested' ? Container(
+                                                        margin: EdgeInsets.only(top: 26),
+                                                        height: 1,
+                                                        color: Colors.black,
+                                                      ) : SizedBox()
+                                                    ],
+                                                  )
                                                 ),
                                                 const Padding(padding: EdgeInsets.only(left: 5)),
                                                 Expanded(
-                                                  child: RichText(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == 'invited' ? 26 : 0)),
+                                                      RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
                                                           text: 'Invited',
@@ -249,13 +286,24 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               eventSubRoute = 'invited';
                                                               setState(() { });
                                                             }
-                                                        ),
-                                                      ]),
-                                                    ),
+                                                          ),
+                                                        ]),
+                                                      ),
+                                                      eventSubRoute == 'invited' ? Container(
+                                                        margin: EdgeInsets.only(top: 26),
+                                                        height: 1,
+                                                        color: Colors.black,
+                                                      ) : SizedBox()
+                                                    ],
+                                                  )
                                                 ),
                                                 const Padding(padding: EdgeInsets.only(left: 5)),
                                                 Expanded(
-                                                  child: RichText(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == 'manage' ? 26 : 0)),
+                                                      RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
                                                           text: 'My Events',
@@ -266,15 +314,22 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               eventSubRoute = 'manage';
                                                               setState(() { });
                                                             }
-                                                        ),
-                                                      ]),
-                                                    ),
+                                                          ),
+                                                        ]),
+                                                      ),
+                                                      eventSubRoute == 'manage' ? Container(
+                                                        margin: EdgeInsets.only(top: 26),
+                                                        height: 1,
+                                                        color: Colors.black,
+                                                      ) : SizedBox()
+                                                    ],
+                                                  )
                                                 ),
                                             ]),
                                           ),
                                           const Flexible(fit: FlexFit.tight, child: SizedBox()),
                                           Container(
-                                            width: 120,
+                                            width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? 120 : 50,
                                             margin: const EdgeInsets.only(right: 20),
                                             child: ElevatedButton(
                                                     style: ElevatedButton.styleFrom(
@@ -283,8 +338,8 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                       // elevation: 3,
                                                       shape: RoundedRectangleBorder(
                                                           borderRadius: BorderRadius.circular(3.0)),
-                                                      minimumSize: const Size(120, 50),
-                                                      maximumSize: const Size(120, 50),
+                                                      minimumSize: Size(SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? 120 : 50, 50),
+                                                      maximumSize: Size(SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? 120 : 50, 50),
                                                     ),
                                                     onPressed: () {
                                                       (showDialog(
@@ -306,10 +361,10 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                     child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: const [
-                                                      Icon(Icons.add_circle),
-                                                      Padding(padding: EdgeInsets.only(left: 4)),
-                                                      Text('Create Event', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold))
+                                                      children: [
+                                                      const Icon(Icons.add_circle),
+                                                      const Padding(padding: EdgeInsets.only(left: 4)),
+                                                      SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? const Text('Create Event', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold)) : SizedBox()
                                                     ],)),
                                           )
                                         ],)

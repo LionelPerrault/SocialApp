@@ -60,6 +60,7 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
                   goingEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
+                      buttonFun: (){},
                       picture: 'null',
                       interests: 1,
                       header: event['eventName'],

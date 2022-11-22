@@ -20,7 +20,7 @@ class Helper {
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
         toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
       );
-  static var postData = FirebaseFirestore.instance
+  static var eventsData = FirebaseFirestore.instance
       .collection(Helper.eventsField)
       .withConverter<TokenLogin>(
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),

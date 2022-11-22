@@ -250,9 +250,9 @@ class SettingAccountScreenState extends State<SettingAccountScreen> {
                   ))
                 ],),
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                SettingFooter()
             ]),
-          )
+          ),
+          SettingFooter()
       ],)
       );
   }
