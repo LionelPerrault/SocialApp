@@ -217,7 +217,7 @@ class ProfileAvatarandTabScreenState extends mvc.StateMVC<ProfileAvatarandTabScr
                   children: mainTabList.map((e) => 
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
+                  child: InkWell(
                   onTap: (){
                     widget.onClick(e['title']);
                     setState(() {});

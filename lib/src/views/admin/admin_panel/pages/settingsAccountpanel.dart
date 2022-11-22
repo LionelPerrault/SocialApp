@@ -352,9 +352,8 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-            child: Container(
-          width: 200,
+        Container(
+          width: 150,
           child: Text(
             title,
             style: TextStyle(
@@ -362,14 +361,18 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold),
           ),
-        )),
+        ),
         Flexible(fit: FlexFit.tight, child: SizedBox()),
+        Expanded(
+          flex: 3,
+          child: 
         Container(
-            width: SizeConfig(context).screenWidth * 0.5,
+            width: 500,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  width: 400,
                   height: height,
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 250, 250, 250),
@@ -397,7 +400,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
                   style: TextStyle(fontSize: 12),
                 )
               ],
-            ))
+            )))
       ],
     );
   }
