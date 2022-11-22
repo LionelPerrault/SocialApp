@@ -354,7 +354,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
           ),
           Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth > 700 ? SizeConfig(context).screenWidth * 0.75 : SizeConfig(context).screenWidth,
+              width: SizeConfig(context).screenWidth > 800 ? SizeConfig(context).screenWidth * 0.75 : SizeConfig(context).screenWidth,
               child: tabTitle == 'General'
                   ? generalWidget()
                   : tabTitle == 'SEO'
@@ -951,7 +951,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
                   ),
                   // const Padding(padding: EdgeInsets.only(top: 5)),
                   Container(
-                      width: SizeConfig(context).screenWidth * 0.5,
+                      width: SizeConfig(context).screenWidth * 0.4,
                       child: Text(
                         'Turn the entire website On and Off',
                         style: TextStyle(fontSize: 14),
@@ -1037,9 +1037,8 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-            child: Container(
-          width: 200,
+        Container(
+          width: 100,
           child: Text(
             title,
             style: TextStyle(
@@ -1047,7 +1046,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold),
           ),
-        )),
+        ),
         const Flexible(fit: FlexFit.tight, child: SizedBox()),
         Container(
           width: SizeConfig(context).screenWidth * 0.5,
@@ -1109,16 +1108,15 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-            child: Container(
-          width: 200,
+             Container(
+          width: 100,
           child: Text(
             title,
             style: TextStyle(
                 color: fontColor, fontSize: 13, fontWeight: FontWeight.bold),
           ),
-        )),
-        const Flexible(fit: FlexFit.tight, child: SizedBox()),
+        ),
+        Flexible(fit: FlexFit.tight, child: SizedBox()),
         Container(
             width: SizeConfig(context).screenWidth * 0.5,
             child: Column(
@@ -1210,9 +1208,8 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
-              child: Container(
-            width: 200,
+          Container(
+            width: 100,
             child: Text(
               title,
               style: TextStyle(
@@ -1220,10 +1217,10 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
                   fontSize: fontSize,
                   fontWeight: FontWeight.bold),
             ),
-          )),
+          ),
           Flexible(fit: FlexFit.tight, child: SizedBox()),
           Container(
-            width: SizeConfig(context).screenWidth * 0.5,
+            width: SizeConfig(context).screenWidth * 0.6,
             decoration: BoxDecoration(
                 border: Border.all(width: 0.5, color: Colors.grey)),
             height: 70,

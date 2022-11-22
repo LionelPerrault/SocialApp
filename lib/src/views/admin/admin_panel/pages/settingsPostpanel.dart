@@ -65,11 +65,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -433,11 +432,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -492,11 +490,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -551,11 +548,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -610,11 +606,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -669,11 +664,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -728,11 +722,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -787,11 +780,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -841,11 +833,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -1036,11 +1027,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -1095,11 +1085,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -1210,11 +1199,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -1325,11 +1313,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -1440,11 +1427,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -1499,11 +1485,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -1917,11 +1902,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -1976,11 +1960,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -2035,11 +2018,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -2089,11 +2071,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -2148,11 +2129,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },
@@ -2207,11 +2187,10 @@ class AdminSettingsPostsState extends mvc.StateMVC<AdminSettingsPosts> {
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 1,
+                        scaleY:1,
                         child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          // activeColor: kprimaryColor,
+                          activeColor: Colors.black,
                           value: true,
                           onChanged: (value) {
                           },

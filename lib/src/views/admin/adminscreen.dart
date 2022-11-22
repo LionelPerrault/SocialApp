@@ -128,7 +128,8 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                                     children: [
                                       Container(
                                         color: Colors.white,
-                                        width: SizeConfig.leftBarWidth,
+                                        width: SizeConfig(context).screenWidth > 800 ? SizeConfig.leftBarWidth
+                                                : SizeConfig.leftBarWidth + 30,
                                         child: SingleChildScrollView(
                                           child: AdminLeftPanel(
                                             onClick: (value) {

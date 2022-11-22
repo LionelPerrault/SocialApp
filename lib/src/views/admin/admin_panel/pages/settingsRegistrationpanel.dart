@@ -883,7 +883,7 @@ class AdminSettingsRegistrationState
                   fontWeight: FontWeight.bold),
             ),
           )),
-          Flexible(fit: FlexFit.tight, child: SizedBox()),
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
           Container(
             width: SizeConfig(context).screenWidth * 0.5,
             decoration: BoxDecoration(
