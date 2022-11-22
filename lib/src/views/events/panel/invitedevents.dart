@@ -31,15 +31,15 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
     con.getEvent();
     con.setState(() { });
     super.initState();
+    getEventNow();
+  }
+
+  void getEventNow() {
     con.getEvent().then((value) => {
-      for (int i = 0; i<value.length; i++) {
-        for (int j = 0; j<value[i]['eventInterested'].length; j++) {
-          if (value[i]['eventInvited'][j] == UserManager.userInfo['userName']) {
-            invitedEvents.add(value[i]),
-            setState(() { })
-          }
-        }
-      },
+      invitedEvents = value,
+      invitedEvents.where((event) => event['data']['eventInvited'].where((invite) => invite == UserManager.userInfo['userName']).length > 0),
+      print(invitedEvents),
+      setState(() {})
     });
   }
   @override
@@ -62,11 +62,11 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
                   invitedEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
-                      buttonFun: (){},
+                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
                       interests: 1,
-                      header: event['eventName'],
-                      interested: false)).toList(),),
+                      header: event['data']['eventName'],
+                      interested: event['interested'])).toList(),),
           ),
         ],
       ),

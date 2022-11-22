@@ -51,10 +51,8 @@ class PostController extends ControllerMVC {
       for (int i = 0; i<doc.length; i++) {
           var id = doc[i].id;
           var interested = await boolInterested(id);
-          var da = doc[i];
-          if (da['eventPost'] == true) {
-            realAllEvents.add({'data':da,'id':id, 'interested' : interested});
-          }
+          var data = doc[i];
+          realAllEvents.add({'data':data,'id':id, 'interested' : interested});
         }
     });
     
@@ -66,7 +64,7 @@ class PostController extends ControllerMVC {
       ...eventData,
       'eventAdmin': UserManager.userInfo['userName'],
       'eventDate': DateTime.now().toString(),
-      'eventGoing': false,
+      'eventGoing': [],
       'eventInterested': [],
       'eventInterests': 0,
       'eventInvited': [],

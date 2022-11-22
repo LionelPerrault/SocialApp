@@ -31,15 +31,15 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
     con.getEvent();
     con.setState(() { });
     super.initState();
+    getEventNow();
+  }
+
+  void getEventNow() {
     con.getEvent().then((value) => {
-      for (int i = 0; i<value.length; i++) {
-        for (int j = 0; j<value[i]['eventInterested'].length; j++) {
-          if (value[i]['eventInterested'][j] == UserManager.userInfo['userName']) {
-            interestedEvents.add(value[i]),
-            setState(() { })
-          }
-        }
-      },
+      interestedEvents = value,
+      interestedEvents.where((event) => event['data']['eventInterested'].where((interest) => interest == UserManager.userInfo['userName']).length > 0),
+      print(interestedEvents),
+      setState(() {})
     });
   }
   @override
@@ -62,11 +62,11 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
                   interestedEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
-                      buttonFun: (){},
+                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
                       interests: 1,
-                      header: event['eventName'],
-                      interested: false)).toList(),),
+                      header: event['data']['eventName'],
+                      interested: event['interested'])).toList(),),
           ),
         ],
       ),
