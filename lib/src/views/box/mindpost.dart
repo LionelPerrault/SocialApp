@@ -125,7 +125,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         SingleChildScrollView(
         child:GestureDetector(
           onTap: (){
-            notActionShow = true;
+            if(!state) {
+                            notActionShow = true;
+                          };
           },
           child:
         AnimatedContainer(
@@ -142,7 +144,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true,
+                    if(!state) {
+                            notActionShow = true
+                          }
                   },
                   label: 'Upload Photos',
                   image:
@@ -155,7 +159,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
+                    if(!state) {
+                            notActionShow = true
+                          }
 
                   },
                   label: 'Create Album',
@@ -171,8 +177,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
-
+                    if(!state) {
+                            notActionShow = true
+                          }
                   },
                   label: 'Feelings/Activity',
                   image:
@@ -185,7 +192,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
+                    if(!state) {
+                            notActionShow = true
+                          }
 
                   },
                   label: 'Check In',
@@ -201,7 +210,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
+                    if(!state) {
+                            notActionShow = true
+                          }
 
                   },
                   label: 'Colored Posts',
@@ -215,7 +226,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
+                    if(!state) {
+                            notActionShow = true
+                          }
 
                   },
                   label: 'Voice Notes',
@@ -231,7 +244,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
+                    if(!state) {
+                            notActionShow = true
+                          }
 
                   },
                   label: 'Write Aticle',
@@ -245,7 +260,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
+                    if(!state) {
+                            notActionShow = true
+                          }
 
                   },
                   label: 'Sell Something',
@@ -261,8 +278,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
-
+if(!state) {
+                            notActionShow = true
+                          }
                   },
                   label: 'Create Poll',
                   image:
@@ -275,7 +293,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
+                    if(!state) {
+                            notActionShow = true
+                          }
 
                   },
                   label: 'Upload Video',
@@ -291,7 +311,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-                    notActionShow = true
+                    if(!state) {
+                            notActionShow = true
+                          }
 
                   },
                   label: 'Upload Audio',
@@ -304,9 +326,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             Expanded(
               flex: 1,
               child: MindSlice(
-                  onTap: () => {
-                    notActionShow = true
-
+                  onTap: () {
+                    if(!state) {
+                            notActionShow = true;
+                          }
                   },
                   label: 'Upload File',
                   image:
@@ -336,7 +359,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         padding: const EdgeInsets.only(top: 7, left: 15),
                         child: DropdownButton(
                           onTap: (){
+                          if(!state) {
                             notActionShow = true;
+                          }
                           },
                           hint: Row(
                             children: const [
@@ -445,6 +470,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               ),
               onPressed: () {
                 () => {
+                  if(!state)
                   notActionShow = true
                 };
               },
