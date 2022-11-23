@@ -23,6 +23,7 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var invitedEvents = [];
+  var returnValue= [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -36,8 +37,14 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
 
   void getEventNow() {
     con.getEvent().then((value) => {
-      invitedEvents = value,
-      invitedEvents.where((event) => event['data']['eventInvited'].where((invite) => invite == UserManager.userInfo['userName']).length > 0),
+      returnValue = value,
+      for (int i=0; i<returnValue.length; i++) {
+        for (int j=0; j<returnValue[i]['data']['eventInvited'].length; j++) {
+          if (returnValue[i]['data']['eventInvited'][j] == UserManager.userInfo['userName']) {
+            invitedEvents.add(returnValue[i])
+          }
+        }
+      },
       print(invitedEvents),
       setState(() {})
     });

@@ -22,6 +22,7 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
+  var returnValue = [];
   var goingEvents = [];
   int arrayLength = 0;
   @override
@@ -36,9 +37,14 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
 
   void getEventNow() {
     con.getEvent().then((value) => {
-      goingEvents = value,
-      goingEvents.where((event) => event['data']['eventGoing'].where((going) => going == UserManager.userInfo['userName']).length > 0),
-      print(goingEvents),
+      returnValue = value,
+      for (int i=0; i<returnValue.length; i++) {
+        for (int j=0; j<returnValue[i]['data']['eventGoing'].length; j++) {
+          if (returnValue[i]['data']['eventGoing'][j] == UserManager.userInfo['userName']) {
+            goingEvents.add(returnValue[i])
+          }
+        }
+      },
       setState(() {})
     });
   }

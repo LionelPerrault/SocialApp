@@ -23,6 +23,7 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var interestedEvents = [];
+  var returnValue= [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -36,9 +37,14 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
 
   void getEventNow() {
     con.getEvent().then((value) => {
-      interestedEvents = value,
-      interestedEvents.where((event) => event['data']['eventInterested'].where((interest) => interest == UserManager.userInfo['userName']).length > 0),
-      print(interestedEvents),
+      returnValue = value,
+      for (int i=0; i<returnValue.length; i++) {
+        for (int j=0; j<returnValue[i]['data']['eventInterested'].length; j++) {
+          if (returnValue[i]['data']['eventInterested'][j] == UserManager.userInfo['userName']) {
+            interestedEvents.add(returnValue[i])
+          }
+        }
+      },
       setState(() {})
     });
   }
