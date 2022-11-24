@@ -126,14 +126,16 @@ class PostController extends ControllerMVC {
     var interested = doc['eventInterested'];
     var respon = await boolInterested(eventId);
     if (respon) {
-      interested.removeWhere((item) => item == UserManager.userInfo['userName']);
+      interested.removeWhere((item) => item['userName'] == UserManager.userInfo['userName']);
       await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .doc(eventId)
         .update({'eventInterested': interested});
       return true;
     }else {
-      interested.add(UserManager.userInfo['userName']);
+      interested.add({'userName': UserManager.userInfo['userName'], 
+                    'fullName': '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
+                    'userAvatar': UserManager.userInfo['avatar']});
       await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .doc(eventId)
@@ -151,7 +153,7 @@ class PostController extends ControllerMVC {
     if (interested == null) {
       return false;
     }
-    var returnData = interested.where((eachUser) => eachUser == UserManager.userInfo['userName']);
+    var returnData = interested.where((eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
     print('you get bool of interested event');
     if (returnData.length == 0) {
       return false;
@@ -169,14 +171,16 @@ class PostController extends ControllerMVC {
     var going = doc['eventGoing'];
     var respon = await boolGoing(eventId);
     if (respon) {
-      going.removeWhere((item) => item == UserManager.userInfo['userName']);
+      going.removeWhere((item) => item['userName'] == UserManager.userInfo['userName']);
       await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .doc(eventId)
         .update({'eventGoing': going});
       return true;
     }else {
-      going.add(UserManager.userInfo['userName']);
+      going.add({'userName': UserManager.userInfo['userName'], 
+                    'fullName': '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
+                    'userAvatar': UserManager.userInfo['avatar']});
       await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .doc(eventId)
@@ -195,7 +199,7 @@ class PostController extends ControllerMVC {
     if (going == null) {
       return false;
     }
-    var returnData = going.where((eachUser) => eachUser == UserManager.userInfo['userName']);
+    var returnData = going.where((eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
     print('you get bool of going event');
     if (returnData.length == 0) {
       return false;
@@ -213,14 +217,16 @@ class PostController extends ControllerMVC {
     var invited = doc['eventInvited'];
     var respon = await boolInvited(eventId);
     if (respon) {
-      invited.removeWhere((item) => item == UserManager.userInfo['userName']);
+      invited.removeWhere((item) => item['userName'] == UserManager.userInfo['userName']);
       await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .doc(eventId)
         .update({'eventInvited': invited});
       return true;
     }else {
-      invited.add(UserManager.userInfo['userName']);
+      invited.add({'userName': UserManager.userInfo['userName'], 
+                    'fullName': '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
+                    'userAvatar': UserManager.userInfo['avatar']});
       await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .doc(eventId)
@@ -239,7 +245,7 @@ class PostController extends ControllerMVC {
     if (invited == null) {
       return false;
     }
-    var returnData = invited.where((eachUser) => eachUser == UserManager.userInfo['userName']);
+    var returnData = invited.where((eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
     print('you get bool of invited event');
     if (returnData.length == 0) {
       return false;

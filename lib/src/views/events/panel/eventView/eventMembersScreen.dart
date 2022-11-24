@@ -1,6 +1,10 @@
+import 'package:badges/badges.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
@@ -70,18 +74,29 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen>{
                           setState(() { });
                         },
                         child: Container(
-                      alignment: Alignment.center,
-                      width: 100,
-                      height: 40,
-                      color: tab == 'Going' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
-                      child: const Text(
-                        'Going',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 40,
+                          color: tab == 'Going' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Going',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black
+                                ),
+                              ),
+                              Badge(
+                                badgeContent: Text('${con.event["eventGoing"].length}', style: TextStyle(
+                                  color: Colors.white
+                                ),),
+                                badgeColor: Color.fromARGB(255, 23, 162, 184),
+                              )
+                          ],)
                         ),
                       ),
-                    ),),
                     ),
                     MouseRegion(
                       cursor: SystemMouseCursors.click,
@@ -91,18 +106,29 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen>{
                           setState(() { });
                         },
                         child: Container(
-                      alignment: Alignment.center,
-                      width: 100,
-                      height: 40,
-                      color: tab == 'Interested' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
-                      child: const Text(
-                        'Interested',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 40,
+                          color: tab == 'Interested' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Interested',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black
+                                ),
+                              ),
+                              Badge(
+                                badgeContent: Text('${con.event["eventInterested"].length}', style: TextStyle(
+                                  color: Colors.white
+                                ),),
+                                badgeColor: Color.fromARGB(255, 23, 162, 184),
+                              )
+                          ],)
                         ),
                       ),
-                    ),),
                     ),
                     MouseRegion(
                       cursor: SystemMouseCursors.click,
@@ -112,18 +138,29 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen>{
                           setState(() { });
                         },
                         child: Container(
-                      alignment: Alignment.center,
-                      width: 100,
-                      height: 40,
-                      color: tab == 'Invited' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
-                      child: const Text(
-                        'Invited',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 40,
+                          color: tab == 'Invited' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Invited',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black
+                                ),
+                              ),
+                              Badge(
+                                badgeContent: Text('${con.event["eventInvited"].length}', style: TextStyle(
+                                  color: Colors.white
+                                ),),
+                                badgeColor: Color.fromARGB(255, 23, 162, 184),
+                              )
+                          ],)
                         ),
                       ),
-                    ),),
                     ),
                     MouseRegion(
                       cursor: SystemMouseCursors.click,
@@ -133,21 +170,30 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen>{
                           setState(() { });
                         },
                         child: Container(
-                      alignment: Alignment.center,
-                      width: 100,
-                      height: 40,
-                      color: tab == 'Invites' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
-                      child: const Text(
-                        'Invites',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 40,
+                          color: tab == 'Invites' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Invites',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black
+                                ),
+                              ),
+                              Badge(
+                                badgeContent: Text('${con.event["eventInvited"].length}', style: TextStyle(
+                                  color: Colors.white
+                                ),),
+                                badgeColor: Color.fromARGB(255, 23, 162, 184),
+                              )
+                          ],)
                         ),
                       ),
                     ),
-                      ),
-                    ),
-                    
                 ]),
               )
             ],
@@ -155,41 +201,202 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen>{
       );
   }
   Widget GoingData(){
-    return userInfo['photos'] == null ? Container(
+    List going = con.event['eventGoing'];
+    return going.isEmpty ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
       child: Text('${con.event['eventName']} doesn`t have photos',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
-    ) : Container();
+    ) : Container(
+          child: Row(children: [
+            Expanded(
+              child: GridView.count(
+                  crossAxisCount: SizeConfig(context).screenWidth > 800 ? 4 : SizeConfig(context).screenWidth > 600 ? 3 : SizeConfig(context).screenWidth > 210 ? 2 : 1  ,
+                  childAspectRatio: 1/1,
+                  padding: const EdgeInsets.all(4.0),
+                  mainAxisSpacing: 4.0,
+                  shrinkWrap: true,
+                  crossAxisSpacing: 4.0,
+                  children: 
+                    going.map((user) => 
+                      UserCell(
+                        eventTap: (){
+                          Navigator
+                          .pushReplacementNamed(
+                              context,
+                              '/${user["userName"]}');
+                        },
+                        picture: user['userAvatar'] ?? '',
+                        header: user['fullName'])).toList(),),
+            )
+          ],)
+        );
   }
   Widget InterestedData(){
-    return userInfo['albums'] == null ? Container(
+    List interested = con.event['eventInterested'];
+    return interested.isEmpty ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
       child: Text('${con.event['eventName']} doesn`t have albums',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
-    ) : Container();
+    ) : Container(
+          child: Row(children: [
+            Expanded(
+              child: GridView.count(
+                  crossAxisCount: SizeConfig(context).screenWidth > 800 ? 4 : SizeConfig(context).screenWidth > 600 ? 3 : SizeConfig(context).screenWidth > 210 ? 2 : 1  ,
+                  childAspectRatio: 1/1,
+                  padding: const EdgeInsets.all(4.0),
+                  mainAxisSpacing: 4.0,
+                  shrinkWrap: true,
+                  crossAxisSpacing: 4.0,
+                  children: 
+                    interested.map((user) => 
+                      UserCell(
+                        eventTap: (){
+                          Navigator
+                          .pushReplacementNamed(
+                              context,
+                              '/${user["userName"]}');
+                        },
+                        picture: user['userAvatar'] ?? '',
+                        header: user['fullName'])).toList(),),
+            )
+          ],)
+        );
   }
   
   Widget InvitedData(){
-    return userInfo['albums'] == null ? Container(
+    List invited = con.event['eventInvited'];
+    return invited.isEmpty ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
       child: Text('${con.event['eventName']} doesn`t have albums',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
-    ) : Container();
+    ) : Container(
+          child: Row(children: [
+            Expanded(
+              child: GridView.count(
+                  crossAxisCount: SizeConfig(context).screenWidth > 800 ? 4 : SizeConfig(context).screenWidth > 600 ? 3 : SizeConfig(context).screenWidth > 210 ? 2 : 1  ,
+                  childAspectRatio: 1/1,
+                  padding: const EdgeInsets.all(4.0),
+                  mainAxisSpacing: 4.0,
+                  shrinkWrap: true,
+                  crossAxisSpacing: 4.0,
+                  children: 
+                    invited.map((user) => 
+                      UserCell(
+                        eventTap: (){
+                          Navigator
+                          .pushReplacementNamed(
+                              context,
+                              '/${user["userName"]}');
+                        },
+                        picture: user['userAvatar'] ?? '',
+                        header: user['fullName'])).toList(),),
+            )
+          ],)
+        );
   }
   
   Widget InvitesData(){
-    return userInfo['albums'] == null ? Container(
+    List invites = con.event['eventInvited'];
+    return invites.isEmpty ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
       child: Text('${con.event['eventName']} doesn`t have albums',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
-    ) : Container();
+    ) : Container(
+          child: Row(children: [
+            Expanded(
+              child: GridView.count(
+                  crossAxisCount: SizeConfig(context).screenWidth > 800 ? 4 : SizeConfig(context).screenWidth > 600 ? 3 : SizeConfig(context).screenWidth > 210 ? 2 : 1  ,
+                  childAspectRatio: 1/1,
+                  padding: const EdgeInsets.all(4.0),
+                  mainAxisSpacing: 4.0,
+                  shrinkWrap: true,
+                  crossAxisSpacing: 4.0,
+                  children: 
+                    invites.map((user) => 
+                      UserCell(
+                        eventTap: (){
+                          Navigator
+                          .pushReplacementNamed(
+                              context,
+                              '/${user["userName"]}');
+                        },
+                        picture: user['userAvatar'] ?? '',
+                        header: user['fullName'])).toList(),),
+            )
+          ],)
+        );
+  }
+
+  Widget UserCell({required Null Function() eventTap, required header, required String picture}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+      Container(
+      alignment: Alignment.center,
+      width: 160,
+      height: 150,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+        Container(
+          width: 160,
+          margin: EdgeInsets.only(top: 50),
+          padding: EdgeInsets.only(top: 50),
+          decoration: BoxDecoration(
+              color: Colors.grey[350],
+              borderRadius: BorderRadius.circular(5),
+          ),
+          child: Column(children: [
+            Padding(padding: EdgeInsets.only(top: 10)),
+            Container(
+              alignment: Alignment.center,
+              width: 150,
+              child: RichText(
+                text: TextSpan(children: <TextSpan>[
+                  TextSpan(
+                    text: header,
+                    style: const TextStyle(
+                        color: Colors.black, fontSize: 18),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        eventTap();
+                      }
+                  ),
+                ]),
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 10))
+          ],),
+        ),
+        Container(
+          alignment: Alignment.topCenter,
+          width: 100,
+          height: 100,
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+              color:
+                  Colors.white,
+              borderRadius: BorderRadius.circular(50)),
+          child: 
+              CircleAvatar(
+                radius: 78,
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                    radius: 75,
+                    backgroundImage:
+                      NetworkImage( picture != '' ? picture : Helper.avatar)),
+              )
+        ),
+      ],),
+    )
+    ],);
   }
 }
