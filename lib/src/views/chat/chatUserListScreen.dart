@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,6 +36,9 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
     con = controller as ChatController;
     super.initState();
     scrollController = ScrollController();
+    if (!mounted) {
+      print('mounted');
+    }
   }
 
   String dropdownValue = 'Male';
@@ -92,6 +96,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                           con.avatar = t.chatInfo[chatUserName]['avatar'];
                           widget.onBack('message-list');
                           con.chattingUser = chatUserName;
+                          con.chatUserFullName = chatUserFullName;
                           con.docId = docId;
                           con.chatId = t.chatId;
 
@@ -120,6 +125,15 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                           lastData,
                           style: TextStyle(fontSize: 11),
                         ),
+                        trailing: t.chatInfo[chatUserFullName] != 0
+                            ? Badge(
+                                badgeColor: Colors.red,
+                                badgeContent: Text(
+                                  t.chatInfo[chatUserFullName].toString(),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            : Icon(null),
                       ),
                       Container(
                         width: double.infinity,
@@ -130,9 +144,11 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                   },
                 ));
           } else {
-            return con.takedata ? Container() : SizedBox(
-              height:SizeConfig(context).screenHeight - 220,
-              child:Center(child:CircularProgressIndicator()));
+            return con.takedata
+                ? Container()
+                : SizedBox(
+                    height: SizeConfig(context).screenHeight - 220,
+                    child: Center(child: CircularProgressIndicator()));
           }
         });
   }

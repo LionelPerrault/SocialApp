@@ -42,14 +42,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     _focus.dispose();
   }
   void _onFocusChange() {
-    print(11);
     var future = Future.delayed(const Duration(milliseconds: 100), (){
       if(state){
         show = true;
         state = false;
         return;
       }
-      print(22);
       if(!notActionShow)
         {show = !show;}
       else{
@@ -126,8 +124,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         child:GestureDetector(
           onTap: (){
             if(!state) {
-                            notActionShow = true;
-                          };
+              notActionShow = true;
+            }
           },
           child:
         AnimatedContainer(
@@ -145,8 +143,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               child: MindSlice(
                   onTap: () => {
                     if(!state) {
-                            notActionShow = true
-                          }
+                      notActionShow = true
+                    }
                   },
                   label: 'Upload Photos',
                   image:
@@ -160,9 +158,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               child: MindSlice(
                   onTap: () => {
                     if(!state) {
-                            notActionShow = true
-                          }
-
+                      notActionShow = true
+                    }
                   },
                   label: 'Create Album',
                   image:
@@ -178,8 +175,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               child: MindSlice(
                   onTap: () => {
                     if(!state) {
-                            notActionShow = true
-                          }
+                      notActionShow = true
+                    }
                   },
                   label: 'Feelings/Activity',
                   image:
@@ -278,9 +275,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               flex: 1,
               child: MindSlice(
                   onTap: () => {
-if(!state) {
-                            notActionShow = true
-                          }
+                    if(!state) {
+                      notActionShow = true
+                    }
                   },
                   label: 'Create Poll',
                   image:
@@ -294,8 +291,8 @@ if(!state) {
               child: MindSlice(
                   onTap: () => {
                     if(!state) {
-                            notActionShow = true
-                          }
+                      notActionShow = true
+                    }
 
                   },
                   label: 'Upload Video',
@@ -312,8 +309,8 @@ if(!state) {
               child: MindSlice(
                   onTap: () => {
                     if(!state) {
-                            notActionShow = true
-                          }
+                      notActionShow = true
+                    }
 
                   },
                   label: 'Upload Audio',
@@ -328,8 +325,8 @@ if(!state) {
               child: MindSlice(
                   onTap: () {
                     if(!state) {
-                            notActionShow = true;
-                          }
+                      notActionShow = true;
+                    }
                   },
                   label: 'Upload File',
                   image:

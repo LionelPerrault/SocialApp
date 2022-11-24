@@ -118,8 +118,9 @@ class UserController extends ControllerMVC {
     print("------4--------");
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
-    QuerySnapshot<TokenLogin> querySnapshot1 =
-        await Helper.authdata.where('userName', isEqualTo: signUpUserInfo['userName']).get();
+    QuerySnapshot<TokenLogin> querySnapshot1 = await Helper.authdata
+        .where('userName', isEqualTo: signUpUserInfo['userName'])
+        .get();
     if (querySnapshot.size > 0) {
       failRegister =
           'Sorry, it looks like $email belongs to an existing account';
@@ -127,7 +128,7 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    if(querySnapshot1.size > 0){
+    if (querySnapshot1.size > 0) {
       failRegister =
           'Sorry, it looks like ${signUpUserInfo['userName']} belongs to an existing account';
       isSendRegisterInfo = false;
@@ -162,7 +163,7 @@ class UserController extends ControllerMVC {
         .set({
       ...signUpUserInfo,
       'paymail': paymail,
-      'avatar':'',
+      'avatar': '',
       'walletAddress': walletAddress,
       'relysiaEmail': relysiaEmail,
       'relysiaPassword': relysiaPassword,
@@ -171,7 +172,8 @@ class UserController extends ControllerMVC {
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
       'paymail': paymail,
-      'fullName': '${signUpUserInfo['firstName']} ${signUpUserInfo['lastName']}',
+      'fullName':
+          '${signUpUserInfo['firstName']} ${signUpUserInfo['lastName']}',
       'walletAddress': walletAddress,
       'relysiaEmail': relysiaEmail,
       'relysiaPassword': relysiaPassword,
@@ -242,11 +244,11 @@ class UserController extends ControllerMVC {
         var b = user.userInfo;
         var j = {};
         b.forEach((key, value) {
-          j = {...j,key.toString():value.toString()};
+          j = {...j, key.toString(): value.toString()};
         });
         userInfo = {
           ...j,
-          'fullName':'${j['firstName']} ${j['lastName']}',
+          'fullName': '${j['firstName']} ${j['lastName']}',
           'isVerify': isVerify.toString(),
           'isRememberme': isRememberme.toString(),
           'uid': uid,
@@ -396,7 +398,8 @@ class UserController extends ControllerMVC {
                                                   response['address'],
                                               await registerUserInfo(),
                                               await UserManager.getUserInfo(),
-                                              RouteNames.userName = signUpUserInfo['userName'],
+                                              RouteNames.userName =
+                                                  signUpUserInfo['userName'],
                                               isSendRegisterInfo = false,
                                               isLogined = true,
                                               Navigator.pushReplacementNamed(
@@ -446,7 +449,8 @@ class UserController extends ControllerMVC {
               userInfo = await Helper.getJSONPreference(Helper.userField),
               info = UserManager.userInfo.toString(),
               await Helper.saveJSONPreference(Helper.userField,
-                  {...userInfo, 'avatar': value.data()!['avatar']})
+                  {...userInfo, 'avatar': value.data()!['avatar']}),
+              await Helper.getJSONPreference(Helper.userField)
             });
   }
 
@@ -457,19 +461,23 @@ class UserController extends ControllerMVC {
         .doc(UserManager.userInfo['uid'])
         .update({'avatar': userAvatar});
     FirebaseFirestore.instance
-        .collection(Helper.message).
-        where('users', arrayContains: UserManager.userInfo['userName'])
-        .get().then((value) async{
-          for(int i = 0;i< value.docs.length;i++){
-            await FirebaseFirestore.instance.collection(Helper.message)
-            .doc(value.docs[i].id).update({
-              UserManager.userInfo['userName']:{
-                'avatar':userAvatar,
-                'name':"${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}"
-              }
-            });
+        .collection(Helper.message)
+        .where('users', arrayContains: UserManager.userInfo['userName'])
+        .get()
+        .then((value) async {
+      for (int i = 0; i < value.docs.length; i++) {
+        await FirebaseFirestore.instance
+            .collection(Helper.message)
+            .doc(value.docs[i].id)
+            .update({
+          UserManager.userInfo['userName']: {
+            'avatar': userAvatar,
+            'name':
+                "${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}"
           }
         });
+      }
+    });
     resetGetUserInfo();
   }
 
@@ -488,7 +496,7 @@ class UserController extends ControllerMVC {
   //get all interests from firebase
   Future<List> getAllInterests() async {
     QuerySnapshot querySnapshot =
-          await Helper.allInterests.orderBy('title').get();
+        await Helper.allInterests.orderBy('title').get();
     var doc = querySnapshot.docs;
     return doc;
   }
