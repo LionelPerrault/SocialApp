@@ -13,18 +13,18 @@ import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 
-class ProfielTimelineScreen extends StatefulWidget {
+class ProfileTimelineScreen extends StatefulWidget {
   Function onClick;
-  ProfielTimelineScreen({Key? key,required this.onClick})
+  ProfileTimelineScreen({Key? key,required this.onClick})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
 
   @override
-  State createState() => ProfielTimelineScreenState();
+  State createState() => ProfileTimelineScreenState();
 }
 
-class ProfielTimelineScreenState extends mvc.StateMVC<ProfielTimelineScreen>
+class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

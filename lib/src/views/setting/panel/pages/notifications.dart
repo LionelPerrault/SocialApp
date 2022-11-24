@@ -42,7 +42,7 @@ class SettingNotificationScreenState extends State<SettingNotificationScreen> {
   var mailEnable = false;
   @override
   Widget build(BuildContext context) {
-    return Container(padding: const EdgeInsets.only(top: 20, left:50),
+    return Container(padding: const EdgeInsets.only(top: 20, left:30),
       child: 
         Column(
           mainAxisAlignment: MainAxisAlignment.start,

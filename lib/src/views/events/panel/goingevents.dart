@@ -22,6 +22,7 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
+  var returnValue = [];
   var goingEvents = [];
   int arrayLength = 0;
   @override
@@ -31,13 +32,20 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
     con.getEvent();
     con.setState(() { });
     super.initState();
+    getEventNow();
+  }
+
+  void getEventNow() {
     con.getEvent().then((value) => {
-      for (int i = 0; i<value.length; i++) {
-        if (value[i]['eventGoing'] == true) {
-          goingEvents.add(value[i]),
-          setState(() { })
+      returnValue = value,
+      for (int i=0; i<returnValue.length; i++) {
+        for (int j=0; j<returnValue[i]['data']['eventGoing'].length; j++) {
+          if (returnValue[i]['data']['eventGoing'][j] == UserManager.userInfo['userName']) {
+            goingEvents.add(returnValue[i])
+          }
         }
       },
+      setState(() {})
     });
   }
   @override
@@ -60,10 +68,12 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
                   goingEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
+                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
-                      interests: 1,
-                      header: event['eventName'],
-                      interested: false)).toList(),),
+                      status: false,
+                      interests: event['data']['eventInterested'].length,
+                      header: event['data']['eventName'],
+                      interested: event['interested'])).toList(),),
           ),
         ],
       ),

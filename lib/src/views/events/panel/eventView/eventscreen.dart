@@ -1,47 +1,31 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ProfileController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/profile/profileAvatarandTabscreen.dart';
-import 'package:shnatter/src/views/profile/profileEventsScreen.dart';
-import 'package:shnatter/src/views/profile/profileFriendsScreen.dart';
-import 'package:shnatter/src/views/profile/profileGroupsScreen.dart';
-import 'package:shnatter/src/views/profile/profileLikesScreen.dart';
-import 'package:shnatter/src/views/profile/profilePhotosScreen.dart';
-import 'package:shnatter/src/views/profile/profileTimelineScreen.dart';
-import 'package:shnatter/src/views/profile/profileVideosScreen.dart';
-import '../../controllers/HomeController.dart';
-import '../../utils/size_config.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:shnatter/src/views/panel/leftpanel.dart';
 
-import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
+import 'eventAvatarandTabscreen.dart';
+import 'eventMembersScreen.dart';
+import 'eventPhotosScreen.dart';
+import 'eventTimelineScreen.dart';
+import 'profileVideosScreen.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  UserProfileScreen({Key? key})
-      : con = ProfileController(),
+class EventEachScreen extends StatefulWidget {
+  EventEachScreen({Key? key,required this.docId})
+      : con = PostController(),
         super(key: key);
-  final ProfileController con;
-
+  final PostController con;
+  String docId = '';
   @override
-  State createState() => UserProfileScreenState();
+  State createState() => EventEachScreenState();
 }
 
-class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
+class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -57,9 +41,8 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   @override
   void initState() {
     add(widget.con);
-    con = controller as ProfileController;
+    con = controller as PostController;
     filecon = FileController();
-    con.profile_cover = UserManager.userInfo['profile_cover'] ?? '';
     setState(() { });
     super.initState();
     searchFocusNode = FocusNode();
@@ -67,9 +50,19 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    con = controller as PostController;
+    getSelectedEvent(widget.docId);
   }
 
-  late ProfileController con;
+  late PostController con;
+  
+  void getSelectedEvent(id) {
+    con.getSelectedEvent(id).then((value) => {
+      if (value){
+        print('Successfully get event you want!!!'),
+      }
+    });
+  }
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
     setState(() {
@@ -120,19 +113,6 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
         body: Stack(
           fit: StackFit.expand,
           children: [
-            // Stack(
-            //   children: [
-            //     Container(
-            //       margin: const EdgeInsets.only(top: SizeConfig.navbarHeight,left: 30,right: 30),
-            //       width: SizeConfig(context).screenWidth,
-            //       height: SizeConfig(context).screenHeight * 0.5,
-            //       decoration: con.profile_cover == '' ? const BoxDecoration(
-            //       color: Color.fromRGBO(66, 66, 66, 1),
-            //       ) : const BoxDecoration(),
-            //       child: con.profile_cover == '' ? Container() : Image.network(con.profile_cover,fit:BoxFit.cover),
-            //     )
-            //   ],
-            // ),
             ShnatterNavigation(
               searchController: searchController,
               onSearchBarFocus: onSearchBarFocus,
@@ -142,49 +122,94 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
             Padding(
                 padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child:
-                    //AnimatedPositioned(
-                    //top: showMenu ? 0 : -150.0,
-                    //duration: const Duration(seconds: 2),
-                    //curve: Curves.fastOutSlowIn,
-                    //child:
                     SingleChildScrollView(
-                  child: Column(
+                  child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ProfileAvatarandTabScreen(onClick: (value) {
-                          print(value);
-                          con.tab = value;
-                          setState(() { });
-                        },),
-                        con.tab == 'Timeline' ? ProfileTimelineScreen(onClick:(value){
-                          con.tab = value;
-                          setState(() { });
-                        }) :
-                        con.tab == 'Friends' ? ProfileFriendScreen(onClick:(value){
-                          con.tab = value;
-                          setState(() { });
-                        }) :
-                        con.tab == 'Photos' ? ProfilePhotosScreen(onClick:(value){
-                          con.tab = value;
-                          setState(() { });
-                        }) :
-                        con.tab == 'Videos' ? ProfileVideosScreen(onClick:(value){
-                          con.tab = value;
-                          setState(() { });
-                        }) :
-                        con.tab == 'Likes' ? ProfileLikesScreen(onClick:(value){
-                          con.tab = value;
-                          setState(() { });
-                        }) :
-                        con.tab == 'Groups' ? ProfileGroupsScreen(onClick:(value){
-                          con.tab = value;
-                          setState(() { });
-                        }) :
-                        ProfileEventsScreen()
-                        // ProfileFriendScreen(),
+                        SizeConfig(context).screenWidth <
+                                SizeConfig.smallScreenSize
+                            ? const SizedBox()
+                            : LeftPanel(),
+                        //    : SizedBox(width: 0),
+                        Expanded(
+                            child: Row(
+                          mainAxisAlignment: con.event == null ? MainAxisAlignment.center : MainAxisAlignment.end,
+                          crossAxisAlignment: con.event == null ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                          children: [
+                            con.event == null ? Container(
+                                  width: 30,
+                                  height: 30,
+                                  margin: EdgeInsets.only(top: SizeConfig(context).screenHeight*2/5),
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.grey,
+                                  ),
+                                ) : Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  EventAvatarandTabScreen(onClick: (value) {
+                                    print(value);
+                                    con.eventTab = value;
+                                    setState(() { });
+                                  },),
+                                  con.eventTab == 'Timeline' ? EventTimelineScreen(onClick:(value){
+                                    con.eventTab = value;
+                                    setState(() { });
+                                  }) :
+                                  con.eventTab == 'Photos' ? EventPhotosScreen(onClick:(value){
+                                    con.eventTab = value;
+                                    setState(() { });
+                                  }) :
+                                  con.eventTab == 'Videos' ? EventVideosScreen(onClick:(value){
+                                    con.eventTab = value;
+                                    setState(() { });
+                                  }) :
+                                  con.eventTab == 'Members' ? EventMembersScreen(onClick:(value){
+                                    con.eventTab = value;
+                                    setState(() { });
+                                  }) :
+                                  const SizedBox()
+                                  // EventFriendScreen(),
+                                ]),
+                            ),
+                          ],
+                        )),
                       ]),
+                  
                 )),
+                AnimatedBuilder(
+                animation: _drawerSlideController,
+                builder: (context, child) {
+                  return FractionalTranslation(
+                      translation: SizeConfig(context).screenWidth >
+                              SizeConfig.smallScreenSize
+                          ? Offset(0, 0)
+                          : Offset(_drawerSlideController.value * 0.001, 0.0),
+                      child: SizeConfig(context).screenWidth >
+                                  SizeConfig.smallScreenSize ||
+                              _isDrawerClosed()
+                          ? const SizedBox()
+                          : Padding(
+                              padding:
+                                  EdgeInsets.only(top: SizeConfig.navbarHeight),
+                              child: Container(
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        color: Colors.white,
+                                        width: SizeConfig.leftBarWidth,
+                                        child: SingleChildScrollView(
+                                          child: LeftPanel(),
+                                        ),
+                                      )
+                                    ]),
+                              )));
+                }),
             showSearch
                 ? GestureDetector(
                     onTap: () {

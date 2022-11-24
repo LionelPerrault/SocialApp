@@ -36,6 +36,7 @@ class AdminLeftPanel extends StatelessWidget {
                     Icon(
                       Icons.settings,
                       size: 28,
+                      color: Colors.black,
                     ),
                     Padding(padding: EdgeInsets.only(left: 10)),
                     Text(
@@ -166,10 +167,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Users',
-                    icon: const Icon(Icons.person)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.person,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Users',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -215,10 +229,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Pages',
-                    icon: const Icon(Icons.flag)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.flag,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Pages',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -248,10 +275,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Groups',
-                    icon: const Icon(Icons.groups)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.groups,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Groups',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -281,10 +321,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Events',
-                    icon: const Icon(Icons.event)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.event,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Events',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -314,10 +367,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Blogs',
-                    icon: const Icon(Icons.article)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.article,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Blogs',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -347,10 +413,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Marketplace',
-                    icon: const Icon(Icons.card_travel)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.card_travel,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Marketplace',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -376,10 +455,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Offers',
-                    icon: const Icon(Icons.forward)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.forward,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Offers',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -409,10 +501,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Jobs',
-                    icon: const Icon(Icons.card_travel)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.card_travel,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Jobs',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -442,10 +547,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Forums',
-                    icon: const Icon(Icons.comment_bank)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.comment_bank,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Forums',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -479,10 +597,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Movies',
-                    icon: const Icon(Icons.movie_filter_outlined)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.movie_filter_outlined,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Movies',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -522,10 +653,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Ads',
-                    icon: const Icon(Icons.attach_money)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.attach_money,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Ads',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -559,10 +703,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Wallet',
-                    icon: const Icon(Icons.wallet)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.wallet,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Wallet',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -592,10 +749,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Pro System',
-                    icon: const Icon(Icons.square)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.square,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Pro System',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -633,10 +803,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Affiliates',
-                    icon: const Icon(Icons.currency_exchange)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.currency_exchange,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Affiliates',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -666,10 +849,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Points System',
-                    icon: const Icon(Icons.system_security_update_outlined)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.system_security_update_outlined,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Points System',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -699,10 +895,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Fundings',
-                    icon: const Icon(Icons.attach_money)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.attach_money,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Fundings',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -756,10 +965,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Developers',
-                    icon: const Icon(Icons.square_foot)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.square_foot,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Developers',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -807,10 +1029,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Verification',
-                    icon: const Icon(Icons.check_circle)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.check_circle,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Verification',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [
@@ -844,10 +1079,23 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: ListText(
-                    onTap: () => {},
-                    label: 'Tools',
-                    icon: const Icon(Icons.badge_rounded)),
+                title: Row(
+                  children: const [
+                    Padding(padding: EdgeInsets.only(left: 43)),
+                    Icon(
+                      Icons.badge_rounded,
+                      size: 28,
+                      color: Colors.black,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(
+                      'Tools',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
+                    )
+                  ],
+                ),
                 children: <Widget>[
                   Row(
                     children: [

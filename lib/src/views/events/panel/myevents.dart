@@ -31,13 +31,15 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
     con.getEvent();
     con.setState(() { });
     super.initState();
+    getEventNow();
+  }
+
+  void getEventNow() {
     con.getEvent().then((value) => {
-      for (int i = 0; i<value.length; i++) {
-        if (value[i]['eventAdmin'] == UserManager.userInfo['userName']) {
-          myEvents.add(value[i]),
-          setState(() { })
-        }
-      },
+      myEvents = value,
+      myEvents.where((event) => event['data']['eventAdmin'] == UserManager.userInfo['id']),
+      print(myEvents),
+      setState(() {})
     });
   }
   @override
@@ -60,10 +62,12 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
                   myEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
+                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
-                      interests: 1,
-                      header: event['eventName'],
-                      interested: false)).toList(),),
+                      status: false,
+                      interests: event['data']['eventInterested'].length,
+                      header: event['data']['eventName'],
+                      interested: event['interested'])).toList(),),
           ),
         ],
       ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
@@ -31,15 +32,18 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
     con.getEvent();
     con.setState(() { });
     super.initState();
+    getEventNow();
+  }
+
+  void getEventNow() {
     con.getEvent().then((value) => {
-      for (int i = 0; i<value.length; i++) {
-        if (value[i]['eventPost'] == true) {
-          realAllEvents.add(value[i]),
-          setState(() { })
-        }
-      },
+      realAllEvents = value,
+      realAllEvents.where((event) => event['data']['eventPost'] == true),
+      print(realAllEvents),
+      setState(() {})
     });
   }
+  
   @override
   Widget build(BuildContext context) {
     var  screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
@@ -59,11 +63,18 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
                 children: 
                   realAllEvents.map((event) => 
                     EventCell(
-                      eventTap: (){},
+                      eventTap: (){
+                        Navigator
+                        .pushReplacementNamed(
+                            context,
+                            '/events/${event['id']}');
+                      },
+                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
-                      interests: 1,
-                      header: event['eventName'],
-                      interested: false)).toList(),),
+                      status: false,
+                      interests: event['data']['eventInterested'].length,
+                      header: event['data']['eventName'],
+                      interested: event['interested'])).toList(),),
           ),
         ],
       ),

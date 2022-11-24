@@ -13,8 +13,12 @@ class EventCell extends StatelessWidget {
       required this.picture,
       required this.interests,
       required this.header,
-      required this.interested});
+      required this.interested,
+      required this.status,
+      required this.buttonFun,});
 Function eventTap;
+Function buttonFun;
+bool status;
   String picture;
   int interests;
   String header;
@@ -70,7 +74,7 @@ Function eventTap;
                     minimumSize: const Size(120, 35),
                     maximumSize: const Size(120, 35)),
                 onPressed: () {
-                  interested ? () {}:()=>{};
+                  buttonFun();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

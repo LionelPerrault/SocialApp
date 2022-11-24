@@ -23,6 +23,7 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var invitedEvents = [];
+  var returnValue= [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -31,15 +32,21 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
     con.getEvent();
     con.setState(() { });
     super.initState();
+    getEventNow();
+  }
+
+  void getEventNow() {
     con.getEvent().then((value) => {
-      for (int i = 0; i<value.length; i++) {
-        for (int j = 0; j<value[i]['eventInterested'].length; j++) {
-          if (value[i]['eventInvited'][j] == UserManager.userInfo['userName']) {
-            invitedEvents.add(value[i]),
-            setState(() { })
+      returnValue = value,
+      for (int i=0; i<returnValue.length; i++) {
+        for (int j=0; j<returnValue[i]['data']['eventInvited'].length; j++) {
+          if (returnValue[i]['data']['eventInvited'][j] == UserManager.userInfo['userName']) {
+            invitedEvents.add(returnValue[i])
           }
         }
       },
+      print(invitedEvents),
+      setState(() {})
     });
   }
   @override
@@ -62,10 +69,12 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
                   invitedEvents.map((event) => 
                     EventCell(
                       eventTap: (){},
+                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
-                      interests: 1,
-                      header: event['eventName'],
-                      interested: false)).toList(),),
+                      status: false,
+                      interests: event['data']['eventInterested'].length,
+                      header: event['data']['eventName'],
+                      interested: event['interested'])).toList(),),
           ),
         ],
       ),
