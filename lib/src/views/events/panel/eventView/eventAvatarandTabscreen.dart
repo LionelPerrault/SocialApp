@@ -41,7 +41,8 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     {'title':'Videos','icon':Icons.video_call},
     {'title':'Members','icon':Icons.groups},
   ];
-
+  var interestedStatus = false;
+  var goingStatus = false;
   var selectedEvent = {};
   @override
   void initState() {
@@ -51,8 +52,6 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     print(avatar);
     con = controller as PostController;
     _gotoHome();
-    print(con.event);
-    print('con.event');
   }
   late PostController con;
   var userCon = UserController();
@@ -71,7 +70,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               
               Container(
                   margin: const EdgeInsets.only(left: 30,right: 30),
-                  width: SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth,
+                  width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth : SizeConfig(context).screenWidth,
                   height: SizeConfig(context).screenHeight * 0.5,
                   decoration: con.event['eventPicture'] == '' ? const BoxDecoration(
                   color: Color.fromRGBO(66, 66, 66, 1),
@@ -88,7 +87,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                   child: const Icon(Icons.photo_camera,size: 25,),)
               ),
               Container(
-                width: SizeConfig(context).screenWidth - SizeConfig.leftBarWidth,
+                width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth : SizeConfig(context).screenWidth,
                 padding: const EdgeInsets.only(left: 30, right: 30),
                 margin: const EdgeInsets.only(top: 200),
                 child: 
@@ -233,7 +232,110 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                         Text('data'),
                         Text('data'),
                       ],)
+                    ],),
+                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    Row(children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 45, 205, 137),
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(
+                                        2.0)),
+                            minimumSize: const Size(120, 45),
+                            maximumSize: const Size(120, 45)),
+                        onPressed: () {
+                          goingStatus = true;
+                          setState(() { });
+                          con.goingEvent(con.viewEventId).then((value) => {
+                            con.getSelectedEvent(con.viewEventId).then((value) => {
+                              goingStatus = false,
+                              setState(() {}),
+                            }),
+                          });
+                        },
+                        child: goingStatus ? Container(
+                                  width: 10,
+                                  height: 10,
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.grey,
+                                  ),
+                                ) : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            con.viewEventGoing ? Icon(
+                              Icons.edit_calendar,
+                              color: Colors.white,
+                              size: 18.0,
+                            )
+                            :
+                            Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 18.0,
+                            ),
+                            Text('Going',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight:
+                                        FontWeight.bold)),
+                          ],
+                        )),
+                        const Padding(padding: EdgeInsets.only(left: 5)),
+                        ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(
+                                        2.0)),
+                            minimumSize: const Size(120, 45),
+                            maximumSize: const Size(120, 45)),
+                        onPressed: () {
+                          interestedStatus = true;
+                          setState(() {});
+                          con.interestedEvent(con.viewEventId).then((value) => {
+                            con.getSelectedEvent(con.viewEventId).then((value) => {
+                              interestedStatus = false,
+                              setState(() {}),
+                            })
+                          });
+                        },
+                        child: interestedStatus ? Container(
+                                  width: 10,
+                                  height: 10,
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.grey,
+                                  ),
+                                ) :  Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            con.viewEventInterested ? Icon(
+                              Icons.star,
+                              color: Colors.black,
+                              size: 18.0,
+                            )
+                            :
+                            Icon(
+                              Icons.check,
+                              color: Colors.black,
+                              size: 18.0,
+                            ),
+                            Text('Interested',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 11,
+                                    fontWeight:
+                                        FontWeight.bold)),
+                          ],
+                        )),
                     ],)
+                    
                   ]),
                 ),
                 SingleChildScrollView(
@@ -241,7 +343,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                 scrollDirection: Axis.horizontal,
                 child:
                 Container(
-                  width: SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth - 40,
+                  width:  SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth - 40 : SizeConfig(context).screenWidth,
                 margin: const EdgeInsets.only(top: 10, left: 25),
                 height: 70,
                 decoration: BoxDecoration(

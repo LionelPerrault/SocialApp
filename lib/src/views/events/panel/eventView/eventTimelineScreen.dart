@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
@@ -10,9 +10,9 @@ import 'package:shnatter/src/views/box/mindpost.dart';
 class EventTimelineScreen extends StatefulWidget {
   Function onClick;
   EventTimelineScreen({Key? key,required this.onClick})
-      : con = ProfileController(),
+      : con = PostController(),
         super(key: key);
-  final ProfileController con;
+  final PostController con;
 
   @override
   State createState() => EventTimelineScreenState();
@@ -36,9 +36,9 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   void initState() {
     super.initState();
     add(widget.con);
-    con = controller as ProfileController;
+    con = controller as PostController;
   }
-  late ProfileController con;
+  late PostController con;
   @override
   Widget build(BuildContext context) {
     return Container(

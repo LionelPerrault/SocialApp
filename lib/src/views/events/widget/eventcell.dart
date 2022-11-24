@@ -14,9 +14,11 @@ class EventCell extends StatelessWidget {
       required this.interests,
       required this.header,
       required this.interested,
+      required this.status,
       required this.buttonFun,});
 Function eventTap;
 Function buttonFun;
+bool status;
   String picture;
   int interests;
   String header;

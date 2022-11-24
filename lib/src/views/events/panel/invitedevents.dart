@@ -71,6 +71,7 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
                       eventTap: (){},
                       buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
+                      status: false,
                       interests: event['data']['eventInterested'].length,
                       header: event['data']['eventName'],
                       interested: event['interested'])).toList(),),

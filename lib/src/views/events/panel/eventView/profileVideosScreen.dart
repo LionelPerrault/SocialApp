@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 class EventVideosScreen extends StatefulWidget {
   Function onClick;
   EventVideosScreen({Key? key, required this.onClick})
-      : con = ProfileController(),
+      : con = PostController(),
         super(key: key);
-  final ProfileController con;
+  final PostController con;
   @override
   State createState() => EventVideosScreenState();
 }
@@ -20,9 +20,9 @@ class EventVideosScreenState extends mvc.StateMVC<EventVideosScreen>{
   void initState() {
     super.initState();
     add(widget.con);
-    con = controller as ProfileController;
+    con = controller as PostController;
   }
-  late ProfileController con;
+  late PostController con;
   @override
   Widget build(BuildContext context) {
     return Column(children: [
