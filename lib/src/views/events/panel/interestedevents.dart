@@ -70,7 +70,7 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
                       eventTap: (){},
                       buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
-                      interests: 1,
+                      interests: event['data']['eventInterested'].length,
                       header: event['data']['eventName'],
                       interested: event['interested'])).toList(),),
           ),

@@ -23,7 +23,8 @@ class PostController extends ControllerMVC {
 
   //variable
   List events=[];
-
+  var event;
+  String eventTab = 'Timeline';
   //sub route
   String eventSubRoute;
 
@@ -59,6 +60,16 @@ class PostController extends ControllerMVC {
     return realAllEvents;
   }
 
+  Future<bool> getSelectedEvent(String id) async {
+    id = id.split('/')[id.split('/').length-1];
+    await Helper.eventsData.doc(id).get().then((value) async {
+      event = value;
+      setState(() { });
+      print('This event was posted by ${event['eventAdmin']}');
+    });
+    return true;
+  }
+
   Future<void> createEvent(context,Map<String, dynamic> eventData) async {
     eventData = {
       ...eventData,
@@ -69,6 +80,7 @@ class PostController extends ControllerMVC {
       'eventInterests': 0,
       'eventInvited': [],
       'eventPost': false,
+      'eventPicture': '',
     };
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)

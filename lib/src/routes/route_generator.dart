@@ -1,11 +1,10 @@
 import 'dart:js';
 
 import 'package:flutter/material.dart';
-import 'package:shnatter/src/controllers/AppController.dart';
-import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/events/eventsscreen.dart';
+import 'package:shnatter/src/views/events/panel/eventView/eventscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
@@ -13,7 +12,6 @@ import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
 import 'package:shnatter/src/views/resetpassword.dart';
 import 'package:shnatter/src/views/admin/adminscreen.dart';
-import 'package:shnatter/src/views/startedscreen.dart';
 import 'package:shnatter/src/views/startedscreen.dart';
 
 import '../managers/user_manager.dart';
@@ -37,6 +35,10 @@ class RouteGenerator {
     if (url == RouteNames.userName) {
       return MaterialPageRoute(
           builder: (context) => UserProfileScreen(), settings: settings);
+    }
+    if (url!.split('/')[1] == RouteNames.eventsName && url.split('/').length > 2) {
+      return MaterialPageRoute(
+          builder: (context) => EventEachScreen(docId:settings.name.toString()), settings: settings);
     }
     switch (url) {
       case RouteNames.splashScreen:

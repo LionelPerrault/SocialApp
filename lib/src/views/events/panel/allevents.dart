@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
@@ -62,10 +63,15 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
                 children: 
                   realAllEvents.map((event) => 
                     EventCell(
-                      eventTap: (){},
+                      eventTap: (){
+                        Navigator
+                        .pushReplacementNamed(
+                            context,
+                            '/events/${event['id']}');
+                      },
                       buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
-                      interests: 1,
+                      interests: event['data']['eventInterested'].length,
                       header: event['data']['eventName'],
                       interested: event['interested'])).toList(),),
           ),
