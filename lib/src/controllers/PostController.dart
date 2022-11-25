@@ -51,7 +51,7 @@ class PostController extends ControllerMVC {
   }
 
   //get all event function
-  Future<List> getEvent() async {
+  Future<List> getEvent(String condition) async {
     List<Map> realAllEvents = [];
     await Helper.eventsData.get().then((value) async {
       var doc = value.docs;
@@ -59,12 +59,81 @@ class PostController extends ControllerMVC {
         var id = doc[i].id;
         var interested = await boolInterested(id);
         var data = doc[i];
-        realAllEvents.add({'data':data,'id':id, 'interested' : interested});
+        //closed event
+        if (data['eventPrivacy'] == 'closed') {
+          if (data['eventAdmin']['userName'] == UserManager.userInfo['userName'] && condition == 'manage'){
+            realAllEvents.add({'data':data,'id':id, 'interested' : interested});
+          }
+        }
+        //security event
+        else /*if (data['eventPrivacy'] == 'security') */{
+          var inInterested = await boolInterested(id);
+          var inInvited = await boolInvited(id);
+          var inGoing = await boolGoing(id);
+          if (inInterested && condition == 'interested') {
+            realAllEvents.add({'data':data,'id':id, 'interested' : interested});
+          }else if (inInvited && condition == 'invited') {
+            realAllEvents.add({'data':data,'id':id, 'interested' : interested});
+          }else if (inGoing && condition == 'going') {
+            realAllEvents.add({'data':data,'id':id, 'interested' : interested});
+          }else if (UserManager.userInfo['userName'] == data['eventAdmin']['userName'] && condition == 'manage') {
+            realAllEvents.add({'data':data,'id':id, 'interested' : interested});
+          }else if (condition == 'all') {
+            if (data['eventPrivacy'] == 'public') {
+              realAllEvents.add({'data':data,'id':id, 'interested' : interested});
+            }
+          }
+          setState(() { });
+        // }
+        // //only me
+        // // else if (data['eventPrivacy'] == 'onlyme') {
+        // //   if (data['eventAdmin']['userName'] == UserManager.userInfo['userName']) {
+        // //     realAllEvents.add({'data':data,'id':id, 'interested' : interested});
+        // //   }
+        // // }
+        // //public
+        // else if (data['eventPrivacy'] == 'public') {
+        }
       }
       print('Now you get all events');
     });
     
     return realAllEvents;
+  }
+
+  //bool of my friends
+  Future<bool> boolMyFriend(String userName) async {
+    if (UserManager.userInfo['friends'] != null) {
+      var friends = UserManager.userInfo['friends'].where((eachUser) => eachUser['userName'] == userName && eachUser['status']);
+      if (friends.length > 0) {
+        return true;
+      }else {
+        return false;
+      }
+    }else {
+      return false;
+    }
+  }
+
+  //bool of friends of my friends
+  Future<bool> boolFriendMyFriend(String userId) async {
+    if (UserManager.userInfo['friends'] != null) {
+      var myFriends = UserManager.userInfo['friends'];
+      var hisFriends = [];
+      await Helper.authdata.doc(userId).get().then((value) async {
+        hisFriends = value['friends'];
+      });
+      for (var i = 0; i < myFriends.length; i++) {
+        for (var j = 0; j < hisFriends.length; j++) {
+          if (myFriends[i]['userName'] == hisFriends[j]['userName'] && myFriends[i]['status'] && hisFriends[j]['status']) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }else {
+      return false;
+    }
   }
 
   //get one event function that using uid of firebase database

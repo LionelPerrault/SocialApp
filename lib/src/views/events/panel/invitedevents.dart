@@ -29,24 +29,16 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.getEvent();
     con.setState(() { });
     super.initState();
     getEventNow();
   }
 
   void getEventNow() {
-    con.getEvent().then((value) => {
+    con.getEvent('invited').then((value) => {
       returnValue = value,
-      for (int i=0; i<returnValue.length; i++) {
-        for (int j=0; j<returnValue[i]['data']['eventInvited'].length; j++) {
-          if (returnValue[i]['data']['eventInvited'][j] == UserManager.userInfo['userName']) {
-            invitedEvents.add(returnValue[i])
-          }
-        }
-      },
+      invitedEvents = value,
       print(invitedEvents),
-      setState(() {})
     });
   }
   @override

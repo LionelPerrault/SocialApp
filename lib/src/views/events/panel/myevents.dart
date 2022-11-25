@@ -28,14 +28,13 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.getEvent();
     con.setState(() { });
     super.initState();
     getEventNow();
   }
 
   void getEventNow() {
-    con.getEvent().then((value) => {
+    con.getEvent('manage').then((value) => {
       myEvents = value,
       myEvents.where((event) => event['data']['eventAdmin'] == UserManager.userInfo['id']),
       print(myEvents),

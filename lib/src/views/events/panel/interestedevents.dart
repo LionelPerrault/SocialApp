@@ -29,23 +29,15 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.getEvent();
     con.setState(() { });
     super.initState();
     getEventNow();
   }
 
   void getEventNow() {
-    con.getEvent().then((value) => {
-      returnValue = value,
-      for (int i=0; i<returnValue.length; i++) {
-        for (int j=0; j<returnValue[i]['data']['eventInterested'].length; j++) {
-          if (returnValue[i]['data']['eventInterested'][j] == UserManager.userInfo['userName']) {
-            interestedEvents.add(returnValue[i])
-          }
-        }
-      },
-      setState(() {})
+    con.getEvent('interested').then((value) => {
+      interestedEvents = value,
+      print(returnValue),
     });
   }
   @override

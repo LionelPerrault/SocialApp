@@ -29,14 +29,13 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.getEvent();
     con.setState(() { });
     super.initState();
     getEventNow();
   }
 
   void getEventNow() {
-    con.getEvent().then((value) => {
+    con.getEvent('all').then((value) => {
       realAllEvents = value,
       realAllEvents.where((event) => event['data']['eventPost'] == true),
       print(realAllEvents),

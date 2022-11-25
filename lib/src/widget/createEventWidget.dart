@@ -220,7 +220,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                 ]),
                               ),
                               DropdownMenuItem(
-                                value: "friends",
+                                value: "closed",
                                 child: Row(children: const [
                                   Icon(
                                     Icons.groups,
@@ -228,27 +228,13 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                   ),
                                   Padding(padding: EdgeInsets.only(left: 5)),
                                   Text(
-                                    "Friends",
+                                    "Closed",
                                     style: TextStyle(fontSize: 13),
                                   )
                                 ]),
                               ),
                               DropdownMenuItem(
-                                value: "friendsof",
-                                child: Row(children: const [
-                                  Icon(
-                                    Icons.groups,
-                                    color: Colors.black,
-                                  ),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    "Friends of Friends",
-                                    style: TextStyle(fontSize: 13),
-                                  )
-                                ]),
-                              ),
-                              DropdownMenuItem(
-                                value: "onlyme",
+                                value: "security",
                                 child: Row(children: const [
                                   Icon(
                                     Icons.lock_outline,
@@ -256,7 +242,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                   ),
                                   Padding(padding: EdgeInsets.only(left: 5)),
                                   Text(
-                                    "Only Me",
+                                    "Security",
                                     style: TextStyle(fontSize: 13),
                                   )
                                 ]),
