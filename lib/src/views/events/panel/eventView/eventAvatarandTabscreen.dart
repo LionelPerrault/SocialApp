@@ -222,9 +222,8 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                         ),),
                         const Padding(padding: EdgeInsets.only(left: 6)),
                         Icon(con.event['eventPrivacy'] == 'public' ? Icons.language
-                        : con.event['eventPrivacy'] == 'friends' ?  Icons.group
-                        : con.event['eventPrivacy'] == 'friendsof' ?  Icons.group
-                        : Icons.lock_outline, color: Colors.white,)
+                        : con.event['eventPrivacy'] == 'security' ?  Icons.lock
+                        : Icons.lock_open_rounded, color: Colors.white,)
                       ],),
                       Row(children: [
                         Text('data'),
