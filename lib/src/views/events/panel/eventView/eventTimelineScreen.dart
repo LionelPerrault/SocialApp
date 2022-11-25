@@ -57,7 +57,9 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children:[
                 MindPost(),
-                eventInfo()
+                const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                eventInfo(),
+                const Padding(padding: EdgeInsets.only(left: 40))
             ]),
         );
   }
