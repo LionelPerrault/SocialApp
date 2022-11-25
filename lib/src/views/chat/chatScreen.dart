@@ -43,188 +43,198 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
   String dropdownValue = 'Male';
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth < 700 ? Container() : GestureDetector(
-        onTap: () {
-          con.isShowEmoticon = false;
-          setState(() {});
-        },
-        child: Stack(children: <Widget>[
-          AnimatedContainer(
-              width: 300,
-              duration: const Duration(milliseconds: 500),
-              margin: EdgeInsets.only(
-                  top: !hidden ? 85 : SizeConfig(context).screenHeight - 40,
-                  left: SizeConfig(context).screenWidth - 300),
-              height: !hidden ? SizeConfig(context).screenHeight - 85 : 40,
-              curve: Curves.fastOutSlowIn,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(3),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(220, 220, 220, 230),
-                    blurRadius: 2,
-                    spreadRadius: 2,
-                    offset: Offset(
-                      2,
-                      2,
-                    ),
-                  )
-                ],
-              ),
-              child: Scaffold(
-                  body: ListView(children: [
+    return SizeConfig(context).screenWidth < 700
+        ? Container()
+        : GestureDetector(
+            onTap: () {
+              con.isShowEmoticon = false;
+              setState(() {});
+            },
+            child: Stack(children: <Widget>[
+              AnimatedContainer(
+                  width: 300,
+                  duration: const Duration(milliseconds: 500),
+                  margin: EdgeInsets.only(
+                      top: !hidden ? 85 : SizeConfig(context).screenHeight - 40,
+                      left: SizeConfig(context).screenWidth - 300),
+                  height: !hidden ? SizeConfig(context).screenHeight - 85 : 40,
+                  curve: Curves.fastOutSlowIn,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(3),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromARGB(220, 220, 220, 230),
+                        blurRadius: 2,
+                        spreadRadius: 2,
+                        offset: Offset(
+                          2,
+                          2,
+                        ),
+                      )
+                    ],
+                  ),
+                  child: Scaffold(
+                      body: ListView(children: [
                     Container(
                       width: double.infinity,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(5),
-                          topRight: Radius.circular(5),
-                        )
-                      ),
-                      child: Row(
-                        children: [
-                          MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                            onTap: () {
-                              if (isMessageTap == '') {
-                                isMessageTap = 'all-list';
-                              }
-                              hidden = !hidden;
-                              setState(() {});
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.only(left: 5),
-                              width: 50,
-                              child: hidden ? Icon(Icons.arrow_drop_down,color: Colors.white,) : Icon(
-                                Icons.arrow_drop_up,
-                                color: Colors.white,
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            topRight: Radius.circular(5),
+                          )),
+                      child: Row(children: [
+                        MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (isMessageTap == '') {
+                                  isMessageTap = 'all-list';
+                                }
+                                hidden = !hidden;
+                                setState(() {});
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.only(left: 5),
+                                width: 50,
+                                child: hidden
+                                    ? Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Colors.white,
+                                      )
+                                    : Icon(
+                                        Icons.arrow_drop_up,
+                                        color: Colors.white,
+                                      ),
                               ),
-                            ),
-                          )
-                          
+                            )),
+                        MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (isMessageTap != 'all-list') {
+                                  isMessageTap = 'all-list';
+                                }
+                                con.docId = '';
+                                setState(() {});
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.only(left: 5),
+                                  width: 30,
+                                  child: isMessageTap != 'all-list' &&
+                                          isMessageTap != ''
+                                      ? Icon(Icons.arrow_back,
+                                          size: 16, color: Colors.white)
+                                      : Container()),
+                            )),
+                        Text(
+                          'Chats',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
-                          MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                            onTap: () {
-                              if(isMessageTap != 'all-list'){
-                                isMessageTap = 'all-list';
-                              }
-                              setState(() { });
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.only(left: 5),
-                              width: 30,
-                              child: isMessageTap != 'all-list' && isMessageTap != '' ? Icon(Icons.arrow_back,size: 16,color: Colors.white) : Container()
-                            ),
-                          )
-                          
+                        Flexible(
+                          fit: FlexFit.tight,
+                          child: SizedBox(),
                         ),
-                          Text(
-                            'Chats',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                          Flexible(fit: FlexFit.tight,child: SizedBox(),),
-                          MouseRegion(
+                        MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
                               if (hidden) hidden = false;
                               isMessageTap = 'new';
+                              con.docId = '';
                               setState(() {});
                             },
                             child: Icon(
-                                Icons.add,
-                                size: 16,
-                                color: Colors.white,
-                              ),
+                              Icons.add,
+                              size: 16,
+                              color: Colors.white,
                             ),
                           ),
-                      PopupMenuButton(
-                        onSelected: (value) {
-                          // your logic
-                        },
-                        icon: Icon(
-                          Icons.settings,
-                          size: 16,
-                          color: Colors.white,
                         ),
-                        itemBuilder: (BuildContext bc) {
-                          return const [
-                            PopupMenuItem(
-                              value: 'block',
-                              child: Text(
-                                "Manage Blocking",
-                                style: TextStyle(fontSize: 14),
+                        PopupMenuButton(
+                          onSelected: (value) {
+                            // your logic
+                          },
+                          icon: Icon(
+                            Icons.settings,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                          itemBuilder: (BuildContext bc) {
+                            return const [
+                              PopupMenuItem(
+                                value: 'block',
+                                child: Text(
+                                  "Manage Blocking",
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               ),
-                            ),
-                            PopupMenuItem(
-                              value: 'privacy',
-                              child: Text(
-                                "Privacy Settings",
-                                style: TextStyle(fontSize: 14),
+                              PopupMenuItem(
+                                value: 'privacy',
+                                child: Text(
+                                  "Privacy Settings",
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               ),
-                            ),
-                            PopupMenuItem(
-                              value: 'turn_off',
-                              child: Text(
-                                "Turn Off Chat",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            )
-                          ];
-                        },
-                      )
+                              PopupMenuItem(
+                                value: 'turn_off',
+                                child: Text(
+                                  "Turn Off Chat",
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              )
+                            ];
+                          },
+                        )
                       ]),
                     ),
                     isMessageTap == ''
-                      ? Container()
-                      : isMessageTap == 'all-list'
-                          ? ChatUserListScreen(onBack: (value) {
-                              print(value);
-                              if (value == 'hidden') {
-                                hidden = hidden ? false : true;
-                              } else {
-                                isMessageTap = value;
-                                if (hidden == true) hidden = false;
-                              }
-                              setState(() {});
-                            })
-                          : isMessageTap == 'new'
-                              ? NewMessageScreen(
-                                  onBack: (value) {
-                                    if (value == true) {
+                        ? Container()
+                        : isMessageTap == 'all-list'
+                            ? ChatUserListScreen(onBack: (value) {
+                                print(value);
+                                if (value == 'hidden') {
+                                  hidden = hidden ? false : true;
+                                } else {
+                                  isMessageTap = value;
+                                  if (hidden == true) hidden = false;
+                                }
+                                setState(() {});
+                              })
+                            : isMessageTap == 'new'
+                                ? NewMessageScreen(
+                                    onBack: (value) {
+                                      if (value == true) {
+                                        con.isShowEmoticon = value;
+                                      } else {
+                                        isMessageTap = value;
+                                      }
+                                      setState(() {});
+                                    },
+                                  )
+                                : ChatMessageListScreen(
+                                    showWriteMessage: !hidden,
+                                    onBack: (value) {
                                       con.isShowEmoticon = value;
-                                    } else {
-                                      isMessageTap = value;
-                                    }
-                                    setState(() {});
-                                  },
-                                )
-                              : ChatMessageListScreen(
-                                  showWriteMessage: !hidden,
-                                  onBack: (value) {
-                                    con.isShowEmoticon = value;
-                                    setState(() {});
-                                  },
-                                )]))),
-          !hidden && con.isShowEmoticon
-              ? Container(
-                  margin: EdgeInsets.only(
-                      left: SizeConfig(context).screenWidth - 295,
-                      top: SizeConfig(context).screenHeight - 265),
-                  child: EmoticonScreen(onBack: (value) {
-                    con.isShowEmoticon = value;
-                    setState(() {});
-                  }))
-              : Container()
-        ]));
+                                      setState(() {});
+                                    },
+                                  )
+                  ]))),
+              !hidden && con.isShowEmoticon
+                  ? Container(
+                      margin: EdgeInsets.only(
+                          left: SizeConfig(context).screenWidth - 295,
+                          top: SizeConfig(context).screenHeight - 265),
+                      child: EmoticonScreen(onBack: (value) {
+                        con.isShowEmoticon = value;
+                        setState(() {});
+                      }))
+                  : Container()
+            ]));
   }
 
   Widget firstChatComponent() {

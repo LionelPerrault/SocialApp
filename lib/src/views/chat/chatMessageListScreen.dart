@@ -14,7 +14,8 @@ import '../../managers/user_manager.dart';
 
 class ChatMessageListScreen extends StatefulWidget {
   Function onBack;
-  ChatMessageListScreen({Key? key, required this.onBack, required this.showWriteMessage})
+  ChatMessageListScreen(
+      {Key? key, required this.onBack, required this.showWriteMessage})
       : con = ChatController(),
         super(key: key);
   late ChatController con;
@@ -57,6 +58,12 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
           curve: Curves.easeOut,
         );
       });
+      if (con.docId != '') {
+        FirebaseFirestore.instance
+            .collection(Helper.message)
+            .doc(con.docId)
+            .update({con.chatUserFullName: 0});
+      }
     });
   }
 
@@ -136,23 +143,24 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                           fontSize: 13),
                                                     ))
                                                 : Container(
-                                                  margin: EdgeInsets.only(
+                                                    margin: EdgeInsets.only(
                                                         left: 10, top: 5),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topRight:
-                                                          Radius.circular(15),
-                                                      bottomLeft:
-                                                          Radius.circular(15),
-                                                      bottomRight:
-                                                          Radius.circular(15),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(15),
+                                                        bottomLeft:
+                                                            Radius.circular(15),
+                                                        bottomRight:
+                                                            Radius.circular(15),
+                                                      ),
+                                                      child: Image.network(
+                                                        list['data'],
+                                                        width: 150,
+                                                      ),
                                                     ),
-                                                    child: Image.network(
-                                                        list['data'],width: 150,),
-                                                  ),
-                                                ) 
-                                                
+                                                  )
                                           ])
                                         : list['type'] == 'text'
                                             ? Container(
@@ -185,25 +193,28 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                   bottomLeft:
                                                       Radius.circular(15),
                                                 ),
-                                                child:
-                                                    Image.network(list['data'],width: 150,),
+                                                child: Image.network(
+                                                  list['data'],
+                                                  width: 150,
+                                                ),
                                               )),
                               );
                             },
                           )),
-                          widget.showWriteMessage ? 
-                           WriteMessageScreen(
+                      widget.showWriteMessage
+                          ? WriteMessageScreen(
                               type: 'old',
                               goMessage: (value) {
                                 widget.onBack(value);
                               },
-                            ) : Container()
-                      
+                            )
+                          : Container()
                     ]);
                   } else {
                     return SizedBox(
-                      height:SizeConfig(context).screenHeight - 220,
-                      child:Center(child:CircularProgressIndicator()));;
+                        height: SizeConfig(context).screenHeight - 220,
+                        child: Center(child: CircularProgressIndicator()));
+                    ;
                   }
                 }));
   }
