@@ -31,11 +31,12 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
     con.setState(() { });
     super.initState();
     getEventNow();
+    print('now initstate');
   }
 
   void getEventNow() {
     con.getEvent('manage').then((value) => {
-      myEvents = value,
+      myEvents = [...value],
       myEvents.where((event) => event['data']['eventAdmin'] == UserManager.userInfo['id']),
       print(myEvents),
       setState(() {})
@@ -60,8 +61,17 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
                 children: 
                   myEvents.map((event) => 
                     EventCell(
-                      eventTap: (){},
-                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
+                      eventTap: (){
+                        Navigator
+                        .pushReplacementNamed(
+                            context,
+                            '/events/${event['id']}');
+                      },
+                      buttonFun: (){
+                        con.interestedEvent(event['id']).then((value){
+                          getEventNow();
+                        });
+                      },
                       picture: 'null',
                       status: false,
                       interests: event['data']['eventInterested'].length,

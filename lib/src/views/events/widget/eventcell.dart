@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
-class EventCell extends StatelessWidget {
-  EventCell(
+class EventCell extends StatefulWidget {
+    EventCell(
       {super.key,
       required this.eventTap,
       required this.picture,
@@ -23,6 +25,22 @@ bool status;
   int interests;
   String header;
   bool interested;
+  
+      
+  late PostController con;
+  @override
+  State createState() => EventCellState();
+}
+
+class EventCellState extends mvc.StateMVC<EventCell> {
+  late PostController con;
+  var loading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return 
@@ -48,21 +66,21 @@ bool status;
             RichText(
               text: TextSpan(children: <TextSpan>[
                 TextSpan(
-                  text: header,
+                  text: widget.header,
                   style: const TextStyle(
                       color: Colors.black, fontSize: 13,
                       fontWeight: FontWeight.bold),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      eventTap();
+                      widget.eventTap();
                     }
                 ),
               ]),
             ),
-            Padding(padding: EdgeInsets.only(top: 5)),
-            Text('${interests} Interested', style: TextStyle(
+            const Padding(padding: EdgeInsets.only(top: 5)),
+            Text('${widget.interests} Interested', style: const TextStyle(
                       color: Colors.black, fontSize: 13),),
-            Padding(padding: EdgeInsets.only(top: 20)),
+            const Padding(padding: EdgeInsets.only(top: 20)),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -74,13 +92,21 @@ bool status;
                     minimumSize: const Size(120, 35),
                     maximumSize: const Size(120, 35)),
                 onPressed: () {
-                  buttonFun();
+                  loading = true;
+                  setState(() { });
+                  widget.buttonFun();
                 },
-                child: Row(
+                child: loading ? Container(
+                                      width: 10,
+                                      height: 10,
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.grey,
+                                      ),
+                                    ) : Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    interested ? Icon(
+                    widget.interested ? Icon(
                       Icons.star,
                       color: Colors.black,
                       size: 18.0,
@@ -113,7 +139,7 @@ bool status;
               borderRadius: BorderRadius.circular(60),
               border: Border.all(color: Colors.grey)),
           child: SvgPicture.network(
-              picture),
+              widget.picture),
         ),
       ],),
     )

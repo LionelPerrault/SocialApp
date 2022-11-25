@@ -87,8 +87,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                   child: const Icon(Icons.photo_camera,size: 25,),)
               ),
               Container(
-                width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth : SizeConfig(context).screenWidth,
-                padding: const EdgeInsets.only(left: 30, right: 30),
+                width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth : SizeConfig(context).screenWidth - 20,
                 margin: const EdgeInsets.only(top: 200),
                 child: 
                   Column(
@@ -185,7 +184,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 45, left: 25),
+                  margin: const EdgeInsets.only(top: 45, left: 40),
                   child: Row(children: [
                     Container(
                       width: 57,
@@ -199,7 +198,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
+                        children: const [
                           Text('data', style: TextStyle(
                             color: Colors.white,
                             fontSize: 17,
@@ -245,48 +244,48 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                                         2.0)),
                             minimumSize: const Size(120, 45),
                             maximumSize: const Size(120, 45)),
-                        onPressed: () {
-                          goingStatus = true;
-                          setState(() { });
-                          con.goingEvent(con.viewEventId).then((value) => {
-                            con.getSelectedEvent(con.viewEventId).then((value) => {
-                              goingStatus = false,
-                              setState(() {}),
-                            }),
-                          });
-                        },
-                        child: goingStatus ? Container(
-                                  width: 10,
-                                  height: 10,
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.grey,
-                                  ),
-                                ) : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            con.viewEventGoing ? Icon(
-                              Icons.edit_calendar,
-                              color: Colors.white,
-                              size: 18.0,
-                            )
-                            :
-                            Icon(
-                              Icons.check,
-                              color: Colors.white,
-                              size: 18.0,
-                            ),
-                            Text('Going',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontWeight:
-                                        FontWeight.bold)),
-                          ],
-                        )),
-                        const Padding(padding: EdgeInsets.only(left: 5)),
-                        ElevatedButton(
-                        style: ElevatedButton.styleFrom(
+                            onPressed: () {
+                              goingStatus = true;
+                              setState(() { });
+                              con.goingEvent(con.viewEventId).then((value) => {
+                                con.getSelectedEvent(con.viewEventId).then((value) => {
+                                  goingStatus = false,
+                                  setState(() {}),
+                                }),
+                              });
+                            },
+                            child: goingStatus ? Container(
+                                      width: 10,
+                                      height: 10,
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.grey,
+                                      ),
+                                    ) : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                con.viewEventGoing ? const Icon(
+                                  Icons.edit_calendar,
+                                  color: Colors.white,
+                                  size: 18.0,
+                                )
+                                :
+                                const Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 18.0,
+                                ),
+                                const Text('Going',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 11,
+                                        fontWeight:
+                                            FontWeight.bold)),
+                              ],
+                            )),
+                      const Padding(padding: EdgeInsets.only(left: 5)),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             elevation: 3,
                             shape: RoundedRectangleBorder(
@@ -295,45 +294,46 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                                         2.0)),
                             minimumSize: const Size(120, 45),
                             maximumSize: const Size(120, 45)),
-                        onPressed: () {
-                          interestedStatus = true;
-                          setState(() {});
-                          con.interestedEvent(con.viewEventId).then((value) => {
-                            con.getSelectedEvent(con.viewEventId).then((value) => {
-                              interestedStatus = false,
-                              setState(() {}),
-                            })
-                          });
-                        },
-                        child: interestedStatus ? Container(
-                                  width: 10,
-                                  height: 10,
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.grey,
-                                  ),
-                                ) :  Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            con.viewEventInterested ? Icon(
-                              Icons.star,
-                              color: Colors.black,
-                              size: 18.0,
-                            )
-                            :
-                            Icon(
-                              Icons.check,
-                              color: Colors.black,
-                              size: 18.0,
-                            ),
-                            Text('Interested',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 11,
-                                    fontWeight:
-                                        FontWeight.bold)),
-                          ],
-                        )),
+                            onPressed: () {
+                              interestedStatus = true;
+                              setState(() {});
+                              con.interestedEvent(con.viewEventId).then((value) => {
+                                con.getSelectedEvent(con.viewEventId).then((value) => {
+                                  interestedStatus = false,
+                                  setState(() {}),
+                                })
+                              });
+                            },
+                            child: interestedStatus ? Container(
+                                      width: 10,
+                                      height: 10,
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.grey,
+                                      ),
+                                    ) :  Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                con.viewEventInterested ? const Icon(
+                                  Icons.star,
+                                  color: Colors.black,
+                                  size: 18.0,
+                                )
+                                :
+                                const Icon(
+                                  Icons.check,
+                                  color: Colors.black,
+                                  size: 18.0,
+                                ),
+                                const Text('Interested',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 11,
+                                        fontWeight:
+                                            FontWeight.bold)),
+                              ],
+                            )),
+                            const Padding(padding: EdgeInsets.only(left: 30))
                     ],)
                     
                   ]),
@@ -343,56 +343,56 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                 scrollDirection: Axis.horizontal,
                 child:
                 Container(
-                  width:  SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth - 40 : SizeConfig(context).screenWidth,
-                margin: const EdgeInsets.only(top: 10, left: 25),
-                height: 70,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child:Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: mainTabList.map((e) => 
-                    Expanded(
-                      child: 
-                      MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: InkWell(
-                        onTap: (){
-                          widget.onClick(e['title']);
-                          setState(() {});
-                        },
+                  width:  SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth - 60 : SizeConfig(context).screenWidth - 40,
+                  margin: const EdgeInsets.only(top: 10, left: 20),
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child:Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: mainTabList.map((e) => 
+                      Expanded(
                         child: 
-                          Container(
-                            padding: const EdgeInsets.only(top: 30),
-                            width: itemWidth,
-                            child: 
-                            Column(
-                              children: [
-                              Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(e['icon'],size: 15,color: Color.fromRGBO(76, 76, 76, 1),),
-                                const Padding(padding:EdgeInsets.only(left:5)),
-                                Text(e['title'],style:const TextStyle(
-                                  fontSize:13,
-                                  color: Color.fromRGBO(76, 76, 76, 1),
-                                  fontWeight: FontWeight.bold
-                                ))
-                              ]),
-                              e['title'] == con.eventTab ? 
-                              Container(
-                                margin: const EdgeInsets.only(top: 23),
-                                height: 2,
-                                color: Colors.grey,
-                              ) : Container()
-                            ],)
-                            
-                          )),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: InkWell(
+                          onTap: (){
+                            widget.onClick(e['title']);
+                            setState(() {});
+                          },
+                          child: 
+                            Container(
+                              padding: const EdgeInsets.only(top: 30),
+                              width: itemWidth,
+                              child: 
+                              Column(
+                                children: [
+                                Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(e['icon'],size: 15,color: Color.fromRGBO(76, 76, 76, 1),),
+                                  const Padding(padding:EdgeInsets.only(left:5)),
+                                  Text(e['title'],style:const TextStyle(
+                                    fontSize:13,
+                                    color: Color.fromRGBO(76, 76, 76, 1),
+                                    fontWeight: FontWeight.bold
+                                  ))
+                                ]),
+                                e['title'] == con.eventTab ? 
+                                Container(
+                                  margin: const EdgeInsets.only(top: 23),
+                                  height: 2,
+                                  color: Colors.grey,
+                                ) : Container()
+                              ],)
+                              
+                            )),
+                        )
                       )
-                    )
-                ).toList()),
+                  ).toList()),
                 ))
               ],
           );

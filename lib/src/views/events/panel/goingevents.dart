@@ -59,7 +59,12 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
                 children: 
                   goingEvents.map((event) => 
                     EventCell(
-                      eventTap: (){},
+                      eventTap: (){
+                        Navigator
+                        .pushReplacementNamed(
+                            context,
+                            '/events/${event['id']}');
+                      },
                       buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
                       status: false,

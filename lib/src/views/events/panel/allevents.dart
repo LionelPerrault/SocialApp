@@ -39,7 +39,7 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
       realAllEvents = value,
       realAllEvents.where((event) => event['data']['eventPost'] == true),
       print(realAllEvents),
-      setState(() {})
+      setState(() {}),
     });
   }
   
@@ -68,7 +68,11 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
                             context,
                             '/events/${event['id']}');
                       },
-                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
+                      buttonFun: (){
+                        con.interestedEvent(event['id']).then((value){
+                          getEventNow();
+                        });
+                      },
                       picture: 'null',
                       status: false,
                       interests: event['data']['eventInterested'].length,

@@ -136,11 +136,6 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
             Padding(
                 padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child:
-                    //AnimatedPositioned(
-                    //top: showMenu ? 0 : -150.0,
-                    //duration: const Duration(seconds: 2),
-                    //curve: Curves.fastOutSlowIn,
-                    //child:
                     SingleChildScrollView(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -148,7 +143,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize
+                                SizeConfig.mediumScreenSize
                             ? const SizedBox()
                             : LeftPanel(),
                         //    : SizedBox(width: 0),
