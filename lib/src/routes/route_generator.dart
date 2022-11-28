@@ -6,6 +6,7 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/events/panel/eventView/eventscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
+import 'package:shnatter/src/views/people/peoplescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
@@ -36,9 +37,12 @@ class RouteGenerator {
       return MaterialPageRoute(
           builder: (context) => UserProfileScreen(), settings: settings);
     }
-    if (url!.split('/')[1] == RouteNames.eventsName && url.split('/').length > 2) {
+    if (url!.split('/')[1] == RouteNames.eventsName &&
+        url.split('/').length > 2) {
       return MaterialPageRoute(
-          builder: (context) => EventEachScreen(docId:settings.name.toString()), settings: settings);
+          builder: (context) =>
+              EventEachScreen(docId: settings.name.toString()),
+          settings: settings);
     }
     switch (url) {
       case RouteNames.splashScreen:
@@ -83,7 +87,9 @@ class RouteGenerator {
         Helper.showToast("ok now to admin");
         return MaterialPageRoute(
             builder: (context) => AdminScreen(), settings: settings);
-
+      case RouteNames.people:
+        return MaterialPageRoute(
+            builder: (context) => PeopleScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);
