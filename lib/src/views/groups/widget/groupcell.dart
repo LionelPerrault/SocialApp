@@ -8,8 +8,8 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
-class EventCell extends StatefulWidget {
-    EventCell(
+class GroupCell extends StatefulWidget {
+    GroupCell(
       {super.key,
       required this.eventTap,
       required this.picture,
@@ -29,10 +29,10 @@ bool status;
       
   late PostController con;
   @override
-  State createState() => EventCellState();
+  State createState() => GroupCellState();
 }
 
-class EventCellState extends mvc.StateMVC<EventCell> {
+class GroupCellState extends mvc.StateMVC<GroupCell> {
   late PostController con;
   var loading = false;
   @override

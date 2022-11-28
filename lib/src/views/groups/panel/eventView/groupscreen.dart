@@ -9,23 +9,23 @@ import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 
-import 'eventAvatarandTabscreen.dart';
-import 'eventMembersScreen.dart';
-import 'eventPhotosScreen.dart';
-import 'eventTimelineScreen.dart';
-import 'profileVideosScreen.dart';
+import 'groupAvatarandTabscreen.dart';
+import 'groupMembersScreen.dart';
+import 'groupPhotosScreen.dart';
+import 'groupTimelineScreen.dart';
+import 'groupVideosScreen.dart';
 
-class EventEachScreen extends StatefulWidget {
-  EventEachScreen({Key? key,required this.docId})
+class GroupEachScreen extends StatefulWidget {
+  GroupEachScreen({Key? key,required this.docId})
       : con = PostController(),
         super(key: key);
   final PostController con;
   String docId = '';
   @override
-  State createState() => EventEachScreenState();
+  State createState() => GroupEachScreenState();
 }
 
-class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
+class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -149,24 +149,24 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  EventAvatarandTabScreen(onClick: (value) {
+                                  GroupAvatarandTabScreen(onClick: (value) {
                                     print(value);
                                     con.eventTab = value;
                                     setState(() { });
                                   },),
-                                  con.eventTab == 'Timeline' ? EventTimelineScreen(onClick:(value){
+                                  con.eventTab == 'Timeline' ? GroupTimelineScreen(onClick:(value){
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Photos' ? EventPhotosScreen(onClick:(value){
+                                  con.eventTab == 'Photos' ? GroupPhotosScreen(onClick:(value){
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Videos' ? EventVideosScreen(onClick:(value){
+                                  con.eventTab == 'Videos' ? GroupVideosScreen(onClick:(value){
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Members' ? EventMembersScreen(onClick:(value){
+                                  con.eventTab == 'Members' ? GroupMembersScreen(onClick:(value){
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :

@@ -9,21 +9,21 @@ import 'package:shnatter/src/views/events/widget/eventcell.dart';
 import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
-class InterestedEvents extends StatefulWidget {
-  InterestedEvents({Key? key})
+class JoinedGroups extends StatefulWidget {
+  JoinedGroups({Key? key})
       : con = PostController(),
         super(key: key);
   late PostController con;
-  State createState() => InterestedEventsState();
+  State createState() => JoinedGroupsState();
 }
 
-class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
+class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
   bool check1 = false;
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
-  var interestedEvents = [];
-  var returnValue= [];
+  var returnValue = [];
+  var goingEvents = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -35,9 +35,9 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   }
 
   void getEventNow() {
-    con.getEvent('interested').then((value) => {
-      interestedEvents = value,
-      print(returnValue),
+    con.getEvent('going').then((value) => {
+      returnValue = value,
+      goingEvents = value,
     });
   }
   @override
@@ -57,7 +57,7 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
                 shrinkWrap: true,
                 crossAxisSpacing: 4.0,
                 children: 
-                  interestedEvents.map((event) => 
+                  goingEvents.map((event) => 
                     EventCell(
                       eventTap: (){
                         Navigator

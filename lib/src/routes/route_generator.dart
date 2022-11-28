@@ -5,8 +5,10 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/events/panel/eventView/eventscreen.dart';
+import 'package:shnatter/src/views/groups/groupsscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/people/peoplescreen.dart';
+import 'package:shnatter/src/views/pages/pagesscreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
@@ -81,6 +83,16 @@ class RouteGenerator {
       case RouteNames.events:
         return MaterialPageRoute(
             builder: (context) => EventsScreen(), settings: settings);
+
+      //page route generators
+      case RouteNames.pages:
+        return MaterialPageRoute(
+            builder: (context) => PagesScreen(), settings: settings);
+
+      //groups route generators
+      case RouteNames.groups:
+        return MaterialPageRoute(
+            builder: (context) => GroupsScreen(), settings: settings);
 
       //admin routes generators
       case RouteNames.adp:

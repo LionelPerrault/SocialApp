@@ -9,11 +9,11 @@ import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 
-import 'eventAvatarandTabscreen.dart';
-import 'eventMembersScreen.dart';
-import 'eventPhotosScreen.dart';
-import 'eventTimelineScreen.dart';
-import 'profileVideosScreen.dart';
+import 'pageAvatarandTabscreen.dart';
+import 'pageMembersScreen.dart';
+import 'pagePhotosScreen.dart';
+import 'pageTimelineScreen.dart';
+import 'pageVideosScreen.dart';
 
 class EventEachScreen extends StatefulWidget {
   EventEachScreen({Key? key,required this.docId})
@@ -162,7 +162,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Videos' ? EventVideosScreen(onClick:(value){
+                                  con.eventTab == 'Videos' ? PageVideosScreen(onClick:(value){
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :

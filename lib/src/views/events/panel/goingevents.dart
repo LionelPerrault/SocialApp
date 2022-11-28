@@ -29,23 +29,15 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.getEvent();
     con.setState(() { });
     super.initState();
     getEventNow();
   }
 
   void getEventNow() {
-    con.getEvent().then((value) => {
+    con.getEvent('going').then((value) => {
       returnValue = value,
-      for (int i=0; i<returnValue.length; i++) {
-        for (int j=0; j<returnValue[i]['data']['eventGoing'].length; j++) {
-          if (returnValue[i]['data']['eventGoing'][j] == UserManager.userInfo['userName']) {
-            goingEvents.add(returnValue[i])
-          }
-        }
-      },
-      setState(() {})
+      goingEvents = value,
     });
   }
   @override
@@ -67,7 +59,12 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
                 children: 
                   goingEvents.map((event) => 
                     EventCell(
-                      eventTap: (){},
+                      eventTap: (){
+                        Navigator
+                        .pushReplacementNamed(
+                            context,
+                            '/events/${event['id']}');
+                      },
                       buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
                       picture: 'null',
                       status: false,

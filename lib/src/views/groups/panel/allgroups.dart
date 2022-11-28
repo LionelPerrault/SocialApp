@@ -3,27 +3,27 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
 import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
-class InterestedEvents extends StatefulWidget {
-  InterestedEvents({Key? key})
+class AllGroup extends StatefulWidget {
+  AllGroup({Key? key})
       : con = PostController(),
         super(key: key);
   late PostController con;
-  State createState() => InterestedEventsState();
+  State createState() => AllGroupState();
 }
 
-class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
+class AllGroupState extends mvc.StateMVC<AllGroup> {
   bool check1 = false;
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
-  var interestedEvents = [];
-  var returnValue= [];
+  var realAllEvents = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -35,11 +35,14 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   }
 
   void getEventNow() {
-    con.getEvent('interested').then((value) => {
-      interestedEvents = value,
-      print(returnValue),
+    con.getEvent('all').then((value) => {
+      realAllEvents = value,
+      realAllEvents.where((event) => event['data']['eventPost'] == true),
+      print(realAllEvents),
+      setState(() {}),
     });
   }
+  
   @override
   Widget build(BuildContext context) {
     var  screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
@@ -57,7 +60,7 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
                 shrinkWrap: true,
                 crossAxisSpacing: 4.0,
                 children: 
-                  interestedEvents.map((event) => 
+                  realAllEvents.map((event) => 
                     EventCell(
                       eventTap: (){
                         Navigator
@@ -65,7 +68,11 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
                             context,
                             '/events/${event['id']}');
                       },
-                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
+                      buttonFun: (){
+                        con.interestedEvent(event['id']).then((value){
+                          getEventNow();
+                        });
+                      },
                       picture: 'null',
                       status: false,
                       interests: event['data']['eventInterested'].length,

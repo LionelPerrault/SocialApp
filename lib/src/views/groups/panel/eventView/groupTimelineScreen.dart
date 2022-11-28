@@ -7,18 +7,18 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 
-class EventTimelineScreen extends StatefulWidget {
+class GroupTimelineScreen extends StatefulWidget {
   Function onClick;
-  EventTimelineScreen({Key? key,required this.onClick})
+  GroupTimelineScreen({Key? key,required this.onClick})
       : con = PostController(),
         super(key: key);
   final PostController con;
 
   @override
-  State createState() => EventTimelineScreenState();
+  State createState() => GroupTimelineScreenState();
 }
 
-class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
+class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

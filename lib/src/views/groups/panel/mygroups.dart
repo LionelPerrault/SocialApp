@@ -4,26 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/events/widget/eventcell.dart';
+import 'package:shnatter/src/views/groups/widget/groupcell.dart';
 
 import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
-class InterestedEvents extends StatefulWidget {
-  InterestedEvents({Key? key})
+class MyGroups extends StatefulWidget {
+  MyGroups({Key? key})
       : con = PostController(),
         super(key: key);
   late PostController con;
-  State createState() => InterestedEventsState();
+  State createState() => MyGroupsState();
 }
 
-class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
+class MyGroupsState extends mvc.StateMVC<MyGroups> {
   bool check1 = false;
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
-  var interestedEvents = [];
-  var returnValue= [];
+  var myGroups = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -32,12 +31,15 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
     con.setState(() { });
     super.initState();
     getEventNow();
+    print('now initstate');
   }
 
   void getEventNow() {
-    con.getEvent('interested').then((value) => {
-      interestedEvents = value,
-      print(returnValue),
+    con.getEvent('manage').then((value) => {
+      myGroups = [...value],
+      myGroups.where((event) => event['data']['eventAdmin'] == UserManager.userInfo['id']),
+      print(myGroups),
+      setState(() {})
     });
   }
   @override
@@ -57,15 +59,19 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
                 shrinkWrap: true,
                 crossAxisSpacing: 4.0,
                 children: 
-                  interestedEvents.map((event) => 
-                    EventCell(
+                  myGroups.map((event) => 
+                    GroupCell(
                       eventTap: (){
                         Navigator
                         .pushReplacementNamed(
                             context,
-                            '/events/${event['id']}');
+                            '/groups/${event['id']}');
                       },
-                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
+                      buttonFun: (){
+                        con.interestedEvent(event['id']).then((value){
+                          getEventNow();
+                        });
+                      },
                       picture: 'null',
                       status: false,
                       interests: event['data']['eventInterested'].length,

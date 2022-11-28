@@ -1,46 +1,31 @@
-import 'dart:html';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/events/panel/allevents.dart';
-import 'package:shnatter/src/views/events/panel/goingevents.dart';
-import 'package:shnatter/src/views/events/panel/interestedevents.dart';
-import 'package:shnatter/src/views/events/panel/invitedevents.dart';
-import 'package:shnatter/src/views/events/panel/myevents.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
+import 'package:shnatter/src/views/pages/panel/allpages.dart';
+import 'package:shnatter/src/views/pages/panel/likedpages.dart';
+import 'package:shnatter/src/views/pages/panel/mypages.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
-import 'package:shnatter/src/views/panel/rightpanel.dart';
-import 'package:shnatter/src/widget/createEventWidget.dart';
+import 'package:shnatter/src/widget/createPageWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
-import '../../widget/mprimary_button.dart';
-import '../../widget/list_text.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/gestures.dart';
-import '../box/notification.dart';
 
-class EventsScreen extends StatefulWidget {
-  EventsScreen({Key? key})
+class PagesScreen extends StatefulWidget {
+  PagesScreen({Key? key})
       : con = PostController(),
         super(key: key);
   final PostController con;
 
   @override
-  State createState() => EventsScreenState();
+  State createState() => PagesScreenState();
 }
 
-class EventsScreenState extends mvc.StateMVC<EventsScreen>
+class PagesScreenState extends mvc.StateMVC<PagesScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -49,14 +34,8 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var suggest = <String, bool>{
-    'friends': true,
-    'pages': true,
-    'groups': true,
-    'events': true
-  };
   //route variable
-  String eventSubRoute = '';
+  String pageSubRoute = '';
 
 
   @override
@@ -185,7 +164,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                   child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
-                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == '' ? 26 : 0)),
+                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == '' ? 26 : 0)),
                                                       RichText(
                                                         text: TextSpan(children: <TextSpan>[
                                                           TextSpan(
@@ -194,13 +173,13 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                                 color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
                                                             recognizer: TapGestureRecognizer()
                                                               ..onTap = () {
-                                                                eventSubRoute = '';
+                                                                pageSubRoute = '';
                                                                 setState(() { });
                                                               }
                                                           ),
                                                         ]),
                                                       ),
-                                                      eventSubRoute == '' ? Container(
+                                                      pageSubRoute == '' ? Container(
                                                         margin: EdgeInsets.only(top: 26),
                                                         height: 1,
                                                         color: Colors.black,
@@ -213,22 +192,22 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                   child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
-                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == 'going' ? 26 : 0)),
+                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == 'liked' ? 26 : 0)),
                                                       RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
-                                                          text: 'Going',
+                                                          text: 'Liked Pages',
                                                           style: const TextStyle(
                                                               color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
                                                           recognizer: TapGestureRecognizer()
                                                             ..onTap = () {
-                                                              eventSubRoute = 'going';
+                                                              pageSubRoute = 'liked';
                                                               setState(() { });
                                                             }
                                                           ),
                                                         ]),
                                                       ),
-                                                      eventSubRoute == 'going' ? Container(
+                                                      pageSubRoute == 'liked' ? Container(
                                                         margin: EdgeInsets.only(top: 26),
                                                         height: 1,
                                                         color: Colors.black,
@@ -241,78 +220,22 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                   child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
-                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == 'interested' ? 26 : 0)),
+                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == 'manage' ? 26 : 0)),
                                                       RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
-                                                          text: 'Interested',
+                                                          text: 'My Pages',
                                                           style: const TextStyle(
                                                               color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
                                                           recognizer: TapGestureRecognizer()
                                                             ..onTap = () {
-                                                              eventSubRoute = 'interested';
+                                                              pageSubRoute = 'manage';
                                                               setState(() { });
                                                             }
                                                           ),
                                                         ]),
                                                       ),
-                                                      eventSubRoute == 'interested' ? Container(
-                                                        margin: EdgeInsets.only(top: 26),
-                                                        height: 1,
-                                                        color: Colors.black,
-                                                      ) : SizedBox()
-                                                    ],
-                                                  )
-                                                ),
-                                                const Padding(padding: EdgeInsets.only(left: 5)),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == 'invited' ? 26 : 0)),
-                                                      RichText(
-                                                      text: TextSpan(children: <TextSpan>[
-                                                        TextSpan(
-                                                          text: 'Invited',
-                                                          style: const TextStyle(
-                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
-                                                          recognizer: TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              eventSubRoute = 'invited';
-                                                              setState(() { });
-                                                            }
-                                                          ),
-                                                        ]),
-                                                      ),
-                                                      eventSubRoute == 'invited' ? Container(
-                                                        margin: EdgeInsets.only(top: 26),
-                                                        height: 1,
-                                                        color: Colors.black,
-                                                      ) : SizedBox()
-                                                    ],
-                                                  )
-                                                ),
-                                                const Padding(padding: EdgeInsets.only(left: 5)),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(padding: EdgeInsets.only(top: eventSubRoute == 'manage' ? 26 : 0)),
-                                                      RichText(
-                                                      text: TextSpan(children: <TextSpan>[
-                                                        TextSpan(
-                                                          text: 'My Events',
-                                                          style: const TextStyle(
-                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
-                                                          recognizer: TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              eventSubRoute = 'manage';
-                                                              setState(() { });
-                                                            }
-                                                          ),
-                                                        ]),
-                                                      ),
-                                                      eventSubRoute == 'manage' ? Container(
+                                                      pageSubRoute == 'manage' ? Container(
                                                         margin: EdgeInsets.only(top: 26),
                                                         height: 1,
                                                         color: Colors.black,
@@ -342,14 +265,14 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                       builder: (BuildContext context) =>
                                                           AlertDialog(
                                                             title: Row(children: const [
-                                                              Icon(Icons.event,color: Color.fromARGB(255, 247, 159, 88),),
-                                                              Text('Create New Event',
+                                                              Icon(Icons.flag,color: Color.fromARGB(255, 33, 150, 243),),
+                                                              Text('Create New Page',
                                                               style: TextStyle(
                                                                 fontSize: 15,
                                                                 fontStyle: FontStyle.italic
                                                               ),),
                                                             ],),
-                                                            content: CreateEventModal(context: context)
+                                                            content: CreatePageModal(context: context)
                                                           )
                                                     ));
                                                     },
@@ -359,7 +282,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                       children: [
                                                       const Icon(Icons.add_circle),
                                                       const Padding(padding: EdgeInsets.only(left: 4)),
-                                                      SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? const Text('Create Event', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold)) : SizedBox()
+                                                      SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? const Text('Create Page', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold)) : SizedBox()
                                                     ],)),
                                           )
                                         ],)
@@ -368,20 +291,14 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                   ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                eventSubRoute == ''
-                                    ? AllEvents()
+                                pageSubRoute == ''
+                                    ? AllPages()
                                     : const SizedBox(),
-                                eventSubRoute == 'going'
-                                    ? GoingEvents()
+                                pageSubRoute == 'liked'
+                                    ? LikedPages()
                                     : const SizedBox(),
-                                eventSubRoute == 'interested'
-                                    ? InterestedEvents()
-                                    : const SizedBox(),
-                                eventSubRoute == 'invited'
-                                    ? InvitedEvents()
-                                    : const SizedBox(),
-                                eventSubRoute == 'manage'
-                                    ? MyEvents()
+                                pageSubRoute == 'manage'
+                                    ? MyPages()
                                     : const SizedBox(),
                               ],
                             )),

@@ -12,21 +12,22 @@ import 'package:shnatter/src/utils/colors.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 
-class CreateEventModal extends StatefulWidget {
+class CreateGroupModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
-  CreateEventModal({Key? key,required this.context}) :Postcon = PostController(), super(key: key);
+  CreateGroupModal({Key? key,required this.context}) :Postcon = PostController(), super(key: key);
   @override
-  State createState() => CreateEventModalState();
+  State createState() => CreateGroupModalState();
 }
-class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
+class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   bool isSound = false;
   late PostController Postcon;
-  Map<String, dynamic> eventInfo = {'eventPrivacy': 'public'};
+  Map<String, dynamic> pageInfo = {};
   var privacy = 'public';
   var interest = 'none';
   @override
@@ -56,7 +57,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                 Row(
                   children: const [
                     Text(
-                      'Name Your Event',
+                      'Name Your Page',
                       style: TextStyle(
                           color: Color.fromARGB(
                               255, 82, 95, 127),
@@ -71,9 +72,79 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                       input(validator: (value) async {
                     print(value);
                   }, onchange: (value) async {
-                    eventInfo['eventName'] = value;
+                    pageInfo['pageName'] = value;
                     // setState(() {});
                   }),
+                )
+              ],
+            ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
+            
+            const Padding(padding: EdgeInsets.only(top: 15)),
+            Column(
+              mainAxisAlignment:
+                  MainAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: const [
+                    Text('Page Username',
+                        style: TextStyle(
+                            color: Color.fromARGB(
+                                255, 82, 95, 127),
+                            fontSize: 11,
+                            fontWeight:
+                                FontWeight.bold)),
+                  ],
+                ),
+                Container(
+                  width: 400,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(7)),
+                    ),
+                    child: Row(children: [
+                      Container(
+                        padding: EdgeInsets.only(top: 7),
+                        alignment: Alignment.topCenter,
+                        width: 200,
+                        height: 30,
+                        color: Colors.grey,
+                        child: Text('https://test.shnatter.com/'),
+                      ),
+                      Expanded(child: 
+                      Container(
+                        width: 300,
+                        height: 30,
+                        child: TextFormField(
+                                onChanged: (newIndex) {
+                                  setState(() {});
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color.fromARGB(255, 54, 54, 54), width: 1.0),
+                                    borderRadius: BorderRadius.circular(0),
+                                  ),
+                                ),
+                                style: const TextStyle(fontSize: 14),
+                                onSaved: (String? value) {
+                                  // This optional block of code can be used to run
+                                  // code when the user saves the form.
+                                },
+                                validator: (String? value) {
+                                  return (value != null && value.contains('@'))
+                                      ? 'Do not use the @ char.'
+                                      : null;
+                                },
+                              ),
+                      )),
+                    ]),
+                  ),
                 )
               ],
             ),
@@ -101,178 +172,12 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                       input(validator: (value) async {
                     print(value);
                   }, onchange: (value) async {
-                    eventInfo['eventLocation'] = value;
+                    pageInfo['pageLocation'] = value;
                     // setState(() {});
                   }),
                 )
               ],
             ),
-            const Padding(padding: EdgeInsets.only(top: 15)),
-            Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.start,
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: const [
-                    Text('Start Date',
-                        style: TextStyle(
-                            color: Color.fromARGB(
-                                255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight:
-                                FontWeight.bold)),
-                  ],
-                ),
-                Container(
-                  width: 400,
-                  child:
-                      input(validator: (value) async {
-                    print(value);
-                  }, onchange: (value) async {
-                    eventInfo['eventStartDate'] = value;
-                    // setState(() {});
-                  }),
-                )
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(top: 15)),
-            Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.start,
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: const [
-                    Text('End Date',
-                        style: TextStyle(
-                            color: Color.fromARGB(
-                                255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight:
-                                FontWeight.bold)),
-                  ],
-                ),
-                Container(
-                  width: 400,
-                  child:
-                      input(validator: (value) async {
-                    print(value);
-                  }, onchange: (value) async {
-                    eventInfo['eventEndDate'] = value;
-                    // setState(() {});
-                  }),
-                )
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(top: 15)),
-            Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.start,
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: const [
-                    Text('Select Privacy',
-                        style: TextStyle(
-                            color: Color.fromARGB(
-                                255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight:
-                                FontWeight.bold)),
-                  ],
-                ),
-              ],
-            ),
-            Row(children: [
-              Expanded(
-                child: SizedBox(
-                  width: 400,
-                  height: 40,
-                  child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 17, 205, 239),
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 17, 205, 239),
-                            width: 0.1), //bordrder raiuds of dropdown button
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 7, left: 15),
-                          child: DropdownButton(
-                            value: privacy,
-                            items: [
-                              DropdownMenuItem(
-                                value: "public",
-                                child: Row(children: const [
-                                  Icon(
-                                    Icons.language,
-                                    color: Colors.black,
-                                  ),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    "Public",
-                                    style: TextStyle(fontSize: 13),
-                                  )
-                                ]),
-                              ),
-                              DropdownMenuItem(
-                                value: "closed",
-                                child: Row(children: const [
-                                  Icon(
-                                    Icons.groups,
-                                    color: Colors.black,
-                                  ),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    "Closed",
-                                    style: TextStyle(fontSize: 13),
-                                  )
-                                ]),
-                              ),
-                              DropdownMenuItem(
-                                value: "security",
-                                child: Row(children: const [
-                                  Icon(
-                                    Icons.lock_outline,
-                                    color: Colors.black,
-                                  ),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    "Security",
-                                    style: TextStyle(fontSize: 13),
-                                  )
-                                ]),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              //get value when changed
-                              eventInfo['eventPrivacy'] = value;
-                              privacy = value.toString();
-                              print(privacy);
-                              // click(value);
-                              setState(() {});
-                            },
-                            icon: const Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Icon(Icons.arrow_drop_down)),
-                            iconEnabledColor: Colors.white, //Icon color
-                            style: const TextStyle(
-                              color: Colors.black, //Font color
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            dropdownColor: Colors.white,
-                            underline: Container(), //remove underline
-                            isExpanded: true,
-                            isDense: true,
-                          ))),
-                ),
-              ),
-            ],),
             const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
@@ -305,7 +210,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                 minLines: 1,
                                 maxLines: 4,
                                 onChanged: (value) async {
-                                  eventInfo['eventAbout'] = value;
+                                  pageInfo['pageAbout'] = value;
                                   // setState(() {});
                                 },
                                 keyboardType: TextInputType.multiline,
@@ -362,7 +267,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
-                    Postcon.createEvent(context,eventInfo);
+                    Postcon.createEvent(context,pageInfo);
                   },
                   child: const Text('Create',
                       style: TextStyle(

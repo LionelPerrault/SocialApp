@@ -25,8 +25,19 @@ class RouteNames {
   static const settings_verification = "/settings/verification";
   static const settings_information = "/settings/information";
   static const settings_delete = "/settings/delete";
+
+  //event routes
   static const events = "/events";
   static const eventsName = "events";
+
+  //page routes
+  static const pages = "/pages";
+  static const pagesName = "pages";
+
+  //group routes
+  static const groups = "/groups";
+  static const groupsName = "groups";
+  //profile routes
   static var userName = "";
 
   //admin routes
