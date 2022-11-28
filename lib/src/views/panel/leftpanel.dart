@@ -95,12 +95,20 @@ class LeftPanel extends StatelessWidget {
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsaved_posts.svg?alt=media&token=a6950b2b-26ee-4cb8-b1ff-78047383e0de'),
           ListText(
-              onTap: () => {},
+              onTap: () => {Navigator
+                    .pushReplacementNamed(
+                        context,
+                        RouteNames
+                            .pages)},
               label: 'Pages',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpages.svg?alt=media&token=eed0ae72-6faf-4fdc-8581-bf3a99a04fa7'),
           ListText(
-              onTap: () => {},
+              onTap: () => {Navigator
+                    .pushReplacementNamed(
+                        context,
+                        RouteNames
+                            .groups)},
               label: 'Groups',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fgroups.svg?alt=media&token=56ef9dc4-2c1b-4dfd-b945-3439cb5dfe25'),

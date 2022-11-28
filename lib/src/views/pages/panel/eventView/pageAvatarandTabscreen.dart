@@ -15,17 +15,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
 
-class GroupAvatarandTabScreen extends StatefulWidget {
+class EventAvatarandTabScreen extends StatefulWidget {
   Function onClick;
-  GroupAvatarandTabScreen({Key? key,required this.onClick})
+  EventAvatarandTabScreen({Key? key,required this.onClick})
       : con = PostController(),
         super(key: key);
   final PostController con;
   @override
-  State createState() => GroupAvatarandTabScreenState();
+  State createState() => EventAvatarandTabScreenState();
 }
 
-class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
+class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   double width = 0;
@@ -43,7 +43,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   ];
   var interestedStatus = false;
   var goingStatus = false;
-  var selectedGroup = {};
+  var selectedEvent = {};
   @override
   void initState() {
     super.initState();

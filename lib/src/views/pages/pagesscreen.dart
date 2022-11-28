@@ -1,44 +1,31 @@
-import 'dart:html';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/groups/panel/allgroups.dart';
-import 'package:shnatter/src/views/groups/panel/joinedgroups.dart';
-import 'package:shnatter/src/views/groups/panel/mygroups.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
+import 'package:shnatter/src/views/pages/panel/allpages.dart';
+import 'package:shnatter/src/views/pages/panel/likedpages.dart';
+import 'package:shnatter/src/views/pages/panel/mypages.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
-import 'package:shnatter/src/views/panel/rightpanel.dart';
-import 'package:shnatter/src/widget/createGroupWidget.dart';
+import 'package:shnatter/src/widget/createPageWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
-import '../../widget/mprimary_button.dart';
-import '../../widget/list_text.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/gestures.dart';
-import '../box/notification.dart';
 
-class GroupsScreen extends StatefulWidget {
-  GroupsScreen({Key? key})
+class PagesScreen extends StatefulWidget {
+  PagesScreen({Key? key})
       : con = PostController(),
         super(key: key);
   final PostController con;
 
   @override
-  State createState() => GroupsScreenState();
+  State createState() => PagesScreenState();
 }
 
-class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
+class PagesScreenState extends mvc.StateMVC<PagesScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -48,7 +35,7 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
   bool showMenu = false;
   late AnimationController _drawerSlideController;
   //route variable
-  String groupSubRoute = '';
+  String pageSubRoute = '';
 
 
   @override
@@ -177,7 +164,7 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                                   child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
-                                                      Padding(padding: EdgeInsets.only(top: groupSubRoute == '' ? 26 : 0)),
+                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == '' ? 26 : 0)),
                                                       RichText(
                                                         text: TextSpan(children: <TextSpan>[
                                                           TextSpan(
@@ -186,13 +173,13 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                                                 color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
                                                             recognizer: TapGestureRecognizer()
                                                               ..onTap = () {
-                                                                groupSubRoute = '';
+                                                                pageSubRoute = '';
                                                                 setState(() { });
                                                               }
                                                           ),
                                                         ]),
                                                       ),
-                                                      groupSubRoute == '' ? Container(
+                                                      pageSubRoute == '' ? Container(
                                                         margin: EdgeInsets.only(top: 26),
                                                         height: 1,
                                                         color: Colors.black,
@@ -205,22 +192,22 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                                   child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
-                                                      Padding(padding: EdgeInsets.only(top: groupSubRoute == 'joined' ? 26 : 0)),
+                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == 'liked' ? 26 : 0)),
                                                       RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
-                                                          text: 'Joined Groups',
+                                                          text: 'Liked Pages',
                                                           style: const TextStyle(
                                                               color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
                                                           recognizer: TapGestureRecognizer()
                                                             ..onTap = () {
-                                                              groupSubRoute = 'joined';
+                                                              pageSubRoute = 'liked';
                                                               setState(() { });
                                                             }
                                                           ),
                                                         ]),
                                                       ),
-                                                      groupSubRoute == 'joined' ? Container(
+                                                      pageSubRoute == 'liked' ? Container(
                                                         margin: EdgeInsets.only(top: 26),
                                                         height: 1,
                                                         color: Colors.black,
@@ -233,22 +220,22 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                                   child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
-                                                      Padding(padding: EdgeInsets.only(top: groupSubRoute == 'manage' ? 26 : 0)),
+                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == 'manage' ? 26 : 0)),
                                                       RichText(
                                                       text: TextSpan(children: <TextSpan>[
                                                         TextSpan(
-                                                          text: 'My Groups',
+                                                          text: 'My Pages',
                                                           style: const TextStyle(
                                                               color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
                                                           recognizer: TapGestureRecognizer()
                                                             ..onTap = () {
-                                                              groupSubRoute = 'manage';
+                                                              pageSubRoute = 'manage';
                                                               setState(() { });
                                                             }
                                                           ),
                                                         ]),
                                                       ),
-                                                      groupSubRoute == 'manage' ? Container(
+                                                      pageSubRoute == 'manage' ? Container(
                                                         margin: EdgeInsets.only(top: 26),
                                                         height: 1,
                                                         color: Colors.black,
@@ -278,14 +265,14 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                                       builder: (BuildContext context) =>
                                                           AlertDialog(
                                                             title: Row(children: const [
-                                                              Icon(Icons.groups,color: Color.fromARGB(255, 247, 159, 88),),
-                                                              Text('Create New Group',
+                                                              Icon(Icons.flag,color: Color.fromARGB(255, 33, 150, 243),),
+                                                              Text('Create New Page',
                                                               style: TextStyle(
                                                                 fontSize: 15,
                                                                 fontStyle: FontStyle.italic
                                                               ),),
                                                             ],),
-                                                            content: CreateGroupModal(context: context)
+                                                            content: CreatePageModal(context: context)
                                                           )
                                                     ));
                                                     },
@@ -295,7 +282,7 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                                       children: [
                                                       const Icon(Icons.add_circle),
                                                       const Padding(padding: EdgeInsets.only(left: 4)),
-                                                      SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? const Text('Create Group', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold)) : SizedBox()
+                                                      SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? const Text('Create Page', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold)) : SizedBox()
                                                     ],)),
                                           )
                                         ],)
@@ -304,14 +291,14 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                   ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                groupSubRoute == ''
-                                    ? AllGroup()
+                                pageSubRoute == ''
+                                    ? AllPages()
                                     : const SizedBox(),
-                                groupSubRoute == 'joined'
-                                    ? JoinedGroups()
+                                pageSubRoute == 'liked'
+                                    ? LikedPages()
                                     : const SizedBox(),
-                                groupSubRoute == 'manage'
-                                    ? MyGroups()
+                                pageSubRoute == 'manage'
+                                    ? MyPages()
                                     : const SizedBox(),
                               ],
                             )),
