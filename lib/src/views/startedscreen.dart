@@ -105,11 +105,13 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     {
       for(int i = 0; i<allInterests.length; i++){
         if (allInterests[i]['parentId'] == '0') {
-          category.add(allInterests[i])
+          category.add(allInterests[i]),
+          setState(() { })
         },
         subCategory.add(allInterests[i]),
         parent = allInterests.where((inte) => inte['id'] == allInterests[i]['parentId']).toList(),
-        interestsCheck.add({'title' : allInterests[i]['title'], 'interested' : false, 'parentId' : parent.length == 0 ? allInterests[i]['title'] : parent[0]['title']})
+        interestsCheck.add({'title' : allInterests[i]['title'], 'interested' : false, 'parentId' : parent.length == 0 ? allInterests[i]['title'] : parent[0]['title']}),
+        setState(() { })
       }
     });
     
@@ -661,7 +663,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                       ],
                                                       onChanged: (String? value) {
                                                         //get value when changed
-                                                        saveData['sex'] = value;
+                                                        saveData['relationship'] = value;
                                                         relation = value!;
                                                         setState(() {});
                                                       },

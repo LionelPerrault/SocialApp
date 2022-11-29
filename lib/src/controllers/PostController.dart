@@ -383,14 +383,16 @@ class PostController extends ControllerMVC {
   //get one event function that using uid of firebase database
   Future<bool> getSelectedPage(String name) async {
     name = name.split('/')[name.split('/').length-1];
+    print(name);
     // viewPageId = id;
     viewPageName = name;
-    await Helper.pagesData.doc(name).get().then((value) async {
-      page = value;
-      viewPageLiked = await boolLiked(name);
-      setState(() { });
-      print('This event was posted by ${event['eventAdmin']}');
-    });
+    print(viewPageName);
+    var reuturnValue = await Helper.pagesData.where('pageUserName', isEqualTo: viewPageName).get();
+    var value = reuturnValue.docs;
+    page = value[0];
+    viewPageLiked = await boolLiked(name);
+    setState(() { });
+    print('This event was posted by ${page['pageAdmin']}');
     return true;
   }
 
@@ -446,9 +448,9 @@ class PostController extends ControllerMVC {
   //bool of user already in event interested or not
   Future<bool> boolLiked(String pageId) async {
     var querySnapshot =
-          await Helper.pagesData.doc(pageId).get();
-    var doc = querySnapshot;
-    var liked = doc['pageLiked'];
+          await Helper.pagesData.where('pageUserName', isEqualTo: viewPageName).get();
+    var doc = querySnapshot.docs;
+    var liked = doc[0]['pageLiked'];
     if (liked == null) {
       return false;
     }

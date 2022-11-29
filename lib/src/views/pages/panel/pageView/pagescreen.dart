@@ -134,10 +134,10 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
                         //    : SizedBox(width: 0),
                         Expanded(
                             child: Row(
-                          mainAxisAlignment: con.event == null ? MainAxisAlignment.center : MainAxisAlignment.end,
-                          crossAxisAlignment: con.event == null ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                          mainAxisAlignment: con.page == null ? MainAxisAlignment.center : MainAxisAlignment.end,
+                          crossAxisAlignment: con.page == null ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                           children: [
-                            con.event == null ? Container(
+                            con.page == null ? Container(
                                   width: 30,
                                   height: 30,
                                   margin: EdgeInsets.only(top: SizeConfig(context).screenHeight*2/5),
@@ -151,23 +151,23 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
                                 children: [
                                   PageAvatarandTabScreen(onClick: (value) {
                                     print(value);
-                                    con.eventTab = value;
+                                    con.pageTab = value;
                                     setState(() { });
                                   },),
-                                  con.eventTab == 'Timeline' ? PageTimelineScreen(onClick:(value){
-                                    con.eventTab = value;
+                                  con.pageTab == 'Timeline' ? PageTimelineScreen(onClick:(value){
+                                    con.pageTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Photos' ? PagePhotosScreen(onClick:(value){
-                                    con.eventTab = value;
+                                  con.pageTab == 'Photos' ? PagePhotosScreen(onClick:(value){
+                                    con.pageTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Videos' ? PageVideosScreen(onClick:(value){
-                                    con.eventTab = value;
+                                  con.pageTab == 'Videos' ? PageVideosScreen(onClick:(value){
+                                    con.pageTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Members' ? PageMembersScreen(onClick:(value){
-                                    con.eventTab = value;
+                                  con.pageTab == 'Members' ? PageMembersScreen(onClick:(value){
+                                    con.pageTab = value;
                                     setState(() { });
                                   }) :
                                   const SizedBox()

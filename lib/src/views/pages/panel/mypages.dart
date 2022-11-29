@@ -64,7 +64,7 @@ class MyPagesState extends mvc.StateMVC<MyPages> {
                         Navigator
                         .pushReplacementNamed(
                             context,
-                            '/events/${page['pageUserName']}');
+                            '/pages/${page['pageUserName']}');
                       },
                       buttonFun: (){
                         con.likedPage(page['id']).then((value){
