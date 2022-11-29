@@ -71,6 +71,8 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
           ),
           Column(
               children: con.userList
+                  .asMap()
+                  .entries
                   .map((e) => Container(
                       padding: EdgeInsets.only(top: 10, left: 20, right: 20),
                       child: Column(
@@ -80,7 +82,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(padding: EdgeInsets.only(left: 10)),
-                                e['avatar'] == ''
+                                e.value['avatar'] == ''
                                     ? CircleAvatar(
                                         radius: 20,
                                         child:
@@ -88,11 +90,11 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                     : CircleAvatar(
                                         radius: 20,
                                         backgroundImage:
-                                            NetworkImage(e['avatar'])),
+                                            NetworkImage(e.value['avatar'])),
                                 Container(
                                   padding: EdgeInsets.only(left: 10, top: 5),
                                   child: Text(
-                                    '${e['firstName']} ${e['lastName']}',
+                                    '${e.value['firstName']} ${e.value['lastName']}',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w900,
@@ -103,6 +105,11 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                 Container(
                                   padding: EdgeInsets.only(top: 6),
                                   child: ElevatedButton(
+                                      onPressed: () async {
+                                        await con.requestFriend(
+                                            e.value['userName'],
+                                            '${e.value['firstName']} ${e.value['lastName']}',e.key);
+                                      },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color.fromARGB(
                                               255, 33, 37, 41),
@@ -110,25 +117,40 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(2.0)),
-                                          minimumSize: const Size(110, 35),
-                                          maximumSize: const Size(110, 35)),
-                                      onPressed: () {
-                                        () => {};
-                                      },
-                                      child: Row(
-                                        children: const [
-                                          Icon(
-                                            Icons.person_add_alt_rounded,
-                                            color: Colors.white,
-                                            size: 18.0,
-                                          ),
-                                          Text(' Add Friend',
-                                              style: TextStyle(
+                                          minimumSize:
+                                              con.isFriendRequest[e.key] != null &&
+                                                      con.isFriendRequest[e.key]
+                                                  ? const Size(90, 35)
+                                                  : const Size(110, 35),
+                                          maximumSize:
+                                              con.isFriendRequest[e.key] != null &&
+                                                      con.isFriendRequest[e.key]
+                                                  ? const Size(90, 35)
+                                                  : const Size(110, 35)),
+                                      child: con.isFriendRequest[e.key] != null &&
+                                              con.isFriendRequest[e.key]
+                                          ? SizedBox(
+                                              width: 10,
+                                              height: 10,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          : Row(
+                                              children: const [
+                                                Icon(
+                                                  Icons.person_add_alt_rounded,
                                                   color: Colors.white,
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w900)),
-                                        ],
-                                      )),
+                                                  size: 18.0,
+                                                ),
+                                                Text(' Add Friend',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 11,
+                                                        fontWeight:
+                                                            FontWeight.w900)),
+                                              ],
+                                            )),
                                 )
                               ]),
                           Padding(padding: EdgeInsets.only(top: 10)),
@@ -139,8 +161,34 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                         ],
                       )))
                   .toList()),
-          InkWell(
-            child: Container(color: Color.fromRGBO(55, 213, 242, 1)),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: InkWell(
+              onTap: () async {
+                con.pageIndex++;
+                con.isShowProgressive = true;
+                setState(() {});
+                await con.getUserList();
+                con.isShowProgressive = false;
+                setState(() {});
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(55, 213, 242, 1),
+                    borderRadius: BorderRadius.all(Radius.circular(3))),
+                alignment: Alignment.center,
+                height: 45,
+                child: con.isShowProgressive
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20.0,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )
+                    : Text('See More', style: TextStyle(color: Colors.white)),
+              ),
+            ),
           )
         ],
       ),

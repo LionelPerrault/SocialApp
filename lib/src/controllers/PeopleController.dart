@@ -25,9 +25,16 @@ class PeopleController extends ControllerMVC {
       _this ??= PeopleController._(state);
   PeopleController._(StateMVC? state)
       : userList = [],
+        pageIndex = 1,
+        isShowProgressive = false,
+        isFriendRequest = {},
         super(state);
   static PeopleController? _this;
   List userList;
+  int pageIndex;
+  bool isShowProgressive;
+  Map isFriendRequest = {};
+  var userInfo = UserManager.userInfo;
   @override
   Future<bool> initAsync() async {
     //
@@ -44,9 +51,31 @@ class PeopleController extends ControllerMVC {
   getUserList() async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .limit(5)
+        .limit(5 * pageIndex)
         .get();
-    userList = snapshot.docs;
+    userList = snapshot.docs
+        .where((element) =>
+            element['userName'] != UserManager.userInfo['userName'])
+        .toList();
     setState(() {});
+  }
+
+  requestFriend(receiver, fullName, index) async {
+    isFriendRequest[index] = true;
+    setState(() {});
+    FirebaseFirestore.instance.collection(Helper.friendField).add({
+      'requester': userInfo['userName'],
+      'receiver': receiver,
+      receiver: fullName,
+      userInfo['userName']: userInfo['fullName'],
+      'state': 0
+    }).then((value) => {isFriendRequest[index] = false, setState(() {})});
+  }
+
+  getReceiveRequests() async {
+    FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .where('receiver', isEqualTo: userInfo['userName'])
+        .get();
   }
 }
