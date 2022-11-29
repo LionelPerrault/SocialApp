@@ -26,6 +26,12 @@ class Helper {
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
         toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
       );
+  static var pagesData = FirebaseFirestore.instance
+      .collection(Helper.pagesField)
+      .withConverter<TokenLogin>(
+        fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
+        toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
+      );
   static var allInterests = FirebaseFirestore.instance
       .collection(Helper.interestsField)
       .withConverter<TokenLogin>(
@@ -36,6 +42,7 @@ class Helper {
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82';
   static var userField = 'user';
   static var eventsField = 'events';
+  static var pagesField = 'pages';
   static var interestsField = 'interests';
   static var balance = 0;
   static var message = 'messages';

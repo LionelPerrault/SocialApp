@@ -38,7 +38,8 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
   }
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -108,17 +109,18 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                       Container(
                         padding: EdgeInsets.only(top: 7),
                         alignment: Alignment.topCenter,
-                        width: 200,
+                        width: 240,
                         height: 30,
                         color: Colors.grey,
-                        child: Text('https://test.shnatter.com/'),
+                        child: Text('https://test.shnatter.com/pages'),
                       ),
                       Expanded(child: 
                       Container(
-                        width: 300,
+                        width: 260,
                         height: 30,
                         child: TextFormField(
-                                onChanged: (newIndex) {
+                                onChanged: (value) {
+                                  pageInfo['pageUserName'] = value;
                                   setState(() {});
                                 },
                                 decoration: InputDecoration(
@@ -233,7 +235,13 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            // InterestsWidget(context: context),
+            Container(
+              width: 400,
+              child: InterestsWidget(context: context, sendUpdate: (value) {
+                pageInfo['pageInterests'] = value;
+              },),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
               width: 400,
               margin: const EdgeInsets.only(right: 0),
@@ -267,7 +275,8 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
-                    Postcon.createEvent(context,pageInfo);
+                    Postcon.createPage(context, pageInfo);
+                    print(pageInfo);
                   },
                   child: const Text('Create',
                       style: TextStyle(
@@ -276,7 +285,8 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
               ],),
             ),
           ],
-        );
+        )
+    );
   }
 }
 Widget input({label, onchange, obscureText = false, validator}) {

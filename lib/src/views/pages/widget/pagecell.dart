@@ -8,31 +8,31 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
-class EventCell extends StatefulWidget {
-    EventCell(
+class PageCell extends StatefulWidget {
+    PageCell(
       {super.key,
-      required this.eventTap,
+      required this.pageTap,
       required this.picture,
-      required this.interests,
+      required this.likes,
       required this.header,
-      required this.interested,
+      required this.liked,
       required this.status,
       required this.buttonFun,});
-Function eventTap;
-Function buttonFun;
-bool status;
+  Function pageTap;
+  Function buttonFun;
+  bool status;
   String picture;
-  int interests;
+  int likes;
   String header;
-  bool interested;
+  bool liked;
   
       
   late PostController con;
   @override
-  State createState() => EventCellState();
+  State createState() => PageCellState();
 }
 
-class EventCellState extends mvc.StateMVC<EventCell> {
+class PageCellState extends mvc.StateMVC<PageCell> {
   late PostController con;
   var loading = false;
   @override
@@ -50,7 +50,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
  Container(
       alignment: Alignment.center,
       width: 200,
-      height: 300,
+      height: 250,
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
@@ -72,13 +72,13 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                       fontWeight: FontWeight.bold),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      widget.eventTap();
+                      widget.pageTap();
                     }
                 ),
               ]),
             ),
             const Padding(padding: EdgeInsets.only(top: 5)),
-            Text('${widget.interests} Interested', style: const TextStyle(
+            Text('${widget.likes} Likes', style: const TextStyle(
                       color: Colors.black, fontSize: 13),),
             const Padding(padding: EdgeInsets.only(top: 20)),
             ElevatedButton(
@@ -106,19 +106,14 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    widget.interested ? Icon(
-                      Icons.star,
-                      color: Colors.black,
-                      size: 18.0,
-                    )
-                    :
-                    Icon(
-                      Icons.check,
+                    const Icon(
+                      Icons.thumb_up_sharp,
                       color: Colors.black,
                       size: 18.0,
                     ),
-                    Text('Interested',
-                        style: TextStyle(
+                    const Padding(padding: EdgeInsets.only(left: 3)),
+                    Text(widget.liked ? 'Unlike' : 'Like',
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 11,
                             fontWeight:
@@ -134,12 +129,15 @@ class EventCellState extends mvc.StateMVC<EventCell> {
           height: 120,
           padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
+            image: DecorationImage(
+                    image: NetworkImage(
+                        widget.picture != '' ? widget.picture : 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_page.jpg?alt=media&token=404c2404-1b87-4760-b6e6-286462a9cd1a'),
+                    fit: BoxFit.cover,
+                  ),
               color:
                   Color.fromARGB(255, 150, 99, 99),
               borderRadius: BorderRadius.circular(60),
               border: Border.all(color: Colors.grey)),
-          child: SvgPicture.network(
-              widget.picture),
         ),
       ],),
     )

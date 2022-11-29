@@ -18,11 +18,67 @@ class PostController extends ControllerMVC {
       _this ??= PostController._(state);
   PostController._(StateMVC? state) : 
     eventSubRoute = '',
+    pageSubRoute = '',
     super(state);
   static PostController? _this;
 
+
+
+  @override
+  Future<bool> initAsync() async {
+    //
+    Helper.eventsData = FirebaseFirestore.instance
+        .collection(Helper.eventsField)
+        .withConverter<TokenLogin>(
+          fromFirestore: (snapshots, _) =>
+              TokenLogin.fromJSON(snapshots.data()!),
+          toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
+        );
+    return true;
+  }
+
+  /////////////////////////////all support ////////////////////////////////////
+  //bool of my friends
+  Future<bool> boolMyFriend(String userName) async {
+    if (UserManager.userInfo['friends'] != null) {
+      var friends = UserManager.userInfo['friends'].where((eachUser) => eachUser['userName'] == userName && eachUser['status']);
+      if (friends.length > 0) {
+        return true;
+      }else {
+        return false;
+      }
+    }else {
+      return false;
+    }
+  }
+
+  //bool of friends of my friends
+  Future<bool> boolFriendMyFriend(String userId) async {
+    if (UserManager.userInfo['friends'] != null) {
+      var myFriends = UserManager.userInfo['friends'];
+      var hisFriends = [];
+      await Helper.authdata.doc(userId).get().then((value) async {
+        hisFriends = value['friends'];
+      });
+      for (var i = 0; i < myFriends.length; i++) {
+        for (var j = 0; j < hisFriends.length; j++) {
+          if (myFriends[i]['userName'] == hisFriends[j]['userName'] && myFriends[i]['status'] && hisFriends[j]['status']) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }else {
+      return false;
+    }
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////// start event functions ///////////////////////////////////
+  
   //variable
-  List events=[];
+  List events = [];
 
   //view each event support data
   var event;
@@ -37,18 +93,6 @@ class PostController extends ControllerMVC {
   //sub route
   String eventSubRoute;
 
-  @override
-  Future<bool> initAsync() async {
-    //
-    Helper.eventsData = FirebaseFirestore.instance
-        .collection(Helper.eventsField)
-        .withConverter<TokenLogin>(
-          fromFirestore: (snapshots, _) =>
-              TokenLogin.fromJSON(snapshots.data()!),
-          toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-        );
-    return true;
-  }
 
   //get all event function
   Future<List> getEvent(String condition) async {
@@ -99,41 +143,6 @@ class PostController extends ControllerMVC {
     });
     
     return realAllEvents;
-  }
-
-  //bool of my friends
-  Future<bool> boolMyFriend(String userName) async {
-    if (UserManager.userInfo['friends'] != null) {
-      var friends = UserManager.userInfo['friends'].where((eachUser) => eachUser['userName'] == userName && eachUser['status']);
-      if (friends.length > 0) {
-        return true;
-      }else {
-        return false;
-      }
-    }else {
-      return false;
-    }
-  }
-
-  //bool of friends of my friends
-  Future<bool> boolFriendMyFriend(String userId) async {
-    if (UserManager.userInfo['friends'] != null) {
-      var myFriends = UserManager.userInfo['friends'];
-      var hisFriends = [];
-      await Helper.authdata.doc(userId).get().then((value) async {
-        hisFriends = value['friends'];
-      });
-      for (var i = 0; i < myFriends.length; i++) {
-        for (var j = 0; j < hisFriends.length; j++) {
-          if (myFriends[i]['userName'] == hisFriends[j]['userName'] && myFriends[i]['status'] && hisFriends[j]['status']) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }else {
-      return false;
-    }
   }
 
   //get one event function that using uid of firebase database
@@ -324,4 +333,137 @@ class PostController extends ControllerMVC {
   }
 
   ////////////////////functions that make comment to event/////////////////////////////
+
+  ///////////////////////////end events functions //////////////////////////////////////////////////
+  
+  //////////////////////////// start event functions ///////////////////////////////////
+  
+  //variable
+  List pages = [];
+
+  //view each event support data
+  var page;
+  var viewPageId = '';
+  var viewPageLiked = false;
+
+  //sub router
+  String pageTab = 'Timeline';
+
+  //sub route
+  String pageSubRoute;
+
+
+  //get all event function
+  Future<List> getPage(String condition) async {
+    List<Map> realAllpage = [];
+    await Helper.pagesData.get().then((value) async {
+      var doc = value.docs;
+      for (int i = 0; i<doc.length; i++) {
+        var id = doc[i].id;
+        var liked = await boolLiked(id);
+        var data = doc[i];
+        if (UserManager.userInfo['userName'] == data['pageAdmin']['userName'] && condition == 'manage') {
+          realAllpage.add({'data':data,'id':id, 'liked' : liked});
+        }else if (condition == 'all') {
+          if (data['pagePost']) {
+            realAllpage.add({'data':data,'id':id, 'liked' : liked});
+          }
+        }else if (condition == 'liked' && liked) {
+          realAllpage.add({'data':data,'id':id, 'liked' : liked});
+        }
+        setState(() { });
+      }
+      print('Now you get all pages');
+    });
+    
+    return realAllpage;
+  }
+
+  //get one event function that using uid of firebase database
+  Future<bool> getSelectedPage(String id) async {
+    id = id.split('/')[id.split('/').length-1];
+    viewEventId = id;
+    await Helper.eventsData.doc(id).get().then((value) async {
+      event = value;
+      viewEventInterested = await boolInterested(id);
+      viewEventGoing = await boolGoing(id);
+      viewEventInvited = await boolInvited(id);
+      setState(() { });
+      print('This event was posted by ${event['eventAdmin']}');
+    });
+    return true;
+  }
+
+  //create event function
+  Future<void> createPage(context,Map<String, dynamic> pageData) async {
+    pageData = {
+      ...pageData,
+      'pageAdmin': {'userName': UserManager.userInfo['userName']},
+      'pageDate': DateTime.now().toString(),
+      'pageLiked': [],
+      'pagePost': false,
+      'pagePicture': '',
+    };
+    await FirebaseFirestore.instance
+        .collection(Helper.pagesField)
+        .add(pageData);
+        
+    Navigator
+      .pushReplacementNamed(
+          context,
+          '${RouteNames.pages}/${pageData['pageUserName']}');
+  }
+
+  ////////////////////functions that support for making comment to event/////////////////////////////
+
+  //user join in page liked function
+  Future<bool> likedPage(String pageId) async {
+    print('now you are liked or unliked this event ${pageId}');
+    var querySnapshot =
+          await Helper.pagesData.doc(pageId).get();
+    var doc = querySnapshot;
+    var liked = doc['pageLiked'];
+    var respon = await boolLiked(pageId);
+    if (respon) {
+      liked.removeWhere((item) => item['userName'] == UserManager.userInfo['userName']);
+      await FirebaseFirestore.instance
+        .collection(Helper.pagesField)
+        .doc(pageId)
+        .update({'pageLiked': liked});
+      return true;
+    }else {
+      liked.add({'userName': UserManager.userInfo['userName'], 
+                    'fullName': '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
+                    'userAvatar': UserManager.userInfo['avatar']});
+      await FirebaseFirestore.instance
+        .collection(Helper.pagesField)
+        .doc(pageId)
+        .update({'pageLiked': liked});
+      return true;
+    }
+  }
+
+  //bool of user already in event interested or not
+  Future<bool> boolLiked(String pageId) async {
+    var querySnapshot =
+          await Helper.pagesData.doc(pageId).get();
+    var doc = querySnapshot;
+    var liked = doc['pageLiked'];
+    if (liked == null) {
+      return false;
+    }
+    var returnData = liked.where((eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
+    print('you get bool of liked page');
+    if (returnData.length == 0) {
+      return false;
+    }else {
+      return true;
+    }
+  }
+
+  ////////////////////functions that make comment to event/////////////////////////////
+
+  ///////////////////////////end events functions //////////////////////////////////////////////////
+  
+  
 }

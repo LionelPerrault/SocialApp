@@ -42,6 +42,10 @@ class RouteGenerator {
       return MaterialPageRoute(
           builder: (context) => EventEachScreen(docId:settings.name.toString()), settings: settings);
     }
+    if (url.split('/')[1] == RouteNames.pagesName && url.split('/').length > 2) {
+      return MaterialPageRoute(
+          builder: (context) => EventEachScreen(docId:settings.name.toString()), settings: settings);
+    }
     switch (url) {
       case RouteNames.splashScreen:
         return MaterialPageRoute(

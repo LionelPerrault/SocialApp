@@ -1,36 +1,27 @@
-import 'dart:html';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/HomeController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/colors.dart';
 
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 
 class InterestsWidget extends StatefulWidget {
   BuildContext context;
+  Function sendUpdate;
   late PostController Postcon;
-  InterestsWidget({Key? key,required this.context}) :Postcon = PostController(), super(key: key);
+  InterestsWidget({Key? key,required this.context,required this.sendUpdate}) :Postcon = PostController(), super(key: key);
   @override
   State createState() => InterestsWidgetState();
 }
 class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
   bool isSound = false;
   late PostController Postcon;
-  Map<String, dynamic> eventInfo = {'eventPrivacy': 'public'};
   var interests = "none";
-  var privacy = 'public';
   var interest = 'none';
   var interestsCheck = [];
   var parent;
+  var saveData;
   List category = [
     {
       'title' : 'none'
@@ -49,19 +40,14 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
         },
         subCategory.add(allInterests[i]),
         parent = allInterests.where((inte) => inte['id'] == allInterests[i]['parentId']).toList(),
-        interestsCheck.add({'title' : allInterests[i]['title'], 'interested' : false, 'parentId' : parent.length == 0 ? allInterests[i]['title'] : parent[0]['title']})
+        interestsCheck.add({'id' : allInterests[i]['id'], 'title' : allInterests[i]['title'], 'interested' : false, 'parentId' : parent.length == 0 ? allInterests[i]['title'] : parent[0]['title']}),
+        setState(() { })
       }
     });
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    // for(int i = 0; i<interestsCheck.length; i++){
-    //   if (interestsCheck[i]['interested'] == true) {
-    //     Postcon.createEventData['interests'].add(interestsCheck[i]['id']);
-    //   }
-    // }
-    // Postcon.setState((){});
     return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +93,6 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                                 )
                               ).toList(),
                               onChanged: (dynamic? value) {
-                                //get value when changed
                                 interests = value!;
                                 for (var i = 0; i < interestsCheck.length; i++) {
                                   if (interestsCheck[i]['parentId'] == interests) {
@@ -115,17 +100,22 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                                   }
                                 }
                                 setState(() {});
+                                saveData = [];
+                                for(int i = 0; i<interestsCheck.length; i++){
+                                  if (interestsCheck[i]['interested'] == true) {
+                                    saveData.add(interestsCheck[i]['id']);
+                                  }
+                                }
+                                widget.sendUpdate(saveData);
                               },
                               style: const TextStyle(
-                                  //te
-                                  color: Colors.black, //Font color
-                                  fontSize:
-                                      12 //font size on dropdown button
+                                  color: Colors.black,
+                                  fontSize: 12
                                   ),
 
                               dropdownColor: Colors.white,
                               underline:
-                                  Container(), //remove underline
+                                  Container(),
                               isExpanded: true,
                               isDense: true,
                             ),
@@ -193,11 +183,19 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                               shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(
-                                          5.0))), // Rounded Checkbox
+                                          5.0))),
                               onChanged: (value) {
                                 setState(() {
                                   interestsCheck[index]['interested'] = !interestsCheck[index]['interested'];
                                 });
+                                saveData = [];
+                                for(int i = 0; i<interestsCheck.length; i++){
+                                  if (interestsCheck[i]['interested'] == true) {
+                                    saveData.add(interestsCheck[i]['id']);
+                                    setState(() { });
+                                  }
+                                }
+                                widget.sendUpdate(saveData);
                               },
                             )),
                         const Padding(padding: EdgeInsets.only(left: 30))

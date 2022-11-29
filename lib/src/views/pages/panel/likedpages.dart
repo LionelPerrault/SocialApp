@@ -23,7 +23,7 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var returnValue = [];
-  var goingEvents = [];
+  var likedPages = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -31,13 +31,15 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
     con = controller as PostController;
     con.setState(() { });
     super.initState();
-    getEventNow();
+    getPageNow();
   }
 
-  void getEventNow() {
-    con.getEvent('going').then((value) => {
-      returnValue = value,
-      goingEvents = value,
+  void getPageNow() {
+    con.getPage('liked').then((value) => {
+      likedPages = value,
+      likedPages.where((event) => event['data']['eventPost'] == true),
+      print(likedPages),
+      setState(() {}),
     });
   }
   @override
@@ -57,20 +59,24 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
                 shrinkWrap: true,
                 crossAxisSpacing: 4.0,
                 children: 
-                  goingEvents.map((event) => 
-                    EventCell(
-                      eventTap: (){
+                  likedPages.map((page) => 
+                    PageCell(
+                      pageTap: (){
                         Navigator
                         .pushReplacementNamed(
                             context,
-                            '/events/${event['id']}');
+                            '/events/${page['pageUserName']}');
                       },
-                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
-                      picture: 'null',
+                      buttonFun: (){
+                        con.likedPage(page['id']).then((value){
+                          getPageNow();
+                        });
+                      },
+                      picture: '',
                       status: false,
-                      interests: event['data']['eventInterested'].length,
-                      header: event['data']['eventName'],
-                      interested: event['interested'])).toList(),),
+                      likes: page['data']['pageLiked'].length,
+                      header: page['data']['pageName'],
+                      liked: page['liked'])).toList(),),
           ),
         ],
       ),
