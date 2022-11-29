@@ -344,6 +344,7 @@ class PostController extends ControllerMVC {
   //view each event support data
   var page;
   var viewPageId = '';
+  var viewPageName = '';
   var viewPageLiked = false;
 
   //sub router
@@ -380,14 +381,13 @@ class PostController extends ControllerMVC {
   }
 
   //get one event function that using uid of firebase database
-  Future<bool> getSelectedPage(String id) async {
-    id = id.split('/')[id.split('/').length-1];
-    viewEventId = id;
-    await Helper.eventsData.doc(id).get().then((value) async {
-      event = value;
-      viewEventInterested = await boolInterested(id);
-      viewEventGoing = await boolGoing(id);
-      viewEventInvited = await boolInvited(id);
+  Future<bool> getSelectedPage(String name) async {
+    name = name.split('/')[name.split('/').length-1];
+    // viewPageId = id;
+    viewPageName = name;
+    await Helper.pagesData.doc(name).get().then((value) async {
+      page = value;
+      viewPageLiked = await boolLiked(name);
       setState(() { });
       print('This event was posted by ${event['eventAdmin']}');
     });

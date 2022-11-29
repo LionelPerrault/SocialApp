@@ -8,18 +8,18 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
-class EventMembersScreen extends StatefulWidget {
+class PageMembersScreen extends StatefulWidget {
   Function onClick;
-  EventMembersScreen({Key? key,required this.onClick})
+  PageMembersScreen({Key? key,required this.onClick})
       : con = PostController(),
         super(key: key);
   final PostController con;
 
   @override
-  State createState() => EventMembersScreenState();
+  State createState() => PageMembersScreenState();
 }
 
-class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen>{
+class PageMembersScreenState extends mvc.StateMVC<PageMembersScreen>{
   var userInfo = UserManager.userInfo;
   String tab = 'Going';
   @override

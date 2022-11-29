@@ -4,18 +4,18 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
-class EventPhotosScreen extends StatefulWidget {
+class PagePhotosScreen extends StatefulWidget {
   Function onClick;
-  EventPhotosScreen({Key? key,required this.onClick})
+  PagePhotosScreen({Key? key,required this.onClick})
       : con = PostController(),
         super(key: key);
   final PostController con;
 
   @override
-  State createState() => EventPhotosScreenState();
+  State createState() => PagePhotosScreenState();
 }
 
-class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen>{
+class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen>{
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
   @override

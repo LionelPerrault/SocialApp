@@ -15,17 +15,17 @@ import 'pagePhotosScreen.dart';
 import 'pageTimelineScreen.dart';
 import 'pageVideosScreen.dart';
 
-class EventEachScreen extends StatefulWidget {
-  EventEachScreen({Key? key,required this.docId})
+class PageEachScreen extends StatefulWidget {
+  PageEachScreen({Key? key,required this.docId})
       : con = PostController(),
         super(key: key);
   final PostController con;
   String docId = '';
   @override
-  State createState() => EventEachScreenState();
+  State createState() => PageEachScreenState();
 }
 
-class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
+class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -51,13 +51,13 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
       duration: const Duration(milliseconds: 150),
     );
     con = controller as PostController;
-    getSelectedEvent(widget.docId);
+    getSelectedPage(widget.docId);
   }
 
   late PostController con;
   
-  void getSelectedEvent(id) {
-    con.getSelectedEvent(id).then((value) => {
+  void getSelectedPage(id) {
+    con.getSelectedPage(id).then((value) => {
       if (value){
         print('Successfully get event you want!!!'),
       }
@@ -149,16 +149,16 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  EventAvatarandTabScreen(onClick: (value) {
+                                  PageAvatarandTabScreen(onClick: (value) {
                                     print(value);
                                     con.eventTab = value;
                                     setState(() { });
                                   },),
-                                  con.eventTab == 'Timeline' ? EventTimelineScreen(onClick:(value){
+                                  con.eventTab == 'Timeline' ? PageTimelineScreen(onClick:(value){
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Photos' ? EventPhotosScreen(onClick:(value){
+                                  con.eventTab == 'Photos' ? PagePhotosScreen(onClick:(value){
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :
@@ -166,7 +166,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :
-                                  con.eventTab == 'Members' ? EventMembersScreen(onClick:(value){
+                                  con.eventTab == 'Members' ? PageMembersScreen(onClick:(value){
                                     con.eventTab = value;
                                     setState(() { });
                                   }) :
