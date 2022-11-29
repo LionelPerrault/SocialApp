@@ -168,15 +168,15 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                   return FractionalTranslation(
                       translation: SizeConfig(context).screenWidth >
                               SizeConfig.smallScreenSize
-                          ? Offset(0, 0)
+                          ? const Offset(0, 0)
                           : Offset(_drawerSlideController.value * 0.001, 0.0),
                       child: SizeConfig(context).screenWidth >
                                   SizeConfig.smallScreenSize ||
                               _isDrawerClosed()
                           ? const SizedBox()
                           : Padding(
-                              padding:
-                                  EdgeInsets.only(top: SizeConfig.navbarHeight),
+                              padding: const EdgeInsets.only(
+                                  top: SizeConfig.navbarHeight),
                               child: Container(
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,

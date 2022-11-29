@@ -29,11 +29,9 @@ class LeftPanel extends StatelessWidget {
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmessages.svg?alt=media&token=9893a9e0-1f09-4bca-82de-b829ba0f0bb5'),
           ListText(
-              onTap: () => {Navigator
-                    .pushReplacementNamed(
-                        context,
-                        RouteNames
-                            .settings)},
+              onTap: () => {
+                    Navigator.pushReplacementNamed(context, RouteNames.settings)
+                  },
               label: 'Settings',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb'),
@@ -55,16 +53,14 @@ class LeftPanel extends StatelessWidget {
                     color: Color.fromARGB(255, 150, 150, 150), fontSize: 10)),
           ]),
           ListText(
-              onTap: () => {},
+              onTap: () =>
+                  {Navigator.pushReplacementNamed(context, RouteNames.people)},
               label: 'People',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpeople.svg?alt=media&token=64d020ea-d767-45da-826e-2c24a989b175'),
           ListText(
-              onTap: () => {Navigator
-                    .pushReplacementNamed(
-                        context,
-                        RouteNames
-                            .events)},
+              onTap: () =>
+                  {Navigator.pushReplacementNamed(context, RouteNames.events)},
               label: 'Events',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fevents.svg?alt=media&token=92e4dba9-b601-4289-94f9-99534605a248'),
