@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
@@ -11,15 +13,27 @@ import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingEducationScreen extends StatefulWidget {
-  SettingEducationScreen({Key? key}) : super(key: key);
+  SettingEducationScreen({Key? key}) :
+    con = UserController(),
+  super(key: key);
+  late UserController con;
   @override
   State createState() => SettingEducationScreenState();
 }
 // ignore: must_be_immutable
-class SettingEducationScreenState extends State<SettingEducationScreen> {
-  var setting_profile = {};
+class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
+  var educationInfo = {};
+  late UserController con;
+  var userInfo = UserManager.userInfo;
+  @override
+  void initState(){
+    add(widget.con);
+    con = controller as UserController;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(padding: const EdgeInsets.only(top: 20, left:30),
@@ -54,9 +68,9 @@ class SettingEducationScreenState extends State<SettingEducationScreen> {
                             input(validator: (value) async {
                           print(value);
                         }, onchange: (value) async {
-                          setting_profile['school'] = value;
+                          educationInfo['school'] = value;
                           setState(() {});
-                        }),
+                        },text:userInfo['school'] ?? ''),
                       )
                     ],)
                   ),
@@ -84,9 +98,9 @@ class SettingEducationScreenState extends State<SettingEducationScreen> {
                             input(validator: (value) async {
                           print(value);
                         }, onchange: (value) async {
-                          setting_profile['major'] = value;
+                          educationInfo['major'] = value;
                           setState(() {});
-                        }),
+                        },text: userInfo['major'] ?? ''),
                       )
                     ],)
                   ),
@@ -97,7 +111,7 @@ class SettingEducationScreenState extends State<SettingEducationScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('Class',
+                      const Text('Class',
                           style: TextStyle(
                               color: Color.fromARGB(
                                   255, 82, 95, 127),
@@ -109,9 +123,9 @@ class SettingEducationScreenState extends State<SettingEducationScreen> {
                             input(validator: (value) async {
                           print(value);
                         }, onchange: (value) async {
-                          setting_profile['class'] = value;
+                          educationInfo['class'] = value;
                           setState(() {});
-                        }),
+                        },text: userInfo['class'] ?? ''),
                       )
                     ],)
                   ),
@@ -121,11 +135,11 @@ class SettingEducationScreenState extends State<SettingEducationScreen> {
             ],),
           ),
           const Padding(padding: EdgeInsets.only(top: 20)),
-          SettingFooter()
+          footer()
       ],)
       );
   }
-  Widget input({label, onchange, obscureText = false, validator}) {
+  Widget input({label, onchange, obscureText = false, validator,text}) {
     return Container(
       height: 28,
       child: StartedInput(
@@ -136,7 +150,55 @@ class SettingEducationScreenState extends State<SettingEducationScreen> {
         onChange: (val) async {
           onchange(val);
         },
+        text: text,
       ),
+    );
+  }
+  Widget footer(){
+    return Padding(
+      padding: EdgeInsets.only(right: 20, top: 20),
+      child: Container(
+        height: 65,
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Color.fromARGB(255, 220, 226, 237),
+              width: 1,
+            )
+          ),
+          color: Color.fromARGB(255, 240, 243, 246),
+          // borderRadius: BorderRadius.all(Radius.circular(3)),
+        ),
+        padding: const EdgeInsets.only(top: 5, left: 15),
+        child: Row(children: [
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(3),
+              backgroundColor: Colors.white,
+              // elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3.0)),
+              minimumSize: con.isProfileChange ? const Size(90, 50) : const Size(120, 50),
+              maximumSize: con.isProfileChange ? const Size(90, 50) : const Size(120, 50),
+            ),
+            onPressed: () {
+              con.profileChange(educationInfo);
+            },
+            child: con.isProfileChange ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                  SizedBox(
+                    width: 10,
+                    height: 10,
+                    child: CircularProgressIndicator(color: Colors.black),
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 7)),
+                  Text('Loading', style: TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.bold))
+                ],) : const Text('Save Changes', style: TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.bold))),
+            const Padding(padding: EdgeInsets.only(right: 30))
+        ],)
+        ),
     );
   }
 }

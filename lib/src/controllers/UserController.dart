@@ -21,6 +21,7 @@ class UserController extends ControllerMVC {
       _this ??= UserController._(state);
   UserController._(StateMVC? state) :
     isSettingAction = false,
+    isProfileChange = false,
    super(state);
   static UserController? _this;
   String token = '';
@@ -32,6 +33,7 @@ class UserController extends ControllerMVC {
   String walletAddress = '';
   int balance = 0;
   bool isSendRegisterInfo = false;
+  bool isProfileChange;
   bool isSettingAction;
   bool isSendLoginedInfo = false;
   bool isStarted = false;
@@ -553,6 +555,31 @@ class UserController extends ControllerMVC {
       setState(() { });
     } catch (e) {
       rethrow;
+    }
+  }
+  profileChange(profile) async {
+    if(profile.isNotEmpty){
+      isProfileChange = true;
+      setState(() {});
+      var userManager = UserManager.userInfo;
+      var snapshot = await FirebaseFirestore.instance.collection(Helper.userField)
+        .where('userName',isEqualTo: userManager['userName']).get();
+      print(snapshot.docs[0].id);
+      await FirebaseFirestore.instance.collection(Helper.userField)
+      .doc(snapshot.docs[0].id).update({
+        ...profile
+      });
+      profile.forEach((key,value) {
+        userManager[key] = value; 
+      });
+      var j = {};
+      userManager.forEach((key, value) {
+        j = {...j, key.toString(): value.toString()};
+      });
+      await Helper.saveJSONPreference(Helper.userField, {...j});
+      await UserManager.getUserInfo();
+      isProfileChange = false;
+      setState(() {});
     }
   }
 }

@@ -1,8 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
@@ -13,21 +16,62 @@ import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingBasicScreen extends StatefulWidget {
-  SettingBasicScreen({Key? key}) : super(key: key);
+  SettingBasicScreen({Key? key}) :
+    con = UserController(),
+   super(key: key);
+  late UserController con;
   @override
   State createState() => SettingBasicScreenState();
 }
 // ignore: must_be_immutable
-class SettingBasicScreenState extends State<SettingBasicScreen> {
+class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
   var setting_profile = {};
+  var sex = 'male';
+    var relation = 'Select Relationship';
+    var country = 'male';
+    var birthm = '1';
+    var birthd = '1';
+    var birthy = '1910';
+  var userInfo = UserManager.userInfo;
+  List month = [{'value':'1','data':'Jan'},{'value':'2','data':'Feb'},{'value':'3','data':'Mar'},
+      {'value':'4','data':'Apr'},{'value':'5','data':'May'},{'value':'6','data':'Jun'},{'value':'7','data':'Jul'},
+      {'value':'8','data':'Aug'},{'value':'9','data':'Sep'},{'value':'10','data':'Oct'},{'value':'11','data':'Nov'},{'value':'12','data':'Dec'}];
+  late Map day = {};
+  late List year = [];
+  TextEditingController aboutController = TextEditingController();
+  TextEditingController religionController = TextEditingController();
+  late UserController con;
+  @override
+  void initState(){
+    add(widget.con);
+    con = controller as UserController;
+    sex = userInfo['sex'];
+    print(sex);
+    aboutController.text = userInfo['about'] ?? '';
+    religionController.text = userInfo['current'] ?? '';
+    for(int i = 1; i < 13; i++){
+      var d = [];
+      for(int j = 1; j < 32; j++){
+        if(i == 2 && j == 29){
+          break;
+        }
+        else if(i == 4 || i == 6 || i == 9 || i == 11){
+          if(j == 31){
+            break;
+          }
+        }
+        d.add(j.toString());
+      }
+      day = {...day,i.toString():d};
+    }
+    for(int i = 1910; i < 2022; i++){
+      year.add(i.toString());
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    var sex = 'Male';
-    var relation = 'Select Relationship';
-    var country = 'Male';
-    var birthm = 'Male';
-    var birthd = 'Male';
-    var birthy = 'Male';
+    List bDay = day[birthm];
     return Container(padding: const EdgeInsets.only(top: 20, left:30),
       child: 
         Column(children: [
@@ -48,21 +92,20 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('First Name',
+                      const Text('First Name',
                           style: TextStyle(
                               color: Color.fromARGB(
                                   255, 82, 95, 127),
                               fontSize: 11,
                               fontWeight: FontWeight.bold)),
-                      Container(
+                      SizedBox(
                         width: 300,
                         child:
                             input(validator: (value) async {
                           print(value);
                         }, onchange: (value) async {
-                          setting_profile['first_name'] = value;
-                          setState(() {});
-                        }),
+                          setting_profile['firstName'] = value;
+                        },text:userInfo['firstName']),
                       )
                     ],)
                   ),
@@ -73,21 +116,20 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('Last Name',
+                      const Text('Last Name',
                           style: TextStyle(
                               color: Color.fromARGB(
                                   255, 82, 95, 127),
                               fontSize: 11,
                               fontWeight: FontWeight.bold)),
-                      Container(
+                      SizedBox(
                         width: 300,
                         child:
                             input(validator: (value) async {
                           print(value);
                         }, onchange: (value) async {
-                          setting_profile['first_name'] = value;
-                          setState(() {});
-                        }),
+                          setting_profile['lastName'] = value;
+                        },text:userInfo['lastName']),
                       )
                     ],)
                   ),
@@ -103,7 +145,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('I am',
+                      const Text('I am',
                           style: TextStyle(
                               color: Color.fromARGB(
                                   255, 82, 95, 127),
@@ -112,7 +154,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       Container(
                         width: 300,
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(
+                            color: const Color.fromARGB(
                                 255, 250, 250, 250),
                             border:
                                 Border.all(color: Colors.grey)),
@@ -126,14 +168,14 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                               child: Text("Select Sex"),
                             ),
                             DropdownMenuItem(
-                                value: "Male",
+                                value: "male",
                                 child: Text("Male")),
                             DropdownMenuItem(
-                              value: "Female",
+                              value: "female",
                               child: Text("Female"),
                             ),
                             DropdownMenuItem(
-                              value: "Other",
+                              value: "other",
                               child: Text("Other"),
                             ),
                           ],
@@ -166,7 +208,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('Last Name',
+                      const Text('Relationship Status',
                           style: TextStyle(
                               color: Color.fromARGB(
                                   255, 82, 95, 127),
@@ -175,7 +217,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       Container(
                         width: 300,
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(
+                            color: const Color.fromARGB(
                                 255, 250, 250, 250),
                             border:
                                 Border.all(color: Colors.grey)),
@@ -219,7 +261,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                           onChanged: (String? value) {
                             //get value when changed
                             setting_profile['relation'] = value;
-                            relation= value!;
+                            relation = value!;
                             setState(() {});
                           },
                           style: const TextStyle(
@@ -250,7 +292,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('Country',
+                      const Text('Country',
                           style: TextStyle(
                               color: Color.fromARGB(
                                   255, 82, 95, 127),
@@ -259,7 +301,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       Container(
                         width: 300,
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(
+                            color: const Color.fromARGB(
                                 255, 250, 250, 250),
                             border:
                                 Border.all(color: Colors.grey)),
@@ -273,14 +315,14 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                               child: Text("Select Sex"),
                             ),
                             DropdownMenuItem(
-                                value: "Male",
+                                value: "male",
                                 child: Text("Male")),
                             DropdownMenuItem(
-                              value: "Female",
+                              value: "female",
                               child: Text("Female"),
                             ),
                             DropdownMenuItem(
-                              value: "Other",
+                              value: "other",
                               child: Text("Other"),
                             ),
                           ],
@@ -313,23 +355,22 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('Website',
+                      const Text('Website',
                           style: TextStyle(
                               color: Color.fromARGB(
                                   255, 82, 95, 127),
                               fontSize: 11,
                               fontWeight: FontWeight.bold)),
-                      Container(
+                      SizedBox(
                         width: 300,
                         child:
                             input(validator: (value) async {
                           print(value);
                         }, onchange: (value) async {
-                          setting_profile['website'] = value;
-                          setState(() {});
-                        }),
+                          setting_profile['workWebsite'] = value;
+                        },text:userInfo['workWebsite'] ?? ''),
                       ),
-                      Text('Website link must start with http:// or https://', style: TextStyle(fontSize: 12),)
+                      const Text('Website link must start with http:// or https://', style: TextStyle(fontSize: 12),)
                     ],)
                   ),
                   const Padding(padding: EdgeInsets.only(right: 20))
@@ -344,7 +385,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('Birthday',
+                      const Text('Birthday',
                           style: TextStyle(
                               color: Color.fromARGB(
                                   255, 82, 95, 127),
@@ -360,28 +401,15 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                         padding: const EdgeInsets.only(left: 20),
                         child: DropdownButton(
                           value: birthm,
-                          items: const [
-                            //add items in the dropdown
+                          items: month.map((e) => 
                             DropdownMenuItem(
-                              value: "Select Sex",
-                              child: Text("Select Sex"),
-                            ),
-                            DropdownMenuItem(
-                                value: "Male",
-                                child: Text("Male")),
-                            DropdownMenuItem(
-                              value: "Female",
-                              child: Text("Female"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Other",
-                              child: Text("Other"),
-                            ),
-                          ],
-                          onChanged: (String? value) {
+                              value: e['value'],
+                              child: Text(e['data']))
+                          ).toList(),
+                          onChanged: (value) {
                             //get value when changed
-                            setting_profile['birthm'] = value;
-                            birthm= value!;
+                            birthm = value.toString();
+                            setting_profile['birthM'] = birthm;
                             setState(() {});
                           },
                           style: const TextStyle(
@@ -423,28 +451,16 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                         padding: const EdgeInsets.only(left: 20),
                         child: DropdownButton(
                           value: birthd,
-                          items: const [
-                            //add items in the dropdown
+                          items: bDay.map((e) => 
                             DropdownMenuItem(
-                              value: "Select Sex",
-                              child: Text("Select Sex"),
-                            ),
-                            DropdownMenuItem(
-                                value: "Male",
-                                child: Text("Male")),
-                            DropdownMenuItem(
-                              value: "Female",
-                              child: Text("Female"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Other",
-                              child: Text("Other"),
-                            ),
-                          ],
-                          onChanged: (String? value) {
+                              value: e,
+                              child: Text(e)
+                            )
+                          ).toList(),
+                          onChanged: (value) {
                             //get value when changed
-                            setting_profile['birthd'] = value;
-                            country= value!;
+                            birthd = value.toString();
+                            setting_profile['birthD'] = birthd;
                             setState(() {});
                           },
                           style: const TextStyle(
@@ -486,28 +502,15 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                         padding: const EdgeInsets.only(left: 20),
                         child: DropdownButton(
                           value: birthy,
-                          items: const [
-                            //add items in the dropdown
+                          items: year.map(((e) => 
                             DropdownMenuItem(
-                              value: "Select Sex",
-                              child: Text("Select Sex"),
-                            ),
-                            DropdownMenuItem(
-                                value: "Male",
-                                child: Text("Male")),
-                            DropdownMenuItem(
-                              value: "Female",
-                              child: Text("Female"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Other",
-                              child: Text("Other"),
-                            ),
-                          ],
-                          onChanged: (String? value) {
+                              value: e,
+                              child: Text(e))
+                          )).toList(),
+                          onChanged: (value) {
                             //get value when changed
-                            setting_profile['birthy'] = value;
-                            country= value!;
+                            setting_profile['birthY'] = value.toString();
+                            birthy = value.toString();
                             setState(() {});
                           },
                           style: const TextStyle(
@@ -553,6 +556,10 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                                 Border.all(color: Colors.grey)),
                         padding: const EdgeInsets.only(left: 20),
                         child: TextFormField(
+                          controller: aboutController,
+                          onChanged: (value){
+                            setting_profile['about'] = value;
+                          },
                               minLines: 1,
                               maxLines: 5,
                               keyboardType: TextInputType.multiline,
@@ -596,9 +603,9 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
                             input(validator: (value) async {
                           print(value);
                         }, onchange: (value) async {
-                          setting_profile['religion'] = value;
+                          setting_profile['current'] = value;
                           setState(() {});
-                        }),
+                        },text: userInfo['current'] ?? ''),
                       )
                     ],)
                   ),
@@ -609,11 +616,55 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
             ],),
           ),
           const Padding(padding: EdgeInsets.only(top: 20)),
-          SettingFooter()
+          Padding(
+      padding: EdgeInsets.only(right: 20, top: 20),
+      child: Container(
+        height: 65,
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Color.fromARGB(255, 220, 226, 237),
+              width: 1,
+            )
+          ),
+          color: Color.fromARGB(255, 240, 243, 246),
+          // borderRadius: BorderRadius.all(Radius.circular(3)),
+        ),
+        padding: const EdgeInsets.only(top: 5, left: 15),
+        child: Row(children: [
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(3),
+              backgroundColor: Colors.white,
+              // elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3.0)),
+              minimumSize: con.isProfileChange ? const Size(90, 50) : const Size(120, 50),
+              maximumSize: con.isProfileChange ? const Size(90, 50) : const Size(120, 50),
+            ),
+            onPressed: () {
+              con.profileChange(setting_profile);
+            },
+            child: con.isProfileChange ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                  SizedBox(
+                    width: 10,
+                    height: 10,
+                    child: CircularProgressIndicator(color: Colors.black),
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 7)),
+                  Text('Loading', style: TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.bold))
+                ],) : const Text('Save Changes', style: TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.bold))),
+            const Padding(padding: EdgeInsets.only(right: 30))
+        ],)
+        ),
+    )
       ],)
       );
   }
-  Widget input({label, onchange, obscureText = false, validator}) {
+  Widget input({label, onchange, obscureText = false, validator,text = ''}) {
     return Container(
       height: 28,
       child: StartedInput(
@@ -624,6 +675,7 @@ class SettingBasicScreenState extends State<SettingBasicScreen> {
         onChange: (val) async {
           onchange(val);
         },
+        text:text
       ),
     );
   }
