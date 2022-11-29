@@ -19,7 +19,9 @@ enum EmailType { emailVerify, googleVerify }
 class UserController extends ControllerMVC {
   factory UserController([StateMVC? state]) =>
       _this ??= UserController._(state);
-  UserController._(StateMVC? state) : super(state);
+  UserController._(StateMVC? state) :
+    isSettingAction = false,
+   super(state);
   static UserController? _this;
   String token = '';
   String email = '';
@@ -30,6 +32,7 @@ class UserController extends ControllerMVC {
   String walletAddress = '';
   int balance = 0;
   bool isSendRegisterInfo = false;
+  bool isSettingAction;
   bool isSendLoginedInfo = false;
   bool isStarted = false;
   bool isVerify = false;
@@ -44,7 +47,6 @@ class UserController extends ControllerMVC {
   var responseData;
   var context;
   var signUpUserInfo = {};
-
   @override
   Future<bool> initAsync() async {
     //
@@ -109,7 +111,7 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    if (password.length < 9) {
+    if (password.length < Helper.passwordMinLength) {
       failRegister = 'Password length should be 8 over';
       isSendRegisterInfo = false;
       setState(() {});
@@ -499,5 +501,58 @@ class UserController extends ControllerMVC {
         await Helper.allInterests.orderBy('title').get();
     var doc = querySnapshot.docs;
     return doc;
+  }
+  saveAccountSettings(email,userName, password) async {
+    var userManager = UserManager.userInfo;
+    var uuid = '';
+    isSettingAction = true;
+    setState(() { });
+    if(!email.contains('@')){
+      return;
+    }
+    if(password.length < Helper.passwordMinLength){
+      return;
+    }
+    await FirebaseAuth.instance.signInWithEmailAndPassword(email: userManager['email'], password: userManager['password']);
+    await FirebaseAuth.instance.currentUser?.delete();
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      uuid = userCredential.user!.uid;
+      var snapshot = await FirebaseFirestore.instance.collection(Helper.userField)
+                      .doc(UserManager.userInfo['uid']).get();
+      await FirebaseFirestore.instance.collection(Helper.userField)
+          .doc(UserManager.userInfo['uid']).delete();
+      var user = {};
+      snapshot.data()!.forEach((key,value) {  
+        user = {...user,key:key == 'email' ? email : key =='password' ? password
+         : key == 'userName' ? userName : value};
+      });
+      await FirebaseFirestore.instance.collection(Helper.userField)
+      .doc(uuid).set({
+        ...user,
+      });
+      var j = {};
+      user.forEach((key, value) {
+        j = {...j, key.toString(): value.toString()};
+      });
+      await Helper.saveJSONPreference(Helper.userField, {...j,'uid':uuid});
+      UserManager.getUserInfo();
+      isSettingAction = false;
+      setState(() { });
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        uuid = userCredential.user!.uid;
+      } else {}
+      isSettingAction = false;
+      setState(() { });
+    } catch (e) {
+      rethrow;
+    }
   }
 }
