@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -19,9 +19,9 @@ import 'package:shnatter/src/utils/size_config.dart';
 class PageAvatarandTabScreen extends StatefulWidget {
   Function onClick;
   PageAvatarandTabScreen({Key? key, required this.onClick})
-      : con = ProfileController(),
+      : con = PostController(),
         super(key: key);
-  final ProfileController con;
+  final PostController con;
   @override
   State createState() => PageAvatarandTabScreenState();
 }
@@ -32,30 +32,31 @@ class PageAvatarandTabScreenState extends mvc
   double width = 0;
   double itemWidth = 0;
   var tap = 'Timeline';
-  var userInfo = UserManager.userInfo;
+  var pageInfo;
   late String avatar;
   double avatarProgress = 0;
   double coverProgress = 0;
   List<Map> mainTabList = [
     {'title': 'Timeline', 'icon': Icons.tab},
-    {'title': 'Friends', 'icon': Icons.group_sharp},
+    // {'title': 'Friends', 'icon': Icons.group_sharp},
     {'title': 'Photos', 'icon': Icons.photo},
     {'title': 'Videos', 'icon': Icons.video_call},
-    {'title': 'Likes', 'icon': Icons.flag},
-    {'title': 'Groups', 'icon': Icons.group_sharp},
-    {'title': 'Events', 'icon': Icons.gif_box},
+    {'title': 'Invite Friends', 'icon': Icons.person_add_alt_rounded},
+    {'title': 'Settings', 'icon': Icons.settings},
   ];
   @override
   void initState() {
     super.initState();
     add(widget.con);
-    avatar = userInfo['avatar'];
-    print(avatar);
-    con = controller as ProfileController;
+    con = controller as PostController;
+    var pageInfo = con.page;
+    print(con.page);
+    print('this is pageInfo');
+    avatar = '';
     _gotoHome();
   }
 
-  late ProfileController con;
+  late PostController con;
   var userCon = UserController();
   void _gotoHome() {
     Future.delayed(Duration.zero, () {
@@ -73,14 +74,10 @@ class PageAvatarandTabScreenState extends mvc
           margin: const EdgeInsets.only(left: 30, right: 30),
           width: SizeConfig(context).screenWidth,
           height: SizeConfig(context).screenHeight * 0.5,
-          decoration: con.profile_cover == ''
-              ? const BoxDecoration(
+          decoration: const BoxDecoration(
                   color: Color.fromRGBO(66, 66, 66, 1),
-                )
-              : const BoxDecoration(),
-          child: con.profile_cover == ''
-              ? Container()
-              : Image.network(con.profile_cover, fit: BoxFit.cover),
+                ),
+          child: Container(),
         ),
         Container(
             alignment: Alignment.topLeft,
@@ -147,7 +144,7 @@ class PageAvatarandTabScreenState extends mvc
                 radius: 78,
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
-                    radius: 75, backgroundImage: NetworkImage(avatar)),
+                    radius: 75, backgroundImage: NetworkImage('')),
               )
             : CircleAvatar(
                 radius: 78,
@@ -207,7 +204,7 @@ class PageAvatarandTabScreenState extends mvc
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${userInfo['firstName']} ${userInfo['lastName']}',
+          '${con.page['pageName']}',
           style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -261,7 +258,7 @@ class PageAvatarandTabScreenState extends mvc
                                                       fontWeight:
                                                           FontWeight.bold))
                                             ]),
-                                        e['title'] == con.tab
+                                        e['title'] == con.pageTab
                                             ? Container(
                                                 margin: const EdgeInsets.only(
                                                     top: 23),
@@ -313,25 +310,6 @@ class PageAvatarandTabScreenState extends mvc
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
-        uploadTask.whenComplete(() async {
-          var downloadUrl = await _reference.getDownloadURL();
-          if (type == 'profile_cover') {
-            FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(UserManager.userInfo['uid'])
-                .update({'profile_cover': downloadUrl}).then((e) async {
-              con.profile_cover = downloadUrl;
-              await Helper.saveJSONPreference(Helper.userField,
-                  {...userInfo, 'profile_cover': downloadUrl});
-              setState(() {});
-            });
-          } else {
-            userCon.userAvatar = downloadUrl;
-            await userCon.changeAvatar();
-            avatar = downloadUrl;
-            setState(() {});
-          }
-        });
         uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
           switch (taskSnapshot.state) {
             case TaskState.running:

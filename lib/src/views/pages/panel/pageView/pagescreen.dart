@@ -11,9 +11,8 @@ import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageAvatarandTabscreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageEventsScreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageFriendsScreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageGroupsScreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageLikesScreen.dart';
+import 'package:shnatter/src/views/pages/panel/pageView/pageSettingsScreen.dart';
+import 'package:shnatter/src/views/pages/panel/pageView/pageInviteScreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pagePhotosScreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageTimelineScreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageVideosScreen.dart';
@@ -66,8 +65,13 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    getSelectedPage(widget.docId);
   }
-
+  void getSelectedPage(String docId) {
+    con.getSelectedPage(docId).then((value) => {
+      print('You get selected page info!'),
+    });
+  }
   late PostController con;
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
@@ -141,13 +145,17 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
             Padding(
                 padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child:
-                    //AnimatedPositioned(
-                    //top: showMenu ? 0 : -150.0,
-                    //duration: const Duration(seconds: 2),
-                    //curve: Curves.fastOutSlowIn,
-                    //child:
                     SingleChildScrollView(
-                  child: Column(
+                  child: con.page == null ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Container(
+                        width: 50,
+                        height: 50,
+                        margin: EdgeInsets.only(top: SizeConfig(context).screenHeight*2/5),
+                        child: const CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )]) : Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -160,10 +168,6 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
                           con.pageTab = value;
                           setState(() { });
                         }) :
-                        con.pageTab == 'Friends' ? PageFriendScreen(onClick:(value){
-                          con.pageTab = value;
-                          setState(() { });
-                        }) :
                         con.pageTab == 'Photos' ? PagePhotosScreen(onClick:(value){
                           con.pageTab = value;
                           setState(() { });
@@ -172,11 +176,11 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
                           con.pageTab = value;
                           setState(() { });
                         }) :
-                        con.pageTab == 'Likes' ? PageLikesScreen(onClick:(value){
+                        con.pageTab == 'Invite Friends' ? PageInviteScreen(onClick:(value){
                           con.pageTab = value;
                           setState(() { });
                         }) :
-                        con.pageTab == 'Groups' ? PageGroupsScreen(onClick:(value){
+                        con.pageTab == 'Settings' ? PageSettingsScreen(onClick:(value){
                           con.pageTab = value;
                           setState(() { });
                         }) :

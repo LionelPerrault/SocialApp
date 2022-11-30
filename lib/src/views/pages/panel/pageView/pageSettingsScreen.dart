@@ -8,17 +8,17 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 
 // ignore: must_be_immutable
-class PageGroupsScreen extends StatefulWidget {
+class PageSettingsScreen extends StatefulWidget {
   Function onClick;
-  PageGroupsScreen({Key? key, required this.onClick})
+  PageSettingsScreen({Key? key, required this.onClick})
       : con = PostController(),
         super(key: key);
   final PostController con;
   @override
-  State createState() => PageGroupsScreenState();
+  State createState() => PageSettingsScreenState();
 }
 
-class PageGroupsScreenState extends mvc.StateMVC<PageGroupsScreen>{
+class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen>{
   var userInfo = UserManager.userInfo;
   @override
   void initState() {

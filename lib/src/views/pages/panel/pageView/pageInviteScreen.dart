@@ -12,17 +12,17 @@ import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PageLikesScreen extends StatefulWidget {
+class PageInviteScreen extends StatefulWidget {
   Function onClick;
-  PageLikesScreen({Key? key,required this.onClick})
+  PageInviteScreen({Key? key,required this.onClick})
       : con = PostController(),
         super(key: key);
   final PostController con;
   @override
-  State createState() => PageLikesScreenState();
+  State createState() => PageInviteScreenState();
 }
 
-class PageLikesScreenState extends mvc.StateMVC<PageLikesScreen>{
+class PageInviteScreenState extends mvc.StateMVC<PageInviteScreen>{
   var userInfo = UserManager.userInfo;
   @override
   void initState() {
