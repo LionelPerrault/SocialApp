@@ -33,9 +33,13 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
   String profileImage = UserManager.userInfo['profileImage'] ?? '';
   @override
   Widget build(BuildContext context) {
+    print(progress);
     return Container(padding: const EdgeInsets.only(top: 20, left:30),
       child: 
-        Column(children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
           SettingHeader(icon: Icon(Icons.brush, color: Color.fromARGB(255, 43, 83, 164),), pagename: 'Design',
             // ignore: prefer_const_literals_to_create_immutables
             button: {'buttoncolor': Color.fromARGB(255, 17, 205, 239),
@@ -46,6 +50,7 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
           Container(
             width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
             height: 80,
+            padding: EdgeInsets.only(left: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +99,7 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
                         child: AnimatedContainer(
                           color: Colors.blue,
                           duration: const Duration(milliseconds: 500),
-                          padding: EdgeInsets.only(right: 60 - 60*progress/100),
+                          margin: EdgeInsets.only(right: 60 - 60*progress/100),
                         ),
                       ) : Container()
                   ],

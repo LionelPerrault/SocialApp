@@ -163,7 +163,9 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen>{
   }
   Widget friendsData(){
     return userInfo['friends'] == null ? Container(
-      padding: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: SizeConfig(context).screenHeight * 0.2,
+      color: Colors.white,
       alignment: Alignment.center,
       child: Text('${userInfo['fullName']} doesn`t have friends',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
@@ -172,7 +174,9 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen>{
   }
   Widget followingsData(){
     return userInfo['followings'] == null ? Container(
-      padding: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: SizeConfig(context).screenHeight * 0.2,
+      color: Colors.white,
       alignment: Alignment.center,
       child: Text('${userInfo['fullName']} doesn`t have followings',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
@@ -181,7 +185,9 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen>{
   }
   Widget followsData(){
     return userInfo['followers'] == null ? Container(
-      padding: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: SizeConfig(context).screenHeight * 0.2,
+      color: Colors.white,
       alignment: Alignment.center,
       child: Text('${userInfo['fullName']} doesn`t have followers',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)

@@ -122,7 +122,9 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen>{
   }
   Widget PhotosData(){
     return userInfo['photos'] == null ? Container(
-      padding: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: SizeConfig(context).screenHeight * 0.2,
+      color: Colors.white,
       alignment: Alignment.center,
       child: Text('${userInfo['fullName']} doesn`t have photos',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
@@ -131,7 +133,9 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen>{
   }
   Widget AlbumsData(){
     return userInfo['albums'] == null ? Container(
-      padding: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: SizeConfig(context).screenHeight * 0.2,
+      color: Colors.white,
       alignment: Alignment.center,
       child: Text('${userInfo['fullName']} doesn`t have albums',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)

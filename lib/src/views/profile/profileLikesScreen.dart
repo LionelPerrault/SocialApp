@@ -55,10 +55,11 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen>{
               Container(
                 margin: const EdgeInsets.only(left:20,top: 30),
                 child: Row(children: const [
-                  Icon(Icons.thumb_up,size: 17,),
+                  Icon(Icons.thumb_up,size: 17,color: Colors.black,),
                   Padding(padding: EdgeInsets.only(left: 5)),
                   Text('Likes',style: TextStyle(
-                    fontSize: 15
+                    fontSize: 15,
+                    color: Colors.black
                   ),)
                 ],)
               ),
@@ -68,7 +69,9 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen>{
   }
   Widget likesData(){
     return userInfo['likes'] == null ? Container(
-      padding: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: 200,
+      color: Colors.white,
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

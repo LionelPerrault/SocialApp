@@ -83,27 +83,39 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children:[
-                profileCompletion(),
+                Container(
+                  height: (SizeConfig(context).screenHeight - SizeConfig.navbarHeight)/2,
+                  padding: EdgeInsets.only(bottom: 90),
+                  child: profileCompletion(),
+                ),
                 MindPost()
             ]),
         );
   }
   Widget profileCompletion(){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-    // children: <Widget>[
-    //     Text('\$', style: TextStyle(decoration: TextDecoration.lineThrough))
-    children: mainInfoList.map((e) =>Container(
-      padding: const EdgeInsets.only(top: 5),
-      child:
-       Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-      Icon(e['add'] ? Icons.check : Icons.add,size:15),
-      const Padding(padding: EdgeInsets.only(left: 5),),
-       Text(e['title'],style: e['add'] ? const TextStyle(decoration: TextDecoration.lineThrough) : const TextStyle(),)  
-    ],))).toList(),
-    
-);
+    return 
+    Container(
+      padding: EdgeInsets.only(left:15,right: 15,top: 15,),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(5))
+      ),
+      child: 
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+        // children: <Widget>[
+        //     Text('\$', style: TextStyle(decoration: TextDecoration.lineThrough))
+        children: mainInfoList.map((e) =>Container(
+          padding: const EdgeInsets.only(top: 5),
+          child:
+          Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+          Icon(e['add'] ? Icons.check : Icons.add,size:15),
+          const Padding(padding: EdgeInsets.only(left: 5),),
+          Text(e['title'],style: e['add'] ? const TextStyle(decoration: TextDecoration.lineThrough) : const TextStyle(),)  
+        ],))).toList(),
+        
+    ));
   }
 }

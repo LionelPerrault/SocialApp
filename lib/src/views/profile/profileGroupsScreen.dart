@@ -64,7 +64,9 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen>{
   }
   Widget likesData(){
     return userInfo['groups'] == null ? Container(
-      padding: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: 200,
+      color: Colors.white,
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
