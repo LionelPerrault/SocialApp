@@ -12,17 +12,16 @@ import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PageVideosScreen extends StatefulWidget {
-  Function onClick;
-  PageVideosScreen({Key? key, required this.onClick})
+class PageEventsScreen extends StatefulWidget {
+  PageEventsScreen({Key? key})
       : con = PostController(),
         super(key: key);
   final PostController con;
   @override
-  State createState() => PageVideosScreenState();
+  State createState() => PageEventsScreenState();
 }
 
-class PageVideosScreenState extends mvc.StateMVC<PageVideosScreen>{
+class PageEventsScreenState extends mvc.StateMVC<PageEventsScreen>{
   var userInfo = UserManager.userInfo;
   @override
   void initState() {
@@ -31,31 +30,33 @@ class PageVideosScreenState extends mvc.StateMVC<PageVideosScreen>{
     con = controller as PostController;
   }
   late PostController con;
+  
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       mainTabs(),
-      videosData()
+      likesData()
     ]);
   }
   Widget mainTabs(){
     return Container(
           width: SizeConfig(context).screenWidth ,
-          height: 100,
+          height: 70,
           margin: const EdgeInsets.only(left: 30,right: 30),
           decoration: BoxDecoration(
             color: const Color.fromRGBO(240, 240, 240, 1),
             borderRadius: BorderRadius.circular(3),
+            border: const Border(bottom: BorderSide(width: 0.5,color: Color.fromRGBO(240, 240, 240, 1)))
           ),
           alignment: Alignment.topLeft,
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.only(left:20,top: 20),
+                margin: const EdgeInsets.only(left:20,top: 30),
                 child: Row(children: const [
-                  Icon(Icons.video_call,size: 15,),
+                  Icon(Icons.add_box,size: 17,),
                   Padding(padding: EdgeInsets.only(left: 5)),
-                  Text('Videos',style: TextStyle(
+                  Text('Events',style: TextStyle(
                     fontSize: 15
                   ),)
                 ],)
@@ -64,13 +65,31 @@ class PageVideosScreenState extends mvc.StateMVC<PageVideosScreen>{
           ),
       );
   }
-  Widget videosData(){
-    return userInfo['videos'] == null ? Container(
+  Widget likesData(){
+    return userInfo['events'] == null ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have videos',style:const TextStyle(
-        color: Color.fromRGBO(108, 117, 125, 1)
-      )),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.network(Helper.emptySVG,width:90),
+          Container(
+            alignment:Alignment.center,
+            margin: const EdgeInsets.only(top:10),
+            padding: const EdgeInsets.only(top: 10,bottom:10),
+            width: 140,
+            decoration: const BoxDecoration(
+            color: Color.fromRGBO(240,240,240, 1),
+              borderRadius: BorderRadius.all(Radius.circular(20))
+            ),
+            child: const Text('No data to show',style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(108, 117, 125, 1)
+            ),)
+          )
+        ]
+
+      )
     ) : Container();
   }
 }

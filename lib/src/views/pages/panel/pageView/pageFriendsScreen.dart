@@ -12,42 +12,60 @@ import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PagePhotosScreen extends StatefulWidget {
+class PageFriendScreen extends StatefulWidget {
   Function onClick;
-  PagePhotosScreen({Key? key,required this.onClick})
+  PageFriendScreen({Key? key,required this.onClick})
       : con = PostController(),
         super(key: key);
   final PostController con;
-
   @override
-  State createState() => PagePhotosScreenState();
+  State createState() => PageFriendScreenState();
 }
 
-class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen>{
+class PageFriendScreenState extends mvc.StateMVC<PageFriendScreen>{
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final TextEditingController searchController = TextEditingController();
+  bool showSearch = false;
+  late FocusNode searchFocusNode;
+  bool showMenu = false;
+  double width = 0;
+  double itemWidth = 0;
+  //
+  var tab = 'Friends';
   var userInfo = UserManager.userInfo;
-  String tab = 'Photos';
+  List<Map> mainInfoList = [];
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    _gotoHome();
   }
   late PostController con;
-  
+  void _gotoHome(){
+    Future.delayed(Duration.zero, () {
+      width = SizeConfig(context).screenWidth - 260;
+      itemWidth = width/7.5;
+      setState(() {});
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       mainTabs(),
-      tab == 'Photos' ? 
-      PhotosData() :
-      AlbumsData()
+      tab == 'Friends' ? 
+      friendsData() :
+      tab == 'Follows' ?
+      followsData() :
+      followingsData()
     ]);
   }
   Widget mainTabs(){
     return Container(
           width: SizeConfig(context).screenWidth ,
           height: 100,
-          margin: const EdgeInsets.only(left: 30,right: 30),
+          margin: EdgeInsets.only(left: 30,right: 30),
           decoration: BoxDecoration(
             color: const Color.fromRGBO(240, 240, 240, 1),
             borderRadius: BorderRadius.circular(3),
@@ -58,31 +76,31 @@ class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen>{
               Container(
                 margin: const EdgeInsets.only(left:20,top: 20),
                 child: Row(children: const [
-                  Icon(Icons.photo,size: 15,),
+                  Icon(Icons.group,size: 14,),
                   Padding(padding: EdgeInsets.only(left: 5)),
-                  Text('Photos',style: TextStyle(
+                  Text('Friends',style: TextStyle(
                     fontSize: 15
                   ),)
                 ],)
               ),
               Container(
-                margin: const EdgeInsets.only(top: 22),
+                margin: EdgeInsets.only(top: 22),
                 child: Row(
                   children: [
                     MouseRegion(
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          tab = 'Photos';
+                          tab = 'Friends';
                           setState(() { });
                         },
                         child: Container(
                       alignment: Alignment.center,
                       width: 100,
                       height: 40,
-                      color: tab == 'Photos' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                      color: tab == 'Friends' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
                       child: const Text(
-                        'Photos',
+                        'Friends',
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.black
@@ -94,16 +112,16 @@ class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen>{
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          tab = 'Albums';
+                          tab = 'Follows';
                           setState(() { });
                         },
                         child: Container(
                       alignment: Alignment.center,
                       width: 100,
                       height: 40,
-                      color: tab == 'Albums' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                      color: tab == 'Follows' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
                       child: const Text(
-                        'Albums',
+                        'Follows',
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.black
@@ -113,26 +131,58 @@ class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen>{
                       ),
                     ),
                     
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () {
+                          tab = 'Followings';
+                          setState(() {});
+                        },
+                        child: Container(
+                      alignment: Alignment.center,
+                      width: 100,
+                      height: 40,
+                      color: tab == 'Followings' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
+                      child: const Text(
+                        'Followings',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black
+                        ),
+                      ),
+                    ),
+                      ),
+                    )
+                    
                 ]),
               )
             ],
           ),
       );
   }
-  Widget PhotosData(){
-    return userInfo['photos'] == null ? Container(
+  Widget friendsData(){
+    return userInfo['friends'] == null ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have photos',style:const TextStyle(
+      child: Text('${userInfo['fullName']} doesn`t have friends',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
     ) : Container();
   }
-  Widget AlbumsData(){
-    return userInfo['albums'] == null ? Container(
+  Widget followingsData(){
+    return userInfo['followings'] == null ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have albums',style:const TextStyle(
+      child: Text('${userInfo['fullName']} doesn`t have followings',style:const TextStyle(
+        color: Color.fromRGBO(108, 117, 125, 1)
+      )),
+    ) : Container();
+  }
+  Widget followsData(){
+    return userInfo['followers'] == null ? Container(
+      padding: const EdgeInsets.only(top: 40),
+      alignment: Alignment.center,
+      child: Text('${userInfo['fullName']} doesn`t have followers',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
     ) : Container();

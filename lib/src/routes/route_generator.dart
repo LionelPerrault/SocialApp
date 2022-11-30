@@ -8,7 +8,7 @@ import 'package:shnatter/src/views/events/panel/eventView/eventscreen.dart';
 import 'package:shnatter/src/views/groups/groupsscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/pages/pagesscreen.dart';
-import 'package:shnatter/src/views/pages/panel/eventView/eventscreen.dart';
+import 'package:shnatter/src/views/pages/panel/pageView/pagescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
