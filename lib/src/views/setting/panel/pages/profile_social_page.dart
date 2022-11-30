@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
@@ -11,15 +13,41 @@ import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingSocialScreen extends StatefulWidget {
-  SettingSocialScreen({Key? key}) : super(key: key);
+  SettingSocialScreen({Key? key}) : 
+    con = UserController(),
+  super(key: key);
+  late UserController con;
   @override
   State createState() => SettingSocialScreenState();
 }
 // ignore: must_be_immutable
-class SettingSocialScreenState extends State<SettingSocialScreen> {
-  var setting_profile = {};
+class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
+  var socialProfile = {};
+  var userInfo = UserManager.userInfo;
+  late UserController con;
+  TextEditingController facebookController = TextEditingController();
+  TextEditingController twitterController = TextEditingController();
+  TextEditingController youtubeController = TextEditingController();
+  TextEditingController instagramController = TextEditingController();
+  TextEditingController twitchController = TextEditingController();
+  TextEditingController linkedinController = TextEditingController();
+  TextEditingController vokontaketeController = TextEditingController();
+  @override
+  void initState(){
+    facebookController.text = userInfo['facebook'] ?? '';
+    twitterController.text = userInfo['twitter'] ?? '';
+    youtubeController.text = userInfo['youtube'] ?? '';
+    instagramController.text = userInfo['instagram'] ?? '';
+    twitchController.text = userInfo['twitch'] ?? '';
+    linkedinController.text = userInfo['linkedin'] ?? '';
+    vokontaketeController.text = userInfo['vokontakete'] ?? '';
+    add(widget.con);
+    con = controller as UserController;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(padding: const EdgeInsets.only(top: 20, left:30),
@@ -66,8 +94,9 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
                     width: 195,
                     height: 30,
                     child: TextFormField(
+                            controller: facebookController,
                             onChanged: (newIndex) {
-                              setting_profile['facebook'] = newIndex;
+                              socialProfile['facebook'] = newIndex;
                               setState(() {});
                             },
                             decoration: InputDecoration(
@@ -118,8 +147,9 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
                     width: 195,
                     height: 30,
                     child: TextFormField(
+                            controller: twitterController,
                             onChanged: (newIndex) {
-                              setting_profile['twitter'] = newIndex;
+                              socialProfile['twitter'] = newIndex;
                               setState(() {});
                             },
                             decoration: InputDecoration(
@@ -170,8 +200,9 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
                     width: 195,
                     height: 30,
                     child: TextFormField(
+                            controller: youtubeController,
                             onChanged: (newIndex) {
-                              setting_profile['facebook'] = newIndex;
+                              socialProfile['youtube'] = newIndex;
                               setState(() {});
                             },
                             decoration: InputDecoration(
@@ -222,8 +253,9 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
                     width: 195,
                     height: 30,
                     child: TextFormField(
+                            controller: instagramController,
                             onChanged: (newIndex) {
-                              setting_profile['twitter'] = newIndex;
+                              socialProfile['instagram'] = newIndex;
                               setState(() {});
                             },
                             decoration: InputDecoration(
@@ -274,8 +306,9 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
                     width: 195,
                     height: 30,
                     child: TextFormField(
+                            controller: twitchController,
                             onChanged: (newIndex) {
-                              setting_profile['youtube'] = newIndex;
+                              socialProfile['twitch'] = newIndex;
                               setState(() {});
                             },
                             decoration: InputDecoration(
@@ -326,8 +359,9 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
                     width: 195,
                     height: 30,
                     child: TextFormField(
+                            controller: linkedinController,
                             onChanged: (newIndex) {
-                              setting_profile['twitter'] = newIndex;
+                              socialProfile['linkedin'] = newIndex;
                               setState(() {});
                             },
                             decoration: InputDecoration(
@@ -378,8 +412,9 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
                       width: 195,
                       height: 30,
                       child: TextFormField(
+                              controller: vokontaketeController,
                               onChanged: (newIndex) {
-                                setting_profile['facebook'] = newIndex;
+                                socialProfile['vokontakete'] = newIndex;
                                 setState(() {});
                               },
                               decoration: InputDecoration(
@@ -411,11 +446,11 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
             ),
           ),
           const Padding(padding: EdgeInsets.only(top: 20)),
-          SettingFooter()
+          footer()
       ],)
       );
   }
-  Widget input({label, onchange, obscureText = false, validator}) {
+  Widget input({label, onchange, obscureText = false, validator,text}) {
     return Container(
       height: 28,
       child: StartedInput(
@@ -426,7 +461,55 @@ class SettingSocialScreenState extends State<SettingSocialScreen> {
         onChange: (val) async {
           onchange(val);
         },
+        text: text,
       ),
+    );
+  }
+  Widget footer(){
+    return Padding(
+      padding: EdgeInsets.only(right: 20, top: 20),
+      child: Container(
+        height: 65,
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Color.fromARGB(255, 220, 226, 237),
+              width: 1,
+            )
+          ),
+          color: Color.fromARGB(255, 240, 243, 246),
+          // borderRadius: BorderRadius.all(Radius.circular(3)),
+        ),
+        padding: const EdgeInsets.only(top: 5, left: 15),
+        child: Row(children: [
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(3),
+              backgroundColor: Colors.white,
+              // elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3.0)),
+              minimumSize: con.isProfileChange ? const Size(90, 50) : const Size(120, 50),
+              maximumSize: con.isProfileChange ? const Size(90, 50) : const Size(120, 50),
+            ),
+            onPressed: () {
+              con.profileChange(socialProfile);
+            },
+            child: con.isProfileChange ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                  SizedBox(
+                    width: 10,
+                    height: 10,
+                    child: CircularProgressIndicator(color: Colors.black),
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 7)),
+                  Text('Loading', style: TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.bold))
+                ],) : const Text('Save Changes', style: TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.bold))),
+            const Padding(padding: EdgeInsets.only(right: 30))
+        ],)
+        ),
     );
   }
 }

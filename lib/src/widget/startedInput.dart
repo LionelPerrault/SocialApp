@@ -20,17 +20,26 @@ class StartedInput extends StatefulWidget {
     this.icon = const Icon(
       null,
     ),
+    this.text = ''
   }) : super(key: key);
+  String text = '';
   @override
   State createState() => StartedInputState();
 }
 
 class StartedInputState extends State<StartedInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController controller = TextEditingController();
+  @override
+  void initState(){
+    controller.text = widget.text;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       key: _formKey,
+      controller: controller,
       onChanged: (newIndex) {
         widget.onChange(newIndex);
       },

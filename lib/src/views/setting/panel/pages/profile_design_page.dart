@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
@@ -33,94 +35,46 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
             width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
-            child: Column(children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text('Work Title',
-                          style: TextStyle(
-                              color: Color.fromARGB(
-                                  255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                      Container(
-                        width: 700,
-                        child:
-                            input(validator: (value) async {
-                          print(value);
-                        }, onchange: (value) async {
-                          setting_profile['worktitle'] = value;
-                          setState(() {});
-                        }),
-                      )
-                    ],)
-                  ),
-                  const Padding(padding: EdgeInsets.only(right: 20))
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text('Work Place',
-                          style: TextStyle(
-                              color: Color.fromARGB(
-                                  255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                      Container(
-                        width: 300,
-                        child:
-                            input(validator: (value) async {
-                          print(value);
-                        }, onchange: (value) async {
-                          setting_profile['workplace'] = value;
-                          setState(() {});
-                        }),
-                      )
-                    ],)
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 25)),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text('Work Website',
-                          style: TextStyle(
-                              color: Color.fromARGB(
-                                  255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                      Container(
-                        width: 300,
-                        child:
-                            input(validator: (value) async {
-                          print(value);
-                        }, onchange: (value) async {
-                          setting_profile['workwebsite'] = value;
-                          setState(() {});
-                        }),
-                      )
-                    ],)
-                  ),
-                  const Padding(padding: EdgeInsets.only(right: 20))
-                ],
-              ),
-            ],),
+            height: 80,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Profile Background'),
+                Padding(padding: EdgeInsets.only(left: 15)),
+                Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              UserManager.userInfo['avatar']),
+                          fit: BoxFit.cover,
+                        ),
+                        color: Color.fromRGBO(240, 240, 240, 1),
+                        borderRadius: BorderRadius.all(Radius.circular(3))
+                      ),
+                      width: 80,
+                      height: 100,
+                    ),
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: InkWell(
+                        onTap: () {
+                          
+                        },
+                        child: Container(
+                            margin: const EdgeInsets.only(top: 50,left: 50),
+                            child: const Icon(Icons.photo_camera,size: 25,color: Colors.black87,)
+                          ),
+                        ),
+                    )
+                    
+                    
+                  ],
+                )
+            ],)
           ),
-          const Padding(padding: EdgeInsets.only(top: 20)),
           SettingFooter()
       ],)
       );
