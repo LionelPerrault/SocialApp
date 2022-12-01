@@ -35,7 +35,7 @@ class PageInviteScreenState extends mvc.StateMVC<PageInviteScreen>{
   Widget build(BuildContext context) {
     return Column(children: [
       mainTabs(),
-      likesData()
+      inviteFriendsData()
     ]);
   }
   Widget mainTabs(){
@@ -46,17 +46,16 @@ class PageInviteScreenState extends mvc.StateMVC<PageInviteScreen>{
           decoration: BoxDecoration(
             color: const Color.fromRGBO(240, 240, 240, 1),
             borderRadius: BorderRadius.circular(3),
-            border: const Border(bottom: BorderSide(width: 0.5,color: Color.fromRGBO(240, 240, 240, 1)))
           ),
           alignment: Alignment.topLeft,
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.only(left:20,top: 30),
+                margin: const EdgeInsets.only(left:20,top: 20),
                 child: Row(children: const [
-                  Icon(Icons.thumb_up,size: 17,),
+                  Icon(Icons.person_add_alt_rounded,size: 15,),
                   Padding(padding: EdgeInsets.only(left: 5)),
-                  Text('Likes',style: TextStyle(
+                  Text('Invites',style: TextStyle(
                     fontSize: 15
                   ),)
                 ],)
@@ -65,8 +64,8 @@ class PageInviteScreenState extends mvc.StateMVC<PageInviteScreen>{
           ),
       );
   }
-  Widget likesData(){
-    return userInfo['likes'] == null ? Container(
+  Widget inviteFriendsData(){
+    return con.page['pageInviteFriends'].isEmpty ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
       child: Column(

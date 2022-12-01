@@ -403,6 +403,9 @@ class PostController extends ControllerMVC {
       'pageLiked': [],
       'pagePost': false,
       'pagePicture': '',
+      'pagePhotos': [],
+      'pageAlbums': [],
+      'pageVideos': [],
     };
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)

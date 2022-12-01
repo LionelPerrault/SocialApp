@@ -45,15 +45,18 @@ class PageTimelineScreenState extends mvc.StateMVC<PageTimelineScreen>
     add(widget.con);
     con = controller as PostController;
     mainInfoList = [
-      {'title':'Add your profile picture','add': UserManager.userInfo['avatar'] ==null ? false : true},
-      // {'title':'Add your profile cover','add':con.profile_cover == '' ? false : true},
-      {'title':'Add your biography','add':UserManager.userInfo['about'] == null ? false : true},
-      {'title':'Add your birthdate','add':UserManager.userInfo['birthY'] == null ? false : true},
-      {'title':'Add your relationship','add':UserManager.userInfo['school'] == null ? false : true},
-      {'title':'Add your work info','add':UserManager.userInfo['workTitle'] == null ? false : true},
-      {'title':'Add your location info','add':UserManager.userInfo['current'] == null ? false : true},
-      {'title':'Add your education info','add':
-        UserManager.userInfo['school'] == null && UserManager.userInfo['class'] == null && UserManager.userInfo['major'] == null ? false : true},
+      {
+        'icon': Icons.thumb_up,
+        'text': '${con.page["pageLiked"].length} people like this'
+      },
+      {
+        'icon': Icons.tag,
+        'text': 'N/A'
+      },
+      {
+        'icon': Icons.location_history,
+        'text': '${con.page["pageLocation"]}'
+      },
     ];
     _gotoHome();
   }
@@ -83,7 +86,7 @@ class PageTimelineScreenState extends mvc.StateMVC<PageTimelineScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children:[
                 profileCompletion(),
-                MindPost()
+                con.page['pageAdmin']['userName'] == UserManager.userInfo['userName'] ? MindPost() : Container()
             ]),
         );
   }
@@ -98,9 +101,9 @@ class PageTimelineScreenState extends mvc.StateMVC<PageTimelineScreen>
        Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-      Icon(e['add'] ? Icons.check : Icons.add,size:15),
+      Icon(e['icon'],size:15, color: Colors.grey,),
       const Padding(padding: EdgeInsets.only(left: 5),),
-       Text(e['title'],style: e['add'] ? const TextStyle(decoration: TextDecoration.lineThrough) : const TextStyle(),)  
+       Text(e['text'],)  
     ],))).toList(),
     
 );

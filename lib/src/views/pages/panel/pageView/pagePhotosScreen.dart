@@ -24,7 +24,6 @@ class PagePhotosScreen extends StatefulWidget {
 }
 
 class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen>{
-  var userInfo = UserManager.userInfo;
   String tab = 'Photos';
   @override
   void initState() {
@@ -120,19 +119,19 @@ class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen>{
       );
   }
   Widget PhotosData(){
-    return userInfo['photos'] == null ? Container(
+    return con.page['pagePhotos'].isEmpty ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have photos',style:const TextStyle(
+      child: Text('${con.page['pageName']} doesn`t have photos',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
     ) : Container();
   }
   Widget AlbumsData(){
-    return userInfo['albums'] == null ? Container(
+    return con.page['pageAlbums'].isEmpty ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have albums',style:const TextStyle(
+      child: Text('${con.page['pageName']} doesn`t have albums',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
     ) : Container();
