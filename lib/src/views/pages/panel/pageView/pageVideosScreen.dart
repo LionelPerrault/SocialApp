@@ -23,7 +23,6 @@ class PageVideosScreen extends StatefulWidget {
 }
 
 class PageVideosScreenState extends mvc.StateMVC<PageVideosScreen>{
-  var userInfo = UserManager.userInfo;
   @override
   void initState() {
     super.initState();
@@ -41,7 +40,7 @@ class PageVideosScreenState extends mvc.StateMVC<PageVideosScreen>{
   Widget mainTabs(){
     return Container(
           width: SizeConfig(context).screenWidth ,
-          height: 100,
+          height: 70,
           margin: const EdgeInsets.only(left: 30,right: 30),
           decoration: BoxDecoration(
             color: const Color.fromRGBO(240, 240, 240, 1),
@@ -65,10 +64,10 @@ class PageVideosScreenState extends mvc.StateMVC<PageVideosScreen>{
       );
   }
   Widget videosData(){
-    return userInfo['videos'] == null ? Container(
+    return con.page['pageVideos'].isEmpty ? Container(
       padding: const EdgeInsets.only(top: 40),
       alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have videos',style:const TextStyle(
+      child: Text('${con.page['pageName']} doesn`t have videos',style:const TextStyle(
         color: Color.fromRGBO(108, 117, 125, 1)
       )),
     ) : Container();
