@@ -30,6 +30,26 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   Map<String, dynamic> pageInfo = {};
   var privacy = 'public';
   var interest = 'none';
+  List<Map> pagesDropDown = [
+    {
+      'value': 'public',
+      'title': 'Public Group',
+      'subtitle': 'Anyone can see the group, its members and their posts.',
+      'icon': Icons.language
+    },
+    {
+      'value': 'closed',
+      'title': 'Closed Group',
+      'subtitle': 'Only members can see posts.',
+      'icon': Icons.lock_open_rounded
+    },
+    {
+      'value': 'secret',
+      'title': 'Secret Group',
+      'subtitle': 'Only members can find the group and see posts.',
+      'icon': Icons.lock_outline_rounded
+    },
+  ];
   @override
   void initState(){
     add(widget.Postcon);
@@ -38,7 +58,8 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   }
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -79,76 +100,6 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 15)),
-            
-            const Padding(padding: EdgeInsets.only(top: 15)),
-            Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.start,
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: const [
-                    Text('Page Username',
-                        style: TextStyle(
-                            color: Color.fromARGB(
-                                255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight:
-                                FontWeight.bold)),
-                  ],
-                ),
-                Container(
-                  width: 400,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(7)),
-                    ),
-                    child: Row(children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 7),
-                        alignment: Alignment.topCenter,
-                        width: 200,
-                        height: 30,
-                        color: Colors.grey,
-                        child: Text('https://test.shnatter.com/'),
-                      ),
-                      Expanded(child: 
-                      Container(
-                        width: 300,
-                        height: 30,
-                        child: TextFormField(
-                                onChanged: (newIndex) {
-                                  setState(() {});
-                                },
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 54, 54, 54), width: 1.0),
-                                    borderRadius: BorderRadius.circular(0),
-                                  ),
-                                ),
-                                style: const TextStyle(fontSize: 14),
-                                onSaved: (String? value) {
-                                  // This optional block of code can be used to run
-                                  // code when the user saves the form.
-                                },
-                                validator: (String? value) {
-                                  return (value != null && value.contains('@'))
-                                      ? 'Do not use the @ char.'
-                                      : null;
-                                },
-                              ),
-                      )),
-                    ]),
-                  ),
-                )
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
                   MainAxisAlignment.start,
@@ -178,6 +129,123 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                 )
               ],
             ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
+            Column(
+              mainAxisAlignment:
+                  MainAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: const [
+                    Text('Page Username',
+                        style: TextStyle(
+                            color: Color.fromARGB(
+                                255, 82, 95, 127),
+                            fontSize: 11,
+                            fontWeight:
+                                FontWeight.bold)),
+                  ],
+                ),
+                Container(
+                  width: 400,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(7)),
+                    ),
+                    child: Row(children: [
+                      Container(
+                        padding: EdgeInsets.only(top: 7),
+                        alignment: Alignment.topCenter,
+                        width: 240,
+                        height: 30,
+                        color: Colors.grey,
+                        child: Text('https://test.shnatter.com/groups'),
+                      ),
+                      Expanded(child: 
+                      Container(
+                        width: 260,
+                        height: 30,
+                        child: TextFormField(
+                                onChanged: (value) {
+                                  pageInfo['pageUserName'] = value;
+                                  setState(() {});
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color.fromARGB(255, 54, 54, 54), width: 1.0),
+                                    borderRadius: BorderRadius.circular(0),
+                                  ),
+                                ),
+                                style: const TextStyle(fontSize: 14),
+                                onSaved: (String? value) {
+                                  // This optional block of code can be used to run
+                                  // code when the user saves the form.
+                                },
+                                validator: (String? value) {
+                                  return (value != null && value.contains('@'))
+                                      ? 'Do not use the @ char.'
+                                      : null;
+                                },
+                              ),
+                      )),
+                    ]),
+                  ),
+                )
+              ],
+            ),
+            Container(
+              width: 300,
+              child: const Text('Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
+                      style: TextStyle(fontSize: 12),),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
+            Row(children: [
+              Expanded(
+                child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 0.5, color: Colors.grey)),
+            height: 70,
+            child: DropdownButton(
+              value: pagesDropDown[0]['value'],
+              itemHeight: 70,
+              items: pagesDropDown
+                  .map((e) => DropdownMenuItem(
+                      value: e['value'],
+                      child: Container(
+                          height: 70,
+                          child: ListTile(
+                            leading: Icon(e['icon']),
+                            title: Text(e['title']),
+                            subtitle: Text(e['subtitle']),
+                          ))))
+                  .toList(),
+              onChanged: (value) {
+                //get value when changed
+                // dropdownValue = value!;
+                setState(() {});
+              },
+              icon: const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Icon(Icons.arrow_drop_down)),
+              iconEnabledColor: Colors.white, //Icon color
+              style: const TextStyle(
+                color: Colors.black, //Font color
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+              dropdownColor: Colors.white,
+              underline: Container(), //remove underline
+              isExpanded: true,
+              isDense: true,
+            ),
+          )
+              ),
+            ],),
             const Padding(padding: EdgeInsets.only(top: 15)),
             Column(
               mainAxisAlignment:
@@ -233,7 +301,13 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            // InterestsWidget(context: context),
+            Container(
+              width: 400,
+              child: InterestsWidget(context: context, sendUpdate: (value) {
+                pageInfo['pageInterests'] = value;
+              },),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
               width: 400,
               margin: const EdgeInsets.only(right: 0),
@@ -267,7 +341,8 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
-                    Postcon.createEvent(context,pageInfo);
+                    Postcon.createPage(context, pageInfo);
+                    print(pageInfo);
                   },
                   child: const Text('Create',
                       style: TextStyle(
@@ -276,7 +351,8 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
               ],),
             ),
           ],
-        );
+        )
+    );
   }
 }
 Widget input({label, onchange, obscureText = false, validator}) {
