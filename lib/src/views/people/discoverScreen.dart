@@ -48,7 +48,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
       margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.only(top: 20),
       color: Colors.white,
-      width: SizeConfig(context).screenWidth / 2,
+      width: SizeConfig(context).screenWidth < 700 ? SizeConfig(context).screenWidth : SizeConfig(context).screenWidth / 2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -108,7 +108,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                       onPressed: () async {
                                         await con.requestFriend(
                                             e.value['userName'],
-                                            '${e.value['firstName']} ${e.value['lastName']}',e.key);
+                                            '${e.value['firstName']} ${e.value['lastName']}',e.value['avatar'],e.key);
                                       },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color.fromARGB(

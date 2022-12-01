@@ -30,7 +30,9 @@ class FriendRequestsScreen extends StatefulWidget {
 class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
   bool showMenu = false;
   late PeopleController con;
-  bool isFriendRequest = false;
+  var isConfirmRequest = {};
+  var isDeclineRequest = {};
+  var isDeleteRequest = {};
   //route variable
   String tabName = 'Discover';
   Color color = Color.fromRGBO(230, 236, 245, 1);
@@ -39,7 +41,7 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
   void initState() {
     add(widget.con);
     con = controller as PeopleController;
-    con.getUserList();
+    con.getReceiveRequests();
     super.initState();
   }
 
@@ -49,7 +51,7 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
       margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.only(top: 20),
       color: Colors.white,
-      width: SizeConfig(context).screenWidth / 2,
+      width: SizeConfig(context).screenWidth < 700 ? SizeConfig(context).screenWidth : SizeConfig(context).screenWidth / 2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -70,6 +72,180 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
             height: 1,
             color: color,
           ),
+          Column(
+              children: con.requestFriends
+                  .asMap()
+                  .entries
+                  .map((e) => Container(
+                      padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                      child: Column(
+                        children: [
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(padding: EdgeInsets.only(left: 10)),
+                                e.value[e.value['requester']]['avatar'] == ''
+                                    ? CircleAvatar(
+                                        radius: 20,
+                                        child:
+                                            SvgPicture.network(Helper.avatar))
+                                    : CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage:
+                                            NetworkImage(e.value[e.value['requester']]['avatar'])),
+                                Container(
+                                  padding: EdgeInsets.only(left: 10, top: 5),
+                                  child: Text(
+                                    e.value[e.value['requester']]['name'],
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 11),
+                                  ),
+                                ),
+                                Flexible(fit: FlexFit.tight, child: SizedBox()),
+                                Container(
+                                  padding: EdgeInsets.only(top: 6),
+                                  child:
+                                  e.value['state'] == 0 ?
+                                  Row(children: [ 
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        isConfirmRequest[e.key] = true;
+                                        setState((){});
+                                        await con.confirmFriend(e.value['id'],e.key);
+                                        isConfirmRequest[e.key] = false;
+                                        setState(() { });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.0)),
+                                          minimumSize:
+                                              isConfirmRequest[e.key] != null &&
+                                                      isConfirmRequest[e.key]
+                                                  ? const Size(70, 35)
+                                                  : const Size(90, 35),
+                                          maximumSize:
+                                              isConfirmRequest[e.key] != null &&
+                                                      isConfirmRequest[e.key]
+                                                  ? const Size(70, 35)
+                                                  : const Size(90, 35)),
+                                      child: isConfirmRequest[e.key] != null &&
+                                              isConfirmRequest[e.key]
+                                          ? SizedBox(
+                                              width: 10,
+                                              height: 10,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          :
+                                            Text('Confirm',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w900)),
+                                            ),
+                                    const Padding(padding: EdgeInsets.only(left: 5)),
+                                    ElevatedButton(
+                                      onHover:(value) {
+                                        
+                                      },
+                                      onPressed: () async {
+                                        
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color.fromRGBO(245, 54, 92, 1),
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.0)),
+                                          minimumSize:
+                                              isDeclineRequest[e.key] != null &&
+                                                      isDeclineRequest[e.key]
+                                                  ? const Size(70, 35)
+                                                  : const Size(90, 35),
+                                          maximumSize:
+                                              isDeclineRequest[e.key] != null &&
+                                                      isDeclineRequest[e.key]
+                                                  ? const Size(70, 35)
+                                                  : const Size(90, 35)),
+                                      child: isDeclineRequest[e.key] != null &&
+                                              isDeclineRequest[e.key]
+                                          ? SizedBox(
+                                              width: 10,
+                                              height: 10,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          :
+                                            Text('Decline',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w900)),
+                                            )]) : ElevatedButton(
+                                      onPressed: () async {
+                                        isDeleteRequest[e.key] = true;
+                                        setState(() { });
+                                        await con.deleteFriend(e.value['id']);
+                                        isDeleteRequest[e.key] = false;
+                                        setState(() { });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green,
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.0)),
+                                          minimumSize:
+                                              isDeleteRequest[e.key] != null &&
+                                                      isDeleteRequest[e.key]
+                                                  ? const Size(70, 35)
+                                                  : const Size(90, 35),
+                                          maximumSize:
+                                              isDeleteRequest[e.key] != null &&
+                                                      isDeleteRequest[e.key]
+                                                  ? const Size(70, 35)
+                                                  : const Size(90, 35)),
+                                          child: isDeleteRequest[e.key] != null &&
+                                              isDeleteRequest[e.key]
+                                              ? SizedBox(
+                                                  width: 10,
+                                                  height: 10,
+                                                  child: CircularProgressIndicator(
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              : Row(children: const [
+                                                  Icon(Icons.check_circle, color: Colors.white,size: 13,),
+                                                  Padding(padding: EdgeInsets.only(left: 3)),
+                                                  Text('Friend',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 11,
+                                                        fontWeight:
+                                                            FontWeight.w900))
+                                          ],)
+                                                ,
+                                                ),
+                                )
+                              ]),
+                          Padding(padding: EdgeInsets.only(top: 10)),
+                          Container(
+                            height: 1,
+                            color: color,
+                          ),
+                        ],
+                      )))
+                  .toList()),
         ],
       ),
     );

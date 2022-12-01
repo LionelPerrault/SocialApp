@@ -27,13 +27,17 @@ class PeopleController extends ControllerMVC {
       : userList = [],
         pageIndex = 1,
         isShowProgressive = false,
+        requestFriends = [],
         isFriendRequest = {},
+        isConfirmRequest = {},
         super(state);
   static PeopleController? _this;
   List userList;
   int pageIndex;
   bool isShowProgressive;
+  List requestFriends;
   Map isFriendRequest = {};
+  Map isConfirmRequest;
   var userInfo = UserManager.userInfo;
   @override
   Future<bool> initAsync() async {
@@ -60,22 +64,60 @@ class PeopleController extends ControllerMVC {
     setState(() {});
   }
 
-  requestFriend(receiver, fullName, index) async {
+  requestFriend(receiver, fullName, avatar, index) async {
+    var snapshot = await FirebaseFirestore.instance.collection(Helper.friendField)
+      .where('users', arrayContains: userInfo['userName']).get();
+    var t = 0;
+    var user = [];
+    snapshot.docs.forEach((element) {
+      user = element['users'];
+      if(element['users'].contains(receiver)){
+        t = 1;
+      }
+    });
+    print(t);
+    if(t == 1){
+      return;
+    }
     isFriendRequest[index] = true;
     setState(() {});
     FirebaseFirestore.instance.collection(Helper.friendField).add({
       'requester': userInfo['userName'],
       'receiver': receiver,
-      receiver: fullName,
-      userInfo['userName']: userInfo['fullName'],
+      receiver: {'name':fullName,'avatar':avatar},
+      userInfo['userName']: {'name':userInfo['fullName'],'avatar':userInfo['avatar']},
+      'users':[userInfo['userName'], receiver],
       'state': 0
     }).then((value) => {isFriendRequest[index] = false, setState(() {})});
   }
 
   getReceiveRequests() async {
-    FirebaseFirestore.instance
+    var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
         .where('receiver', isEqualTo: userInfo['userName'])
         .get();
+    var arr = [];
+    snapshot.docs.forEach((element) {
+        var j = {...element.data(),'id': element.id};
+        arr.add(j);
+    });
+    requestFriends = arr;
+    setState(() { });
+  }
+  confirmFriend(id,key) async {
+    await FirebaseFirestore.instance.collection(Helper.friendField).doc(id)
+            .update({
+              'state': 1 
+            });
+    await getReceiveRequests();
+    
+  }
+  deleteFriend(id) async {
+    await FirebaseFirestore.instance.collection(Helper.friendField).doc(id)
+          .update({
+            'state': 0 
+          });
+    await getReceiveRequests();
+    setState(() { });
   }
 }

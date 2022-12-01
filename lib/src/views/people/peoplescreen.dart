@@ -12,6 +12,7 @@ import 'package:shnatter/src/views/chat/newMessageScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/people/discoverScreen.dart';
+import 'package:shnatter/src/views/people/friendRequestsScreen.dart';
 
 import '../../controllers/ChatController.dart';
 
@@ -118,7 +119,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize
+                                700
                             ? const SizedBox()
                             : LeftPanel(),
                         //    : SizedBox(width: 0),
@@ -130,7 +131,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                             Expanded(
                                 child: Container(
                                     padding: EdgeInsets.only(
-                                        right: 30, top: 10, left: 50),
+                                        right: 30, top: 10, left: 30),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -139,7 +140,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                                         tabName == 'Discover'
                                             ? PeopleDiscoverScreen()
                                             : tabName == 'Friend Requests'
-                                                ? Container()
+                                                ? FriendRequestsScreen()
                                                 : Container()
                                       ],
                                     ))),

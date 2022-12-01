@@ -9,6 +9,7 @@ import 'package:shnatter/src/views/groups/groupsscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/pages/pagesscreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pagescreen.dart';
+import 'package:shnatter/src/views/people/peoplescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
@@ -100,7 +101,10 @@ class RouteGenerator {
         Helper.showToast("ok now to admin");
         return MaterialPageRoute(
             builder: (context) => AdminScreen(), settings: settings);
-
+      case RouteNames.people:
+        Helper.showToast("ok now to admin");
+        return MaterialPageRoute(
+            builder: (context) => PeopleScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);
