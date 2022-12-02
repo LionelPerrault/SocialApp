@@ -32,6 +32,12 @@ class Helper {
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
         toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
       );
+  static var groupsData = FirebaseFirestore.instance
+      .collection(Helper.groupsField)
+      .withConverter<TokenLogin>(
+        fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
+        toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
+      );
   static var allInterests = FirebaseFirestore.instance
       .collection(Helper.interestsField)
       .withConverter<TokenLogin>(
@@ -43,6 +49,7 @@ class Helper {
   static var userField = 'user';
   static var eventsField = 'events';
   static var pagesField = 'pages';
+  static var groupsField = 'groups';
   static var interestsField = 'interests';
   static var friendField = 'friends';
   static var balance = 0;
@@ -50,7 +57,8 @@ class Helper {
   static var newMessageSearch = 'userName';
   static var emoticons = 'emoticons';
   static var passwordMinLength = 9;
-  static var emptySVG = 'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fnodaa.svg?alt=media&token=ebfb99db-2cf6-4dd4-ba96-2ca150ba1352';
+  static var emptySVG =
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fnodaa.svg?alt=media&token=ebfb99db-2cf6-4dd4-ba96-2ca150ba1352';
   static bool isUuid(String input) {
     return RegExp(
             "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")

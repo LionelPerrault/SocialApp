@@ -19,6 +19,7 @@ class PostController extends ControllerMVC {
   PostController._(StateMVC? state)
       : eventSubRoute = '',
         pageSubRoute = '',
+        groupSubRoute = '',
         super(state);
   static PostController? _this;
 
@@ -340,12 +341,12 @@ class PostController extends ControllerMVC {
 
   ///////////////////////////end events functions //////////////////////////////////////////////////
 
-  //////////////////////////// start event functions ///////////////////////////////////
+  //////////////////////////// start page functions ///////////////////////////////////
 
   //variable
   List pages = [];
 
-  //view each event support data
+  //view each page support data
   var page;
   var viewPageId = '';
   var viewPageName = '';
@@ -357,7 +358,7 @@ class PostController extends ControllerMVC {
   //sub route
   String pageSubRoute;
 
-  //get all event function
+  //get all page function
   Future<List> getPage(String condition) async {
     List<Map> realAllpage = [];
     await Helper.pagesData.get().then((value) async {
@@ -384,7 +385,7 @@ class PostController extends ControllerMVC {
     return realAllpage;
   }
 
-  //get one event function that using uid of firebase database
+  //get one page function that using uid of firebase database
   Future<bool> getSelectedPage(String name) async {
     name = name.split('/')[name.split('/').length - 1];
     viewPageName = name;
@@ -396,11 +397,11 @@ class PostController extends ControllerMVC {
     viewPageId = page.id;
     viewPageLiked = await boolLiked(viewPageId);
     setState(() {});
-    print('This event was posted by ${page['pageAdmin']}');
+    print('This page was posted by ${page['pageAdmin']}');
     return true;
   }
 
-  //create event function
+  //create page function
   Future<void> createPage(context, Map<String, dynamic> pageData) async {
     pageData = {
       ...pageData,
@@ -421,11 +422,11 @@ class PostController extends ControllerMVC {
         context, '${RouteNames.pages}/${pageData['pageUserName']}');
   }
 
-  ////////////////////functions that support for making comment to event/////////////////////////////
+  ////////////////////functions that support for making comment to page/////////////////////////////
 
   //user join in page liked function
   Future<bool> likedPage(String pageId) async {
-    print('now you are liked or unliked this event ${pageId}');
+    print('now you are liked or unliked this page ${pageId}');
     var querySnapshot = await Helper.pagesData.doc(pageId).get();
     var doc = querySnapshot;
     var liked = doc['pageLiked'];
@@ -453,7 +454,7 @@ class PostController extends ControllerMVC {
     }
   }
 
-  //bool of user already in event interested or not
+  //bool of user already in page interested or not
   Future<bool> boolLiked(String pageId) async {
     var querySnapshot = await Helper.pagesData.doc(pageId).get();
     var doc = querySnapshot;
@@ -471,8 +472,145 @@ class PostController extends ControllerMVC {
     }
   }
 
-  ////////////////////functions that make comment to event/////////////////////////////
+  ////////////////////functions that make comment to page/////////////////////////////
 
-  ///////////////////////////end events functions //////////////////////////////////////////////////
+  ///////////////////////////end pages functions //////////////////////////////////////////////////
+
+  //////////////////////////// start groups functions ///////////////////////////////////
+
+  //variable
+  List groups = [];
+
+  //view each group support data
+  var group;
+  var viewGroupId = '';
+  var viewGroupName = '';
+  var viewGroupLiked = false;
+
+  //sub router
+  String groupTab = 'Timeline';
+
+  //sub route
+  String groupSubRoute;
+
+  //get all group function
+  Future<List> getGroup(String condition) async {
+    List<Map> realAllGroups = [];
+    await Helper.groupsData.get().then((value) async {
+      var doc = value.docs;
+      for (int i = 0; i < doc.length; i++) {
+        var id = doc[i].id;
+        var joined = await boolJoined(id);
+        var data = doc[i];
+        if (UserManager.userInfo['userName'] ==
+                data['groupAdmin']['userName'] &&
+            condition == 'manage') {
+          realAllGroups.add({'data': data, 'id': id, 'joined': joined});
+        } else if (condition == 'all') {
+          if (data['groupPost']) {
+            realAllGroups.add({'data': data, 'id': id, 'joined': joined});
+          }
+        } else if (condition == 'joined' && joined) {
+          realAllGroups.add({'data': data, 'id': id, 'joined': joined});
+        }
+        setState(() {});
+      }
+      print('Now you get all groups');
+    });
+
+    return realAllGroups;
+  }
+
+  //get one group function that using uid of firebase database
+  Future<bool> getSelectedGroup(String name) async {
+    name = name.split('/')[name.split('/').length - 1];
+    viewGroupName = name;
+    var reuturnValue = await Helper.groupsData
+        .where('groupUserName', isEqualTo: viewGroupName)
+        .get();
+    var value = reuturnValue.docs;
+    group = value[0];
+    viewGroupId = group.id;
+    viewGroupLiked = await boolJoined(viewGroupId);
+    setState(() {});
+    print('This group was posted by ${group['groupAdmin']}');
+    return true;
+  }
+
+  //create group function
+  Future<void> createGroup(context, Map<String, dynamic> groupData) async {
+    groupData = {
+      ...groupData,
+      'groupAdmin': {'userName': UserManager.userInfo['userName']},
+      'groupDate': DateTime.now().toString(),
+      'groupJoined': [],
+      'groupPost': false,
+      'groupPicture': '',
+      'groupPhotos': [],
+      'groupAlbums': [],
+      'groupVideos': [],
+    };
+    await FirebaseFirestore.instance
+        .collection(Helper.groupsField)
+        .add(groupData);
+
+    Navigator.pushReplacementNamed(
+        context, '${RouteNames.groups}/${groupData['groupUserName']}');
+  }
+
+  ////////////////////functions that support for making comment to group/////////////////////////////
+
+  //user join in group liked function
+  Future<bool> joinedGroup(String groupId) async {
+    print('now you are joined or unjoined this group ${groupId}');
+    var querySnapshot = await Helper.groupsData.doc(groupId).get();
+    var doc = querySnapshot;
+    var liked = doc['groupLiked'];
+    var respon = await boolLiked(groupId);
+    if (respon) {
+      liked.removeWhere(
+          (item) => item['userName'] == UserManager.userInfo['userName']);
+      await FirebaseFirestore.instance
+          .collection(Helper.groupsField)
+          .doc(groupId)
+          .update({'groupLiked': liked});
+      return true;
+    } else {
+      liked.add({
+        'userName': UserManager.userInfo['userName'],
+        'fullName':
+            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
+        'userAvatar': UserManager.userInfo['avatar']
+      });
+      await FirebaseFirestore.instance
+          .collection(Helper.groupsField)
+          .doc(groupId)
+          .update({'groupLiked': liked});
+      return true;
+    }
+  }
+
+  //bool of user already in group interested or not
+  Future<bool> boolJoined(String groupId) async {
+    var querySnapshot = await Helper.groupsData.doc(groupId).get();
+    var doc = querySnapshot;
+    print(groupId);
+    var joined = doc['groupJoined'];
+    if (joined == null) {
+      return false;
+    }
+    var returnData = joined.where(
+        (eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
+    print('you get bool of joined group');
+    if (returnData.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  ////////////////////functions that make comment to group/////////////////////////////
+
+  ///////////////////////////end groups functions //////////////////////////////////////////////////
 
 }
