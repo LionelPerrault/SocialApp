@@ -16,7 +16,7 @@ import 'groupTimelineScreen.dart';
 import 'groupVideosScreen.dart';
 
 class GroupEachScreen extends StatefulWidget {
-  GroupEachScreen({Key? key,required this.docId})
+  GroupEachScreen({Key? key, required this.docId})
       : con = PostController(),
         super(key: key);
   final PostController con;
@@ -43,7 +43,7 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
     add(widget.con);
     con = controller as PostController;
     filecon = FileController();
-    setState(() { });
+    setState(() {});
     super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
@@ -51,18 +51,20 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
       duration: const Duration(milliseconds: 150),
     );
     con = controller as PostController;
-    getSelectedEvent(widget.docId);
+    getSelectedGroup(widget.docId);
   }
 
   late PostController con;
-  
-  void getSelectedEvent(id) {
-    con.getSelectedEvent(id).then((value) => {
-      if (value){
-        print('Successfully get event you want!!!'),
-      }
-    });
+
+  void getSelectedGroup(id) {
+    con.getSelectedGroup(id).then((value) => {
+          if (value)
+            {
+              print('Successfully get group you want!!!'),
+            }
+        });
   }
+
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
     setState(() {
@@ -121,8 +123,7 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
             ),
             Padding(
                 padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                child:
-                    SingleChildScrollView(
+                child: SingleChildScrollView(
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,52 +135,74 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
                         //    : SizedBox(width: 0),
                         Expanded(
                             child: Row(
-                          mainAxisAlignment: con.event == null ? MainAxisAlignment.center : MainAxisAlignment.end,
-                          crossAxisAlignment: con.event == null ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                          mainAxisAlignment: con.group == null
+                              ? MainAxisAlignment.center
+                              : MainAxisAlignment.end,
+                          crossAxisAlignment: con.group == null
+                              ? CrossAxisAlignment.center
+                              : CrossAxisAlignment.start,
                           children: [
-                            con.event == null ? Container(
-                                  width: 30,
-                                  height: 30,
-                                  margin: EdgeInsets.only(top: SizeConfig(context).screenHeight*2/5),
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.grey,
+                            con.group == null
+                                ? Container(
+                                    width: 30,
+                                    height: 30,
+                                    margin: EdgeInsets.only(
+                                        top: SizeConfig(context).screenHeight *
+                                            2 /
+                                            5),
+                                    child: const CircularProgressIndicator(
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                : Expanded(
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          GroupAvatarandTabScreen(
+                                            onClick: (value) {
+                                              print(value);
+                                              con.groupTab = value;
+                                              setState(() {});
+                                            },
+                                          ),
+                                          con.groupTab == 'Timeline'
+                                              ? GroupTimelineScreen(
+                                                  onClick: (value) {
+                                                  con.groupTab = value;
+                                                  setState(() {});
+                                                })
+                                              : con.groupTab == 'Photos'
+                                                  ? GroupPhotosScreen(
+                                                      onClick: (value) {
+                                                      con.groupTab = value;
+                                                      setState(() {});
+                                                    })
+                                                  : con.groupTab == 'Videos'
+                                                      ? GroupVideosScreen(
+                                                          onClick: (value) {
+                                                          con.groupTab = value;
+                                                          setState(() {});
+                                                        })
+                                                      : con.groupTab ==
+                                                              'Members'
+                                                          ? GroupMembersScreen(
+                                                              onClick: (value) {
+                                                              con.groupTab =
+                                                                  value;
+                                                              setState(() {});
+                                                            })
+                                                          : const SizedBox()
+                                          // EventFriendScreen(),
+                                        ]),
                                   ),
-                                ) : Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  GroupAvatarandTabScreen(onClick: (value) {
-                                    print(value);
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  },),
-                                  con.eventTab == 'Timeline' ? GroupTimelineScreen(onClick:(value){
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  }) :
-                                  con.eventTab == 'Photos' ? GroupPhotosScreen(onClick:(value){
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  }) :
-                                  con.eventTab == 'Videos' ? GroupVideosScreen(onClick:(value){
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  }) :
-                                  con.eventTab == 'Members' ? GroupMembersScreen(onClick:(value){
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  }) :
-                                  const SizedBox()
-                                  // EventFriendScreen(),
-                                ]),
-                            ),
                           ],
                         )),
                       ]),
-                  
                 )),
-                AnimatedBuilder(
+            AnimatedBuilder(
                 animation: _drawerSlideController,
                 builder: (context, child) {
                   return FractionalTranslation(
@@ -265,11 +288,8 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
                         )),
                   )
                 : const SizedBox(),
-                
             ChatScreen(),
-            
           ],
         ));
   }
-  
 }

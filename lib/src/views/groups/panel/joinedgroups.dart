@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/events/widget/eventcell.dart';
+import 'package:shnatter/src/views/groups/widget/groupcell.dart';
 
 import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
@@ -23,7 +23,7 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var returnValue = [];
-  var goingEvents = [];
+  var joinedGroups = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -35,9 +35,9 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
   }
 
   void getGroupNow() {
-    con.getGroup('going').then((value) => {
+    con.getGroup('joined').then((value) => {
           returnValue = value,
-          goingEvents = value,
+          joinedGroups = value,
         });
   }
 
@@ -62,22 +62,22 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
               mainAxisSpacing: 4.0,
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
-              children: goingEvents
-                  .map((event) => EventCell(
-                      eventTap: () {
+              children: joinedGroups
+                  .map((group) => GroupCell(
+                      groupTap: () {
                         Navigator.pushReplacementNamed(
-                            context, '/events/${event['id']}');
+                            context, '/groups/${group['id']}');
                       },
                       buttonFun: () {
-                        con.interestedEvent(event['id']).then((value) {
+                        con.joinedGroup(group['id']).then((value) {
                           getGroupNow();
                         });
                       },
                       picture: 'null',
                       status: false,
-                      interests: event['data']['eventInterested'].length,
-                      header: event['data']['eventName'],
-                      interested: event['interested']))
+                      joins: group['data']['groupJoined'].length,
+                      header: group['data']['groupName'],
+                      joined: group['joined']))
                   .toList(),
             ),
           ),

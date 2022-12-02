@@ -5,7 +5,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/events/widget/eventcell.dart';
 import 'package:shnatter/src/views/groups/widget/groupcell.dart';
 
 import '../../../controllers/PostController.dart';
@@ -38,7 +37,7 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
   void getGroupNow() {
     con.getGroup('all').then((value) => {
           realAllGroups = value,
-          realAllGroups.where((event) => event['data']['eventPost'] == true),
+          realAllGroups.where((group) => group['data']['groupPost'] == true),
           print(realAllGroups),
           setState(() {}),
         });
@@ -66,21 +65,21 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: realAllGroups
-                  .map((event) => GroupCell(
+                  .map((group) => GroupCell(
                       groupTap: () {
                         Navigator.pushReplacementNamed(
-                            context, '/events/${event['id']}');
+                            context, '/groups/${group['id']}');
                       },
                       buttonFun: () {
-                        con.interestedEvent(event['id']).then((value) {
+                        con.joinedGroup(group['id']).then((value) {
                           getGroupNow();
                         });
                       },
                       picture: 'null',
                       status: false,
-                      joins: event['data']['groupJoined'].length,
-                      header: event['data']['groupName'],
-                      joined: event['joined']))
+                      joins: group['data']['groupJoined'].length,
+                      header: group['data']['groupName'],
+                      joined: group['joined']))
                   .toList(),
             ),
           ),

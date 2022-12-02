@@ -1,11 +1,10 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/events/panel/eventView/eventscreen.dart';
 import 'package:shnatter/src/views/groups/groupsscreen.dart';
+import 'package:shnatter/src/views/groups/panel/groupView/groupscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/pages/pagesscreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pagescreen.dart';
@@ -40,13 +39,25 @@ class RouteGenerator {
       return MaterialPageRoute(
           builder: (context) => UserProfileScreen(), settings: settings);
     }
-    if (url!.split('/')[1] == RouteNames.eventsName && url.split('/').length > 2) {
+    if (url!.split('/')[1] == RouteNames.eventsName &&
+        url.split('/').length > 2) {
       return MaterialPageRoute(
-          builder: (context) => EventEachScreen(docId:settings.name.toString()), settings: settings);
+          builder: (context) =>
+              EventEachScreen(docId: settings.name.toString()),
+          settings: settings);
     }
-    if (url.split('/')[1] == RouteNames.pagesName && url.split('/').length > 2) {
+    if (url.split('/')[1] == RouteNames.pagesName &&
+        url.split('/').length > 2) {
       return MaterialPageRoute(
-          builder: (context) => PageEachScreen(docId:settings.name.toString()), settings: settings);
+          builder: (context) => PageEachScreen(docId: settings.name.toString()),
+          settings: settings);
+    }
+    if (url.split('/')[1] == RouteNames.groupsName &&
+        url.split('/').length > 2) {
+      return MaterialPageRoute(
+          builder: (context) =>
+              GroupEachScreen(docId: settings.name.toString()),
+          settings: settings);
     }
     switch (url) {
       case RouteNames.splashScreen:

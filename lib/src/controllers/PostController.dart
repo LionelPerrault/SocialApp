@@ -565,18 +565,18 @@ class PostController extends ControllerMVC {
     print('now you are joined or unjoined this group ${groupId}');
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
-    var liked = doc['groupLiked'];
-    var respon = await boolLiked(groupId);
+    var joined = doc['groupJoined'];
+    var respon = await boolJoined(groupId);
     if (respon) {
-      liked.removeWhere(
+      joined.removeWhere(
           (item) => item['userName'] == UserManager.userInfo['userName']);
       await FirebaseFirestore.instance
           .collection(Helper.groupsField)
           .doc(groupId)
-          .update({'groupLiked': liked});
+          .update({'groupJoined': joined});
       return true;
     } else {
-      liked.add({
+      joined.add({
         'userName': UserManager.userInfo['userName'],
         'fullName':
             '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
@@ -585,7 +585,7 @@ class PostController extends ControllerMVC {
       await FirebaseFirestore.instance
           .collection(Helper.groupsField)
           .doc(groupId)
-          .update({'groupLiked': liked});
+          .update({'groupJoined': joined});
       return true;
     }
   }

@@ -14,7 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class PageTimelineScreen extends StatefulWidget {
   Function onClick;
-  PageTimelineScreen({Key? key,required this.onClick})
+  PageTimelineScreen({Key? key, required this.onClick})
       : con = PostController(),
         super(key: key);
   final PostController con;
@@ -49,63 +49,68 @@ class PageTimelineScreenState extends mvc.StateMVC<PageTimelineScreen>
         'icon': Icons.thumb_up,
         'text': '${con.page["pageLiked"].length} people like this'
       },
-      {
-        'icon': Icons.tag,
-        'text': 'N/A'
-      },
-      {
-        'icon': Icons.location_history,
-        'text': '${con.page["pageLocation"]}'
-      },
+      {'icon': Icons.tag, 'text': 'N/A'},
+      {'icon': Icons.location_history, 'text': '${con.page["pageLocation"]}'},
     ];
     _gotoHome();
   }
+
   late PostController con;
-  void _gotoHome(){
+  void _gotoHome() {
     Future.delayed(Duration.zero, () {
       width = SizeConfig(context).screenWidth - 260;
-      itemWidth = width/7.5;
+      itemWidth = width / 7.5;
       setState(() {});
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.only(right: 10,left: 70,top: 15),
-            child:SizeConfig(context).screenWidth < 800 ? 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:[
-                profileCompletion(),
-                MindPost()
-            ]
-              )
-            : Row(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.only(right: 10, left: 70, top: 15),
+      child: SizeConfig(context).screenWidth < 800
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [pageInfowidget(), MindPost()])
+          : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:[
-                profileCompletion(),
-                con.page['pageAdmin']['userName'] == UserManager.userInfo['userName'] ? MindPost() : Container()
-            ]),
-        );
+              children: [
+                  pageInfowidget(),
+                  con.page['pageAdmin']['userName'] ==
+                          UserManager.userInfo['userName']
+                      ? MindPost()
+                      : Container()
+                ]),
+    );
   }
-  Widget profileCompletion(){
+
+  Widget pageInfowidget() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-    // children: <Widget>[
-    //     Text('\$', style: TextStyle(decoration: TextDecoration.lineThrough))
-    children: mainInfoList.map((e) =>Container(
-      padding: const EdgeInsets.only(top: 5),
-      child:
-       Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-      Icon(e['icon'],size:15, color: Colors.grey,),
-      const Padding(padding: EdgeInsets.only(left: 5),),
-       Text(e['text'],)  
-    ],))).toList(),
-    
-);
+      // children: <Widget>[
+      //     Text('\$', style: TextStyle(decoration: TextDecoration.lineThrough))
+      children: mainInfoList
+          .map((e) => Container(
+              padding: const EdgeInsets.only(top: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    e['icon'],
+                    size: 15,
+                    color: Colors.grey,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 5),
+                  ),
+                  Text(
+                    e['text'],
+                  )
+                ],
+              )))
+          .toList(),
+    );
   }
 }
