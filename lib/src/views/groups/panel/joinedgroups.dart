@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/events/widget/eventcell.dart';
+import 'package:shnatter/src/views/groups/widget/groupcell.dart';
 
 import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
@@ -23,54 +23,63 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var returnValue = [];
-  var goingEvents = [];
+  var joinedGroups = [];
   int arrayLength = 0;
   @override
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() { });
+    con.setState(() {});
     super.initState();
-    getEventNow();
+    getGroupNow();
   }
 
-  void getEventNow() {
-    con.getEvent('going').then((value) => {
-      returnValue = value,
-      goingEvents = value,
-    });
+  void getGroupNow() {
+    con.getGroup('joined').then((value) => {
+          returnValue = value,
+          joinedGroups = value,
+        });
   }
+
   @override
   Widget build(BuildContext context) {
-    var  screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
     return Container(
-      child: 
-      Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
             child: GridView.count(
-                crossAxisCount: screenWidth > 800 ? 4 : screenWidth > 600 ? 3 : screenWidth > 210 ? 2 : 1  ,
-                childAspectRatio: 2/ 3,
-                padding: const EdgeInsets.all(4.0),
-                mainAxisSpacing: 4.0,
-                shrinkWrap: true,
-                crossAxisSpacing: 4.0,
-                children: 
-                  goingEvents.map((event) => 
-                    EventCell(
-                      eventTap: (){
-                        Navigator
-                        .pushReplacementNamed(
-                            context,
-                            '/events/${event['id']}');
+              crossAxisCount: screenWidth > 800
+                  ? 4
+                  : screenWidth > 600
+                      ? 3
+                      : screenWidth > 210
+                          ? 2
+                          : 1,
+              childAspectRatio: 2 / 3,
+              padding: const EdgeInsets.all(4.0),
+              mainAxisSpacing: 4.0,
+              shrinkWrap: true,
+              crossAxisSpacing: 4.0,
+              children: joinedGroups
+                  .map((group) => GroupCell(
+                      groupTap: () {
+                        Navigator.pushReplacementNamed(context,
+                            '/groups/${group['data']['groupUserName']}');
                       },
-                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
+                      buttonFun: () {
+                        con.joinedGroup(group['id']).then((value) {
+                          getGroupNow();
+                        });
+                      },
                       picture: 'null',
                       status: false,
-                      interests: event['data']['eventInterested'].length,
-                      header: event['data']['eventName'],
-                      interested: event['interested'])).toList(),),
+                      joins: group['data']['groupJoined'].length,
+                      header: group['data']['groupName'],
+                      joined: group['joined']))
+                  .toList(),
+            ),
           ),
         ],
       ),

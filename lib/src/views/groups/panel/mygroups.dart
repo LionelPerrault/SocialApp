@@ -28,55 +28,62 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() { });
+    con.setState(() {});
     super.initState();
-    getEventNow();
+    getGroupNow();
     print('now initstate');
   }
 
-  void getEventNow() {
-    con.getEvent('manage').then((value) => {
-      myGroups = [...value],
-      myGroups.where((event) => event['data']['eventAdmin'] == UserManager.userInfo['id']),
-      print(myGroups),
-      setState(() {})
-    });
+  void getGroupNow() {
+    con.getGroup('manage').then((value) => {
+          myGroups = [...value],
+          myGroups.where((group) =>
+              group['data']['groupAdmin']['userName'] ==
+              UserManager.userInfo['id']),
+          print(myGroups),
+          setState(() {})
+        });
   }
+
   @override
   Widget build(BuildContext context) {
-    var  screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
     return Container(
-      child: 
-      Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
             child: GridView.count(
-                crossAxisCount: screenWidth > 800 ? 4 : screenWidth > 600 ? 3 : screenWidth > 210 ? 2 : 1  ,
-                childAspectRatio: 2/ 3,
-                padding: const EdgeInsets.all(4.0),
-                mainAxisSpacing: 4.0,
-                shrinkWrap: true,
-                crossAxisSpacing: 4.0,
-                children: 
-                  myGroups.map((event) => 
-                    GroupCell(
-                      eventTap: (){
-                        Navigator
-                        .pushReplacementNamed(
-                            context,
-                            '/groups/${event['id']}');
+              crossAxisCount: screenWidth > 800
+                  ? 4
+                  : screenWidth > 600
+                      ? 3
+                      : screenWidth > 210
+                          ? 2
+                          : 1,
+              childAspectRatio: 2 / 3,
+              padding: const EdgeInsets.all(4.0),
+              mainAxisSpacing: 4.0,
+              shrinkWrap: true,
+              crossAxisSpacing: 4.0,
+              children: myGroups
+                  .map((group) => GroupCell(
+                      groupTap: () {
+                        Navigator.pushReplacementNamed(context,
+                            '/groups/${group['data']['groupUserName']}');
                       },
-                      buttonFun: (){
-                        con.interestedEvent(event['id']).then((value){
-                          getEventNow();
+                      buttonFun: () {
+                        con.joinedGroup(group['id']).then((value) {
+                          getGroupNow();
                         });
                       },
                       picture: 'null',
                       status: false,
-                      interests: event['data']['eventInterested'].length,
-                      header: event['data']['eventName'],
-                      interested: event['interested'])).toList(),),
+                      joins: group['data']['groupJoined'].length,
+                      header: group['data']['groupName'],
+                      joined: group['joined']))
+                  .toList(),
+            ),
           ),
         ],
       ),
