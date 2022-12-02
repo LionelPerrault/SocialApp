@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:html';
-import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';

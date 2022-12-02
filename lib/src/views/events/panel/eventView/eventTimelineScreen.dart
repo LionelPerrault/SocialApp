@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -27,8 +26,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var url = window.location.href;
-  var subUrl = '';
   double width = 0;
   double itemWidth = 0;
   //

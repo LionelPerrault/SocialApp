@@ -28,17 +28,23 @@ class PeopleController extends ControllerMVC {
         pageIndex = 1,
         isShowProgressive = false,
         requestFriends = [],
+        sendFriends = [],
         isFriendRequest = {},
         isConfirmRequest = {},
+        allFriendsList = [],
         super(state);
   static PeopleController? _this;
   List userList;
+  List allFriendsList;
   int pageIndex;
+  String ind = '';
   bool isShowProgressive;
   List requestFriends;
+  List sendFriends;
   Map isFriendRequest = {};
   Map isConfirmRequest;
   var userInfo = UserManager.userInfo;
+  var addIndex = 0;
   @override
   Future<bool> initAsync() async {
     //
@@ -53,42 +59,108 @@ class PeopleController extends ControllerMVC {
   }
 
   getUserList() async {
+    await getReceiveRequests();
+    await getSendRequests();
+    await getList();
+  }
+
+  getList() async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .limit(5 * pageIndex)
+        .limit(5 * pageIndex + addIndex)
         .get();
+    var snapshot1 = await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('userName', isNotEqualTo: UserManager.userInfo['userName'])
+        .get();
+    var snapshot2 = await FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .where('state', isEqualTo: 1)
+        .get();
+    allFriendsList = snapshot2.docs;
     userList = snapshot.docs
         .where((element) =>
             element['userName'] != UserManager.userInfo['userName'])
         .toList();
-    setState(() {});
+
+    var allUserList = getFilterList(snapshot1.docs);
+    var arr = getFilterList(userList);
+    if (arr.length < 5 * pageIndex && arr.length != allUserList.length) {
+      addIndex += 5 * pageIndex - arr.length as int;
+      await getUserList();
+    } else if (arr.length == 5 * pageIndex ||
+        arr.length == allUserList.length) {
+      print(arr.length);
+      addIndex = 0;
+      userList = arr;
+      setState(() {});
+    }
   }
 
-  requestFriend(receiver, fullName, avatar, index) async {
-    var snapshot = await FirebaseFirestore.instance.collection(Helper.friendField)
-      .where('users', arrayContains: userInfo['userName']).get();
+  getFilterList(list) {
+    var arr = [];
+    for (int i = 0; i < list.length; i++) {
+      var f = 0;
+      for (int j = 0; j < allFriendsList.length; j++) {
+        if (allFriendsList[j]['users'].contains(list[i]['userName']) &&
+            allFriendsList[j]['users'].contains(userInfo['userName'])) {
+          f = 1;
+        }
+      }
+      for (int j = 0; j < requestFriends.length; j++) {
+        if (list[i]['userName'] == requestFriends[j]['requester']) {
+          f = 1;
+        }
+      }
+      for (int j = 0; j < sendFriends.length; j++) {
+        if (list[i]['userName'] == sendFriends[j]['receiver']) {
+          f = 1;
+        }
+      }
+
+      if (f == 0) {
+        arr.add(list[i]);
+      }
+    }
+    var arr1 = [];
+    return arr;
+  }
+
+  requestFriend(receiver, fullName, avatar) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .where('users', arrayContains: userInfo['userName'])
+        .get();
     var t = 0;
     var user = [];
     snapshot.docs.forEach((element) {
       user = element['users'];
-      if(element['users'].contains(receiver)){
+      if (element['users'].contains(receiver)) {
         t = 1;
       }
     });
-    print(t);
-    if(t == 1){
+    if (t == 1) {
       return;
     }
-    isFriendRequest[index] = true;
     setState(() {});
     FirebaseFirestore.instance.collection(Helper.friendField).add({
       'requester': userInfo['userName'],
       'receiver': receiver,
-      receiver: {'name':fullName,'avatar':avatar},
-      userInfo['userName']: {'name':userInfo['fullName'],'avatar':userInfo['avatar']},
-      'users':[userInfo['userName'], receiver],
+      receiver: {'name': fullName, 'avatar': avatar},
+      userInfo['userName']: {
+        'name': userInfo['fullName'],
+        'avatar': userInfo['avatar']
+      },
+      'users': [userInfo['userName'], receiver],
       'state': 0
-    }).then((value) => {isFriendRequest[index] = false, setState(() {})});
+    }).then((value) async => {
+          await getUserList(),
+        });
+  }
+
+  getReceiveRequestsFriends() async {
+    await getReceiveRequests();
+    setState(() {});
   }
 
   getReceiveRequests() async {
@@ -98,26 +170,47 @@ class PeopleController extends ControllerMVC {
         .get();
     var arr = [];
     snapshot.docs.forEach((element) {
-        var j = {...element.data(),'id': element.id};
+      if (element['state'] == 0) {
+        var j = {...element.data(), 'id': element.id};
         arr.add(j);
+      }
     });
     requestFriends = arr;
-    setState(() { });
   }
-  confirmFriend(id,key) async {
-    await FirebaseFirestore.instance.collection(Helper.friendField).doc(id)
-            .update({
-              'state': 1 
-            });
-    await getReceiveRequests();
-    
+
+  getSendRequestsFriends() async {
+    await getSendRequests();
+    setState(() {});
   }
+
+  getSendRequests() async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .where('requester', isEqualTo: userInfo['userName'])
+        .get();
+    var arr = [];
+    snapshot.docs.forEach((element) {
+      if (element['state'] == 0) {
+        var j = {...element.data(), 'id': element.id};
+        arr.add(j);
+      }
+    });
+    sendFriends = arr;
+  }
+
+  confirmFriend(id, key) async {
+    await FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .doc(id)
+        .update({'state': 1});
+    await getReceiveRequestsFriends();
+  }
+
   deleteFriend(id) async {
-    await FirebaseFirestore.instance.collection(Helper.friendField).doc(id)
-          .update({
-            'state': 0 
-          });
-    await getReceiveRequests();
-    setState(() { });
+    await FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .doc(id)
+        .delete();
+    setState(() {});
   }
 }

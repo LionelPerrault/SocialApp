@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -33,8 +32,6 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var url = window.location.href;
-  var subUrl = '';
   double width = 0;
   double itemWidth = 0;
   //

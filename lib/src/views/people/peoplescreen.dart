@@ -1,8 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:badges/badges.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PeopleController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/models/user.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
@@ -13,11 +18,15 @@ import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/people/discoverScreen.dart';
 import 'package:shnatter/src/views/people/friendRequestsScreen.dart';
+import 'package:shnatter/src/views/people/sendRequestsScreen.dart';
 
 import '../../controllers/ChatController.dart';
 
 class PeopleScreen extends StatefulWidget {
-  PeopleScreen({Key? key}) : super(key: key);
+  PeopleScreen({Key? key})
+      : con = PeopleController(),
+        super(key: key);
+  final PeopleController con;
   @override
   State createState() => PeopleScreenState();
 }
@@ -31,11 +40,18 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
+  late PeopleController con;
+  final ScrollController _scrollController = ScrollController();
   //route variable
   String tabName = 'Discover';
   @override
   void initState() {
+    add(widget.con);
+    con = controller as PeopleController;
+    Helper.getJSONPreference(Helper.userField)
+        .then((value) async => {await con.getUserList(), setState(() {})});
     super.initState();
+
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
       vsync: this,
@@ -118,8 +134,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizeConfig(context).screenWidth <
-                                700
+                        SizeConfig(context).screenWidth < 700
                             ? const SizedBox()
                             : LeftPanel(),
                         //    : SizedBox(width: 0),
@@ -131,7 +146,15 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                             Expanded(
                                 child: Container(
                                     padding: EdgeInsets.only(
-                                        right: 30, top: 10, left: 30),
+                                        right: SizeConfig(context).screenWidth <
+                                                700
+                                            ? 30
+                                            : 70,
+                                        top: 10,
+                                        left: SizeConfig(context).screenWidth <
+                                                700
+                                            ? 30
+                                            : 70),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -141,7 +164,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                                             ? PeopleDiscoverScreen()
                                             : tabName == 'Friend Requests'
                                                 ? FriendRequestsScreen()
-                                                : Container()
+                                                : SendRequestsScreen()
                                       ],
                                     ))),
                           ],
@@ -203,121 +226,147 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                         )),
                   )
                 : const SizedBox(),
-            ChatScreen(),
           ],
         ));
   }
 
   Widget mainTabWidget() {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 1,
-            color: Colors.grey,
-            offset: Offset(0, 0), // Shadow position
+    print(con.sendFriends.length);
+    return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        controller: _scrollController,
+        child: Container(
+          height: 60,
+          width: SizeConfig(context).screenWidth < 700
+              ? SizeConfig(context).screenWidth
+              : SizeConfig(context).screenWidth * 0.7,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(3),
           ),
-        ],
-        borderRadius: BorderRadius.circular(3),
-      ),
-      child: Row(children: [
-        InkWell(
-            onTap: () {
-              tabName = 'Discover';
-              setState(() {});
-            },
-            child: Container(
-              padding: EdgeInsets.only(top: 25),
-              width: 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Discover',
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
-                  tabName == 'Discover'
-                      ? Container(
-                          margin: EdgeInsets.only(top: 17),
-                          height: 2,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(2))),
-                        )
-                      : Container(
-                          margin: EdgeInsets.only(top: 19),
-                        )
-                ],
-              ),
-            )),
-        InkWell(
-            onTap: () {
-              tabName = 'Friend Requests';
-              setState(() {});
-            },
-            child: Container(
-              padding: EdgeInsets.only(top: 25),
-              width: 150,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+          child: Row(children: [
+            InkWell(
+                onTap: () async {
+                  tabName = 'Discover';
+                  print(con.ind);
+                  setState(() {});
+                  await con.getUserList();
+                },
+                child: Container(
+                  padding: EdgeInsets.only(top: 19.5),
+                  width: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
                       Text(
-                        'Friend Requests',
+                        'Discover',
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
+                      tabName == 'Discover'
+                          ? Container(
+                              margin: EdgeInsets.only(top: 22.5),
+                              height: 2,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2))),
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(top: 19),
+                            )
                     ],
                   ),
-                  tabName == 'Friend Requests'
-                      ? Container(
-                          margin: EdgeInsets.only(top: 17),
-                          height: 2,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(2))),
-                        )
-                      : Container(
-                          margin: EdgeInsets.only(top: 19),
-                        )
-                ],
-              ),
-            )),
-        InkWell(
-            onTap: () {
-              tabName = 'Send Requests';
-              setState(() {});
-            },
-            child: Container(
-              width: 120,
-              padding: EdgeInsets.only(top: 25),
-              child: Column(
-                children: [
-                  Text(
-                    'Send Requests',
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                )),
+            InkWell(
+                onTap: () async {
+                  await con.getReceiveRequestsFriends();
+                  tabName = 'Friend Requests';
+                  setState(() {});
+                },
+                child: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  width: 150,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Friend Requests',
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Badge(
+                            badgeColor: Colors.blue,
+                            badgeContent: Text(
+                              con.requestFriends.length.toString(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
+                      tabName == 'Friend Requests'
+                          ? Container(
+                              margin: EdgeInsets.only(top: 17),
+                              height: 2,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2))),
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(top: 19),
+                            )
+                    ],
                   ),
-                  tabName == 'Send Requests'
-                      ? Container(
-                          margin: EdgeInsets.only(top: 17),
-                          height: 2,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(2))),
-                        )
-                      : Container(
-                          margin: EdgeInsets.only(top: 19),
-                        )
-                ],
-              ),
-            ))
-      ]),
-    );
+                )),
+            InkWell(
+                onTap: () async {
+                  tabName = 'Send Requests';
+                  await con.getSendRequestsFriends();
+                  setState(() {});
+                },
+                child: Expanded(
+                    child: Container(
+                  width: 130,
+                  padding: EdgeInsets.only(top: 15),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Send Requests',
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                          ),
+                          Padding(padding: EdgeInsets.only(left: 10)),
+                          Badge(
+                            badgeColor: Colors.blue,
+                            badgeContent: Text(
+                              con.sendFriends.length.toString(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
+                      tabName == 'Send Requests'
+                          ? Container(
+                              margin: EdgeInsets.only(top: 17),
+                              height: 2,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2))),
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(top: 19),
+                            )
+                    ],
+                  ),
+                )))
+          ]),
+        ));
   }
 }
