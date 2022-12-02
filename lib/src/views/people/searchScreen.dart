@@ -26,7 +26,14 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
   late PeopleController con;
   //route variable
   Map isFriendRequest = {};
+  final TextEditingController hometownController = TextEditingController();
+  final TextEditingController currentController = TextEditingController();
+  final TextEditingController keydownController = TextEditingController();
+  List location = [];
   String tabName = 'Discover';
+  String isShowLocation = '';
+  String hometownText = '';
+  String currentText = '';
   Color color = Color.fromRGBO(230, 236, 245, 1);
   List gender = [
     {'value': 'Any', 'title': 'Any'},
@@ -67,7 +74,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
           ? SizeConfig(context).screenWidth - 60
           : SizeConfig(context).screenWidth * 0.3 - 90,
       margin: EdgeInsets.only(top: 10, bottom: 20),
-      child: Column(children: [
+      child: Stack(children: [
         Container(
           height: 50,
           decoration: BoxDecoration(
@@ -85,97 +92,156 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
                 Text('Search')
               ]),
         ),
-        Padding(
-          padding: EdgeInsets.only(top: 20),
+        Container(
+          margin: EdgeInsets.only(top: 65),
+          child: customInput(
+              title: 'Hometown',
+              controller: hometownController,
+              onChange: (value) {
+                geoLocator(
+                  value,
+                  'hometown',
+                );
+              }),
         ),
-        customInput(title: 'Hometown', onChange: (value) {}),
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        customInput(
-          title: 'Current place',
-          onChange: (value) {},
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        customInput(title: 'Keyword', onChange: (value) {}),
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        customDropDownButton(
-            title: 'Gender',
-            item: gender,
-            onChange: (value) {},
-            context: context),
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        customDropDownButton(
-            title: 'Relationship',
-            item: relationShip,
-            onChange: (value) {},
-            context: context),
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        customDropDownButton(
-            title: 'Online Status',
-            item: onlineStatus,
-            onChange: (value) {},
-            context: context),
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        customDropDownButton(
-            title: 'Religion',
-            item: religion,
-            onChange: (value) {},
-            context: context),
-        Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(2.0)),
-              minimumSize: Size(
-                  SizeConfig(context).screenWidth < 900
-                      ? SizeConfig(context).screenWidth - 60
-                      : SizeConfig(context).screenWidth * 0.3 - 90,
-                  50),
-              maximumSize: Size(
-                  SizeConfig(context).screenWidth < 900
-                      ? SizeConfig(context).screenWidth - 60
-                      : SizeConfig(context).screenWidth * 0.3 - 90,
-                  50),
-            ),
-            onPressed: () {
-              () => {};
+        Container(
+          margin: EdgeInsets.only(top: 65 * 2),
+          child: customInput(
+            title: 'Current place',
+            controller: currentController,
+            onChange: (value) {
+              geoLocator(value, 'current');
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.search,
-                  color: Colors.black,
-                  size: 16,
-                ),
-                Padding(padding: EdgeInsets.only(left: 3)),
-                Text('Search',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 33, 37, 41),
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.bold)),
-              ],
-            ))
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 65 * 3),
+          child: customInput(title: 'Keyword', onChange: (value) {}),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 65 * 4),
+          child: customDropDownButton(
+              title: 'Gender',
+              item: gender,
+              onChange: (value) {},
+              context: context),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 65 * 5),
+          child: customDropDownButton(
+              title: 'Relationship',
+              item: relationShip,
+              onChange: (value) {},
+              context: context),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 65 * 6),
+          child: customDropDownButton(
+              title: 'Online Status',
+              item: onlineStatus,
+              onChange: (value) {},
+              context: context),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 65 * 7),
+          child: customDropDownButton(
+              title: 'Religion',
+              item: religion,
+              onChange: (value) {},
+              context: context),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 65 * 8),
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2.0)),
+                minimumSize: Size(
+                    SizeConfig(context).screenWidth < 900
+                        ? SizeConfig(context).screenWidth - 60
+                        : SizeConfig(context).screenWidth * 0.3 - 90,
+                    50),
+                maximumSize: Size(
+                    SizeConfig(context).screenWidth < 900
+                        ? SizeConfig(context).screenWidth - 60
+                        : SizeConfig(context).screenWidth * 0.3 - 90,
+                    50),
+              ),
+              onPressed: () {
+                () => {};
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(
+                    Icons.search,
+                    color: Colors.black,
+                    size: 16,
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 3)),
+                  Text('Search',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 33, 37, 41),
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.bold)),
+                ],
+              )),
+        ),
+        isShowLocation == ''
+            ? Container()
+            : Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: Color.fromRGBO(245, 245, 245, 1), width: 0.6)),
+                width: SizeConfig(context).screenWidth < 900
+                    ? SizeConfig(context).screenWidth - 59
+                    : SizeConfig(context).screenWidth * 0.3 - 90,
+                margin: EdgeInsets.only(
+                    top: isShowLocation == 'hometown' ? 115 : 180),
+                child: Column(
+                    children: location
+                        .map((e) => MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: InkWell(
+                                onTap: () {
+                                  if (isShowLocation == 'hometown') {
+                                    hometownController.text = e['data'];
+                                  } else {
+                                    currentController.text = e['data'];
+                                  }
+                                  isShowLocation = '';
+                                  setState(() {});
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          top: 10, left: 10, right: 10),
+                                      child: Text(
+                                        e['data'],
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      height: 1,
+                                      color: Color.fromRGBO(245, 245, 245, 1),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ))
+                        .toList()),
+              )
       ]),
     );
   }
 
-  Widget customInput({title, onChange}) {
+  Widget customInput({title, onChange, controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -190,10 +256,8 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
         Container(
           height: 40,
           child: TextField(
-            onChanged: (value) {
-              onChange(value);
-              geoLocator(value);
-            },
+            controller: controller,
+            onChanged: onChange,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.only(top: 10, left: 10),
               border: OutlineInputBorder(),
@@ -254,14 +318,31 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
     ]);
   }
 
-  void geoLocator(value) async {
+  void geoLocator(value, what) async {
     final sessionToken = Uuid().v4();
     final client = Client();
 
     final request =
-        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$value&types=address&language=${Localizations.localeOf(context).languageCode}&components=country:ch&key=${Helper.apiKey}&sessiontoken=$sessionToken';
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$value&types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
     final response = await client.get(Uri.parse(request));
     var res = jsonDecode(response.body);
-    print(res['predictions']);
+    var loc = [];
+    res['predictions'].forEach((elem) {
+      var ss = elem['description'].replaceAll(' ', '');
+      var str = ss.split(',');
+      var s = '';
+      for (int i = str.length - 1; i >= 0; i--) {
+        s += i == 0 ? ' ${str[i]}' : ' ${str[i]} >';
+      }
+      loc.add({'value': elem['description'], 'data': s});
+    });
+    location = loc;
+    if (location.isEmpty) {
+      isShowLocation = what;
+      setState(() {});
+    } else {
+      isShowLocation = what;
+      setState(() {});
+    }
   }
 }

@@ -42,6 +42,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
   late AnimationController _drawerSlideController;
   late PeopleController con;
   final ScrollController _scrollController = ScrollController();
+
   //route variable
   String tabName = 'Discover';
   @override
@@ -174,6 +175,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
             showSearch
                 ? GestureDetector(
                     onTap: () {
+                      print('gestre');
                       setState(() {
                         showSearch = false;
                       });
@@ -248,7 +250,6 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
             InkWell(
                 onTap: () async {
                   tabName = 'Discover';
-                  print(con.ind);
                   setState(() {});
                   await con.getUserList();
                 },
