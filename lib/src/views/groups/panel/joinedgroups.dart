@@ -65,8 +65,8 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
               children: joinedGroups
                   .map((group) => GroupCell(
                       groupTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/groups/${group['id']}');
+                        Navigator.pushReplacementNamed(context,
+                            '/groups/${group['data']['groupUserName']}');
                       },
                       buttonFun: () {
                         con.joinedGroup(group['id']).then((value) {

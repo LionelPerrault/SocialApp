@@ -485,7 +485,7 @@ class PostController extends ControllerMVC {
   var group;
   var viewGroupId = '';
   var viewGroupName = '';
-  var viewGroupLiked = false;
+  var viewGroupJoined = false;
 
   //sub router
   String groupTab = 'Timeline';
@@ -531,7 +531,7 @@ class PostController extends ControllerMVC {
     var value = reuturnValue.docs;
     group = value[0];
     viewGroupId = group.id;
-    viewGroupLiked = await boolJoined(viewGroupId);
+    viewGroupJoined = await boolJoined(viewGroupId);
     setState(() {});
     print('This group was posted by ${group['groupAdmin']}');
     return true;

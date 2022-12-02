@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -31,6 +32,14 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   var subUrl = '';
   double width = 0;
   double itemWidth = 0;
+  List<Map> sampleData = [
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature}
+  ];
+  get kprimaryColor => null;
   //
   @override
   void initState() {
@@ -51,7 +60,9 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                       UserManager.userInfo['userName']
                   ? MindPost()
                   : Container(),
-              eventInfo()
+              Column(
+                children: [eventInfo(), friendInvites()],
+              )
             ])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -61,7 +72,9 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                           UserManager.userInfo['userName']
                       ? MindPost()
                       : Container(),
-                  eventInfo()
+                  Column(
+                    children: [eventInfo(), friendInvites()],
+                  )
                 ]),
     );
   }
@@ -134,6 +147,126 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
           style: const TextStyle(fontSize: 13),
         )
       ]),
+    );
+  }
+
+  @override
+  Widget friendInvites() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(3),
+      child: Container(
+          width: SizeConfig.rightPaneWidth,
+          // color: Colors.white,
+          padding: const EdgeInsets.all(5),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(Icons.person_add_alt_sharp),
+                  const Padding(padding: EdgeInsets.only(left: 3)),
+                  const Text(
+                    "Invite Friends",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  Row(children: [
+                    const Text(
+                      'See All',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ])
+                ],
+              ),
+              const Divider(
+                height: 1,
+                //thickness: 5,
+                //indent: 20,
+                //endIndent: 0,
+                //color: Colors.black,
+              ),
+              AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  height: 260,
+                  curve: Curves.fastOutSlowIn,
+                  child: SizedBox(
+                    //size: Size(100,100),
+                    child: ListView.separated(
+                      itemCount: sampleData.length,
+                      itemBuilder: (context, index) => Material(
+                          child: ListTile(
+                              onTap: () {
+                                print("tap!");
+                              },
+                              hoverColor:
+                                  const Color.fromARGB(255, 243, 243, 243),
+                              // tileColor: Colors.white,
+                              enabled: true,
+                              leading: const CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
+                              ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        child: Text(
+                                          sampleData[index]['name'],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11),
+                                        ),
+                                      ),
+                                      Container(
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color.fromARGB(
+                                                          255, 33, 37, 41),
+                                                  elevation: 3,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              2.0)),
+                                                  minimumSize:
+                                                      const Size(65, 30),
+                                                  maximumSize:
+                                                      const Size(65, 30)),
+                                              onPressed: () {
+                                                () => {};
+                                              },
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                    Icons
+                                                        .person_add_alt_rounded,
+                                                    color: Colors.white,
+                                                    size: 15.0,
+                                                  ),
+                                                  Text('Add',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
+                                              ))),
+                                    ],
+                                  )
+                                ],
+                              ))),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
+                        height: 1,
+                        endIndent: 10,
+                      ),
+                    ),
+                  ))
+            ],
+          )),
     );
   }
 }

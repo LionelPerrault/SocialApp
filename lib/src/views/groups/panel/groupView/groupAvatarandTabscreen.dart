@@ -250,14 +250,6 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                     onPressed: () {
                       joinStatus = true;
                       setState(() {});
-                      con.goingEvent(con.viewEventId).then((value) => {
-                            con
-                                .getSelectedEvent(con.viewEventId)
-                                .then((value) => {
-                                      joinStatus = false,
-                                      setState(() {}),
-                                    }),
-                          });
                     },
                     child: joinStatus
                         ? Container(
@@ -271,7 +263,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              con.viewEventGoing
+                              con.viewGroupJoined
                                   ? const Icon(
                                       Icons.edit_calendar,
                                       color: Colors.white,
@@ -347,7 +339,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                                                       fontWeight:
                                                           FontWeight.bold))
                                             ]),
-                                        e['title'] == con.eventTab
+                                        e['title'] == con.groupTab
                                             ? Container(
                                                 margin: const EdgeInsets.only(
                                                     top: 23),

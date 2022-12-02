@@ -67,8 +67,8 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
               children: realAllGroups
                   .map((group) => GroupCell(
                       groupTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/groups/${group['id']}');
+                        Navigator.pushReplacementNamed(context,
+                            '/groups/${group['data']['groupUserName']}');
                       },
                       buttonFun: () {
                         con.joinedGroup(group['id']).then((value) {

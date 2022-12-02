@@ -6,6 +6,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
+import 'package:shnatter/src/views/groups/panel/groupView/groupSettingsScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 
@@ -194,7 +195,17 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
                                                                   value;
                                                               setState(() {});
                                                             })
-                                                          : const SizedBox()
+                                                          : con.groupTab ==
+                                                                  'Settings'
+                                                              ? GroupSettingsScreen(
+                                                                  onClick:
+                                                                      (value) {
+                                                                  con.groupTab =
+                                                                      value;
+                                                                  setState(
+                                                                      () {});
+                                                                })
+                                                              : const SizedBox()
                                           // EventFriendScreen(),
                                         ]),
                                   ),
