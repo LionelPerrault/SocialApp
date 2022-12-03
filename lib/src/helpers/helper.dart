@@ -57,6 +57,7 @@ class Helper {
   static var balance = 0;
   static var message = 'messages';
   static var newMessageSearch = 'userName';
+  static var apiKey = 'AIzaSyAtquiA4SXxBhs-lpAdk_xt3_dZtY4PId0';
   static var emoticons = 'emoticons';
   static var passwordMinLength = 9;
   static var emptySVG =
