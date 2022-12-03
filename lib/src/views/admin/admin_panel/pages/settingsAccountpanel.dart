@@ -57,7 +57,9 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
           ),
           Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth > 700 ? SizeConfig(context).screenWidth * 0.75 : SizeConfig(context).screenWidth,
+              width: SizeConfig(context).screenWidth > 700
+                  ? SizeConfig(context).screenWidth * 0.75
+                  : SizeConfig(context).screenWidth,
               child: tabTitle == 'General' ? generalWidget() : ProfileWidget())
         ],
       ),
@@ -348,60 +350,62 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
   }
 
   Widget titleAndsubtitleInput(title, height, line, subtitle) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 150,
-          child: Text(
-            title,
-            style: TextStyle(
-                color: fontColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold),
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 100,
+            alignment: Alignment.topLeft,
+            child: Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 85, 95, 127)),
+            ),
           ),
-        ),
-        Flexible(fit: FlexFit.tight, child: SizedBox()),
-        Expanded(
-          flex: 3,
-          child: 
-        Container(
-            width: 500,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 400,
-                  height: height,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 250, 250, 250),
-                      border: Border.all(color: Colors.grey)),
-                  child: TextFormField(
-                    minLines: 1,
-                    maxLines: line,
-                    onChanged: (value) async {},
-                    keyboardType: TextInputType.multiline,
-                    style: const TextStyle(fontSize: 12),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      hintText: '',
-                      hintStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 5)),
-                Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 12),
-                )
-              ],
-            )))
-      ],
+          Expanded(
+              flex: 2,
+              child: SizedBox(
+                width: 500,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 400,
+                        height: height,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 250, 250, 250),
+                            border: Border.all(color: Colors.grey)),
+                        child: TextFormField(
+                          minLines: 1,
+                          maxLines: line,
+                          onChanged: (value) async {},
+                          keyboardType: TextInputType.multiline,
+                          style: const TextStyle(fontSize: 12),
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            hintText: '',
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      )
+                    ]),
+              ))
+        ],
+      ),
     );
   }
 

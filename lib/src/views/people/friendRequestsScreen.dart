@@ -193,6 +193,7 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
                                               await con
                                                   .getReceiveRequestsFriends();
                                               isDeclineRequest[e.key] = false;
+                                              con.getList();
                                               setState(() {});
                                             },
                                             style: ElevatedButton.styleFrom(

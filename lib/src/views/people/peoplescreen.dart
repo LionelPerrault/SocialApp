@@ -251,7 +251,6 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                 onTap: () async {
                   tabName = 'Discover';
                   setState(() {});
-                  await con.getUserList();
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: 19.5),
