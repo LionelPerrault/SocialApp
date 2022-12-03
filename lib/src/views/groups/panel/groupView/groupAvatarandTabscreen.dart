@@ -32,7 +32,6 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   double itemWidth = 0;
   var tap = 'Timeline';
   var userInfo = UserManager.userInfo;
-  late String avatar;
   double avatarProgress = 0;
   double coverProgress = 0;
   List<Map> mainTabList = [
@@ -49,14 +48,11 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   void initState() {
     super.initState();
     add(widget.con);
-    avatar = userInfo['avatar'];
-    print(avatar);
     con = controller as PostController;
     _gotoHome();
   }
 
   late PostController con;
-  var userCon = UserController();
   void _gotoHome() {
     Future.delayed(Duration.zero, () {
       width = SizeConfig(context).screenWidth - 260;
@@ -89,7 +85,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
             margin: const EdgeInsets.only(left: 50, top: 30),
             child: GestureDetector(
               onTap: () {
-                uploadImage('profile_cover');
+                uploadImage('cover');
               },
               child: const Icon(
                 Icons.photo_camera,
@@ -147,12 +143,13 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   Widget userAvatarWidget() {
     return Stack(
       children: [
-        avatar != ''
+        con.group['groupPicture'] != ''
             ? CircleAvatar(
                 radius: 78,
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
-                    radius: 75, backgroundImage: NetworkImage(avatar)),
+                    radius: 75,
+                    backgroundImage: NetworkImage(con.group['groupPicture'])),
               )
             : CircleAvatar(
                 radius: 78,
@@ -160,7 +157,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                 child: CircleAvatar(
                   radius: 75,
                   child: SvgPicture.network(
-                    Helper.avatar,
+                    Helper.groupImage,
                     width: 150,
                   ),
                 ),
@@ -393,21 +390,10 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
         );
         uploadTask.whenComplete(() async {
           var downloadUrl = await _reference.getDownloadURL();
-          if (type == 'profile_cover') {
-            FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(UserManager.userInfo['uid'])
-                .update({'profile_cover': downloadUrl}).then((e) async {
-              con.event['eventPicture'] = downloadUrl;
-              await Helper.saveJSONPreference(Helper.userField,
-                  {...userInfo, 'profile_cover': downloadUrl});
-              setState(() {});
-            });
+          if (type == 'cover') {
+            await con.uploadPicture('group', 'groupCover', downloadUrl);
           } else {
-            userCon.userAvatar = downloadUrl;
-            await userCon.changeAvatar();
-            avatar = downloadUrl;
-            setState(() {});
+            await con.uploadPicture('group', 'groupPicture', downloadUrl);
           }
         });
         uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
