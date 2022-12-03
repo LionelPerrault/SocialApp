@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/helpers/helper.dart';
 
 // ignore: must_be_immutable
 class GroupCell extends StatefulWidget {
@@ -140,7 +141,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                     color: Color.fromARGB(255, 150, 99, 99),
                     borderRadius: BorderRadius.circular(60),
                     border: Border.all(color: Colors.grey)),
-                child: SvgPicture.network(widget.picture),
+                child: SvgPicture.network(Helper.groupImage),
               ),
             ],
           ),

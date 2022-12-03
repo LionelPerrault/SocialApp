@@ -36,6 +36,23 @@ class PostController extends ControllerMVC {
     return true;
   }
 
+  Future<bool> uploadPicture(String where, String what, String url) async {
+    switch (where) {
+      case 'group':
+        FirebaseFirestore.instance
+            .collection(Helper.groupsField)
+            .doc(viewGroupId)
+            .update({what: url}).then((e) async {
+          group[what] = url;
+          setState(() {});
+        });
+        break;
+
+      default:
+    }
+    return true;
+  }
+
   /////////////////////////////all support ////////////////////////////////////
   //bool of my friends
   Future<bool> boolMyFriend(String userName) async {
