@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -150,7 +149,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                     width: 240,
                     height: 30,
                     color: Colors.grey,
-                    child: Text('https://test.shnatter.com/groups'),
+                    child: Text('https://test.shnatter.com/groups/'),
                   ),
                   Expanded(
                       child: Container(

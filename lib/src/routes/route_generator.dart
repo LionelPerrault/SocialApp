@@ -10,6 +10,7 @@ import 'package:shnatter/src/views/pages/pagesscreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pagescreen.dart';
 import 'package:shnatter/src/views/people/peoplescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
+import 'package:shnatter/src/views/products/peoplescreen.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
@@ -106,6 +107,11 @@ class RouteGenerator {
       case RouteNames.groups:
         return MaterialPageRoute(
             builder: (context) => GroupsScreen(), settings: settings);
+
+      //product route generators
+      case RouteNames.products:
+        return MaterialPageRoute(
+            builder: (context) => ProductScreen(), settings: settings);
 
       //admin routes generators
       case RouteNames.adp:

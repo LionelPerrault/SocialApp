@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
@@ -19,8 +20,11 @@ class LeftPanel extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ListText(
-              onTap: () => {},
-              label: 'shnatter',
+              onTap: () => {
+                    Navigator.pushReplacementNamed(
+                        context, UserManager.userInfo['userName'])
+                  },
+              label: UserManager.userInfo['userName'],
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile.svg?alt=media&token=c40823c5-872b-49b8-8f59-70c7b9314263'),
           ListText(
@@ -81,7 +85,9 @@ class LeftPanel extends StatelessWidget {
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_articles.svg?alt=media&token=e98ee341-30f4-4e2d-8797-0e8396c4fada'),
           ListText(
-              onTap: () => {},
+              onTap: () => {
+                    Navigator.pushReplacementNamed(context, RouteNames.products)
+                  },
               label: 'My Products',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_products.svg?alt=media&token=91cdcfb3-cb0a-4061-a19f-b020c61299a0'),
@@ -91,20 +97,14 @@ class LeftPanel extends StatelessWidget {
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsaved_posts.svg?alt=media&token=a6950b2b-26ee-4cb8-b1ff-78047383e0de'),
           ListText(
-              onTap: () => {Navigator
-                    .pushReplacementNamed(
-                        context,
-                        RouteNames
-                            .pages)},
+              onTap: () =>
+                  {Navigator.pushReplacementNamed(context, RouteNames.pages)},
               label: 'Pages',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpages.svg?alt=media&token=eed0ae72-6faf-4fdc-8581-bf3a99a04fa7'),
           ListText(
-              onTap: () => {Navigator
-                    .pushReplacementNamed(
-                        context,
-                        RouteNames
-                            .groups)},
+              onTap: () =>
+                  {Navigator.pushReplacementNamed(context, RouteNames.groups)},
               label: 'Groups',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fgroups.svg?alt=media&token=56ef9dc4-2c1b-4dfd-b945-3439cb5dfe25'),
