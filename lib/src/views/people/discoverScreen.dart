@@ -162,13 +162,12 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                     padding: EdgeInsets.only(top: 6),
                                     child: ElevatedButton(
                                         onPressed: () async {
-                                          isFriendRequest[e.key] = true;
                                           setState(() {});
                                           await con.requestFriend(
                                               e.value['userName'],
                                               '${e.value['firstName']} ${e.value['lastName']}',
-                                              e.value['avatar']);
-                                          isFriendRequest[e.key] = false;
+                                              e.value['avatar'],
+                                              e.key);
                                           setState(() {});
                                         },
                                         style: ElevatedButton.styleFrom(
@@ -180,19 +179,19 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(2.0)),
                                             minimumSize:
-                                                isFriendRequest[e.key] !=
+                                                con.isFriendRequest[e.key] !=
                                                             null &&
-                                                        isFriendRequest[e.key]
+                                                        con.isFriendRequest[e.key]
                                                     ? const Size(90, 35)
                                                     : const Size(110, 35),
                                             maximumSize:
-                                                isFriendRequest[e.key] !=
+                                                con.isFriendRequest[e.key] !=
                                                             null &&
-                                                        isFriendRequest[e.key]
+                                                        con.isFriendRequest[e.key]
                                                     ? const Size(90, 35)
                                                     : const Size(110, 35)),
-                                        child: isFriendRequest[e.key] != null &&
-                                                isFriendRequest[e.key]
+                                        child: con.isFriendRequest[e.key] != null &&
+                                               con.isFriendRequest[e.key]
                                             ? SizedBox(
                                                 width: 10,
                                                 height: 10,

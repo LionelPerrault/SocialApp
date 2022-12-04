@@ -161,7 +161,9 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
           ),
           Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth < 700 ? SizeConfig(context).screenWidth : SizeConfig(context).screenWidth * 0.75,
+              width: SizeConfig(context).screenWidth < 700
+                  ? SizeConfig(context).screenWidth
+                  : SizeConfig(context).screenWidth * 0.75,
               child: tabTitle == 'General'
                   ? generalWidget()
                   : tabTitle == 'Amazon S3'
@@ -382,62 +384,60 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
       ]),
     );
   }
-  Widget uploadFotter(){
+
+  Widget uploadFotter() {
     return Container(
-            height: 80,
-            decoration: const BoxDecoration(
-                color: Color.fromRGBO(240, 240, 240, 1),
-                border:
-                    Border(top: BorderSide(width: 0.5, color: Colors.grey))),
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 15),
-            child: Row(children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              Expanded(child: 
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(200, 50),
-                  maximumSize: const Size(200, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Test Connection (Vision API)',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
+        height: 80,
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(240, 240, 240, 1),
+            border: Border(top: BorderSide(width: 0.5, color: Colors.grey))),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 15),
+        child: Row(children: [
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2.0)),
+                minimumSize: const Size(200, 50),
+                maximumSize: const Size(200, 50),
               ),
-              ),
-              
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              Expanded(child: 
-               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(150, 50),
-                  maximumSize: const Size(150, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Save Changes',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 33, 37, 41),
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              )
-              )
-             
-            ]));
+              onPressed: () {
+                () => {};
+              },
+              child: const Text('Test Connection (Vision API)',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(left: 10)),
+          Expanded(
+              child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.0)),
+              minimumSize: const Size(150, 50),
+              maximumSize: const Size(150, 50),
+            ),
+            onPressed: () {
+              () => {};
+            },
+            child: const Text('Save Changes',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 33, 37, 41),
+                    fontSize: 11.0,
+                    fontWeight: FontWeight.bold)),
+          ))
+        ]));
   }
+
   Widget generalWidget() {
     return Container(
       child: Column(children: [
@@ -916,127 +916,138 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
   }
 
   Widget titleAndsubtitleDropdown(title, List<Map> dropDownItems, subtitle) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-            child: Container(
-          width: 200,
-          child: Text(
-            title,
-            style: TextStyle(
-                color: fontColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold),
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 100,
+            alignment: Alignment.topLeft,
+            child: Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 85, 95, 127)),
+            ),
           ),
-        )),
-        const Flexible(fit: FlexFit.tight, child: SizedBox()),
-        Container(
-          width: SizeConfig(context).screenWidth * 0.5,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 250, 250, 250),
-                      border: Border.all(color: Colors.grey)),
-                  child: DropdownButton(
-                    value: dropDownItems[0]['value'],
-                    items: dropDownItems
-                        .map(
-                          (e) => DropdownMenuItem(
-                              value: e['value'],
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Text(
-                                  e['title'],
-                                  style: const TextStyle(
-                                      fontSize: 13, color: Colors.grey),
-                                ),
-                              )),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      //get value when changed
-                    },
-                    icon: const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Icon(Icons.arrow_drop_down)),
-                    iconEnabledColor: Colors.white, //Icon color
-                    style: const TextStyle(
-                      color: Colors.black, //Font color
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    dropdownColor: Colors.white,
-                    underline: Container(), //remove underline
-                    isExpanded: true,
-                    isDense: true,
-                  )),
-              const Padding(padding: EdgeInsets.only(top: 5)),
-              Text(
-                subtitle,
-                style: TextStyle(fontSize: fontSize),
-              )
-            ],
-          ),
-        )
-      ],
+          Expanded(
+              flex: 2,
+              child: SizedBox(
+                width: 500,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                          width: 400,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 250, 250, 250),
+                              border: Border.all(color: Colors.grey)),
+                          child: DropdownButton(
+                            value: dropDownItems[0]['value'],
+                            items: dropDownItems
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                      value: e['value'],
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          e['title'],
+                                          style: const TextStyle(
+                                              fontSize: 13, color: Colors.grey),
+                                        ),
+                                      )),
+                                )
+                                .toList(),
+                            onChanged: (value) {
+                              //get value when changed
+                            },
+                            icon: const Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Icon(Icons.arrow_drop_down)),
+                            iconEnabledColor: Colors.white, //Icon color
+                            style: const TextStyle(
+                              color: Colors.black, //Font color
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            dropdownColor: Colors.white,
+                            underline: Container(), //remove underline
+                            isExpanded: true,
+                            isDense: true,
+                          )),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      )
+                    ]),
+              ))
+        ],
+      ),
     );
   }
 
   Widget titleAndsubtitleInput(title, height, line, subtitle) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-            child: Container(
-          width: 200,
-          child: Text(
-            title,
-            style: TextStyle(
-                color: fontColor, fontSize: 13, fontWeight: FontWeight.bold),
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 100,
+            alignment: Alignment.topLeft,
+            child: Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 85, 95, 127)),
+            ),
           ),
-        )),
-        Flexible(fit: FlexFit.tight, child: SizedBox()),
-        Container(
-            width: SizeConfig(context).screenWidth * 0.5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: height,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 250, 250, 250),
-                      border: Border.all(color: Colors.grey)),
-                  child: TextFormField(
-                    minLines: 1,
-                    maxLines: line,
-                    onChanged: (value) async {},
-                    keyboardType: TextInputType.multiline,
-                    style: const TextStyle(fontSize: 12),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      hintText: '',
-                      hintStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 5)),
-                Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 12),
-                )
-              ],
-            ))
-      ],
+          Expanded(
+              flex: 2,
+              child: SizedBox(
+                width: 500,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 400,
+                        height: height,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 250, 250, 250),
+                            border: Border.all(color: Colors.grey)),
+                        child: TextFormField(
+                          minLines: 1,
+                          maxLines: line,
+                          onChanged: (value) async {},
+                          keyboardType: TextInputType.multiline,
+                          style: const TextStyle(fontSize: 12),
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            hintText: '',
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      )
+                    ]),
+              ))
+        ],
+      ),
     );
   }
 
@@ -1093,61 +1104,73 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
   }
 
   Widget moduleDropDown(title, List<Map> dropDownItems) {
-    return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-              child: Container(
-            width: 200,
+          Container(
+            width: 100,
+            alignment: Alignment.topLeft,
             child: Text(
               title,
-              style: TextStyle(
-                  color: fontColor,
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold),
-            ),
-          )),
-          Flexible(fit: FlexFit.tight, child: SizedBox()),
-          Container(
-            width: SizeConfig(context).screenWidth * 0.5,
-            decoration: BoxDecoration(
-                border: Border.all(width: 0.5, color: Colors.grey)),
-            height: 70,
-            child: DropdownButton(
-              value: dropDownItems[0]['value'],
-              itemHeight: 70,
-              items: dropDownItems
-                  .map((e) => DropdownMenuItem(
-                      value: e['value'],
-                      child: Container(
-                          height: 70,
-                          child: ListTile(
-                            leading: Icon(e['icon']),
-                            title: Text(e['title']),
-                            subtitle: Text(e['subtitle']),
-                          ))))
-                  .toList(),
-              onChanged: (value) {
-                //get value when changed
-                // dropdownValue = value!;
-                setState(() {});
-              },
-              icon: const Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Icon(Icons.arrow_drop_down)),
-              iconEnabledColor: Colors.white, //Icon color
               style: const TextStyle(
-                color: Colors.black, //Font color
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-              ),
-              dropdownColor: Colors.white,
-              underline: Container(), //remove underline
-              isExpanded: true,
-              isDense: true,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 85, 95, 127)),
             ),
-          )
-        ]);
+          ),
+          Expanded(
+              flex: 2,
+              child: SizedBox(
+                width: 500,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 400,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 250, 250, 250),
+                            border: Border.all(color: Colors.grey)),
+                        child: DropdownButton(
+                          value: dropDownItems[0]['value'],
+                          itemHeight: 70,
+                          items: dropDownItems
+                              .map((e) => DropdownMenuItem(
+                                  value: e['value'],
+                                  child: Container(
+                                      height: 70,
+                                      child: ListTile(
+                                        leading: Icon(e['icon']),
+                                        title: Text(e['title']),
+                                        subtitle: Text(e['subtitle']),
+                                      ))))
+                              .toList(),
+                          onChanged: (value) {
+                            //get value when changed
+                            // dropdownValue = value!;
+                            setState(() {});
+                          },
+                          icon: const Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Icon(Icons.arrow_drop_down)),
+                          iconEnabledColor: Colors.white, //Icon color
+                          style: const TextStyle(
+                            color: Colors.black, //Font color
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          dropdownColor: Colors.white,
+                          underline: Container(), //remove underline
+                          isExpanded: true,
+                          isDense: true,
+                        ),
+                      ),
+                    ]),
+              ))
+        ],
+      ),
+    );
   }
 }

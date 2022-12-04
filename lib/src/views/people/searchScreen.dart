@@ -332,7 +332,11 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
       var str = ss.split(',');
       var s = '';
       for (int i = str.length - 1; i >= 0; i--) {
-        s += i == 0 ? ' ${str[i]}' : ' ${str[i]} >';
+        s += i == 0
+            ? ' ${str[i]}'
+            : i == str.length - 1
+                ? '${str[i]}'
+                : ' ${str[i]} >';
       }
       loc.add({'value': elem['description'], 'data': s});
     });

@@ -138,6 +138,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                       await con.deleteFriend(e.value['id']);
                                       await con.getSendRequestsFriends();
                                       isDeleteRequest[e.key] = false;
+                                      con.getList();
                                       setState(() {});
                                     },
                                     style: ElevatedButton.styleFrom(

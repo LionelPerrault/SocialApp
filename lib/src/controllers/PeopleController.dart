@@ -32,6 +32,7 @@ class PeopleController extends ControllerMVC {
         isFriendRequest = {},
         isConfirmRequest = {},
         allFriendsList = [],
+        allUserList = [],
         super(state);
   static PeopleController? _this;
   List userList;
@@ -41,6 +42,7 @@ class PeopleController extends ControllerMVC {
   bool isShowProgressive;
   List requestFriends;
   List sendFriends;
+  List allUserList;
   Map isFriendRequest = {};
   Map isConfirmRequest;
   var userInfo = UserManager.userInfo;
@@ -58,13 +60,13 @@ class PeopleController extends ControllerMVC {
     return true;
   }
 
-  getUserList() async {
+  getUserList({index = -1}) async {
     await getReceiveRequests();
     await getSendRequests();
-    await getList();
+    await getList(index: index);
   }
 
-  getList() async {
+  getList({index = -1}) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.userField)
         .limit(5 * pageIndex + addIndex)
@@ -83,14 +85,17 @@ class PeopleController extends ControllerMVC {
             element['userName'] != UserManager.userInfo['userName'])
         .toList();
 
-    var allUserList = getFilterList(snapshot1.docs);
+    allUserList = getFilterList(snapshot1.docs);
     var arr = getFilterList(userList);
     if (arr.length < 5 * pageIndex && arr.length != allUserList.length) {
       addIndex += 5 * pageIndex - arr.length as int;
-      await getUserList();
+      await getList(index: index);
     } else if (arr.length == 5 * pageIndex ||
         arr.length == allUserList.length) {
-      print(arr.length);
+      print(index);
+      if (index != -1) {
+        isFriendRequest[index] = false;
+      }
       addIndex = 0;
       userList = arr;
       setState(() {});
@@ -126,7 +131,9 @@ class PeopleController extends ControllerMVC {
     return arr;
   }
 
-  requestFriend(receiver, fullName, avatar) async {
+  requestFriend(receiver, fullName, avatar, index) async {
+    isFriendRequest[index] = true;
+    setState(() {});
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
         .where('users', arrayContains: userInfo['userName'])
@@ -154,7 +161,7 @@ class PeopleController extends ControllerMVC {
       'users': [userInfo['userName'], receiver],
       'state': 0
     }).then((value) async => {
-          await getUserList(),
+          await getUserList(index: index),
         });
   }
 
