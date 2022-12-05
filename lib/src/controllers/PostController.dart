@@ -632,4 +632,17 @@ class PostController extends ControllerMVC {
 
   ///////////////////////////end groups functions //////////////////////////////////////////////////
 
+  Future<void> createProduct(context, Map<String, dynamic> productData) async {
+    productData = {
+      ...productData,
+      'productAdmin': UserManager.userInfo['userName'],
+      'productDate': DateTime.now().toString(),
+      'eventPost': false,
+    };
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .add(productData);
+
+    Navigator.pushReplacementNamed(context, RouteNames.settings);
+  }
 }

@@ -38,6 +38,12 @@ class Helper {
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
         toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
       );
+  static var productsData = FirebaseFirestore.instance
+      .collection(Helper.productsField)
+      .withConverter<TokenLogin>(
+        fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
+        toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
+      );
   static var allInterests = FirebaseFirestore.instance
       .collection(Helper.interestsField)
       .withConverter<TokenLogin>(
@@ -52,6 +58,7 @@ class Helper {
   static var eventsField = 'events';
   static var pagesField = 'pages';
   static var groupsField = 'groups';
+  static var productsField = 'products';
   static var interestsField = 'interests';
   static var friendField = 'friends';
   static var balance = 0;
