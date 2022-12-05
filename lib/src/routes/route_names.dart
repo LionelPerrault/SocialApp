@@ -40,6 +40,9 @@ class RouteNames {
   //profile routes
   static var userName = "";
 
+  //product routes
+  static const products = "/products";
+
   //admin routes
   static const adp = '/adminpanel';
   static const adp_settings_analytics = '/adminpanel/settings/analytics';

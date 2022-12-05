@@ -39,10 +39,11 @@ class PostController extends ControllerMVC {
   Future<bool> uploadPicture(String where, String what, String url) async {
     switch (where) {
       case 'group':
+        print(what);
         FirebaseFirestore.instance
             .collection(Helper.groupsField)
             .doc(viewGroupId)
-            .update({what: url}).then((e) async {
+            .update({'groupPicture': url}).then((e) async {
           group[what] = url;
           setState(() {});
         });
@@ -563,6 +564,7 @@ class PostController extends ControllerMVC {
       'groupJoined': [],
       'groupPost': false,
       'groupPicture': '',
+      'groupCover': '',
       'groupPhotos': [],
       'groupAlbums': [],
       'groupVideos': [],

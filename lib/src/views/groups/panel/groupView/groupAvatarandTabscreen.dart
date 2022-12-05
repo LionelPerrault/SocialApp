@@ -71,14 +71,14 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
               ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
               : SizeConfig(context).screenWidth,
           height: SizeConfig(context).screenHeight * 0.5,
-          decoration: con.group['groupPicture'] == ''
+          decoration: con.group['groupCover'] == ''
               ? const BoxDecoration(
                   color: Color.fromRGBO(66, 66, 66, 1),
                 )
               : const BoxDecoration(),
-          child: con.group['groupPicture'] == ''
+          child: con.group['groupCover'] == ''
               ? Container()
-              : Image.network(con.group['groupPicture'], fit: BoxFit.cover),
+              : Image.network(con.group['groupCover'], fit: BoxFit.cover),
         ),
         Container(
             alignment: Alignment.topLeft,
