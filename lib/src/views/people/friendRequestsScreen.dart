@@ -55,14 +55,24 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
             children: [
               requestFriendWidget(),
               Padding(padding: EdgeInsets.only(left: 20)),
-              SearchScreen(onChange: () {})
+              SearchScreen(
+                onChange: () {},
+                onClick: (value) {
+                  setState(() {});
+                },
+              )
             ],
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SearchScreen(onChange: () {}),
+              SearchScreen(
+                onChange: () {},
+                onClick: (value) {
+                  setState(() {});
+                },
+              ),
               requestFriendWidget(),
             ],
           );

@@ -10,10 +10,11 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:uuid/uuid.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({Key? key, required this.onChange})
+  SearchScreen({Key? key, required this.onChange, required this.onClick})
       : con = PeopleController(),
         super(key: key);
   final PeopleController con;
+  Function onClick;
   Function onChange;
 
   @override
@@ -24,6 +25,13 @@ class SearchScreen extends StatefulWidget {
 class SearchScreenState extends mvc.StateMVC<SearchScreen> {
   bool showMenu = false;
   late PeopleController con;
+  @override
+  void initState() {
+    super.initState();
+    add(widget.con);
+    con = controller as PeopleController;
+  }
+
   //route variable
   Map isFriendRequest = {};
   final TextEditingController hometownController = TextEditingController();
@@ -34,15 +42,16 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
   String isShowLocation = '';
   String hometownText = '';
   String currentText = '';
+  Map search = {};
   Color color = Color.fromRGBO(230, 236, 245, 1);
   List gender = [
-    {'value': 'Any', 'title': 'Any'},
-    {'value': 'Male', 'title': 'male'},
-    {'value': 'Female', 'title': 'female'},
-    {'value': 'Other', 'title': 'other'},
+    {'title': 'Any', 'value': 'any'},
+    {'title': 'Male', 'value': 'male'},
+    {'title': 'Female', 'value': 'female'},
+    {'title': 'Other', 'value': 'other'},
   ];
   List relationShip = [
-    {'value': 'Any', 'title': 'Any'},
+    {'value': 'any', 'title': 'Any'},
     {'value': 'Single', 'title': 'Single'},
     {'value': 'In a relationship', 'title': 'In a relationship'},
     {'value': 'Married', 'title': 'Married'},
@@ -52,12 +61,12 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
     {'value': "Widowed", 'title': "Widowed"},
   ];
   List onlineStatus = [
-    {'value': 'Any', 'title': 'Any'},
+    {'value': 'Any', 'title': 'any'},
     {'value': 'Online', 'title': 'Online'},
     {'value': 'Offline', 'title': 'Offline'},
   ];
   List religion = [
-    {'value': 'Any', 'title': 'Any'},
+    {'value': 'Any', 'title': 'any'},
     {'value': 'Jewish', 'title': 'Jewish'},
     {'value': 'Lizard', 'title': 'Lizard'},
     {'value': 'world', 'title': 'world'},
@@ -98,6 +107,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               title: 'Hometown',
               controller: hometownController,
               onChange: (value) {
+                search = {'hometown': value};
                 geoLocator(
                   value,
                   'hometown',
@@ -110,20 +120,27 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
             title: 'Current place',
             controller: currentController,
             onChange: (value) {
+              search = {'current': value};
               geoLocator(value, 'current');
             },
           ),
         ),
         Container(
           margin: EdgeInsets.only(top: 65 * 3),
-          child: customInput(title: 'Keyword', onChange: (value) {}),
+          child: customInput(
+              title: 'Keyword',
+              onChange: (value) {
+                search = {'keyword': value};
+              }),
         ),
         Container(
           margin: EdgeInsets.only(top: 65 * 4),
           child: customDropDownButton(
               title: 'Gender',
               item: gender,
-              onChange: (value) {},
+              onChange: (value) {
+                search = {'sex': value == 'any' ? '' : value};
+              },
               context: context),
         ),
         Container(
@@ -131,7 +148,9 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
           child: customDropDownButton(
               title: 'Relationship',
               item: relationShip,
-              onChange: (value) {},
+              onChange: (value) {
+                // search = {'sex': value == 'any' ? '' : value};
+              },
               context: context),
         ),
         Container(
@@ -169,8 +188,8 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
                         : SizeConfig(context).screenWidth * 0.3 - 90,
                     50),
               ),
-              onPressed: () {
-                () => {};
+              onPressed: () async {
+                widget.onClick(search);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -213,6 +232,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
                                     currentController.text = e['data'];
                                   }
                                   isShowLocation = '';
+                                  search = {isShowLocation: e['value']};
                                   setState(() {});
                                 },
                                 child: Column(

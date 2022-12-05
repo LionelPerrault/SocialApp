@@ -84,14 +84,25 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
             children: [
               userListWidget(),
               Padding(padding: EdgeInsets.only(left: 20)),
-              SearchScreen(onChange: () {})
+              SearchScreen(
+                onChange: () {},
+                onClick: (value) async {
+                  await con.fieldSearch(value);
+                  setState(() {});
+                },
+              )
             ],
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SearchScreen(onChange: () {}),
+              SearchScreen(
+                onChange: () {},
+                onClick: (value) {
+                  setState(() {});
+                },
+              ),
               userListWidget(),
             ],
           );
@@ -171,27 +182,25 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                           setState(() {});
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 33, 37, 41),
+                                            backgroundColor: const Color.fromARGB(
+                                                255, 33, 37, 41),
                                             elevation: 3,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(2.0)),
-                                            minimumSize:
-                                                con.isFriendRequest[e.key] !=
-                                                            null &&
-                                                        con.isFriendRequest[e.key]
-                                                    ? const Size(90, 35)
-                                                    : const Size(110, 35),
-                                            maximumSize:
-                                                con.isFriendRequest[e.key] !=
-                                                            null &&
-                                                        con.isFriendRequest[e.key]
-                                                    ? const Size(90, 35)
-                                                    : const Size(110, 35)),
-                                        child: con.isFriendRequest[e.key] != null &&
-                                               con.isFriendRequest[e.key]
+                                            minimumSize: con.isFriendRequest[e.key] !=
+                                                        null &&
+                                                    con.isFriendRequest[e.key]
+                                                ? const Size(90, 35)
+                                                : const Size(110, 35),
+                                            maximumSize: con.isFriendRequest[e.key] !=
+                                                        null &&
+                                                    con.isFriendRequest[e.key]
+                                                ? const Size(90, 35)
+                                                : const Size(110, 35)),
+                                        child: con.isFriendRequest[e.key] !=
+                                                    null &&
+                                                con.isFriendRequest[e.key]
                                             ? SizedBox(
                                                 width: 10,
                                                 height: 10,

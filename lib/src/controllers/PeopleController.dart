@@ -32,6 +32,7 @@ class PeopleController extends ControllerMVC {
         isFriendRequest = {},
         isConfirmRequest = {},
         allFriendsList = [],
+        tabName = 'Discover',
         allUserList = [],
         super(state);
   static PeopleController? _this;
@@ -39,6 +40,7 @@ class PeopleController extends ControllerMVC {
   List allFriendsList;
   int pageIndex;
   String ind = '';
+  String tabName;
   bool isShowProgressive;
   List requestFriends;
   List sendFriends;
@@ -98,6 +100,7 @@ class PeopleController extends ControllerMVC {
       }
       addIndex = 0;
       userList = arr;
+      print(userList);
       setState(() {});
     }
   }
@@ -218,6 +221,40 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.friendField)
         .doc(id)
         .delete();
+    setState(() {});
+  }
+
+  fieldSearch(Map search) async {
+    var arr = [];
+    var arr1 = [];
+    Map elem = {};
+    print(search);
+    if (tabName == 'Discover') {
+      arr = allUserList;
+    }
+    print(search);
+    var t = 0;
+    search.forEach((key, value) {
+      if (value != '') {
+        t = 1;
+      }
+      allUserList.forEach((element) {
+        elem = element.data();
+        elem.forEach((key1, value1) {
+          if (key == key1 && value == value1) {
+            arr1.add(element);
+          }
+        });
+      });
+    });
+    if (t == 0) {
+      await getList();
+    }
+    tabName == 'Discover'
+        ? userList = arr1
+        : tabName == 'Friend Requests'
+            ? requestFriends = arr1
+            : sendFriends = arr1;
     setState(() {});
   }
 }

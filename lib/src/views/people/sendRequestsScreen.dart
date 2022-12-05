@@ -54,14 +54,24 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
             children: [
               sendFriends(),
               Padding(padding: EdgeInsets.only(left: 20)),
-              SearchScreen(onChange: () {})
+              SearchScreen(
+                onChange: () {},
+                onClick: (value) {
+                  setState(() {});
+                },
+              )
             ],
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SearchScreen(onChange: () {}),
+              SearchScreen(
+                onChange: () {},
+                onClick: (value) {
+                  setState(() {});
+                },
+              ),
               sendFriends(),
             ],
           );
