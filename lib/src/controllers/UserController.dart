@@ -19,10 +19,10 @@ enum EmailType { emailVerify, googleVerify }
 class UserController extends ControllerMVC {
   factory UserController([StateMVC? state]) =>
       _this ??= UserController._(state);
-  UserController._(StateMVC? state) :
-    isSettingAction = false,
-    isProfileChange = false,
-   super(state);
+  UserController._(StateMVC? state)
+      : isSettingAction = false,
+        isProfileChange = false,
+        super(state);
   static UserController? _this;
   String token = '';
   String email = '';
@@ -255,7 +255,7 @@ class UserController extends ControllerMVC {
           'fullName': '${j['firstName']} ${j['lastName']}',
           'isVerify': isVerify.toString(),
           'isRememberme': isRememberme.toString(),
-          'uid': uid,
+          'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
@@ -296,6 +296,7 @@ class UserController extends ControllerMVC {
                             walletAddress = response['address'],
                             isSendLoginedInfo = false,
                             isLogined = true,
+                            Helper.connectOnlineDatabase(),
                             Navigator.pushReplacementNamed(
                                 context,
                                 isStarted
@@ -504,45 +505,60 @@ class UserController extends ControllerMVC {
     var doc = querySnapshot.docs;
     return doc;
   }
-  saveAccountSettings(email,userName, password) async {
+
+  saveAccountSettings(email, userName, password) async {
     var userManager = UserManager.userInfo;
     var uuid = '';
     isSettingAction = true;
-    setState(() { });
-    if(!email.contains('@')){
+    setState(() {});
+    if (!email.contains('@')) {
       return;
     }
-    if(password.length < Helper.passwordMinLength){
+    if (password.length < Helper.passwordMinLength) {
       return;
     }
-    await FirebaseAuth.instance.signInWithEmailAndPassword(email: userManager['email'], password: userManager['password']);
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userManager['email'], password: userManager['password']);
     await FirebaseAuth.instance.currentUser?.delete();
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       uuid = userCredential.user!.uid;
-      var snapshot = await FirebaseFirestore.instance.collection(Helper.userField)
-                      .doc(UserManager.userInfo['uid']).get();
-      await FirebaseFirestore.instance.collection(Helper.userField)
-          .doc(UserManager.userInfo['uid']).delete();
+      var snapshot = await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .get();
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .delete();
       var user = {};
-      snapshot.data()!.forEach((key,value) {  
-        user = {...user,key:key == 'email' ? email : key =='password' ? password
-         : key == 'userName' ? userName : value};
+      snapshot.data()!.forEach((key, value) {
+        user = {
+          ...user,
+          key: key == 'email'
+              ? email
+              : key == 'password'
+                  ? password
+                  : key == 'userName'
+                      ? userName
+                      : value
+        };
       });
-      await FirebaseFirestore.instance.collection(Helper.userField)
-      .doc(uuid).set({
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(uuid)
+          .set({
         ...user,
       });
       var j = {};
       user.forEach((key, value) {
         j = {...j, key.toString(): value.toString()};
       });
-      await Helper.saveJSONPreference(Helper.userField, {...j,'uid':uuid});
+      await Helper.saveJSONPreference(Helper.userField, {...j, 'uid': uuid});
       UserManager.getUserInfo();
       isSettingAction = false;
-      setState(() { });
-
+      setState(() {});
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -552,25 +568,28 @@ class UserController extends ControllerMVC {
         uuid = userCredential.user!.uid;
       } else {}
       isSettingAction = false;
-      setState(() { });
+      setState(() {});
     } catch (e) {
       rethrow;
     }
   }
+
   profileChange(profile) async {
-    if(profile.isNotEmpty){
+    if (profile.isNotEmpty) {
       isProfileChange = true;
       setState(() {});
       var userManager = UserManager.userInfo;
-      var snapshot = await FirebaseFirestore.instance.collection(Helper.userField)
-        .where('userName',isEqualTo: userManager['userName']).get();
+      var snapshot = await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .where('userName', isEqualTo: userManager['userName'])
+          .get();
       print(snapshot.docs[0].id);
-      await FirebaseFirestore.instance.collection(Helper.userField)
-      .doc(snapshot.docs[0].id).update({
-        ...profile
-      });
-      profile.forEach((key,value) {
-        userManager[key] = value; 
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(snapshot.docs[0].id)
+          .update({...profile});
+      profile.forEach((key, value) {
+        userManager[key] = value;
       });
       var j = {};
       userManager.forEach((key, value) {

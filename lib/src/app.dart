@@ -1,5 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:universal_html/html.dart' as html;
+import 'package:http/http.dart' as http;
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_window_close/flutter_window_close.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +18,7 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:universal_html/html.dart';
 import 'controllers/AppController.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -37,6 +45,30 @@ class _MyAppState extends AppStateMVC<MyApp> {
   @override
   void initState() {
     super.initState();
+
+    if (kIsWeb) {
+      html.window.onUnload.listen((event) async {
+        event.preventDefault();
+        var userInfo = UserManager.userInfo;
+        if (userInfo['userName'] != null) {
+          http.post(
+            Uri.parse('http://localhost:5000/test'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'userName': userInfo['userName'],
+            }),
+          );
+        }
+      });
+      return;
+    }
+
+    FlutterWindowClose.setWindowShouldCloseHandler(() async {
+      print(123);
+      return false;
+    });
   }
 
   Widget createApp() {

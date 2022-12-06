@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/models/user.dart';
 import '../models/setting.dart';
 import 'package:crypto/crypto.dart';
 
@@ -66,6 +68,7 @@ class Helper {
   static var newMessageSearch = 'userName';
   static var apiKey = 'AIzaSyAtquiA4SXxBhs-lpAdk_xt3_dZtY4PId0';
   static var emoticons = 'emoticons';
+  static var onlineStatusField = 'onlineStatus';
   static var passwordMinLength = 9;
   static var emptySVG =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fnodaa.svg?alt=media&token=ebfb99db-2cf6-4dd4-ba96-2ca150ba1352';
@@ -133,5 +136,29 @@ class Helper {
   static Future<void> removeAllPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(userField);
+  }
+
+  static connectOnlineDatabase() async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection(onlineStatusField)
+        .where('userName', isEqualTo: UserManager.userInfo['userName'])
+        .get();
+    if (snapshot.docs.isEmpty) {
+      await FirebaseFirestore.instance
+          .collection(onlineStatusField)
+          .add({'userName': UserManager.userInfo['userName'], 'status': 1});
+    } else {
+      await FirebaseFirestore.instance
+          .collection(onlineStatusField)
+          .doc(snapshot.docs[0].id)
+          .update({'status': 1});
+    }
+    final Stream<QuerySnapshot> stream =
+        FirebaseFirestore.instance.collection(onlineStatusField).snapshots();
+    stream.listen((event) {
+      event.docs.forEach((e) {
+        print(e.data());
+      });
+    });
   }
 }

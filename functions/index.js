@@ -6,3 +6,6 @@ admin.initializeApp();
 exports.emailVerification = functions.https.onRequest(async (req, res) => {
     res.redirect('https://shnatter-a69cd.web.app/');
   })
+exports.offlineRequest = functions.https.onRequest(async (req,res) => {
+  
+})

@@ -66,6 +66,7 @@ dependencies:
   font_awesome_flutter: ^10.2.1
   badges: ^2.0.3
   uuid: ^3.0.7
+  flutter_window_close: ^0.2.2
 
 dev_dependencies:
   flutter_test:

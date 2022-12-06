@@ -17,10 +17,11 @@ class AppController extends ControllerMVC {
 
   @override
   Future<bool> initAsync() async {
-    getUserInfo();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    getUserInfo();
+
     return true;
   }
 
@@ -30,6 +31,9 @@ class AppController extends ControllerMVC {
   }
 
   Future<void> getUserInfo() async {
-    UserManager.getUserInfo();
+    await UserManager.getUserInfo();
+    if (UserManager.userInfo['userName'] != null) {
+      Helper.connectOnlineDatabase();
+    }
   }
 }
