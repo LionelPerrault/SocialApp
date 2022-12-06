@@ -27,7 +27,10 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   double uploadPhotoProgress = 0;
   List<dynamic> productPhoto = [];
   double uploadFileProgress = 0;
-  var lateLength;
+  var photoLength;
+  var fileLength;
+  bool offer1 = false;
+  bool offer2 = false;
   late List productFile = [];
   late List productCategory = [
     'Choose Category',
@@ -52,7 +55,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
 
   @override
   Widget build(BuildContext context) {
-    print(productPhoto);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -86,8 +88,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     child: input(validator: (value) async {
                       print(value);
                     }, onchange: (value) async {
-                      productInfo['eventName'] = value;
-                      // setState(() {});
+                      productInfo['productName'] = value;
+                      setState(() {});
                     }),
                   )
                 ],
@@ -113,8 +115,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     child: input(validator: (value) async {
                       print(value);
                     }, onchange: (value) async {
-                      productInfo['eventName'] = value;
-                      // setState(() {});
+                      productInfo['productPrice'] = value;
+                      setState(() {});
                     }),
                   )
                 ],
@@ -131,7 +133,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   Row(
                     children: const [
                       Text(
-                        'Product Name',
+                        'Category',
                         style: TextStyle(
                             color: Color.fromARGB(255, 82, 95, 127),
                             fontSize: 11,
@@ -152,7 +154,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                               DropdownMenuItem(value: e, child: Text(e))))
                           .toList(),
                       onChanged: (value) {
-                        //get value when changed
+                        category = value.toString();
+                        productInfo['productCategory'] = value;
                         setState(() {});
                       },
                       style: const TextStyle(
@@ -197,11 +200,17 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                 checkColor: Colors.blue,
                                 activeColor:
                                     const Color.fromRGBO(0, 123, 255, 1),
-                                value: true,
+                                value: offer1,
                                 shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5.0))),
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  print(value);
+                                  offer1 = value!;
+                                  offer2 = !offer1;
+                                  productInfo['productOffer'] = 'Sell';
+                                  setState(() {});
+                                },
                               )),
                           Text('Sell')
                         ],
@@ -218,11 +227,16 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                 checkColor: Colors.blue,
                                 activeColor:
                                     const Color.fromRGBO(0, 123, 255, 1),
-                                value: true,
+                                value: offer2,
                                 shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5.0))),
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  offer2 = value!;
+                                  offer1 = !offer2;
+                                  productInfo['productOffer'] = 'Rent';
+                                  setState(() {});
+                                },
                               )),
                           Text('Rent')
                         ],
@@ -236,7 +250,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   Row(
                     children: const [
                       Text(
-                        'Price',
+                        'Status',
                         style: TextStyle(
                             color: Color.fromARGB(255, 82, 95, 127),
                             fontSize: 11,
@@ -257,7 +271,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                         DropdownMenuItem(value: 'Used', child: Text('Used')),
                       ],
                       onChanged: (value) {
-                        //get value when changed
+                        productInfo['productStatus'] = value;
                         setState(() {});
                       },
                       style: const TextStyle(
@@ -295,8 +309,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                 child: input(validator: (value) async {
                   print(value);
                 }, onchange: (value) async {
-                  productInfo['eventLocation'] = value;
-                  // setState(() {});
+                  productInfo['productLocation'] = value;
+                  setState(() {});
                 }),
               )
             ],
@@ -328,8 +342,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                               minLines: 1,
                               maxLines: 4,
                               onChanged: (value) async {
-                                productInfo['eventAbout'] = value;
-                                // setState(() {});
+                                productInfo['productAbout'] = value;
+                                setState(() {});
                               },
                               keyboardType: TextInputType.multiline,
                               style: const TextStyle(fontSize: 12),
@@ -478,7 +492,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
-                    Postcon.createEvent(context, productInfo);
+                    Postcon.createProduct(context, productInfo);
                   },
                   child: const Text('Publish',
                       style: TextStyle(
@@ -551,7 +565,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   }
 
   Widget productPhotoWidget(photo, id) {
-    print(photo);
     return Container(
       width: 90,
       height: 90,
@@ -628,12 +641,12 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
 
   uploadFile(XFile? pickedFile, type) async {
     if (type == 'photo') {
-      productPhoto.add({'id': productPhoto.length});
-      lateLength = '${productPhoto.length - 1}';
+      productPhoto.add({'id': productPhoto.length, 'url': ''});
+      photoLength = productPhoto.length - 1;
       setState(() {});
     } else {
-      productFile.add({'id': productPhoto.length});
-      lateLength = '${productPhoto.length - 1}';
+      productFile.add({'id': productPhoto.length, 'url': ''});
+      fileLength = productPhoto.length - 1;
       setState(() {});
     }
     final _firebaseStorage = FirebaseStorage.instance;
@@ -653,19 +666,22 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
           var downloadUrl = await _reference.getDownloadURL();
           if (type == 'photo') {
             for (var i = 0; i < productPhoto.length; i++) {
-              if (productPhoto[i]['id'] == '${lateLength}') {
+              if (productPhoto[i]['id'] == photoLength) {
                 productPhoto[i]['url'] = downloadUrl;
+                productInfo['productPhoto'] = productPhoto;
                 setState(() {});
               }
             }
           } else {
             for (var i = 0; i < productFile.length; i++) {
-              if (productFile[i]['id'] == '${lateLength}') {
+              if (productFile[i]['id'] == fileLength) {
                 productFile[i]['url'] = downloadUrl;
+                productInfo['productFile'] = productFile;
                 setState(() {});
               }
             }
           }
+          print(productPhoto);
         });
         uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
           switch (taskSnapshot.state) {
