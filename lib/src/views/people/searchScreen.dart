@@ -10,12 +10,11 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:uuid/uuid.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({Key? key, required this.onChange, required this.onClick})
+  SearchScreen({Key? key, required this.onClick})
       : con = PeopleController(),
         super(key: key);
   final PeopleController con;
   Function onClick;
-  Function onChange;
 
   @override
   State createState() => SearchScreenState();

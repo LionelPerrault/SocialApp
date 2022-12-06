@@ -70,8 +70,6 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
   void initState() {
     add(widget.con);
     con = controller as PeopleController;
-    // con.getUserList();
-
     super.initState();
   }
 
@@ -85,7 +83,6 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
               userListWidget(),
               Padding(padding: EdgeInsets.only(left: 20)),
               SearchScreen(
-                onChange: () {},
                 onClick: (value) async {
                   await con.fieldSearch(value);
                   setState(() {});
@@ -98,8 +95,8 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SearchScreen(
-                onChange: () {},
-                onClick: (value) {
+                onClick: (value) async {
+                  await con.fieldSearch(value);
                   setState(() {});
                 },
               ),
@@ -109,162 +106,193 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
   }
 
   Widget userListWidget() {
-    return Container(
-        margin: EdgeInsets.only(top: 10),
-        color: Colors.white,
-        width: SizeConfig(context).screenWidth < 900
-            ? SizeConfig(context).screenWidth - 60
-            : SizeConfig(context).screenWidth * 0.4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(padding: EdgeInsets.only(top: 25)),
-            Container(
-              padding: EdgeInsets.only(left: 20),
-              child: Text(
-                'People You May Know',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13),
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(top: 15)),
-            Container(
-              height: 1,
-              color: color,
-            ),
-            Column(
-                children: con.userList
-                    .asMap()
-                    .entries
-                    .map((e) => Container(
-                        padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-                        child: Column(
-                          children: [
-                            Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(padding: EdgeInsets.only(left: 10)),
-                                  e.value['avatar'] == ''
-                                      ? CircleAvatar(
-                                          radius: 20,
-                                          child:
-                                              SvgPicture.network(Helper.avatar))
-                                      : CircleAvatar(
-                                          radius: 20,
-                                          backgroundImage:
-                                              NetworkImage(e.value['avatar'])),
-                                  Container(
-                                    padding: EdgeInsets.only(left: 10, top: 5),
-                                    child: Text(
-                                      '${e.value['firstName']} ${e.value['lastName']}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 11),
-                                    ),
-                                  ),
-                                  Flexible(
-                                      fit: FlexFit.tight, child: SizedBox()),
-                                  Container(
-                                    padding: EdgeInsets.only(top: 6),
-                                    child: ElevatedButton(
-                                        onPressed: () async {
-                                          setState(() {});
-                                          await con.requestFriend(
-                                              e.value['userName'],
-                                              '${e.value['firstName']} ${e.value['lastName']}',
-                                              e.value['avatar'],
-                                              e.key);
-                                          setState(() {});
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color.fromARGB(
-                                                255, 33, 37, 41),
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: con.isFriendRequest[e.key] !=
-                                                        null &&
-                                                    con.isFriendRequest[e.key]
-                                                ? const Size(90, 35)
-                                                : const Size(110, 35),
-                                            maximumSize: con.isFriendRequest[e.key] !=
-                                                        null &&
-                                                    con.isFriendRequest[e.key]
-                                                ? const Size(90, 35)
-                                                : const Size(110, 35)),
-                                        child: con.isFriendRequest[e.key] !=
-                                                    null &&
-                                                con.isFriendRequest[e.key]
-                                            ? SizedBox(
-                                                width: 10,
-                                                height: 10,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            : Row(
-                                                children: const [
-                                                  Icon(
-                                                    Icons
-                                                        .person_add_alt_rounded,
-                                                    color: Colors.white,
-                                                    size: 18.0,
-                                                  ),
-                                                  Text(' Add Friend',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 11,
-                                                          fontWeight:
-                                                              FontWeight.w900)),
-                                                ],
-                                              )),
-                                  )
-                                ]),
-                            Padding(padding: EdgeInsets.only(top: 10)),
-                            Container(
-                              height: 1,
-                              color: color,
-                            ),
-                          ],
-                        )))
-                    .toList()),
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: InkWell(
-                onTap: () async {
-                  con.pageIndex++;
-                  con.isShowProgressive = true;
-                  setState(() {});
-                  await con.getUserList();
-                  con.isShowProgressive = false;
-                  setState(() {});
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(55, 213, 242, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(3))),
-                  alignment: Alignment.center,
-                  height: 45,
-                  child: con.isShowProgressive
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20.0,
-                          child: CircularProgressIndicator(
-                            color: Colors.grey,
-                          ),
-                        )
-                      : Text('See More', style: TextStyle(color: Colors.white)),
+    return con.isGetList
+        ? Container(
+            margin: EdgeInsets.only(top: 10),
+            color: Colors.white,
+            width: SizeConfig(context).screenWidth < 900
+                ? SizeConfig(context).screenWidth - 60
+                : SizeConfig(context).screenWidth * 0.4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(padding: EdgeInsets.only(top: 25)),
+                Container(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text(
+                    con.isSearch ? 'Search Results' : 'People You May Know',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13),
+                  ),
                 ),
-              ),
-            )
-          ],
-        ));
+                Padding(padding: EdgeInsets.only(top: 15)),
+                Container(
+                  height: 1,
+                  color: color,
+                ),
+                con.isSearch && con.userList.isEmpty
+                    ? Container(
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.only(top: 20, bottom: 50),
+                        child: Text('No people available for your search',
+                            style: TextStyle(fontSize: 14)))
+                    : Column(
+                        children: con.userList
+                            .asMap()
+                            .entries
+                            .map((e) => Container(
+                                padding: EdgeInsets.only(
+                                    top: 10, left: 20, right: 20),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 10)),
+                                          e.value['avatar'] == ''
+                                              ? CircleAvatar(
+                                                  radius: 20,
+                                                  child: SvgPicture.network(
+                                                      Helper.avatar))
+                                              : CircleAvatar(
+                                                  radius: 20,
+                                                  backgroundImage: NetworkImage(
+                                                      e.value['avatar'])),
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                left: 10, top: 5),
+                                            child: Text(
+                                              '${e.value['firstName']} ${e.value['lastName']}',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 11),
+                                            ),
+                                          ),
+                                          Flexible(
+                                              fit: FlexFit.tight,
+                                              child: SizedBox()),
+                                          Container(
+                                            padding: EdgeInsets.only(top: 6),
+                                            child: ElevatedButton(
+                                                onPressed: () async {
+                                                  requestFriends(e);
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor: const Color.fromARGB(
+                                                        255, 33, 37, 41),
+                                                    elevation: 3,
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                2.0)),
+                                                    minimumSize: con.isFriendRequest[e.key] != null &&
+                                                            con.isFriendRequest[
+                                                                e.key]
+                                                        ? const Size(90, 35)
+                                                        : const Size(110, 35),
+                                                    maximumSize: con.isFriendRequest[e.key] != null &&
+                                                            con.isFriendRequest[e.key]
+                                                        ? const Size(90, 35)
+                                                        : const Size(110, 35)),
+                                                child: con.isFriendRequest[e.key] != null && con.isFriendRequest[e.key]
+                                                    ? SizedBox(
+                                                        width: 10,
+                                                        height: 10,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: Colors.white,
+                                                        ),
+                                                      )
+                                                    : Row(
+                                                        children: const [
+                                                          Icon(
+                                                            Icons
+                                                                .person_add_alt_rounded,
+                                                            color: Colors.white,
+                                                            size: 18.0,
+                                                          ),
+                                                          Text(' Add Friend',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900)),
+                                                        ],
+                                                      )),
+                                          )
+                                        ]),
+                                    Padding(padding: EdgeInsets.only(top: 10)),
+                                    Container(
+                                      height: 1,
+                                      color: color,
+                                    ),
+                                  ],
+                                )))
+                            .toList()),
+                con.isSearch
+                    ? Container()
+                    : MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: InkWell(
+                          onTap: () async {
+                            con.pageIndex++;
+                            con.isShowProgressive = true;
+                            setState(() {});
+                            await con.getUserList();
+                            con.isShowProgressive = false;
+                            setState(() {});
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(55, 213, 242, 1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(3))),
+                            alignment: Alignment.center,
+                            height: 45,
+                            child: con.isShowProgressive
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20.0,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                : Text('See More',
+                                    style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                      )
+              ],
+            ))
+        : Container(
+            height: SizeConfig(context).screenHeight / 2,
+            width: SizeConfig(context).screenWidth < 900
+                ? SizeConfig(context).screenWidth - 60
+                : SizeConfig(context).screenWidth * 0.4,
+            alignment: Alignment.center,
+            child: const CircularProgressIndicator(),
+          );
+  }
+
+  requestFriends(e) async {
+    con.isFriendRequest[e.key] = true;
+    setState(() {});
+    await con.requestFriend(
+        e.value['userName'],
+        '${e.value['firstName']} ${e.value['lastName']}',
+        e.value['avatar'],
+        e.key);
+    setState(() {});
   }
 }
