@@ -3,10 +3,8 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/pages/panel/allpages.dart';
-import 'package:shnatter/src/views/pages/panel/likedpages.dart';
-import 'package:shnatter/src/views/pages/panel/mypages.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
+import 'package:shnatter/src/views/products/panel/allproducts.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
 
 import '../../controllers/PostController.dart';
@@ -300,15 +298,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                 ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                pageSubRoute == ''
-                                    ? AllPages()
-                                    : const SizedBox(),
-                                pageSubRoute == 'liked'
-                                    ? LikedPages()
-                                    : const SizedBox(),
-                                pageSubRoute == 'manage'
-                                    ? MyPages()
-                                    : const SizedBox(),
+                                AllProducts()
                               ],
                             )),
                           ],

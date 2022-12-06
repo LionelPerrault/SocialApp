@@ -49,23 +49,23 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
             children: [
               const Padding(padding: EdgeInsets.only(left: 20)),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(3),
-                  backgroundColor: Colors.white,
-                  // elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0)),
-                  minimumSize: const Size(30, 30),
-                  maximumSize: const Size(30, 30),
-                ),
-                onPressed: () {
-                  Navigator
-                    .pushReplacementNamed(
-                        context,
-                        RouteNames
-                            .login);
-                },
-                child: const Icon(Icons.logout, size: 24, color: Colors.grey,)),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(3),
+                    backgroundColor: Colors.white,
+                    // elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0)),
+                    minimumSize: const Size(30, 30),
+                    maximumSize: const Size(30, 30),
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, RouteNames.login);
+                  },
+                  child: const Icon(
+                    Icons.logout,
+                    size: 24,
+                    color: Colors.grey,
+                  )),
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
             ],
           ),
@@ -96,19 +96,22 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                   flex: 1,
                   child: Container(
                     alignment: Alignment.center,
-                      child: Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: const [
                         Text('Reset Password',
-                            style: TextStyle(color: Colors.white, fontSize: 30)),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 30)),
                         Padding(padding: EdgeInsets.only(top: 10)),
                         Text(
                             'Enter the email address you signed up with and we\'ll email you a reset link',
-                            style: TextStyle(color: Colors.white, fontSize: 14)),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 14)),
                       ],
                     ),
-                  ),)
+                  ),
+                )
               ],
             ),
           ),
@@ -119,10 +122,10 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
               boxShadow: const [
                 BoxShadow(
                   color: Colors.grey,
-                  blurRadius: 1.0,
-                  spreadRadius: 0.1,
+                  blurRadius: 10.0,
+                  spreadRadius: 4,
                   offset: Offset(
-                    1,
+                    2,
                     1,
                   ),
                 )
@@ -132,87 +135,88 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
             height: 180,
             child: Row(children: [
               Expanded(
-                flex: 1,
-                child: Column(children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 35),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(left: 40.0),
-                child: const Text('Email',
-                    style: TextStyle(color: Colors.white, fontSize: 12)),
-              ),
-              Container(
-                width: 260,
-                height: 30,
-                alignment: Alignment.center,
-                child: TextFormField(
-                  onChanged: (newIndex) {
-                    email = newIndex;
-                    setState(() {});
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(0),
+                  flex: 1,
+                  child: Column(children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 35),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 54, 54, 54), width: 1.0),
-                      borderRadius: BorderRadius.circular(0),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: const EdgeInsets.only(left: 40.0),
+                      child: const Text('Email',
+                          style: TextStyle(color: Colors.white, fontSize: 12)),
                     ),
-                  ),
-                  style: const TextStyle(fontSize: 14),
-                  onSaved: (String? value) {
-                    // This optional block of code can be used to run
-                    // code when the user saves the form.
-                  },
-                  validator: (String? value) {
-                    return (value != null && value.contains('@'))
-                        ? 'Do not use the @ char.'
-                        : null;
-                  },
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 30.0),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.teal,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 1,
-                      spreadRadius: 0.01,
-                      offset: Offset(
-                        1,
-                        1,
+                    Container(
+                      width: 260,
+                      height: 30,
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        onChanged: (newIndex) {
+                          email = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
                       ),
-                    )
-                  ],
-                ),
-                width: 260,
-                height: 35,
-                child: FloatingActionButton.extended(
-                  label: const Text('Send',
-                      style: TextStyle(
-                          color: Colors.black, fontSize: 12)), // <-- Text
-                  backgroundColor: Colors.white,
-                  icon: const Icon(
-                    // <-- Icon
-                    Icons.mail,
-                    color: Color.fromARGB(255, 35, 35, 35),
-                    size: 24.0,
-                  ),
-                  onPressed: () {
-                    // con.signUp(email);
-                    con.resetPassword(email: email);
-                  },
-                ),
-              ),
-            ]))
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 30.0),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.teal,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 1,
+                            spreadRadius: 0.01,
+                            offset: Offset(
+                              1,
+                              1,
+                            ),
+                          )
+                        ],
+                      ),
+                      width: 260,
+                      height: 35,
+                      child: FloatingActionButton.extended(
+                        label: const Text('Send',
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 12)), // <-- Text
+                        backgroundColor: Colors.white,
+                        icon: const Icon(
+                          // <-- Icon
+                          Icons.mail,
+                          color: Color.fromARGB(255, 35, 35, 35),
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          // con.signUp(email);
+                          con.resetPassword(email: email);
+                        },
+                      ),
+                    ),
+                  ]))
             ]),
           ),
           const Padding(
