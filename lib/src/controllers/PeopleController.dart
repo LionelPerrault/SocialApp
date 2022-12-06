@@ -28,12 +28,16 @@ class PeopleController extends ControllerMVC {
         pageIndex = 1,
         isShowProgressive = false,
         requestFriends = [],
+        allRequestFriends = [],
         sendFriends = [],
         isFriendRequest = {},
         isConfirmRequest = {},
         allFriendsList = [],
         tabName = 'Discover',
         allUserList = [],
+        allSendFriends = [],
+        isGetList = false,
+        isSearch = false,
         super(state);
   static PeopleController? _this;
   List userList;
@@ -43,10 +47,14 @@ class PeopleController extends ControllerMVC {
   String tabName;
   bool isShowProgressive;
   List requestFriends;
+  List allRequestFriends;
   List sendFriends;
   List allUserList;
+  List allSendFriends;
   Map isFriendRequest = {};
   Map isConfirmRequest;
+  bool isGetList;
+  bool isSearch;
   var userInfo = UserManager.userInfo;
   var addIndex = 0;
   @override
@@ -69,6 +77,7 @@ class PeopleController extends ControllerMVC {
   }
 
   getList({index = -1}) async {
+    print(123);
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.userField)
         .limit(5 * pageIndex + addIndex)
@@ -91,16 +100,16 @@ class PeopleController extends ControllerMVC {
     var arr = getFilterList(userList);
     if (arr.length < 5 * pageIndex && arr.length != allUserList.length) {
       addIndex += 5 * pageIndex - arr.length as int;
+
       await getList(index: index);
     } else if (arr.length == 5 * pageIndex ||
         arr.length == allUserList.length) {
-      print(index);
       if (index != -1) {
         isFriendRequest[index] = false;
       }
       addIndex = 0;
       userList = arr;
-      print(userList);
+      isGetList = true;
       setState(() {});
     }
   }
@@ -135,8 +144,6 @@ class PeopleController extends ControllerMVC {
   }
 
   requestFriend(receiver, fullName, avatar, index) async {
-    isFriendRequest[index] = true;
-    setState(() {});
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
         .where('users', arrayContains: userInfo['userName'])
@@ -153,7 +160,7 @@ class PeopleController extends ControllerMVC {
       return;
     }
     setState(() {});
-    FirebaseFirestore.instance.collection(Helper.friendField).add({
+    await FirebaseFirestore.instance.collection(Helper.friendField).add({
       'requester': userInfo['userName'],
       'receiver': receiver,
       receiver: {'name': fullName, 'avatar': avatar},
@@ -185,6 +192,7 @@ class PeopleController extends ControllerMVC {
         arr.add(j);
       }
     });
+    allRequestFriends = arr;
     requestFriends = arr;
   }
 
@@ -205,6 +213,7 @@ class PeopleController extends ControllerMVC {
         arr.add(j);
       }
     });
+    allSendFriends = arr;
     sendFriends = arr;
   }
 
@@ -227,34 +236,99 @@ class PeopleController extends ControllerMVC {
   fieldSearch(Map search) async {
     var arr = [];
     var arr1 = [];
-    Map elem = {};
     print(search);
-    if (tabName == 'Discover') {
-      arr = allUserList;
-    }
-    print(search);
+
     var t = 0;
-    search.forEach((key, value) {
-      if (value != '') {
-        t = 1;
+    if (tabName == 'Discover') {
+      search.forEach((key, value) {
+        if (value != '') {
+          t = 1;
+        }
+        allUserList.forEach((element) {
+          element.data().forEach((key1, value1) {
+            if (key1 == 'sex') {
+              // print(element['sex']);
+            }
+            if (key == key1 && value == value1) {
+              arr1.add(element);
+            }
+          });
+        });
+      });
+      if (t == 0) {
+        await getList();
+        isSearch = false;
+        return;
+      } else {
+        isSearch = true;
       }
-      allUserList.forEach((element) {
-        elem = element.data();
-        elem.forEach((key1, value1) {
-          if (key == key1 && value == value1) {
-            arr1.add(element);
+      userList = arr1;
+    } else if (tabName == 'Friend Requests') {
+      var c = [];
+      var snapshot =
+          await FirebaseFirestore.instance.collection(Helper.userField).get();
+      allRequestFriends.forEach((element) {
+        var a = element['users']
+            .where((e) => e != userInfo['userName'])
+            .toList()[0];
+        snapshot.docs.forEach((e) {
+          if (e['userName'] == a) {
+            search.forEach((key, value) {
+              if (value != '') {
+                t = 1;
+              }
+              e.data().forEach((key1, value1) {
+                if (key == key1 && value == value1) {
+                  arr1.add(element);
+                }
+              });
+            });
           }
         });
       });
-    });
-    if (t == 0) {
-      await getList();
+      arr = c;
+      if (t == 0) {
+        await getReceiveRequestsFriends();
+        isSearch = false;
+        return;
+      } else {
+        isSearch = true;
+      }
+      requestFriends = arr1;
+    } else {
+      var c = [];
+      var snapshot =
+          await FirebaseFirestore.instance.collection(Helper.userField).get();
+      allSendFriends.forEach((element) {
+        var a = element['users']
+            .where((e) => e != userInfo['userName'])
+            .toList()[0];
+        snapshot.docs.forEach((e) {
+          if (e['userName'] == a) {
+            search.forEach((key, value) {
+              if (value != '') {
+                t = 1;
+              }
+              e.data().forEach((key1, value1) {
+                if (key == key1 && value == value1) {
+                  arr1.add(element);
+                }
+              });
+            });
+          }
+        });
+      });
+      arr = c;
+      if (t == 0) {
+        await getSendRequests();
+        isSearch = false;
+        return;
+      } else {
+        isSearch = true;
+      }
+      sendFriends = arr1;
     }
-    tabName == 'Discover'
-        ? userList = arr1
-        : tabName == 'Friend Requests'
-            ? requestFriends = arr1
-            : sendFriends = arr1;
+    print(sendFriends.length);
     setState(() {});
   }
 }

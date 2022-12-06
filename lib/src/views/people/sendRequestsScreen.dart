@@ -55,8 +55,8 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
               sendFriends(),
               Padding(padding: EdgeInsets.only(left: 20)),
               SearchScreen(
-                onChange: () {},
-                onClick: (value) {
+                onClick: (value) async {
+                  await con.fieldSearch(value);
                   setState(() {});
                 },
               )
@@ -67,8 +67,9 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SearchScreen(
-                onChange: () {},
-                onClick: (value) {
+                onClick: (value) async {
+                  await con.fieldSearch(value);
+
                   setState(() {});
                 },
               ),
@@ -93,7 +94,9 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
           Container(
             padding: EdgeInsets.only(left: 20),
             child: Text(
-              'Respond to Your Friend Request',
+              con.isSearch
+                  ? 'Search Results'
+                  : 'Respond to Your Friend Request',
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
@@ -105,109 +108,140 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
             height: 1,
             color: color,
           ),
-          Column(
-              children: con.sendFriends
-                  .asMap()
-                  .entries
-                  .map((e) => Container(
-                      padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-                      child: Column(
-                        children: [
-                          Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                                e.value[e.value['receiver']]['avatar'] == ''
-                                    ? CircleAvatar(
-                                        radius: 20,
-                                        child:
-                                            SvgPicture.network(Helper.avatar))
-                                    : CircleAvatar(
-                                        radius: 20,
-                                        backgroundImage: NetworkImage(
+          con.isSearch && con.sendFriends.isEmpty
+              ? Container(
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.only(top: 20, bottom: 50),
+                  child: Text('No people available for your search',
+                      style: TextStyle(fontSize: 14)))
+              : con.sendFriends.isEmpty
+                  ? Container(
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.only(top: 20, bottom: 50),
+                      child:
+                          Text('No new sent', style: TextStyle(fontSize: 14)))
+                  : Column(
+                      children: con.sendFriends
+                          .asMap()
+                          .entries
+                          .map((e) => Container(
+                              padding:
+                                  EdgeInsets.only(top: 10, left: 20, right: 20),
+                              child: Column(
+                                children: [
+                                  Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 10)),
+                                        e.value[e.value['receiver']]
+                                                    ['avatar'] ==
+                                                ''
+                                            ? CircleAvatar(
+                                                radius: 20,
+                                                child: SvgPicture.network(
+                                                    Helper.avatar))
+                                            : CircleAvatar(
+                                                radius: 20,
+                                                backgroundImage: NetworkImage(
+                                                    e.value[e.value['receiver']]
+                                                        ['avatar'])),
+                                        Container(
+                                          padding:
+                                              EdgeInsets.only(left: 10, top: 5),
+                                          child: Text(
                                             e.value[e.value['receiver']]
-                                                ['avatar'])),
-                                Container(
-                                  padding: EdgeInsets.only(left: 10, top: 5),
-                                  child: Text(
-                                    e.value[e.value['receiver']]['name'],
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 11),
-                                  ),
-                                ),
-                                Flexible(fit: FlexFit.tight, child: SizedBox()),
-                                Container(
-                                  padding: EdgeInsets.only(top: 6),
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      isDeleteRequest[e.key] = true;
-                                      setState(() {});
-                                      await con.deleteFriend(e.value['id']);
-                                      await con.getSendRequestsFriends();
-                                      isDeleteRequest[e.key] = false;
-                                      con.getList();
-                                      setState(() {});
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Color.fromRGBO(245, 54, 92, 1),
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(2.0)),
-                                        minimumSize:
-                                            isDeleteRequest[e.key] != null &&
-                                                    isDeleteRequest[e.key]
-                                                ? const Size(60, 35)
-                                                : const Size(70, 35),
-                                        maximumSize:
-                                            isDeleteRequest[e.key] != null &&
-                                                    isDeleteRequest[e.key]
-                                                ? const Size(60, 35)
-                                                : const Size(70, 35)),
-                                    child: isDeleteRequest[e.key] != null &&
-                                            isDeleteRequest[e.key]
-                                        ? SizedBox(
-                                            width: 10,
-                                            height: 10,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                            ),
-                                          )
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              Icon(
-                                                FontAwesomeIcons.clock,
-                                                color: Colors.white,
-                                                size: 13,
-                                              ),
-                                              Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 3)),
-                                              Text('Sent',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.w900))
-                                            ],
+                                                ['name'],
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 11),
                                           ),
+                                        ),
+                                        Flexible(
+                                            fit: FlexFit.tight,
+                                            child: SizedBox()),
+                                        Container(
+                                          padding: EdgeInsets.only(top: 6),
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              isDeleteRequest[e.key] = true;
+                                              setState(() {});
+                                              await con
+                                                  .deleteFriend(e.value['id']);
+                                              await con.getSendRequests();
+                                              isDeleteRequest[e.key] = false;
+                                              await con.getList();
+                                              setState(() {});
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color.fromRGBO(
+                                                    245, 54, 92, 1),
+                                                elevation: 3,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2.0)),
+                                                minimumSize: isDeleteRequest[e.key] !=
+                                                            null &&
+                                                        isDeleteRequest[e.key]
+                                                    ? const Size(60, 35)
+                                                    : const Size(70, 35),
+                                                maximumSize: isDeleteRequest[
+                                                                e.key] !=
+                                                            null &&
+                                                        isDeleteRequest[e.key]
+                                                    ? const Size(60, 35)
+                                                    : const Size(70, 35)),
+                                            child: isDeleteRequest[e.key] !=
+                                                        null &&
+                                                    isDeleteRequest[e.key]
+                                                ? SizedBox(
+                                                    width: 10,
+                                                    height: 10,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Colors.white,
+                                                    ),
+                                                  )
+                                                : Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: const [
+                                                      Icon(
+                                                        FontAwesomeIcons.clock,
+                                                        color: Colors.white,
+                                                        size: 13,
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 3)),
+                                                      Text('Sent',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 11,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900))
+                                                    ],
+                                                  ),
+                                          ),
+                                        )
+                                      ]),
+                                  Padding(padding: EdgeInsets.only(top: 10)),
+                                  Container(
+                                    height: 1,
+                                    color: color,
                                   ),
-                                )
-                              ]),
-                          Padding(padding: EdgeInsets.only(top: 10)),
-                          Container(
-                            height: 1,
-                            color: color,
-                          ),
-                        ],
-                      )))
-                  .toList()),
+                                ],
+                              )))
+                          .toList()),
         ],
       ),
     );
