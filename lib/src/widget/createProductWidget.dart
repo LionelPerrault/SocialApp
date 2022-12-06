@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'dart:io' show File;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -22,16 +23,19 @@ class CreateProductModal extends StatefulWidget {
 class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   bool isSound = false;
   late PostController Postcon;
-  Map<String, dynamic> productInfo = {};
+  Map<String, dynamic> productInfo = {
+    'productStatus': 'New',
+    'productOffer': 'Sell'
+  };
   var category = 'Choose Category';
   double uploadPhotoProgress = 0;
   List<dynamic> productPhoto = [];
+  List<dynamic> productFile = [];
   double uploadFileProgress = 0;
   var photoLength;
   var fileLength;
-  bool offer1 = false;
+  bool offer1 = true;
   bool offer2 = false;
-  late List productFile = [];
   late List productCategory = [
     'Choose Category',
     'Apparel & Accessories',
@@ -492,7 +496,13 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
-                    Postcon.createProduct(context, productInfo);
+                    Postcon.createProduct(context, productInfo)
+                        .then((value) => {
+                              if (value != 'success')
+                                {
+                                  print(value),
+                                }
+                            });
                   },
                   child: const Text('Publish',
                       style: TextStyle(
@@ -645,16 +655,14 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
       photoLength = productPhoto.length - 1;
       setState(() {});
     } else {
-      productFile.add({'id': productPhoto.length, 'url': ''});
-      fileLength = productPhoto.length - 1;
+      productFile.add({'id': productFile.length, 'url': ''});
+      fileLength = productFile.length - 1;
       setState(() {});
     }
     final _firebaseStorage = FirebaseStorage.instance;
     if (kIsWeb) {
       try {
-        //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
-        //print(bytes);
         Reference _reference = await _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile!.path)}');
@@ -681,7 +689,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
               }
             }
           }
-          print(productPhoto);
+          print(productFile);
         });
         uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
           switch (taskSnapshot.state) {

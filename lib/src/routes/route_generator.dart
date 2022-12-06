@@ -10,6 +10,7 @@ import 'package:shnatter/src/views/pages/pagesscreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pagescreen.dart';
 import 'package:shnatter/src/views/people/peoplescreen.dart';
 import 'package:shnatter/src/views/privacy.dart';
+import 'package:shnatter/src/views/products/panel/productView/productscreen.dart';
 import 'package:shnatter/src/views/products/productsScreen.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
@@ -58,6 +59,13 @@ class RouteGenerator {
       return MaterialPageRoute(
           builder: (context) =>
               GroupEachScreen(docId: settings.name.toString()),
+          settings: settings);
+    }
+    if (url.split('/')[1] == RouteNames.productName &&
+        url.split('/').length > 2) {
+      return MaterialPageRoute(
+          builder: (context) =>
+              ProductEachScreen(docId: settings.name.toString()),
           settings: settings);
     }
     switch (url) {

@@ -16,13 +16,13 @@ import 'package:time_elapsed/time_elapsed.dart';
 class AdminController extends ControllerMVC {
   factory AdminController([StateMVC? state]) =>
       _this ??= AdminController._(state);
-  AdminController._(StateMVC? state) : 
-    eventSubRoute = '',
-    super(state);
+  AdminController._(StateMVC? state)
+      : eventSubRoute = '',
+        super(state);
   static AdminController? _this;
 
   //variable
-  List events=[];
+  List events = [];
 
   //sub route
   String eventSubRoute;
@@ -30,13 +30,8 @@ class AdminController extends ControllerMVC {
   @override
   Future<bool> initAsync() async {
     //
-    Helper.eventsData = FirebaseFirestore.instance
-        .collection(Helper.eventsField)
-        .withConverter<TokenLogin>(
-          fromFirestore: (snapshots, _) =>
-              TokenLogin.fromJSON(snapshots.data()!),
-          toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-        );
+    Helper.eventsData =
+        FirebaseFirestore.instance.collection(Helper.eventsField);
     return true;
   }
 
@@ -45,13 +40,12 @@ class AdminController extends ControllerMVC {
     //       await Helper.eventsData.where('eventPost', isEqualTo: true).get();
     // events = querySnapshot.docs;
     // setState(() { });
-    QuerySnapshot querySnapshot =
-          await Helper.eventsData.get();
+    QuerySnapshot querySnapshot = await Helper.eventsData.get();
     var doc = querySnapshot.docs;
     return doc;
   }
 
-  Future<void> createEvent(context,Map<String, dynamic> eventData) async {
+  Future<void> createEvent(context, Map<String, dynamic> eventData) async {
     eventData = {
       ...eventData,
       'eventAdmin': UserManager.userInfo['userName'],
@@ -65,17 +59,14 @@ class AdminController extends ControllerMVC {
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .add(eventData);
-        
-    Navigator
-      .pushReplacementNamed(
-          context,
-          RouteNames
-              .settings);
+
+    Navigator.pushReplacementNamed(context, RouteNames.settings);
   }
+
   //get all interests from firebase
   Future<List> getAllInterests() async {
     QuerySnapshot querySnapshot =
-          await Helper.allInterests.orderBy('title').get();
+        await Helper.allInterests.orderBy('title').get();
     var doc = querySnapshot.docs;
     return doc;
   }

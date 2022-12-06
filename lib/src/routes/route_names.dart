@@ -42,6 +42,7 @@ class RouteNames {
 
   //product routes
   static const products = "/products";
+  static const productName = "products";
 
   //admin routes
   static const adp = '/adminpanel';

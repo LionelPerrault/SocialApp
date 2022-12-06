@@ -20,36 +20,16 @@ class Helper {
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
         toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
       );
-  static var eventsData = FirebaseFirestore.instance
-      .collection(Helper.eventsField)
-      .withConverter<TokenLogin>(
-        fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
-        toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-      );
-  static var pagesData = FirebaseFirestore.instance
-      .collection(Helper.pagesField)
-      .withConverter<TokenLogin>(
-        fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
-        toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-      );
-  static var groupsData = FirebaseFirestore.instance
-      .collection(Helper.groupsField)
-      .withConverter<TokenLogin>(
-        fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
-        toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-      );
-  static var productsData = FirebaseFirestore.instance
-      .collection(Helper.productsField)
-      .withConverter<TokenLogin>(
-        fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
-        toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-      );
-  static var allInterests = FirebaseFirestore.instance
-      .collection(Helper.interestsField)
-      .withConverter<TokenLogin>(
-        fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
-        toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-      );
+  static var eventsData =
+      FirebaseFirestore.instance.collection(Helper.eventsField);
+  static var pagesData =
+      FirebaseFirestore.instance.collection(Helper.pagesField);
+  static var groupsData =
+      FirebaseFirestore.instance.collection(Helper.groupsField);
+  static var productsData =
+      FirebaseFirestore.instance.collection(Helper.productsField);
+  static var allInterests =
+      FirebaseFirestore.instance.collection(Helper.interestsField);
   static var avatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82';
   static var groupImage =

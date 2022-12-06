@@ -26,13 +26,8 @@ class PostController extends ControllerMVC {
   @override
   Future<bool> initAsync() async {
     //
-    Helper.eventsData = FirebaseFirestore.instance
-        .collection(Helper.eventsField)
-        .withConverter<TokenLogin>(
-          fromFirestore: (snapshots, _) =>
-              TokenLogin.fromJSON(snapshots.data()!),
-          toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-        );
+    Helper.eventsData =
+        FirebaseFirestore.instance.collection(Helper.eventsField);
     return true;
   }
 
@@ -632,17 +627,63 @@ class PostController extends ControllerMVC {
 
   ///////////////////////////end groups functions //////////////////////////////////////////////////
 
-  Future<void> createProduct(context, Map<String, dynamic> productData) async {
+  Future<String> createProduct(
+      context, Map<String, dynamic> productData) async {
+    if (productData['productName'] == null) {
+      return 'Please add your product name';
+    } else if (productData['productPrice'] == null) {
+      return 'Please add your product price';
+    } else if (productData['productCategory'] == null) {
+      return 'Please add your product category';
+    }
     productData = {
       ...productData,
-      'productAdmin': UserManager.userInfo['userName'],
+      'productAdmin': {
+        'userName': UserManager.userInfo['userName'],
+        'userAvatar': UserManager.userInfo['avatar'],
+        'fullName': UserManager.userInfo['fullName']
+      },
       'productDate': DateTime.now().toString(),
       'eventPost': false,
     };
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
-        .add(productData);
+        .add(productData)
+        .then((value) async => {
+              Navigator.pushReplacementNamed(
+                  context, '${RouteNames.products}/${value.id}')
+            });
+    return 'success';
+  }
 
-    Navigator.pushReplacementNamed(context, RouteNames.settings);
+  //get all product function
+  Future<List> getProduct() async {
+    List<Map> allProduct = [];
+    await Helper.productsData.get().then((value) async {
+      var doc = value.docs;
+      for (int i = 0; i < doc.length; i++) {
+        var id = doc[i].id;
+        var data = doc[i];
+        allProduct.add({'data': data.data(), 'id': id});
+        setState(() {});
+      }
+      print('Now you get all products');
+    });
+
+    return allProduct;
+  }
+
+  var viewProductId;
+  var product;
+  //get one page function that using uid of firebase database
+  Future<bool> getSelectedProduct(String name) async {
+    name = name.split('/')[name.split('/').length - 1];
+    viewProductId = name;
+    var reuturnValue = await Helper.productsData.doc(viewProductId).get();
+    var value = reuturnValue.data();
+    product = value;
+    setState(() {});
+    print('This page was posted by ${product['productAdmin']}');
+    return true;
   }
 }
