@@ -7,6 +7,7 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
 class ProductCell extends StatefulWidget {
@@ -63,14 +64,31 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                             children: [
                               Row(
                                 children: [
-                                  Text(
-                                    product['productAdmin']['fullName'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: product['productAdmin']
+                                                  ['fullName'],
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  print('username');
+                                                  Navigator.pushReplacementNamed(
+                                                      context,
+                                                      '/${product['productAdmin']['userName']}');
+                                                })
+                                        ]),
                                   ),
                                   Container(
-                                    width: 390,
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 200
+                                        : 400,
                                     child: Text(
                                       ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
                                       style: TextStyle(fontSize: 14),
