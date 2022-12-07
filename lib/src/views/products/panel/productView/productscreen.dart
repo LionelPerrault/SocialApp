@@ -162,10 +162,20 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
                               Expanded(
                                 child: Column(
                                   children: [
-                                    ProductCell(data: {
-                                      'data': con.product,
-                                      'id': con.viewProductId
-                                    })
+                                    Container(
+                                      width: SizeConfig(context).screenWidth >
+                                              SizeConfig.mediumScreenSize
+                                          ? 700
+                                          : SizeConfig(context).screenWidth >
+                                                  600
+                                              ? 600
+                                              : SizeConfig(context).screenWidth,
+                                      padding: EdgeInsets.only(top: 100),
+                                      child: ProductCell(data: {
+                                        'data': con.product,
+                                        'id': con.viewProductId
+                                      }),
+                                    )
                                   ],
                                 ),
                               ),

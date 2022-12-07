@@ -131,36 +131,19 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                 child: Column(
                               children: [
                                 Container(
-                                  padding:
-                                      const EdgeInsets.only(top: 20, left: 0),
+                                  width: SizeConfig(context).screenWidth >
+                                          SizeConfig.mediumScreenSize
+                                      ? 700
+                                      : SizeConfig(context).screenWidth > 600
+                                          ? 600
+                                          : SizeConfig(context).screenWidth,
                                   child: Column(
                                     children: [
                                       Container(
-                                          width:
-                                              SizeConfig(context).screenWidth >
-                                                      SizeConfig.smallScreenSize
-                                                  ? SizeConfig(context)
-                                                          .screenWidth *
-                                                      0.6
-                                                  : SizeConfig(context)
-                                                          .screenWidth *
-                                                      1,
                                           height: 70,
                                           child: Row(
                                             children: [
                                               Container(
-                                                width: SizeConfig(context)
-                                                            .screenWidth >
-                                                        SizeConfig
-                                                            .smallScreenSize
-                                                    ? SizeConfig(context)
-                                                                .screenWidth *
-                                                            0.4 +
-                                                        40
-                                                    : SizeConfig(context)
-                                                                .screenWidth *
-                                                            0.9 -
-                                                        30,
                                                 child: Text(
                                                   'My Products',
                                                   style: TextStyle(
@@ -282,12 +265,13 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                           )),
                                       Container(
                                         width: SizeConfig(context).screenWidth >
-                                                SizeConfig.smallScreenSize
-                                            ? SizeConfig(context).screenWidth *
-                                                0.6
-                                            : SizeConfig(context).screenWidth *
-                                                1,
-                                        margin: EdgeInsets.all(20),
+                                                SizeConfig.mediumScreenSize
+                                            ? 700
+                                            : SizeConfig(context).screenWidth >
+                                                    600
+                                                ? 600
+                                                : SizeConfig(context)
+                                                    .screenWidth,
                                         child: const Divider(
                                           thickness: 0.1,
                                           color: Colors.black,
