@@ -1,3 +1,4 @@
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
@@ -8,6 +9,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/utils/svg.dart';
 
 // ignore: must_be_immutable
 class ProductCell extends StatefulWidget {
@@ -87,13 +89,22 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                   ),
                                   Container(
                                     width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 200
-                                        : 400,
+                                        ? SizeConfig(context).screenWidth - 225
+                                        : 375,
                                     child: Text(
                                       ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
                                       style: TextStyle(fontSize: 14),
                                     ),
-                                  )
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(right: 9.0),
+                                    child: CustomPopupMenu(
+                                        menuBuilder: () => SubFunction(),
+                                        pressType: PressType.singleClick,
+                                        verticalMargin: -10,
+                                        child:
+                                            const Icon(Icons.arrow_drop_down)),
+                                  ),
                                 ],
                               ),
                               const Padding(padding: EdgeInsets.only(top: 3)),
@@ -201,7 +212,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: const [
                                       Icon(
-                                        Icons.edit,
+                                        Icons.sell,
                                         color:
                                             Color.fromARGB(255, 31, 156, 255),
                                         size: 17,
@@ -350,5 +361,94 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
         ))
       ],
     );
+  }
+
+  Widget SubFunction() {
+    var subFunctionList = [
+      {
+        'icon': Icons.shopping_cart,
+        'text': 'Mark as Sold',
+      },
+      {
+        'icon': Icons.bookmark,
+        'text': 'Save Post',
+      },
+      {
+        'icon': Icons.pin_drop,
+        'text': 'Pin Post',
+      },
+      {
+        'icon': Icons.edit,
+        'text': 'Edit Product',
+      },
+      {
+        'icon': Icons.delete,
+        'text': 'Delete Post',
+      },
+      {
+        'icon': Icons.remove_red_eye,
+        'text': 'Hide from Timeline',
+      },
+      {
+        'icon': Icons.comment,
+        'text': 'Turn off Commenting',
+      },
+      {
+        'icon': Icons.link,
+        'text': 'Open Post in new Tab',
+      },
+    ];
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(3),
+      child: Container(
+          width: 250,
+          color: Colors.white,
+          // padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 400,
+                //size: Size(100,100),
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  children: subFunctionList
+                      .map((list) =>
+                          listCell(list['icon'], list['text'], list['onTap']))
+                      .toList(),
+                ),
+              )
+            ],
+          )),
+    );
+  }
+
+  Widget listCell(icon, text, onTap) {
+    return ListTile(
+        onTap: () {
+          // onTap(nowContext);
+        },
+        hoverColor: Colors.grey[100],
+        tileColor: Colors.white,
+        enabled: true,
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              color: Colors.grey,
+              size: 20,
+            ),
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            Column(
+              children: [
+                const Padding(padding: EdgeInsets.only(top: 3)),
+                Text(text,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.normal, fontSize: 12)),
+              ],
+            ),
+          ],
+        ));
   }
 }
