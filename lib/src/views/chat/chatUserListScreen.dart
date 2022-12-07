@@ -39,6 +39,17 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
     if (!mounted) {
       print('mounted');
     }
+    final Stream<QuerySnapshot> stream = FirebaseFirestore.instance
+        .collection(Helper.onlineStatusField)
+        .snapshots();
+    stream.listen((event) {
+      var arr = [];
+      event.docs.forEach((e) {
+        arr.add(e.data());
+      });
+      con.onlineStatus = arr;
+      setState(() {});
+    });
   }
 
   String dropdownValue = 'Male';
@@ -84,6 +95,12 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                       lastData = t.chatInfo['lastData'];
                     }
                     var chatUserFullName = t.chatInfo[chatUserName]['name'];
+                    var status = 0;
+                    con.onlineStatus.forEach((e) {
+                      if (e['userName'] == chatUserName) {
+                        status = e['status'];
+                      }
+                    });
                     return Column(children: [
                       ListTile(
                         enabled: true,
@@ -103,17 +120,45 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                           con.setState(() {});
                         },
                         hoverColor: Color.fromRGBO(240, 240, 240, 1),
-                        leading: t.chatInfo[chatUserName]['avatar'] == ''
-                            ? CircleAvatar(
-                                radius: 22,
-                                backgroundColor: Colors.blue,
-                                child: SvgPicture.network(Helper.avatar))
-                            : CircleAvatar(
-                                radius: 22,
-                                backgroundColor: Colors.blue,
-                                backgroundImage: NetworkImage(
-                                    t.chatInfo[chatUserName]['avatar']),
-                              ),
+                        leading: Container(
+                          width: 44,
+                          height: 44,
+                          child: Stack(
+                            children: [
+                              t.chatInfo[chatUserName]['avatar'] == ''
+                                  ? CircleAvatar(
+                                      radius: 22,
+                                      backgroundColor: Colors.blue,
+                                      child: SvgPicture.network(Helper.avatar))
+                                  : CircleAvatar(
+                                      radius: 22,
+                                      backgroundColor: Colors.blue,
+                                      backgroundImage: NetworkImage(
+                                          t.chatInfo[chatUserName]['avatar']),
+                                    ),
+                              Container(
+                                margin: EdgeInsets.only(top: 32, left: 32),
+                                alignment: Alignment.center,
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12))),
+                                child: Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                      color: status == 0
+                                          ? Colors.grey
+                                          : Colors.green,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 5.0),
                           child: Text(

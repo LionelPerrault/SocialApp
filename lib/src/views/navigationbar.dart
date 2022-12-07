@@ -75,7 +75,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
 
   Future<void> onLogOut() async {
     UserManager.isLogined = false;
+    Helper.makeOffline();
+
     UserManager.userInfo = {};
+
     await Helper.removeAllPreference();
     await Navigator.pushReplacementNamed(context, RouteNames.login);
   }
@@ -261,24 +264,24 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
                             PopupMenuItem<Menu>(
-                              onTap: (){
-                                Navigator.pushReplacementNamed(context, UserManager.userInfo['userName']);
-                              },
-                              value: Menu.itemProfile,
-                              child: GestureDetector(
                                 onTap: () {
-                                  print(34);
+                                  Navigator.pushReplacementNamed(context,
+                                      UserManager.userInfo['userName']);
                                 },
-                                child: const Text('Profile')
-                              )
-                            ),
+                                value: Menu.itemProfile,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      print(34);
+                                    },
+                                    child: const Text('Profile'))),
                             PopupMenuItem<Menu>(
                               value: Menu.itemSettings,
                               child: GestureDetector(
-                                  onTap: () {
-                                    onSettingClicked();
-                                  },
-                                  child: const Text('Settings'),),
+                                onTap: () {
+                                  onSettingClicked();
+                                },
+                                child: const Text('Settings'),
+                              ),
                             ),
                             const PopupMenuItem<Menu>(
                               value: Menu.itemPrivacy,
@@ -477,15 +480,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
                             PopupMenuItem<Menu>(
-                              value: Menu.itemProfile,
-                              
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(context, '/${UserManager.userInfo['userName']}');
-                                },
-                                child: const Text('Profile')
-                              )
-                            ),
+                                value: Menu.itemProfile,
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.pushReplacementNamed(context,
+                                          '/${UserManager.userInfo['userName']}');
+                                    },
+                                    child: const Text('Profile'))),
                             PopupMenuItem<Menu>(
                               value: Menu.itemSettings,
                               child: GestureDetector(

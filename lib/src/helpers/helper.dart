@@ -9,6 +9,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/models/user.dart';
 import '../models/setting.dart';
 import 'package:crypto/crypto.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/userModel.dart';
 
@@ -140,5 +141,21 @@ class Helper {
         print(e.data());
       });
     });
+  }
+
+  static makeOffline() async {
+    var userInfo = UserManager.userInfo;
+    if (userInfo['userName'] != null) {
+      print('offline');
+      http.post(
+        Uri.parse('http://localhost:5000/test'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'userName': userInfo['userName'],
+        }),
+      );
+    }
   }
 }

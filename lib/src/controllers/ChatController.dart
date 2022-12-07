@@ -33,6 +33,7 @@ class ChatController extends ControllerMVC {
   var newRLastName = '';
   var chatId = '';
   var avatar = '';
+  var onlineStatus = [];
   String chatUserFullName = '';
   bool sendData = false;
   var emojiList = <Widget>[];

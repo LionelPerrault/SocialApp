@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:universal_html/html.dart' as html;
 import 'package:http/http.dart' as http;
-import 'dart:developer';
+import 'package:universal_html/html.dart' as html;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -49,24 +49,14 @@ class _MyAppState extends AppStateMVC<MyApp> {
     if (kIsWeb) {
       html.window.onUnload.listen((event) async {
         event.preventDefault();
-        var userInfo = UserManager.userInfo;
-        if (userInfo['userName'] != null) {
-          http.post(
-            Uri.parse('http://localhost:5000/test'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(<String, String>{
-              'userName': userInfo['userName'],
-            }),
-          );
-        }
+        Helper.makeOffline();
       });
       return;
     }
 
     FlutterWindowClose.setWindowShouldCloseHandler(() async {
-      print(123);
+      Helper.makeOffline();
+
       return false;
     });
   }
