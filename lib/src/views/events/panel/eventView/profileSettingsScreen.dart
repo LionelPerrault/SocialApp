@@ -78,7 +78,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
 
   Widget EventSettingsWidget() {
     return Column(
-      children: [],
+      children: [Container()],
     );
   }
 
