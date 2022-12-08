@@ -6,6 +6,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
+import 'package:shnatter/src/views/events/panel/eventView/profileSettingsScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 
@@ -16,7 +17,7 @@ import 'eventTimelineScreen.dart';
 import 'profileVideosScreen.dart';
 
 class EventEachScreen extends StatefulWidget {
-  EventEachScreen({Key? key,required this.docId})
+  EventEachScreen({Key? key, required this.docId})
       : con = PostController(),
         super(key: key);
   final PostController con;
@@ -43,7 +44,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
     add(widget.con);
     con = controller as PostController;
     filecon = FileController();
-    setState(() { });
+    setState(() {});
     super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
@@ -55,14 +56,16 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
   }
 
   late PostController con;
-  
+
   void getSelectedEvent(id) {
     con.getSelectedEvent(id).then((value) => {
-      if (value){
-        print('Successfully get event you want!!!'),
-      }
-    });
+          if (value)
+            {
+              print('Successfully get event you want!!!'),
+            }
+        });
   }
+
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
     setState(() {
@@ -121,8 +124,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
             ),
             Padding(
                 padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                child:
-                    SingleChildScrollView(
+                child: SingleChildScrollView(
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,52 +136,84 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                         //    : SizedBox(width: 0),
                         Expanded(
                             child: Row(
-                          mainAxisAlignment: con.event == null ? MainAxisAlignment.center : MainAxisAlignment.end,
-                          crossAxisAlignment: con.event == null ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                          mainAxisAlignment: con.event == null
+                              ? MainAxisAlignment.center
+                              : MainAxisAlignment.end,
+                          crossAxisAlignment: con.event == null
+                              ? CrossAxisAlignment.center
+                              : CrossAxisAlignment.start,
                           children: [
-                            con.event == null ? Container(
-                                  width: 30,
-                                  height: 30,
-                                  margin: EdgeInsets.only(top: SizeConfig(context).screenHeight*2/5),
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.grey,
+                            con.event == null
+                                ? Container(
+                                    width: 30,
+                                    height: 30,
+                                    margin: EdgeInsets.only(
+                                        top: SizeConfig(context).screenHeight *
+                                            2 /
+                                            5),
+                                    child: const CircularProgressIndicator(
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                : Expanded(
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          EventAvatarandTabScreen(
+                                            onClick: (value) {
+                                              print(value);
+                                              con.eventTab = value;
+                                              setState(() {});
+                                            },
+                                          ),
+                                          con.eventTab == 'Timeline'
+                                              ? EventTimelineScreen(
+                                                  onClick: (value) {
+                                                  con.eventTab = value;
+                                                  setState(() {});
+                                                })
+                                              : con.eventTab == 'Photos'
+                                                  ? EventPhotosScreen(
+                                                      onClick: (value) {
+                                                      con.eventTab = value;
+                                                      setState(() {});
+                                                    })
+                                                  : con.eventTab == 'Videos'
+                                                      ? EventVideosScreen(
+                                                          onClick: (value) {
+                                                          con.eventTab = value;
+                                                          setState(() {});
+                                                        })
+                                                      : con.eventTab ==
+                                                              'Members'
+                                                          ? EventMembersScreen(
+                                                              onClick: (value) {
+                                                              con.eventTab =
+                                                                  value;
+                                                              setState(() {});
+                                                            })
+                                                          : con.eventTab ==
+                                                                  'Settings'
+                                                              ? EventSettingsScreen(
+                                                                  onClick:
+                                                                      (value) {
+                                                                  con.eventTab =
+                                                                      value;
+                                                                  setState(
+                                                                      () {});
+                                                                })
+                                                              : const SizedBox()
+                                          // EventFriendScreen(),
+                                        ]),
                                   ),
-                                ) : Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  EventAvatarandTabScreen(onClick: (value) {
-                                    print(value);
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  },),
-                                  con.eventTab == 'Timeline' ? EventTimelineScreen(onClick:(value){
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  }) :
-                                  con.eventTab == 'Photos' ? EventPhotosScreen(onClick:(value){
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  }) :
-                                  con.eventTab == 'Videos' ? EventVideosScreen(onClick:(value){
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  }) :
-                                  con.eventTab == 'Members' ? EventMembersScreen(onClick:(value){
-                                    con.eventTab = value;
-                                    setState(() { });
-                                  }) :
-                                  const SizedBox()
-                                  // EventFriendScreen(),
-                                ]),
-                            ),
                           ],
                         )),
                       ]),
-                  
                 )),
-                AnimatedBuilder(
+            AnimatedBuilder(
                 animation: _drawerSlideController,
                 builder: (context, child) {
                   return FractionalTranslation(
@@ -265,11 +299,8 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                         )),
                   )
                 : const SizedBox(),
-                
             ChatScreen(),
-            
           ],
         ));
   }
-  
 }
