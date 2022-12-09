@@ -354,7 +354,13 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                                               const Padding(
                                                   padding:
                                                       EdgeInsets.only(left: 5)),
-                                              Text(e['title'],
+                                              Text(
+                                                  SizeConfig(context)
+                                                              .screenWidth >
+                                                          SizeConfig
+                                                              .mediumScreenSize
+                                                      ? e['title']
+                                                      : '',
                                                   style: const TextStyle(
                                                       fontSize: 13,
                                                       color: Color.fromRGBO(

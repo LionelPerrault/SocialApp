@@ -12,16 +12,16 @@ class StartedInput extends StatefulWidget {
     color: Colors.white,
   );
 
-  StartedInput({
-    Key? key,
-    required this.onChange,
-    this.obscureText = false,
-    required this.validator,
-    this.icon = const Icon(
-      null,
-    ),
-    this.text = ''
-  }) : super(key: key);
+  StartedInput(
+      {Key? key,
+      required this.onChange,
+      this.obscureText = false,
+      required this.validator,
+      this.icon = const Icon(
+        null,
+      ),
+      this.text = ''})
+      : super(key: key);
   String text = '';
   @override
   State createState() => StartedInputState();
@@ -31,10 +31,11 @@ class StartedInputState extends State<StartedInput> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController controller = TextEditingController();
   @override
-  void initState(){
+  void initState() {
     controller.text = widget.text;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(

@@ -41,7 +41,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 10, left: 10, top: 15),
-      child: SizeConfig(context).screenWidth < 800
+      child: SizeConfig(context).screenWidth < 800 + 250
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [MindPost(), eventInfo()])

@@ -6,7 +6,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/events/panel/eventView/profileSettingsScreen.dart';
+import 'package:shnatter/src/views/events/panel/eventView/eventSettingsScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 
@@ -14,7 +14,7 @@ import 'eventAvatarandTabscreen.dart';
 import 'eventMembersScreen.dart';
 import 'eventPhotosScreen.dart';
 import 'eventTimelineScreen.dart';
-import 'profileVideosScreen.dart';
+import 'eventVideosScreen.dart';
 
 class EventEachScreen extends StatefulWidget {
   EventEachScreen({Key? key, required this.docId})
