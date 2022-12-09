@@ -68,6 +68,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
       child: Padding(
         padding: const EdgeInsets.only(top: 5.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: list
               .map(
                 (e) => ListText(

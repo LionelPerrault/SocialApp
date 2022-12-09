@@ -516,7 +516,7 @@ class PostController extends ControllerMVC {
         var joined = await boolJoined(id);
         var data = doc[i];
         if (UserManager.userInfo['userName'] ==
-                data['groupAdmin']['userName'] &&
+                data['groupAdmin'][0]['userName'] &&
             condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
         } else if (condition == 'all') {
@@ -546,7 +546,7 @@ class PostController extends ControllerMVC {
     viewGroupId = group.id;
     viewGroupJoined = await boolJoined(viewGroupId);
     setState(() {});
-    print('This group was posted by ${group['groupAdmin']}');
+    print('This group was posted by ${group['groupAdmin'][0]['userName']}');
     return true;
   }
 
@@ -554,7 +554,9 @@ class PostController extends ControllerMVC {
   Future<void> createGroup(context, Map<String, dynamic> groupData) async {
     groupData = {
       ...groupData,
-      'groupAdmin': {'userName': UserManager.userInfo['userName']},
+      'groupAdmin': [
+        {'userName': UserManager.userInfo['userName']},
+      ],
       'groupDate': DateTime.now().toString(),
       'groupJoined': [],
       'groupPost': false,
