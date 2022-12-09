@@ -1,8 +1,10 @@
-
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
@@ -13,134 +15,179 @@ import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingSecurityPasswordScreen extends StatefulWidget {
-  SettingSecurityPasswordScreen({Key? key}) : super(key: key);
+  SettingSecurityPasswordScreen({Key? key})
+      : con = UserController(),
+        super(key: key);
+  late UserController con;
   @override
   State createState() => SettingSecurityPasswordScreenState();
 }
+
 // ignore: must_be_immutable
-class SettingSecurityPasswordScreenState extends State<SettingSecurityPasswordScreen> {
-  var setting_security = {};
+class SettingSecurityPasswordScreenState
+    extends mvc.StateMVC<SettingSecurityPasswordScreen> {
+  late UserController con;
+  var userInfo = UserManager.userInfo;
+  late String currentPassword;
+  String newPassword = '';
+  String confirmPassword = '';
+  @override
+  void initState() {
+    super.initState();
+    add(widget.con);
+    currentPassword = '';
+    con = controller as UserController;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(padding: const EdgeInsets.only(top: 20, left:30),
-      child: 
-        Column(children: [
-          SettingHeader(icon: Icon(Icons.security_outlined, color: Color.fromARGB(255, 139, 195, 74),), pagename: 'Change Password',
-            button: {'flag': false},),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Container(
-            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.5 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
-            child: Column(children: [
-              Container(
-                width: 680,
-                height: 65,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 252, 124, 95),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                child: Row(children: [
-                  const Padding(padding: EdgeInsets.only(left: 30)),
-                  const Icon(Icons.warning_rounded, color: Colors.white, size: 30,),
-                  const Padding(padding: EdgeInsets.only(left: 10)),
-                  SizedBox(
-                          width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.3 : SizeConfig(context).screenWidth * 0.5 - 20,
-                          child: const Text('Changing password will log you out from all other sessions',
-                                    style: TextStyle(color: Colors.white,
-                                    fontSize: 11),))
-                ],),
+    return Container(
+        padding: const EdgeInsets.only(top: 20, left: 30),
+        child: Column(
+          children: [
+            SettingHeader(
+              icon: Icon(
+                Icons.security_outlined,
+                color: Color.fromARGB(255, 139, 195, 74),
               ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              Row(
+              pagename: 'Change Password',
+              button: {'flag': false},
+            ),
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            Container(
+              width:
+                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                      ? SizeConfig(context).screenWidth * 0.5 + 40
+                      : SizeConfig(context).screenWidth * 0.9 - 30,
+              child: Column(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Container(
+                    width: 680,
+                    height: 65,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 252, 124, 95),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                    ),
+                    child: Row(
                       children: [
-                      Text('Confirm Current Password',
-                          style: TextStyle(
-                              color: Color.fromARGB(
-                                  255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                      Container(
-                        width: 700,
-                        child:
-                            input(validator: (value) async {
-                          print(value);
-                        }, onchange: (value) async {
-                          setting_security['currentpass'] = value;
-                          setState(() {});
-                        }),
-                      )
-                    ],)
+                        const Padding(padding: EdgeInsets.only(left: 30)),
+                        const Icon(
+                          Icons.warning_rounded,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        const Padding(padding: EdgeInsets.only(left: 10)),
+                        SizedBox(
+                            width: SizeConfig(context).screenWidth >
+                                    SizeConfig.smallScreenSize
+                                ? SizeConfig(context).screenWidth * 0.3
+                                : SizeConfig(context).screenWidth * 0.5 - 20,
+                            child: const Text(
+                              'Changing password will log you out from all other sessions',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 11),
+                            ))
+                      ],
+                    ),
                   ),
-                  const Padding(padding: EdgeInsets.only(right: 20))
+                  const Padding(padding: EdgeInsets.only(top: 20)),
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Confirm Current Password',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 82, 95, 127),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold)),
+                              Container(
+                                width: 700,
+                                child: input(
+                                    validator: (value) async {
+                                      print(value);
+                                    },
+                                    onchange: (value) async {
+                                      currentPassword = value;
+                                    },
+                                    obscureText: true),
+                              )
+                            ],
+                          )),
+                      const Padding(padding: EdgeInsets.only(right: 20))
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Your New Password',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 82, 95, 127),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold)),
+                              Container(
+                                width: 300,
+                                child: input(
+                                    validator: (value) async {
+                                      print(value);
+                                    },
+                                    onchange: (value) async {
+                                      newPassword = value;
+                                    },
+                                    obscureText: true),
+                              )
+                            ],
+                          )),
+                      const Padding(padding: EdgeInsets.only(left: 25)),
+                      Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Confirm New Password',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 82, 95, 127),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold)),
+                              Container(
+                                width: 300,
+                                child: input(
+                                    validator: (value) async {
+                                      print(value);
+                                    },
+                                    onchange: (value) async {
+                                      confirmPassword = value;
+                                    },
+                                    obscureText: true),
+                              )
+                            ],
+                          )),
+                      const Padding(padding: EdgeInsets.only(right: 20))
+                    ],
+                  ),
                 ],
               ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text('Your New Password',
-                          style: TextStyle(
-                              color: Color.fromARGB(
-                                  255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                      Container(
-                        width: 300,
-                        child:
-                            input(validator: (value) async {
-                          print(value);
-                        }, onchange: (value) async {
-                          setting_security['newpass'] = value;
-                          setState(() {});
-                        }),
-                      )
-                    ],)
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 25)),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text('Confirm New Password',
-                          style: TextStyle(
-                              color: Color.fromARGB(
-                                  255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                      Container(
-                        width: 300,
-                        child:
-                            input(validator: (value) async {
-                          print(value);
-                        }, onchange: (value) async {
-                          setting_security['confirm'] = value;
-                          setState(() {});
-                        }),
-                      )
-                    ],)
-                  ),
-                  const Padding(padding: EdgeInsets.only(right: 20))
-                ],
-              ),
-            ],),
-          ),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          SettingFooter()
-      ],)
-      );
+            ),
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            SettingFooter(
+                onClick: () {
+                  saveAccountSettings();
+                },
+                isChange: con.isSettingAction)
+          ],
+        ));
   }
+
   Widget input({label, onchange, obscureText = false, validator}) {
     return Container(
       height: 28,
@@ -154,5 +201,16 @@ class SettingSecurityPasswordScreenState extends State<SettingSecurityPasswordSc
         },
       ),
     );
+  }
+
+  void saveAccountSettings() {
+    print(userInfo['password']);
+    if (currentPassword == userInfo['password']) {
+      print(newPassword);
+      print(confirmPassword);
+      if (newPassword == confirmPassword) {
+        con.changePassword(userInfo['email'], newPassword);
+      }
+    }
   }
 }

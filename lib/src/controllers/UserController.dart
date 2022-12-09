@@ -574,6 +574,64 @@ class UserController extends ControllerMVC {
     }
   }
 
+  changePassword(email, password) async {
+    var userManager = UserManager.userInfo;
+    var uuid = '';
+    isSettingAction = true;
+    setState(() {});
+    if (password.length < Helper.passwordMinLength) {
+      print(0);
+      isSettingAction = false;
+      setState(() {});
+      return;
+    }
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userManager['email'], password: userManager['password']);
+    await FirebaseAuth.instance.currentUser?.delete();
+
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      uuid = userCredential.user!.uid;
+      var snapshot = await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .where('email', isEqualTo: email)
+          .get();
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(snapshot.docs[0].id)
+          .delete();
+      var user = {};
+      snapshot.docs[0].data().forEach((key, value) {
+        user = {...user, key: key == 'password' ? password : value};
+      });
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(uuid)
+          .set({
+        ...user,
+      });
+      var j = {};
+      user.forEach((key, value) {
+        j = {...j, key.toString(): value.toString()};
+      });
+      await Helper.saveJSONPreference(Helper.userField, {...j, 'uid': uuid});
+      UserManager.getUserInfo();
+      isSettingAction = false;
+      setState(() {});
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('email already in use');
+      } else {}
+      isSettingAction = false;
+      setState(() {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   profileChange(profile) async {
     if (profile.isNotEmpty) {
       isProfileChange = true;
@@ -583,7 +641,6 @@ class UserController extends ControllerMVC {
           .collection(Helper.userField)
           .where('userName', isEqualTo: userManager['userName'])
           .get();
-      print(snapshot.docs[0].id);
       await FirebaseFirestore.instance
           .collection(Helper.userField)
           .doc(snapshot.docs[0].id)
@@ -600,5 +657,24 @@ class UserController extends ControllerMVC {
       isProfileChange = false;
       setState(() {});
     }
+  }
+
+  deleteUserAccount() async {
+    isProfileChange = true;
+    setState(() {});
+    var userManager = UserManager.userInfo;
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userManager['email'], password: userManager['password']);
+    await FirebaseAuth.instance.currentUser?.delete();
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('userName', isEqualTo: userManager['userName'])
+        .get();
+    await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .doc(snapshot.docs[0].id)
+        .delete();
+    isProfileChange = false;
+    setState(() {});
   }
 }
