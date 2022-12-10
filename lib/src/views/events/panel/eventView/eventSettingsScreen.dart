@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -118,11 +119,9 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                   ),
                   Container(
                     width: 400,
-                    child: input(validator: (value) async {
-                      print(value);
-                    }, onchange: (value) async {
+                    child: inputWidget('value', (value) {
                       con.event['eventName'] = value;
-                      // setState(() {});
+                      setState(() {});
                     }),
                   )
                 ],
@@ -143,11 +142,9 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                   ),
                   Container(
                     width: 400,
-                    child: input(validator: (value) async {
-                      print(value);
-                    }, onchange: (value) async {
-                      con.event['eventLocation'] = value;
-                      // setState(() {});
+                    child: inputWidget('value', (value) {
+                      con.event['eventName'] = value;
+                      setState(() {});
                     }),
                   )
                 ],
@@ -168,11 +165,9 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                   ),
                   Container(
                     width: 400,
-                    child: input(validator: (value) async {
-                      print(value);
-                    }, onchange: (value) async {
-                      con.event['eventStartDate'] = value;
-                      // setState(() {});
+                    child: inputWidget('value', (value) {
+                      con.event['eventName'] = value;
+                      setState(() {});
                     }),
                   )
                 ],
@@ -193,11 +188,9 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                   ),
                   Container(
                     width: 400,
-                    child: input(validator: (value) async {
-                      print(value);
-                    }, onchange: (value) async {
-                      con.event['eventEndDate'] = value;
-                      // setState(() {});
+                    child: inputWidget('value', (value) {
+                      con.event['eventName'] = value;
+                      setState(() {});
                     }),
                   )
                 ],
@@ -335,7 +328,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                   maxLines: 4,
                                   onChanged: (value) async {
                                     con.event['eventAbout'] = value;
-                                    // setState(() {});
+                                    setState(() {});
                                   },
                                   keyboardType: TextInputType.multiline,
                                   style: TextStyle(fontSize: 12),
@@ -351,6 +344,40 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                 ),
                               ),
                             ],
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: privacySelect(
+                            'Members Can Publish Posts?',
+                            'Members can publish posts or only group admins',
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: privacySelect(
+                            'Post Approval',
+                            'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
                           )),
                     ],
                   ),
@@ -541,6 +568,79 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
         onChange: (val) async {
           onchange(val);
         },
+      ),
+    );
+  }
+
+  Widget privacySelect(title, content) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+            flex: 4,
+            child: Container(
+              padding: EdgeInsets.only(left: 10, right: 30),
+              width: SizeConfig(context).screenWidth * 0.5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                        color: Color.fromRGBO(82, 95, 127, 1),
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(content,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(fontSize: 13)),
+                ],
+              ),
+            )),
+        const Flexible(fit: FlexFit.tight, child: SizedBox()),
+        SizedBox(
+          height: 20,
+          child: Transform.scale(
+            scaleX: 1,
+            scaleY: 1,
+            child: CupertinoSwitch(
+              thumbColor: Colors.white,
+              activeColor: Colors.black,
+              value: true,
+              onChanged: (value) {},
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget inputWidget(value, onChangeFun) {
+    return Container(
+      width: 400,
+      height: 30,
+      decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 250, 250, 250),
+          border: Border.all(color: Colors.grey)),
+      child: TextFormField(
+        minLines: 1,
+        maxLines: 7,
+        initialValue: value,
+        onChanged: (value) async {
+          onChangeFun(value);
+        },
+        keyboardType: TextInputType.multiline,
+        style: const TextStyle(fontSize: 12),
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          hintText: '',
+          hintStyle: TextStyle(color: Colors.grey),
+        ),
       ),
     );
   }

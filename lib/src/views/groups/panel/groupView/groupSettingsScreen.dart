@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -127,13 +128,14 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
 
   Widget GroupSettingsWidget() {
     return Container(
-      width: 450,
+      width: 600,
       child: Column(
         children: [
           headerWidget(Icon(Icons.settings), 'Group Settings'),
           Container(
             width: 430,
             child: Column(children: [
+              const Padding(padding: EdgeInsets.only(top: 15)),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,75 +259,45 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
               Row(
                 children: [
                   Expanded(
-                      child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 0.5, color: Colors.grey)),
-                    height: 70,
-                    child: DropdownButton(
-                      value: privacy,
-                      itemHeight: 70,
-                      items: GroupsDropDown.map(
-                        (e) => DropdownMenuItem(
-                          value: e['value'],
-                          child: Container(
-                            height: 70,
-                            margin: const EdgeInsets.only(top: 15),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 70,
-                                  child: Icon(
-                                    e['icon'],
-                                    size: 40,
-                                  ),
-                                ),
-                                Container(
-                                  height: 70,
-                                  margin:
-                                      const EdgeInsets.only(top: 10, left: 5),
-                                  alignment: Alignment.topLeft,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        e['title'],
-                                        style: const TextStyle(
-                                            fontSize: 14, color: Colors.grey),
-                                      ),
-                                      Text(
-                                        e['subtitle'],
-                                        style: const TextStyle(fontSize: 12),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                    child: Container(
+                      width: 400,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 250, 250, 250),
+                          border: Border.all(color: Colors.grey)),
+                      child: DropdownButton(
+                        value: GroupsDropDown[0]['value'],
+                        itemHeight: 70,
+                        items: GroupsDropDown.map((e) => DropdownMenuItem(
+                            value: e['value'],
+                            child: Container(
+                                height: 70,
+                                child: ListTile(
+                                  leading: Icon(e['icon']),
+                                  title: Text(e['title']),
+                                  subtitle: Text(e['subtitle']),
+                                )))).toList(),
+                        onChanged: (value) {
+                          //get value when changed
+                          // dropdownValue = value!;
+                          setState(() {});
+                        },
+                        icon: const Padding(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Icon(Icons.arrow_drop_down)),
+                        iconEnabledColor: Colors.white, //Icon color
+                        style: const TextStyle(
+                          color: Colors.black, //Font color
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ).toList(),
-                      onChanged: (value) {
-                        privacy = value.toString();
-                        con.group['groupPrivacy'] = privacy;
-                        setState(() {});
-                      },
-                      icon: const Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Icon(Icons.arrow_drop_down)),
-                      iconEnabledColor: Colors.white, //Icon color
-                      style: const TextStyle(
-                        color: Colors.black, //Font color
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
+                        dropdownColor: Colors.white,
+                        underline: Container(), //remove underline
+                        isExpanded: true,
+                        isDense: true,
                       ),
-                      dropdownColor: Colors.white,
-                      underline: Container(), //remove underline
-                      isExpanded: true,
-                      isDense: true,
                     ),
-                  )),
+                  ),
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 15)),
@@ -372,6 +344,40 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                 ),
                               ),
                             ],
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: privacySelect(
+                            'Members Can Publish Posts?',
+                            'Members can publish posts or only group admins',
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: privacySelect(
+                            'Post Approval',
+                            'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
                           )),
                     ],
                   ),
@@ -829,6 +835,50 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
           onchange(val);
         },
       ),
+    );
+  }
+
+  Widget privacySelect(title, content) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+            flex: 4,
+            child: Container(
+              padding: EdgeInsets.only(left: 10, right: 30),
+              width: SizeConfig(context).screenWidth * 0.5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                        color: Color.fromRGBO(82, 95, 127, 1),
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(content,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(fontSize: 13)),
+                ],
+              ),
+            )),
+        const Flexible(fit: FlexFit.tight, child: SizedBox()),
+        SizedBox(
+          height: 20,
+          child: Transform.scale(
+            scaleX: 1,
+            scaleY: 1,
+            child: CupertinoSwitch(
+              thumbColor: Colors.white,
+              activeColor: Colors.black,
+              value: true,
+              onChanged: (value) {},
+            ),
+          ),
+        ),
+      ],
     );
   }
 
