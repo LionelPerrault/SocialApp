@@ -298,15 +298,496 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget InfoBasic() {
-    return Container();
+    return Column(
+      children: [
+        Container(
+          child: customInput(
+            title: 'Company',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+        Container(
+          child: customInput(
+            title: 'Phone',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+        Container(
+          child: customInput(
+            title: 'Website',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+        Container(
+          child: customInput(
+            title: 'Location',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+        Container(
+          child: customInput(
+            title: 'About',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+      ],
+    );
   }
 
   Widget InfoButton() {
-    return Container();
+    return Container(
+      width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+          ? SizeConfig(context).screenWidth * 0.5 + 40
+          : SizeConfig(context).screenWidth * 0.9 - 30,
+      child: Column(
+        children: [
+          GridView.count(
+            crossAxisCount:
+                SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+                    ? 2
+                    : 1,
+            childAspectRatio: 4 / 1,
+            padding: const EdgeInsets.all(4.0),
+            mainAxisSpacing: 4.0,
+            shrinkWrap: true,
+            crossAxisSpacing: 4.0,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Facebook Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.facebook,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: facebookController,
+                        onChanged: (newIndex) {
+                          //socialProfile['facebook'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Twitter Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.new_releases_sharp,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: twitterController,
+                        onChanged: (newIndex) {
+                          //socialProfile['twitter'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Youtube Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.facebook,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: youtubeController,
+                        onChanged: (newIndex) {
+                          //socialProfile['youtube'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Instagram Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.new_releases_sharp,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: instagramController,
+                        onChanged: (newIndex) {
+                          //socialProfile['instagram'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Twitch Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.youtube_searched_for_sharp,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: twitchController,
+                        onChanged: (newIndex) {
+                          //socialProfile['twitch'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Linkedin Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.new_releases_sharp,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        //controller: linkedinController,
+                        onChanged: (newIndex) {
+                          //socialProfile['linkedin'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Vokontakte Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.facebook,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        //controller: vokontaketeController,
+                        onChanged: (newIndex) {
+                          //socialProfile['vokontakete'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget InfoSocialLink() {
     return Container();
+  }
+
+  Widget customInput({title, onChange, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
+        ),
+        Padding(padding: EdgeInsets.only(top: 2)),
+        Container(
+          height: 40,
+          child: TextField(
+            controller: controller,
+            onChanged: onChange,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   Widget PageAdminsWidget() {
