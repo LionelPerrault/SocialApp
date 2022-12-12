@@ -148,14 +148,10 @@ class Helper {
     if (userInfo['userName'] != null) {
       print('offline');
       http.post(
-        Uri.parse('http://localhost:5000/test'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'userName': userInfo['userName'],
-        }),
-      );
+          Uri.parse(
+              'https://us-central1-poiintz-dev.cloudfunctions.net/tokenAward'),
+          headers: {'Access-Control-Allow-Origin': '*'},
+          body: {'userName': userInfo['userName']});
     }
   }
 }
