@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:shnatter/src/widget/interests.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
@@ -22,6 +23,8 @@ class PageSettingsScreen extends StatefulWidget {
 class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   var userInfo = UserManager.userInfo;
   var pageSettingTab = 'Page Settings';
+  var tabTitle = 'basic';
+  var headerTab;
   List<Map> list = [
     {
       'text': 'Page Settings',
@@ -74,6 +77,32 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    headerTab = [
+      {
+        'icon': Icons.flag,
+        'title': 'Basic',
+        'onClick': (value) {
+          tabTitle = value;
+          setState(() {});
+        }
+      },
+      {
+        'icon': Icons.attractions,
+        'title': 'Action Button',
+        'onClick': (value) {
+          tabTitle = value;
+          setState(() {});
+        }
+      },
+      {
+        'icon': Icons.facebook,
+        'title': 'Social Links',
+        'onClick': (value) {
+          tabTitle = value;
+          setState(() {});
+        }
+      },
+    ];
   }
 
   late PostController con;
@@ -87,8 +116,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
           LeftSettingBar(),
           pageSettingTab == 'Page Settings'
               ? PageSettingsWidget()
-              : pageSettingTab == 'Join Requests'
-                  ? GroupJoinWidget()
+              : pageSettingTab == 'Page Information'
+                  ? PageInformationWidget()
                   : pageSettingTab == 'Admins'
                       ? PageAdminsWidget()
                       : pageSettingTab == 'Verification'
@@ -204,7 +233,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                             height: 30,
                             child: TextFormField(
                               onChanged: (value) {
-                                con.group['groupUserName'] = value;
+                                con.page['groupUserName'] = value;
                                 setState(() {});
                               },
                               decoration: InputDecoration(
@@ -246,19 +275,38 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
     );
   }
 
-  Widget GroupJoinWidget() {
+  Widget PageInformationWidget() {
     return Container(
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.person_add_alt), 'Member Requests'),
-          Container(
-            padding: const EdgeInsets.only(right: 30, left: 30),
-            child: Text('No Requests'),
+          AdminSettingHeader(
+            icon: const Icon(Icons.settings),
+            pagename: 'Settings',
+            button: const {'flag': false},
+            headerTab: headerTab,
           ),
+          tabTitle == 'basic'
+              ? InfoBasic()
+              : tabTitle == 'actionButton'
+                  ? InfoButton()
+                  : InfoSocialLink(),
+          footerWidget()
         ],
       ),
     );
+  }
+
+  Widget InfoBasic() {
+    return Container();
+  }
+
+  Widget InfoButton() {
+    return Container();
+  }
+
+  Widget InfoSocialLink() {
+    return Container();
   }
 
   Widget PageAdminsWidget() {
@@ -393,12 +441,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('ALL MEMBERS (${con.group["groupJoined"].length})'),
+                Text('ALL MEMBERS (${con.page["pageLiked"].length})'),
                 SizedBox(
                   width: 450,
-                  height: con.group['groupAdmin'].length * 45,
+                  height: con.page['pageLiked'].length * 45,
                   child: ListView.separated(
-                    itemCount: con.group['groupJoined'].length,
+                    itemCount: con.page['pageLiked'].length,
                     itemBuilder: (context, index) => Material(
                         child: ListTile(
                             onTap: () {
@@ -420,7 +468,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                     Container(
                                       width: 100,
                                       child: Text(
-                                        con.group['groupJoined'][index]
+                                        con.page['pageLiked'][index]
                                             ['userName'],
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -517,7 +565,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.heart_broken), 'Interests'),
+          headerWidget(Icon(Icons.check_circle), 'Verification'),
           Container(
             width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                 ? SizeConfig(context).screenWidth * 0.5
