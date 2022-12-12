@@ -39,7 +39,6 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
     {'title': 'Photos', 'icon': Icons.photo},
     {'title': 'Videos', 'icon': Icons.video_call},
     {'title': 'Members', 'icon': Icons.groups},
-    {'title': 'Settings', 'icon': Icons.settings},
   ];
   var interestedStatus = false;
   var joinStatus = false;
@@ -50,6 +49,9 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
     add(widget.con);
     con = controller as PostController;
     _gotoHome();
+    if (userInfo['userName'] == con.group['groupAdmin'][0]['userName']) {
+      mainTabList.add({'title': 'Settings', 'icon': Icons.settings});
+    }
   }
 
   late PostController con;

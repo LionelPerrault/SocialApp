@@ -54,25 +54,31 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 10, left: 10, top: 15),
-      child: SizeConfig(context).screenWidth < 800
+      child: SizeConfig(context).screenWidth < 800 + 220
           ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              con.group['groupAdmin']['userName'] ==
+              con.group['groupAdmin'][0]['userName'] ==
                       UserManager.userInfo['userName']
                   ? MindPost()
                   : Container(),
               Column(
-                children: [eventInfo(), friendInvites()],
+                children: [
+                  eventInfo(),
+                  friendInvites(),
+                ],
               )
             ])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  con.group['groupAdmin']['userName'] ==
+                  con.group['groupAdmin'][0]['userName'] ==
                           UserManager.userInfo['userName']
                       ? MindPost()
                       : Container(),
+                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [eventInfo(), friendInvites()],
                   )
                 ]),

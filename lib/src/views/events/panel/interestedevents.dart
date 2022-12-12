@@ -23,54 +23,63 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var interestedEvents = [];
-  var returnValue= [];
+  var returnValue = [];
   int arrayLength = 0;
   @override
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() { });
+    con.setState(() {});
     super.initState();
     getEventNow();
   }
 
   void getEventNow() {
     con.getEvent('interested').then((value) => {
-      interestedEvents = value,
-      print(returnValue),
-    });
+          interestedEvents = value,
+          print(returnValue),
+        });
   }
+
   @override
   Widget build(BuildContext context) {
-    var  screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
     return Container(
-      child: 
-      Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
             child: GridView.count(
-                crossAxisCount: screenWidth > 800 ? 4 : screenWidth > 600 ? 3 : screenWidth > 210 ? 2 : 1  ,
-                childAspectRatio: 2/ 3,
-                padding: const EdgeInsets.all(4.0),
-                mainAxisSpacing: 4.0,
-                shrinkWrap: true,
-                crossAxisSpacing: 4.0,
-                children: 
-                  interestedEvents.map((event) => 
-                    EventCell(
-                      eventTap: (){
-                        Navigator
-                        .pushReplacementNamed(
-                            context,
-                            '/events/${event['id']}');
+              crossAxisCount: screenWidth > 800
+                  ? 4
+                  : screenWidth > 600
+                      ? 3
+                      : screenWidth > 210
+                          ? 2
+                          : 1,
+              childAspectRatio: 2 / 3,
+              padding: const EdgeInsets.all(4.0),
+              mainAxisSpacing: 4.0,
+              shrinkWrap: true,
+              crossAxisSpacing: 4.0,
+              children: interestedEvents
+                  .map((event) => EventCell(
+                      eventTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, '/events/${event['id']}');
                       },
-                      buttonFun: (){con.interestedEvent(event['id']).then((value){getEventNow();});},
+                      buttonFun: () {
+                        con.interestedEvent(event['id']).then((value) {
+                          getEventNow();
+                        });
+                      },
                       picture: 'null',
                       status: false,
                       interests: event['data']['eventInterested'].length,
                       header: event['data']['eventName'],
-                      interested: event['interested'])).toList(),),
+                      interested: event['interested']))
+                  .toList(),
+            ),
           ),
         ],
       ),

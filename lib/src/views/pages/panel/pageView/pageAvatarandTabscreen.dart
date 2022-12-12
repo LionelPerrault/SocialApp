@@ -26,8 +26,8 @@ class PageAvatarandTabScreen extends StatefulWidget {
   State createState() => PageAvatarandTabScreenState();
 }
 
-class PageAvatarandTabScreenState extends mvc
-    .StateMVC<PageAvatarandTabScreen> with SingleTickerProviderStateMixin {
+class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
+    with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   double width = 0;
   double itemWidth = 0;
@@ -61,7 +61,7 @@ class PageAvatarandTabScreenState extends mvc
   void _gotoHome() {
     Future.delayed(Duration.zero, () {
       width = SizeConfig(context).screenWidth - 260;
-      itemWidth = 100;
+      itemWidth = 200;
       setState(() {});
     });
   }
@@ -75,8 +75,8 @@ class PageAvatarandTabScreenState extends mvc
           width: SizeConfig(context).screenWidth,
           height: SizeConfig(context).screenHeight * 0.5,
           decoration: const BoxDecoration(
-                  color: Color.fromRGBO(66, 66, 66, 1),
-                ),
+            color: Color.fromRGBO(66, 66, 66, 1),
+          ),
           child: Container(),
         ),
         Container(
@@ -143,8 +143,8 @@ class PageAvatarandTabScreenState extends mvc
             ? CircleAvatar(
                 radius: 78,
                 backgroundColor: Colors.white,
-                child: CircleAvatar(
-                    radius: 75, backgroundImage: NetworkImage('')),
+                child:
+                    CircleAvatar(radius: 75, backgroundImage: NetworkImage('')),
               )
             : CircleAvatar(
                 radius: 78,
@@ -217,6 +217,12 @@ class PageAvatarandTabScreenState extends mvc
             scrollDirection: Axis.horizontal,
             child: Container(
               margin: const EdgeInsets.only(top: 15),
+              width:
+                  SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+                      ? SizeConfig(context).screenWidth -
+                          SizeConfig.leftBarAdminWidth -
+                          250
+                      : SizeConfig(context).screenWidth - 20,
               height: 70,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -224,51 +230,57 @@ class PageAvatarandTabScreenState extends mvc
               ),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: mainTabList
-                      .map((e) => MouseRegion(
+                      .map(
+                        (e) => Expanded(
+                          child: MouseRegion(
                             cursor: SystemMouseCursors.click,
                             child: InkWell(
-                                onTap: () {
-                                  widget.onClick(e['title']);
-                                  setState(() {});
-                                },
-                                child: Container(
-                                    padding: const EdgeInsets.only(top: 30),
-                                    width: itemWidth,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                e['icon'],
-                                                size: 15,
-                                                color: Color.fromRGBO(
-                                                    76, 76, 76, 1),
-                                              ),
-                                              const Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 5)),
-                                              Text(e['title'],
-                                                  style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Color.fromRGBO(
-                                                          76, 76, 76, 1),
-                                                      fontWeight:
-                                                          FontWeight.bold))
-                                            ]),
-                                        e['title'] == con.pageTab
-                                            ? Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 23),
-                                                height: 2,
-                                                color: Colors.grey,
-                                              )
-                                            : Container()
-                                      ],
-                                    ))),
-                          ))
+                              onTap: () {
+                                widget.onClick(e['title']);
+                                setState(() {});
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(top: 30),
+                                width: itemWidth,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            e['icon'],
+                                            size: 15,
+                                            color:
+                                                Color.fromRGBO(76, 76, 76, 1),
+                                          ),
+                                          const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(e['title'],
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color.fromRGBO(
+                                                      76, 76, 76, 1),
+                                                  fontWeight: FontWeight.bold))
+                                        ]),
+                                    e['title'] == con.pageTab
+                                        ? Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 23),
+                                            height: 2,
+                                            color: Colors.grey,
+                                          )
+                                        : Container()
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
                       .toList()),
             ))
       ],

@@ -38,7 +38,7 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
     con.getGroup('manage').then((value) => {
           myGroups = [...value],
           myGroups.where((group) =>
-              group['data']['groupAdmin']['userName'] ==
+              group['data']['groupAdmin'][0]['userName'] ==
               UserManager.userInfo['id']),
           print(myGroups),
           setState(() {})

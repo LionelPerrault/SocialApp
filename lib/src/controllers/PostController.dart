@@ -380,7 +380,8 @@ class PostController extends ControllerMVC {
         var id = doc[i].id;
         var liked = await boolLiked(id);
         var data = doc[i];
-        if (UserManager.userInfo['userName'] == data['pageAdmin']['userName'] &&
+        if (UserManager.userInfo['userName'] ==
+                data['pageAdmin'][0]['userName'] &&
             condition == 'manage') {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
         } else if (condition == 'all') {
@@ -410,7 +411,7 @@ class PostController extends ControllerMVC {
     viewPageId = page.id;
     viewPageLiked = await boolLiked(viewPageId);
     setState(() {});
-    print('This page was posted by ${page['pageAdmin']}');
+    print('This page was posted by ${page['pageAdmin'][0]}');
     return true;
   }
 
@@ -418,7 +419,9 @@ class PostController extends ControllerMVC {
   Future<void> createPage(context, Map<String, dynamic> pageData) async {
     pageData = {
       ...pageData,
-      'pageAdmin': {'userName': UserManager.userInfo['userName']},
+      'pageAdmin': [
+        {'userName': UserManager.userInfo['userName']}
+      ],
       'pageDate': DateTime.now().toString(),
       'pageLiked': [],
       'pagePost': false,
@@ -516,7 +519,7 @@ class PostController extends ControllerMVC {
         var joined = await boolJoined(id);
         var data = doc[i];
         if (UserManager.userInfo['userName'] ==
-                data['groupAdmin']['userName'] &&
+                data['groupAdmin'][0]['userName'] &&
             condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
         } else if (condition == 'all') {
@@ -546,7 +549,7 @@ class PostController extends ControllerMVC {
     viewGroupId = group.id;
     viewGroupJoined = await boolJoined(viewGroupId);
     setState(() {});
-    print('This group was posted by ${group['groupAdmin']}');
+    print('This group was posted by ${group['groupAdmin'][0]['userName']}');
     return true;
   }
 
@@ -554,7 +557,9 @@ class PostController extends ControllerMVC {
   Future<void> createGroup(context, Map<String, dynamic> groupData) async {
     groupData = {
       ...groupData,
-      'groupAdmin': {'userName': UserManager.userInfo['userName']},
+      'groupAdmin': [
+        {'userName': UserManager.userInfo['userName']},
+      ],
       'groupDate': DateTime.now().toString(),
       'groupJoined': [],
       'groupPost': false,

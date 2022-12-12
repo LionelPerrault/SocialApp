@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -63,7 +62,8 @@ class footbar extends StatefulWidget {
   @override
   State createState() => footbarState();
 }
-class footbarState extends State<footbar>{
+
+class footbarState extends State<footbar> {
   var dropdownValue = 'English';
   Widget build(BuildContext context) {
     return Container(
@@ -77,54 +77,61 @@ class footbarState extends State<footbar>{
             const Padding(padding: EdgeInsets.only(left: 10)),
             text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 11),
             const Padding(padding: EdgeInsets.only(left: 20)),
-             Container(
-                width: 200,
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                          color: Colors.black,
-                          width: 0.1), //bordrder raiuds of dropdown button
-                    ),
-                    child: Padding(
-                        padding: const EdgeInsets.only(top: 7, left: 5),
-                        child: DropdownButton(
-                          value: dropdownValue,
-                          items: language.map((items) {
-                            return DropdownMenuItem(
-                              value: items['langText'],
-                              child: Container(child: Row(children: [
+            Container(
+              width: 200,
+              child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                        color: Colors.black,
+                        width: 0.1), //bordrder raiuds of dropdown button
+                  ),
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 7, left: 5),
+                      child: DropdownButton(
+                        value: dropdownValue,
+                        items: language.map((items) {
+                          return DropdownMenuItem(
+                            value: items['langText'],
+                            child: Container(
+                                child: Row(
+                              children: [
                                 SizedBox(
                                   width: 20,
                                   child: Image.network(items['png']!),
                                 ),
-                                const Padding(padding: EdgeInsets.only(left: 15)),
-                                Text(items['langText']!,style: TextStyle(color: Color.fromARGB(255, 60, 60, 60)),)
-                              ],)
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? value) {
-                            //get value when changed
-                            dropdownValue = value!;
-                            setState(() {});
-                          },
-                          icon: const Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Icon(Icons.arrow_drop_down)),
-                          iconEnabledColor: Colors.white, //Icon color
-                          style: const TextStyle(
-                            color: Colors.black, //Font color
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          dropdownColor: Colors.white,
-                          underline: Container(), //remove underline
-                          isExpanded: true,
-                          isDense: true,
-                        ))),
-              ),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 15)),
+                                Text(
+                                  items['langText']!,
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 60, 60, 60)),
+                                )
+                              ],
+                            )),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          //get value when changed
+                          dropdownValue = value!;
+                          setState(() {});
+                        },
+                        icon: const Padding(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Icon(Icons.arrow_drop_down)),
+                        iconEnabledColor: Colors.white, //Icon color
+                        style: const TextStyle(
+                          color: Colors.black, //Font color
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        dropdownColor: Colors.white,
+                        underline: Container(), //remove underline
+                        isExpanded: true,
+                        isDense: true,
+                      ))),
+            ),
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Container(
               margin: const EdgeInsets.only(right: 20),
@@ -148,7 +155,8 @@ class footbarM extends StatefulWidget {
   @override
   State createState() => footbarMState();
 }
-class footbarMState extends State<footbarM>{
+
+class footbarMState extends State<footbarM> {
   var dropdownValue = 'English';
   Widget build(BuildContext context) {
     return Container(
@@ -159,11 +167,13 @@ class footbarMState extends State<footbarM>{
         child: Column(
           children: [
             const Padding(padding: EdgeInsets.only(top: 10)),
-            Row(children: [
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 13),
-              const Padding(padding: EdgeInsets.only(left: 15)),
-              Container(
+            Row(
+              children: [
+                const Padding(padding: EdgeInsets.only(left: 10)),
+                text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
+                    13),
+                const Padding(padding: EdgeInsets.only(left: 15)),
+                Container(
                   width: 190,
                   padding: const EdgeInsets.only(left: 5),
                   child: DecoratedBox(
@@ -181,15 +191,23 @@ class footbarMState extends State<footbarM>{
                             items: language.map((items) {
                               return DropdownMenuItem(
                                 value: items['langText'],
-                                child: Container(child: Row(children: [
-                                  SizedBox(
-                                    width: 20,
-                                    child: Image.network(items['png']!),
-                                  ),
-                                  const Padding(padding: EdgeInsets.only(left: 15)),
-                                  Text(items['langText']!,style: TextStyle(color: Color.fromARGB(255, 60, 60, 60)),)
-                                ],)
-                                ),
+                                child: Container(
+                                    child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                      child: Image.network(items['png']!),
+                                    ),
+                                    const Padding(
+                                        padding: EdgeInsets.only(left: 15)),
+                                    Text(
+                                      items['langText']!,
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 60, 60, 60)),
+                                    )
+                                  ],
+                                )),
                               );
                             }).toList(),
                             onChanged: (String? value) {
@@ -211,8 +229,9 @@ class footbarMState extends State<footbarM>{
                             isExpanded: true,
                             isDense: true,
                           ))),
-                  ),
-            ],),
+                ),
+              ],
+            ),
             const Padding(padding: EdgeInsets.only(top: 5)),
             Container(
               margin: const EdgeInsets.only(right: 20),
@@ -231,6 +250,7 @@ class footbarMState extends State<footbarM>{
         ));
   }
 }
+
 Widget text(String title, Color color, double size) {
   return Text(title, style: TextStyle(color: color, fontSize: size));
 }
