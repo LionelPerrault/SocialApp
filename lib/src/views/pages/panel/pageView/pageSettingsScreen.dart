@@ -23,7 +23,7 @@ class PageSettingsScreen extends StatefulWidget {
 class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   var userInfo = UserManager.userInfo;
   var pageSettingTab = 'Page Settings';
-  var tabTitle = 'basic';
+  var tabTitle = 'Basic';
   var headerTab;
   List<Map> list = [
     {
@@ -286,9 +286,9 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
             button: const {'flag': false},
             headerTab: headerTab,
           ),
-          tabTitle == 'basic'
+          tabTitle == 'Basic'
               ? InfoBasic()
-              : tabTitle == 'actionButton'
+              : tabTitle == 'Action Button'
                   ? InfoButton()
                   : InfoSocialLink(),
           footerWidget()

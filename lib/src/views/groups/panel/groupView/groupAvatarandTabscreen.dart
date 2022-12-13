@@ -330,13 +330,30 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                                               const Padding(
                                                   padding:
                                                       EdgeInsets.only(left: 5)),
-                                              Text(e['title'],
-                                                  style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Color.fromRGBO(
-                                                          76, 76, 76, 1),
-                                                      fontWeight:
-                                                          FontWeight.bold))
+                                              Text(
+                                                  SizeConfig(context)
+                                                              .screenWidth >
+                                                          SizeConfig
+                                                                  .mediumScreenSize +
+                                                              200
+                                                      ? e['title']
+                                                      : SizeConfig(context)
+                                                                  .screenWidth >
+                                                              SizeConfig
+                                                                  .mediumScreenSize
+                                                          ? ''
+                                                          : SizeConfig(context)
+                                                                      .screenWidth >
+                                                                  600
+                                                              ? e['title']
+                                                              : '',
+                                                  style:
+                                                      const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Color.fromRGBO(
+                                                              76, 76, 76, 1),
+                                                          fontWeight:
+                                                              FontWeight.bold))
                                             ]),
                                         e['title'] == con.groupTab
                                             ? Container(
