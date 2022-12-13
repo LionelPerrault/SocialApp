@@ -176,26 +176,13 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: const [
-                        Text(
-                          'Name Your Page',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
                     Container(
-                      width: 400,
-                      child: input(validator: (value) async {
-                        print(value);
-                      }, onchange: (value) async {
-                        con.page['pageName'] = value;
-                        setState(() {});
-                      }),
-                    )
+                      child: customInput(
+                        title: 'Name Your Page',
+                        // controller: currentController,
+                        onChange: (value) {},
+                      ),
+                    ),
                   ],
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
@@ -203,60 +190,13 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: const [
-                        Text('Page Username',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 82, 95, 127),
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
                     Container(
-                      width: 400,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(7)),
-                        ),
-                        child: Row(children: [
-                          Container(
-                            padding: EdgeInsets.only(top: 7),
-                            alignment: Alignment.topCenter,
-                            width: 240,
-                            height: 30,
-                            color: Colors.grey,
-                            child: Text('https://test.shnatter.com/pages/'),
-                          ),
-                          Expanded(
-                              child: Container(
-                            width: 260,
-                            height: 30,
-                            child: TextFormField(
-                              onChanged: (value) {
-                                con.page['groupUserName'] = value;
-                                setState(() {});
-                              },
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 54, 54, 54),
-                                      width: 1.0),
-                                  borderRadius: BorderRadius.circular(0),
-                                ),
-                              ),
-                              style: const TextStyle(fontSize: 14),
-                              onSaved: (String? value) {
-                                // This optional block of code can be used to run
-                                // code when the user saves the form.
-                              },
-                            ),
-                          )),
-                        ]),
+                      child: customInput(
+                        title: 'Page UserName',
+                        // controller: currentController,
+                        onChange: (value) {},
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Container(
