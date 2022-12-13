@@ -1,29 +1,18 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_generator.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
-import 'package:shnatter/src/views/homescreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:universal_html/html.dart';
 import 'controllers/AppController.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'controllers/UserController.dart';
-import 'helpers/helper.dart';
 import 'models/setting.dart';
 
 class MyApp extends AppStatefulWidgetMVC {
