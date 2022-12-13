@@ -22,6 +22,10 @@ class GroupSettingsScreen extends StatefulWidget {
 class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   var userInfo = UserManager.userInfo;
   var groupSettingTab = 'Group Settings';
+  final TextEditingController groupNameController = TextEditingController();
+  final TextEditingController groupUserNameController = TextEditingController();
+  final TextEditingController groupLocationController = TextEditingController();
+  final TextEditingController groupAboutController = TextEditingController();
   List<Map> list = [
     {
       'text': 'Group Settings',
@@ -70,6 +74,10 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    groupNameController.text = con.group['groupName'];
+    groupUserNameController.text = con.group['groupUserName'];
+    groupLocationController.text = con.group['groupLocation'];
+    groupAboutController.text = con.group['groupAbout'];
   }
 
   late PostController con;
@@ -140,25 +148,15 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Text(
-                        'Name Your Group',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
                   Container(
                     width: 400,
-                    child: input(validator: (value) async {
-                      print(value);
-                    }, onchange: (value) async {
-                      con.group['groupName'] = value;
-                      setState(() {});
-                    }),
+                    child: customInput(
+                        title: 'Name Your Group',
+                        onChange: (value) async {
+                          con.group['groupName'] = value;
+                          setState(() {});
+                        },
+                        controller: groupNameController),
                   )
                 ],
               ),
@@ -167,23 +165,15 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Text('Location',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
                   Container(
                     width: 400,
-                    child: input(validator: (value) async {
-                      print(value);
-                    }, onchange: (value) async {
-                      con.group['groupLocation'] = value;
-                      setState(() {});
-                    }),
+                    child: customInput(
+                        title: 'Location',
+                        onChange: (value) async {
+                          con.group['groupLocation'] = value;
+                          setState(() {});
+                        },
+                        controller: groupLocationController),
                   )
                 ],
               ),
@@ -192,59 +182,15 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Text('Group Username',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
                   Container(
                     width: 400,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(7)),
-                      ),
-                      child: Row(children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 7),
-                          alignment: Alignment.topCenter,
-                          width: 240,
-                          height: 30,
-                          color: Colors.grey,
-                          child: Text('https://test.shnatter.com/groups/'),
-                        ),
-                        Expanded(
-                            child: Container(
-                          width: 260,
-                          height: 30,
-                          child: TextFormField(
-                            onChanged: (value) {
-                              con.group['groupUserName'] = value;
-                              setState(() {});
-                            },
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Color.fromARGB(255, 54, 54, 54),
-                                    width: 1.0),
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                            ),
-                            style: const TextStyle(fontSize: 14),
-                            onSaved: (String? value) {
-                              // This optional block of code can be used to run
-                              // code when the user saves the form.
-                            },
-                          ),
-                        )),
-                      ]),
-                    ),
+                    child: customInput(
+                        title: 'Group Username',
+                        onChange: (value) async {
+                          con.group['groupUserName'] = value;
+                          setState(() {});
+                        },
+                        controller: groupUserNameController),
                   )
                 ],
               ),
@@ -266,7 +212,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                           color: const Color.fromARGB(255, 250, 250, 250),
                           border: Border.all(color: Colors.grey)),
                       child: DropdownButton(
-                        value: GroupsDropDown[0]['value'],
+                        value: con.group['groupPrivacy'],
                         itemHeight: 70,
                         items: GroupsDropDown.map((e) => DropdownMenuItem(
                             value: e['value'],
@@ -278,8 +224,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                   subtitle: Text(e['subtitle']),
                                 )))).toList(),
                         onChanged: (value) {
-                          //get value when changed
-                          // dropdownValue = value!;
+                          con.group['groupPrivacy'] = value;
                           setState(() {});
                         },
                         icon: const Padding(
@@ -306,45 +251,45 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('About',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 400,
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 250, 250, 250),
-                                    border: Border.all(color: Colors.grey)),
-                                child: TextFormField(
-                                  minLines: 1,
-                                  maxLines: 4,
-                                  onChanged: (value) async {
-                                    // con.group['groupAbout'] = value;
-                                    // setState(() {});
-                                  },
-                                  keyboardType: TextInputType.multiline,
-                                  style: TextStyle(fontSize: 12),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    hintText: '',
-                                    hintStyle: TextStyle(color: Colors.grey),
+                      Container(
+                        width: 400,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'About',
+                              style: TextStyle(
+                                  color: Color.fromRGBO(82, 95, 127, 1),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Padding(padding: EdgeInsets.only(top: 2)),
+                            Container(
+                              height: 40,
+                              child: TextField(
+                                controller: groupAboutController,
+                                onChanged: (value) async {
+                                  con.group['groupAbout'] = value;
+                                  setState(() {});
+                                },
+                                decoration: const InputDecoration(
+                                  hintMaxLines: 5,
+                                  contentPadding:
+                                      EdgeInsets.only(top: 10, left: 10),
+                                  border: OutlineInputBorder(),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 1.0),
                                   ),
                                 ),
                               ),
-                            ],
-                          )),
+                            )
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ],
@@ -357,11 +302,17 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: privacySelect(
-                            'Members Can Publish Posts?',
-                            'Members can publish posts or only group admins',
-                          )),
+                        flex: 1,
+                        child: privacySelect(
+                          'Members Can Publish Posts?',
+                          'Members can publish posts or only group admins',
+                          con.group['groupCanPublish'],
+                          (value) {
+                            con.group['groupCanPublish'] = value;
+                            setState(() {});
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -374,11 +325,17 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: privacySelect(
-                            'Post Approval',
-                            'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
-                          )),
+                        flex: 1,
+                        child: privacySelect(
+                          'Post Approval',
+                          'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
+                          con.group['groupPostApproval'],
+                          (value) {
+                            con.group['groupPostApproval'] = value;
+                            setState(() {});
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -823,22 +780,37 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
     );
   }
 
-  Widget input({label, onchange, obscureText = false, validator}) {
-    return Container(
-      height: 28,
-      child: StartedInput(
-        validator: (val) async {
-          validator(val);
-        },
-        obscureText: obscureText,
-        onChange: (val) async {
-          onchange(val);
-        },
-      ),
+  Widget customInput({title, onChange, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
+        ),
+        Padding(padding: EdgeInsets.only(top: 2)),
+        Container(
+          height: 40,
+          child: TextField(
+            controller: controller,
+            onChanged: onChange,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 
-  Widget privacySelect(title, content) {
+  Widget privacySelect(title, content, initialValue, onChange) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -873,8 +845,10 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
             child: CupertinoSwitch(
               thumbColor: Colors.white,
               activeColor: Colors.black,
-              value: true,
-              onChanged: (value) {},
+              value: initialValue,
+              onChanged: (value) {
+                onChange(value);
+              },
             ),
           ),
         ),

@@ -416,7 +416,14 @@ class PostController extends ControllerMVC {
   }
 
   //create page function
-  Future<void> createPage(context, Map<String, dynamic> pageData) async {
+  Future<String> createPage(context, Map<String, dynamic> pageData) async {
+    if (pageData['pageName'] == null) {
+      return 'Please add your page name';
+    } else if (pageData['pageUserName'] == null) {
+      return 'Please add your page user name';
+    } else if (pageData['pageLocation'] == null) {
+      return 'Please add your page location';
+    }
     pageData = {
       ...pageData,
       'pageAdmin': [
@@ -430,12 +437,21 @@ class PostController extends ControllerMVC {
       'pageAlbums': [],
       'pageVideos': [],
     };
+
+    var reuturnValue = await Helper.pagesData
+        .where('pageUserName', isEqualTo: pageData['pageUserName'])
+        .get();
+    var value = reuturnValue.docs;
+    if (value.isEmpty) {
+      return 'doubleName';
+    }
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .add(pageData);
 
     Navigator.pushReplacementNamed(
         context, '${RouteNames.pages}/${pageData['pageUserName']}');
+    return 'success';
   }
 
   ////////////////////functions that support for making comment to page/////////////////////////////
@@ -554,7 +570,14 @@ class PostController extends ControllerMVC {
   }
 
   //create group function
-  Future<void> createGroup(context, Map<String, dynamic> groupData) async {
+  Future<String> createGroup(context, Map<String, dynamic> groupData) async {
+    if (groupData['groupName'] == null) {
+      return 'Please add your group name';
+    } else if (groupData['groupUserName'] == null) {
+      return 'Please add your group user name';
+    } else if (groupData['groupLocation'] == null) {
+      return 'Please add your group location';
+    }
     groupData = {
       ...groupData,
       'groupAdmin': [
@@ -568,13 +591,25 @@ class PostController extends ControllerMVC {
       'groupPhotos': [],
       'groupAlbums': [],
       'groupVideos': [],
+      'groupCanPublish': false,
+      'groupPostApproval': true,
     };
+
+    var reuturnValue = await Helper.groupsData
+        .where('groupUserName', isEqualTo: groupData['groupUserName'])
+        .get();
+    var value = reuturnValue.docs;
+    if (value.isEmpty) {
+      return 'doubleName';
+    }
+
     await FirebaseFirestore.instance
         .collection(Helper.groupsField)
         .add(groupData);
 
     Navigator.pushReplacementNamed(
         context, '${RouteNames.groups}/${groupData['groupUserName']}');
+    return 'success';
   }
 
   ////////////////////functions that support for making comment to group/////////////////////////////

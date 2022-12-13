@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:shnatter/src/widget/interests.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
@@ -22,6 +23,8 @@ class PageSettingsScreen extends StatefulWidget {
 class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   var userInfo = UserManager.userInfo;
   var pageSettingTab = 'Page Settings';
+  var tabTitle = 'Basic';
+  var headerTab;
   List<Map> list = [
     {
       'text': 'Page Settings',
@@ -74,6 +77,32 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    headerTab = [
+      {
+        'icon': Icons.flag,
+        'title': 'Basic',
+        'onClick': (value) {
+          tabTitle = value;
+          setState(() {});
+        }
+      },
+      {
+        'icon': Icons.attractions,
+        'title': 'Action Button',
+        'onClick': (value) {
+          tabTitle = value;
+          setState(() {});
+        }
+      },
+      {
+        'icon': Icons.facebook,
+        'title': 'Social Links',
+        'onClick': (value) {
+          tabTitle = value;
+          setState(() {});
+        }
+      },
+    ];
   }
 
   late PostController con;
@@ -87,8 +116,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
           LeftSettingBar(),
           pageSettingTab == 'Page Settings'
               ? PageSettingsWidget()
-              : pageSettingTab == 'Join Requests'
-                  ? GroupJoinWidget()
+              : pageSettingTab == 'Page Information'
+                  ? PageInformationWidget()
                   : pageSettingTab == 'Admins'
                       ? PageAdminsWidget()
                       : pageSettingTab == 'Verification'
@@ -204,7 +233,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                             height: 30,
                             child: TextFormField(
                               onChanged: (value) {
-                                con.group['groupUserName'] = value;
+                                con.page['groupUserName'] = value;
                                 setState(() {});
                               },
                               decoration: InputDecoration(
@@ -246,18 +275,518 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
     );
   }
 
-  Widget GroupJoinWidget() {
+  Widget PageInformationWidget() {
     return Container(
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.person_add_alt), 'Member Requests'),
-          Container(
-            padding: const EdgeInsets.only(right: 30, left: 30),
-            child: Text('No Requests'),
+          AdminSettingHeader(
+            icon: const Icon(Icons.settings),
+            pagename: 'Settings',
+            button: const {'flag': false},
+            headerTab: headerTab,
+          ),
+          tabTitle == 'Basic'
+              ? InfoBasic()
+              : tabTitle == 'Action Button'
+                  ? InfoButton()
+                  : InfoSocialLink(),
+          footerWidget()
+        ],
+      ),
+    );
+  }
+
+  Widget InfoBasic() {
+    return Column(
+      children: [
+        Container(
+          child: customInput(
+            title: 'Company',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+        Container(
+          child: customInput(
+            title: 'Phone',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+        Container(
+          child: customInput(
+            title: 'Website',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+        Container(
+          child: customInput(
+            title: 'Location',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+        Container(
+          child: customInput(
+            title: 'About',
+            // controller: currentController,
+            onChange: (value) {},
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget InfoButton() {
+    return Container(
+      width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+          ? SizeConfig(context).screenWidth * 0.5 + 40
+          : SizeConfig(context).screenWidth * 0.9 - 30,
+      child: Column(
+        children: [
+          GridView.count(
+            crossAxisCount:
+                SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+                    ? 2
+                    : 1,
+            childAspectRatio: 4 / 1,
+            padding: const EdgeInsets.all(4.0),
+            mainAxisSpacing: 4.0,
+            shrinkWrap: true,
+            crossAxisSpacing: 4.0,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Facebook Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.facebook,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: facebookController,
+                        onChanged: (newIndex) {
+                          //socialProfile['facebook'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Twitter Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.new_releases_sharp,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: twitterController,
+                        onChanged: (newIndex) {
+                          //socialProfile['twitter'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Youtube Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.facebook,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: youtubeController,
+                        onChanged: (newIndex) {
+                          //socialProfile['youtube'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Instagram Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.new_releases_sharp,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: instagramController,
+                        onChanged: (newIndex) {
+                          //socialProfile['instagram'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Twitch Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.youtube_searched_for_sharp,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        // controller: twitchController,
+                        onChanged: (newIndex) {
+                          //socialProfile['twitch'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Linkedin Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.new_releases_sharp,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        //controller: linkedinController,
+                        onChanged: (newIndex) {
+                          //socialProfile['linkedin'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Vokontakte Profile URL',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 82, 95, 127),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Container(
+                      width: 40,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.1)),
+                      child: Icon(
+                        Icons.facebook,
+                        color: Color.fromARGB(255, 59, 87, 157),
+                      ),
+                    ),
+                    Container(
+                      width: 195,
+                      height: 30,
+                      child: TextFormField(
+                        //controller: vokontaketeController,
+                        onChanged: (newIndex) {
+                          //socialProfile['vokontakete'] = newIndex;
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 54, 54, 54),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ]),
+                ],
+              )
+            ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget InfoSocialLink() {
+    return Container();
+  }
+
+  Widget customInput({title, onChange, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
+        ),
+        Padding(padding: EdgeInsets.only(top: 2)),
+        Container(
+          height: 40,
+          child: TextField(
+            controller: controller,
+            onChanged: onChange,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -393,12 +922,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('ALL MEMBERS (${con.group["groupJoined"].length})'),
+                Text('ALL MEMBERS (${con.page["pageLiked"].length})'),
                 SizedBox(
                   width: 450,
-                  height: con.group['groupAdmin'].length * 45,
+                  height: con.page['pageLiked'].length * 45,
                   child: ListView.separated(
-                    itemCount: con.group['groupJoined'].length,
+                    itemCount: con.page['pageLiked'].length,
                     itemBuilder: (context, index) => Material(
                         child: ListTile(
                             onTap: () {
@@ -420,7 +949,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                     Container(
                                       width: 100,
                                       child: Text(
-                                        con.group['groupJoined'][index]
+                                        con.page['pageLiked'][index]
                                             ['userName'],
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -517,7 +1046,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.heart_broken), 'Interests'),
+          headerWidget(Icon(Icons.check_circle), 'Verification'),
           Container(
             width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                 ? SizeConfig(context).screenWidth * 0.5

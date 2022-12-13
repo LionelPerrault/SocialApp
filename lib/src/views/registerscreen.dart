@@ -19,6 +19,7 @@ class RegisterScreen extends StatefulWidget {
   State createState() => RegisterScreenState();
   late UserController con;
 }
+
 class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   bool check1 = false;
   bool check2 = false;
@@ -349,9 +350,11 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                         }
                                       else
                                         {
-                                          if(!con.isSendRegisterInfo){
-                                            con.validate(context, signUpUserInfo),
-                                          }
+                                          if (!con.isSendRegisterInfo)
+                                            {
+                                              con.validate(
+                                                  context, signUpUserInfo),
+                                            }
                                         }
                                       // con.createPassword()
                                     },

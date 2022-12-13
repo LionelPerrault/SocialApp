@@ -118,19 +118,19 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                         SizeConfig(context).screenWidth <
                                 SizeConfig.smallScreenSize
                             ? const SizedBox()
-                            : SettingsLeftPanel(onClick:(value) {
+                            : SettingsLeftPanel(onClick: (value) {
                                 settingPage = value;
-                                setState(() { });
-                            }),
+                                setState(() {});
+                              }),
                         //    : SizedBox(width: 0),
                         Expanded(
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: 
-                              SettingRouter.settingRouter(settingPage)
-                            ),
+                            Expanded(
+                                child:
+                                    SettingRouter.settingRouter(settingPage)),
                             // ChatScreen(),
                           ],
                         )),
@@ -162,9 +162,9 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                         width: SizeConfig.leftBarWidth + 50,
                                         child: SingleChildScrollView(
                                           child: SettingsLeftPanel(
-                                            onClick: (value){
+                                            onClick: (value) {
                                               settingPage = value;
-                                              setState(() { });
+                                              setState(() {});
                                             },
                                           ),
                                         ),
