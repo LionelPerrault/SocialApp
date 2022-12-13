@@ -113,18 +113,25 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LeftSettingBar(),
-          pageSettingTab == 'Page Settings'
-              ? PageSettingsWidget()
-              : pageSettingTab == 'Page Information'
-                  ? PageInformationWidget()
-                  : pageSettingTab == 'Admins'
-                      ? PageAdminsWidget()
-                      : pageSettingTab == 'Verification'
-                          ? VerificationWidget()
-                          : pageSettingTab == 'Interests'
-                              ? GroupInterestsWidget()
-                              : GroupDeleteWidget(),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LeftSettingBar(),
+                pageSettingTab == 'Page Settings'
+                    ? PageSettingsWidget()
+                    : pageSettingTab == 'Page Information'
+                        ? PageInformationWidget()
+                        : pageSettingTab == 'Admins'
+                            ? PageAdminsWidget()
+                            : pageSettingTab == 'Verification'
+                                ? VerificationWidget()
+                                : pageSettingTab == 'Interests'
+                                    ? GroupInterestsWidget()
+                                    : GroupDeleteWidget(),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -217,7 +224,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget PageInformationWidget() {
     return Container(
-      width: 450,
+      width: SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth,
       child: Column(
         children: [
           AdminSettingHeader(

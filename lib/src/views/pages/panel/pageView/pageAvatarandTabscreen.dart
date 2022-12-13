@@ -259,7 +259,26 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                                           const Padding(
                                               padding:
                                                   EdgeInsets.only(left: 5)),
-                                          Text(e['title'],
+                                          Text(
+                                              SizeConfig(
+                                                              context)
+                                                          .screenWidth >
+                                                      SizeConfig
+                                                              .mediumScreenSize +
+                                                          200
+                                                  ? e['title']
+                                                  : SizeConfig(
+                                                                  context)
+                                                              .screenWidth >
+                                                          SizeConfig
+                                                              .mediumScreenSize
+                                                      ? ''
+                                                      : SizeConfig(
+                                                                      context)
+                                                                  .screenWidth >
+                                                              600
+                                                          ? e['title']
+                                                          : '',
                                               style: const TextStyle(
                                                   fontSize: 13,
                                                   color: Color.fromRGBO(
