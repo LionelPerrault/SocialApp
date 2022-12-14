@@ -21,10 +21,19 @@ class PageSettingsScreen extends StatefulWidget {
 }
 
 class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
+  final TextEditingController pageNameController = TextEditingController();
+  final TextEditingController pageUserNameController = TextEditingController();
+  final TextEditingController pageCompanyController = TextEditingController();
+  final TextEditingController pagePhoneController = TextEditingController();
+  final TextEditingController pageWebsiteController = TextEditingController();
+  final TextEditingController pageLocationController = TextEditingController();
+  final TextEditingController pageAboutController = TextEditingController();
+
   var userInfo = UserManager.userInfo;
   var pageSettingTab = 'Page Settings';
   var tabTitle = 'Basic';
   var headerTab;
+  var pageInfo;
   List<Map> list = [
     {
       'text': 'Page Settings',
@@ -103,6 +112,13 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         }
       },
     ];
+    pageNameController.text = con.page['pageName'];
+    pageUserNameController.text = con.page['pageUserName'];
+    // pageCompanyController.text = con.page['pageCompany'] ?? '';
+    // pagePhoneController.text = con.page['pagePhone'] ?? '';
+    // pageWebsiteController.text = con.page['pageWebsite'] ?? '';
+    // pageLocationController.text = con.page['pageLocation'] ?? '';
+    // pageAboutController.text = con.page['pageAbout'] ?? '';
   }
 
   late PostController con;
@@ -186,7 +202,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                     Container(
                       child: customInput(
                         title: 'Name Your Page',
-                        // controller: currentController,
+                        controller: pageNameController,
                         onChange: (value) {},
                       ),
                     ),
@@ -200,7 +216,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                     Container(
                       child: customInput(
                         title: 'Page UserName',
-                        // controller: currentController,
+                        controller: pageUserNameController,
                         onChange: (value) {},
                       ),
                     ),
@@ -1156,7 +1172,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       'Chat Message Sound',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
@@ -1177,8 +1193,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                             // setState(() {});
                           },
                           keyboardType: TextInputType.multiline,
-                          style: TextStyle(fontSize: 12),
-                          decoration: InputDecoration(
+                          style: const TextStyle(fontSize: 12),
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
@@ -1236,7 +1252,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                         child: Row(
                           children: [
                             const Padding(padding: EdgeInsets.only(left: 30)),
-                            Icon(
+                            const Icon(
                               Icons.warning_rounded,
                               color: Colors.white,
                               size: 30,
@@ -1345,7 +1361,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(
@@ -1354,9 +1370,18 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                     maximumSize: const Size(120, 50),
                   ),
                   onPressed: () {
-                    (() => {});
+                    // con.updatePageInfo();
+                    print({
+                      'pageName': pageNameController.text,
+                      'pageUserName': pageUserNameController.text,
+                      'pageCompany': pageCompanyController.text,
+                      'pagePhone': pagePhoneController.text,
+                      'pageWebsite': pageWebsiteController.text,
+                      'pageLocation': pageLocationController.text,
+                      'pageAbout': pageAboutController.text,
+                    });
                   },
-                  child: Text('Save Changes',
+                  child: const Text('Save Changes',
                       style: TextStyle(
                           fontSize: 11,
                           color: Colors.black,
@@ -1364,21 +1389,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               const Padding(padding: EdgeInsets.only(right: 30))
             ],
           )),
-    );
-  }
-
-  Widget input({label, onchange, obscureText = false, validator}) {
-    return Container(
-      height: 28,
-      child: StartedInput(
-        validator: (val) async {
-          validator(val);
-        },
-        obscureText: obscureText,
-        onChange: (val) async {
-          onchange(val);
-        },
-      ),
     );
   }
 
@@ -1390,7 +1400,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1404,7 +1414,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
