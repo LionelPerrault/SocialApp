@@ -10,6 +10,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
+import 'package:shnatter/src/widget/likesCommentWidget.dart';
 
 // ignore: must_be_immutable
 class ProductCell extends StatefulWidget {
@@ -354,6 +355,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                               ],
                             )),
                       ),
+                      LikesCommentScreen(context: context)
                     ]),
               )
             ],
