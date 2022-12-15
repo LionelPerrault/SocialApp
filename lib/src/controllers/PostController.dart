@@ -509,6 +509,39 @@ class PostController extends ControllerMVC {
     return true;
   }
 
+  Future<bool> deletePage() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.pagesField)
+        .doc(viewPageId)
+        .delete();
+    return true;
+  }
+
+  Future<String> removeMember(String userName) async {
+    page['pageLiked'].removeWhere((item) => item['userName'] == userName);
+    await FirebaseFirestore.instance
+        .collection(Helper.pagesField)
+        .doc(viewPageId)
+        .update({
+      'pageLiked': page['pageLiked'],
+    });
+    return 'success';
+  }
+
+  Future<String> removeAdmin(String userName) async {
+    if (page['pageAdmin'][0]['userName'] == userName) {
+      return 'superAdmin';
+    }
+    page['pageAdmin'].removeWhere((item) => item['userName'] == userName);
+    await FirebaseFirestore.instance
+        .collection(Helper.pagesField)
+        .doc(viewPageId)
+        .update({
+      'pageLiked': page['pageLiked'],
+    });
+    return 'success';
+  }
+
   ////////////////////functions that make comment to page/////////////////////////////
 
   ///////////////////////////end pages functions //////////////////////////////////////////////////

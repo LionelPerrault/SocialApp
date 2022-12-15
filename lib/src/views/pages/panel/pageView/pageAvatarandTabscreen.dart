@@ -110,7 +110,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                     child: userAvatarWidget(),
                   ),
                   Container(
-                      width: SizeConfig(context).screenWidth - 260,
+                      width: SizeConfig(context).screenWidth - 246,
                       padding: const EdgeInsets.only(left: 50, top: 40),
                       child: mainTabWidget())
                 ]),
@@ -220,10 +220,10 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
               width:
                   SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
                       ? SizeConfig(context).screenWidth -
-                          SizeConfig.leftBarAdminWidth -
-                          250
+                          SizeConfig.leftBarAdminWidth
                       : SizeConfig(context).screenWidth - 20,
               height: 70,
+              padding: EdgeInsets.only(right: 50),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(3),
