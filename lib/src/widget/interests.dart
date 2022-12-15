@@ -8,8 +8,10 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 class InterestsWidget extends StatefulWidget {
   BuildContext context;
   Function sendUpdate;
+  var data;
   late PostController Postcon;
-  InterestsWidget({Key? key, required this.context, required this.sendUpdate})
+  InterestsWidget(
+      {Key? key, required this.context, required this.sendUpdate, this.data})
       : Postcon = PostController(),
         super(key: key);
   @override
@@ -44,7 +46,13 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
               interestsCheck.add({
                 'id': allInterests[i]['id'],
                 'title': allInterests[i]['title'],
-                'interested': false,
+                'interested': (widget.data != null &&
+                        widget.data
+                                .where((inte) => inte == allInterests[i]['id'])
+                                .length >
+                            0)
+                    ? true
+                    : false,
                 'parentId': parent.length == 0
                     ? allInterests[i]['title']
                     : parent[0]['title']

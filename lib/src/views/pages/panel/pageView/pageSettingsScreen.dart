@@ -28,12 +28,20 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   final TextEditingController pageWebsiteController = TextEditingController();
   final TextEditingController pageLocationController = TextEditingController();
   final TextEditingController pageAboutController = TextEditingController();
+  final TextEditingController pageFacebookController = TextEditingController();
+  final TextEditingController pageTwitterController = TextEditingController();
+  final TextEditingController pageYoutubeController = TextEditingController();
+  final TextEditingController pageInstagramController = TextEditingController();
+  final TextEditingController pageTwitchController = TextEditingController();
+  final TextEditingController pageLinkedinController = TextEditingController();
+  final TextEditingController pageVokonController = TextEditingController();
 
   var userInfo = UserManager.userInfo;
   var pageSettingTab = 'Page Settings';
   var tabTitle = 'Basic';
   var headerTab;
   var pageInfo;
+  var footerBtnState = false;
   List<Map> list = [
     {
       'text': 'Page Settings',
@@ -232,7 +240,10 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               ],
             ),
           ),
-          footerWidget()
+          footerWidget({
+            'pageName': pageNameController.text,
+            'pageUserName': pageUserNameController.text,
+          })
         ],
       ),
     );
@@ -254,7 +265,25 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               : tabTitle == 'Action Button'
                   ? InfoButton()
                   : InfoSocialLink(),
-          footerWidget()
+          footerWidget(tabTitle == 'Basic'
+              ? {
+                  'pageCompany': pageCompanyController.text,
+                  'pagePhone': pagePhoneController.text,
+                  'pageWebsite': pageWebsiteController.text,
+                  'pageLocation': pageLocationController.text,
+                  'pageAbout': pageAboutController.text,
+                }
+              : tabTitle == 'Action Button'
+                  ? {}
+                  : {
+                      'pageFacebook': pageFacebookController.text,
+                      'pageTwitter': pageTwitterController.text,
+                      'pageYoutube': pageYoutubeController.text,
+                      'pageInstagram': pageInstagramController.text,
+                      'pageTwitch': pageTwitchController.text,
+                      'pageLinkedin': pageLinkedinController.text,
+                      'pageVokon': pageVokonController.text,
+                    })
         ],
       ),
     );
@@ -266,35 +295,35 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         Container(
           child: customInput(
             title: 'Company',
-            // controller: currentController,
+            controller: pageCompanyController,
             onChange: (value) {},
           ),
         ),
         Container(
           child: customInput(
             title: 'Phone',
-            // controller: currentController,
+            controller: pagePhoneController,
             onChange: (value) {},
           ),
         ),
         Container(
           child: customInput(
             title: 'Website',
-            // controller: currentController,
+            controller: pageWebsiteController,
             onChange: (value) {},
           ),
         ),
         Container(
           child: customInput(
             title: 'Location',
-            // controller: currentController,
+            controller: pageLocationController,
             onChange: (value) {},
           ),
         ),
         Container(
           child: customInput(
             title: 'About',
-            // controller: currentController,
+            controller: pageAboutController,
             onChange: (value) {},
           ),
         ),
@@ -302,7 +331,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
     );
   }
 
-  Widget InfoButton() {
+  Widget InfoSocialLink() {
     return Container(
       width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
           ? SizeConfig(context).screenWidth * 0.5 + 40
@@ -345,11 +374,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       width: 195,
                       height: 30,
                       child: TextFormField(
-                        // controller: facebookController,
-                        onChanged: (newIndex) {
-                          //socialProfile['facebook'] = newIndex;
-                          setState(() {});
-                        },
+                        controller: pageFacebookController,
+                        onChanged: (newIndex) {},
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0),
@@ -365,11 +391,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                         onSaved: (String? value) {
                           // This optional block of code can be used to run
                           // code when the user saves the form.
-                        },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
                         },
                       ),
                     ),
@@ -401,11 +422,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       width: 195,
                       height: 30,
                       child: TextFormField(
-                        // controller: twitterController,
-                        onChanged: (newIndex) {
-                          //socialProfile['twitter'] = newIndex;
-                          setState(() {});
-                        },
+                        controller: pageTwitterController,
+                        onChanged: (newIndex) {},
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0),
@@ -421,11 +439,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                         onSaved: (String? value) {
                           // This optional block of code can be used to run
                           // code when the user saves the form.
-                        },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
                         },
                       ),
                     ),
@@ -457,11 +470,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       width: 195,
                       height: 30,
                       child: TextFormField(
-                        // controller: youtubeController,
-                        onChanged: (newIndex) {
-                          //socialProfile['youtube'] = newIndex;
-                          setState(() {});
-                        },
+                        controller: pageYoutubeController,
+                        onChanged: (newIndex) {},
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0),
@@ -477,11 +487,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                         onSaved: (String? value) {
                           // This optional block of code can be used to run
                           // code when the user saves the form.
-                        },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
                         },
                       ),
                     ),
@@ -513,11 +518,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       width: 195,
                       height: 30,
                       child: TextFormField(
-                        // controller: instagramController,
-                        onChanged: (newIndex) {
-                          //socialProfile['instagram'] = newIndex;
-                          setState(() {});
-                        },
+                        controller: pageInstagramController,
+                        onChanged: (newIndex) {},
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0),
@@ -533,11 +535,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                         onSaved: (String? value) {
                           // This optional block of code can be used to run
                           // code when the user saves the form.
-                        },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
                         },
                       ),
                     ),
@@ -569,11 +566,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       width: 195,
                       height: 30,
                       child: TextFormField(
-                        // controller: twitchController,
-                        onChanged: (newIndex) {
-                          //socialProfile['twitch'] = newIndex;
-                          setState(() {});
-                        },
+                        controller: pageTwitchController,
+                        onChanged: (newIndex) {},
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0),
@@ -589,11 +583,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                         onSaved: (String? value) {
                           // This optional block of code can be used to run
                           // code when the user saves the form.
-                        },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
                         },
                       ),
                     ),
@@ -625,11 +614,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       width: 195,
                       height: 30,
                       child: TextFormField(
-                        //controller: linkedinController,
-                        onChanged: (newIndex) {
-                          //socialProfile['linkedin'] = newIndex;
-                          setState(() {});
-                        },
+                        controller: pageLinkedinController,
+                        onChanged: (newIndex) {},
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0),
@@ -645,11 +631,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                         onSaved: (String? value) {
                           // This optional block of code can be used to run
                           // code when the user saves the form.
-                        },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
                         },
                       ),
                     ),
@@ -681,11 +662,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       width: 195,
                       height: 30,
                       child: TextFormField(
-                        //controller: vokontaketeController,
-                        onChanged: (newIndex) {
-                          //socialProfile['vokontakete'] = newIndex;
-                          setState(() {});
-                        },
+                        controller: pageVokonController,
+                        onChanged: (newIndex) {},
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0),
@@ -702,11 +680,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                           // This optional block of code can be used to run
                           // code when the user saves the form.
                         },
-                        validator: (String? value) {
-                          return (value != null && value.contains('@'))
-                              ? 'Do not use the @ char.'
-                              : null;
-                        },
                       ),
                     ),
                   ]),
@@ -719,7 +692,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
     );
   }
 
-  Widget InfoSocialLink() {
+  Widget InfoButton() {
     return Container();
   }
 
@@ -1211,7 +1184,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               ],
             ),
           ),
-          footerWidget()
+          // footerWidget()
         ],
       ),
     );
@@ -1223,8 +1196,11 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
       child: Column(
         children: [
           headerWidget(Icon(Icons.heart_broken), 'Interests'),
-          InterestsWidget(context: context, sendUpdate: () {}),
-          footerWidget()
+          InterestsWidget(
+              context: context,
+              data: con.page['pageInterests'],
+              sendUpdate: () {}),
+          footerWidget({'pageInterests': ''})
         ],
       ),
     );
@@ -1341,7 +1317,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
     );
   }
 
-  Widget footerWidget() {
+  Widget footerWidget(updateData) {
     return Padding(
       padding: EdgeInsets.only(right: 20, top: 20),
       child: Container(
@@ -1370,7 +1346,14 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                     maximumSize: const Size(120, 50),
                   ),
                   onPressed: () {
-                    // con.updatePageInfo();
+                    footerBtnState = true;
+                    setState(() {});
+                    con.updatePageInfo(updateData).then(
+                          (value) => {
+                            footerBtnState = false,
+                            setState(() {}),
+                          },
+                        );
                     print({
                       'pageName': pageNameController.text,
                       'pageUserName': pageUserNameController.text,
@@ -1379,13 +1362,28 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       'pageWebsite': pageWebsiteController.text,
                       'pageLocation': pageLocationController.text,
                       'pageAbout': pageAboutController.text,
+                      'pageFacebook': pageFacebookController.text,
+                      'pageTwitter': pageTwitterController.text,
+                      'pageYoutube': pageYoutubeController.text,
+                      'pageInstagram': pageInstagramController.text,
+                      'pageTwitch': pageTwitchController.text,
+                      'pageLinkedin': pageLinkedinController.text,
+                      'pageVokon': pageVokonController.text,
                     });
                   },
-                  child: const Text('Save Changes',
-                      style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold))),
+                  child: footerBtnState
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const Text('Save Changes',
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold))),
               const Padding(padding: EdgeInsets.only(right: 30))
             ],
           )),
