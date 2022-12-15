@@ -504,6 +504,11 @@ class PostController extends ControllerMVC {
     }
   }
 
+  Future<bool> updatePageInfo(dynamic pageInfo) async {
+    var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+    return true;
+  }
+
   ////////////////////functions that make comment to page/////////////////////////////
 
   ///////////////////////////end pages functions //////////////////////////////////////////////////

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -60,23 +59,27 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
           color: Color.fromARGB(255, 255, 255, 255),
           child: Column(
             children: [
-              SizedBox(height: 10,),
-              Padding(padding:  EdgeInsets.only(left: 10),
-              child:Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Messages",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  Row(children: [
-                    TextButton(
-                        child: Text('ShnatterMessage',
-                            style: TextStyle(fontSize: 11)),
-                        onPressed: () {}),
-                  ])
-                ],
-              )),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Messages",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Row(children: [
+                        TextButton(
+                            child: Text('ShnatterMessage',
+                                style: TextStyle(fontSize: 11)),
+                            onPressed: () {}),
+                      ])
+                    ],
+                  )),
               SizedBox(
                 height: 5,
               ),
@@ -125,22 +128,19 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                   ),
                 ),
               ),
-              Divider(
-                height: 1,
-                indent: 0
-              ),
+              Divider(height: 1, indent: 0),
               Container(
-              color: Colors.grey[300],
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                   TextButton(
-                        child: Text('See All',
-                            style: TextStyle(fontSize: 11)),
-                        onPressed: () {}),
-              ],)
-              )
+                  color: Colors.grey[300],
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          child:
+                              Text('See All', style: TextStyle(fontSize: 11)),
+                          onPressed: () {}),
+                    ],
+                  ))
             ],
           )),
     );

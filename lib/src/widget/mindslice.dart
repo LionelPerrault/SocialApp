@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
@@ -17,28 +16,29 @@ class MindSlice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 42,
-      width: 240,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 230, 230, 230),
-        borderRadius: BorderRadius.circular(21),
-        
-      ),
-      child:GestureDetector(
-        onTap: () {
-          onTap();
-        },
-        child:Column(
-        children: [
-          const Padding(padding: EdgeInsets.only(top: 11.0)),
-          Row(
+        height: 42,
+        width: 240,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 230, 230, 230),
+          borderRadius: BorderRadius.circular(21),
+        ),
+        child: GestureDetector(
+          onTap: () {
+            onTap();
+          },
+          child: Column(
             children: [
-              const Padding(padding: EdgeInsets.only(left: 12.0)),
-              SvgPicture.network(image, width: 22,),
-              const Padding(padding: EdgeInsets.only(left: 12.0)),
-              RichText(
-                text: TextSpan(
-                    children: <TextSpan>[
+              const Padding(padding: EdgeInsets.only(top: 11.0)),
+              Row(
+                children: [
+                  const Padding(padding: EdgeInsets.only(left: 12.0)),
+                  SvgPicture.network(
+                    image,
+                    width: 22,
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 12.0)),
+                  RichText(
+                    text: TextSpan(children: <TextSpan>[
                       TextSpan(
                           text: label,
                           style: const TextStyle(
@@ -46,17 +46,17 @@ class MindSlice extends StatelessWidget {
                               fontFamily: 'var(--body-font-family)',
                               fontWeight: FontWeight.w900,
                               fontSize: 15),
-                          recognizer:
-                              TapGestureRecognizer()
-                                ..onTap = () {onTap();})
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              onTap();
+                            })
                     ]),
+                  ),
+                ],
               ),
+              const Padding(padding: EdgeInsets.only(top: 8.0)),
             ],
           ),
-          const Padding(padding: EdgeInsets.only(top: 8.0)),
-        ],
-      ),
-      ) 
-    );
+        ));
   }
 }

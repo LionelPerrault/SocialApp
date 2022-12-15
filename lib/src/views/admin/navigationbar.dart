@@ -58,15 +58,12 @@ class AdminShnatterNavigationState
         : buildSmallSize();
   }
 
-
-  void onHomeClicked()
-  {
+  void onHomeClicked() {
     Navigator.pushReplacementNamed(context, RouteNames.homePage);
   }
-  
+
   @override
   Widget buildSmallSize() {
-   
     return Stack(
       children: [
         Container(
@@ -132,13 +129,11 @@ class AdminShnatterNavigationState
                         )
                         //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                         ),
-                   
                     Container(
                         padding: EdgeInsets.all(9.0),
                         child: PopupMenuButton(
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
-                           
                             PopupMenuItem<Menu>(
                                 value: Menu.itemLogout,
                                 child: Row(children: [
@@ -147,7 +142,6 @@ class AdminShnatterNavigationState
                                   Text('Log Out'),
                                 ])),
                             PopupMenuDivider(),
-                           
                           ],
                           onSelected: (Menu item) {},
                           child: Row(
@@ -222,7 +216,9 @@ class AdminShnatterNavigationState
                     Container(
                         padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton(
-                          onPressed: () { onHomeClicked();},
+                          onPressed: () {
+                            onHomeClicked();
+                          },
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.black),
@@ -254,7 +250,6 @@ class AdminShnatterNavigationState
                         child: PopupMenuButton(
                           itemBuilder: (BuildContext context) =>
                               <PopupMenuEntry<Menu>>[
-                           
                             PopupMenuItem<Menu>(
                                 value: Menu.itemLogout,
                                 child: Row(children: [
@@ -262,7 +257,6 @@ class AdminShnatterNavigationState
                                   SizedBox(width: 8),
                                   Text('Log Out'),
                                 ])),
-                           
                           ],
                           onSelected: (Menu item) {},
                           child: Row(
