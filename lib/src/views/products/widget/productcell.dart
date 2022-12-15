@@ -29,11 +29,13 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   late PostController con;
   var loading = false;
   Map product = {};
+  var productId = '';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     product = widget.data['data'];
+    productId = widget.data['id'];
   }
 
   @override
@@ -43,7 +45,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
         Expanded(
             child: Container(
           width: 600,
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.only(top: 20),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -51,6 +53,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
           child: Column(
             children: [
               Container(
+                padding: EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -355,9 +358,9 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                               ],
                             )),
                       ),
-                      LikesCommentScreen(context: context)
                     ]),
-              )
+              ),
+              LikesCommentScreen(productId: productId)
             ],
           ),
         ))

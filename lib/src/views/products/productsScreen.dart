@@ -344,7 +344,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                         )),
                   )
                 : const SizedBox(),
-            ChatScreen(),
+            // ChatScreen(),
           ],
         ));
   }

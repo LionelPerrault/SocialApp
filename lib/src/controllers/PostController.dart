@@ -731,4 +731,8 @@ class PostController extends ControllerMVC {
     print('This page was posted by ${product['productAdmin']}');
     return true;
   }
+
+  saveComment(productId) async {
+    await Helper.productLikeComment.doc(productId).set({});
+  }
 }

@@ -143,6 +143,7 @@ class RelysiaManager {
                   <String, String>{'Key': serviceId, 'Value': 'true'}),
               'authToken': token,
               'content-type': 'application/json',
+              'note': 'enjoy your new tokens'
             },
             body:
                 '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$token_id"}]}',

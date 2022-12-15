@@ -29,6 +29,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.groupsField);
   static var productsData =
       FirebaseFirestore.instance.collection(Helper.productsField);
+  static var productLikeComment =
+      FirebaseFirestore.instance.collection(Helper.productLikeCommentField);
   static var allInterests =
       FirebaseFirestore.instance.collection(Helper.interestsField);
   static var avatar =
@@ -48,6 +50,7 @@ class Helper {
   static var apiKey = 'AIzaSyAtquiA4SXxBhs-lpAdk_xt3_dZtY4PId0';
   static var emoticons = 'emoticons';
   static var onlineStatusField = 'onlineStatus';
+  static var productLikeCommentField = 'productLikeComment';
   static var passwordMinLength = 9;
   static var emptySVG =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fnodaa.svg?alt=media&token=ebfb99db-2cf6-4dd4-ba96-2ca150ba1352';
