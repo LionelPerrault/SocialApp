@@ -42,6 +42,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   var headerTab;
   var pageInfo;
   var footerBtnState = false;
+  var pageInterests;
   List<Map> list = [
     {
       'text': 'Page Settings',
@@ -194,12 +195,14 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget PageSettingsWidget() {
     return Container(
-      width: 600,
+      width: SizeConfig(context).screenWidth > 600
+          ? 600
+          : SizeConfig(context).screenWidth - 100,
       child: Column(
         children: [
           headerWidget(Icon(Icons.settings), 'Page Settings'),
           Container(
-            width: 430,
+            padding: EdgeInsets.all(5),
             child: Column(
               children: [
                 const Padding(padding: EdgeInsets.only(top: 15)),
@@ -251,7 +254,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget PageInformationWidget() {
     return Container(
-      width: SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth,
+      width: 600,
       child: Column(
         children: [
           AdminSettingHeader(
@@ -728,7 +731,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget PageAdminsWidget() {
     return Container(
-      width: 510,
+      width: 600,
       child: Column(
         children: [
           headerWidget(Icon(Icons.groups), 'Members'),
@@ -804,40 +807,40 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                         ),
                                       ),
                                     ),
-                                    const Padding(
-                                        padding: EdgeInsets.only(left: 10)),
-                                    Container(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 245, 54, 92),
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: const Size(125, 35),
-                                            maximumSize: const Size(125, 35)),
-                                        onPressed: () {
-                                          () => {};
-                                        },
-                                        child: Row(
-                                          children: const [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 18.0,
-                                            ),
-                                            Text('Remove Admin',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                    // const Padding(
+                                    //     padding: EdgeInsets.only(left: 10)),
+                                    // Container(
+                                    //   child: ElevatedButton(
+                                    //     style: ElevatedButton.styleFrom(
+                                    //         backgroundColor:
+                                    //             const Color.fromARGB(
+                                    //                 255, 245, 54, 92),
+                                    //         elevation: 3,
+                                    //         shape: RoundedRectangleBorder(
+                                    //             borderRadius:
+                                    //                 BorderRadius.circular(2.0)),
+                                    //         minimumSize: const Size(125, 35),
+                                    //         maximumSize: const Size(125, 35)),
+                                    //     onPressed: () {
+                                    //       () => {};
+                                    //     },
+                                    //     child: Row(
+                                    //       children: const [
+                                    //         Icon(
+                                    //           Icons.delete,
+                                    //           color: Colors.white,
+                                    //           size: 18.0,
+                                    //         ),
+                                    //         Text('Remove Admin',
+                                    //             style: TextStyle(
+                                    //                 color: Colors.white,
+                                    //                 fontSize: 11,
+                                    //                 fontWeight:
+                                    //                     FontWeight.bold)),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
                                   ],
                                 )
                               ],
@@ -979,7 +982,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget VerificationWidget() {
     return Container(
-      width: 450,
+      width: 600,
       child: Column(
         children: [
           headerWidget(Icon(Icons.check_circle), 'Verification'),
@@ -1192,15 +1195,18 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget GroupInterestsWidget() {
     return Container(
-      width: 450,
+      width: 600,
       child: Column(
         children: [
           headerWidget(Icon(Icons.heart_broken), 'Interests'),
           InterestsWidget(
               context: context,
               data: con.page['pageInterests'],
-              sendUpdate: () {}),
-          footerWidget({'pageInterests': ''})
+              sendUpdate: (value) {
+                pageInterests = value;
+                setState(() {});
+              }),
+          footerWidget({'pageInterests': pageInterests})
         ],
       ),
     );
@@ -1208,7 +1214,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget GroupDeleteWidget() {
     return Container(
-      width: 450,
+      width: 600,
       child: Column(
         children: [
           headerWidget(Icon(Icons.delete), 'Delete'),
@@ -1292,7 +1298,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget headerWidget(icon, pagename) {
     return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
+      padding: EdgeInsets.only(right: 0, top: 0),
       child: Container(
         height: 65,
         decoration: const BoxDecoration(
