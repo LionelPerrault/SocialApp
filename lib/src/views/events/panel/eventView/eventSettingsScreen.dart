@@ -20,6 +20,16 @@ class EventSettingsScreen extends StatefulWidget {
 }
 
 class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
+  final TextEditingController eventNameController = TextEditingController();
+  final TextEditingController eventLocationController = TextEditingController();
+  final TextEditingController eventStartDController = TextEditingController();
+  final TextEditingController eventEndDController = TextEditingController();
+  final TextEditingController eventAboutController = TextEditingController();
+  bool footerBtnState = false;
+  var eventPrivacy;
+  var approval;
+  var canPub;
+  var eventInterests;
   var userInfo = UserManager.userInfo;
   var eventSettingTab = 'Event Settings';
   List<Map> list = [
@@ -41,6 +51,14 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    eventNameController.text = con.event['eventName'];
+    eventLocationController.text = con.event['eventLocation'];
+    eventStartDController.text = con.event['eventStartDate'];
+    eventEndDController.text = con.event['eventEndDate'];
+    eventAboutController.text = con.event['eventAbout'];
+    eventPrivacy = con.event['eventPrivacy'];
+    canPub = con.event['eventCanPub'];
+    approval = con.event['eventApproval'];
   }
 
   late PostController con;
@@ -106,247 +124,191 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Text(
-                        'Name Your Event',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
+                  Container(
+                    width: 400,
+                    child: customInput(
+                      title: 'Name Your Event',
+                      controller: eventNameController,
+                      onChange: (value) {},
+                    ),
+                  )
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 400,
+                    child: customInput(
+                      title: 'Location',
+                      controller: eventLocationController,
+                      onChange: (value) {},
+                    ),
+                  )
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 400,
+                    child: customInput(
+                      title: 'Start Date',
+                      controller: eventStartDController,
+                      onChange: (value) {},
+                    ),
+                  )
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 400,
+                    child: customInput(
+                      title: 'End Date',
+                      controller: eventEndDController,
+                      onChange: (value) {},
+                    ),
+                  )
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Container(
+                padding: const EdgeInsets.only(left: 20),
+                child: Column(children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Text(
+                            'Select Privacy',
+                            style: TextStyle(
+                                color: Color.fromRGBO(82, 95, 127, 1),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Container(
-                    width: 400,
-                    child: inputWidget('value', (value) {
-                      con.event['eventName'] = value;
-                      setState(() {});
-                    }),
-                  )
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: const [
-                      Text('Location',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Container(
-                    width: 400,
-                    child: inputWidget('value', (value) {
-                      con.event['eventName'] = value;
-                      setState(() {});
-                    }),
-                  )
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: const [
-                      Text('Start Date',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Container(
-                    width: 400,
-                    child: inputWidget('value', (value) {
-                      con.event['eventName'] = value;
-                      setState(() {});
-                    }),
-                  )
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: const [
-                      Text('End Date',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Container(
-                    width: 400,
-                    child: inputWidget('value', (value) {
-                      con.event['eventName'] = value;
-                      setState(() {});
-                    }),
-                  )
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: const [
-                      Text('Select Privacy',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 82, 95, 127),
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      width: 380,
-                      height: 40,
-                      padding: EdgeInsets.only(right: 30),
-                      child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 17, 205, 239),
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(
-                                color: const Color.fromARGB(255, 17, 205, 239),
-                                width:
-                                    0.1), //bordrder raiuds of dropdown button
-                          ),
-                          child: Padding(
-                              padding: const EdgeInsets.only(top: 7, left: 15),
-                              child: DropdownButton(
-                                value: con.event['eventPrivacy'],
-                                items: [
-                                  DropdownMenuItem(
-                                    value: "public",
-                                    child: Row(children: const [
-                                      Icon(
-                                        Icons.language,
-                                        color: Colors.black,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        "Public",
-                                        style: TextStyle(fontSize: 13),
-                                      )
-                                    ]),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "closed",
-                                    child: Row(children: const [
-                                      Icon(
-                                        Icons.groups,
-                                        color: Colors.black,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        "Closed",
-                                        style: TextStyle(fontSize: 13),
-                                      )
-                                    ]),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "security",
-                                    child: Row(children: const [
-                                      Icon(
-                                        Icons.lock_outline,
-                                        color: Colors.black,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        "Security",
-                                        style: TextStyle(fontSize: 13),
-                                      )
-                                    ]),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  con.event['eventPrivacy'] = value;
-                                  setState(() {});
-                                },
-                                icon: const Padding(
-                                    padding: EdgeInsets.only(left: 20),
-                                    child: Icon(Icons.arrow_drop_down)),
-                                iconEnabledColor: Colors.white, //Icon color
-                                style: const TextStyle(
-                                  color: Colors.black, //Font color
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                dropdownColor: Colors.white,
-                                underline: Container(), //remove underline
-                                isExpanded: true,
-                                isDense: true,
-                              ))),
-                    ),
-                  ),
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('About',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 400,
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 250, 250, 250),
-                                    border: Border.all(color: Colors.grey)),
-                                child: TextFormField(
-                                  minLines: 1,
-                                  maxLines: 4,
-                                  onChanged: (value) async {
-                                    con.event['eventAbout'] = value;
-                                    setState(() {});
-                                  },
-                                  keyboardType: TextInputType.multiline,
-                                  style: TextStyle(fontSize: 12),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    hintText: '',
-                                    hintStyle: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
+                        child: Container(
+                          width: 380,
+                          height: 40,
+                          padding: EdgeInsets.only(right: 30),
+                          child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 17, 205, 239),
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                    color:
+                                        const Color.fromARGB(255, 17, 205, 239),
+                                    width:
+                                        0.1), //bordrder raiuds of dropdown button
                               ),
-                            ],
-                          )),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 7, left: 15),
+                                  child: DropdownButton(
+                                    value: eventPrivacy,
+                                    items: [
+                                      DropdownMenuItem(
+                                        value: "public",
+                                        child: Row(children: const [
+                                          Icon(
+                                            Icons.language,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Public",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: "closed",
+                                        child: Row(children: const [
+                                          Icon(
+                                            Icons.groups,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Closed",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: "security",
+                                        child: Row(children: const [
+                                          Icon(
+                                            Icons.lock_outline,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Security",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      eventPrivacy = value;
+                                      setState(() {});
+                                    },
+                                    icon: const Padding(
+                                        padding: EdgeInsets.only(left: 20),
+                                        child: Icon(Icons.arrow_drop_down)),
+                                    iconEnabledColor: Colors.white, //Icon color
+                                    style: const TextStyle(
+                                      color: Colors.black, //Font color
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    dropdownColor: Colors.white,
+                                    underline: Container(), //remove underline
+                                    isExpanded: true,
+                                    isDense: true,
+                                  ))),
+                        ),
+                      ),
                     ],
                   ),
+                ]),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 400,
+                    child: customTextarea(
+                      title: 'About',
+                      controller: eventAboutController,
+                      onChange: (value) {},
+                    ),
+                  )
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 15)),
@@ -361,6 +323,11 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                           child: privacySelect(
                             'Members Can Publish Posts?',
                             'Members can publish posts or only group admins',
+                            canPub,
+                            (value) {
+                              canPub = value;
+                              setState(() {});
+                            },
                           )),
                     ],
                   ),
@@ -376,16 +343,28 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                       Expanded(
                           flex: 1,
                           child: privacySelect(
-                            'Post Approval',
-                            'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
-                          )),
+                              'Post Approval',
+                              'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
+                              approval, (value) {
+                            approval = value;
+                            setState(() {});
+                          })),
                     ],
                   ),
                 ],
               ),
             ]),
           ),
-          footerWidget()
+          footerWidget({
+            'eventName': eventNameController.text,
+            'eventLocation': eventLocationController.text,
+            'eventStartDate': eventStartDController.text,
+            'eventEndDate': eventEndDController.text,
+            'eventPrivacy': eventPrivacy,
+            'eventAbout': eventAboutController.text,
+            'eventCanPub': canPub,
+            'eventApproval': approval,
+          })
         ],
       ),
     );
@@ -397,8 +376,14 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
       child: Column(
         children: [
           headerWidget(Icon(Icons.settings), 'Settings'),
-          InterestsWidget(context: context, sendUpdate: () {}),
-          footerWidget()
+          InterestsWidget(
+              context: context,
+              data: con.event['eventInterests'],
+              sendUpdate: (value) {
+                eventInterests = value;
+                setState(() {});
+              }),
+          footerWidget({'eventInterests': eventInterests})
         ],
       ),
     );
@@ -515,7 +500,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
     );
   }
 
-  Widget footerWidget() {
+  Widget footerWidget(updateData) {
     return Padding(
       padding: EdgeInsets.only(right: 20, top: 20),
       child: Container(
@@ -535,7 +520,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(
@@ -544,13 +529,29 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                     maximumSize: const Size(120, 50),
                   ),
                   onPressed: () {
-                    (() => {});
+                    footerBtnState = true;
+                    setState(() {});
+                    con.updateEventInfo(updateData).then(
+                          (value) => {
+                            footerBtnState = false,
+                            setState(() {}),
+                          },
+                        );
+                    print(updateData);
                   },
-                  child: Text('Save Changes',
-                      style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold))),
+                  child: footerBtnState
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const Text('Save Changes',
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold))),
               const Padding(padding: EdgeInsets.only(right: 30))
             ],
           )),
@@ -572,7 +573,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
     );
   }
 
-  Widget privacySelect(title, content) {
+  Widget privacySelect(title, content, value, onchange) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -580,7 +581,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -594,7 +595,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
@@ -607,8 +608,10 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
             child: CupertinoSwitch(
               thumbColor: Colors.white,
               activeColor: Colors.black,
-              value: true,
-              onChanged: (value) {},
+              value: value,
+              onChanged: (value) {
+                onchange(value);
+              },
             ),
           ),
         ),
@@ -616,32 +619,65 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
     );
   }
 
-  Widget inputWidget(value, onChangeFun) {
-    return Container(
-      width: 400,
-      height: 30,
-      decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 250, 250, 250),
-          border: Border.all(color: Colors.grey)),
-      child: TextFormField(
-        minLines: 1,
-        maxLines: 7,
-        initialValue: value,
-        onChanged: (value) async {
-          onChangeFun(value);
-        },
-        keyboardType: TextInputType.multiline,
-        style: const TextStyle(fontSize: 12),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
-          hintText: '',
-          hintStyle: TextStyle(color: Colors.grey),
+  Widget customInput({title, onChange, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
         ),
-      ),
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        SizedBox(
+          height: 40,
+          child: TextField(
+            controller: controller,
+            onChanged: onChange,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget customTextarea({title, onChange, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        SizedBox(
+          height: 100,
+          child: TextField(
+            maxLines: 10,
+            minLines: 5,
+            controller: controller,
+            onChanged: onChange,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 

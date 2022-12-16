@@ -187,6 +187,8 @@ class PostController extends ControllerMVC {
       'eventInvited': [],
       'eventPost': false,
       'eventPicture': '',
+      'eventCanPub': true,
+      'eventApproval': true
     };
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
@@ -350,6 +352,11 @@ class PostController extends ControllerMVC {
     }
   }
 
+  Future<bool> updateEventInfo(dynamic pageInfo) async {
+    var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+    return true;
+  }
+
   ////////////////////functions that make comment to event/////////////////////////////
 
   ///////////////////////////end events functions //////////////////////////////////////////////////
@@ -504,9 +511,21 @@ class PostController extends ControllerMVC {
     }
   }
 
-  Future<bool> updatePageInfo(dynamic pageInfo) async {
-    var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
-    return true;
+  Future<String> updatePageInfo(dynamic pageInfo) async {
+    if (pageInfo['pageName'] == page['pageName']) {
+      var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+      return 'success';
+    } else {
+      QuerySnapshot querySnapshot = await Helper.pagesData.get();
+      var allPage = querySnapshot.docs;
+      allPage.where((eachPage) => eachPage['pageName'] == pageInfo['pageName']);
+      if (allPage.isNotEmpty) {
+        return 'dobuleName';
+      } else {
+        var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+        return 'success';
+      }
+    }
   }
 
   Future<bool> deletePage() async {
@@ -722,7 +741,7 @@ class PostController extends ControllerMVC {
         'fullName': UserManager.userInfo['fullName']
       },
       'productDate': DateTime.now().toString(),
-      'eventPost': false,
+      'productPost': false,
     };
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
