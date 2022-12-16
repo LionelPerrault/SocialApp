@@ -250,48 +250,16 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 400,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'About',
-                              style: TextStyle(
-                                  color: Color.fromRGBO(82, 95, 127, 1),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Padding(padding: EdgeInsets.only(top: 2)),
-                            Container(
-                              height: 40,
-                              child: TextField(
-                                controller: groupAboutController,
-                                onChanged: (value) async {
-                                  con.group['groupAbout'] = value;
-                                  setState(() {});
-                                },
-                                decoration: const InputDecoration(
-                                  hintMaxLines: 5,
-                                  contentPadding:
-                                      EdgeInsets.only(top: 10, left: 10),
-                                  border: OutlineInputBorder(),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blue, width: 1.0),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                  Container(
+                    width: 400,
+                    child: customInput(
+                        title: 'About',
+                        onChange: (value) async {
+                          // con.group['groupUserName'] = value;
+                          setState(() {});
+                        },
+                        controller: groupUserNameController),
+                  )
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 15)),
@@ -802,6 +770,38 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget customTextarea({title, onChange, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        SizedBox(
+          height: 100,
+          child: TextField(
+            maxLines: 10,
+            minLines: 5,
+            controller: controller,
+            onChanged: onChange,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
               ),
             ),
           ),

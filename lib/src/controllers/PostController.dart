@@ -357,6 +357,14 @@ class PostController extends ControllerMVC {
     return true;
   }
 
+  Future<bool> deleteEvent() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.eventsField)
+        .doc(viewEventId)
+        .delete();
+    return true;
+  }
+
   ////////////////////functions that make comment to event/////////////////////////////
 
   ///////////////////////////end events functions //////////////////////////////////////////////////
