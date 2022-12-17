@@ -68,7 +68,11 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
       'icon': Icons.lock_outline_rounded
     },
   ];
-  var privacy = 'public';
+  var privacy;
+  var canPub;
+  var approval;
+  var groupInterests;
+  var footerBtnState = false;
   @override
   void initState() {
     super.initState();
@@ -78,6 +82,9 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
     groupUserNameController.text = con.group['groupUserName'];
     groupLocationController.text = con.group['groupLocation'];
     groupAboutController.text = con.group['groupAbout'];
+    privacy = con.group['groupPrivacy'];
+    canPub = con.group['groupCanPub'];
+    approval = con.group['groupApproval'];
   }
 
   late PostController con;
@@ -152,10 +159,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     width: 400,
                     child: customInput(
                         title: 'Name Your Group',
-                        onChange: (value) async {
-                          con.group['groupName'] = value;
-                          setState(() {});
-                        },
+                        onChange: (value) async {},
                         controller: groupNameController),
                   )
                 ],
@@ -169,10 +173,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     width: 400,
                     child: customInput(
                         title: 'Location',
-                        onChange: (value) async {
-                          con.group['groupLocation'] = value;
-                          setState(() {});
-                        },
+                        onChange: (value) async {},
                         controller: groupLocationController),
                   )
                 ],
@@ -186,10 +187,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     width: 400,
                     child: customInput(
                         title: 'Group Username',
-                        onChange: (value) async {
-                          con.group['groupUserName'] = value;
-                          setState(() {});
-                        },
+                        onChange: (value) async {},
                         controller: groupUserNameController),
                   )
                 ],
@@ -212,7 +210,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                           color: const Color.fromARGB(255, 250, 250, 250),
                           border: Border.all(color: Colors.grey)),
                       child: DropdownButton(
-                        value: con.group['groupPrivacy'],
+                        value: privacy,
                         itemHeight: 70,
                         items: GroupsDropDown.map((e) => DropdownMenuItem(
                             value: e['value'],
@@ -224,7 +222,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                   subtitle: Text(e['subtitle']),
                                 )))).toList(),
                         onChanged: (value) {
-                          con.group['groupPrivacy'] = value;
+                          privacy = value;
                           setState(() {});
                         },
                         icon: const Padding(
@@ -254,11 +252,8 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     width: 400,
                     child: customInput(
                         title: 'About',
-                        onChange: (value) async {
-                          // con.group['groupUserName'] = value;
-                          setState(() {});
-                        },
-                        controller: groupUserNameController),
+                        onChange: (value) async {},
+                        controller: groupAboutController),
                   )
                 ],
               ),
@@ -274,9 +269,9 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                         child: privacySelect(
                           'Members Can Publish Posts?',
                           'Members can publish posts or only group admins',
-                          con.group['groupCanPublish'],
+                          canPub,
                           (value) {
-                            con.group['groupCanPublish'] = value;
+                            canPub = value;
                             setState(() {});
                           },
                         ),
@@ -297,9 +292,9 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                         child: privacySelect(
                           'Post Approval',
                           'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
-                          con.group['groupPostApproval'],
+                          approval,
                           (value) {
-                            con.group['groupPostApproval'] = value;
+                            approval = value;
                             setState(() {});
                           },
                         ),
@@ -310,7 +305,15 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
               ),
             ]),
           ),
-          footerWidget()
+          footerWidget({
+            'groupName': groupNameController.text,
+            'groupUserName': groupUserNameController.text,
+            'groupLocation': groupLocationController.text,
+            'groupAbout': groupAboutController.text,
+            'groupPrivacy': privacy,
+            'groupCanPub': canPub,
+            'groupApproval': approval,
+          })
         ],
       ),
     );
@@ -588,8 +591,14 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
       child: Column(
         children: [
           headerWidget(Icon(Icons.heart_broken), 'Interests'),
-          InterestsWidget(context: context, sendUpdate: () {}),
-          footerWidget()
+          InterestsWidget(
+              context: context,
+              data: con.group['groupInterests'],
+              sendUpdate: (value) {
+                groupInterests = value;
+                setState(() {});
+              }),
+          footerWidget({'groupInterests': groupInterests})
         ],
       ),
     );
@@ -706,7 +715,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
     );
   }
 
-  Widget footerWidget() {
+  Widget footerWidget(updateData) {
     return Padding(
       padding: EdgeInsets.only(right: 20, top: 20),
       child: Container(
@@ -726,7 +735,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(
@@ -735,13 +744,35 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     maximumSize: const Size(120, 50),
                   ),
                   onPressed: () {
-                    (() => {});
+                    footerBtnState = true;
+                    setState(() {});
+                    print(updateData);
+                    con.updateGroupInfo(updateData).then(
+                          (value) => {
+                            footerBtnState = false,
+                            setState(() {}),
+                            if (value !=
+                                'doubleName${updateData['groupUserName']}')
+                              {
+                                Navigator.pushReplacementNamed(
+                                    context, '/groups/${value}')
+                              }
+                          },
+                        );
                   },
-                  child: Text('Save Changes',
-                      style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold))),
+                  child: footerBtnState
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const Text('Save Changes',
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold))),
               const Padding(padding: EdgeInsets.only(right: 30))
             ],
           )),

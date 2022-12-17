@@ -656,8 +656,8 @@ class PostController extends ControllerMVC {
       'groupPhotos': [],
       'groupAlbums': [],
       'groupVideos': [],
-      'groupCanPublish': false,
-      'groupPostApproval': true,
+      'groupCanPub': false,
+      'groupApproval': true,
     };
 
     var reuturnValue = await Helper.groupsData
@@ -725,6 +725,28 @@ class PostController extends ControllerMVC {
       return false;
     } else {
       return true;
+    }
+  }
+
+  Future<String> updateGroupInfo(dynamic groupInfo) async {
+    if (groupInfo['groupUserName'] == null) {
+      var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+      return group['groupUserName'];
+    }
+    if (groupInfo['groupUserName'] == group['groupUserName']) {
+      var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+      return group['groupUserName'];
+    } else {
+      QuerySnapshot querySnapshot = await Helper.groupsData.get();
+      var allGroup = querySnapshot.docs;
+      var flag = allGroup.where((eachGroup) =>
+          eachGroup['groupUserName'] == groupInfo['groupUserName']);
+      if (flag.isNotEmpty) {
+        return 'dobuleName${groupInfo['groupUserName']}';
+      } else {
+        var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+        return groupInfo['groupUserName'];
+      }
     }
   }
 
