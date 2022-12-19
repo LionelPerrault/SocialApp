@@ -146,7 +146,7 @@ class AdminLeftPanel extends StatelessWidget {
                 label: 'Shnatter token',
                 icon: const Icon(Icons.money_rounded)),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/manage-prices')},
                 label: 'Manage prices',
                 icon: const Icon(Icons.money_rounded)),
             ListText(
