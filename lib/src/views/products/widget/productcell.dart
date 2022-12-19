@@ -10,6 +10,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
+import 'package:shnatter/src/widget/createProductWidget.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
 
 // ignore: must_be_immutable
@@ -17,7 +18,7 @@ class ProductCell extends StatefulWidget {
   ProductCell({
     super.key,
     required this.data,
-  });
+  }) : con = PostController();
   var data;
 
   late PostController con;
@@ -30,12 +31,98 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   var loading = false;
   Map product = {};
   var productId = '';
+
+  List<Map> subFunctionList = [];
   @override
   void initState() {
+    add(widget.con);
     // TODO: implement initState
+    con = controller as PostController;
     super.initState();
     product = widget.data['data'];
     productId = widget.data['id'];
+    subFunctionList = [
+      {
+        'icon': product['productMarkAsSold']
+            ? Icons.shopping_cart
+            : Icons.shopping_cart,
+        'text':
+            product['productMarkAsSold'] ? 'Mark as Available' : 'Mark as Sold',
+        'onTap': () {
+          con.productMarkAsSold(productId, !product['productMarkAsSold']);
+        },
+      },
+      {
+        'icon': product['productMarkAsSold'] ? Icons.bookmark : Icons.bookmark,
+        'text': product['productMarkAsSold'] ? 'UnSave Post' : 'Save Post',
+        'onTap': () {
+          con.productSavePost(productId, !product['productMarkAsSold']);
+        },
+      },
+      {
+        'icon': Icons.pin_drop,
+        'text': 'Pin Post',
+        'onTap': () {},
+      },
+      {
+        'icon': Icons.edit,
+        'text': 'Edit Product',
+        'onTap': () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                  title: Row(
+                    children: const [
+                      Icon(
+                        Icons.add_circle,
+                        color: Color.fromARGB(255, 33, 150, 243),
+                      ),
+                      Text(
+                        'Add New Product',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic),
+                      ),
+                    ],
+                  ),
+                  content: CreateProductModal(context: context)));
+        },
+      },
+      {
+        'icon': Icons.delete,
+        'text': 'Delete Post',
+        'onTap': () {
+          con.productDelete(productId);
+        },
+      },
+      {
+        'icon': Icons.remove_red_eye,
+        'text': product['productTimeline']
+            ? 'Hide from Timeline'
+            : 'Allow on Timeline',
+        'onTap': () {
+          con.productHideFromTimeline(productId, !product['productTimeline']);
+        },
+      },
+      {
+        'icon': Icons.comment,
+        'text': product['productTimeline']
+            ? 'Turn off Commenting'
+            : 'Trun on Commenting',
+        'onTap': () {
+          con.productTurnOffCommenting(productId, !product['productTimeline']);
+        },
+      },
+      {
+        'icon': Icons.link,
+        'text': 'Open Post in new Tab',
+        'onTap': () {
+          Navigator.pushReplacementNamed(
+              context, '${RouteNames.products}/${product['id']}');
+        },
+      },
+    ];
   }
 
   @override
@@ -128,7 +215,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                 ..onTap = () {
                                                   Navigator.pushReplacementNamed(
                                                       context,
-                                                      '${RouteNames.products}/${widget.data['id']}');
+                                                      '${RouteNames.products}/${product['id']}');
                                                 })
                                         ]),
                                   ),
@@ -369,40 +456,6 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   }
 
   Widget SubFunction() {
-    var subFunctionList = [
-      {
-        'icon': Icons.shopping_cart,
-        'text': 'Mark as Sold',
-      },
-      {
-        'icon': Icons.bookmark,
-        'text': 'Save Post',
-      },
-      {
-        'icon': Icons.pin_drop,
-        'text': 'Pin Post',
-      },
-      {
-        'icon': Icons.edit,
-        'text': 'Edit Product',
-      },
-      {
-        'icon': Icons.delete,
-        'text': 'Delete Post',
-      },
-      {
-        'icon': Icons.remove_red_eye,
-        'text': 'Hide from Timeline',
-      },
-      {
-        'icon': Icons.comment,
-        'text': 'Turn off Commenting',
-      },
-      {
-        'icon': Icons.link,
-        'text': 'Open Post in new Tab',
-      },
-    ];
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Container(
@@ -413,13 +466,15 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             children: [
               SizedBox(
                 height: 400,
-                //size: Size(100,100),
                 child: ListView(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
                   children: subFunctionList
-                      .map((list) =>
-                          listCell(list['icon'], list['text'], list['onTap']))
+                      .map((list) => listCell(
+                            list['icon'],
+                            list['text'],
+                            list['onTap'],
+                          ))
                       .toList(),
                 ),
               )
@@ -431,7 +486,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   Widget listCell(icon, text, onTap) {
     return ListTile(
         onTap: () {
-          // onTap(nowContext);
+          onTap();
         },
         hoverColor: Colors.grey[100],
         tileColor: Colors.white,

@@ -772,6 +772,9 @@ class PostController extends ControllerMVC {
       },
       'productDate': DateTime.now().toString(),
       'productPost': false,
+      'productMarkAsSold': false,
+      'productTimeline': true,
+      'productOnOffCommenting': true,
     };
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
@@ -783,9 +786,10 @@ class PostController extends ControllerMVC {
     return 'success';
   }
 
+  List<Map> allProduct = [];
+
   //get all product function
-  Future<List> getProduct() async {
-    List<Map> allProduct = [];
+  Future<void> getProduct() async {
     await Helper.productsData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
@@ -796,8 +800,6 @@ class PostController extends ControllerMVC {
       }
       print('Now you get all products');
     });
-
-    return allProduct;
   }
 
   var viewProductId;
@@ -812,6 +814,59 @@ class PostController extends ControllerMVC {
     setState(() {});
     print('This page was posted by ${product['productAdmin']}');
     return true;
+  }
+
+  Future<void> productMarkAsSold(String productUid, bool value) async {
+    print(productUid);
+    print(value);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .update({'productMarkAsSold': value}).then((e) async {
+      getProduct();
+    });
+  }
+
+  Future<void> productSavePost(String productUid, bool value) async {
+    print(productUid);
+    print(value);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .update({'productPost': value}).then((e) async {
+      getProduct();
+    });
+  }
+
+  Future<void> productDelete(String productUid) async {
+    print(productUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .delete()
+        .then((e) async {
+      getProduct();
+    });
+  }
+
+  Future<void> productHideFromTimeline(String productUid, bool value) async {
+    print(productUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .update({'productTimeline': value}).then((e) async {
+      getProduct();
+    });
+  }
+
+  Future<void> productTurnOffCommenting(String productUid, bool value) async {
+    print(productUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .update({'productOnOffCommenting': value}).then((e) async {
+      getProduct();
+    });
   }
 
   saveComment(productId) async {
