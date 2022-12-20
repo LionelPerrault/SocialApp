@@ -122,7 +122,7 @@ class AdminLeftPanel extends StatelessWidget {
               ),
             ),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/themes')},
                 label: 'Themes',
                 icon: const Icon(Icons.display_settings)),
             ListText(
@@ -130,19 +130,19 @@ class AdminLeftPanel extends StatelessWidget {
                 label: 'Design',
                 icon: const Icon(Icons.display_settings_rounded)),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/languages')},
                 label: 'Languages',
                 icon: const Icon(Icons.brush)),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/countries')},
                 label: 'Countries',
                 icon: const Icon(Icons.abc)),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/currencies')},
                 label: 'Currencies',
                 icon: const Icon(Icons.language)),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/shnatter_token')},
                 label: 'Shnatter token',
                 icon: const Icon(Icons.money_rounded)),
             ListText(
@@ -150,13 +150,13 @@ class AdminLeftPanel extends StatelessWidget {
                 label: 'Manage prices',
                 icon: const Icon(Icons.money_rounded)),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/genders')},
                 label: 'Genders',
                 icon: const Icon(Icons.roundabout_left_sharp)),
-            ListText(
-                onTap: () => {},
-                label: 'Webmail',
-                icon: const Icon(Icons.roundabout_left)),
+            // ListText(
+            //     onTap: () => {},
+            //     label: 'Webmail',
+            //     icon: const Icon(Icons.roundabout_left)),
             Row(children: const [
               Padding(padding: EdgeInsets.only(left: 30.0)),
               Text('MODELS',

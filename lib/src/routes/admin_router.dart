@@ -1,4 +1,5 @@
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/currencies.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/design.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/managePrice.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAccountpanel.dart';
@@ -57,6 +58,8 @@ class AdminRouter {
         return AdminManagePrice();
       case '/design':
         return AdminDesign();
+      case '/currencies':
+        return AdminCurrencies();
     }
   }
 }

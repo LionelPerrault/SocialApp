@@ -41,6 +41,8 @@ class AdminDesignState extends mvc.StateMVC<AdminDesign> {
                 : SizeConfig(context).screenWidth,
             child: generalWidget(),
           ),
+          const Padding(padding: EdgeInsets.only(top: 10)),
+          footer()
         ],
       ),
     );
@@ -124,8 +126,6 @@ class AdminDesignState extends mvc.StateMVC<AdminDesign> {
               'The code will be added in head tag'),
           titleAndsubtitleInput('Footer Custom JavaScript', 100, 7,
               'The code will be added at the end of body tag'),
-          const Padding(padding: EdgeInsets.only(top: 10)),
-          footer()
         ],
       ),
     );
