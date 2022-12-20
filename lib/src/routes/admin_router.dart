@@ -1,4 +1,5 @@
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/design.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/managePrice.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAccountpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAnalyticspanel.dart';
@@ -54,6 +55,8 @@ class AdminRouter {
         return AdminSettingsSMS();
       case '/manage-prices':
         return AdminManagePrice();
+      case '/design':
+        return AdminDesign();
     }
   }
 }

@@ -126,7 +126,7 @@ class AdminLeftPanel extends StatelessWidget {
                 label: 'Themes',
                 icon: const Icon(Icons.display_settings)),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/design')},
                 label: 'Design',
                 icon: const Icon(Icons.display_settings_rounded)),
             ListText(
