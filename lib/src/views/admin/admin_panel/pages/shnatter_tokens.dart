@@ -108,8 +108,8 @@ class AdminShnatterTokenState extends mvc.StateMVC<AdminShnatterToken> {
       child: Column(
         children: [
           AdminSettingHeader(
-            icon: const Icon(Icons.display_settings),
-            pagename: 'Themes',
+            icon: const Icon(Icons.attach_money_outlined),
+            pagename: 'Transactions History',
             button: const {
               'flag': false,
             },
