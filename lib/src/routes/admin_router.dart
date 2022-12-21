@@ -1,4 +1,5 @@
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/countries.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/currencies.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/design.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/genders.dart';
@@ -72,6 +73,8 @@ class AdminRouter {
         return AdminShnatterToken();
       case '/genders':
         return AdminGenders();
+      case '/countries':
+        return AdminCountries();
     }
   }
 }

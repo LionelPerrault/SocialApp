@@ -29,43 +29,59 @@ class AdminManagePriceState extends mvc.StateMVC<AdminManagePrice> {
           : SizeConfig(context).screenWidth,
       padding: EdgeInsets.only(left: 20, right: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        AdminSettingHeader(
-          icon: Icon(Icons.attach_money_outlined),
-          pagename: 'Manage Prices',
-          button: const {'flag': false},
-        ),
-        const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
-          child: Column(children: [
-            customInput(
-              title: 'Price for creating a page',
-              onChange: (value) {},
-            ),
-            customInput(
-              title: 'Price for creating a product',
-              onChange: (value) {},
-            ),
-            customInput(
-              title: 'Price for creating an event',
-              onChange: (value) {},
-            ),
-            customInput(
-              title: 'Price for creating a group',
-              onChange: (value) {},
-            ),
-            customInput(
-              title: 'Price for sending friend request',
-              onChange: (value) {},
-            ),
-            customInput(
-              title: 'Price for accepting friend request',
-              onChange: (value) {},
-            ),
-          ]),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          child: generalWidget(),
         ),
-        const Padding(padding: EdgeInsets.only(top: 20)),
-        AdminSettingFooter()
       ]),
+    );
+  }
+
+  Widget generalWidget() {
+    return Container(
+      child: Column(
+        children: [
+          AdminSettingHeader(
+            icon: Icon(Icons.attach_money_outlined),
+            pagename: 'Manage Prices',
+            button: const {'flag': false},
+          ),
+          const Padding(padding: EdgeInsets.only(top: 20)),
+          Container(
+            child: Column(children: [
+              customInput(
+                title: 'Price for creating a page',
+                onChange: (value) {},
+              ),
+              customInput(
+                title: 'Price for creating a product',
+                onChange: (value) {},
+              ),
+              customInput(
+                title: 'Price for creating an event',
+                onChange: (value) {},
+              ),
+              customInput(
+                title: 'Price for creating a group',
+                onChange: (value) {},
+              ),
+              customInput(
+                title: 'Price for sending friend request',
+                onChange: (value) {},
+              ),
+              customInput(
+                title: 'Price for accepting friend request',
+                onChange: (value) {},
+              ),
+            ]),
+          ),
+          const Padding(padding: EdgeInsets.only(top: 20)),
+          AdminSettingFooter()
+        ],
+      ),
     );
   }
 
