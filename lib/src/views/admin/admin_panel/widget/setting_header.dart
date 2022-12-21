@@ -25,23 +25,21 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
   @override
   void initState() {
     subTabname = widget.headerTab.isEmpty ? '' : widget.headerTab[0]['title'];
-    
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
-          printHeaderTab();
-          setState(() { });
-        });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      printHeaderTab();
+      setState(() {});
+    });
     super.initState();
   }
-  void addEventListener(){
 
-  }
-  void printHeaderTab(){
+  void addEventListener() {}
+  void printHeaderTab() {
     List<Widget> header = [];
     headerTab = [];
     int index = 0;
-    for(int i = 0;i < widget.headerTab.length; i++){
-        header.add(InkWell(
+    for (int i = 0; i < widget.headerTab.length; i++) {
+      header.add(InkWell(
           onTap: () {
             subTabname = widget.headerTab[i]['title'];
             widget.headerTab[i]['onClick'](widget.headerTab[i]['title']);
@@ -55,31 +53,30 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
             alignment: Alignment.center,
             width: 140,
             padding:
-                const EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(widget.headerTab[i]['icon']),
-                  const Padding(
-                      padding: EdgeInsets.only(left: 10)),
-                      Expanded(child: 
-                        Text(widget.headerTab[i]['title'])
-                      )
-                ]),
+                const EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(widget.headerTab[i]['icon']),
+              const Padding(padding: EdgeInsets.only(left: 10)),
+              Expanded(child: Text(widget.headerTab[i]['title']))
+            ]),
           )));
-      if((i + 2 - index) * 140 + 15 >= SizeConfig(context).screenWidth || i == widget.headerTab.length- 1){
-        headerTab.add(Row(
-          children: header
-              .map((value) => value).toList()));
+      if ((i + 2 - index) * 140 + 15 >= SizeConfig(context).screenWidth ||
+          i == widget.headerTab.length - 1) {
+        headerTab.add(Row(children: header.map((value) => value).toList()));
         header = [];
         index = i + 1;
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(right: 20, left: 15,top: 20,bottom: widget.headerTab.isEmpty ? 20 : 0),
+      padding: EdgeInsets.only(
+          right: 20,
+          left: 15,
+          top: 20,
+          bottom: widget.headerTab.isEmpty ? 20 : 0),
       decoration: const BoxDecoration(
         border: Border(
             bottom: BorderSide(
@@ -94,17 +91,13 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
               alignment: Alignment.center,
               child: mainHeaderWidget(),
             )
-          :
-             Column(
+          : Column(
               children: [
                 Container(
                   child: mainHeaderWidget(),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                    children: headerTab
-                        .map((value) => value)
-                        .toList())
+                Column(children: headerTab.map((value) => value).toList())
               ],
             ),
     );
@@ -125,11 +118,11 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
                   // elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: const Size(120, 50),
-                  maximumSize: const Size(120, 50),
+                  minimumSize: widget.button['size'],
+                  maximumSize: widget.button['size'],
                 ),
                 onPressed: () {
-                  (() => {});
+                  widget.button['callback']();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -137,9 +130,9 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
                   children: [
                     widget.button['icon'],
                     Text(widget.button['text'],
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 11,
-                            color: Colors.white,
+                            color: widget.button['valueColor'],
                             fontWeight: FontWeight.bold))
                   ],
                 ))

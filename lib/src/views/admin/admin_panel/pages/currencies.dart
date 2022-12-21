@@ -53,11 +53,11 @@ class AdminCurrenciesState extends mvc.StateMVC<AdminCurrencies> {
     PlutoRow(
       cells: {
         'id': PlutoCell(value: 1),
-        'name': PlutoCell(value: 'user1'),
-        'code': PlutoCell(value: 'user1'),
-        'symbol': PlutoCell(value: 'user1'),
-        'default': PlutoCell(value: 'user1'),
-        'actions': PlutoCell(value: 'user1'),
+        'name': PlutoCell(value: 'Australia Dollar'),
+        'code': PlutoCell(value: 'AUD'),
+        'symbol': PlutoCell(value: '\$'),
+        'default': PlutoCell(value: 'No'),
+        'actions': PlutoCell(value: 'Action'),
       },
     ),
   ];
@@ -85,23 +85,20 @@ class AdminCurrenciesState extends mvc.StateMVC<AdminCurrencies> {
   bool check1 = false;
   Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
   double fontSize = 14;
+  var addroute = 'main';
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.settings),
-            pagename: 'Settings',
-            button: const {'flag': false},
-          ),
           Container(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.75
                 : SizeConfig(context).screenWidth,
-            child: generalWidget(),
+            child:
+                addroute == 'main' ? generalWidget() : addNewCurrencyWidget(),
           ),
         ],
       ),
@@ -112,6 +109,25 @@ class AdminCurrenciesState extends mvc.StateMVC<AdminCurrencies> {
     return Container(
       child: Column(
         children: [
+          AdminSettingHeader(
+            icon: const Icon(Icons.money),
+            pagename: 'Currencies',
+            button: {
+              'flag': true,
+              'buttoncolor': Colors.white,
+              'icon': const Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+              'text': 'Add New Currency',
+              'valueColor': Colors.black,
+              'callback': () {
+                addroute = 'addNew';
+                setState(() {});
+              },
+              'size': Size(180, 50),
+            },
+          ),
           Container(
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.75
@@ -137,5 +153,121 @@ class AdminCurrenciesState extends mvc.StateMVC<AdminCurrencies> {
         ],
       ),
     );
+  }
+
+  Widget addNewCurrencyWidget() {
+    return Container(
+      child: Column(
+        children: [
+          AdminSettingHeader(
+            icon: const Icon(Icons.money),
+            pagename: 'Currencies',
+            button: {
+              'flag': true,
+              'buttoncolor': Colors.grey,
+              'icon': const Icon(Icons.arrow_back),
+              'text': 'Go Back',
+              'callback': () {
+                addroute = 'main';
+                setState(() {});
+              },
+              'size': Size(120, 50),
+            },
+          ),
+          titleAndsubtitleInput('Currency Name', 30, 1,
+              'Currency name, For Example: U.S. Dollar, Euro or Pound Sterling'),
+          titleAndsubtitleInput('Currency Code', 30, 1,
+              'Currency code, For Example: USD, EUR or GBP'),
+          titleAndsubtitleInput('Currency Symbol', 30, 1,
+              'Currency symbol, For Example: \$, € or £'),
+          footer(),
+        ],
+      ),
+    );
+  }
+
+  Widget titleAndsubtitleInput(title, height, line, subtitle) {
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 100,
+            alignment: Alignment.topLeft,
+            child: Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 85, 95, 127)),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: SizedBox(
+              width: 500,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 400,
+                    height: height,
+                    child: TextField(
+                      maxLines: line,
+                      minLines: line,
+                      onChanged: (value) {},
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(top: 10, left: 10),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.blue, width: 1.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      fontSize: 12,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget footer() {
+    return Container(
+        height: 80,
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(240, 240, 240, 1),
+            border: Border(top: BorderSide(width: 0.5, color: Colors.grey))),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 15),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(2.0)),
+            minimumSize: const Size(150, 50),
+            maximumSize: const Size(150, 50),
+          ),
+          onPressed: () {
+            () => {};
+          },
+          child: const Text('Save Changes',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 33, 37, 41),
+                  fontSize: 11.0,
+                  fontWeight: FontWeight.bold)),
+        ));
   }
 }
