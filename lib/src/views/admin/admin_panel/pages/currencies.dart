@@ -161,7 +161,7 @@ class AdminCurrenciesState extends mvc.StateMVC<AdminCurrencies> {
         children: [
           AdminSettingHeader(
             icon: const Icon(Icons.money),
-            pagename: 'Currencies',
+            pagename: 'Currencies › Add New Currency',
             button: {
               'flag': true,
               'buttoncolor': Colors.grey,
