@@ -29,11 +29,6 @@ class AdminDesignState extends mvc.StateMVC<AdminDesign> {
     return Container(
       child: Column(
         children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.settings),
-            pagename: 'Settings',
-            button: const {'flag': false},
-          ),
           Container(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             width: SizeConfig(context).screenWidth > 800
@@ -52,6 +47,11 @@ class AdminDesignState extends mvc.StateMVC<AdminDesign> {
     return Container(
       child: Column(
         children: [
+          AdminSettingHeader(
+            icon: const Icon(Icons.settings),
+            pagename: 'Settings',
+            button: const {'flag': false},
+          ),
           pictureAndSelect(
             'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fdesign%2FnightAndDark.svg?alt=media&token=017921a8-d7b2-4557-83bf-d4b8a298ec3d',
             'Night Mode is Default',

@@ -18,6 +18,7 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsPostpanel.dar
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSMSpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/themes.dart';
 
 import '../views/admin/admin_panel/pages/settingsSystempanel.dart';
 
@@ -63,6 +64,8 @@ class AdminRouter {
         return AdminCurrencies();
       case '/languages':
         return AdminLanguages();
+      case '/themes':
+        return AdminThemes();
     }
   }
 }
