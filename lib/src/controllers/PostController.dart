@@ -94,7 +94,7 @@ class PostController extends ControllerMVC {
 
   //variable
   List events = [];
-
+  var productsComments = {};
   //view each event support data
   var event;
   var viewEventId = '';
@@ -765,7 +765,226 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  saveComment(productId) async {
-    await Helper.productLikeComment.doc(productId).set({});
+  var productLikes = {};
+  saveProductLikes(productId, likes) async {
+    var userInfo = UserManager.userInfo;
+    var snapshot = await Helper.productLikeComment.get();
+    var existLikes = [];
+    var exist = false;
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      if (snapshot.docs[i].id == productId) {
+        existLikes = snapshot.docs[i].data()['likes'];
+        exist = true;
+        break;
+      }
+    }
+    var a = [];
+    if (existLikes.isNotEmpty) {
+      var s = '';
+      for (int i = 0; i < existLikes.length; i++) {
+        s = existLikes[i]['likes'];
+        if (userInfo['userName'] == existLikes[i]['userName']) {
+          s = likes;
+        }
+        a.add({'userName': existLikes[i]['userName'], 'likes': s});
+      }
+    } else {
+      a.add({'userName': userInfo['userName'], 'likes': likes});
+    }
+    await Helper.productLikeComment.doc(productId).set({'likes': a});
+
+    // if(exist){
+    // }
+    // else{
+
+    // }
+  }
+
+  var productLikesCount = {};
+  getProductLikes() async {
+    var userInfo = UserManager.userInfo;
+    var snapshot = await Helper.productLikeComment.get();
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      productLikesCount[snapshot.docs[i].id] = {};
+      for (int j = 0; j < snapshot.docs[i]['likes'].length; i++) {
+        if (snapshot.docs[i]['likes'][j]['userName'] == userInfo['userName']) {
+          productLikes[snapshot.docs[i].id] =
+              snapshot.docs[i]['likes'][j]['likes'];
+        }
+        if (productLikesCount[snapshot.docs[i].id]
+            [snapshot.docs[i]['likes'][j]['likes']]) {}
+      }
+    }
+  }
+
+  saveComment(productId, data, type) async {
+    var snapshot = await Helper.productLikeComment.get();
+    var userManager = UserManager.userInfo;
+    var existId = false;
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      if (snapshot.docs[i].id == productId) {
+        existId = true;
+        break;
+      }
+    }
+    if (!existId) {
+      await Helper.productLikeComment.doc(productId).set({'likes': []});
+    }
+    await Helper.productLikeComment
+        .doc(productId)
+        .collection('comments')
+        .doc()
+        .set({
+      'data': {
+        'type': type,
+        'content': data,
+        'userName': userManager['userName']
+      },
+      'timeStamp': FieldValue.serverTimestamp(),
+      'likes': []
+    });
+    await getComment(productId);
+  }
+
+  saveLikesComment(productId, commentId, likes) async {
+    var userInfo = UserManager.userInfo;
+    var snapshot = await Helper.productLikeComment
+        .doc(productId)
+        .collection('comments')
+        .doc(commentId)
+        .get();
+    var arr = snapshot.data()!['likes'];
+    var a = [];
+    if (arr.isEmpty) {
+      a.add({'userName': userInfo['userName'], 'likes': likes});
+    } else {
+      for (int i = 0; i < arr.length; i++) {
+        var s = arr[i]['likes'];
+        if (arr[i]['userName'] == userInfo['userName']) {
+          s = likes;
+        }
+        a.add({'userName': arr[i]['userName'], 'likes': s});
+      }
+    }
+
+    await Helper.productLikeComment
+        .doc(productId)
+        .collection('comments')
+        .doc(commentId)
+        .update({'likes': a});
+  }
+
+  var commentLikes = {};
+  getComment(productId) async {
+    var userInfo = UserManager.userInfo;
+    var snapshot = await Helper.productLikeComment
+        .doc(productId)
+        .collection('comments')
+        .orderBy('timeStamp')
+        .get();
+    var comment = [];
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      for (int j = 0; j < snapshot.docs[i]['likes'].length; j++) {
+        if (userInfo['userName'] == snapshot.docs[i]['likes'][j]['userName']) {
+          commentLikes[snapshot.docs[i].id] =
+              snapshot.docs[i]['likes'][j]['likes'];
+        }
+      }
+      var avatar =
+          await Helper.getUserAvatar(snapshot.docs[i]['data']['userName']);
+      comment.add({
+        'data': snapshot.docs[i]['data'],
+        'avatar': avatar,
+        'id': snapshot.docs[i].id,
+      });
+    }
+    print(snapshot.docs.length);
+    if (comment.isNotEmpty) {
+      productsComments[productId] = comment;
+    }
+  }
+
+  saveReply(productId, commentId, data, type) async {
+    var userInfo = UserManager.userInfo;
+    await Helper.productLikeComment
+        .doc(productId)
+        .collection('comments')
+        .doc(commentId)
+        .collection('reply')
+        .doc()
+        .set({
+      'data': {'type': type, 'content': data, 'userName': userInfo['userName']},
+      'timeStamp': FieldValue.serverTimestamp(),
+      'likes': []
+    });
+    await getReply(productId);
+  }
+
+  var commentReply = {};
+  var replyLikes = {};
+  getReply(productId) async {
+    var userInfo = UserManager.userInfo;
+    var snapshot = await Helper.productLikeComment
+        .doc(productId)
+        .collection('comments')
+        .get();
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      var replies = await Helper.productLikeComment
+          .doc(productId)
+          .collection('comments')
+          .doc(snapshot.docs[i].id)
+          .collection('reply')
+          .orderBy('timeStamp')
+          .get();
+      var arr = [];
+      for (int j = 0; j < replies.docs.length; j++) {
+        for (int m = 0; m < replies.docs[j]['likes'].length; m++) {
+          if (userInfo['userName'] == replies.docs[j]['likes'][m]['userName']) {
+            replyLikes[replies.docs[j].id] =
+                replies.docs[j]['likes'][m]['likes'];
+          }
+        }
+        var avatar =
+            await Helper.getUserAvatar(replies.docs[j]['data']['userName']);
+        arr.add({
+          'data': replies.docs[j]['data'],
+          'avatar': avatar,
+          'id': replies.docs[j].id
+        });
+      }
+      commentReply[snapshot.docs[i].id] = arr;
+    }
+    print(commentReply);
+  }
+
+  saveLikesReply(productId, commentId, replyId, likes) async {
+    var userInfo = UserManager.userInfo;
+    var snapshot = await Helper.productLikeComment
+        .doc(productId)
+        .collection('comments')
+        .doc(commentId)
+        .collection('reply')
+        .doc(replyId)
+        .get();
+    var arr = snapshot.data()!['likes'];
+    var a = [];
+    if (arr.isEmpty) {
+      a.add({'userName': userInfo['userName'], 'likes': likes});
+    } else {
+      for (int i = 0; i < arr.length; i++) {
+        var s = arr[i]['likes'];
+        if (arr[i]['userName'] == userInfo['userName']) {
+          s = likes;
+        }
+        a.add({'userName': arr[i]['userName'], 'likes': s});
+      }
+    }
+    await Helper.productLikeComment
+        .doc(productId)
+        .collection('comments')
+        .doc(commentId)
+        .collection('reply')
+        .doc(replyId)
+        .update({'likes': a});
   }
 }
