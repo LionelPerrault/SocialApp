@@ -677,4 +677,18 @@ class UserController extends ControllerMVC {
     isProfileChange = false;
     setState(() {});
   }
+
+  pinPost() async {
+    var pinData = UserManager.userInfo['pinnedPost'];
+    pinData = pinData
+        .where((eachPage) => eachPage['pageName'] == eachPage['pageName']);
+    await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .doc(UserManager.userInfo['uid'])
+        .update({
+      'pinnedPost': [
+        ...UserManager.userInfo['uid'],
+      ]
+    });
+  }
 }

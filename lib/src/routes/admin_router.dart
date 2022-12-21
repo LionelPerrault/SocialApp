@@ -1,4 +1,10 @@
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/countries.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/currencies.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/design.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/genders.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/languages.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/managePrice.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAccountpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAnalyticspanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsChatpanel.dart';
@@ -14,6 +20,8 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsPostpanel.dar
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSMSpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/shnatter_tokens.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/themes.dart';
 
 import '../views/admin/admin_panel/pages/settingsSystempanel.dart';
 
@@ -51,6 +59,22 @@ class AdminRouter {
         return AdminSettingsEmail();
       case '/settings/sms':
         return AdminSettingsSMS();
+      case '/manage-prices':
+        return AdminManagePrice();
+      case '/design':
+        return AdminDesign();
+      case '/currencies':
+        return AdminCurrencies();
+      case '/languages':
+        return AdminLanguages();
+      case '/themes':
+        return AdminThemes();
+      case '/shnatter_token':
+        return AdminShnatterToken();
+      case '/genders':
+        return AdminGenders();
+      case '/countries':
+        return AdminCountries();
     }
   }
 }

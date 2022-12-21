@@ -187,6 +187,8 @@ class PostController extends ControllerMVC {
       'eventInvited': [],
       'eventPost': false,
       'eventPicture': '',
+      'eventCanPub': true,
+      'eventApproval': true
     };
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
@@ -350,6 +352,19 @@ class PostController extends ControllerMVC {
     }
   }
 
+  Future<bool> updateEventInfo(dynamic pageInfo) async {
+    var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+    return true;
+  }
+
+  Future<bool> deleteEvent() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.eventsField)
+        .doc(viewEventId)
+        .delete();
+    return true;
+  }
+
   ////////////////////functions that make comment to event/////////////////////////////
 
   ///////////////////////////end events functions //////////////////////////////////////////////////
@@ -504,9 +519,21 @@ class PostController extends ControllerMVC {
     }
   }
 
-  Future<bool> updatePageInfo(dynamic pageInfo) async {
-    var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
-    return true;
+  Future<String> updatePageInfo(dynamic pageInfo) async {
+    if (pageInfo['pageName'] == page['pageName']) {
+      var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+      return 'success';
+    } else {
+      QuerySnapshot querySnapshot = await Helper.pagesData.get();
+      var allPage = querySnapshot.docs;
+      allPage.where((eachPage) => eachPage['pageName'] == pageInfo['pageName']);
+      if (allPage.isNotEmpty) {
+        return 'dobuleName';
+      } else {
+        var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+        return 'success';
+      }
+    }
   }
 
   Future<bool> deletePage() async {
@@ -629,8 +656,8 @@ class PostController extends ControllerMVC {
       'groupPhotos': [],
       'groupAlbums': [],
       'groupVideos': [],
-      'groupCanPublish': false,
-      'groupPostApproval': true,
+      'groupCanPub': false,
+      'groupApproval': true,
     };
 
     var reuturnValue = await Helper.groupsData
@@ -701,6 +728,28 @@ class PostController extends ControllerMVC {
     }
   }
 
+  Future<String> updateGroupInfo(dynamic groupInfo) async {
+    if (groupInfo['groupUserName'] == null) {
+      var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+      return group['groupUserName'];
+    }
+    if (groupInfo['groupUserName'] == group['groupUserName']) {
+      var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+      return group['groupUserName'];
+    } else {
+      QuerySnapshot querySnapshot = await Helper.groupsData.get();
+      var allGroup = querySnapshot.docs;
+      var flag = allGroup.where((eachGroup) =>
+          eachGroup['groupUserName'] == groupInfo['groupUserName']);
+      if (flag.isNotEmpty) {
+        return 'dobuleName${groupInfo['groupUserName']}';
+      } else {
+        var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+        return groupInfo['groupUserName'];
+      }
+    }
+  }
+
   ////////////////////functions that make comment to group/////////////////////////////
 
   ///////////////////////////end groups functions //////////////////////////////////////////////////
@@ -722,7 +771,10 @@ class PostController extends ControllerMVC {
         'fullName': UserManager.userInfo['fullName']
       },
       'productDate': DateTime.now().toString(),
-      'eventPost': false,
+      'productPost': false,
+      'productMarkAsSold': false,
+      'productTimeline': true,
+      'productOnOffCommenting': true,
     };
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
@@ -734,9 +786,10 @@ class PostController extends ControllerMVC {
     return 'success';
   }
 
+  List<Map> allProduct = [];
+
   //get all product function
-  Future<List> getProduct() async {
-    List<Map> allProduct = [];
+  Future<void> getProduct() async {
     await Helper.productsData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
@@ -747,8 +800,6 @@ class PostController extends ControllerMVC {
       }
       print('Now you get all products');
     });
-
-    return allProduct;
   }
 
   var viewProductId;
@@ -763,6 +814,59 @@ class PostController extends ControllerMVC {
     setState(() {});
     print('This page was posted by ${product['productAdmin']}');
     return true;
+  }
+
+  Future<void> productMarkAsSold(String productUid, bool value) async {
+    print(productUid);
+    print(value);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .update({'productMarkAsSold': value}).then((e) async {
+      getProduct();
+    });
+  }
+
+  Future<void> productSavePost(String productUid, bool value) async {
+    print(productUid);
+    print(value);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .update({'productPost': value}).then((e) async {
+      getProduct();
+    });
+  }
+
+  Future<void> productDelete(String productUid) async {
+    print(productUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .delete()
+        .then((e) async {
+      getProduct();
+    });
+  }
+
+  Future<void> productHideFromTimeline(String productUid, bool value) async {
+    print(productUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .update({'productTimeline': value}).then((e) async {
+      getProduct();
+    });
+  }
+
+  Future<void> productTurnOffCommenting(String productUid, bool value) async {
+    print(productUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(productUid)
+        .update({'productOnOffCommenting': value}).then((e) async {
+      getProduct();
+    });
   }
 
   var productLikes = {};
@@ -806,13 +910,13 @@ class PostController extends ControllerMVC {
     var snapshot = await Helper.productLikeComment.get();
     for (int i = 0; i < snapshot.docs.length; i++) {
       productLikesCount[snapshot.docs[i].id] = {};
-      for (int j = 0; j < snapshot.docs[i]['likes'].length; i++) {
+      for (int j = 0; j < snapshot.docs[i]['likes'].length; j++) {
         if (snapshot.docs[i]['likes'][j]['userName'] == userInfo['userName']) {
           productLikes[snapshot.docs[i].id] =
               snapshot.docs[i]['likes'][j]['likes'];
         }
-        if (productLikesCount[snapshot.docs[i].id]
-            [snapshot.docs[i]['likes'][j]['likes']]) {}
+        // if (productLikesCount[snapshot.docs[i].id]
+        //     [snapshot.docs[i]['likes'][j]['likes']]) {}
       }
     }
   }

@@ -22,7 +22,6 @@ class AllProducts extends StatefulWidget {
 class AllProductsState extends mvc.StateMVC<AllProducts> {
   late PostController con;
   var userInfo = UserManager.userInfo;
-  var allProduct = [];
   @override
   void initState() {
     add(widget.con);
@@ -34,11 +33,7 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
   }
 
   void getProductNow() {
-    con.getProduct().then((value) => {
-          allProduct = value,
-          print(allProduct),
-          setState(() {}),
-        });
+    con.getProduct();
   }
 
   @override
@@ -52,11 +47,23 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
-            child: Column(
-              children: allProduct
-                  .map((product) => ProductCell(data: product))
-                  .toList(),
-            ),
+            child: con.allProduct == null
+                ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      margin: EdgeInsets.only(
+                          top: SizeConfig(context).screenHeight * 2 / 5),
+                      child: const CircularProgressIndicator(
+                        color: Colors.grey,
+                      ),
+                    )
+                  ])
+                : Column(
+                    children: con.allProduct
+                        .map((product) => ProductCell(data: product))
+                        .toList(),
+                  ),
           ),
         ],
       ),

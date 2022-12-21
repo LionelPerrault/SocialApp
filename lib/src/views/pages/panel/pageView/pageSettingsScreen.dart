@@ -324,7 +324,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
           ),
         ),
         Container(
-          child: customInput(
+          child: customTextarea(
             title: 'About',
             controller: pageAboutController,
             onChange: (value) {},
@@ -721,6 +721,38 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget customTextarea({title, onChange, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        SizedBox(
+          height: 100,
+          child: TextField(
+            maxLines: 10,
+            minLines: 5,
+            controller: controller,
+            onChanged: onChange,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
               ),
             ),
           ),
