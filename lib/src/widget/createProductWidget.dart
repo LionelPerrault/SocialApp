@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'dart:io' show File;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -37,18 +38,54 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   bool offer1 = true;
   bool offer2 = false;
   late List productCategory = [
-    'Choose Category',
-    'Apparel & Accessories',
-    'Autos & Vehicles',
-    'Baby & Children\'s...',
-    'Beauty Products & Services',
-    'Computers & Peripherals',
-    'Consumer Electronics',
-    'Dating Services',
-    'Financial Services',
-    'Gifts & Occasions',
-    'Home & Garden',
-    'Other',
+    {
+      'value': 'Choose Category',
+      'title': 'Choose Category',
+    },
+    {
+      'value': 'Apparel & Accessories',
+      'title': 'Apparel & Accessories',
+    },
+    {
+      'value': 'Autos & Vehicles',
+      'title': 'Autos & Vehicles',
+    },
+    {
+      'value': 'Baby & Children\'s...',
+      'title': 'Baby & Children\'s...',
+    },
+    {
+      'value': 'Beauty Products & Services',
+      'title': 'Beauty Products & Services',
+    },
+    {
+      'value': 'Computers & Peripherals',
+      'title': 'Computers & Peripherals',
+    },
+    {
+      'value': 'Consumer Electronics',
+      'title': 'Consumer Electronics',
+    },
+    {
+      'value': 'Dating Services',
+      'title': 'Dating Services',
+    },
+    {
+      'value': 'Financial Services',
+      'title': 'Financial Services',
+    },
+    {
+      'value': 'Gifts & Occasions',
+      'title': 'Gifts & Occasions',
+    },
+    {
+      'value': 'Home & Garden',
+      'title': 'Home & Garden',
+    },
+    {
+      'value': 'Other',
+      'title': 'Other',
+    },
   ];
   @override
   void initState() {
@@ -76,26 +113,14 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Text(
-                        'Product Name',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
                   Container(
-                    width: 285,
-                    child: input(validator: (value) async {
-                      print(value);
-                    }, onchange: (value) async {
-                      productInfo['productName'] = value;
-                      setState(() {});
-                    }),
-                  )
+                      width: 285,
+                      child: customInput(
+                          title: 'Product Name',
+                          onChange: (value) async {
+                            productInfo['productName'] = value;
+                            setState(() {});
+                          }))
                 ],
               ),
               const Padding(padding: EdgeInsets.only(left: 15)),
@@ -103,97 +128,56 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Text(
-                        'Price',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
                   Container(
                     width: 100,
-                    child: input(validator: (value) async {
-                      print(value);
-                    }, onchange: (value) async {
-                      productInfo['productPrice'] = value;
-                      setState(() {});
-                    }),
+                    child: customInput(
+                      title: 'Price',
+                      onChange: (value) async {
+                        productInfo['productPrice'] = value;
+                        setState(() {});
+                      },
+                    ),
                   )
                 ],
               ),
             ],
           ),
-          const Padding(padding: EdgeInsets.only(top: 15)),
           Row(
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Text(
-                        'Category',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Container(
+                  customDropDownButton(
+                    title: 'Category',
                     width: 200,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 250, 250, 250),
-                        border: Border.all(color: Colors.grey)),
-                    padding: const EdgeInsets.only(left: 20),
-                    child: DropdownButton(
-                      value: category,
-                      items: productCategory
-                          .map(((e) =>
-                              DropdownMenuItem(value: e, child: Text(e))))
-                          .toList(),
-                      onChanged: (value) {
-                        category = value.toString();
-                        productInfo['productCategory'] = value;
-                        setState(() {});
-                      },
-                      style: const TextStyle(
-                          //te
-                          color: Colors.black, //Font color
-                          fontSize: 12 //font size on dropdown button
-                          ),
-
-                      dropdownColor: Colors.white,
-                      underline: Container(), //remove underline
-                      isExpanded: true,
-                      isDense: true,
-                    ),
+                    item: productCategory,
+                    onChange: (value) {
+                      productInfo['productCategory'] = value;
+                      setState(() {});
+                    },
+                    context: context,
                   ),
                 ],
               ),
-              const Padding(padding: EdgeInsets.only(left: 15)),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Padding(padding: EdgeInsets.only(top: 20)),
                   Row(
                     children: const [
                       Text(
                         'Offer',
                         style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
+                            color: Color.fromRGBO(82, 95, 127, 1),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
                   Container(
-                      width: 85,
+                      width: 100,
                       child: Row(
                         children: [
                           Transform.scale(
@@ -251,75 +235,39 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      Text(
-                        'Status',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Container(
+                  customDropDownButton(
+                    title: 'Status',
                     width: 100,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 250, 250, 250),
-                        border: Border.all(color: Colors.grey)),
-                    padding: const EdgeInsets.only(left: 20),
-                    child: DropdownButton(
-                      value: 'New',
-                      items: const [
-                        DropdownMenuItem(value: 'New', child: Text('New')),
-                        DropdownMenuItem(value: 'Used', child: Text('Used')),
-                      ],
-                      onChanged: (value) {
-                        productInfo['productStatus'] = value;
-                        setState(() {});
-                      },
-                      style: const TextStyle(
-                          //te
-                          color: Colors.black, //Font color
-                          fontSize: 12 //font size on dropdown button
-                          ),
-
-                      dropdownColor: Colors.white,
-                      underline: Container(), //remove underline
-                      isExpanded: true,
-                      isDense: true,
-                    ),
+                    item: [
+                      {'value': 'New', 'title': 'New'},
+                      {'value': 'Used', 'title': 'Used'}
+                    ],
+                    onChange: (value) {
+                      productInfo['productStatus'] = value;
+                      setState(() {});
+                    },
+                    context: context,
                   ),
                 ],
               ),
             ],
           ),
-          const Padding(padding: EdgeInsets.only(top: 15)),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: const [
-                  Text('Location',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 82, 95, 127),
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold)),
-                ],
-              ),
               Container(
                 width: 400,
-                child: input(validator: (value) async {
-                  print(value);
-                }, onchange: (value) async {
-                  productInfo['productLocation'] = value;
-                  setState(() {});
-                }),
+                child: customInput(
+                  title: 'Location',
+                  onChange: (value) async {
+                    productInfo['productLocation'] = value;
+                    setState(() {});
+                  },
+                ),
               )
             ],
           ),
-          const Padding(padding: EdgeInsets.only(top: 15)),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -332,34 +280,16 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('About',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 82, 95, 127),
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
                           Container(
                             width: 400,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 250, 250, 250),
-                                border: Border.all(color: Colors.grey)),
-                            child: TextFormField(
-                              minLines: 1,
-                              maxLines: 4,
-                              onChanged: (value) async {
+                            child: titleAndsubtitleInput(
+                              'About',
+                              70,
+                              5,
+                              (value) async {
                                 productInfo['productAbout'] = value;
                                 setState(() {});
                               },
-                              keyboardType: TextInputType.multiline,
-                              style: const TextStyle(fontSize: 12),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: '',
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
                             ),
                           ),
                         ],
@@ -382,9 +312,9 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                       Text(
                         'Photos',
                         style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
+                            color: Color.fromRGBO(82, 95, 127, 1),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -432,9 +362,9 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                       Text(
                         'Files',
                         style: TextStyle(
-                            color: Color.fromARGB(255, 82, 95, 127),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold),
+                            color: Color.fromRGBO(82, 95, 127, 1),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -482,7 +412,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
           const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
             width: 400,
-            margin: const EdgeInsets.only(right: 0),
+            margin: const EdgeInsets.only(right: 20, bottom: 10),
             child: Row(
               children: [
                 const Flexible(fit: FlexFit.tight, child: SizedBox()),
@@ -753,17 +683,124 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   }
 }
 
-Widget input({label, onchange, obscureText = false, validator}) {
+Widget customInput({title, onChange, controller}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        title,
+        style: const TextStyle(
+            color: Color.fromRGBO(82, 95, 127, 1),
+            fontSize: 13,
+            fontWeight: FontWeight.w600),
+      ),
+      const Padding(padding: EdgeInsets.only(top: 2)),
+      Container(
+        height: 40,
+        child: TextField(
+          controller: controller,
+          onChanged: (value) {
+            onChange(value);
+          },
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.only(top: 10, left: 10),
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 1.0),
+            ),
+          ),
+        ),
+      )
+    ],
+  );
+}
+
+Widget titleAndsubtitleInput(title, height, line, onChange) {
   return Container(
-    height: 28,
-    child: StartedInput(
-      validator: (val) async {
-        validator(val);
-      },
-      obscureText: obscureText,
-      onChange: (val) async {
-        onchange(val);
-      },
+    margin: const EdgeInsets.only(top: 15),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 85, 95, 127)),
+        ),
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                width: 400,
+                height: height,
+                child: TextField(
+                  maxLines: line,
+                  minLines: line,
+                  onChanged: (value) {
+                    onChange(value);
+                  },
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.only(top: 10, left: 10),
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     ),
   );
+}
+
+Widget customDropDownButton(
+    {title, width, item = const [], onChange, context}) {
+  List items = item;
+  return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    Text(
+      title,
+      style: TextStyle(
+          color: Color.fromRGBO(82, 95, 127, 1),
+          fontSize: 13,
+          fontWeight: FontWeight.w600),
+    ),
+    Padding(padding: EdgeInsets.only(top: 2)),
+    Container(
+        height: 40,
+        width: width,
+        child: DropdownButtonFormField(
+          value: items[0]['value'],
+          items: items
+              .map((e) =>
+                  DropdownMenuItem(value: e['value'], child: Text(e['title'])))
+              .toList(),
+          onChanged: onChange,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(top: 10, left: 10),
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+            ),
+          ),
+          icon: const Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Icon(Icons.arrow_drop_down)),
+          iconEnabledColor: Colors.grey, //Icon color
+
+          style: const TextStyle(
+            color: Colors.grey, //Font color
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+          dropdownColor: Colors.white,
+          isExpanded: true,
+          isDense: true,
+        ))
+  ]);
 }

@@ -74,7 +74,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                   title: Row(
                     children: const [
                       Icon(
-                        Icons.add_circle,
+                        Icons.production_quantity_limits_sharp,
                         color: Color.fromARGB(255, 33, 150, 243),
                       ),
                       Text(
