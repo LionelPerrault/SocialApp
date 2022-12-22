@@ -28,7 +28,6 @@ class EventAvatarandTabScreen extends StatefulWidget {
 class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
-  double width = 0;
   double itemWidth = 0;
   var tap = 'Timeline';
   var userInfo = UserManager.userInfo;
@@ -51,7 +50,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     con = controller as PostController;
     _gotoHome();
     if (UserManager.userInfo['userName'] ==
-        con.event['eventAdmin']['userName']) {
+        con.event['eventAdmin'][0]['userName']) {
       mainTabList.add({'title': 'Settings', 'icon': Icons.settings});
     }
   }
@@ -60,7 +59,6 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
   var userCon = UserController();
   void _gotoHome() {
     Future.delayed(Duration.zero, () {
-      width = SizeConfig(context).screenWidth - 260;
       itemWidth = 100;
       setState(() {});
     });
@@ -167,6 +165,8 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               padding: EdgeInsets.only(left: 10),
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -192,9 +192,12 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                 ),
                 Row(
                   children: [
-                    Text('data'),
-                    Text('data'),
-                    Text('data'),
+                    const Icon(
+                      Icons.punch_clock,
+                      color: Colors.white,
+                    ),
+                    Text('${con.event['eventStartDate']} to'),
+                    Text('${con.event['eventEndDate']}'),
                   ],
                 )
               ],

@@ -119,7 +119,7 @@ class PostController extends ControllerMVC {
         var data = doc[i];
         //closed event
         if (data['eventPrivacy'] == 'closed') {
-          if (data['eventAdmin']['userName'] ==
+          if (data['eventAdmin'][0]['userName'] ==
                   UserManager.userInfo['userName'] &&
               condition == 'manage') {
             realAllEvents
@@ -141,7 +141,7 @@ class PostController extends ControllerMVC {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
           } else if (UserManager.userInfo['userName'] ==
-                  data['eventAdmin']['userName'] &&
+                  data['eventAdmin'][0]['userName'] &&
               condition == 'manage') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
@@ -165,7 +165,7 @@ class PostController extends ControllerMVC {
     id = id.split('/')[id.split('/').length - 1];
     viewEventId = id;
     await Helper.eventsData.doc(id).get().then((value) async {
-      event = value;
+      event = value.data();
       viewEventInterested = await boolInterested(id);
       viewEventGoing = await boolGoing(id);
       viewEventInvited = await boolInvited(id);
@@ -179,11 +179,15 @@ class PostController extends ControllerMVC {
   Future<void> createEvent(context, Map<String, dynamic> eventData) async {
     eventData = {
       ...eventData,
-      'eventAdmin': UserManager.userInfo['userName'],
+      'eventAdmin': [
+        {
+          'userName': UserManager.userInfo['userName'],
+          'fullName': UserManager.userInfo['fullName']
+        }
+      ],
       'eventDate': DateTime.now().toString(),
       'eventGoing': [],
       'eventInterested': [],
-      'eventInterests': 0,
       'eventInvited': [],
       'eventPost': false,
       'eventPicture': '',
@@ -192,9 +196,12 @@ class PostController extends ControllerMVC {
     };
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
-        .add(eventData);
-
-    Navigator.pushReplacementNamed(context, RouteNames.settings);
+        .add(eventData)
+        .then(
+          (value) => {
+            Navigator.pushReplacementNamed(context, '/events/${value.id}'),
+          },
+        );
   }
 
   //get all interests from firebase
@@ -352,8 +359,8 @@ class PostController extends ControllerMVC {
     }
   }
 
-  Future<bool> updateEventInfo(dynamic pageInfo) async {
-    var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+  Future<bool> updateEventInfo(Map<String, dynamic> pageInfo) async {
+    var result = await Helper.eventsData.doc(viewEventId).update(pageInfo);
     return true;
   }
 

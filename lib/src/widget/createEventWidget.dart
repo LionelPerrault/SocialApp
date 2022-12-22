@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/HomeController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -29,6 +30,8 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   Map<String, dynamic> eventInfo = {'eventPrivacy': 'public'};
   var privacy = 'public';
   var interest = 'none';
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
   @override
   void initState() {
     add(widget.Postcon);
@@ -53,26 +56,13 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: const [
-                  Text(
-                    'Name Your Event',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 82, 95, 127),
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Container(
-                width: 400,
-                child: input(validator: (value) async {
-                  print(value);
-                }, onchange: (value) async {
+              customInput(
+                title: 'Name Your Event',
+                onChange: (value) async {
                   eventInfo['eventName'] = value;
-                  // setState(() {});
-                }),
-              )
+                  setState(() {});
+                },
+              ),
             ],
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
@@ -80,24 +70,13 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: const [
-                  Text('Location',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 82, 95, 127),
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold)),
-                ],
-              ),
-              Container(
-                width: 400,
-                child: input(validator: (value) async {
-                  print(value);
-                }, onchange: (value) async {
+              customInput(
+                title: 'Location',
+                onChange: (value) async {
                   eventInfo['eventLocation'] = value;
-                  // setState(() {});
-                }),
-              )
+                  setState(() {});
+                },
+              ),
             ],
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
@@ -105,24 +84,35 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: const [
-                  Text('Start Date',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 82, 95, 127),
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold)),
-                ],
+              customDateInput(
+                title: 'Start Date',
+                controller: startDateController,
+                onChange: (value) async {},
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(), //get today's date
+                      firstDate: DateTime(
+                          2000), //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime(2101));
+                  if (pickedDate != null) {
+                    print(
+                        pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                    String formattedDate = DateFormat('yyyy-MM-dd').format(
+                        pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                    print(
+                        formattedDate); //formatted date output using intl package =>  2022-07-04
+                    //You can format date as per your need
+
+                    setState(() {
+                      startDateController.text = formattedDate;
+                      eventInfo['eventStartDate'] = formattedDate;
+                    });
+                  } else {
+                    print("Date is not selected");
+                  }
+                },
               ),
-              Container(
-                width: 400,
-                child: input(validator: (value) async {
-                  print(value);
-                }, onchange: (value) async {
-                  eventInfo['eventStartDate'] = value;
-                  // setState(() {});
-                }),
-              )
             ],
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
@@ -130,24 +120,35 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: const [
-                  Text('End Date',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 82, 95, 127),
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold)),
-                ],
+              customDateInput(
+                title: 'End Date',
+                controller: endDateController,
+                onChange: (value) async {},
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(), //get today's date
+                      firstDate: DateTime(
+                          2000), //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime(2101));
+                  if (pickedDate != null) {
+                    print(
+                        pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                    String formattedDate = DateFormat('yyyy-MM-dd').format(
+                        pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                    print(
+                        formattedDate); //formatted date output using intl package =>  2022-07-04
+                    //You can format date as per your need
+
+                    setState(() {
+                      eventInfo['eventEndDate'] = formattedDate;
+                      endDateController.text = formattedDate;
+                    });
+                  } else {
+                    print("Date is not selected");
+                  }
+                },
               ),
-              Container(
-                width: 400,
-                child: input(validator: (value) async {
-                  print(value);
-                }, onchange: (value) async {
-                  eventInfo['eventEndDate'] = value;
-                  // setState(() {});
-                }),
-              )
             ],
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
@@ -267,36 +268,10 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('About',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 82, 95, 127),
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
-                          Container(
-                            width: 400,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 250, 250, 250),
-                                border: Border.all(color: Colors.grey)),
-                            child: TextFormField(
-                              minLines: 1,
-                              maxLines: 4,
-                              onChanged: (value) async {
-                                eventInfo['eventAbout'] = value;
-                                // setState(() {});
-                              },
-                              keyboardType: TextInputType.multiline,
-                              style: TextStyle(fontSize: 12),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: '',
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                          ),
+                          titleAndsubtitleInput('About', 70, 5, (value) {
+                            eventInfo['eventAbout'] = value;
+                            setState(() {});
+                          }),
                         ],
                       )),
                 ],
@@ -315,7 +290,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
           ),
           Container(
             width: 400,
-            margin: const EdgeInsets.only(right: 0),
+            margin: const EdgeInsets.only(right: 20, bottom: 10),
             child: Row(
               children: [
                 const Flexible(fit: FlexFit.tight, child: SizedBox()),
@@ -346,6 +321,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
+                    print(eventInfo);
                     Postcon.createEvent(context, eventInfo);
                   },
                   child: const Text('Create',
@@ -361,17 +337,109 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   }
 }
 
-Widget input({label, onchange, obscureText = false, validator}) {
+Widget customInput({title, onChange, controller}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        title,
+        style: const TextStyle(
+            color: Color.fromRGBO(82, 95, 127, 1),
+            fontSize: 13,
+            fontWeight: FontWeight.w600),
+      ),
+      const Padding(padding: EdgeInsets.only(top: 2)),
+      Container(
+        height: 40,
+        child: TextField(
+          controller: controller,
+          onChanged: onChange,
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.only(top: 10, left: 10),
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 1.0),
+            ),
+          ),
+        ),
+      )
+    ],
+  );
+}
+
+Widget customDateInput({title, onChange, controller, onTap}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        title,
+        style: const TextStyle(
+            color: Color.fromRGBO(82, 95, 127, 1),
+            fontSize: 13,
+            fontWeight: FontWeight.w600),
+      ),
+      const Padding(padding: EdgeInsets.only(top: 2)),
+      Container(
+        height: 40,
+        child: TextField(
+          controller: controller,
+          onChanged: onChange,
+          onTap: () async {
+            onTap();
+          },
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.only(top: 10, left: 10),
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 1.0),
+            ),
+          ),
+        ),
+      )
+    ],
+  );
+}
+
+Widget titleAndsubtitleInput(title, height, line, onChange) {
   return Container(
-    height: 28,
-    child: StartedInput(
-      validator: (val) async {
-        validator(val);
-      },
-      obscureText: obscureText,
-      onChange: (val) async {
-        onchange(val);
-      },
+    margin: const EdgeInsets.only(top: 15),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 85, 95, 127)),
+        ),
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                width: 400,
+                height: height,
+                child: TextField(
+                  maxLines: line,
+                  minLines: line,
+                  onChanged: (value) {
+                    onChange(value);
+                  },
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.only(top: 10, left: 10),
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     ),
   );
 }
