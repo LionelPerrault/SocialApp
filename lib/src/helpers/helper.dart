@@ -155,4 +155,13 @@ class Helper {
           body: {'userName': userInfo['userName']});
     }
   }
+
+  static getUserAvatar(userName) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection(userField)
+        .where('userName', isEqualTo: userName)
+        .get();
+    var avatar = snapshot.docs[0]['avatar'];
+    return avatar;
+  }
 }

@@ -29,6 +29,7 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
     con.setState(() {});
     super.initState();
     getProductNow();
+    con.getProductLikes();
   }
 
   void getProductNow() {
@@ -46,7 +47,7 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
-            child: con.allProduct == null
+            child: con.allProduct.isEmpty
                 ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
                       width: 50,
