@@ -57,8 +57,7 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
     add(widget.con);
     con = controller as PostController;
     filecon = FileController();
-    // con.profile_cover = UserManager.userInfo['profile_cover'] ?? '';
-    setState(() { });
+    setState(() {});
     super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
@@ -67,11 +66,13 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
     );
     getSelectedPage(widget.docId);
   }
+
   void getSelectedPage(String docId) {
     con.getSelectedPage(docId).then((value) => {
-      print('You get selected page info!'),
-    });
+          print('You get selected page info!'),
+        });
   }
+
   late PostController con;
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
@@ -123,19 +124,6 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
         body: Stack(
           fit: StackFit.expand,
           children: [
-            // Stack(
-            //   children: [
-            //     Container(
-            //       margin: const EdgeInsets.only(top: SizeConfig.navbarHeight,left: 30,right: 30),
-            //       width: SizeConfig(context).screenWidth,
-            //       height: SizeConfig(context).screenHeight * 0.5,
-            //       decoration: con.profile_cover == '' ? const BoxDecoration(
-            //       color: Color.fromRGBO(66, 66, 66, 1),
-            //       ) : const BoxDecoration(),
-            //       child: con.profile_cover == '' ? Container() : Image.network(con.profile_cover,fit:BoxFit.cover),
-            //     )
-            //   ],
-            // ),
             ShnatterNavigation(
               searchController: searchController,
               onSearchBarFocus: onSearchBarFocus,
@@ -144,49 +132,64 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
             ),
             Padding(
                 padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                child:
-                    SingleChildScrollView(
-                  child: con.page == null ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Container(
-                        width: 50,
-                        height: 50,
-                        margin: EdgeInsets.only(top: SizeConfig(context).screenHeight*2/5),
-                        child: const CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )]) : Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        PageAvatarandTabScreen(onClick: (value) {
-                          print(value);
-                          con.pageTab = value;
-                          setState(() { });
-                        },),
-                        con.pageTab == 'Timeline' ? PageTimelineScreen(onClick:(value){
-                          con.pageTab = value;
-                          setState(() { });
-                        }) :
-                        con.pageTab == 'Photos' ? PagePhotosScreen(onClick:(value){
-                          con.pageTab = value;
-                          setState(() { });
-                        }) :
-                        con.pageTab == 'Videos' ? PageVideosScreen(onClick:(value){
-                          con.pageTab = value;
-                          setState(() { });
-                        }) :
-                        con.pageTab == 'Invite Friends' ? PageInviteScreen(onClick:(value){
-                          con.pageTab = value;
-                          setState(() { });
-                        }) :
-                        con.pageTab == 'Settings' ? PageSettingsScreen(onClick:(value){
-                          con.pageTab = value;
-                          setState(() { });
-                        }) :
-                        PageEventsScreen()
-                        // PageFriendScreen(),
-                      ]),
+                child: SingleChildScrollView(
+                  child: con.page == null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                margin: EdgeInsets.only(
+                                    top: SizeConfig(context).screenHeight *
+                                        2 /
+                                        5),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.grey,
+                                ),
+                              )
+                            ])
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                              PageAvatarandTabScreen(
+                                onClick: (value) {
+                                  print(value);
+                                  con.pageTab = value;
+                                  setState(() {});
+                                },
+                              ),
+                              con.pageTab == 'Timeline'
+                                  ? PageTimelineScreen(onClick: (value) {
+                                      con.pageTab = value;
+                                      setState(() {});
+                                    })
+                                  : con.pageTab == 'Photos'
+                                      ? PagePhotosScreen(onClick: (value) {
+                                          con.pageTab = value;
+                                          setState(() {});
+                                        })
+                                      : con.pageTab == 'Videos'
+                                          ? PageVideosScreen(onClick: (value) {
+                                              con.pageTab = value;
+                                              setState(() {});
+                                            })
+                                          : con.pageTab == 'Invite Friends'
+                                              ? PageInviteScreen(
+                                                  onClick: (value) {
+                                                  con.pageTab = value;
+                                                  setState(() {});
+                                                })
+                                              : con.pageTab == 'Settings'
+                                                  ? PageSettingsScreen(
+                                                      onClick: (value) {
+                                                      con.pageTab = value;
+                                                      setState(() {});
+                                                    })
+                                                  : PageEventsScreen()
+                              // PageFriendScreen(),
+                            ]),
                 )),
             showSearch
                 ? GestureDetector(
@@ -243,11 +246,8 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
                         )),
                   )
                 : const SizedBox(),
-                
             ChatScreen(),
-            
           ],
         ));
   }
-  
 }

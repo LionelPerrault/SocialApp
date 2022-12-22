@@ -34,6 +34,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
   var tap = 'Timeline';
   var pageInfo;
   late String avatar;
+  late String cover;
   double avatarProgress = 0;
   double coverProgress = 0;
   List<Map> mainTabList = [
@@ -52,7 +53,8 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
     var pageInfo = con.page;
     print(con.page);
     print('this is pageInfo');
-    avatar = '';
+    avatar = con.page['pagePicture'];
+    cover = con.page['pageCover'];
     _gotoHome();
   }
 
@@ -74,10 +76,14 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
           margin: const EdgeInsets.only(left: 30, right: 30),
           width: SizeConfig(context).screenWidth,
           height: SizeConfig(context).screenHeight * 0.5,
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(66, 66, 66, 1),
-          ),
-          child: Container(),
+          decoration: con.page['pageCover'] == ''
+              ? const BoxDecoration(
+                  color: Color.fromRGBO(66, 66, 66, 1),
+                )
+              : const BoxDecoration(),
+          child: con.page['pageCover'] == ''
+              ? Container()
+              : Image.network(con.page['pageCover'], fit: BoxFit.cover),
         ),
         Container(
             alignment: Alignment.topLeft,
@@ -143,8 +149,8 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
             ? CircleAvatar(
                 radius: 78,
                 backgroundColor: Colors.white,
-                child:
-                    CircleAvatar(radius: 75, backgroundImage: NetworkImage('')),
+                child: CircleAvatar(
+                    radius: 75, backgroundImage: NetworkImage(avatar)),
               )
             : CircleAvatar(
                 radius: 78,
@@ -152,7 +158,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                 child: CircleAvatar(
                   radius: 75,
                   child: SvgPicture.network(
-                    Helper.avatar,
+                    Helper.pageAvatar,
                     width: 150,
                   ),
                 ),
@@ -341,6 +347,22 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
+        uploadTask.whenComplete(() async {
+          var downloadUrl = await _reference.getDownloadURL();
+          if (type == 'avatar') {
+            con.updatePageInfo({
+              'pageUserName': con.page['pageUserName'],
+              'pagePicture': downloadUrl
+            });
+          } else {
+            con.updatePageInfo({
+              'pageUserName': con.page['pageUserName'],
+              'pageCover': downloadUrl
+            });
+            print(downloadUrl);
+          }
+          print(type);
+        });
         uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
           switch (taskSnapshot.state) {
             case TaskState.running:
@@ -388,11 +410,6 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
       _reference.putFile(file).whenComplete(() async {
         print('value');
         var downloadUrl = await _reference.getDownloadURL();
-        await _reference.getDownloadURL().then((value) {
-          // userCon.userAvatar = value;
-          // userCon.setState(() {});
-          // print(value);
-        });
       });
     }
   }

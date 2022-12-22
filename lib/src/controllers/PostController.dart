@@ -455,6 +455,7 @@ class PostController extends ControllerMVC {
       'pageLiked': [],
       'pagePost': false,
       'pagePicture': '',
+      'pageCover': '',
       'pagePhotos': [],
       'pageAlbums': [],
       'pageVideos': [],
@@ -464,8 +465,8 @@ class PostController extends ControllerMVC {
         .where('pageUserName', isEqualTo: pageData['pageUserName'])
         .get();
     var value = reuturnValue.docs;
-    if (value.isEmpty) {
-      return 'doubleName';
+    if (value.isNotEmpty) {
+      return 'Page Name should be unique';
     }
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
@@ -473,7 +474,7 @@ class PostController extends ControllerMVC {
 
     Navigator.pushReplacementNamed(
         context, '${RouteNames.pages}/${pageData['pageUserName']}');
-    return 'success';
+    return 'Page was created successfully';
   }
 
   ////////////////////functions that support for making comment to page/////////////////////////////
@@ -527,17 +528,22 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> updatePageInfo(dynamic pageInfo) async {
-    if (pageInfo['pageName'] == page['pageName']) {
+    print(page['pageUserName']);
+    print(pageInfo['pageUserName']);
+    if (pageInfo['pageUserName'] == page['pageUserName']) {
       var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+      getSelectedPage(viewPageName);
       return 'success';
     } else {
       QuerySnapshot querySnapshot = await Helper.pagesData.get();
       var allPage = querySnapshot.docs;
-      allPage.where((eachPage) => eachPage['pageName'] == pageInfo['pageName']);
-      if (allPage.isNotEmpty) {
+      var allPages = allPage.where(
+          (eachPage) => eachPage['pageUserName'] == pageInfo['pageUserName']);
+      if (allPages.isNotEmpty) {
         return 'dobuleName';
       } else {
         var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
+        getSelectedPage(viewPageName);
         return 'success';
       }
     }
