@@ -89,12 +89,15 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   void initState() {
     add(widget.Postcon);
     con = controller as PostController;
+    con.getComment(widget.productId);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     List list = con.productsComments[widget.productId] ?? [];
+    List productLikesCount = con.productLikesCount[widget.productId] ?? [];
     return SingleChildScrollView(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,15 +111,35 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                     color: Colors.white,
                     alignment: Alignment.centerRight,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Icon(
+                      children: [
+                        const Padding(padding: EdgeInsets.only(left: 15)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: productLikesCount
+                              .map((val) => Container(
+                                  padding: EdgeInsets.only(left: 3),
+                                  child: Row(
+                                    children: [
+                                      Image.network(
+                                        emoticon[val['likes']].toString(),
+                                        width: 20,
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(left: 3)),
+                                      Text(val['count'].toString())
+                                    ],
+                                  )))
+                              .toList(),
+                        ),
+                        const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                        const Icon(
                           FontAwesomeIcons.comment,
                           size: 15,
                         ),
-                        Padding(padding: EdgeInsets.only(left: 5)),
-                        Text('0 comments')
+                        const Padding(padding: EdgeInsets.only(left: 5)),
+                        Text('${list.length} comments')
                       ],
                     )),
                 Container(
@@ -190,7 +213,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         child: InkWell(
                             onTap: () async {
                               isComment = true;
-                              await con.getComment(widget.productId);
                               await con.getReply(widget.productId);
                               setState(() {});
                             },
@@ -488,6 +510,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 
   Widget eachComment(e) {
     List replies = con.commentReply[e['id']] ?? [];
+    List commentLikesCount = con.commentLikesCount[e['id']] ?? [];
     var key = GlobalKey();
     double width = SizeConfig(context).screenWidth > 600
         ? 500
@@ -586,12 +609,54 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                   'Reply',
                                   style: TextStyle(fontSize: 13),
                                 ))),
+                        const Padding(padding: EdgeInsets.only(left: 10)),
+                        Row(
+                          children: commentLikesCount
+                              .map((value) => Container(
+                                  padding: const EdgeInsets.only(left: 3),
+                                  child: Row(
+                                    children: [
+                                      Image.network(
+                                        emoticon[value['likes']].toString(),
+                                        width: 20,
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(left: 3)),
+                                      Text(value['count'].toString())
+                                    ],
+                                  )))
+                              .toList(),
+                        )
                       ],
                     )),
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        replies.map((val) => replyWidget(val, e)).toList()),
+                whatReply.contains(e['id'])
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:
+                            replies.map((val) => replyWidget(val, e)).toList())
+                    : Container(
+                        padding: const EdgeInsets.only(
+                            top: 10, bottom: 30, left: 10),
+                        child: Row(children: [
+                          const Icon(
+                            FontAwesomeIcons.comment,
+                            size: 12,
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 5)),
+                          InkWell(
+                            onTap: () {
+                              if (!whatReply.contains(e['id'])) {
+                                whatReply.add(e['id']);
+                              }
+                              setState(() {});
+                            },
+                            child: Text(
+                              '${replies.length} Replies',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          )
+                        ]),
+                      ),
                 whatReply.contains(e['id'])
                     ? Container(
                         margin: const EdgeInsets.only(top: 10),
@@ -617,9 +682,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         ? 500
         : SizeConfig(context).screenWidth - 20;
     var key1 = GlobalKey();
-
+    List replyLikesCount = con.replyLikesCount[val['id']] ?? [];
     return Container(
-        padding: EdgeInsets.only(top: 15),
+        padding: const EdgeInsets.only(top: 15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -713,6 +778,25 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                   'Reply',
                                   style: TextStyle(fontSize: 13),
                                 ))),
+                        const Padding(padding: EdgeInsets.only(left: 10)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: replyLikesCount
+                              .map((val) => Container(
+                                  padding: const EdgeInsets.only(left: 3),
+                                  child: Row(
+                                    children: [
+                                      Image.network(
+                                        emoticon[val['likes']].toString(),
+                                        width: 20,
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(left: 3)),
+                                      Text(val['count'].toString())
+                                    ],
+                                  )))
+                              .toList(),
+                        ),
                       ],
                     )),
               ],

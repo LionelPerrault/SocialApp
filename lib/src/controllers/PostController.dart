@@ -872,36 +872,28 @@ class PostController extends ControllerMVC {
   var productLikes = {};
   saveProductLikes(productId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment.get();
-    var existLikes = [];
-    var exist = false;
-    for (int i = 0; i < snapshot.docs.length; i++) {
-      if (snapshot.docs[i].id == productId) {
-        existLikes = snapshot.docs[i].data()['likes'];
-        exist = true;
-        break;
-      }
-    }
+    var snapshot = await Helper.productLikeComment.doc(productId).get();
     var a = [];
-    if (existLikes.isNotEmpty) {
+    if (snapshot.data() == null) {
+      a.add({'userName': userInfo['userName'], 'likes': likes});
+    } else {
+      var arr = snapshot.data()!['likes'];
+      var aa =
+          arr.where((val) => val['userName'] == userInfo['userName']).toList();
+      print(aa);
+      if (aa.isEmpty) {
+        a.add({'userName': userInfo['userName'], 'likes': likes});
+      }
       var s = '';
-      for (int i = 0; i < existLikes.length; i++) {
-        s = existLikes[i]['likes'];
-        if (userInfo['userName'] == existLikes[i]['userName']) {
+      for (int i = 0; i < arr.length; i++) {
+        s = arr[i]['likes'];
+        if (userInfo['userName'] == arr[i]['userName']) {
           s = likes;
         }
-        a.add({'userName': existLikes[i]['userName'], 'likes': s});
+        a.add({'userName': arr[i]['userName'], 'likes': s});
       }
-    } else {
-      a.add({'userName': userInfo['userName'], 'likes': likes});
     }
     await Helper.productLikeComment.doc(productId).set({'likes': a});
-
-    // if(exist){
-    // }
-    // else{
-
-    // }
   }
 
   var productLikesCount = {};
@@ -909,15 +901,32 @@ class PostController extends ControllerMVC {
     var userInfo = UserManager.userInfo;
     var snapshot = await Helper.productLikeComment.get();
     for (int i = 0; i < snapshot.docs.length; i++) {
-      productLikesCount[snapshot.docs[i].id] = {};
+      productLikesCount[snapshot.docs[i].id] = [];
       for (int j = 0; j < snapshot.docs[i]['likes'].length; j++) {
         if (snapshot.docs[i]['likes'][j]['userName'] == userInfo['userName']) {
           productLikes[snapshot.docs[i].id] =
               snapshot.docs[i]['likes'][j]['likes'];
         }
-        // if (productLikesCount[snapshot.docs[i].id]
-        //     [snapshot.docs[i]['likes'][j]['likes']]) {}
+        var aa = productLikesCount[snapshot.docs[i].id];
+        var a = [];
+        var count = 0;
+        var s = aa
+            .where(
+                (val) => val['likes'] == snapshot.docs[i]['likes'][j]['likes'])
+            .toList();
+        if (s.isEmpty) {
+          a.add({'likes': snapshot.docs[i]['likes'][j]['likes'], 'count': 1});
+        }
+        for (int k = 0; k < aa.length; k++) {
+          count = aa[k]['count'];
+          if (aa[k]['likes'] == snapshot.docs[i]['likes'][j]['likes']) {
+            count += 1;
+          }
+          a.add({'likes': aa[k]['likes'], 'count': count});
+        }
+        productLikesCount[snapshot.docs[i].id] = a;
       }
+      print(productLikesCount[snapshot.docs[i].id]);
     }
   }
 
@@ -947,7 +956,6 @@ class PostController extends ControllerMVC {
       'timeStamp': FieldValue.serverTimestamp(),
       'likes': []
     });
-    await getComment(productId);
   }
 
   saveLikesComment(productId, commentId, likes) async {
@@ -959,41 +967,60 @@ class PostController extends ControllerMVC {
         .get();
     var arr = snapshot.data()!['likes'];
     var a = [];
-    if (arr.isEmpty) {
+    var aa =
+        arr.where((val) => val['userName'] == userInfo['userName']).toList();
+    if (aa.isEmpty) {
       a.add({'userName': userInfo['userName'], 'likes': likes});
-    } else {
-      for (int i = 0; i < arr.length; i++) {
-        var s = arr[i]['likes'];
-        if (arr[i]['userName'] == userInfo['userName']) {
-          s = likes;
-        }
-        a.add({'userName': arr[i]['userName'], 'likes': s});
-      }
     }
-
+    for (int i = 0; i < arr.length; i++) {
+      var s = arr[i]['likes'];
+      if (arr[i]['userName'] == userInfo['userName']) {
+        s = likes;
+      }
+      a.add({'userName': arr[i]['userName'], 'likes': s});
+    }
     await Helper.productLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
         .update({'likes': a});
+    getComment(productId);
   }
 
   var commentLikes = {};
+  var commentLikesCount = {};
   getComment(productId) async {
     var userInfo = UserManager.userInfo;
     var snapshot = await Helper.productLikeComment
         .doc(productId)
         .collection('comments')
-        .orderBy('timeStamp')
+        .orderBy('timeStamp', descending: true)
         .get();
     var comment = [];
     for (int i = 0; i < snapshot.docs.length; i++) {
-      for (int j = 0; j < snapshot.docs[i]['likes'].length; j++) {
-        if (userInfo['userName'] == snapshot.docs[i]['likes'][j]['userName']) {
-          commentLikes[snapshot.docs[i].id] =
-              snapshot.docs[i]['likes'][j]['likes'];
+      var aa = snapshot.docs[i]['likes'];
+      commentLikesCount[snapshot.docs[i].id] = [];
+      for (int j = 0; j < aa.length; j++) {
+        if (userInfo['userName'] == aa[j]['userName']) {
+          commentLikes[snapshot.docs[i].id] = aa[j]['likes'];
         }
+        var arr = commentLikesCount[snapshot.docs[i].id];
+
+        var a = [];
+        var s = arr.where((val) => val['likes'] == aa[j]['likes']).toList();
+        if (s.isEmpty) {
+          a.add({'likes': aa[j]['likes'], 'count': 1});
+        }
+        for (int k = 0; k < arr.length; k++) {
+          var count = arr[k]['count'];
+          if (arr[k]['likes'] == aa[j]['likes']) {
+            count += 1;
+          }
+          a.add({'likes': arr[k]['likes'], 'count': count});
+        }
+        commentLikesCount[snapshot.docs[i].id] = a;
       }
+      print(commentLikesCount[snapshot.docs[i].id]);
       var avatar =
           await Helper.getUserAvatar(snapshot.docs[i]['data']['userName']);
       comment.add({
@@ -1026,6 +1053,7 @@ class PostController extends ControllerMVC {
 
   var commentReply = {};
   var replyLikes = {};
+  var replyLikesCount = {};
   getReply(productId) async {
     var userInfo = UserManager.userInfo;
     var snapshot = await Helper.productLikeComment
@@ -1042,11 +1070,29 @@ class PostController extends ControllerMVC {
           .get();
       var arr = [];
       for (int j = 0; j < replies.docs.length; j++) {
+        replyLikesCount[replies.docs[j].id] = [];
         for (int m = 0; m < replies.docs[j]['likes'].length; m++) {
           if (userInfo['userName'] == replies.docs[j]['likes'][m]['userName']) {
             replyLikes[replies.docs[j].id] =
                 replies.docs[j]['likes'][m]['likes'];
           }
+          var arr = replyLikesCount[replies.docs[j].id];
+          var a = [];
+          var aa = arr
+              .where(
+                  (val) => val['likes'] == replies.docs[j]['likes'][m]['likes'])
+              .toList();
+          if (aa.isEmpty) {
+            a.add({'likes': replies.docs[j]['likes'][m]['likes'], 'count': 1});
+          }
+          for (int k = 0; k < arr.length; k++) {
+            var count = arr[k]['count'];
+            if (arr[k]['likes'] == replies.docs[j]['likes'][m]['likes']) {
+              count++;
+            }
+            a.add({'likes': arr[k]['likes'], 'count': count});
+          }
+          replyLikesCount[replies.docs[j].id] = a;
         }
         var avatar =
             await Helper.getUserAvatar(replies.docs[j]['data']['userName']);
@@ -1072,16 +1118,17 @@ class PostController extends ControllerMVC {
         .get();
     var arr = snapshot.data()!['likes'];
     var a = [];
-    if (arr.isEmpty) {
+    var aa =
+        arr.where((val) => val['userName'] == userInfo['userName']).toList();
+    if (aa.isEmpty) {
       a.add({'userName': userInfo['userName'], 'likes': likes});
-    } else {
-      for (int i = 0; i < arr.length; i++) {
-        var s = arr[i]['likes'];
-        if (arr[i]['userName'] == userInfo['userName']) {
-          s = likes;
-        }
-        a.add({'userName': arr[i]['userName'], 'likes': s});
+    }
+    for (int i = 0; i < arr.length; i++) {
+      var s = arr[i]['likes'];
+      if (arr[i]['userName'] == userInfo['userName']) {
+        s = likes;
       }
+      a.add({'userName': arr[i]['userName'], 'likes': s});
     }
     await Helper.productLikeComment
         .doc(productId)
