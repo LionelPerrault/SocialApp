@@ -35,7 +35,7 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
   }
 
   void getGroupNow() {
-    con.getGroup('all').then((value) => {
+    con.getGroup('all', UserManager.userInfo['userName']).then((value) => {
           realAllGroups = value,
           realAllGroups.where((group) => group['data']['groupPost'] == true),
           print(realAllGroups),

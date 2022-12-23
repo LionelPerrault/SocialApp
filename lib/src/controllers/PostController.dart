@@ -109,7 +109,7 @@ class PostController extends ControllerMVC {
   String eventSubRoute;
 
   //get all event function
-  Future<List> getEvent(String condition) async {
+  Future<List> getEvent(String condition, String userName) async {
     List<Map> realAllEvents = [];
     await Helper.eventsData.get().then((value) async {
       var doc = value.docs;
@@ -119,8 +119,7 @@ class PostController extends ControllerMVC {
         var data = doc[i];
         //closed event
         if (data['eventPrivacy'] == 'closed') {
-          if (data['eventAdmin'][0]['userName'] ==
-                  UserManager.userInfo['userName'] &&
+          if (data['eventAdmin'][0]['userName'] == userName &&
               condition == 'manage') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
@@ -140,8 +139,7 @@ class PostController extends ControllerMVC {
           } else if (inGoing && condition == 'going') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
-          } else if (UserManager.userInfo['userName'] ==
-                  data['eventAdmin'][0]['userName'] &&
+          } else if (userName == data['eventAdmin'][0]['userName'] &&
               condition == 'manage') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
@@ -407,7 +405,7 @@ class PostController extends ControllerMVC {
   String pageSubRoute;
 
   //get all page function
-  Future<List> getPage(String condition) async {
+  Future<List> getPage(String condition, String userName) async {
     List<Map> realAllpage = [];
     await Helper.pagesData.get().then((value) async {
       var doc = value.docs;
@@ -415,8 +413,7 @@ class PostController extends ControllerMVC {
         var id = doc[i].id;
         var liked = await boolLiked(id);
         var data = doc[i];
-        if (UserManager.userInfo['userName'] ==
-                data['pageAdmin'][0]['userName'] &&
+        if (userName == data['pageAdmin'][0]['userName'] &&
             condition == 'manage') {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
         } else if (condition == 'all') {
@@ -621,7 +618,7 @@ class PostController extends ControllerMVC {
   String groupSubRoute;
 
   //get all group function
-  Future<List> getGroup(String condition) async {
+  Future<List> getGroup(String condition, String userName) async {
     List<Map> realAllGroups = [];
     await Helper.groupsData.get().then((value) async {
       var doc = value.docs;
@@ -629,8 +626,7 @@ class PostController extends ControllerMVC {
         var id = doc[i].id;
         var joined = await boolJoined(id);
         var data = doc[i];
-        if (UserManager.userInfo['userName'] ==
-                data['groupAdmin'][0]['userName'] &&
+        if (userName == data['groupAdmin'][0]['userName'] &&
             condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
         } else if (condition == 'all') {

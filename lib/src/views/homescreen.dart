@@ -139,7 +139,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizeConfig(context).screenWidth <
-                                SizeConfig.smallScreenSize
+                                SizeConfig.mediumScreenSize
                             ? const SizedBox()
                             : LeftPanel(),
                         //    : SizedBox(width: 0),

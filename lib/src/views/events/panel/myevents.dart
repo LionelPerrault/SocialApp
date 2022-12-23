@@ -35,7 +35,7 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
   }
 
   void getEventNow() {
-    con.getEvent('manage').then((value) => {
+    con.getEvent('manage', UserManager.userInfo['userName']).then((value) => {
           myEvents = [...value],
           myEvents.where((event) =>
               event['data']['eventAdmin'] == UserManager.userInfo['id']),

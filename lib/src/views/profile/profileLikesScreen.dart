@@ -37,12 +37,14 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
   }
 
   void getPageNow() {
-    PostController().getPage('manage').then((value) => {
-          myPages = value,
-          getFlag = false,
-          print(myPages),
-          setState(() {}),
-        });
+    PostController()
+        .getPage('manage', UserManager.userInfo['userName'])
+        .then((value) => {
+              myPages = value,
+              getFlag = false,
+              print(myPages),
+              setState(() {}),
+            });
   }
 
   late ProfileController con;

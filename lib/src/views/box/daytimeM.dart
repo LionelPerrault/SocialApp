@@ -7,7 +7,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 // ignore: must_be_immutable
 class DayTimeM extends StatelessWidget {
   DayTimeM({super.key, required this.time, required this.username});
-  String time;
+  int time;
   String username;
   List<Map> sampleData = [
     {
@@ -36,7 +36,6 @@ class DayTimeM extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    List<Map> result = sampleData.where((i) => i['id'] == time).toList();
     return Padding(
       padding: EdgeInsets.only(left: 20, right: 20),
       child: ClipRRect(
@@ -54,12 +53,11 @@ class DayTimeM extends StatelessWidget {
               // borderRadius: BorderRadius.circular(12),
             ),
             height: 70,
-            width: SizeConfig(context).screenWidth * 0.5,
             child: Row(children: [
               const Padding(padding: EdgeInsets.only(left: 20)),
               SizedBox(
                 width: 42,
-                child: SvgPicture.network(result[0]['image']),
+                child: SvgPicture.network(sampleData[time]['image']),
               ),
               const Padding(padding: EdgeInsets.only(left: 10)),
               Column(
@@ -69,25 +67,56 @@ class DayTimeM extends StatelessWidget {
                     Row(
                       children: [
                         const Padding(padding: EdgeInsets.only(top: 30)),
-                        Text(result[0]['welcome'],
+                        Container(
+                          width: SizeConfig(context).screenWidth >
+                                  SizeConfig.mediumScreenSize
+                              ? SizeConfig(context).screenWidth -
+                                  SizeConfig.leftBarAdminWidth -
+                                  SizeConfig.rightPaneWidth -
+                                  80
+                              : SizeConfig(context).screenWidth - 130,
+                          child: Text(
+                            '${sampleData[time]['welcome']} $username',
                             style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold)),
-                        Text(username,
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold)),
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ],
                     ),
-                    Text(result[0]['message'],
-                        style: const TextStyle(
-                          fontSize: 14,
-                        )),
+                    Container(
+                      width: SizeConfig(context).screenWidth >
+                              SizeConfig.mediumScreenSize
+                          ? SizeConfig(context).screenWidth -
+                              SizeConfig.leftBarAdminWidth -
+                              SizeConfig.rightPaneWidth -
+                              80
+                          : SizeConfig(context).screenWidth - 130,
+                      child: Text(sampleData[time]['message'],
+                          style: const TextStyle(
+                            fontSize: 14,
+                          )),
+                    ),
                   ]),
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               Container(
+                height: 15,
+                width: 15,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0)),
+                    maximumSize: const Size(20, 20),
+                    minimumSize: const Size(20, 20),
+                  ),
+                  onPressed: () {},
                   child: const Icon(
-                Icons.close,
-                size: 10,
-              ))
+                    Icons.close,
+                    color: Colors.black,
+                  ),
+                ),
+              )
             ]),
           )),
     );

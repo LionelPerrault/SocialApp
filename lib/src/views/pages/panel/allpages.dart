@@ -29,47 +29,49 @@ class AllPagesState extends mvc.StateMVC<AllPages> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() { });
+    con.setState(() {});
     super.initState();
     getPageNow();
   }
 
   void getPageNow() {
-    con.getPage('all').then((value) => {
-      realAllPage = value,
-      realAllPage.where((event) => event['data']['eventPost'] == true),
-      print(realAllPage),
-      setState(() {}),
-    });
+    con.getPage('all', UserManager.userInfo['userName']).then((value) => {
+          realAllPage = value,
+          realAllPage.where((event) => event['data']['eventPost'] == true),
+          print(realAllPage),
+          setState(() {}),
+        });
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    var  screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
     return Container(
-      child: 
-      Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
             child: GridView.count(
-                crossAxisCount: screenWidth > 800 ? 4 : screenWidth > 600 ? 3 : screenWidth > 210 ? 2 : 1  ,
-                childAspectRatio: 2/ 3,
-                padding: const EdgeInsets.all(4.0),
-                mainAxisSpacing: 4.0,
-                shrinkWrap: true,
-                crossAxisSpacing: 4.0,
-                children: 
-                  realAllPage.map((page) => 
-                    PageCell(
-                      pageTap: (){
-                        Navigator
-                        .pushReplacementNamed(
-                            context,
-                            '/pages/${page['data']['pageUserName']}');
+              crossAxisCount: screenWidth > 800
+                  ? 4
+                  : screenWidth > 600
+                      ? 3
+                      : screenWidth > 210
+                          ? 2
+                          : 1,
+              childAspectRatio: 2 / 3,
+              padding: const EdgeInsets.all(4.0),
+              mainAxisSpacing: 4.0,
+              shrinkWrap: true,
+              crossAxisSpacing: 4.0,
+              children: realAllPage
+                  .map((page) => PageCell(
+                      pageTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, '/pages/${page['data']['pageUserName']}');
                       },
-                      buttonFun: (){
-                        con.likedPage(page['id']).then((value){
+                      buttonFun: () {
+                        con.likedPage(page['id']).then((value) {
                           getPageNow();
                         });
                       },
@@ -77,7 +79,9 @@ class AllPagesState extends mvc.StateMVC<AllPages> {
                       status: false,
                       likes: page['data']['pageLiked'].length,
                       header: page['data']['pageName'],
-                      liked: page['liked'])).toList(),),
+                      liked: page['liked']))
+                  .toList(),
+            ),
           ),
         ],
       ),
