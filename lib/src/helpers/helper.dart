@@ -39,6 +39,8 @@ class Helper {
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_page.jpg?alt=media&token=404c2404-1b87-4760-b6e6-286462a9cd1a';
   static var groupImage =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_group.jpg?alt=media&token=92339ace-99df-41de-84c5-581260ffb6ec';
+  static var eventImage =
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_event.jpg?alt=media&token=aba15f40-0918-4ce8-965e-82f77ba34800';
   static var userField = 'user';
   static var eventsField = 'events';
   static var pagesField = 'pages';
