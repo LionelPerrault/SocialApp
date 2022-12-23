@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
@@ -35,6 +36,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
   var isConfirmRequest = {};
   var isDeclineRequest = {};
   var isDeleteRequest = {};
+  var userInfo = UserManager.userInfo;
   //route variable
   String tabName = 'Discover';
   Color color = Color.fromRGBO(230, 236, 245, 1);
@@ -172,7 +174,8 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                               setState(() {});
                                               await con
                                                   .deleteFriend(e.value['id']);
-                                              await con.getSendRequests();
+                                              await con.getSendRequests(
+                                                  userInfo['userName']);
                                               isDeleteRequest[e.key] = false;
                                               await con.getList();
                                               setState(() {});

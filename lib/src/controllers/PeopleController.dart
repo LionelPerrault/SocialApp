@@ -51,6 +51,7 @@ class PeopleController extends ControllerMVC {
   List sendFriends;
   List allUserList;
   List allSendFriends;
+  List friends = [];
   Map isFriendRequest = {};
   Map isConfirmRequest;
   bool isGetList;
@@ -70,9 +71,26 @@ class PeopleController extends ControllerMVC {
     return true;
   }
 
+  getFriends(name) async {
+    var userInfo = UserManager.userInfo;
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .where('state', isEqualTo: 1)
+        .get();
+    var s = [];
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      var data = snapshot.docs[i].data();
+      var arr1 = data['users'].where((val) => val == name).toList();
+      if (arr1.isNotEmpty) {
+        s.add(data);
+      }
+    }
+    friends = s;
+  }
+
   getUserList({index = -1}) async {
-    await getReceiveRequests();
-    await getSendRequests();
+    await getReceiveRequests(userInfo['userName']);
+    await getSendRequests(userInfo['userName']);
     await getList(index: index);
   }
 
@@ -176,14 +194,14 @@ class PeopleController extends ControllerMVC {
   }
 
   getReceiveRequestsFriends() async {
-    await getReceiveRequests();
+    await getReceiveRequests(userInfo['userName']);
     setState(() {});
   }
 
-  getReceiveRequests() async {
+  getReceiveRequests(name) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
-        .where('receiver', isEqualTo: userInfo['userName'])
+        .where('receiver', isEqualTo: name)
         .get();
     var arr = [];
     for (var element in snapshot.docs) {
@@ -197,14 +215,14 @@ class PeopleController extends ControllerMVC {
   }
 
   getSendRequestsFriends() async {
-    await getSendRequests();
+    await getSendRequests(userInfo['userName']);
     setState(() {});
   }
 
-  getSendRequests() async {
+  getSendRequests(name) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
-        .where('requester', isEqualTo: userInfo['userName'])
+        .where('requester', isEqualTo: name)
         .get();
     var arr = [];
     snapshot.docs.forEach((element) {
@@ -320,7 +338,7 @@ class PeopleController extends ControllerMVC {
       });
       arr = c;
       if (t == 0) {
-        await getSendRequests();
+        await getSendRequests(userInfo['userName']);
         isSearch = false;
         return;
       } else {

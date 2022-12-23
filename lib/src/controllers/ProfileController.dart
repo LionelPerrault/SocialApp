@@ -28,6 +28,8 @@ class ProfileController extends ControllerMVC {
         super(state);
   static ProfileController? _this;
   String profile_cover = '';
+  String viewProfileUserName = '';
+  String viewProfileFullName = '';
   String tab = 'Timeline';
   double progress;
   var resData = {};

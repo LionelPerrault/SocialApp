@@ -64,7 +64,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       widget.onSearchBarFocus();
     });
     Future.delayed(const Duration(milliseconds: 5), () async {
-      await PeopleController().getReceiveRequests();
+      await PeopleController().getReceiveRequests(userInfo['userName']);
       setState(() {});
     });
     final Stream<QuerySnapshot> friendStrem = FirebaseFirestore.instance

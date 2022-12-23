@@ -60,18 +60,18 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   void initState() {
     add(widget.con);
     con = controller as ProfileController;
-    var userName = widget.userName;
-    if (userName == '') {
-      userName = userInfo['userName'];
+    con.viewProfileUserName = widget.userName;
+    if (con.viewProfileUserName == '') {
+      con.viewProfileUserName = userInfo['userName'];
     }
-    print('sdf${widget.userName}');
     FirebaseFirestore.instance
         .collection(Helper.userField)
-        .where('userName', isEqualTo: userName)
+        .where('userName', isEqualTo: con.viewProfileUserName)
         .get()
         .then((value) {
-      print(value.docs[0].data());
       isgetdata = true;
+      con.viewProfileFullName =
+          '${value.docs[0].data()['firstName']} ${value.docs[0].data()['lastName']}';
       con.userData = value.docs[0].data();
       con.profile_cover = con.userData['profile_cover'] ?? '';
       profileImage = con.userData['profileImage'] ?? '';
