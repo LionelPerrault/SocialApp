@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -33,6 +34,9 @@ class AppController extends ControllerMVC {
   Future<void> getUserInfo() async {
     await UserManager.getUserInfo();
     if (UserManager.userInfo['userName'] != null) {
+      var userInfo = UserManager.userInfo;
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: userInfo['email'], password: userInfo['password']);
       Helper.connectOnlineDatabase();
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
@@ -594,6 +595,12 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                     setState(() {});
                     con.updateEventInfo(updateData).then(
                           (value) => {
+                            con
+                                .getSelectedEvent(con.viewEventId)
+                                .then((value) => {
+                                      setState(() {}),
+                                    }),
+                            Helper.showToast(value),
                             footerBtnState = false,
                             setState(() {}),
                           },

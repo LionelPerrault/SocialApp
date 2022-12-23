@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
@@ -87,6 +88,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
       'title': 'Other',
     },
   ];
+  bool footerBtnState = false;
   @override
   void initState() {
     add(widget.Postcon);
@@ -426,17 +428,28 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     minimumSize: Size(100, 50),
                   ),
                   onPressed: () {
-                    Postcon.createProduct(context, productInfo)
-                        .then((value) => {
-                              if (value != 'success')
-                                {
-                                  print(value),
-                                }
-                            });
+                    footerBtnState = true;
+                    setState(() {});
+                    Postcon.createProduct(context, productInfo).then(
+                      (value) => {
+                        footerBtnState = false,
+                        setState(() {}),
+                        Helper.showToast(value),
+                      },
+                    );
                   },
-                  child: const Text('Publish',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold)),
+                  child: footerBtnState
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const Text('Publish',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
                 )
               ],
             ),

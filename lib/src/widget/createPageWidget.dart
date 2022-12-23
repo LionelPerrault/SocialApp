@@ -30,6 +30,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
   Map<String, dynamic> pageInfo = {};
   var privacy = 'public';
   var interest = 'none';
+  bool footerBtnState = false;
   @override
   void initState() {
     add(widget.Postcon);
@@ -159,13 +160,26 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                   minimumSize: Size(100, 50),
                 ),
                 onPressed: () {
-                  Postcon.createPage(context, pageInfo)
-                      .then((value) => {Helper.showToast(value)});
+                  footerBtnState = true;
+                  setState(() {});
+                  Postcon.createPage(context, pageInfo).then((value) => {
+                        footerBtnState = false,
+                        setState(() {}),
+                        Helper.showToast(value)
+                      });
                   print(pageInfo);
                 },
-                child: const Text('Create',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold)),
+                child: footerBtnState
+                    ? const SizedBox(
+                        width: 10,
+                        height: 10.0,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )
+                    : const Text('Create',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold)),
               )
             ],
           ),

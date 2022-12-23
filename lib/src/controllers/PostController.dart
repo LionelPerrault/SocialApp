@@ -176,7 +176,19 @@ class PostController extends ControllerMVC {
   }
 
   //create event function
-  Future<void> createEvent(context, Map<String, dynamic> eventData) async {
+  Future<String> createEvent(context, Map<String, dynamic> eventData) async {
+    if (eventData['eventName'] == null && eventData['eventName'] == '') {
+      return 'Please add your event name';
+    } else if (eventData['eventLocation'] == null &&
+        eventData['eventLocation'] == '') {
+      return 'Please add your event location';
+    } else if (eventData['eventStartDate'] == null &&
+        eventData['eventStartDate'] == '') {
+      return 'Please add your event start date';
+    } else if (eventData['eventEndDate'] == null &&
+        eventData['eventEndDate'] == '') {
+      return 'Please add your event end date';
+    }
     eventData = {
       ...eventData,
       'eventAdmin': [
@@ -202,6 +214,7 @@ class PostController extends ControllerMVC {
             Navigator.pushReplacementNamed(context, '/events/${value.id}'),
           },
         );
+    return 'Successfully created';
   }
 
   //get all interests from firebase
@@ -359,9 +372,9 @@ class PostController extends ControllerMVC {
     }
   }
 
-  Future<bool> updateEventInfo(Map<String, dynamic> pageInfo) async {
+  Future<String> updateEventInfo(Map<String, dynamic> pageInfo) async {
     var result = await Helper.eventsData.doc(viewEventId).update(pageInfo);
-    return true;
+    return 'Successfully updated';
   }
 
   Future<bool> deleteEvent() async {
@@ -439,11 +452,13 @@ class PostController extends ControllerMVC {
 
   //create page function
   Future<String> createPage(context, Map<String, dynamic> pageData) async {
-    if (pageData['pageName'] == null) {
+    if (pageData['pageName'] == null && pageData['pageName'] == '') {
       return 'Please add your page name';
-    } else if (pageData['pageUserName'] == null) {
+    } else if (pageData['pageUserName'] == null &&
+        pageData['pageUserName'] == '') {
       return 'Please add your page user name';
-    } else if (pageData['pageLocation'] == null) {
+    } else if (pageData['pageLocation'] == null &&
+        pageData['pageLocation'] == '') {
       return 'Please add your page location';
     }
     pageData = {
@@ -470,10 +485,12 @@ class PostController extends ControllerMVC {
     }
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
-        .add(pageData);
+        .add(pageData)
+        .then((value) => {
+              Navigator.pushReplacementNamed(
+                  context, '${RouteNames.pages}/${pageData['pageUserName']}'),
+            });
 
-    Navigator.pushReplacementNamed(
-        context, '${RouteNames.pages}/${pageData['pageUserName']}');
     return 'Page was created successfully';
   }
 
@@ -649,11 +666,13 @@ class PostController extends ControllerMVC {
 
   //create group function
   Future<String> createGroup(context, Map<String, dynamic> groupData) async {
-    if (groupData['groupName'] == null) {
+    if (groupData['groupName'] == null && groupData['groupName'] == '') {
       return 'Please add your group name';
-    } else if (groupData['groupUserName'] == null) {
+    } else if (groupData['groupUserName'] == null &&
+        groupData['groupUserName'] == '') {
       return 'Please add your group user name';
-    } else if (groupData['groupLocation'] == null) {
+    } else if (groupData['groupLocation'] == null &&
+        groupData['groupLocation'] == '') {
       return 'Please add your group location';
     }
     groupData = {
@@ -677,8 +696,8 @@ class PostController extends ControllerMVC {
         .where('groupUserName', isEqualTo: groupData['groupUserName'])
         .get();
     var value = reuturnValue.docs;
-    if (value.isEmpty) {
-      return 'doubleName';
+    if (value.isNotEmpty) {
+      return 'Group name already exist';
     }
 
     await FirebaseFirestore.instance
@@ -687,7 +706,7 @@ class PostController extends ControllerMVC {
 
     Navigator.pushReplacementNamed(
         context, '${RouteNames.groups}/${groupData['groupUserName']}');
-    return 'success';
+    return 'Successfully created';
   }
 
   ////////////////////functions that support for making comment to group/////////////////////////////
@@ -769,11 +788,14 @@ class PostController extends ControllerMVC {
 
   Future<String> createProduct(
       context, Map<String, dynamic> productData) async {
-    if (productData['productName'] == null) {
+    if (productData['productName'] == null &&
+        productData['productName'] == '') {
       return 'Please add your product name';
-    } else if (productData['productPrice'] == null) {
+    } else if (productData['productPrice'] == null &&
+        productData['productPrice'] == '') {
       return 'Please add your product price';
-    } else if (productData['productCategory'] == null) {
+    } else if (productData['productCategory'] == null &&
+        productData['productCategory'] == '') {
       return 'Please add your product category';
     }
     productData = {
@@ -796,7 +818,7 @@ class PostController extends ControllerMVC {
               Navigator.pushReplacementNamed(
                   context, '${RouteNames.products}/${value.id}')
             });
-    return 'success';
+    return 'Successfully created';
   }
 
   List<Map> allProduct = [];

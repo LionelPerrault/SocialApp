@@ -61,6 +61,7 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
     con.getSelectedGroup(id).then((value) => {
           if (value)
             {
+              setState(() {}),
               print('Successfully get group you want!!!'),
             }
         });

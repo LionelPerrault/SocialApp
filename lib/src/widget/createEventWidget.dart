@@ -27,11 +27,12 @@ class CreateEventModal extends StatefulWidget {
 class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   bool isSound = false;
   late PostController Postcon;
-  Map<String, dynamic> eventInfo = {'eventPrivacy': 'public'};
+  Map<String, dynamic> eventInfo = {'eventPrivacy': 'public', 'eventAbout': ''};
   var privacy = 'public';
   var interest = 'none';
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
+  bool footerBtnState = false;
   @override
   void initState() {
     add(widget.Postcon);
@@ -161,8 +162,8 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                   Text('Select Privacy',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold)),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600)),
                 ],
               ),
             ],
@@ -322,11 +323,28 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                   ),
                   onPressed: () {
                     print(eventInfo);
-                    Postcon.createEvent(context, eventInfo);
+                    footerBtnState = true;
+                    setState(() {});
+                    Postcon.createEvent(context, eventInfo).then((value) => {
+                          footerBtnState = false,
+                          setState(
+                            () => {},
+                          ),
+                          Helper.showToast(value),
+                        });
                   },
-                  child: const Text('Create',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold)),
+                  child: footerBtnState
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const Text('Create',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
                 )
               ],
             ),
@@ -411,7 +429,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
           title,
           style: const TextStyle(
               fontSize: 13,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               color: Color.fromARGB(255, 85, 95, 127)),
         ),
         Row(

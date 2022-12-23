@@ -157,12 +157,8 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                 radius: 78,
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
-                  radius: 75,
-                  child: SvgPicture.network(
-                    Helper.groupImage,
-                    width: 150,
-                  ),
-                ),
+                    radius: 75,
+                    backgroundImage: NetworkImage(Helper.groupImage)),
               ),
         (avatarProgress != 0 && avatarProgress != 100)
             ? AnimatedContainer(
@@ -410,9 +406,19 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
         uploadTask.whenComplete(() async {
           var downloadUrl = await _reference.getDownloadURL();
           if (type == 'cover') {
-            await con.uploadPicture('group', 'groupCover', downloadUrl);
+            await con
+                .updateGroupInfo({'groupCover': downloadUrl}).then((value) => {
+                      con
+                          .getSelectedGroup(con.viewGroupName)
+                          .then((value) => {setState((() {}))})
+                    });
           } else {
-            await con.uploadPicture('group', 'groupPicture', downloadUrl);
+            await con.updateGroupInfo({'groupPicture': downloadUrl}).then(
+                (value) => {
+                      con
+                          .getSelectedGroup(con.viewGroupName)
+                          .then((value) => {setState((() {}))})
+                    });
           }
         });
         uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
