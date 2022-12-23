@@ -32,11 +32,11 @@ import 'package:path/path.dart' as PPath;
 import 'dart:io' show File, Platform;
 
 class UserProfileScreen extends StatefulWidget {
-  UserProfileScreen({Key? key})
+  UserProfileScreen({Key? key, this.userName = ''})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
-
+  String userName;
   @override
   State createState() => UserProfileScreenState();
 }
@@ -54,15 +54,31 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   double progress = 0;
   //
   var userInfo = UserManager.userInfo;
-  late String profileImage;
+  String profileImage = '';
+  bool isgetdata = false;
   @override
   void initState() {
     add(widget.con);
-    profileImage = userInfo['profileImage'] ?? '';
     con = controller as ProfileController;
+    var userName = widget.userName;
+    if (userName == '') {
+      userName = userInfo['userName'];
+    }
+    print('sdf${widget.userName}');
+    FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('userName', isEqualTo: userName)
+        .get()
+        .then((value) {
+      print(value.docs[0].data());
+      isgetdata = true;
+      con.userData = value.docs[0].data();
+      con.profile_cover = con.userData['profile_cover'] ?? '';
+      profileImage = con.userData['profileImage'] ?? '';
+      setState(() {});
+    });
     filecon = FileController();
-    con.profile_cover = UserManager.userInfo['profile_cover'] ?? '';
-    setState(() { });
+    setState(() {});
     super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
@@ -150,46 +166,63 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                     //curve: Curves.fastOutSlowIn,
                     //child:
                     SingleChildScrollView(
-                  child: 
-                  Container(
-                    decoration:profileImage != '' ? BoxDecoration(
-                      image:DecorationImage(image: NetworkImage(profileImage),fit: BoxFit.cover)
-                    ) : const BoxDecoration(),
-                    child: 
-                      Column(
+                  child: Container(
+                      decoration: profileImage != ''
+                          ? BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(profileImage),
+                                  fit: BoxFit.cover))
+                          : const BoxDecoration(),
+                      child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ProfileAvatarandTabScreen(onClick: (value) {
-                              print(value);
-                              con.tab = value;
-                              setState(() { });
-                            },),
-                            con.tab == 'Timeline' ? ProfileTimelineScreen(onClick:(value){
-                              con.tab = value;
-                              setState(() { });
-                            }) :
-                            con.tab == 'Friends' ? ProfileFriendScreen(onClick:(value){
-                              con.tab = value;
-                              setState(() { });
-                            }) :
-                            con.tab == 'Photos' ? ProfilePhotosScreen(onClick:(value){
-                              con.tab = value;
-                              setState(() { });
-                            }) :
-                            con.tab == 'Videos' ? ProfileVideosScreen(onClick:(value){
-                              con.tab = value;
-                              setState(() { });
-                            }) :
-                            con.tab == 'Likes' ? ProfileLikesScreen(onClick:(value){
-                              con.tab = value;
-                              setState(() { });
-                            }) :
-                            con.tab == 'Groups' ? ProfileGroupsScreen(onClick:(value){
-                              con.tab = value;
-                              setState(() { });
-                            }) :
-                            ProfileEventsScreen()
+                            !isgetdata
+                                ? Container()
+                                : ProfileAvatarandTabScreen(
+                                    onClick: (value) {
+                                      print(value);
+                                      con.tab = value;
+                                      setState(() {});
+                                    },
+                                  ),
+                            con.tab == 'Timeline' && isgetdata
+                                ? ProfileTimelineScreen(
+                                    onClick: (value) {
+                                      con.tab = value;
+                                      setState(() {});
+                                    },
+                                    userName: widget.userName,
+                                  )
+                                : con.tab == 'Friends'
+                                    ? ProfileFriendScreen(onClick: (value) {
+                                        con.tab = value;
+                                        setState(() {});
+                                      })
+                                    : con.tab == 'Photos'
+                                        ? ProfilePhotosScreen(onClick: (value) {
+                                            con.tab = value;
+                                            setState(() {});
+                                          })
+                                        : con.tab == 'Videos'
+                                            ? ProfileVideosScreen(
+                                                onClick: (value) {
+                                                con.tab = value;
+                                                setState(() {});
+                                              })
+                                            : con.tab == 'Likes'
+                                                ? ProfileLikesScreen(
+                                                    onClick: (value) {
+                                                    con.tab = value;
+                                                    setState(() {});
+                                                  })
+                                                : con.tab == 'Groups'
+                                                    ? ProfileGroupsScreen(
+                                                        onClick: (value) {
+                                                        con.tab = value;
+                                                        setState(() {});
+                                                      })
+                                                    : ProfileEventsScreen()
                             // ProfileFriendScreen(),
                           ])),
                 )),
@@ -248,11 +281,9 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                         )),
                   )
                 : const SizedBox(),
-                
+
             ChatScreen(),
-            
           ],
         ));
   }
-  
 }

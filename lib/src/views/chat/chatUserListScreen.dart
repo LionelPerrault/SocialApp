@@ -39,10 +39,15 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
     if (!mounted) {
       print('mounted');
     }
-    final Stream<QuerySnapshot> stream = FirebaseFirestore.instance
+    final Stream<QuerySnapshot> stream = con.getChatUsers();
+    stream.listen((event) {
+      con.listUsers = event.docs;
+      setState(() {});
+    });
+    final Stream<QuerySnapshot> onlineStream = FirebaseFirestore.instance
         .collection(Helper.onlineStatusField)
         .snapshots();
-    stream.listen((event) {
+    onlineStream.listen((event) {
       var arr = [];
       event.docs.forEach((e) {
         arr.add(e.data());
@@ -55,146 +60,130 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
   String dropdownValue = 'Male';
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: con.getChatUsers(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            List<QueryDocumentSnapshot<ChatModel>>? listUsers =
-                snapshot.data!.docs;
-            return Scrollbar(
-                controller: scrollController,
-                child: ListView.builder(
-                  itemCount: listUsers.length,
-                  controller: scrollController,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(bottom: 10),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    con.takedata = true;
-                    ChatModel t = listUsers[index].data();
-                    var docId = snapshot.data!.docs[index].id;
-                    var chatUserName = '';
-                    var me = UserManager.userInfo['userName'];
-                    for (int i = 0; i < t.users.length; i++) {
-                      if (t.users[i] != me) {
-                        chatUserName = t.users[i];
-                        break;
-                      }
-                    }
-                    arr.add(chatUserName);
-                    if (index == listUsers.length - 1) {
-                      con.chatUserList = arr;
-                    }
-                    var lastData = '';
-                    if (t.chatInfo['lastData'].length > 18) {
-                      for (int i = 0; i < 18; i++) {
-                        lastData += t.chatInfo['lastData'][i];
-                      }
-                      lastData += '...';
-                    } else {
-                      lastData = t.chatInfo['lastData'];
-                    }
-                    var chatUserFullName = t.chatInfo[chatUserName]['name'];
-                    var status = 0;
-                    con.onlineStatus.forEach((e) {
-                      if (e['userName'] == chatUserName) {
-                        status = e['status'];
-                      }
-                    });
-                    return Column(children: [
-                      ListTile(
-                        enabled: true,
-                        contentPadding: EdgeInsets.only(
-                            top: 5, bottom: 5, left: 20, right: 10),
-                        tileColor: con.chattingUser == chatUserName
-                            ? Color.fromRGBO(240, 240, 240, 1)
-                            : Colors.white,
-                        onTap: () {
-                          con.avatar = t.chatInfo[chatUserName]['avatar'];
-                          widget.onBack('message-list');
-                          con.chattingUser = chatUserName;
-                          con.chatUserFullName = chatUserFullName;
-                          con.docId = docId;
-                          con.chatId = t.chatId;
-
-                          con.setState(() {});
-                        },
-                        hoverColor: Color.fromRGBO(240, 240, 240, 1),
-                        leading: Container(
-                          width: 44,
-                          height: 44,
-                          child: Stack(
-                            children: [
-                              t.chatInfo[chatUserName]['avatar'] == ''
-                                  ? CircleAvatar(
-                                      radius: 22,
-                                      backgroundColor: Colors.blue,
-                                      child: SvgPicture.network(Helper.avatar))
-                                  : CircleAvatar(
-                                      radius: 22,
-                                      backgroundColor: Colors.blue,
-                                      backgroundImage: NetworkImage(
-                                          t.chatInfo[chatUserName]['avatar']),
-                                    ),
-                              Container(
-                                margin: EdgeInsets.only(top: 32, left: 32),
-                                alignment: Alignment.center,
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12))),
-                                child: Container(
-                                  width: 10,
-                                  height: 10,
-                                  decoration: BoxDecoration(
-                                      color: status == 0
-                                          ? Colors.grey
-                                          : Colors.green,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        title: Padding(
-                          padding: const EdgeInsets.only(bottom: 5.0),
-                          child: Text(
-                            chatUserFullName,
-                            style: TextStyle(color: Colors.blue, fontSize: 14),
-                          ),
-                        ),
-                        subtitle: Text(
-                          lastData,
-                          style: TextStyle(fontSize: 11),
-                        ),
-                        trailing: t.chatInfo[chatUserFullName] != 0
-                            ? Badge(
-                                badgeColor: Colors.red,
-                                badgeContent: Text(
-                                  t.chatInfo[chatUserFullName].toString(),
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
-                            : Icon(null),
-                      ),
+    return Scrollbar(
+        controller: scrollController,
+        child: ListView.builder(
+          itemCount: con.listUsers.length,
+          controller: scrollController,
+          shrinkWrap: true,
+          padding: EdgeInsets.only(bottom: 10),
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            con.takedata = true;
+            var t = con.listUsers[index].data();
+            var docId = con.listUsers[index].id;
+            var chatUserName = '';
+            var me = UserManager.userInfo['userName'];
+            for (int i = 0; i < t['users'].length; i++) {
+              if (t['users'][i] != me) {
+                chatUserName = t['users'][i];
+                break;
+              }
+            }
+            arr.add(chatUserName);
+            if (index == con.listUsers.length - 1) {
+              con.chatUserList = arr;
+            }
+            var lastData = '';
+            if (t['lastData'].length > 18) {
+              for (int i = 0; i < 18; i++) {
+                lastData += t['lastData'][i];
+              }
+              lastData += '...';
+            } else {
+              lastData = t['lastData'];
+            }
+            var chatUserFullName = t[chatUserName]['name'];
+            var status = 0;
+            con.onlineStatus.forEach((e) {
+              if (e['userName'] == chatUserName) {
+                status = e['status'];
+              }
+            });
+            //     print(chatUserFullName);
+            return Column(children: [
+              ListTile(
+                enabled: true,
+                contentPadding:
+                    EdgeInsets.only(top: 5, bottom: 5, left: 20, right: 10),
+                tileColor: con.chattingUser == chatUserName
+                    ? Color.fromRGBO(240, 240, 240, 1)
+                    : Colors.white,
+                onTap: () {
+                  con.avatar = t[chatUserName]['avatar'];
+                  widget.onBack('message-list');
+                  con.chattingUser = chatUserName;
+                  con.chatUserFullName = chatUserFullName;
+                  con.docId = docId;
+                  con.setState(() {});
+                },
+                hoverColor: Color.fromRGBO(240, 240, 240, 1),
+                leading: Container(
+                  width: 44,
+                  height: 44,
+                  child: Stack(
+                    children: [
+                      t[chatUserName]['avatar'] == ''
+                          ? CircleAvatar(
+                              radius: 22,
+                              backgroundColor: Colors.blue,
+                              child: SvgPicture.network(Helper.avatar))
+                          : CircleAvatar(
+                              radius: 22,
+                              backgroundColor: Colors.blue,
+                              backgroundImage:
+                                  NetworkImage(t[chatUserName]['avatar']),
+                            ),
                       Container(
-                        width: double.infinity,
-                        height: 0.5,
-                        color: Color.fromRGBO(240, 240, 240, 1),
+                        margin: EdgeInsets.only(top: 32, left: 32),
+                        alignment: Alignment.center,
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                              color: status == 0 ? Colors.grey : Colors.green,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                        ),
                       )
-                    ]);
-                  },
-                ));
-          } else {
-            return con.takedata
-                ? Container()
-                : SizedBox(
-                    height: SizeConfig(context).screenHeight - 220,
-                    child: Center(child: CircularProgressIndicator()));
-          }
-        });
+                    ],
+                  ),
+                ),
+                title: Padding(
+                  padding: const EdgeInsets.only(bottom: 5.0),
+                  child: Text(
+                    chatUserFullName,
+                    style: TextStyle(color: Colors.blue, fontSize: 14),
+                  ),
+                ),
+                subtitle: Text(
+                  lastData,
+                  style: TextStyle(fontSize: 11),
+                ),
+                trailing:
+                    t[chatUserFullName] != 0 && t[chatUserFullName] != null
+                        ? Badge(
+                            badgeColor: Colors.red,
+                            badgeContent: Text(
+                              t[chatUserFullName].toString(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        : Icon(null),
+              ),
+              Container(
+                width: double.infinity,
+                height: 0.5,
+                color: Color.fromRGBO(240, 240, 240, 1),
+              )
+            ]);
+          },
+        ));
   }
 }

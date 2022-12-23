@@ -130,9 +130,14 @@ class RouteGenerator {
         Helper.showToast("ok now to admin");
         return MaterialPageRoute(
             builder: (context) => PeopleScreen(), settings: settings);
-      default:
+      case '/':
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);
+      default:
+        return MaterialPageRoute(
+            builder: (context) =>
+                UserProfileScreen(userName: url!.split('/')[1]),
+            settings: settings);
     }
   }
 }

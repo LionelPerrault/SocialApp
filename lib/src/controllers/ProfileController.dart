@@ -23,9 +23,9 @@ enum EmailType { emailVerify, googleVerify }
 class ProfileController extends ControllerMVC {
   factory ProfileController([StateMVC? state]) =>
       _this ??= ProfileController._(state);
-  ProfileController._(StateMVC? state) :
-    progress = 0,
-  super(state);
+  ProfileController._(StateMVC? state)
+      : progress = 0,
+        super(state);
   static ProfileController? _this;
   String profile_cover = '';
   String tab = 'Timeline';
@@ -34,6 +34,7 @@ class ProfileController extends ControllerMVC {
   var userInfo = {};
   // ignore: prefer_typing_uninitialized_variables
   var responseData;
+  var userData = {};
   var signUpUserInfo = {};
 
   @override
@@ -48,5 +49,4 @@ class ProfileController extends ControllerMVC {
         );
     return true;
   }
-  
 }

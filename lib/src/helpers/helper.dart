@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -148,11 +149,20 @@ class Helper {
     var userInfo = UserManager.userInfo;
     if (userInfo['userName'] != null) {
       print('offline');
+      // HttpsCallable callable =
+      //     FirebaseFunctions.instance.httpsCallable('offlineRequest');
+      // var res = await callable
+      //     .call(<String, dynamic>{'userName': userInfo['userName']});
+      var data = {"userName": userInfo['userName']};
       http.post(
-          Uri.parse(
-              'https://us-central1-poiintz-dev.cloudfunctions.net/tokenAward'),
-          headers: {'Access-Control-Allow-Origin': '*'},
-          body: {'userName': userInfo['userName']});
+        Uri.parse(
+            'https://us-central1-shnatter-a69cd.cloudfunctions.net/offlineRequest'),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(<String, dynamic>{"data": data}),
+      );
     }
   }
 

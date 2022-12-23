@@ -28,7 +28,6 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
     res.set("Access-Control-Allow-Origin", "*"); // you can also whitelist a specific domain like "http://127.0.0.1:4000"
     res.set("Access-Control-Allow-Headers", "Content-Type");
     var userName = req.body.userName
-    console.log(req.body)
     var snapshot = await firebase.firestore().collection('onlineStatus').where('userName','==',userName).get()
     if(snapshot.docs.length == 0){
       await firebase.firestore().collection('onlineStatus').add({
@@ -41,5 +40,6 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
         'status':0
       })
     }
+    res.send('ok')
   })
 })

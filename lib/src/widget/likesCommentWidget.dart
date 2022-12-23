@@ -90,7 +90,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     add(widget.Postcon);
     con = controller as PostController;
     con.getComment(widget.productId);
-
+    print(widget.productId);
     super.initState();
   }
 
@@ -338,7 +338,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 width: SizeConfig(context).screenWidth > 600
                     ? 600
                     : SizeConfig(context).screenWidth,
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                padding: const EdgeInsets.only(left: 20, right: 15, bottom: 10),
                 color: const Color.fromRGBO(245, 245, 245, 1),
                 child: Column(
                     children: list.isNotEmpty
@@ -354,7 +354,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         height: 30,
         width: SizeConfig(context).screenWidth > 600
             ? 500
-            : SizeConfig(context).screenWidth - 20,
+            : SizeConfig(context).screenWidth - 88,
         decoration: BoxDecoration(
             border:
                 Border.all(color: Color.fromRGBO(220, 220, 220, 1), width: 1),
@@ -365,7 +365,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               height: 30,
               width: SizeConfig(context).screenWidth > 600
                   ? 350
-                  : SizeConfig(context).screenWidth * 0.7,
+                  : SizeConfig(context).screenWidth - 205,
               child: TextField(
                 // controller: commentController,
                 cursorWidth: 1,
@@ -514,7 +514,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     var key = GlobalKey();
     double width = SizeConfig(context).screenWidth > 600
         ? 500
-        : SizeConfig(context).screenWidth - 20;
+        : SizeConfig(context).screenWidth - 81;
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Row(
@@ -680,7 +680,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   Widget replyWidget(val, e) {
     double width = SizeConfig(context).screenWidth > 600
         ? 500
-        : SizeConfig(context).screenWidth - 20;
+        : SizeConfig(context).screenWidth - 87;
     var key1 = GlobalKey();
     List replyLikesCount = con.replyLikesCount[val['id']] ?? [];
     return Container(

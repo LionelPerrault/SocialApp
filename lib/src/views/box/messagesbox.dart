@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
@@ -13,8 +18,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../controllers/UserController.dart';
 
 class ShnatterMessage extends StatefulWidget {
-  ShnatterMessage({Key? key}) : super(key: key);
-
+  ShnatterMessage({Key? key})
+      : con = ChatController(),
+        super(key: key);
+  final ChatController con;
   @override
   State createState() => ShnatterMessageState();
 }
@@ -22,31 +29,13 @@ class ShnatterMessage extends StatefulWidget {
 class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
   //
   bool isSound = false;
-  List<Map> sampleData = [
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': 'now following you',
-      'subsubtitle': '2 days ago',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': 'now following you',
-      'subsubtitle': '2 days ago',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': 'now following you',
-      'subsubtitle': '2 days ago',
-      'icon': Icons.nature
-    }
-  ];
+  var userInfo = UserManager.userInfo;
+  late ChatController con;
   @override
   void initState() {
+    add(widget.con);
+    con = controller as ChatController;
+
     super.initState();
   }
 
@@ -59,7 +48,7 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
           color: Color.fromARGB(255, 255, 255, 255),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
@@ -67,20 +56,20 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Messages",
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       Row(children: [
                         TextButton(
-                            child: Text('ShnatterMessage',
+                            child: const Text('ShnatterMessage',
                                 style: TextStyle(fontSize: 11)),
                             onPressed: () {}),
                       ])
                     ],
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               const Divider(
@@ -91,34 +80,53 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                 height: 300,
                 //size: Size(100,100),
                 child: ListView.separated(
-                  itemCount: sampleData.length,
+                  itemCount: con.newMessage.length,
                   itemBuilder: (context, index) => Material(
                       child: ListTile(
                           onTap: () {
-                            print("tap!");
+                            con.avatar = con.newMessage[index]['avatar'];
+                            con.isMessageTap = 'message-list';
+                            con.hidden = false;
+                            con.chattingUser =
+                                con.newMessage[index]['userName'];
+                            con.chatUserFullName =
+                                con.newMessage[index]['name'];
+                            con.docId = con.newMessage[index]['id'];
+                            con.newMessage = con.newMessage
+                                .where((e) =>
+                                    e['id'] != con.newMessage[index]['id'])
+                                .toList();
+                            // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+                            Helper.setting.notifyListeners();
                           },
-                          hoverColor: Color.fromARGB(255, 243, 243, 243),
+                          hoverColor: const Color.fromARGB(255, 243, 243, 243),
+                          tileColor: const Color.fromARGB(230, 230, 230, 230),
+                          contentPadding: const EdgeInsets.only(
+                              top: 5, bottom: 5, left: 20, right: 10),
                           enabled: true,
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
-                          ),
+                          leading: con.newMessage[index]['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  con.newMessage[index]['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(
+                                  con.newMessage[index]['avatar'],
+                                )),
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                sampleData[index]['name'],
-                                style: TextStyle(
+                                con.newMessage[index]['name'],
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 10),
                               ),
-                              Text(sampleData[index]['subname'],
-                                  style: TextStyle(
+                              const Padding(padding: EdgeInsets.only(top: 5)),
+                              Text(con.newMessage[index]['lastData'],
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.normal,
                                       fontSize: 10)),
-                              Text(sampleData[index]['subsubtitle'],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 8))
                             ],
                           ))),
                   separatorBuilder: (BuildContext context, int index) =>
@@ -128,7 +136,7 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                   ),
                 ),
               ),
-              Divider(height: 1, indent: 0),
+              const Divider(height: 1, indent: 0),
               Container(
                   color: Colors.grey[300],
                   alignment: Alignment.center,

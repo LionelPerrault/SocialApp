@@ -32,9 +32,9 @@ class ProfileAvatarandTabScreenState extends mvc
   double itemWidth = 0;
   var tap = 'Timeline';
   var userInfo = UserManager.userInfo;
-  late String avatar;
   double avatarProgress = 0;
   double coverProgress = 0;
+  String avatar = '';
   List<Map> mainTabList = [
     {'title': 'Timeline', 'icon': Icons.tab},
     {'title': 'Friends', 'icon': Icons.group_sharp},
@@ -48,9 +48,9 @@ class ProfileAvatarandTabScreenState extends mvc
   void initState() {
     super.initState();
     add(widget.con);
-    avatar = userInfo['avatar'];
-    print(avatar);
     con = controller as ProfileController;
+
+    avatar = con.userData['avatar'];
     _gotoHome();
   }
 
@@ -206,7 +206,7 @@ class ProfileAvatarandTabScreenState extends mvc
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${userInfo['firstName']} ${userInfo['lastName']}',
+          '${con.userData['firstName']} ${con.userData['lastName']}',
           style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,

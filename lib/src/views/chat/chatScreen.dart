@@ -29,8 +29,6 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
   bool check1 = false;
   bool check2 = false;
   late ChatController con;
-  var isMessageTap = '';
-  var hidden = true;
 
   @override
   void initState() {
@@ -55,9 +53,12 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                   width: 300,
                   duration: const Duration(milliseconds: 500),
                   margin: EdgeInsets.only(
-                      top: !hidden ? 85 : SizeConfig(context).screenHeight - 40,
+                      top: !con.hidden
+                          ? 85
+                          : SizeConfig(context).screenHeight - 40,
                       left: SizeConfig(context).screenWidth - 300),
-                  height: !hidden ? SizeConfig(context).screenHeight - 85 : 40,
+                  height:
+                      !con.hidden ? SizeConfig(context).screenHeight - 85 : 40,
                   curve: Curves.fastOutSlowIn,
                   decoration: BoxDecoration(
                     color: Colors.red,
@@ -90,17 +91,17 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                             cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () {
-                                if (isMessageTap == '') {
-                                  isMessageTap = 'all-list';
+                                if (con.isMessageTap == '') {
+                                  con.isMessageTap = 'all-list';
                                 }
-                                hidden = !hidden;
+                                con.hidden = !con.hidden;
                                 setState(() {});
                               },
                               child: Container(
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.only(left: 5),
                                 width: 50,
-                                child: hidden
+                                child: con.hidden
                                     ? Icon(
                                         Icons.arrow_drop_down,
                                         color: Colors.white,
@@ -115,8 +116,8 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                             cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () {
-                                if (isMessageTap != 'all-list') {
-                                  isMessageTap = 'all-list';
+                                if (con.isMessageTap != 'all-list') {
+                                  con.isMessageTap = 'all-list';
                                 }
                                 con.docId = '';
                                 setState(() {});
@@ -125,8 +126,8 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.only(left: 5),
                                   width: 30,
-                                  child: isMessageTap != 'all-list' &&
-                                          isMessageTap != ''
+                                  child: con.isMessageTap != 'all-list' &&
+                                          con.isMessageTap != ''
                                       ? Icon(Icons.arrow_back,
                                           size: 16, color: Colors.white)
                                       : Container()),
@@ -143,8 +144,8 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
-                              if (hidden) hidden = false;
-                              isMessageTap = 'new';
+                              if (con.hidden) con.hidden = false;
+                              con.isMessageTap = 'new';
                               con.docId = '';
                               setState(() {});
                             },
@@ -192,39 +193,39 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                         )
                       ]),
                     ),
-                    isMessageTap == ''
+                    con.isMessageTap == ''
                         ? Container()
-                        : isMessageTap == 'all-list'
+                        : con.isMessageTap == 'all-list'
                             ? ChatUserListScreen(onBack: (value) {
                                 print(value);
                                 if (value == 'hidden') {
-                                  hidden = hidden ? false : true;
+                                  con.hidden = con.hidden ? false : true;
                                 } else {
-                                  isMessageTap = value;
-                                  if (hidden == true) hidden = false;
+                                  con.isMessageTap = value;
+                                  if (con.hidden == true) con.hidden = false;
                                 }
                                 setState(() {});
                               })
-                            : isMessageTap == 'new'
+                            : con.isMessageTap == 'new'
                                 ? NewMessageScreen(
                                     onBack: (value) {
                                       if (value == true) {
                                         con.isShowEmoticon = value;
                                       } else {
-                                        isMessageTap = value;
+                                        con.isMessageTap = value;
                                       }
                                       setState(() {});
                                     },
                                   )
                                 : ChatMessageListScreen(
-                                    showWriteMessage: !hidden,
+                                    showWriteMessage: !con.hidden,
                                     onBack: (value) {
                                       con.isShowEmoticon = value;
                                       setState(() {});
                                     },
                                   )
                   ]))),
-              !hidden && con.isShowEmoticon
+              !con.hidden && con.isShowEmoticon
                   ? Container(
                       margin: EdgeInsets.only(
                           left: SizeConfig(context).screenWidth - 295,
@@ -250,8 +251,8 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                 size: 16,
               ),
               onPressed: () {
-                hidden = false;
-                isMessageTap = 'all-list';
+                con.hidden = false;
+                con.isMessageTap = 'all-list';
                 setState(() {});
               }),
           title: Text(

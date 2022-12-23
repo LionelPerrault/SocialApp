@@ -58,6 +58,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
           curve: Curves.easeOut,
         );
       });
+      print(con.docId);
       if (con.docId != '') {
         FirebaseFirestore.instance
             .collection(Helper.message)
@@ -102,68 +103,97 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                         ? Alignment.topLeft
                                         : Alignment.topRight),
                                     child: list['sender'] != me
-                                        ? Row(children: [
-                                            con.avatar == ''
-                                                ? CircleAvatar(
-                                                    radius: 22,
-                                                    child: SvgPicture.network(
-                                                        Helper.avatar),
-                                                  )
-                                                : CircleAvatar(
-                                                    radius: 22,
-                                                    backgroundImage:
-                                                        NetworkImage(
-                                                            con.avatar),
-                                                  ),
-                                            list['type'] == 'text'
-                                                ? Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 10, top: 5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        topRight:
-                                                            Radius.circular(15),
-                                                        bottomLeft:
-                                                            Radius.circular(15),
-                                                        bottomRight:
-                                                            Radius.circular(15),
+                                        ? Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                                con.avatar == ''
+                                                    ? CircleAvatar(
+                                                        radius: 22,
+                                                        child:
+                                                            SvgPicture.network(
+                                                                Helper.avatar),
+                                                      )
+                                                    : CircleAvatar(
+                                                        radius: 22,
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                                con.avatar),
                                                       ),
-                                                      color: (list['sender'] ==
-                                                              me
-                                                          ? Color.fromRGBO(
-                                                              219, 241, 255, 1)
-                                                          : Color.fromRGBO(242,
-                                                              246, 249, 1)),
-                                                    ),
-                                                    padding: EdgeInsets.all(10),
-                                                    child: Text(
-                                                      list['data'],
-                                                      style: TextStyle(
-                                                          fontSize: 13),
-                                                    ))
-                                                : Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 10, top: 5),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        topRight:
-                                                            Radius.circular(15),
-                                                        bottomLeft:
-                                                            Radius.circular(15),
-                                                        bottomRight:
-                                                            Radius.circular(15),
-                                                      ),
-                                                      child: Image.network(
-                                                        list['data'],
-                                                        width: 150,
-                                                      ),
-                                                    ),
-                                                  )
-                                          ])
+                                                list['type'] == 'text'
+                                                    ? Container(
+                                                        constraints:
+                                                            BoxConstraints(
+                                                                minWidth: 30,
+                                                                maxWidth: 200),
+                                                        margin: EdgeInsets.only(
+                                                          left: 10,
+                                                        ),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    15),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    15),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    15),
+                                                          ),
+                                                          color:
+                                                              (list['sender'] ==
+                                                                      me
+                                                                  ? Color
+                                                                      .fromRGBO(
+                                                                          219,
+                                                                          241,
+                                                                          255,
+                                                                          1)
+                                                                  : Color
+                                                                      .fromRGBO(
+                                                                          242,
+                                                                          246,
+                                                                          249,
+                                                                          1)),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.all(10),
+                                                        child: Text(
+                                                          list['data'],
+                                                          style: TextStyle(
+                                                              fontSize: 13),
+                                                        ))
+                                                    : Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 10, top: 5),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    15),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    15),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    15),
+                                                          ),
+                                                          child: Image.network(
+                                                            list['data'],
+                                                            width: 150,
+                                                          ),
+                                                        ),
+                                                      )
+                                              ])
                                         : list['type'] == 'text'
                                             ? Container(
+                                                constraints: BoxConstraints(
+                                                    minWidth: 30,
+                                                    maxWidth: 200),
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.only(

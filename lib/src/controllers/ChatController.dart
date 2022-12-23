@@ -31,11 +31,15 @@ class ChatController extends ControllerMVC {
   var docId = '';
   var newRFirstName = '';
   var newRLastName = '';
+  var newMessage = [];
   var chatId = '';
   var avatar = '';
+  var hidden = true;
   var onlineStatus = [];
   String chatUserFullName = '';
+  var notifyCount = 0;
   bool sendData = false;
+  List listUsers = [];
   var emojiList = <Widget>[];
   bool takedata = false;
   TextEditingController textController = TextEditingController();
@@ -81,6 +85,7 @@ class ChatController extends ControllerMVC {
         '$newRFirstName $newRLastName': 0
       }).then((value) async {
         docId = value.id;
+        chatUserFullName = '$newRFirstName $newRLastName';
         success = true;
         setState(() {});
         await FirebaseFirestore.instance
@@ -118,13 +123,8 @@ class ChatController extends ControllerMVC {
     return success;
   }
 
-  final chatCollection = FirebaseFirestore.instance
-      .collection(Helper.message)
-      .withConverter<ChatModel>(
-        fromFirestore: (snapshots, _) => ChatModel.fromJSON(snapshots.data()!),
-        toFirestore: (value, _) => value.toMap(),
-      );
-  Stream<QuerySnapshot<ChatModel>> getChatUsers() {
+  final chatCollection = FirebaseFirestore.instance.collection(Helper.message);
+  getChatUsers() {
     var stream = chatCollection
         .where('users', arrayContains: UserManager.userInfo['userName'])
         .snapshots();

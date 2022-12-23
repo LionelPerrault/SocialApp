@@ -186,12 +186,12 @@ class PeopleController extends ControllerMVC {
         .where('receiver', isEqualTo: userInfo['userName'])
         .get();
     var arr = [];
-    snapshot.docs.forEach((element) {
+    for (var element in snapshot.docs) {
       if (element['state'] == 0) {
         var j = {...element.data(), 'id': element.id};
         arr.add(j);
       }
-    });
+    }
     allRequestFriends = arr;
     requestFriends = arr;
   }
@@ -230,7 +230,7 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.friendField)
         .doc(id)
         .delete();
-    setState(() {});
+    await getReceiveRequestsFriends();
   }
 
   fieldSearch(Map search) async {

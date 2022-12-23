@@ -14,11 +14,12 @@ import '../../controllers/ProfileController.dart';
 
 class ProfileTimelineScreen extends StatefulWidget {
   Function onClick;
-  ProfileTimelineScreen({Key? key,required this.onClick})
+  ProfileTimelineScreen(
+      {Key? key, required this.onClick, required this.userName})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
-
+  String userName = '';
   @override
   State createState() => ProfileTimelineScreenState();
 }
@@ -37,82 +38,132 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   //
   var userInfo = UserManager.userInfo;
   List<Map> mainInfoList = [];
+  var userData = {};
+  String userName = '';
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
+    userName = widget.userName;
+    if (userName == '') {
+      userName = UserManager.userInfo['userName'];
+    }
+    if (userName == '') {
+      return;
+    }
+    userData = con.userData;
+    con.profile_cover = con.userData['profile_cover'] ?? '';
     mainInfoList = [
-      {'title':'Add your profile picture','add': UserManager.userInfo['avatar'] ==null ? false : true},
-      {'title':'Add your profile cover','add':con.profile_cover == '' ? false : true},
-      {'title':'Add your biography','add':UserManager.userInfo['about'] == null ? false : true},
-      {'title':'Add your birthdate','add':UserManager.userInfo['birthY'] == null ? false : true},
-      {'title':'Add your relationship','add':UserManager.userInfo['school'] == null ? false : true},
-      {'title':'Add your work info','add':UserManager.userInfo['workTitle'] == null ? false : true},
-      {'title':'Add your location info','add':UserManager.userInfo['current'] == null ? false : true},
-      {'title':'Add your education info','add':
-        UserManager.userInfo['school'] == null && UserManager.userInfo['class'] == null && UserManager.userInfo['major'] == null ? false : true},
+      {
+        'title': 'Add your profile picture',
+        'add': userData['profileImage'] == null ? false : true
+      },
+      {
+        'title': 'Add your profile cover',
+        'add': con.profile_cover == '' ? false : true
+      },
+      {
+        'title': 'Add your biography',
+        'add': userData['about'] == null ? false : true
+      },
+      {
+        'title': 'Add your birthdate',
+        'add': userData['birthY'] == null ? false : true
+      },
+      {
+        'title': 'Add your relationship',
+        'add': userData['school'] == null ? false : true
+      },
+      {
+        'title': 'Add your work info',
+        'add': userData['workTitle'] == null ? false : true
+      },
+      {
+        'title': 'Add your location info',
+        'add': userData['current'] == null ? false : true
+      },
+      {
+        'title': 'Add your education info',
+        'add': userData['school'] == null &&
+                userData['class'] == null &&
+                userData['major'] == null
+            ? false
+            : true
+      },
     ];
+
     _gotoHome();
   }
+
   late ProfileController con;
-  void _gotoHome(){
+  void _gotoHome() {
     Future.delayed(Duration.zero, () {
       width = SizeConfig(context).screenWidth - 260;
-      itemWidth = width/7.5;
+      itemWidth = width / 7.5;
       setState(() {});
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.only(right: 10,left: 70,top: 15),
-            child:SizeConfig(context).screenWidth < 800 ? 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:[
-                profileCompletion(),
-                MindPost()
-            ]
-              )
-            : Row(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.only(right: 10, left: 70, top: 15),
+      child: SizeConfig(context).screenWidth < 800
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [profileCompletion(), MindPost()])
+          : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:[
-                Container(
-                  height: (SizeConfig(context).screenHeight - SizeConfig.navbarHeight)/2,
-                  padding: EdgeInsets.only(bottom: 90),
-                  child: profileCompletion(),
-                ),
-                MindPost()
-            ]),
-        );
+              children: [
+                  Container(
+                    height: (SizeConfig(context).screenHeight -
+                            SizeConfig.navbarHeight) /
+                        2,
+                    padding: EdgeInsets.only(bottom: 90),
+                    child: profileCompletion(),
+                  ),
+                  MindPost()
+                ]),
+    );
   }
-  Widget profileCompletion(){
-    return 
-    Container(
-      padding: EdgeInsets.only(left:15,right: 15,top: 15,),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5))
-      ),
-      child: 
-        Column(
+
+  Widget profileCompletion() {
+    return Container(
+        padding: EdgeInsets.only(
+          left: 15,
+          right: 15,
+          top: 15,
+        ),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-        // children: <Widget>[
-        //     Text('\$', style: TextStyle(decoration: TextDecoration.lineThrough))
-        children: mainInfoList.map((e) =>Container(
-          padding: const EdgeInsets.only(top: 5),
-          child:
-          Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-          Icon(e['add'] ? Icons.check : Icons.add,size:15),
-          const Padding(padding: EdgeInsets.only(left: 5),),
-          Text(e['title'],style: e['add'] ? const TextStyle(decoration: TextDecoration.lineThrough) : const TextStyle(),)  
-        ],))).toList(),
-        
-    ));
+          // children: <Widget>[
+          //     Text('\$', style: TextStyle(decoration: TextDecoration.lineThrough))
+          children: mainInfoList
+              .map((e) => Container(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(e['add'] ? Icons.check : Icons.add, size: 15),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 5),
+                      ),
+                      Text(
+                        e['title'],
+                        style: e['add']
+                            ? const TextStyle(
+                                decoration: TextDecoration.lineThrough)
+                            : const TextStyle(),
+                      )
+                    ],
+                  )))
+              .toList(),
+        ));
   }
 }

@@ -23,7 +23,7 @@ class MyApp extends AppStatefulWidgetMVC {
   AppStateMVC createState() => _MyAppState();
 }
 
-class _MyAppState extends AppStateMVC<MyApp> {
+class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
   factory _MyAppState() => _this ??= _MyAppState._();
   _MyAppState._()
       : super(
@@ -34,20 +34,38 @@ class _MyAppState extends AppStateMVC<MyApp> {
   @override
   void initState() {
     super.initState();
-
+    WidgetsBinding.instance.addObserver(this);
     if (kIsWeb) {
-      html.window.onUnload.listen((event) async {
-        event.preventDefault();
-        Helper.makeOffline();
-      });
+      // FlutterWindowClose.setWindowShouldCloseHandler();
+
+      // html.window.onUnload.listen((event) async {
+      //   event.preventDefault();
+      //   Helper.makeOffline();
+      // });
       return;
     }
 
-    FlutterWindowClose.setWindowShouldCloseHandler(() async {
-      Helper.makeOffline();
+    // FlutterWindowClose.setWindowShouldCloseHandler(() async {
+    //   Helper.makeOffline();
 
-      return false;
-    });
+    //   return false;
+    // });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      print(3333);
+    } else {
+      Helper.makeOffline();
+    }
   }
 
   Widget createApp() {

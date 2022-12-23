@@ -1,8 +1,12 @@
+import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shnatter/src/controllers/ChatController.dart';
+import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
@@ -47,7 +51,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late TextEditingController searhCon;
   late FocusNode searchFocusNode;
+  var userInfo = UserManager.userInfo;
   bool onHover = false;
+  var chatCon = ChatController();
+  var peopleCon = PeopleController();
   //
   @override
   void initState() {
@@ -56,6 +63,60 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     searchFocusNode.addListener(() {
       widget.onSearchBarFocus();
     });
+    Future.delayed(const Duration(milliseconds: 5), () async {
+      await PeopleController().getReceiveRequests();
+      setState(() {});
+    });
+    final Stream<QuerySnapshot> friendStrem = FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .where('receiver', isEqualTo: userInfo['userName'])
+        .snapshots();
+    friendStrem.listen((event) {
+      var arr = [];
+      for (int i = 0; i < event.docs.length; i++) {
+        var data = event.docs[i].data() as Map;
+        if (data['state'] == 0) {
+          var j = {...data, 'id': event.docs[i].id};
+          arr.add(j);
+        }
+      }
+      peopleCon.allRequestFriends = arr;
+      peopleCon.requestFriends = arr;
+      setState(() {});
+    });
+
+    final Stream<QuerySnapshot> messageStrem = FirebaseFirestore.instance
+        .collection(Helper.message)
+        .where('users', arrayContains: userInfo['userName'])
+        .snapshots();
+    messageStrem.listen(
+      (value) {
+        var message = [];
+        var count = 0;
+        for (int i = 0; i < value.docs.length; i++) {
+          var docs = value.docs[i].data() as Map;
+          var s = docs['users']
+              .where((val) => val != userInfo['userName'])
+              .toList();
+          if (docs[docs[s[0]]['name']] != null &&
+              docs[docs[s[0]]['name']] != 0) {
+            count += int.parse(docs[docs[s[0]]['name']].toString());
+            message.add({
+              'avatar': docs[s[0]]['avatar'],
+              'name': docs[s[0]]['name'],
+              'userName': s[0],
+              'lastData': docs['lastData'],
+              'id': value.docs[i].id
+            });
+          }
+        }
+        chatCon.notifyCount = count;
+        chatCon.newMessage = message;
+        setState(
+          () {},
+        );
+      },
+    );
     super.initState();
   }
 
@@ -178,19 +239,38 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     Container(
                       padding: EdgeInsets.only(right: 9.0),
                       child: CustomPopupMenu(
-                          menuBuilder: () => ShnatterFriendRequest(),
+                          menuBuilder: () => ShnatterFriendRequest(
+                                onClick: () {
+                                  setState(() {});
+                                },
+                              ),
                           pressType: PressType.singleClick,
                           verticalMargin: -10,
-                          child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.group,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          )),
+                          child: Row(children: [
+                            SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.group,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
+                            peopleCon.requestFriends.isEmpty
+                                ? SizedBox()
+                                : Badge(
+                                    toAnimate: false,
+                                    shape: BadgeShape.square,
+                                    badgeColor: Colors.deepPurple,
+                                    borderRadius: BorderRadius.circular(8),
+                                    badgeContent: Text(
+                                        peopleCon.requestFriends.length
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 13)),
+                                  ),
+                          ])),
                     ),
                     Container(
                       padding: EdgeInsets.all(9.0),
@@ -198,16 +278,30 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           menuBuilder: () => ShnatterMessage(),
                           pressType: PressType.singleClick,
                           verticalMargin: -10,
-                          child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.message,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          )),
+                          child: Row(children: [
+                            SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.message,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
+                            chatCon.notifyCount == 0
+                                ? SizedBox()
+                                : Badge(
+                                    toAnimate: false,
+                                    shape: BadgeShape.square,
+                                    badgeColor: Colors.deepPurple,
+                                    borderRadius: BorderRadius.circular(8),
+                                    badgeContent: Text(
+                                        chatCon.notifyCount.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 13)),
+                                  ),
+                          ])),
                     ),
                     Container(
                       padding: EdgeInsets.all(9.0),
@@ -425,19 +519,42 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     Container(
                       padding: EdgeInsets.only(right: 9.0),
                       child: CustomPopupMenu(
-                          menuBuilder: () => ShnatterFriendRequest(),
+                          menuBuilder: () => ShnatterFriendRequest(
+                                onClick: () {
+                                  setState(() {});
+                                },
+                              ),
                           pressType: PressType.singleClick,
                           verticalMargin: -10,
-                          child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.group,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          )),
+                          child: Row(children: [
+                            SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.group,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
+                            peopleCon.requestFriends.isEmpty
+                                ? const SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 3),
+                                    child: Badge(
+                                      toAnimate: false,
+                                      shape: BadgeShape.square,
+                                      badgeColor: Colors.deepPurple,
+                                      borderRadius: BorderRadius.circular(8),
+                                      badgeContent: Text(
+                                          peopleCon.requestFriends.length
+                                              .toString(),
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13)),
+                                    ),
+                                  )
+                          ])),
                     ),
                     Container(
                       padding: EdgeInsets.all(9.0),
@@ -445,16 +562,34 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           menuBuilder: () => ShnatterMessage(),
                           pressType: PressType.singleClick,
                           verticalMargin: -10,
-                          child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.message,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          )),
+                          child: Row(children: [
+                            SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.message,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
+                            const Padding(padding: EdgeInsets.only(left: 3)),
+                            chatCon.notifyCount == 0
+                                ? const SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 3),
+                                    child: Badge(
+                                      toAnimate: true,
+                                      shape: BadgeShape.square,
+                                      badgeColor: Colors.deepPurple,
+                                      borderRadius: BorderRadius.circular(8),
+                                      badgeContent: Text(
+                                          chatCon.notifyCount.toString(),
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13)),
+                                    )),
+                          ])),
                     ),
                     Container(
                       padding: EdgeInsets.all(9.0),
