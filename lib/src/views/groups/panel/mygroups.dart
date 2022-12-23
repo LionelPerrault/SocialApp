@@ -77,7 +77,7 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
                           getGroupNow();
                         });
                       },
-                      picture: 'null',
+                      picture: group['data']['groupPicture'],
                       status: false,
                       joins: group['data']['groupJoined'].length,
                       header: group['data']['groupName'],

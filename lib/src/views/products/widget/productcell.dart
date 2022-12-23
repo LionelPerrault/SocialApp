@@ -49,14 +49,22 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
         'text':
             product['productMarkAsSold'] ? 'Mark as Available' : 'Mark as Sold',
         'onTap': () {
-          con.productMarkAsSold(productId, !product['productMarkAsSold']);
+          con
+              .productMarkAsSold(productId, !product['productMarkAsSold'])
+              .then((value) => {
+                    con.getProduct().then((value) => {setState((() {}))})
+                  });
         },
       },
       {
         'icon': product['productMarkAsSold'] ? Icons.bookmark : Icons.bookmark,
         'text': product['productMarkAsSold'] ? 'UnSave Post' : 'Save Post',
         'onTap': () {
-          con.productSavePost(productId, !product['productMarkAsSold']);
+          con
+              .productSavePost(productId, !product['productMarkAsSold'])
+              .then((value) => {
+                    con.getProduct().then((value) => {setState(() {})})
+                  });
         },
       },
       {
@@ -74,7 +82,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                   title: Row(
                     children: const [
                       Icon(
-                        Icons.add_circle,
+                        Icons.production_quantity_limits_sharp,
                         color: Color.fromARGB(255, 33, 150, 243),
                       ),
                       Text(
@@ -93,7 +101,9 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
         'icon': Icons.delete,
         'text': 'Delete Post',
         'onTap': () {
-          con.productDelete(productId);
+          con.productDelete(productId).then((value) => {
+                con.getProduct().then((value) => {setState((() {}))})
+              });
         },
       },
       {
@@ -102,7 +112,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             ? 'Hide from Timeline'
             : 'Allow on Timeline',
         'onTap': () {
-          con.productHideFromTimeline(productId, !product['productTimeline']);
+          con
+              .productHideFromTimeline(productId, !product['productTimeline'])
+              .then((value) => {
+                    con.getProduct().then((value) => {setState((() {}))})
+                  });
         },
       },
       {
@@ -111,7 +125,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             ? 'Turn off Commenting'
             : 'Trun on Commenting',
         'onTap': () {
-          con.productTurnOffCommenting(productId, !product['productTimeline']);
+          con
+              .productTurnOffCommenting(productId, !product['productTimeline'])
+              .then((value) =>
+                  con.getProduct().then((value) => {setState((() {}))}));
         },
       },
       {
@@ -181,7 +198,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                   Container(
                                     width: SizeConfig(context).screenWidth < 600
                                         ? SizeConfig(context).screenWidth - 225
-                                        : 375,
+                                        : 370,
                                     child: Text(
                                       ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
                                       style: TextStyle(fontSize: 14),

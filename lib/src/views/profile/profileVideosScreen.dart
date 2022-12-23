@@ -22,7 +22,7 @@ class ProfileVideosScreen extends StatefulWidget {
   State createState() => ProfileVideosScreenState();
 }
 
-class ProfileVideosScreenState extends mvc.StateMVC<ProfileVideosScreen>{
+class ProfileVideosScreenState extends mvc.StateMVC<ProfileVideosScreen> {
   var userInfo = UserManager.userInfo;
   @override
   void initState() {
@@ -30,49 +30,56 @@ class ProfileVideosScreenState extends mvc.StateMVC<ProfileVideosScreen>{
     add(widget.con);
     con = controller as ProfileController;
   }
+
   late ProfileController con;
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      mainTabs(),
-      videosData()
-    ]);
+    return Column(children: [mainTabs(), videosData()]);
   }
-  Widget mainTabs(){
+
+  Widget mainTabs() {
     return Container(
-          width: SizeConfig(context).screenWidth ,
-          height: 100,
-          margin: const EdgeInsets.only(left: 30,right: 30),
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(240, 240, 240, 1),
-            borderRadius: BorderRadius.circular(3),
-          ),
-          alignment: Alignment.topLeft,
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left:20,top: 20),
-                child: Row(children: const [
-                  Icon(Icons.video_call,size: 15,),
-                  Padding(padding: EdgeInsets.only(left: 5)),
-                  Text('Videos',style: TextStyle(
-                    fontSize: 15
-                  ),)
-                ],)
-              ),
-            ],
-          ),
-      );
-  }
-  Widget videosData(){
-    return userInfo['videos'] == null ? Container(
+      width: SizeConfig(context).screenWidth,
+      height: 70,
       margin: const EdgeInsets.only(left: 30, right: 30),
-      height: SizeConfig(context).screenHeight * 0.2,
-      color: Colors.white,
-      alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have videos',style:const TextStyle(
-        color: Color.fromRGBO(108, 117, 125, 1)
-      )),
-    ) : Container();
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(240, 240, 240, 1),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      alignment: Alignment.topLeft,
+      child: Column(
+        children: [
+          Container(
+              margin: const EdgeInsets.only(left: 20, top: 20),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.video_call,
+                    size: 15,
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 5)),
+                  Text(
+                    'Videos',
+                    style: TextStyle(fontSize: 15),
+                  )
+                ],
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget videosData() {
+    return userInfo['videos'] == null
+        ? Container(
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            height: SizeConfig(context).screenHeight * 0.2,
+            color: Colors.white,
+            alignment: Alignment.center,
+            child: Text('${userInfo['fullName']} doesn`t have videos',
+                style:
+                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
+          )
+        : Container();
   }
 }

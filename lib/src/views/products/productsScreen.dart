@@ -204,7 +204,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                                                     children: const [
                                                                       Icon(
                                                                         Icons
-                                                                            .add_circle,
+                                                                            .production_quantity_limits_sharp,
                                                                         color: Color.fromARGB(
                                                                             255,
                                                                             33,

@@ -28,7 +28,6 @@ class EventAvatarandTabScreen extends StatefulWidget {
 class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
-  double width = 0;
   double itemWidth = 0;
   var tap = 'Timeline';
   var userInfo = UserManager.userInfo;
@@ -44,6 +43,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
   var interestedStatus = false;
   var goingStatus = false;
   var selectedEvent = {};
+  var date;
   @override
   void initState() {
     super.initState();
@@ -51,16 +51,16 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     con = controller as PostController;
     _gotoHome();
     if (UserManager.userInfo['userName'] ==
-        con.event['eventAdmin']['userName']) {
+        con.event['eventAdmin'][0]['userName']) {
       mainTabList.add({'title': 'Settings', 'icon': Icons.settings});
     }
+    date = con.event['eventStartDate'].split('-');
   }
 
   late PostController con;
   var userCon = UserController();
   void _gotoHome() {
     Future.delayed(Duration.zero, () {
-      width = SizeConfig(context).screenWidth - 260;
       itemWidth = 100;
       setState(() {});
     });
@@ -146,20 +146,20 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
-                      'data',
-                      style: TextStyle(
+                      date[1],
+                      style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 17,
+                          fontSize: 25,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'data',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold),
+                      date[2],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                      ),
                     ),
                   ],
                 )),
@@ -167,6 +167,8 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               padding: EdgeInsets.only(left: 10),
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -192,9 +194,12 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                 ),
                 Row(
                   children: [
-                    Text('data'),
-                    Text('data'),
-                    Text('data'),
+                    const Icon(
+                      Icons.punch_clock,
+                      color: Colors.white,
+                    ),
+                    Text('${con.event['eventStartDate']} to'),
+                    Text('${con.event['eventEndDate']}'),
                   ],
                 )
               ],
@@ -423,20 +428,16 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
         uploadTask.whenComplete(() async {
           var downloadUrl = await _reference.getDownloadURL();
           if (type == 'profile_cover') {
-            FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(UserManager.userInfo['uid'])
-                .update({'profile_cover': downloadUrl}).then((e) async {
-              con.event['eventPicture'] = downloadUrl;
-              await Helper.saveJSONPreference(Helper.userField,
-                  {...userInfo, 'profile_cover': downloadUrl});
-              setState(() {});
-            });
-          } else {
-            userCon.userAvatar = downloadUrl;
-            await userCon.changeAvatar();
-            avatar = downloadUrl;
-            setState(() {});
+            con.updateEventInfo({
+              'eventPicture': downloadUrl,
+            }).then(
+              (value) => {
+                con
+                    .getSelectedEvent(con.viewEventId)
+                    .then((value) => {setState(() {})}),
+                Helper.showToast(value),
+              },
+            );
           }
         });
         uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {

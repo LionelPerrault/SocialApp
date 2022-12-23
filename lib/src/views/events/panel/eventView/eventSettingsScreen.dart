@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
@@ -32,6 +34,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   var eventInterests;
   var userInfo = UserManager.userInfo;
   var eventSettingTab = 'Event Settings';
+  Map<String, dynamic> eventInfo = {};
   List<Map> list = [
     {
       'text': 'Event Settings',
@@ -129,7 +132,10 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                     child: customInput(
                       title: 'Name Your Event',
                       controller: eventNameController,
-                      onChange: (value) {},
+                      onChange: (value) {
+                        eventInfo['eventName'] = value;
+                        setState(() {});
+                      },
                     ),
                   )
                 ],
@@ -144,7 +150,10 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                     child: customInput(
                       title: 'Location',
                       controller: eventLocationController,
-                      onChange: (value) {},
+                      onChange: (value) {
+                        eventInfo['eventLocation'] = value;
+                        setState(() {});
+                      },
                     ),
                   )
                 ],
@@ -156,12 +165,36 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 children: [
                   Container(
                     width: 400,
-                    child: customInput(
+                    child: customDateInput(
                       title: 'Start Date',
                       controller: eventStartDController,
-                      onChange: (value) {},
+                      onChange: (value) async {},
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(), //get today's date
+                            firstDate: DateTime(
+                                2000), //DateTime.now() - not to allow to choose before today.
+                            lastDate: DateTime(2101));
+                        if (pickedDate != null) {
+                          print(
+                              pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                          String formattedDate = DateFormat('yyyy-MM-dd').format(
+                              pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                          print(
+                              formattedDate); //formatted date output using intl package =>  2022-07-04
+                          //You can format date as per your need
+
+                          setState(() {
+                            eventStartDController.text = formattedDate;
+                            eventInfo['eventStartDate'] = formattedDate;
+                          });
+                        } else {
+                          print("Date is not selected");
+                        }
+                      },
                     ),
-                  )
+                  ),
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 15)),
@@ -171,12 +204,36 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 children: [
                   Container(
                     width: 400,
-                    child: customInput(
+                    child: customDateInput(
                       title: 'End Date',
                       controller: eventEndDController,
-                      onChange: (value) {},
+                      onChange: (value) async {},
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(), //get today's date
+                            firstDate: DateTime(
+                                2000), //DateTime.now() - not to allow to choose before today.
+                            lastDate: DateTime(2101));
+                        if (pickedDate != null) {
+                          print(
+                              pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                          String formattedDate = DateFormat('yyyy-MM-dd').format(
+                              pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                          print(
+                              formattedDate); //formatted date output using intl package =>  2022-07-04
+                          //You can format date as per your need
+
+                          setState(() {
+                            eventInfo['eventEndDate'] = formattedDate;
+                            eventEndDController.text = formattedDate;
+                          });
+                        } else {
+                          print("Date is not selected");
+                        }
+                      },
                     ),
-                  )
+                  ),
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 15)),
@@ -274,6 +331,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                     ],
                                     onChanged: (value) {
                                       eventPrivacy = value;
+                                      eventInfo['eventPrivacy'] = value;
                                       setState(() {});
                                     },
                                     icon: const Padding(
@@ -306,7 +364,10 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                     child: customTextarea(
                       title: 'About',
                       controller: eventAboutController,
-                      onChange: (value) {},
+                      onChange: (value) {
+                        eventInfo['eventAbout'] = value;
+                        setState(() {});
+                      },
                     ),
                   )
                 ],
@@ -319,16 +380,21 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: privacySelect(
-                            'Members Can Publish Posts?',
-                            'Members can publish posts or only group admins',
-                            canPub,
-                            (value) {
-                              canPub = value;
-                              setState(() {});
-                            },
-                          )),
+                        flex: 1,
+                        child: privacySelect(
+                          'Members Can Publish Posts?',
+                          'Members can publish posts or only group admins',
+                          canPub,
+                          (value) {
+                            setState(
+                              () {
+                                canPub = value;
+                                eventInfo['eventCanPub'] = value;
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -341,30 +407,26 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: privacySelect(
-                              'Post Approval',
-                              'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
-                              approval, (value) {
-                            approval = value;
-                            setState(() {});
-                          })),
+                        flex: 1,
+                        child: privacySelect(
+                          'Post Approval',
+                          'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
+                          approval,
+                          (value) {
+                            setState(() {
+                              approval = value;
+                              eventInfo['eventApproval'] = value;
+                            });
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ],
               ),
             ]),
           ),
-          footerWidget({
-            'eventName': eventNameController.text,
-            'eventLocation': eventLocationController.text,
-            'eventStartDate': eventStartDController.text,
-            'eventEndDate': eventEndDController.text,
-            'eventPrivacy': eventPrivacy,
-            'eventAbout': eventAboutController.text,
-            'eventCanPub': canPub,
-            'eventApproval': approval,
-          })
+          footerWidget(eventInfo)
         ],
       ),
     );
@@ -533,6 +595,12 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                     setState(() {});
                     con.updateEventInfo(updateData).then(
                           (value) => {
+                            con
+                                .getSelectedEvent(con.viewEventId)
+                                .then((value) => {
+                                      setState(() {}),
+                                    }),
+                            Helper.showToast(value),
                             footerBtnState = false,
                             setState(() {}),
                           },
@@ -635,7 +703,9 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
           height: 40,
           child: TextField(
             controller: controller,
-            onChanged: onChange,
+            onChanged: (value) {
+              onChange(value);
+            },
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10, left: 10),
               border: OutlineInputBorder(),
@@ -668,6 +738,39 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
             minLines: 5,
             controller: controller,
             onChanged: onChange,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget customDateInput({title, onChange, controller, onTap}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        Container(
+          height: 40,
+          child: TextField(
+            controller: controller,
+            onChanged: onChange,
+            onTap: () async {
+              onTap();
+            },
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10, left: 10),
               border: OutlineInputBorder(),

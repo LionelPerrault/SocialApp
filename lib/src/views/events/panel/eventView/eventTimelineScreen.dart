@@ -27,6 +27,13 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   late AnimationController _drawerSlideController;
   double width = 0;
   double itemWidth = 0;
+  List<Map> sampleData = [
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
+    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature}
+  ];
   //
   @override
   void initState() {
@@ -81,7 +88,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                     : con.event['eventPrivacy'] == 'security'
                         ? Icons.lock
                         : Icons.lock_open_rounded,
-                color: Colors.grey,
+                color: Colors.black,
               ),
               text: con.event['eventPrivacy'] == 'public'
                   ? 'Public Event'
@@ -90,10 +97,11 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                       : 'Closed Event'),
           eventInfoCell(
               icon: Icon(Icons.punch_clock),
-              text: '${con.event["eventDate"]} ${con.event["eventEndDate"]}'),
+              text:
+                  '${con.event["eventStartDate"]} to ${con.event["eventEndDate"]}'),
           eventInfoCell(
               icon: Icon(Icons.person),
-              text: 'Hosted by ${con.event["eventAdmin"]["fullName"]}'),
+              text: 'Hosted by ${con.event["eventAdmin"][0]["fullName"]}'),
           eventInfoCell(icon: Icon(Icons.sell), text: 'B/N'),
           eventInfoCell(
               icon: Icon(Icons.maps_ugc),
@@ -111,6 +119,8 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
           eventInfoCell(
               icon: Icon(Icons.event),
               text: '${con.event["eventInvited"].length} Invited'),
+          const Padding(padding: EdgeInsets.only(top: 30)),
+          friendInvites(),
         ],
       ),
     );
@@ -127,6 +137,141 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
           style: const TextStyle(fontSize: 13),
         )
       ]),
+    );
+  }
+
+  @override
+  Widget groupInfoCell({icon, text}) {
+    return Container(
+      margin: const EdgeInsets.all(3),
+      child: Row(children: [
+        icon,
+        const Padding(padding: EdgeInsets.only(left: 10)),
+        Text(
+          text,
+          style: const TextStyle(fontSize: 13),
+        )
+      ]),
+    );
+  }
+
+  @override
+  Widget friendInvites() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(3),
+      child: Container(
+          width: SizeConfig.rightPaneWidth,
+          // color: Colors.white,
+          padding: const EdgeInsets.all(5),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(Icons.person_add_alt_sharp),
+                  const Padding(padding: EdgeInsets.only(left: 3)),
+                  const Text(
+                    "Invite Friends",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  Row(children: [
+                    const Text(
+                      'See All',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ])
+                ],
+              ),
+              const Divider(
+                height: 1,
+                //thickness: 5,
+                //indent: 20,
+                //endIndent: 0,
+                //color: Colors.black,
+              ),
+              AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  height: 260,
+                  curve: Curves.fastOutSlowIn,
+                  child: SizedBox(
+                    //size: Size(100,100),
+                    child: ListView.separated(
+                      itemCount: sampleData.length,
+                      itemBuilder: (context, index) => Material(
+                          child: ListTile(
+                              onTap: () {
+                                print("tap!");
+                              },
+                              hoverColor:
+                                  const Color.fromARGB(255, 243, 243, 243),
+                              // tileColor: Colors.white,
+                              enabled: true,
+                              leading: const CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
+                              ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        child: Text(
+                                          sampleData[index]['name'],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11),
+                                        ),
+                                      ),
+                                      Container(
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color.fromARGB(
+                                                          255, 33, 37, 41),
+                                                  elevation: 3,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              2.0)),
+                                                  minimumSize:
+                                                      const Size(65, 30),
+                                                  maximumSize:
+                                                      const Size(65, 30)),
+                                              onPressed: () {
+                                                () => {};
+                                              },
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                    Icons
+                                                        .person_add_alt_rounded,
+                                                    color: Colors.white,
+                                                    size: 15.0,
+                                                  ),
+                                                  Text('Add',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
+                                              ))),
+                                    ],
+                                  )
+                                ],
+                              ))),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
+                        height: 1,
+                        endIndent: 10,
+                      ),
+                    ),
+                  ))
+            ],
+          )),
     );
   }
 }

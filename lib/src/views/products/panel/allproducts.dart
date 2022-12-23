@@ -22,6 +22,7 @@ class AllProducts extends StatefulWidget {
 class AllProductsState extends mvc.StateMVC<AllProducts> {
   late PostController con;
   var userInfo = UserManager.userInfo;
+  var roundFlag = true;
   @override
   void initState() {
     add(widget.con);
@@ -33,7 +34,12 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
   }
 
   void getProductNow() {
-    con.getProduct();
+    con.getProduct().then(
+          (value) => {
+            roundFlag = false,
+            setState(() => {}),
+          },
+        );
   }
 
   @override
@@ -47,7 +53,7 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
-            child: con.allProduct.isEmpty
+            child: roundFlag
                 ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
                       width: 50,
