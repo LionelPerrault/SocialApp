@@ -64,7 +64,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
     if (userName == '') {
       userName = userInfo['userName'];
     }
-    print('sdf${widget.userName}');
+    print('this is profile username:${widget.userName}');
     FirebaseFirestore.instance
         .collection(Helper.userField)
         .where('userName', isEqualTo: userName)

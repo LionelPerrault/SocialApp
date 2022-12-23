@@ -35,7 +35,7 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
   }
 
   void getEventNow() {
-    con.getEvent('going').then((value) => {
+    con.getEvent('going', UserManager.userInfo['userName']).then((value) => {
           returnValue = value,
           goingEvents = value,
         });

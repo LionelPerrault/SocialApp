@@ -35,10 +35,12 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   }
 
   void getEventNow() {
-    con.getEvent('interested').then((value) => {
-          interestedEvents = value,
-          print(returnValue),
-        });
+    con
+        .getEvent('interested', UserManager.userInfo['userName'])
+        .then((value) => {
+              interestedEvents = value,
+              print(returnValue),
+            });
   }
 
   @override

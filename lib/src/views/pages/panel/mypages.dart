@@ -34,7 +34,7 @@ class MyPagesState extends mvc.StateMVC<MyPages> {
   }
 
   void getPageNow() {
-    con.getPage('manage').then((value) => {
+    con.getPage('manage', UserManager.userInfo['userName']).then((value) => {
           myPages = value,
           print(myPages),
           setState(() {}),
