@@ -53,7 +53,7 @@ class AdminShnatterNavigationState
 
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+    return SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
         ? buildLargeSize()
         : buildSmallSize();
   }
@@ -77,7 +77,7 @@ class AdminShnatterNavigationState
                 Row(
                   children: [
                     Container(
-                        padding: const EdgeInsets.only(right: 0),
+                        padding: const EdgeInsets.only(right: 0, left: 10),
                         child: ElevatedButton(
                             onPressed: () {
                               widget.drawClicked();
