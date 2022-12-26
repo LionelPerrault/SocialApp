@@ -146,7 +146,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+    return SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
         ? buildLargeSize()
         : buildSmallSize();
   }
@@ -169,7 +169,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 Row(
                   children: [
                     Container(
-                        padding: const EdgeInsets.only(right: 0),
+                        padding: const EdgeInsets.only(right: 0, left: 10),
                         child: ElevatedButton(
                             onPressed: () {
                               widget.drawClicked();
@@ -195,7 +195,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     Container(
                         padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            onHomeClicked();
+                          },
                           style: ButtonStyle(
                             minimumSize:
                                 MaterialStateProperty.all(Size(30, 30)),
@@ -363,9 +365,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                       UserManager.userInfo['userName']);
                                 },
                                 value: Menu.itemProfile,
-                                child: GestureDetector(
+                                child: InkWell(
                                     onTap: () {
-                                      print(34);
+                                      Navigator.pushReplacementNamed(context,
+                                          '/${UserManager.userInfo['userName']}');
                                     },
                                     child: const Text('Profile'))),
                             PopupMenuItem<Menu>(
