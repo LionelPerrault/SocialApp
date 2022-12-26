@@ -68,7 +68,7 @@ class ChatController extends ControllerMVC {
       success = false;
     }
     if (newOrNot == 'new') {
-      await FirebaseFirestore.instance.collection(Helper.message).add({
+      await Helper.messageCollection.add({
         'users': [UserManager.userInfo['userName'], chattingUser],
         UserManager.userInfo['userName']: {
           'name':
@@ -88,11 +88,7 @@ class ChatController extends ControllerMVC {
         chatUserFullName = '$newRFirstName $newRLastName';
         success = true;
         setState(() {});
-        await FirebaseFirestore.instance
-            .collection(Helper.message)
-            .doc(value.id)
-            .collection('content')
-            .add({
+        await Helper.messageCollection.doc(value.id).collection('content').add({
           'type': messageType,
           'sender': UserManager.userInfo['userName'],
           'receiver': chattingUser,
@@ -102,16 +98,12 @@ class ChatController extends ControllerMVC {
       });
     } else {
       success = true;
-      FirebaseFirestore.instance.collection(Helper.message).doc(docId).update({
+      Helper.messageCollection.doc(docId).update({
         'lastData': data,
         '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}':
             FieldValue.increment(1)
       });
-      FirebaseFirestore.instance
-          .collection(Helper.message)
-          .doc(docId)
-          .collection('content')
-          .add({
+      Helper.messageCollection.doc(docId).collection('content').add({
         'type': messageType,
         'sender': UserManager.userInfo['userName'],
         'receiver': chattingUser,
@@ -123,7 +115,7 @@ class ChatController extends ControllerMVC {
     return success;
   }
 
-  final chatCollection = FirebaseFirestore.instance.collection(Helper.message);
+  final chatCollection = Helper.messageCollection;
   getChatUsers() {
     var stream = chatCollection
         .where('users', arrayContains: UserManager.userInfo['userName'])

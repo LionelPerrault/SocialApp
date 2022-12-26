@@ -1,8 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PeopleController.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
@@ -23,40 +25,16 @@ class ShnatterEventSuggest extends StatefulWidget {
 class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
   //
   bool isSound = true;
-  List<Map> sampleData = [
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Interested',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Interested',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Interested',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Interested',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Interested',
-      'icon': Icons.nature
-    }
-  ];
+  var con = PostController();
+  var userInfo = UserManager.userInfo;
+  var isJoining = {};
   @override
   void initState() {
+    Future.delayed(const Duration(microseconds: 0), () async {
+      con.unInterestedEvents =
+          await con.getEvent('unInterested', userInfo['userName']);
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -119,74 +97,89 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                   child: SizedBox(
                     //size: Size(100,100),
                     child: ListView.separated(
-                      itemCount: sampleData.length,
+                      itemCount: con.unInterestedEvents.length,
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
-                              onTap: () {
-                                print("tap!");
-                              },
-                              hoverColor: const Color.fromARGB(255, 243, 243, 243),
-                              enabled: true,
-                              leading: CircleAvatar(
+                        contentPadding:
+                            const EdgeInsets.only(left: 10, right: 10),
+                        leading: Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: CircleAvatar(
+                                radius: 17,
                                 backgroundImage: NetworkImage(
-                                    "https://test.shnatter.com/content/themes/default/images/blank_event.jpg"),
-                              ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 65,
-                                        alignment: Alignment.topLeft,
-                                        child: Column(children: [
-                                          Text(
-                                            sampleData[index]['name'],
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12),
-                                          ),
-                                          Text(sampleData[index]['subname'],
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 10)),
-                                        ]),
-                                      ),
-                                      Container(
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.white,
-                                                elevation: 3,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(2.0)),
-                                                minimumSize: new Size(100, 35),
-                                                maximumSize: new Size(100, 35),
-                                              ),
-                                              onPressed: () {
-                                                () => {};
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.star,
-                                                    color: Color.fromARGB(
-                                                        255, 33, 37, 41),
-                                                    size: 18.0,
-                                                  ),
-                                                  Text('Interested',
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 33, 37, 41),
-                                                          fontSize: 11,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ],
-                                              ))),
-                                    ],
+                                    con.unInterestedEvents[index]['data']
+                                                ['eventPicture'] ==
+                                            ''
+                                        ? Helper.blankEvent
+                                        : con.unInterestedEvents[index]['data']
+                                            ['eventPicture']))),
+                        title: Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              con.unInterestedEvents[index]['data']
+                                  ['eventName'],
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 11),
+                            )),
+                        subtitle: Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${con.unInterestedEvents[index]['data']['eventInterested'].length} Interested',
+                              style: const TextStyle(fontSize: 10),
+                            )),
+                        trailing: ElevatedButton(
+                            onPressed: () async {
+                              isJoining[index] = true;
+                              setState(() {});
+                              con
+                                  .interestedEvent(
+                                      con.unInterestedEvents[index]['id'])
+                                  .then((value) async {
+                                con.unInterestedEvents = await con.getEvent(
+                                    'unInterested', userInfo['userName']);
+                                isJoining[index] = false;
+                                setState(() {});
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2.0)),
+                                minimumSize:
+                                    isJoining[index] != null && isJoining[index]
+                                        ? const Size(60, 35)
+                                        : const Size(90, 35),
+                                maximumSize:
+                                    isJoining[index] != null && isJoining[index]
+                                        ? const Size(60, 35)
+                                        : const Size(90, 35)),
+                            child: isJoining[index] != null && isJoining[index]
+                                ? const SizedBox(
+                                    width: 10,
+                                    height: 10,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                    ),
                                   )
-                                ],
-                              ))),
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.black,
+                                        size: 18.0,
+                                      ),
+                                      Text(' Interested',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w900)),
+                                    ],
+                                  )),
+                      )),
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
                         height: 1,

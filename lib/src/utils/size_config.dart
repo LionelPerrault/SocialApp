@@ -12,7 +12,7 @@ class SizeConfig {
   static const leftBarAdminWidth = 250.0;
   static const navbarHeight = 68.0;
   //static const mainPaneWidth = 300.0;
-  static const rightPaneWidth = 270.0;
+  static const rightPaneWidth = 250.0;
   SizeConfig(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;

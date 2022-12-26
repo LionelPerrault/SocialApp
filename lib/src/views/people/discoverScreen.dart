@@ -184,7 +184,18 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                             padding: EdgeInsets.only(top: 6),
                                             child: ElevatedButton(
                                                 onPressed: () async {
-                                                  requestFriends(e);
+                                                  con.isFriendRequest[e.key] =
+                                                      true;
+                                                  setState(() {});
+                                                  await con.requestFriend(
+                                                      e.value['userName'],
+                                                      '${e.value['firstName']} ${e.value['lastName']}',
+                                                      e.value['avatar'],
+                                                      e.key);
+                                                  con.isFriendRequest[e.key] =
+                                                      false;
+
+                                                  setState(() {});
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                     backgroundColor: const Color.fromARGB(

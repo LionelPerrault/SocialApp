@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
@@ -54,8 +56,15 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
       'icon': Icons.nature
     }
   ];
+  var con = PostController();
+  var userInfo = UserManager.userInfo;
+  var isJoining = {};
   @override
   void initState() {
+    Future.delayed(const Duration(microseconds: 0), () async {
+      con.unJoindGroups = await con.getGroup('unJoined', userInfo['userName']);
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -118,75 +127,84 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                   child: SizedBox(
                     //size: Size(100,100),
                     child: ListView.separated(
-                      itemCount: sampleData.length,
+                      itemCount: con.unJoindGroups.length,
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
-                              onTap: () {
-                                print("tap!");
-                              },
-                              hoverColor:
-                                  const Color.fromARGB(255, 243, 243, 243),
-                              enabled: true,
-                              leading: CircleAvatar(
+                        contentPadding:
+                            const EdgeInsets.only(left: 10, right: 10),
+                        leading: Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: CircleAvatar(
+                                radius: 17,
                                 backgroundImage: NetworkImage(
-                                    "https://test.shnatter.com/content/themes/default/images/blank_group.jpg"),
-                              ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 90,
-                                        alignment: Alignment.topLeft,
-                                        child: Column(children: [
-                                          Text(
-                                            sampleData[index]['name'],
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12),
-                                          ),
-                                          Text(sampleData[index]['subname'],
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 10)),
-                                        ]),
-                                      ),
-                                      Container(
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 33, 37, 41),
-                                                elevation: 3,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            2.0)),
-                                                minimumSize: new Size(75, 35),
-                                              ),
-                                              onPressed: () {
-                                                () => {};
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons
-                                                        .person_add_alt_rounded,
-                                                    color: Colors.white,
-                                                    size: 18.0,
-                                                  ),
-                                                  Text('Join',
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 11,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ],
-                                              ))),
-                                    ],
+                                    con.unJoindGroups[index]['data']
+                                                ['groupPicture'] ==
+                                            ''
+                                        ? Helper.blankGroup
+                                        : con.unJoindGroups[index]['data']
+                                            ['groupPicture']))),
+                        title: Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              con.unJoindGroups[index]['data']['groupName'],
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 11),
+                            )),
+                        subtitle: Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${con.unJoindGroups[index]['data']['groupJoined'].length} Members',
+                              style: TextStyle(fontSize: 10),
+                            )),
+                        trailing: ElevatedButton(
+                            onPressed: () async {
+                              isJoining[index] = true;
+                              setState(() {});
+                              con
+                                  .joinedGroup(con.unJoindGroups[index]['id'])
+                                  .then((value) async {
+                                con.unJoindGroups = await con.getGroup(
+                                    'unJoined', userInfo['userName']);
+                                isJoining[index] = false;
+                                setState(() {});
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2.0)),
+                                minimumSize:
+                                    isJoining[index] != null && isJoining[index]
+                                        ? const Size(60, 35)
+                                        : const Size(75, 35),
+                                maximumSize:
+                                    isJoining[index] != null && isJoining[index]
+                                        ? const Size(60, 35)
+                                        : const Size(75, 35)),
+                            child: isJoining[index] != null && isJoining[index]
+                                ? const SizedBox(
+                                    width: 10,
+                                    height: 10,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                    ),
                                   )
-                                ],
-                              ))),
+                                : Row(
+                                    children: const [
+                                      Icon(
+                                        Icons.person_add_alt_rounded,
+                                        color: Colors.black,
+                                        size: 18.0,
+                                      ),
+                                      Text(' Join',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w900)),
+                                    ],
+                                  )),
+                      )),
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
                         height: 1,

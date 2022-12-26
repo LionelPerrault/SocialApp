@@ -1,7 +1,8 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
@@ -30,8 +31,15 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature}
   ];
+  var con = PeopleController();
+  var isFirst = false;
   @override
   void initState() {
+    con.getUserList();
+    Future.delayed(const Duration(microseconds: 0), () async {
+      await con.getUserList(isGetOnly5: true);
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -94,72 +102,76 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                   child: SizedBox(
                     //size: Size(100,100),
                     child: ListView.separated(
-                      itemCount: sampleData.length,
+                      itemCount: con.userList.length,
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
-                              onTap: () {
-                                print("tap!");
-                              },
-                              hoverColor:
-                                  const Color.fromARGB(255, 243, 243, 243),
-                              // tileColor: Colors.white,
-                              enabled: true,
-                              leading: const CircleAvatar(
+                        contentPadding: EdgeInsets.only(left: 10, right: 10),
+                        leading: con.userList[index]['avatar'] == ''
+                            ? CircleAvatar(
+                                radius: 17,
+                                child: SvgPicture.network(Helper.avatar))
+                            : CircleAvatar(
+                                radius: 17,
                                 backgroundImage: NetworkImage(
-                                    "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
-                              ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        child: Text(
-                                          sampleData[index]['name'],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12),
-                                        ),
-                                      ),
-                                      Container(
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color.fromARGB(
-                                                          255, 33, 37, 41),
-                                                  elevation: 3,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              2.0)),
-                                                  minimumSize:
-                                                      const Size(70, 35),
-                                                  maximumSize:
-                                                      const Size(70, 35)),
-                                              onPressed: () {
-                                                () => {};
-                                              },
-                                              child: Row(
-                                                children: const [
-                                                  Icon(
-                                                    Icons
-                                                        .person_add_alt_rounded,
-                                                    color: Colors.white,
-                                                    size: 18.0,
-                                                  ),
-                                                  Text('Add',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 11,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ],
-                                              ))),
-                                    ],
+                                    con.userList[index]['avatar'])),
+                        title: Text(
+                          '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 11),
+                        ),
+                        trailing: ElevatedButton(
+                            onPressed: () async {
+                              con.isFriendRequest[index] = true;
+                              setState(() {});
+                              await con.requestFriend(
+                                  con.userList[index]['userName'],
+                                  '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
+                                  con.userList[index]['avatar'],
+                                  index);
+                              con.isFriendRequest[index] = false;
+
+                              setState(() {});
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 33, 37, 41),
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2.0)),
+                                minimumSize:
+                                    con.isFriendRequest[index] != null &&
+                                            con.isFriendRequest[index]
+                                        ? const Size(60, 35)
+                                        : const Size(75, 35),
+                                maximumSize:
+                                    con.isFriendRequest[index] != null &&
+                                            con.isFriendRequest[index]
+                                        ? const Size(60, 35)
+                                        : const Size(75, 35)),
+                            child: con.isFriendRequest[index] != null &&
+                                    con.isFriendRequest[index]
+                                ? const SizedBox(
+                                    width: 10,
+                                    height: 10,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
                                   )
-                                ],
-                              ))),
+                                : Row(
+                                    children: const [
+                                      Icon(
+                                        Icons.person_add_alt_rounded,
+                                        color: Colors.white,
+                                        size: 18.0,
+                                      ),
+                                      Text(' Add',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w900)),
+                                    ],
+                                  )),
+                      )),
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
                         height: 1,
