@@ -22,7 +22,9 @@ class PostController extends ControllerMVC {
         groupSubRoute = '',
         super(state);
   static PostController? _this;
-
+  List unlikedPages = [];
+  List unJoindGroups = [];
+  List unInterestedEvents = [];
   @override
   Future<bool> initAsync() async {
     //
@@ -156,6 +158,10 @@ class PostController extends ControllerMVC {
               realAllEvents
                   .add({'data': data, 'id': id, 'interested': interested});
             }
+          } else if (condition == 'unInterested' &&
+              !interested &&
+              realAllEvents.length < 5) {
+            realAllEvents.add({'data': data, 'id': id});
           }
           setState(() {});
         }
@@ -426,12 +432,14 @@ class PostController extends ControllerMVC {
           }
         } else if (condition == 'liked' && liked) {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
+        } else if (condition == 'unliked' && !liked && realAllpage.length < 5) {
+          realAllpage.add({'data': data, 'id': id});
         }
         setState(() {});
       }
       print('Now you get all pages');
     });
-
+    print(realAllpage);
     return realAllpage;
   }
 
@@ -637,6 +645,10 @@ class PostController extends ControllerMVC {
           }
         } else if (condition == 'joined' && joined) {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
+        } else if (condition == 'unJoined' &&
+            !joined &&
+            realAllGroups.length < 5) {
+          realAllGroups.add({'data': data, 'id': id});
         }
         setState(() {});
       }

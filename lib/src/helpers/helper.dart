@@ -22,6 +22,8 @@ class Helper {
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
         toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
       );
+  static var messageCollection =
+      FirebaseFirestore.instance.collection(Helper.message);
   static var eventsData =
       FirebaseFirestore.instance.collection(Helper.eventsField);
   static var pagesData =
@@ -59,6 +61,12 @@ class Helper {
   static var passwordMinLength = 9;
   static var emptySVG =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fnodaa.svg?alt=media&token=ebfb99db-2cf6-4dd4-ba96-2ca150ba1352';
+  static var blankGroup =
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fblank_group.jpg?alt=media&token=89a979ed-f6ac-431b-bb04-012b4a944f7a';
+  static var blankEvent =
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_event.jpg?alt=media&token=aba15f40-0918-4ce8-965e-82f77ba34800';
+  static var blankPage =
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_page.jpg?alt=media&token=404c2404-1b87-4760-b6e6-286462a9cd1a';
   static bool isUuid(String input) {
     return RegExp(
             "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")

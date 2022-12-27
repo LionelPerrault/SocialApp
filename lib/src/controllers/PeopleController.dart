@@ -88,17 +88,20 @@ class PeopleController extends ControllerMVC {
     friends = s;
   }
 
-  getUserList({index = -1}) async {
+  getUserList({index = -1, isGetOnly5 = false}) async {
     await getReceiveRequests(userInfo['userName']);
     await getSendRequests(userInfo['userName']);
-    await getList(index: index);
+    await getList(index: index, isGetOnly5: isGetOnly5);
   }
 
-  getList({index = -1}) async {
-    print(123);
+  getList({index = -1, isGetOnly5 = false}) async {
+    int pagination = pageIndex;
+    if (isGetOnly5) {
+      pagination = 1;
+    }
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .limit(5 * pageIndex + addIndex)
+        .limit(5 * pagination + addIndex)
         .get();
     var snapshot1 = await FirebaseFirestore.instance
         .collection(Helper.userField)
@@ -109,19 +112,19 @@ class PeopleController extends ControllerMVC {
         .where('state', isEqualTo: 1)
         .get();
     allFriendsList = snapshot2.docs;
-    userList = snapshot.docs
+    var friends = snapshot.docs
         .where((element) =>
             element['userName'] != UserManager.userInfo['userName'])
         .toList();
-
     allUserList = getFilterList(snapshot1.docs);
-    var arr = getFilterList(userList);
-    if (arr.length < 5 * pageIndex && arr.length != allUserList.length) {
-      addIndex += 5 * pageIndex - arr.length as int;
+    var arr = getFilterList(friends);
+    if (arr.length < 5 * pagination && arr.length != allUserList.length) {
+      addIndex += 5 * pagination - arr.length as int;
 
-      await getList(index: index);
-    } else if (arr.length == 5 * pageIndex ||
+      await getList(index: index, isGetOnly5: isGetOnly5);
+    } else if (arr.length == 5 * pagination ||
         arr.length == allUserList.length) {
+      print('---------');
       if (index != -1) {
         isFriendRequest[index] = false;
       }

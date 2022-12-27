@@ -109,11 +109,13 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-      padding: const EdgeInsets.only(right: 10, left: 70, top: 15),
+      padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
       child: SizeConfig(context).screenWidth < 800
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [profileCompletion(), MindPost()])
+          ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              profileCompletion(),
+              const Padding(padding: EdgeInsets.only(top: 30)),
+              MindPost()
+            ])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

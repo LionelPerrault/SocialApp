@@ -64,7 +64,8 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(30),
+        padding:
+            const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
         child: Column(children: [
           mainTabs(),
           tab == 'Friends'
@@ -79,11 +80,11 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     return Container(
       width: SizeConfig(context).screenWidth,
       height: 100,
-      margin: EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),
         borderRadius: BorderRadius.circular(3),
       ),
+      margin: const EdgeInsets.only(left: 10),
       alignment: Alignment.topLeft,
       child: Column(
         children: [
@@ -179,7 +180,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     var screenWidth = SizeConfig(context).screenWidth;
     return con.friends.isEmpty
         ? Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
+            margin: const EdgeInsets.only(left: 10),
             height: SizeConfig(context).screenHeight * 0.2,
             color: Colors.white,
             alignment: Alignment.center,
@@ -201,8 +202,8 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                             : screenWidth > 210
                                 ? 2
                                 : 1,
-                    childAspectRatio: 3 / 2.5,
-                    padding: const EdgeInsets.only(left: 15, top: 30),
+                    childAspectRatio: 3 / 3,
+                    padding: const EdgeInsets.only(top: 30),
                     mainAxisSpacing: 4.0,
                     shrinkWrap: true,
                     crossAxisSpacing: 4.0,
@@ -221,7 +222,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     var screenWidth = SizeConfig(context).screenWidth;
     return con.requestFriends.isEmpty
         ? Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
+            margin: const EdgeInsets.only(left: 10),
             height: SizeConfig(context).screenHeight * 0.2,
             color: Colors.white,
             alignment: Alignment.center,
@@ -244,7 +245,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                                 ? 2
                                 : 1,
                     childAspectRatio: 3 / 2.5,
-                    padding: const EdgeInsets.only(left: 15, top: 30),
+                    padding: const EdgeInsets.only(top: 30),
                     mainAxisSpacing: 4.0,
                     shrinkWrap: true,
                     crossAxisSpacing: 4.0,
@@ -262,7 +263,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     var screenWidth = SizeConfig(context).screenWidth;
     return con.sendFriends.isEmpty
         ? Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
+            margin: const EdgeInsets.only(left: 10),
             height: SizeConfig(context).screenHeight * 0.2,
             color: Colors.white,
             alignment: Alignment.center,
@@ -284,8 +285,8 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                             : screenWidth > 210
                                 ? 2
                                 : 1,
-                    childAspectRatio: 3 / 2.5,
-                    padding: const EdgeInsets.only(left: 15, top: 30),
+                    childAspectRatio: 3 / 3,
+                    padding: const EdgeInsets.only(top: 30),
                     mainAxisSpacing: 4.0,
                     shrinkWrap: true,
                     crossAxisSpacing: 4.0,
