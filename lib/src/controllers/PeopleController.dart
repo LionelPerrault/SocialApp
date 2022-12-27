@@ -38,6 +38,7 @@ class PeopleController extends ControllerMVC {
         allSendFriends = [],
         isGetList = false,
         isSearch = false,
+        isFirst = false,
         super(state);
   static PeopleController? _this;
   List userList;
@@ -56,8 +57,8 @@ class PeopleController extends ControllerMVC {
   Map isConfirmRequest;
   bool isGetList;
   bool isSearch;
+  bool isFirst;
   var userInfo = UserManager.userInfo;
-  var addIndex = 0;
   @override
   Future<bool> initAsync() async {
     //
@@ -94,14 +95,14 @@ class PeopleController extends ControllerMVC {
     await getList(index: index, isGetOnly5: isGetOnly5);
   }
 
-  getList({index = -1, isGetOnly5 = false}) async {
+  getList({index = -1, isGetOnly5 = false, int add = 0}) async {
     int pagination = pageIndex;
     if (isGetOnly5) {
       pagination = 1;
     }
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .limit(5 * pagination + addIndex)
+        .limit(5 * pagination + add)
         .get();
     var snapshot1 = await FirebaseFirestore.instance
         .collection(Helper.userField)
@@ -118,17 +119,18 @@ class PeopleController extends ControllerMVC {
         .toList();
     allUserList = getFilterList(snapshot1.docs);
     var arr = getFilterList(friends);
+    print(arr.length);
     if (arr.length < 5 * pagination && arr.length != allUserList.length) {
-      addIndex += 5 * pagination - arr.length as int;
-
-      await getList(index: index, isGetOnly5: isGetOnly5);
+      int addIndex = 0;
+      addIndex += 5 * pagination - arr.length + add as int;
+      print('addIndex$addIndex');
+      await getList(index: index, isGetOnly5: isGetOnly5, add: addIndex);
     } else if (arr.length == 5 * pagination ||
         arr.length == allUserList.length) {
       print('---------');
       if (index != -1) {
         isFriendRequest[index] = false;
       }
-      addIndex = 0;
       userList = arr;
       isGetList = true;
       setState(() {});
