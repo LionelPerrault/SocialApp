@@ -842,7 +842,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         Uint8List bytes = await pickedFile!.readAsBytes();
         Reference _reference = await _firebaseStorage
             .ref()
-            .child('images/${PPath.basename(pickedFile!.path)}');
+            .child('images/${PPath.basename(pickedFile.path)}');
         final uploadTask = _reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
@@ -911,7 +911,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
       //write a code for android or ios
       Reference _reference = await _firebaseStorage
           .ref()
-          .child('images/${PPath.basename(pickedFile!.path)}');
+          .child('images/${PPath.basename(pickedFile.path)}');
       _reference.putFile(file).whenComplete(() async {
         print('value');
         var downloadUrl = await _reference.getDownloadURL();

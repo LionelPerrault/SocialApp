@@ -17,12 +17,12 @@ import '../models/userModel.dart';
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File, Platform;
 
-class FileController extends ControllerMVC{
+class FileController extends ControllerMVC {
   factory FileController([StateMVC? state]) =>
       _this ??= FileController._(state);
-  FileController._(StateMVC? state) : 
-    progress = 0,
-    super(state);
+  FileController._(StateMVC? state)
+      : progress = 0,
+        super(state);
   static FileController? _this;
   double progress;
   get SharedPreferences => null;
@@ -64,80 +64,75 @@ class FileController extends ControllerMVC{
 
   uploadFile(XFile? pickedFile) async {
     final _firebaseStorage = FirebaseStorage.instance;
-    if(kIsWeb){
-        try{
-          
-          //print("read bytes");
-          Uint8List bytes  = await pickedFile!.readAsBytes();
-          //print(bytes);
-          Reference _reference = await _firebaseStorage.ref()
-            .child('chat-assets/${PPath.basename(pickedFile!.path)}');
-          final uploadTask = _reference.putData(
-            bytes,
-            SettableMetadata(contentType: 'image/jpeg'),
-          );
-          uploadTask.whenComplete(() async {
-            var downloadUrl = await _reference.getDownloadURL();
-            userCon.userAvatar = downloadUrl;
-            userCon.setState(() {});
-            userCon.changeAvatar();
-            //await _reference.getDownloadURL().then((value) {
-            //  uploadedPhotoUrl = value;
-            //});
-          });
-          uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-                      switch (taskSnapshot.state) {
-                        case TaskState.running:
-                          progress =
-                              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                              setState(() {});
-                              print("Upload is $progress% complete.");
+    if (kIsWeb) {
+      try {
+        //print("read bytes");
+        Uint8List bytes = await pickedFile!.readAsBytes();
+        //print(bytes);
+        Reference _reference = await _firebaseStorage
+            .ref()
+            .child('chat-assets/${PPath.basename(pickedFile.path)}');
+        final uploadTask = _reference.putData(
+          bytes,
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
+        uploadTask.whenComplete(() async {
+          var downloadUrl = await _reference.getDownloadURL();
+          userCon.userAvatar = downloadUrl;
+          userCon.setState(() {});
+          userCon.changeAvatar();
+          //await _reference.getDownloadURL().then((value) {
+          //  uploadedPhotoUrl = value;
+          //});
+        });
+        uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+          switch (taskSnapshot.state) {
+            case TaskState.running:
+              progress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $progress% complete.");
 
-                          break;
-                        case TaskState.paused:
-                          print("Upload is paused.");
-                          break;
-                        case TaskState.canceled:
-
-                          print("Upload was canceled");
-                          break;
-                        case TaskState.error:
-                        // Handle unsuccessful uploads
-                          break;
-                        case TaskState.success:
-                         print("Upload is completed");
-                        // Handle successful uploads on complete
-                        // ...
-                        //  var downloadUrl = await _reference.getDownloadURL();
-                          break;
-                      }
-                    });
-        }catch(e)
-        {
-          // print("Exception $e");
-        }
-    }else{
+              break;
+            case TaskState.paused:
+              print("Upload is paused.");
+              break;
+            case TaskState.canceled:
+              print("Upload was canceled");
+              break;
+            case TaskState.error:
+              // Handle unsuccessful uploads
+              break;
+            case TaskState.success:
+              print("Upload is completed");
+              // Handle successful uploads on complete
+              // ...
+              //  var downloadUrl = await _reference.getDownloadURL();
+              break;
+          }
+        });
+      } catch (e) {
+        // print("Exception $e");
+      }
+    } else {
       var file = File(pickedFile!.path);
       //write a code for android or ios
-      Reference _reference = await _firebaseStorage.ref()
-          .child('chat-assets/${PPath.basename(pickedFile!.path)}');
-        _reference.putFile(
-          file
-        )
-        .whenComplete(() async {
-            print('value');
-          var downloadUrl = await _reference.getDownloadURL();
-          await _reference.getDownloadURL().then((value) {
-            // userCon.userAvatar = value;
-            // userCon.setState(() {});
-            // print(value);
-          });
+      Reference _reference = await _firebaseStorage
+          .ref()
+          .child('chat-assets/${PPath.basename(pickedFile.path)}');
+      _reference.putFile(file).whenComplete(() async {
+        print('value');
+        var downloadUrl = await _reference.getDownloadURL();
+        await _reference.getDownloadURL().then((value) {
+          // userCon.userAvatar = value;
+          // userCon.setState(() {});
+          // print(value);
         });
+      });
     }
-
   }
 
-   Future<Map> uploadImage({callBack}) async {
+  Future<Map> uploadImage({callBack}) async {
     XFile? pickedFile = await chooseImage();
     uploadFile(pickedFile);
     return {'success': true, 'url': downloadUrl};

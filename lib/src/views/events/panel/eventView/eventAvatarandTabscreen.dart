@@ -420,7 +420,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
         //print(bytes);
         Reference _reference = await _firebaseStorage
             .ref()
-            .child('images/${PPath.basename(pickedFile!.path)}');
+            .child('images/${PPath.basename(pickedFile.path)}');
         final uploadTask = _reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
@@ -483,7 +483,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
       //write a code for android or ios
       Reference _reference = await _firebaseStorage
           .ref()
-          .child('images/${PPath.basename(pickedFile!.path)}');
+          .child('images/${PPath.basename(pickedFile.path)}');
       _reference.putFile(file).whenComplete(() async {
         print('value');
         var downloadUrl = await _reference.getDownloadURL();
