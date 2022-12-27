@@ -419,11 +419,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ],
                           onSelected: (Menu item) {},
                           child: Row(
-                            children: const [
+                            children: [
                               CircleAvatar(
                                 backgroundColor: Colors.green,
-                                backgroundImage: NetworkImage(
-                                    "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
+                                backgroundImage: NetworkImage(UserManager
+                                            .userInfo['avatar'] ==
+                                        ''
+                                    ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
+                                    : UserManager.userInfo['avatar']),
                               ),
                               //Icon(Icons.arrow_downward,
                               //    size: 15, color: Colors.white)
@@ -680,11 +683,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ],
                           onSelected: (Menu item) {},
                           child: Row(
-                            children: const [
+                            children: [
                               CircleAvatar(
                                 backgroundColor: Colors.green,
-                                backgroundImage: NetworkImage(
-                                    "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
+                                backgroundImage: NetworkImage(UserManager
+                                            .userInfo['avatar'] ==
+                                        ''
+                                    ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
+                                    : UserManager.userInfo['avatar']),
                               ),
                               //Icon(Icons.arrow_downward,
                               //    size: 15, color: Colors.white)

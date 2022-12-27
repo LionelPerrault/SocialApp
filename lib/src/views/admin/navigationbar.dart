@@ -1,19 +1,12 @@
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/friendrequestbox.dart';
-import 'package:shnatter/src/views/box/messagesbox.dart';
-
-import '../../controllers/UserController.dart';
 import '../../routes/route_names.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../box/notification.dart';
 
 enum Menu {
   itemProfile,
@@ -25,7 +18,7 @@ enum Menu {
 }
 
 class AdminShnatterNavigation extends StatefulWidget {
-  AdminShnatterNavigation({
+  const AdminShnatterNavigation({
     Key? key,
     required this.drawClicked,
   }) : super(key: key);
@@ -63,7 +56,6 @@ class AdminShnatterNavigationState
     Navigator.pushReplacementNamed(context, RouteNames.homePage);
   }
 
-  @override
   Widget buildSmallSize() {
     return Stack(
       children: [
@@ -85,9 +77,9 @@ class AdminShnatterNavigationState
                             },
                             style: ButtonStyle(
                               minimumSize:
-                                  MaterialStateProperty.all(Size(30, 30)),
-                              padding:
-                                  MaterialStateProperty.all(EdgeInsets.all(2)),
+                                  MaterialStateProperty.all(const Size(30, 30)),
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.all(2)),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.black),
                               backgroundColor:
@@ -99,73 +91,73 @@ class AdminShnatterNavigationState
                         ),
                   ],
                 ),
-                Container(
-                  child: Row(children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            onHomeClicked();
-                          },
-                          style: ButtonStyle(
-                            minimumSize:
-                                MaterialStateProperty.all(Size(30, 30)),
-                            padding:
-                                MaterialStateProperty.all(EdgeInsets.all(2)),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black),
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                          ),
-                          child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.home,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          ),
-                        )
-                        //Icon(Icons.home_outlined, size: 30, color: Colors.white),
+                Row(children: [
+                  Container(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          onHomeClicked();
+                        },
+                        style: ButtonStyle(
+                          minimumSize:
+                              MaterialStateProperty.all(const Size(30, 30)),
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.all(2)),
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
                         ),
-                    Container(
-                        padding: EdgeInsets.all(9.0),
-                        child: PopupMenuButton(
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<Menu>>[
-                            PopupMenuItem<Menu>(
-                                value: Menu.itemLogout,
-                                child: Row(children: [
-                                  Icon(Icons.logout),
-                                  SizedBox(width: 8),
-                                  Text('Log Out'),
-                                ])),
-                            PopupMenuDivider(),
+                        child: SvgPicture.network(
+                          placeholderBuilder: (context) => const Icon(
+                              Icons.logo_dev,
+                              size: 30,
+                              color: Colors.white),
+                          SVGPath.home,
+                          color: Colors.white,
+                          width: 20,
+                          height: 20,
+                        ),
+                      )
+                      //Icon(Icons.home_outlined, size: 30, color: Colors.white),
+                      ),
+                  Container(
+                      padding: const EdgeInsets.all(9.0),
+                      child: PopupMenuButton(
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<Menu>>[
+                          PopupMenuItem<Menu>(
+                              value: Menu.itemLogout,
+                              child: Row(children: const [
+                                Icon(Icons.logout),
+                                SizedBox(width: 8),
+                                Text('Log Out'),
+                              ])),
+                          const PopupMenuDivider(),
+                        ],
+                        onSelected: (Menu item) {},
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.green,
+                              backgroundImage: NetworkImage(UserManager
+                                          .userInfo['avatar'] ==
+                                      ''
+                                  ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
+                                  : UserManager.userInfo['avatar']),
+                            ),
+                            //Icon(Icons.arrow_downward,
+                            //    size: 15, color: Colors.white)
                           ],
-                          onSelected: (Menu item) {},
-                          child: Row(
-                            children: const [
-                              CircleAvatar(
-                                backgroundColor: Colors.green,
-                                backgroundImage: NetworkImage(
-                                    "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
-                              ),
-                              //Icon(Icons.arrow_downward,
-                              //    size: 15, color: Colors.white)
-                            ],
-                          ),
-                        )),
-                  ]),
-                )
+                        ),
+                      )),
+                ])
               ],
             )),
       ],
     );
   }
 
-  @override
   Widget buildLargeSize() {
     return Stack(
       children: [
@@ -189,7 +181,7 @@ class AdminShnatterNavigationState
                         child: Row(
                           children: [
                             AnimatedOpacity(
-                              duration: Duration(microseconds: 1000),
+                              duration: const Duration(microseconds: 1000),
                               curve: Curves.easeIn,
                               opacity: onHover ? 0.5 : 1,
                               child: SvgPicture.network(
@@ -244,39 +236,37 @@ class AdminShnatterNavigationState
                     )
                   ],
                 ),
-                Container(
-                  child: Row(children: [
-                    Container(
-                        padding: EdgeInsets.all(9.0),
-                        child: PopupMenuButton(
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<Menu>>[
-                            PopupMenuItem<Menu>(
-                                value: Menu.itemLogout,
-                                child: Row(children: [
-                                  Icon(Icons.logout),
-                                  SizedBox(width: 8),
-                                  Text('Log Out'),
-                                ])),
+                Row(children: [
+                  Container(
+                      padding: const EdgeInsets.all(9.0),
+                      child: PopupMenuButton(
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<Menu>>[
+                          PopupMenuItem<Menu>(
+                              value: Menu.itemLogout,
+                              child: Row(children: const [
+                                Icon(Icons.logout),
+                                SizedBox(width: 8),
+                                Text('Log Out'),
+                              ])),
+                        ],
+                        onSelected: (Menu item) {},
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.green,
+                              backgroundImage: NetworkImage(UserManager
+                                          .userInfo['avatar'] ==
+                                      ''
+                                  ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
+                                  : UserManager.userInfo['avatar']),
+                            ),
+                            //Icon(Icons.arrow_downward,
+                            //    size: 15, color: Colors.white)
                           ],
-                          onSelected: (Menu item) {},
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.green,
-                                backgroundImage: NetworkImage(UserManager
-                                            .userInfo['avatar'] ==
-                                        ''
-                                    ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
-                                    : UserManager.userInfo['avatar']),
-                              ),
-                              //Icon(Icons.arrow_downward,
-                              //    size: 15, color: Colors.white)
-                            ],
-                          ),
-                        )),
-                  ]),
-                )
+                        ),
+                      )),
+                ])
               ],
             )),
       ],

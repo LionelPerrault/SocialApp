@@ -55,6 +55,8 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     return Container(
         padding: const EdgeInsets.only(top: 20, left: 0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             MindPost(),
             const Padding(padding: EdgeInsets.only(top: 20)),

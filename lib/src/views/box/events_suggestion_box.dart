@@ -101,7 +101,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
                         contentPadding:
-                            const EdgeInsets.only(left: 10, right: 10),
+                            const EdgeInsets.only(left: 5, right: 5),
                         leading: Padding(
                             padding: EdgeInsets.only(top: 5),
                             child: CircleAvatar(
@@ -149,11 +149,11 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                                 minimumSize:
                                     isJoining[index] != null && isJoining[index]
                                         ? const Size(60, 35)
-                                        : const Size(90, 35),
+                                        : const Size(102, 35),
                                 maximumSize:
                                     isJoining[index] != null && isJoining[index]
                                         ? const Size(60, 35)
-                                        : const Size(90, 35)),
+                                        : const Size(102, 35)),
                             child: isJoining[index] != null && isJoining[index]
                                 ? const SizedBox(
                                     width: 10,

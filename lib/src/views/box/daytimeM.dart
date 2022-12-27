@@ -98,25 +98,25 @@ class DayTimeM extends StatelessWidget {
                     ),
                   ]),
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              Container(
-                height: 15,
-                width: 15,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    maximumSize: const Size(20, 20),
-                    minimumSize: const Size(20, 20),
-                  ),
-                  onPressed: () {},
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.black,
-                  ),
-                ),
-              )
+              // Container(
+              //   height: 15,
+              //   width: 15,
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Colors.white,
+              //       elevation: 3,
+              //       shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(3.0)),
+              //       maximumSize: const Size(20, 20),
+              //       minimumSize: const Size(20, 20),
+              //     ),
+              //     onPressed: () {},
+              //     child: const Icon(
+              //       Icons.close,
+              //       color: Colors.black,
+              //     ),
+              //   ),
+              // )
             ]),
           )),
     );
