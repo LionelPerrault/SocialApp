@@ -68,16 +68,17 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           LeftSettingBar(),
-          eventSettingTab == 'Event Settings'
-              ? EventSettingsWidget()
-              : eventSettingTab == 'Event Interests'
-                  ? EventInterestsWidget()
-                  : EventDeleteWidget(),
+          Expanded(
+            child: eventSettingTab == 'Event Settings'
+                ? EventSettingsWidget()
+                : eventSettingTab == 'Event Interests'
+                    ? EventInterestsWidget()
+                    : EventDeleteWidget(),
+          ),
         ],
       ),
     );
@@ -438,13 +439,16 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
       child: Column(
         children: [
           headerWidget(Icon(Icons.settings), 'Settings'),
-          InterestsWidget(
-              context: context,
-              data: con.event['eventInterests'],
-              sendUpdate: (value) {
-                eventInterests = value;
-                setState(() {});
-              }),
+          Container(
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            child: InterestsWidget(
+                context: context,
+                data: con.event['eventInterests'],
+                sendUpdate: (value) {
+                  eventInterests = value;
+                  setState(() {});
+                }),
+          ),
           footerWidget({'eventInterests': eventInterests})
         ],
       ),
@@ -536,93 +540,86 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   }
 
   Widget headerWidget(icon, pagename) {
-    return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
-      child: Container(
-        height: 65,
-        decoration: const BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-            color: Color.fromARGB(255, 220, 226, 237),
-            width: 1,
-          )),
-          color: Color.fromARGB(255, 240, 243, 246),
-          // borderRadius: BorderRadius.all(Radius.circular(3)),
-        ),
-        padding: const EdgeInsets.only(top: 5, left: 15),
-        child: Row(
-          children: [
-            icon,
-            const Padding(padding: EdgeInsets.only(left: 10)),
-            Text(pagename),
-            const Flexible(fit: FlexFit.tight, child: SizedBox()),
-          ],
-        ),
+    return Container(
+      height: 65,
+      decoration: const BoxDecoration(
+        border: Border(
+            bottom: BorderSide(
+          color: Color.fromARGB(255, 220, 226, 237),
+          width: 1,
+        )),
+        color: Color.fromARGB(255, 240, 243, 246),
+        // borderRadius: BorderRadius.all(Radius.circular(3)),
+      ),
+      padding: const EdgeInsets.only(top: 5, left: 15),
+      child: Row(
+        children: [
+          icon,
+          const Padding(padding: EdgeInsets.only(left: 10)),
+          Text(pagename),
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+        ],
       ),
     );
   }
 
   Widget footerWidget(updateData) {
-    return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
-      child: Container(
-          height: 65,
-          decoration: const BoxDecoration(
-            border: Border(
-                top: BorderSide(
-              color: Color.fromARGB(255, 220, 226, 237),
-              width: 1,
-            )),
-            color: Color.fromARGB(255, 240, 243, 246),
-            // borderRadius: BorderRadius.all(Radius.circular(3)),
-          ),
-          padding: const EdgeInsets.only(top: 5, left: 15),
-          child: Row(
-            children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(3),
-                    backgroundColor: Colors.white,
-                    // elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    minimumSize: const Size(120, 50),
-                    maximumSize: const Size(120, 50),
-                  ),
-                  onPressed: () {
-                    footerBtnState = true;
-                    setState(() {});
-                    con.updateEventInfo(updateData).then(
-                          (value) => {
-                            con
-                                .getSelectedEvent(con.viewEventId)
-                                .then((value) => {
-                                      setState(() {}),
-                                    }),
-                            Helper.showToast(value),
-                            footerBtnState = false,
-                            setState(() {}),
-                          },
-                        );
-                    print(updateData);
-                  },
-                  child: footerBtnState
-                      ? const SizedBox(
-                          width: 10,
-                          height: 10.0,
-                          child: CircularProgressIndicator(
-                            color: Colors.grey,
-                          ),
-                        )
-                      : const Text('Save Changes',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold))),
-              const Padding(padding: EdgeInsets.only(right: 30))
-            ],
-          )),
+    return Container(
+      height: 65,
+      decoration: const BoxDecoration(
+        border: Border(
+            top: BorderSide(
+          color: Color.fromARGB(255, 220, 226, 237),
+          width: 1,
+        )),
+        color: Color.fromARGB(255, 240, 243, 246),
+        // borderRadius: BorderRadius.all(Radius.circular(3)),
+      ),
+      padding: const EdgeInsets.only(top: 5, left: 15),
+      child: Row(
+        children: [
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(3),
+                backgroundColor: Colors.white,
+                // elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3.0)),
+                minimumSize: const Size(120, 50),
+                maximumSize: const Size(120, 50),
+              ),
+              onPressed: () {
+                footerBtnState = true;
+                setState(() {});
+                con.updateEventInfo(updateData).then(
+                      (value) => {
+                        con.getSelectedEvent(con.viewEventId).then((value) => {
+                              setState(() {}),
+                            }),
+                        Helper.showToast(value),
+                        footerBtnState = false,
+                        setState(() {}),
+                      },
+                    );
+                print(updateData);
+              },
+              child: footerBtnState
+                  ? const SizedBox(
+                      width: 10,
+                      height: 10.0,
+                      child: CircularProgressIndicator(
+                        color: Colors.grey,
+                      ),
+                    )
+                  : const Text('Save Changes',
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold))),
+          const Padding(padding: EdgeInsets.only(right: 30))
+        ],
+      ),
     );
   }
 

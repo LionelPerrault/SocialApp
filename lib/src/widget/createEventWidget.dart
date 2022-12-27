@@ -27,7 +27,11 @@ class CreateEventModal extends StatefulWidget {
 class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   bool isSound = false;
   late PostController Postcon;
-  Map<String, dynamic> eventInfo = {'eventPrivacy': 'public', 'eventAbout': ''};
+  Map<String, dynamic> eventInfo = {
+    'eventPrivacy': 'public',
+    'eventAbout': '',
+    'eventInterests': [],
+  };
   var privacy = 'public';
   var interest = 'none';
   TextEditingController startDateController = TextEditingController();

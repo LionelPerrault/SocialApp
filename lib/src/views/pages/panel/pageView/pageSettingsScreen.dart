@@ -134,7 +134,6 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -143,17 +142,19 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LeftSettingBar(),
-                pageSettingTab == 'Page Settings'
-                    ? PageSettingsWidget()
-                    : pageSettingTab == 'Page Information'
-                        ? PageInformationWidget()
-                        : pageSettingTab == 'Admins'
-                            ? PageAdminsWidget()
-                            : pageSettingTab == 'Verification'
-                                ? VerificationWidget()
-                                : pageSettingTab == 'Interests'
-                                    ? GroupInterestsWidget()
-                                    : GroupDeleteWidget(),
+                Expanded(
+                  child: pageSettingTab == 'Page Settings'
+                      ? PageSettingsWidget()
+                      : pageSettingTab == 'Page Information'
+                          ? PageInformationWidget()
+                          : pageSettingTab == 'Admins'
+                              ? PageAdminsWidget()
+                              : pageSettingTab == 'Verification'
+                                  ? VerificationWidget()
+                                  : pageSettingTab == 'Interests'
+                                      ? GroupInterestsWidget()
+                                      : GroupDeleteWidget(),
+                ),
               ],
             ),
           )
@@ -211,6 +212,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                      width: 400,
                       child: customInput(
                         title: 'Name Your Page',
                         controller: pageNameController,
@@ -225,6 +227,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                      width: 400,
                       child: customInput(
                         title: 'Page UserName',
                         controller: pageUserNameController,
@@ -296,6 +299,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
     return Column(
       children: [
         Container(
+          width: 400,
           child: customInput(
             title: 'Company',
             controller: pageCompanyController,
@@ -303,6 +307,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
           ),
         ),
         Container(
+          width: 400,
           child: customInput(
             title: 'Phone',
             controller: pagePhoneController,
@@ -310,6 +315,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
           ),
         ),
         Container(
+          width: 400,
           child: customInput(
             title: 'Website',
             controller: pageWebsiteController,
@@ -317,6 +323,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
           ),
         ),
         Container(
+          width: 400,
           child: customInput(
             title: 'Location',
             controller: pageLocationController,
@@ -324,6 +331,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
           ),
         ),
         Container(
+          width: 400,
           child: customTextarea(
             title: 'About',
             controller: pageAboutController,
@@ -1231,13 +1239,16 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
       child: Column(
         children: [
           headerWidget(Icon(Icons.heart_broken), 'Interests'),
-          InterestsWidget(
-              context: context,
-              data: con.page['pageInterests'],
-              sendUpdate: (value) {
-                pageInterests = value;
-                setState(() {});
-              }),
+          Container(
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            child: InterestsWidget(
+                context: context,
+                data: con.page['pageInterests'],
+                sendUpdate: (value) {
+                  pageInterests = value;
+                  setState(() {});
+                }),
+          ),
           footerWidget({'pageInterests': pageInterests})
         ],
       ),
@@ -1329,102 +1340,97 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget headerWidget(icon, pagename) {
-    return Padding(
-      padding: EdgeInsets.only(right: 0, top: 0),
-      child: Container(
-        height: 65,
-        decoration: const BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-            color: Color.fromARGB(255, 220, 226, 237),
-            width: 1,
-          )),
-          color: Color.fromARGB(255, 240, 243, 246),
-          // borderRadius: BorderRadius.all(Radius.circular(3)),
-        ),
-        padding: const EdgeInsets.only(top: 5, left: 15),
-        child: Row(
-          children: [
-            icon,
-            const Padding(padding: EdgeInsets.only(left: 10)),
-            Text(pagename),
-            const Flexible(fit: FlexFit.tight, child: SizedBox()),
-          ],
-        ),
+    return Container(
+      height: 65,
+      decoration: const BoxDecoration(
+        border: Border(
+            bottom: BorderSide(
+          color: Color.fromARGB(255, 220, 226, 237),
+          width: 1,
+        )),
+        color: Color.fromARGB(255, 240, 243, 246),
+        // borderRadius: BorderRadius.all(Radius.circular(3)),
+      ),
+      padding: const EdgeInsets.only(top: 5, left: 15),
+      child: Row(
+        children: [
+          icon,
+          const Padding(padding: EdgeInsets.only(left: 10)),
+          Text(pagename),
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+        ],
       ),
     );
   }
 
   Widget footerWidget(updateData) {
-    return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
-      child: Container(
-          height: 65,
-          decoration: const BoxDecoration(
-            border: Border(
-                top: BorderSide(
-              color: Color.fromARGB(255, 220, 226, 237),
-              width: 1,
-            )),
-            color: Color.fromARGB(255, 240, 243, 246),
-            // borderRadius: BorderRadius.all(Radius.circular(3)),
-          ),
-          padding: const EdgeInsets.only(top: 5, left: 15),
-          child: Row(
-            children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(3),
-                    backgroundColor: Colors.white,
-                    // elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    minimumSize: const Size(120, 50),
-                    maximumSize: const Size(120, 50),
-                  ),
-                  onPressed: () {
-                    footerBtnState = true;
-                    setState(() {});
-                    con.updatePageInfo(updateData).then(
-                          (value) => {
-                            footerBtnState = false,
-                            setState(() {}),
-                          },
-                        );
-                    print({
-                      'pageName': pageNameController.text,
-                      'pageUserName': pageUserNameController.text,
-                      'pageCompany': pageCompanyController.text,
-                      'pagePhone': pagePhoneController.text,
-                      'pageWebsite': pageWebsiteController.text,
-                      'pageLocation': pageLocationController.text,
-                      'pageAbout': pageAboutController.text,
-                      'pageFacebook': pageFacebookController.text,
-                      'pageTwitter': pageTwitterController.text,
-                      'pageYoutube': pageYoutubeController.text,
-                      'pageInstagram': pageInstagramController.text,
-                      'pageTwitch': pageTwitchController.text,
-                      'pageLinkedin': pageLinkedinController.text,
-                      'pageVokon': pageVokonController.text,
-                    });
-                  },
-                  child: footerBtnState
-                      ? const SizedBox(
-                          width: 10,
-                          height: 10.0,
-                          child: CircularProgressIndicator(
-                            color: Colors.grey,
-                          ),
-                        )
-                      : const Text('Save Changes',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold))),
-              const Padding(padding: EdgeInsets.only(right: 30))
-            ],
-          )),
+    return Container(
+      height: 65,
+      decoration: const BoxDecoration(
+        border: Border(
+            top: BorderSide(
+          color: Color.fromARGB(255, 220, 226, 237),
+          width: 1,
+        )),
+        color: Color.fromARGB(255, 240, 243, 246),
+        // borderRadius: BorderRadius.all(Radius.circular(3)),
+      ),
+      padding: const EdgeInsets.only(top: 5, left: 15),
+      child: Row(
+        children: [
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(3),
+                backgroundColor: Colors.white,
+                // elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3.0)),
+                minimumSize: const Size(120, 50),
+                maximumSize: const Size(120, 50),
+              ),
+              onPressed: () {
+                footerBtnState = true;
+                setState(() {});
+                con.updatePageInfo(updateData).then(
+                      (value) => {
+                        footerBtnState = false,
+                        setState(() {}),
+                      },
+                    );
+                print({
+                  'pageName': pageNameController.text,
+                  'pageUserName': pageUserNameController.text,
+                  'pageCompany': pageCompanyController.text,
+                  'pagePhone': pagePhoneController.text,
+                  'pageWebsite': pageWebsiteController.text,
+                  'pageLocation': pageLocationController.text,
+                  'pageAbout': pageAboutController.text,
+                  'pageFacebook': pageFacebookController.text,
+                  'pageTwitter': pageTwitterController.text,
+                  'pageYoutube': pageYoutubeController.text,
+                  'pageInstagram': pageInstagramController.text,
+                  'pageTwitch': pageTwitchController.text,
+                  'pageLinkedin': pageLinkedinController.text,
+                  'pageVokon': pageVokonController.text,
+                });
+              },
+              child: footerBtnState
+                  ? const SizedBox(
+                      width: 10,
+                      height: 10.0,
+                      child: CircularProgressIndicator(
+                        color: Colors.grey,
+                      ),
+                    )
+                  : const Text('Save Changes',
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold))),
+          const Padding(padding: EdgeInsets.only(right: 30))
+        ],
+      ),
     );
   }
 

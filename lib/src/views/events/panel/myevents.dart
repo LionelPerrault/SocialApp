@@ -66,21 +66,14 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: myEvents
-                  .map((event) => EventCell(
-                      eventTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/events/${event['id']}');
-                      },
+                  .map(
+                    (event) => EventCell(
+                      eventData: event,
                       buttonFun: () {
-                        con.interestedEvent(event['id']).then((value) {
-                          getEventNow();
-                        });
+                        getEventNow();
                       },
-                      picture: 'null',
-                      status: false,
-                      interests: event['data']['eventInterested'].length,
-                      header: event['data']['eventName'],
-                      interested: event['interested']))
+                    ),
+                  )
                   .toList(),
             ),
           ),

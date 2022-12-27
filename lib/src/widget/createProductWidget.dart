@@ -27,7 +27,10 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   late PostController Postcon;
   Map<String, dynamic> productInfo = {
     'productStatus': 'New',
-    'productOffer': 'Sell'
+    'productOffer': 'Sell',
+    'productAbout': '',
+    'productPhoto': [],
+    'productFile': []
   };
   var category = 'Choose Category';
   double uploadPhotoProgress = 0;
@@ -715,6 +718,8 @@ Widget customInput({title, onChange, controller}) {
           onChanged: (value) {
             onChange(value);
           },
+          keyboardType:
+              title == 'Price' ? TextInputType.number : TextInputType.text,
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.only(top: 10, left: 10),
             border: OutlineInputBorder(),

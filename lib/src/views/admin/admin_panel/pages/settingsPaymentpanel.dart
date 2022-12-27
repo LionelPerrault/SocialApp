@@ -168,31 +168,31 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 20),
         ),
-        titleAndsubtitleInput('Bank Name', 30, 1, 'Your Bank Name'),
+        titleAndsubtitleInput('Bank Name', 30, 1, () {}, 'Your Bank Name'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
         titleAndsubtitleInput(
-            'Bank Account Number', 30, 1, 'Your Bank Account Number'),
+            'Bank Account Number', 30, 1, () {}, 'Your Bank Account Number'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
         titleAndsubtitleInput(
-            'Bank Account Name', 30, 1, 'Your Bank Account Name'),
+            'Bank Account Name', 30, 1, () {}, 'Your Bank Account Name'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        titleAndsubtitleInput('Bank Account Routing Code', 30, 1,
+        titleAndsubtitleInput('Bank Account Routing Code', 30, 1, () {},
             'Your Bank Account Routing Code or SWIFT Code'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
         titleAndsubtitleInput(
-            'Bank Account Country', 30, 1, 'Your Bank Account Country'),
+            'Bank Account Country', 30, 1, () {}, 'Your Bank Account Country'),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        titleAndsubtitleInput('Transfer Note', 100, 7,
+        titleAndsubtitleInput('Transfer Note', 100, 7, () {},
             'This note will be displayed to the user while upload his bank transfer receipt'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -223,15 +223,15 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        titleAndsubtitleInput('Merchant Code', 30, 1, ''),
+        titleAndsubtitleInput('Merchant Code', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        titleAndsubtitleInput('API Publishable Key', 30, 1, ''),
+        titleAndsubtitleInput('API Publishable Key', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        titleAndsubtitleInput('API Private Key', 30, 1, ''),
+        titleAndsubtitleInput('API Private Key', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 20),
         ),
@@ -257,11 +257,11 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Merchant ID', 30, 1, ''),
+        titleAndsubtitleInput('Merchant ID', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
-        titleAndsubtitleInput('IPN Secret', 30, 1, ''),
+        titleAndsubtitleInput('IPN Secret', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -287,8 +287,8 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput(
-            'Secret Key', 30, 1, 'Paystack secret key that starts with sk_'),
+        titleAndsubtitleInput('Secret Key', 30, 1, () {},
+            'Paystack secret key that starts with sk_'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -318,11 +318,11 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('PayPal Client ID', 30, 1, ''),
+        titleAndsubtitleInput('PayPal Client ID', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        titleAndsubtitleInput('PayPal Secret Key', 30, 1, ''),
+        titleAndsubtitleInput('PayPal Secret Key', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
@@ -359,22 +359,22 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        titleAndsubtitleInput(
-            'Test Secret Key', 30, 1, 'Stripe secret key that starts with sk_'),
+        titleAndsubtitleInput('Test Secret Key', 30, 1, () {},
+            'Stripe secret key that starts with sk_'),
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        titleAndsubtitleInput('Test Publishable Key', 30, 1,
+        titleAndsubtitleInput('Test Publishable Key', 30, 1, () {},
             'Stripe publishable key that starts with pk_'),
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        titleAndsubtitleInput(
-            'Live Secret Key', 30, 1, 'Stripe secret key that starts with sk_'),
+        titleAndsubtitleInput('Live Secret Key', 30, 1, () {},
+            'Stripe secret key that starts with sk_'),
         const Padding(
           padding: EdgeInsets.only(top: 15),
         ),
-        titleAndsubtitleInput('Live Publishable Key', 30, 1,
+        titleAndsubtitleInput('Live Publishable Key', 30, 1, () {},
             'Stripe publishable key that starts with pk_'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
@@ -426,7 +426,8 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
-        titleAndsubtitleInput('Bucket Name', 30, 1, 'Your Wasabi bucket name'),
+        titleAndsubtitleInput(
+            'Bucket Name', 30, 1, () {}, 'Your Wasabi bucket name'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -434,12 +435,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           padding: EdgeInsets.only(top: 30),
         ),
         titleAndsubtitleInput(
-            'Access Key ID', 30, 1, 'Your Wasabi Access Key ID'),
+            'Access Key ID', 30, 1, () {}, 'Your Wasabi Access Key ID'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
         titleAndsubtitleInput(
-            'Access Key Secret', 30, 1, 'Your Wasabi Access Key Secret'),
+            'Access Key Secret', 30, 1, () {}, 'Your Wasabi Access Key Secret'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
@@ -539,7 +540,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           padding: EdgeInsets.only(top: 50),
         ),
         titleAndsubtitleInput(
-            'Space Name', 30, 1, 'Your DigitalOcean space name'),
+            'Space Name', 30, 1, () {}, 'Your DigitalOcean space name'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -547,12 +548,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           padding: EdgeInsets.only(top: 30),
         ),
         titleAndsubtitleInput(
-            'Access Key ID', 30, 1, 'Your DigitalOcean Access Key ID'),
+            'Access Key ID', 30, 1, () {}, 'Your DigitalOcean Access Key ID'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput(
-            'Access Key Secret', 30, 1, 'Your DigitalOcean Access Key Secret'),
+        titleAndsubtitleInput('Access Key Secret', 30, 1, () {},
+            'Your DigitalOcean Access Key Secret'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
@@ -644,18 +645,18 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput(
-            'Uploads Directory', 30, 1, 'The path of uploads local directory'),
+        titleAndsubtitleInput('Uploads Directory', 30, 1, () {},
+            'The path of uploads local directory'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Uploads Prefix', 30, 1,
+        titleAndsubtitleInput('Uploads Prefix', 30, 1, () {},
             'Add a prefix to the uploaded files (No spaces or special characters only like mysite or my_site)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput(
-            'Uploads CDN Endpoint', 30, 1, 'Your CDN URL like AWS CloudFront'),
+        titleAndsubtitleInput('Uploads CDN Endpoint', 30, 1, () {},
+            'Your CDN URL like AWS CloudFront'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -681,7 +682,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Max Photo Size', 30, 1,
+        titleAndsubtitleInput('Max Photo Size', 30, 1, () {},
             'The Maximum size of uploaded photo in posts in kilobytes (1M = 1024KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -703,12 +704,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Max Cover Photo Size', 30, 1,
+        titleAndsubtitleInput('Max Cover Photo Size', 30, 1, () {},
             'The Maximum size of cover photo in kilobytes (1 M = 1024 KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Max Profile Photo Size', 30, 1,
+        titleAndsubtitleInput('Max Profile Photo Size', 30, 1, () {},
             'The Maximum size of profile photo in kilobytes (1 M = 1024 KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -761,23 +762,23 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Watermark Position', 30, 1,
+        titleAndsubtitleInput('Watermark Position', 30, 1, () {},
             'Select the position (the anchor point) of your watermark icon'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Watermark Opacity', 30, 1,
+        titleAndsubtitleInput('Watermark Opacity', 30, 1, () {},
             'The opacity level of the watermark icon (value between 0 - 1)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
         titleAndsubtitleInput(
-            'Watermark X Offset', 30, 1, 'Horizontal offset in pixels'),
+            'Watermark X Offset', 30, 1, () {}, 'Horizontal offset in pixels'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
         titleAndsubtitleInput(
-            'Watermark Y Offset', 30, 1, 'Vertical offset in pixels'),
+            'Watermark Y Offset', 30, 1, () {}, 'Vertical offset in pixels'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -850,7 +851,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           padding: EdgeInsets.only(top: 30),
         ),
         titleAndsubtitleInput(
-            'Google Vision API Key', 30, 1, 'Your Cloud Vision API Key'),
+            'Google Vision API Key', 30, 1, () {}, 'Your Cloud Vision API Key'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
@@ -868,12 +869,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Max video size', 30, 1,
+        titleAndsubtitleInput('Max video size', 30, 1, () {},
             'The Maximum size of uploaded video in posts in kilobytes (1M = 1024KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Video extensions', 30, 1,
+        titleAndsubtitleInput('Video extensions', 30, 1, () {},
             'Allowed video extensions (separated with comma)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -892,12 +893,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Max audio size', 30, 1,
+        titleAndsubtitleInput('Max audio size', 30, 1, () {},
             'The Maximum size of uploaded audio in posts in kilobytes (1M = 1024KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Audio extensions', 30, 1,
+        titleAndsubtitleInput('Audio extensions', 30, 1, () {},
             'Allowed audio extensions (separated with comma )'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -916,12 +917,12 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('Max file size', 30, 1,
+        titleAndsubtitleInput('Max file size', 30, 1, () {},
             'The Maximum size of uploaded file in posts in kilobytes (1M = 1024KB)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('File extensions', 30, 1,
+        titleAndsubtitleInput('File extensions', 30, 1, () {},
             'Allowed file extensions (separated with comma `,)'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -1060,22 +1061,22 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           padding: EdgeInsets.only(top: 50),
         ),
         titleAndsubtitleInput(
-            'Bucket Name', 30, 1, 'Your Amazon S3 bucket name'),
+            'Bucket Name', 30, 1, () {}, 'Your Amazon S3 bucket name'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
         titleAndsubtitleInput(
-            'Bucket Region', 30, 1, 'Your Amazon S3 bucket region'),
+            'Bucket Region', 30, 1, () {}, 'Your Amazon S3 bucket region'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
         titleAndsubtitleInput(
-            'Access Key ID', 30, 1, 'Your Amazon S3 Access Key ID'),
+            'Access Key ID', 30, 1, () {}, 'Your Amazon S3 Access Key ID'),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput(
-            'Access Key Secret', 30, 1, 'Your Amazon S3 Access Key Secret'),
+        titleAndsubtitleInput('Access Key Secret', 30, 1, () {},
+            'Your Amazon S3 Access Key Secret'),
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
@@ -1235,61 +1236,48 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
     );
   }
 
-  Widget titleAndsubtitleInput(title, height, line, subtitle) {
+  Widget titleAndsubtitleInput(title, height, line, onChange, subTitle) {
     return Container(
-      child: Row(
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 100,
-            alignment: Alignment.topLeft,
-            child: Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 85, 95, 127)),
-            ),
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: Color.fromARGB(255, 85, 95, 127)),
           ),
-          Expanded(
-              flex: 2,
-              child: SizedBox(
-                width: 500,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 400,
-                        height: height,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: line,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  width: 400,
+                  child: Column(children: [
+                    TextField(
+                      maxLines: line,
+                      minLines: line,
+                      onChanged: (value) {
+                        onChange(value);
+                      },
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(top: 10, left: 10),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.blue, width: 1.0),
                         ),
                       ),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      )
-                    ]),
-              ))
+                    ),
+                    Text(subTitle)
+                  ]),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

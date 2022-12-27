@@ -101,6 +101,7 @@ class PostController extends ControllerMVC {
   var viewEventInterested = false;
   var viewEventGoing = false;
   var viewEventInvited = false;
+  var allEvent;
 
   //sub router
   String eventTab = 'Timeline';
@@ -110,13 +111,18 @@ class PostController extends ControllerMVC {
 
   //get all event function
   Future<List> getEvent(String condition, String userName) async {
+    var ae = await Helper.eventsData.get();
+    allEvent = ae.docs;
+    setState(() {});
+    print(allEvent);
     List<Map> realAllEvents = [];
     await Helper.eventsData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
-        var interested = await boolInterested(id);
         var data = doc[i];
+        var interested =
+            await boolInterested(data, UserManager.userInfo['userName']);
         //closed event
         if (data['eventPrivacy'] == 'closed') {
           if (data['eventAdmin'][0]['userName'] == userName &&
@@ -127,9 +133,11 @@ class PostController extends ControllerMVC {
         }
         //security event
         else /*if (data['eventPrivacy'] == 'security') */ {
-          var inInterested = await boolInterested(id);
-          var inInvited = await boolInvited(id);
-          var inGoing = await boolGoing(id);
+          var inInterested =
+              await boolInterested(data, UserManager.userInfo['userName']);
+          var inInvited =
+              await boolInvited(data, UserManager.userInfo['userName']);
+          var inGoing = await boolGoing(data, UserManager.userInfo['userName']);
           if (inInterested && condition == 'interested') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
@@ -144,7 +152,7 @@ class PostController extends ControllerMVC {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
           } else if (condition == 'all') {
-            if (data['eventPrivacy'] == 'public') {
+            if (data['eventPrivacy'] == 'public' && data['eventPost'] == true) {
               realAllEvents
                   .add({'data': data, 'id': id, 'interested': interested});
             }
@@ -164,9 +172,11 @@ class PostController extends ControllerMVC {
     viewEventId = id;
     await Helper.eventsData.doc(id).get().then((value) async {
       event = value.data();
-      viewEventInterested = await boolInterested(id);
-      viewEventGoing = await boolGoing(id);
-      viewEventInvited = await boolInvited(id);
+      viewEventInterested =
+          await boolInterested(value, UserManager.userInfo['userName']);
+      viewEventGoing = await boolGoing(value, UserManager.userInfo['userName']);
+      viewEventInvited =
+          await boolInvited(value, UserManager.userInfo['userName']);
       setState(() {});
       print('This event was posted by ${event['eventAdmin']}');
     });
@@ -175,15 +185,15 @@ class PostController extends ControllerMVC {
 
   //create event function
   Future<String> createEvent(context, Map<String, dynamic> eventData) async {
-    if (eventData['eventName'] == null && eventData['eventName'] == '') {
+    if (eventData['eventName'] == null || eventData['eventName'] == '') {
       return 'Please add your event name';
-    } else if (eventData['eventLocation'] == null &&
+    } else if (eventData['eventLocation'] == null ||
         eventData['eventLocation'] == '') {
       return 'Please add your event location';
-    } else if (eventData['eventStartDate'] == null &&
+    } else if (eventData['eventStartDate'] == null ||
         eventData['eventStartDate'] == '') {
       return 'Please add your event start date';
-    } else if (eventData['eventEndDate'] == null &&
+    } else if (eventData['eventEndDate'] == null ||
         eventData['eventEndDate'] == '') {
       return 'Please add your event end date';
     }
@@ -232,7 +242,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var interested = doc['eventInterested'];
-    var respon = await boolInterested(eventId);
+    var respon = await boolInterested(doc, UserManager.userInfo['userName']);
     if (respon) {
       interested.removeWhere(
           (item) => item['userName'] == UserManager.userInfo['userName']);
@@ -257,15 +267,13 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event interested or not
-  Future<bool> boolInterested(String eventId) async {
-    var querySnapshot = await Helper.eventsData.doc(eventId).get();
-    var doc = querySnapshot;
-    var interested = doc['eventInterested'];
+  Future<bool> boolInterested(var eventData, String userName) async {
+    var interested = eventData['eventInterested'];
     if (interested == null) {
       return false;
     }
-    var returnData = interested.where(
-        (eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
+    var returnData =
+        interested.where((eachUser) => eachUser['userName'] == userName);
     print('you get bool of interested event');
     if (returnData.length == 0) {
       return false;
@@ -280,7 +288,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var going = doc['eventGoing'];
-    var respon = await boolGoing(eventId);
+    var respon = await boolGoing(doc, UserManager.userInfo['userName']);
     if (respon) {
       going.removeWhere(
           (item) => item['userName'] == UserManager.userInfo['userName']);
@@ -305,15 +313,13 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event going or not
-  Future<bool> boolGoing(String eventId) async {
-    var querySnapshot = await Helper.eventsData.doc(eventId).get();
-    var doc = querySnapshot;
-    var going = doc['eventGoing'];
+  Future<bool> boolGoing(var eventData, String userName) async {
+    var going = eventData['eventGoing'];
     if (going == null) {
       return false;
     }
-    var returnData = going.where(
-        (eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
+    var returnData =
+        going.where((eachUser) => eachUser['userName'] == userName);
     print('you get bool of going event');
     if (returnData.length == 0) {
       return false;
@@ -328,7 +334,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var invited = doc['eventInvited'];
-    var respon = await boolInvited(eventId);
+    var respon = await boolInvited(doc, UserManager.userInfo['userName']);
     if (respon) {
       invited.removeWhere(
           (item) => item['userName'] == UserManager.userInfo['userName']);
@@ -353,15 +359,13 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event invited or not
-  Future<bool> boolInvited(String eventId) async {
-    var querySnapshot = await Helper.eventsData.doc(eventId).get();
-    var doc = querySnapshot;
-    var invited = doc['eventInvited'];
+  Future<bool> boolInvited(var eventData, String userName) async {
+    var invited = eventData['eventInvited'];
     if (invited == null) {
       return false;
     }
-    var returnData = invited.where(
-        (eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
+    var returnData =
+        invited.where((eachUser) => eachUser['userName'] == userName);
     print('you get bool of invited event');
     if (returnData.length == 0) {
       return false;
@@ -411,8 +415,8 @@ class PostController extends ControllerMVC {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
-        var liked = await boolLiked(id);
         var data = doc[i];
+        var liked = await boolLiked(data, UserManager.userInfo['userName']);
         if (userName == data['pageAdmin'][0]['userName'] &&
             condition == 'manage') {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
@@ -441,7 +445,7 @@ class PostController extends ControllerMVC {
     var value = reuturnValue.docs;
     page = value[0];
     viewPageId = page.id;
-    viewPageLiked = await boolLiked(viewPageId);
+    viewPageLiked = await boolLiked(page, UserManager.userInfo['userName']);
     setState(() {});
     print('This page was posted by ${page['pageAdmin'][0]}');
     return true;
@@ -449,12 +453,12 @@ class PostController extends ControllerMVC {
 
   //create page function
   Future<String> createPage(context, Map<String, dynamic> pageData) async {
-    if (pageData['pageName'] == null && pageData['pageName'] == '') {
+    if (pageData['pageName'] == null || pageData['pageName'] == '') {
       return 'Please add your page name';
-    } else if (pageData['pageUserName'] == null &&
+    } else if (pageData['pageUserName'] == null ||
         pageData['pageUserName'] == '') {
       return 'Please add your page user name';
-    } else if (pageData['pageLocation'] == null &&
+    } else if (pageData['pageLocation'] == null ||
         pageData['pageLocation'] == '') {
       return 'Please add your page location';
     }
@@ -499,7 +503,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.pagesData.doc(pageId).get();
     var doc = querySnapshot;
     var liked = doc['pageLiked'];
-    var respon = await boolLiked(pageId);
+    var respon = await boolLiked(doc, UserManager.userInfo['userName']);
     if (respon) {
       liked.removeWhere(
           (item) => item['userName'] == UserManager.userInfo['userName']);
@@ -524,15 +528,13 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in page interested or not
-  Future<bool> boolLiked(String pageId) async {
-    var querySnapshot = await Helper.pagesData.doc(pageId).get();
-    var doc = querySnapshot;
-    var liked = doc['pageLiked'];
+  Future<bool> boolLiked(var pageData, String userName) async {
+    var liked = pageData['pageLiked'];
     if (liked == null) {
       return false;
     }
-    var returnData = liked.where(
-        (eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
+    var returnData =
+        liked.where((eachUser) => eachUser['userName'] == userName);
     print('you get bool of liked page');
     if (returnData.length == 0) {
       return false;
@@ -624,8 +626,8 @@ class PostController extends ControllerMVC {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
-        var joined = await boolJoined(id);
         var data = doc[i];
+        var joined = await boolJoined(data, UserManager.userInfo['userName']);
         if (userName == data['groupAdmin'][0]['userName'] &&
             condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
@@ -654,7 +656,7 @@ class PostController extends ControllerMVC {
     var value = reuturnValue.docs;
     group = value[0];
     viewGroupId = group.id;
-    viewGroupJoined = await boolJoined(viewGroupId);
+    viewGroupJoined = await boolJoined(group, UserManager.userInfo['userName']);
     setState(() {});
     print('This group was posted by ${group['groupAdmin'][0]['userName']}');
     return true;
@@ -662,12 +664,12 @@ class PostController extends ControllerMVC {
 
   //create group function
   Future<String> createGroup(context, Map<String, dynamic> groupData) async {
-    if (groupData['groupName'] == null && groupData['groupName'] == '') {
+    if (groupData['groupName'] == null || groupData['groupName'] == '') {
       return 'Please add your group name';
-    } else if (groupData['groupUserName'] == null &&
+    } else if (groupData['groupUserName'] == null ||
         groupData['groupUserName'] == '') {
       return 'Please add your group user name';
-    } else if (groupData['groupLocation'] == null &&
+    } else if (groupData['groupLocation'] == null ||
         groupData['groupLocation'] == '') {
       return 'Please add your group location';
     }
@@ -713,7 +715,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
     var joined = doc['groupJoined'];
-    var respon = await boolJoined(groupId);
+    var respon = await boolJoined(doc, UserManager.userInfo['userName']);
     if (respon) {
       joined.removeWhere(
           (item) => item['userName'] == UserManager.userInfo['userName']);
@@ -738,16 +740,13 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in group interested or not
-  Future<bool> boolJoined(String groupId) async {
-    var querySnapshot = await Helper.groupsData.doc(groupId).get();
-    var doc = querySnapshot;
-    print(groupId);
-    var joined = doc['groupJoined'];
+  Future<bool> boolJoined(var groupData, String userName) async {
+    var joined = groupData['groupJoined'];
     if (joined == null) {
       return false;
     }
-    var returnData = joined.where(
-        (eachUser) => eachUser['userName'] == UserManager.userInfo['userName']);
+    var returnData =
+        joined.where((eachUser) => eachUser['userName'] == userName);
     print('you get bool of joined group');
     if (returnData.length == 0) {
       return false;
@@ -784,13 +783,13 @@ class PostController extends ControllerMVC {
 
   Future<String> createProduct(
       context, Map<String, dynamic> productData) async {
-    if (productData['productName'] == null &&
+    if (productData['productName'] == null ||
         productData['productName'] == '') {
       return 'Please add your product name';
-    } else if (productData['productPrice'] == null &&
+    } else if (productData['productPrice'] == null ||
         productData['productPrice'] == '') {
       return 'Please add your product price';
-    } else if (productData['productCategory'] == null &&
+    } else if (productData['productCategory'] == null ||
         productData['productCategory'] == '') {
       return 'Please add your product category';
     }
@@ -821,6 +820,7 @@ class PostController extends ControllerMVC {
 
   //get all product function
   Future<void> getProduct() async {
+    allProduct = [];
     await Helper.productsData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {

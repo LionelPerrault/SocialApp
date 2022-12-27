@@ -188,10 +188,15 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                         Row(
                           children: [
                             const Padding(padding: EdgeInsets.only(left: 10)),
-                            Text(
-                              subCategory[index]['title'],
-                              style: const TextStyle(
-                                  fontSize: 11, color: Colors.black),
+                            Expanded(
+                              child: Container(
+                                width: 400,
+                                child: Text(
+                                  subCategory[index]['title'],
+                                  style: const TextStyle(
+                                      fontSize: 11, color: Colors.black),
+                                ),
+                              ),
                             ),
                             const Flexible(
                                 fit: FlexFit.tight, child: SizedBox()),

@@ -380,9 +380,15 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 child: const Text('Settings'),
                               ),
                             ),
-                            const PopupMenuItem<Menu>(
+                            PopupMenuItem<Menu>(
                               value: Menu.itemPrivacy,
-                              child: Text('Privacy'),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, RouteNames.adp);
+                                    print(1123);
+                                  },
+                                  child: Text('Privacy')),
                             ),
                             PopupMenuDivider(),
                             PopupMenuItem<Menu>(
@@ -633,9 +639,16 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   },
                                   child: const Text('Settings')),
                             ),
-                            const PopupMenuItem<Menu>(
+                            PopupMenuItem<Menu>(
                               value: Menu.itemPrivacy,
-                              child: Text('Privacy'),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      RouteNames.settings,
+                                    );
+                                  },
+                                  child: const Text('Privacy')),
                             ),
                             const PopupMenuDivider(),
                             PopupMenuItem<Menu>(

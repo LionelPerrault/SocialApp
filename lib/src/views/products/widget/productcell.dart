@@ -29,18 +29,26 @@ class ProductCell extends StatefulWidget {
 class ProductCellState extends mvc.StateMVC<ProductCell> {
   late PostController con;
   var loading = false;
-  Map product = {};
+  var product;
   var productId = '';
 
   List<Map> subFunctionList = [];
   @override
   void initState() {
     add(widget.con);
-    // TODO: implement initState
+    print(loading);
     con = controller as PostController;
     super.initState();
-    product = widget.data['data'];
+    if (loading == false) {
+      product = widget.data['data'];
+    }
+    loading = true;
     productId = widget.data['id'];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('render');
     subFunctionList = [
       {
         'icon': product['productMarkAsSold']
@@ -52,7 +60,14 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
           con
               .productMarkAsSold(productId, !product['productMarkAsSold'])
               .then((value) => {
-                    con.getProduct().then((value) => {setState((() {}))})
+                    con.getProduct().then((value) => {
+                          product = con.allProduct
+                              .where((val) => val['id'] == widget.data['id'])
+                              .toList()[0]['data'],
+                          print(product),
+                          setState(() {}),
+                          Helper.setting.notifyListeners(),
+                        })
                   });
         },
       },
@@ -63,7 +78,14 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
           con
               .productSavePost(productId, !product['productMarkAsSold'])
               .then((value) => {
-                    con.getProduct().then((value) => {setState(() {})})
+                    con.getProduct().then((value) => {
+                          product = con.allProduct
+                              .where((val) => val['id'] == widget.data['id'])
+                              .toList()[0]['data'],
+                          print(product),
+                          setState(() {}),
+                          Helper.setting.notifyListeners(),
+                        })
                   });
         },
       },
@@ -102,7 +124,14 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
         'text': 'Delete Post',
         'onTap': () {
           con.productDelete(productId).then((value) => {
-                con.getProduct().then((value) => {setState((() {}))})
+                con.getProduct().then((value) => {
+                      product = con.allProduct
+                          .where((val) => val['id'] == widget.data['id'])
+                          .toList()[0]['data'],
+                      print(product),
+                      setState(() {}),
+                      Helper.setting.notifyListeners(),
+                    })
               });
         },
       },
@@ -115,20 +144,33 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
           con
               .productHideFromTimeline(productId, !product['productTimeline'])
               .then((value) => {
-                    con.getProduct().then((value) => {setState((() {}))})
+                    con.getProduct().then((value) => {
+                          product = con.allProduct
+                              .where((val) => val['id'] == widget.data['id'])
+                              .toList()[0]['data'],
+                          print(product),
+                          setState(() {}),
+                          Helper.setting.notifyListeners(),
+                        })
                   });
         },
       },
       {
         'icon': Icons.comment,
-        'text': product['productTimeline']
+        'text': product['productOnOffCommenting']
             ? 'Turn off Commenting'
             : 'Trun on Commenting',
         'onTap': () {
           con
               .productTurnOffCommenting(productId, !product['productTimeline'])
-              .then((value) =>
-                  con.getProduct().then((value) => {setState((() {}))}));
+              .then((value) => con.getProduct().then((value) => {
+                    product = con.allProduct
+                        .where((val) => val['id'] == widget.data['id'])
+                        .toList()[0]['data'],
+                    print(product),
+                    setState(() {}),
+                    Helper.setting.notifyListeners(),
+                  }));
         },
       },
       {
@@ -136,18 +178,15 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
         'text': 'Open Post in new Tab',
         'onTap': () {
           Navigator.pushReplacementNamed(
-              context, '${RouteNames.products}/${product['id']}');
+              context, '${RouteNames.products}/${productId}');
         },
       },
     ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
             child: Container(
+          margin: const EdgeInsets.only(top: 30, bottom: 30),
           width: 600,
           padding: EdgeInsets.only(top: 20),
           decoration: BoxDecoration(
@@ -197,8 +236,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                   ),
                                   Container(
                                     width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 225
-                                        : 370,
+                                        ? SizeConfig(context).screenWidth - 210
+                                        : 350,
                                     child: Text(
                                       ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
                                       style: TextStyle(fontSize: 14),

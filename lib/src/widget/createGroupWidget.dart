@@ -27,7 +27,11 @@ class CreateGroupModal extends StatefulWidget {
 class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   bool isSound = false;
   late PostController Postcon;
-  Map<String, dynamic> groupInfo = {};
+  Map<String, dynamic> groupInfo = {
+    'groupAbout': '',
+    'groupPrivacy': 'public',
+    'groupInterests': [],
+  };
   var privacy = 'public';
   var interest = 'none';
   List<Map> GroupsDropDown = [
@@ -55,8 +59,6 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   void initState() {
     add(widget.Postcon);
     Postcon = controller as PostController;
-    groupInfo['groupPrivacy'] = 'public';
-    groupInfo['groupAbout'] = '';
     super.initState();
   }
 

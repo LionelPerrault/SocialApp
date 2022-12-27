@@ -37,7 +37,6 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   void getEventNow() {
     con.getEvent('all', UserManager.userInfo['userName']).then((value) => {
           realAllEvents = value,
-          realAllEvents.where((event) => event['data']['eventPost'] == true),
           print(realAllEvents),
           setState(() {}),
         });
@@ -65,21 +64,16 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: realAllEvents
-                  .map((event) => EventCell(
-                      eventTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/events/${event['id']}');
-                      },
+                  .map(
+                    (event) => EventCell(
+                      eventData: event,
                       buttonFun: () {
                         con.interestedEvent(event['id']).then((value) {
                           getEventNow();
                         });
                       },
-                      picture: 'null',
-                      status: false,
-                      interests: event['data']['eventInterested'].length,
-                      header: event['data']['eventName'],
-                      interested: event['interested']))
+                    ),
+                  )
                   .toList(),
             ),
           ),

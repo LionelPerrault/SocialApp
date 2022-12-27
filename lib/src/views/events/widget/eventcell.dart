@@ -11,21 +11,11 @@ import 'package:shnatter/src/helpers/helper.dart';
 class EventCell extends StatefulWidget {
   EventCell({
     super.key,
-    required this.eventTap,
-    required this.picture,
-    required this.interests,
-    required this.header,
-    required this.interested,
-    required this.status,
+    required this.eventData,
     required this.buttonFun,
-  });
-  Function eventTap;
+  }) : con = PostController();
+  Map eventData;
   Function buttonFun;
-  bool status;
-  String picture;
-  int interests;
-  String header;
-  bool interested;
 
   late PostController con;
   @override
@@ -39,6 +29,8 @@ class EventCellState extends mvc.StateMVC<EventCell> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    add(widget.con);
+    con = controller as PostController;
   }
 
   @override
@@ -66,20 +58,21 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
-                            text: widget.header,
+                            text: widget.eventData['data']['eventName'],
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                widget.eventTap();
+                                Navigator.pushReplacementNamed(context,
+                                    '/events/${widget.eventData['id']}');
                               }),
                       ]),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 5)),
                     Text(
-                      '${widget.interests} Interested',
+                      '${widget.eventData['data']['eventInterested'].length} Interested',
                       style: const TextStyle(color: Colors.black, fontSize: 13),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 20)),
@@ -91,10 +84,16 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                 borderRadius: BorderRadius.circular(2.0)),
                             minimumSize: const Size(120, 35),
                             maximumSize: const Size(120, 35)),
-                        onPressed: () {
+                        onPressed: () async {
                           loading = true;
                           setState(() {});
-                          widget.buttonFun();
+                          con.interestedEvent(widget.eventData['id']).then(
+                            (value) async {
+                              await widget.buttonFun();
+                              loading = false;
+                              setState(() {});
+                            },
+                          );
                         },
                         child: loading
                             ? Container(
@@ -108,7 +107,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  widget.interested
+                                  widget.eventData['interested']
                                       ? Icon(
                                           Icons.star,
                                           color: Colors.black,
@@ -147,9 +146,10 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                     radius: 75,
-                    backgroundImage: NetworkImage(widget.picture == ''
-                        ? Helper.eventImage
-                        : widget.picture)),
+                    backgroundImage: NetworkImage(
+                        widget.eventData['data']['eventPicture'] == ''
+                            ? Helper.eventImage
+                            : widget.eventData['data']['eventPicture'])),
               )
             ],
           ),

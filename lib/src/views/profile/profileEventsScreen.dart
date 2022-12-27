@@ -141,11 +141,9 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
                         shrinkWrap: true,
                         crossAxisSpacing: 2.0,
                         children: myEvents
-                            .map((event) => EventCell(
-                                eventTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/events/${event['id']}');
-                                },
+                            .map(
+                              (event) => EventCell(
+                                eventData: event,
                                 buttonFun: () {
                                   PostController()
                                       .interestedEvent(event['id'])
@@ -153,12 +151,8 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
                                     getEventNow();
                                   });
                                 },
-                                picture: event['data']['eventPicture'],
-                                status: false,
-                                interests:
-                                    event['data']['eventInterested'].length,
-                                header: event['data']['eventName'],
-                                interested: event['interested']))
+                              ),
+                            )
                             .toList(),
                       ),
                     ),

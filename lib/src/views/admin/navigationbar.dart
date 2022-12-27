@@ -2,6 +2,7 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
@@ -260,11 +261,14 @@ class AdminShnatterNavigationState
                           ],
                           onSelected: (Menu item) {},
                           child: Row(
-                            children: const [
+                            children: [
                               CircleAvatar(
                                 backgroundColor: Colors.green,
-                                backgroundImage: NetworkImage(
-                                    "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
+                                backgroundImage: NetworkImage(UserManager
+                                            .userInfo['avatar'] ==
+                                        ''
+                                    ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
+                                    : UserManager.userInfo['avatar']),
                               ),
                               //Icon(Icons.arrow_downward,
                               //    size: 15, color: Colors.white)

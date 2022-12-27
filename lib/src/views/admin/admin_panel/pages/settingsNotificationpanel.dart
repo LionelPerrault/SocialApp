@@ -92,11 +92,11 @@ class AdminSettingsNotificationState
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('OneSignal APP ID', 30, 1, ''),
+        titleAndsubtitleInput('OneSignal APP ID', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 30),
         ),
-        titleAndsubtitleInput('OneSignal REST API Key', 30, 1, ''),
+        titleAndsubtitleInput('OneSignal REST API Key', 30, 1, () {}, ''),
         const Padding(
           padding: EdgeInsets.only(top: 50),
         ),
@@ -328,61 +328,48 @@ class AdminSettingsNotificationState
     );
   }
 
-  Widget titleAndsubtitleInput(title, height, line, subtitle) {
+  Widget titleAndsubtitleInput(title, height, line, onChange, subTitle) {
     return Container(
-      child: Row(
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 100,
-            alignment: Alignment.topLeft,
-            child: Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 85, 95, 127)),
-            ),
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: Color.fromARGB(255, 85, 95, 127)),
           ),
-          Expanded(
-              flex: 2,
-              child: SizedBox(
-                width: 500,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 400,
-                        height: height,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: line,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  width: 400,
+                  child: Column(children: [
+                    TextField(
+                      maxLines: line,
+                      minLines: line,
+                      onChanged: (value) {
+                        onChange(value);
+                      },
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(top: 10, left: 10),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.blue, width: 1.0),
                         ),
                       ),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      )
-                    ]),
-              ))
+                    ),
+                    Text(subTitle)
+                  ]),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

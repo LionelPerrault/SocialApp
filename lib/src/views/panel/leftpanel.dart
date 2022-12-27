@@ -22,7 +22,7 @@ class LeftPanel extends StatelessWidget {
           ListText(
               onTap: () => {
                     Navigator.pushReplacementNamed(
-                        context, UserManager.userInfo['userName'])
+                        context, '/${UserManager.userInfo['userName']}')
                   },
               label: UserManager.userInfo['userName'],
               image:

@@ -27,7 +27,10 @@ class CreatePageModal extends StatefulWidget {
 class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
   bool isSound = false;
   late PostController Postcon;
-  Map<String, dynamic> pageInfo = {};
+  Map<String, dynamic> pageInfo = {
+    'pageAbout': '',
+    'pageInterests': [],
+  };
   var privacy = 'public';
   var interest = 'none';
   bool footerBtnState = false;
