@@ -4,7 +4,6 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -13,8 +12,6 @@ import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
-
-import '../controllers/UserController.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../utils/size_config.dart';
@@ -141,6 +138,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     UserManager.userInfo = {};
 
     await Helper.removeAllPreference();
+    // ignore: use_build_context_synchronously
     await Navigator.pushReplacementNamed(context, RouteNames.login);
   }
 
@@ -151,10 +149,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         : buildSmallSize();
   }
 
-  @override
   Widget buildSmallSize() {
     Future.delayed(
-        Duration(microseconds: 300), () => {widget.onSearchBarDismiss()});
+        const Duration(microseconds: 300), () => {widget.onSearchBarDismiss()});
 
     return Stack(
       children: [
@@ -176,9 +173,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             },
                             style: ButtonStyle(
                               minimumSize:
-                                  MaterialStateProperty.all(Size(30, 30)),
-                              padding:
-                                  MaterialStateProperty.all(EdgeInsets.all(2)),
+                                  MaterialStateProperty.all(const Size(30, 30)),
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.all(2)),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.black),
                               backgroundColor:
@@ -190,19 +187,149 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         ),
                   ],
                 ),
-                Container(
-                  child: Row(children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 20),
+                Row(children: [
+                  Container(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          onHomeClicked();
+                        },
+                        style: ButtonStyle(
+                          minimumSize:
+                              MaterialStateProperty.all(const Size(30, 30)),
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.all(2)),
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
+                        child: SvgPicture.network(
+                          placeholderBuilder: (context) => const Icon(
+                              Icons.logo_dev,
+                              size: 30,
+                              color: Colors.white),
+                          SVGPath.home,
+                          color: Colors.white,
+                          width: 20,
+                          height: 20,
+                        ),
+                      )
+                      //Icon(Icons.home_outlined, size: 30, color: Colors.white),
+                      ),
+                  Container(
+                    padding: const EdgeInsets.only(right: 9.0),
+                    child: CustomPopupMenu(
+                        menuBuilder: () => PostsNavBox(),
+                        pressType: PressType.singleClick,
+                        verticalMargin: -10,
+                        child: SvgPicture.network(
+                          placeholderBuilder: (context) => const Icon(
+                              Icons.logo_dev,
+                              size: 30,
+                              color: Colors.white),
+                          SVGPath.posts,
+                          color: Colors.white,
+                          width: 20,
+                          height: 20,
+                        )),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(right: 9.0),
+                    child: CustomPopupMenu(
+                        menuBuilder: () => ShnatterFriendRequest(
+                              onClick: () {
+                                setState(() {});
+                              },
+                            ),
+                        pressType: PressType.singleClick,
+                        verticalMargin: -10,
+                        child: Row(children: [
+                          SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.group,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          ),
+                          peopleCon.requestFriends.isEmpty
+                              ? const SizedBox()
+                              : Badge(
+                                  toAnimate: false,
+                                  shape: BadgeShape.square,
+                                  badgeColor: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(8),
+                                  badgeContent: Text(
+                                      peopleCon.requestFriends.length
+                                          .toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 13)),
+                                ),
+                        ])),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(9.0),
+                    child: CustomPopupMenu(
+                        menuBuilder: () => ShnatterMessage(),
+                        pressType: PressType.singleClick,
+                        verticalMargin: -10,
+                        child: Row(children: [
+                          SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.message,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          ),
+                          chatCon.notifyCount == 0
+                              ? const SizedBox()
+                              : Badge(
+                                  toAnimate: false,
+                                  shape: BadgeShape.square,
+                                  badgeColor: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(8),
+                                  badgeContent: Text(
+                                      chatCon.notifyCount.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 13)),
+                                ),
+                        ])),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(9.0),
+                    child: CustomPopupMenu(
+                      menuBuilder: () => ShnatterNotification(),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: SvgPicture.network(
+                        placeholderBuilder: (context) => const Icon(
+                            Icons.logo_dev,
+                            size: 30,
+                            color: Colors.white),
+                        SVGPath.notification,
+                        color: Colors.white,
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                  ),
+                  Container(
+                      padding: const EdgeInsets.only(right: 1),
+                      child: ButtonTheme(
+                        minWidth: 30,
                         child: ElevatedButton(
-                          onPressed: () {
-                            onHomeClicked();
-                          },
+                          onPressed: () {},
                           style: ButtonStyle(
                             minimumSize:
-                                MaterialStateProperty.all(Size(30, 30)),
-                            padding:
-                                MaterialStateProperty.all(EdgeInsets.all(2)),
+                                MaterialStateProperty.all(const Size(30, 30)),
+                            padding: MaterialStateProperty.all(
+                                const EdgeInsets.all(2)),
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.black),
                             backgroundColor:
@@ -213,235 +340,102 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 Icons.logo_dev,
                                 size: 30,
                                 color: Colors.white),
-                            SVGPath.home,
+                            SVGPath.search,
                             color: Colors.white,
                             width: 20,
                             height: 20,
                           ),
-                        )
-                        //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                         ),
-                    Container(
-                      padding: EdgeInsets.only(right: 9.0),
-                      child: CustomPopupMenu(
-                          menuBuilder: () => PostsNavBox(),
-                          pressType: PressType.singleClick,
-                          verticalMargin: -10,
-                          child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.posts,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          )),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: 9.0),
-                      child: CustomPopupMenu(
-                          menuBuilder: () => ShnatterFriendRequest(
-                                onClick: () {
-                                  setState(() {});
-                                },
-                              ),
-                          pressType: PressType.singleClick,
-                          verticalMargin: -10,
-                          child: Row(children: [
-                            SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
-                              SVGPath.group,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                            peopleCon.requestFriends.isEmpty
-                                ? SizedBox()
-                                : Badge(
-                                    toAnimate: false,
-                                    shape: BadgeShape.square,
-                                    badgeColor: Colors.deepPurple,
-                                    borderRadius: BorderRadius.circular(8),
-                                    badgeContent: Text(
-                                        peopleCon.requestFriends.length
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 13)),
-                                  ),
-                          ])),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(9.0),
-                      child: CustomPopupMenu(
-                          menuBuilder: () => ShnatterMessage(),
-                          pressType: PressType.singleClick,
-                          verticalMargin: -10,
-                          child: Row(children: [
-                            SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
-                              SVGPath.message,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                            chatCon.notifyCount == 0
-                                ? SizedBox()
-                                : Badge(
-                                    toAnimate: false,
-                                    shape: BadgeShape.square,
-                                    badgeColor: Colors.deepPurple,
-                                    borderRadius: BorderRadius.circular(8),
-                                    badgeContent: Text(
-                                        chatCon.notifyCount.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 13)),
-                                  ),
-                          ])),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(9.0),
-                      child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterNotification(),
-                        pressType: PressType.singleClick,
-                        verticalMargin: -10,
-                        child: SvgPicture.network(
-                          placeholderBuilder: (context) => const Icon(
-                              Icons.logo_dev,
-                              size: 30,
-                              color: Colors.white),
-                          SVGPath.notification,
-                          color: Colors.white,
-                          width: 20,
-                          height: 20,
-                        ),
-                      ),
-                    ),
-                    Container(
-                        padding: const EdgeInsets.only(right: 1),
-                        child: ButtonTheme(
-                          minWidth: 30,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                              minimumSize:
-                                  MaterialStateProperty.all(Size(30, 30)),
-                              padding:
-                                  MaterialStateProperty.all(EdgeInsets.all(2)),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.black),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.transparent),
-                            ),
-                            child: SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
-                              SVGPath.search,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                          ),
-                        )
+                      )
 
-                        //Icon(Icons.home_outlined, size: 30, color: Colors.white),
-                        ),
-                    Container(
-                        padding: const EdgeInsets.all(9.0),
-                        child: PopupMenuButton(
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<Menu>>[
-                            PopupMenuItem<Menu>(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(context,
-                                      UserManager.userInfo['userName']);
-                                },
-                                value: Menu.itemProfile,
-                                child: InkWell(
-                                    onTap: () {
-                                      Navigator.pushReplacementNamed(context,
-                                          '/${UserManager.userInfo['userName']}');
-                                    },
-                                    child: const Text('Profile'))),
-                            PopupMenuItem<Menu>(
-                              value: Menu.itemSettings,
-                              child: GestureDetector(
-                                onTap: () {
-                                  onSettingClicked();
-                                },
-                                child: const Text('Settings'),
-                              ),
-                            ),
-                            PopupMenuItem<Menu>(
-                              value: Menu.itemPrivacy,
-                              child: GestureDetector(
+                      //Icon(Icons.home_outlined, size: 30, color: Colors.white),
+                      ),
+                  Container(
+                      padding: const EdgeInsets.all(9.0),
+                      child: PopupMenuButton(
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<Menu>>[
+                          PopupMenuItem<Menu>(
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                    context, UserManager.userInfo['userName']);
+                              },
+                              value: Menu.itemProfile,
+                              child: InkWell(
                                   onTap: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, RouteNames.adp);
-                                    print(1123);
+                                    Navigator.pushReplacementNamed(context,
+                                        '/${UserManager.userInfo['userName']}');
                                   },
-                                  child: Text('Privacy')),
+                                  child: const Text('Profile'))),
+                          PopupMenuItem<Menu>(
+                            value: Menu.itemSettings,
+                            child: GestureDetector(
+                              onTap: () {
+                                onSettingClicked();
+                              },
+                              child: const Text('Settings'),
                             ),
-                            PopupMenuDivider(),
-                            PopupMenuItem<Menu>(
-                              value: Menu.itemAdminPanel,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, RouteNames.adp);
-                                    print(1123);
-                                  },
-                                  child: Text('AdminPanel')),
-                            ),
-                            PopupMenuDivider(),
-                            PopupMenuItem<Menu>(
-                                onTap: () => {onLogOut()},
-                                value: Menu.itemLogout,
-                                child: Row(children: [
-                                  Icon(Icons.logout),
-                                  SizedBox(width: 8),
-                                  Text('Log Out'),
-                                ])),
-                            PopupMenuDivider(),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemKeyboardShortcut,
-                              child: Text('Keyboard Shortcuts'),
-                            ),
-                            PopupMenuDivider(),
-                          ],
-                          onSelected: (Menu item) {},
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.green,
-                                backgroundImage: NetworkImage(UserManager
-                                            .userInfo['avatar'] ==
-                                        ''
-                                    ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
-                                    : UserManager.userInfo['avatar']),
-                              ),
-                              //Icon(Icons.arrow_downward,
-                              //    size: 15, color: Colors.white)
-                            ],
                           ),
-                        )),
-                  ]),
-                )
+                          PopupMenuItem<Menu>(
+                            value: Menu.itemPrivacy,
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, RouteNames.adp);
+                                  print(1123);
+                                },
+                                child: const Text('Privacy')),
+                          ),
+                          const PopupMenuDivider(),
+                          PopupMenuItem<Menu>(
+                            value: Menu.itemAdminPanel,
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, RouteNames.adp);
+                                  print(1123);
+                                },
+                                child: const Text('AdminPanel')),
+                          ),
+                          const PopupMenuDivider(),
+                          PopupMenuItem<Menu>(
+                              onTap: () => {onLogOut()},
+                              value: Menu.itemLogout,
+                              child: Row(children: const [
+                                Icon(Icons.logout),
+                                SizedBox(width: 8),
+                                Text('Log Out'),
+                              ])),
+                          const PopupMenuDivider(),
+                          const PopupMenuItem<Menu>(
+                            value: Menu.itemKeyboardShortcut,
+                            child: Text('Keyboard Shortcuts'),
+                          ),
+                          const PopupMenuDivider(),
+                        ],
+                        onSelected: (Menu item) {},
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.green,
+                              backgroundImage: NetworkImage(UserManager
+                                          .userInfo['avatar'] ==
+                                      ''
+                                  ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
+                                  : UserManager.userInfo['avatar']),
+                            ),
+                            //Icon(Icons.arrow_downward,
+                            //    size: 15, color: Colors.white)
+                          ],
+                        ),
+                      )),
+                ])
               ],
             )),
       ],
     );
   }
 
-  @override
   Widget buildLargeSize() {
     return Stack(
       children: [
@@ -463,7 +457,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         });
                       },
                       child: AnimatedOpacity(
-                        duration: Duration(microseconds: 1000),
+                        duration: const Duration(microseconds: 1000),
                         curve: Curves.easeIn,
                         opacity: onHover ? 0.5 : 1,
                         child: SvgPicture.network(
@@ -509,104 +503,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     )
                   ],
                 ),
-                Container(
-                  child: Row(children: [
-                    Container(
-                      padding: EdgeInsets.only(right: 9.0),
-                      child: CustomPopupMenu(
-                          menuBuilder: () => PostsNavBox(),
-                          pressType: PressType.singleClick,
-                          verticalMargin: -10,
-                          child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.posts,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          )),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: 9.0),
-                      child: CustomPopupMenu(
-                          menuBuilder: () => ShnatterFriendRequest(
-                                onClick: () {
-                                  setState(() {});
-                                },
-                              ),
-                          pressType: PressType.singleClick,
-                          verticalMargin: -10,
-                          child: Row(children: [
-                            SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
-                              SVGPath.group,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                            peopleCon.requestFriends.isEmpty
-                                ? const SizedBox()
-                                : Padding(
-                                    padding: const EdgeInsets.only(left: 3),
-                                    child: Badge(
-                                      toAnimate: false,
-                                      shape: BadgeShape.square,
-                                      badgeColor: Colors.deepPurple,
-                                      borderRadius: BorderRadius.circular(8),
-                                      badgeContent: Text(
-                                          peopleCon.requestFriends.length
-                                              .toString(),
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 13)),
-                                    ),
-                                  )
-                          ])),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(9.0),
-                      child: CustomPopupMenu(
-                          menuBuilder: () => ShnatterMessage(),
-                          pressType: PressType.singleClick,
-                          verticalMargin: -10,
-                          child: Row(children: [
-                            SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
-                              SVGPath.message,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 3)),
-                            chatCon.notifyCount == 0
-                                ? const SizedBox()
-                                : Padding(
-                                    padding: const EdgeInsets.only(left: 3),
-                                    child: Badge(
-                                      toAnimate: true,
-                                      shape: BadgeShape.square,
-                                      badgeColor: Colors.deepPurple,
-                                      borderRadius: BorderRadius.circular(8),
-                                      badgeContent: Text(
-                                          chatCon.notifyCount.toString(),
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 13)),
-                                    )),
-                          ])),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(9.0),
-                      child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterNotification(),
+                Row(children: [
+                  Container(
+                    padding: const EdgeInsets.only(right: 9.0),
+                    child: CustomPopupMenu(
+                        menuBuilder: () => PostsNavBox(),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
@@ -614,104 +515,193 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               Icons.logo_dev,
                               size: 30,
                               color: Colors.white),
-                          SVGPath.notification,
+                          SVGPath.posts,
                           color: Colors.white,
                           width: 20,
                           height: 20,
-                        ),
+                        )),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(right: 9.0),
+                    child: CustomPopupMenu(
+                        menuBuilder: () => ShnatterFriendRequest(
+                              onClick: () {
+                                setState(() {});
+                              },
+                            ),
+                        pressType: PressType.singleClick,
+                        verticalMargin: -10,
+                        child: Row(children: [
+                          SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.group,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          ),
+                          peopleCon.requestFriends.isEmpty
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.only(left: 3),
+                                  child: Badge(
+                                    toAnimate: false,
+                                    shape: BadgeShape.square,
+                                    badgeColor: Colors.deepPurple,
+                                    borderRadius: BorderRadius.circular(8),
+                                    badgeContent: Text(
+                                        peopleCon.requestFriends.length
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 13)),
+                                  ),
+                                )
+                        ])),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(9.0),
+                    child: CustomPopupMenu(
+                        menuBuilder: () => ShnatterMessage(),
+                        pressType: PressType.singleClick,
+                        verticalMargin: -10,
+                        child: Row(children: [
+                          SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.message,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 3)),
+                          chatCon.notifyCount == 0
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.only(left: 3),
+                                  child: Badge(
+                                    toAnimate: true,
+                                    shape: BadgeShape.square,
+                                    badgeColor: Colors.deepPurple,
+                                    borderRadius: BorderRadius.circular(8),
+                                    badgeContent: Text(
+                                        chatCon.notifyCount.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 13)),
+                                  )),
+                        ])),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(9.0),
+                    child: CustomPopupMenu(
+                      menuBuilder: () => ShnatterNotification(),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: SvgPicture.network(
+                        placeholderBuilder: (context) => const Icon(
+                            Icons.logo_dev,
+                            size: 30,
+                            color: Colors.white),
+                        SVGPath.notification,
+                        color: Colors.white,
+                        width: 20,
+                        height: 20,
                       ),
                     ),
-                    Container(
-                        padding: const EdgeInsets.all(9.0),
-                        child: PopupMenuButton(
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<Menu>>[
-                            PopupMenuItem<Menu>(
-                                value: Menu.itemProfile,
-                                child: InkWell(
-                                    onTap: () {
-                                      Navigator.pushReplacementNamed(context,
-                                          '/${UserManager.userInfo['userName']}');
-                                    },
-                                    child: const Text('Profile'))),
-                            PopupMenuItem<Menu>(
-                              value: Menu.itemSettings,
-                              child: GestureDetector(
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(9.0),
+                      child: PopupMenuButton(
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<Menu>>[
+                          PopupMenuItem<Menu>(
+                              value: Menu.itemProfile,
+                              child: InkWell(
                                   onTap: () {
-                                    onSettingClicked();
+                                    Navigator.pushReplacementNamed(context,
+                                        '/${UserManager.userInfo['userName']}');
                                   },
-                                  child: const Text('Settings')),
-                            ),
-                            PopupMenuItem<Menu>(
-                              value: Menu.itemPrivacy,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushReplacementNamed(
-                                      context,
-                                      RouteNames.settings,
-                                    );
-                                  },
-                                  child: const Text('Privacy')),
-                            ),
-                            const PopupMenuDivider(),
-                            PopupMenuItem<Menu>(
-                              value: Menu.itemAdminPanel,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, RouteNames.adp);
-                                  },
-                                  child: const Text('AdminPanel')),
-                            ),
-                            const PopupMenuDivider(),
-                            PopupMenuItem<Menu>(
+                                  child: const Text('Profile'))),
+                          PopupMenuItem<Menu>(
+                            value: Menu.itemSettings,
+                            child: GestureDetector(
                                 onTap: () {
-                                  onLogOut();
+                                  onSettingClicked();
                                 },
-                                value: Menu.itemLogout,
-                                child: Row(children: const [
-                                  Icon(Icons.logout),
-                                  SizedBox(width: 8),
-                                  Text('Log Out'),
-                                ])),
-                            PopupMenuDivider(),
-                            const PopupMenuItem<Menu>(
-                              value: Menu.itemKeyboardShortcut,
-                              child: Text('Keyboard Shortcuts'),
-                            ),
-                            PopupMenuDivider(),
-                          ],
-                          onSelected: (Menu item) {},
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.green,
-                                backgroundImage: NetworkImage(UserManager
-                                            .userInfo['avatar'] ==
-                                        ''
-                                    ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
-                                    : UserManager.userInfo['avatar']),
-                              ),
-                              //Icon(Icons.arrow_downward,
-                              //    size: 15, color: Colors.white)
-                            ],
+                                child: const Text('Settings')),
                           ),
-                        )),
-                  ]),
-                )
+                          PopupMenuItem<Menu>(
+                            value: Menu.itemPrivacy,
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    RouteNames.settings,
+                                  );
+                                },
+                                child: const Text('Privacy')),
+                          ),
+                          const PopupMenuDivider(),
+                          PopupMenuItem<Menu>(
+                            value: Menu.itemAdminPanel,
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, RouteNames.adp);
+                                },
+                                child: const Text('AdminPanel')),
+                          ),
+                          const PopupMenuDivider(),
+                          PopupMenuItem<Menu>(
+                              onTap: () {
+                                onLogOut();
+                              },
+                              value: Menu.itemLogout,
+                              child: Row(children: const [
+                                Icon(Icons.logout),
+                                SizedBox(width: 8),
+                                Text('Log Out'),
+                              ])),
+                          const PopupMenuDivider(),
+                          const PopupMenuItem<Menu>(
+                            value: Menu.itemKeyboardShortcut,
+                            child: Text('Keyboard Shortcuts'),
+                          ),
+                          const PopupMenuDivider(),
+                        ],
+                        onSelected: (Menu item) {},
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.green,
+                              backgroundImage: NetworkImage(UserManager
+                                          .userInfo['avatar'] ==
+                                      ''
+                                  ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
+                                  : UserManager.userInfo['avatar']),
+                            ),
+                            //Icon(Icons.arrow_downward,
+                            //    size: 15, color: Colors.white)
+                          ],
+                        ),
+                      )),
+                ])
               ],
             )),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(right: 20.0),
                 child: const SizedBox(
                   width: 20,
                   height: 20,
                 )),
             Container(
-              padding: EdgeInsets.only(top: 10, bottom: 10, right: 9),
+              padding: const EdgeInsets.only(top: 10, bottom: 10, right: 9),
               width: SizeConfig(context).screenWidth * 0.4,
               child: TextField(
                 controller: searhCon,

@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/routes/admin_router.dart';
 import 'package:shnatter/src/views/admin/navigationbar.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
-import 'package:shnatter/src/routes/setting_router.dart';
-
-import '../../controllers/UserController.dart';
 import '../../utils/size_config.dart';
-import '../box/notification.dart';
-import '../box/admin_dash_chart.dart';
 import 'admin_panel/adminleftpanel.dart';
 
 class AdminScreen extends StatefulWidget {
-  AdminScreen({Key? key}) : super(key: key);
+  const AdminScreen({Key? key}) : super(key: key);
 
   @override
   State createState() => AdminScreenState();
@@ -74,7 +67,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
-        drawer: Drawer(),
+        drawer: const Drawer(),
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -82,10 +75,10 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
               drawClicked: clickMenu,
             ),
             Padding(
-                padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,38 +104,35 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                   return FractionalTranslation(
                       translation: SizeConfig(context).screenWidth >
                               SizeConfig.mediumScreenSize
-                          ? Offset(0, 0)
+                          ? const Offset(0, 0)
                           : Offset(_drawerSlideController.value * 0.001, 0.0),
                       child: SizeConfig(context).screenWidth >
                                   SizeConfig.mediumScreenSize ||
                               _isDrawerClosed()
                           ? const SizedBox()
                           : Padding(
-                              padding:
-                                  EdgeInsets.only(top: SizeConfig.navbarHeight),
-                              child: Container(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: Colors.white,
-                                        width: SizeConfig(context).screenWidth >
-                                                800
-                                            ? SizeConfig.leftBarWidth + 15
-                                            : SizeConfig.leftBarWidth + 30,
-                                        child: SingleChildScrollView(
-                                          child: AdminLeftPanel(
-                                            onClick: (value) {
-                                              adminAllRouter = value;
-                                              setState(() {});
-                                            },
-                                          ),
+                              padding: const EdgeInsets.only(
+                                  top: SizeConfig.navbarHeight),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      color: Colors.white,
+                                      width:
+                                          SizeConfig(context).screenWidth > 800
+                                              ? SizeConfig.leftBarWidth + 15
+                                              : SizeConfig.leftBarWidth + 30,
+                                      child: SingleChildScrollView(
+                                        child: AdminLeftPanel(
+                                          onClick: (value) {
+                                            adminAllRouter = value;
+                                            setState(() {});
+                                          },
                                         ),
-                                      )
-                                    ]),
-                              )));
+                                      ),
+                                    )
+                                  ])));
                 }),
           ],
         ));

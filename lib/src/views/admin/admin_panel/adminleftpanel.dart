@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../../widget/admin_list_text.dart';
@@ -10,7 +9,7 @@ class AdminLeftPanel extends StatelessWidget {
   Function onClick;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: SizeConfig.leftBarAdminWidth,
       child: Padding(
         padding: const EdgeInsets.only(top: 5.0),

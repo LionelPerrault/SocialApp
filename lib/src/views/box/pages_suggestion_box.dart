@@ -89,29 +89,31 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                   const Padding(
                     padding: EdgeInsets.only(top: 45.0),
                   ),
-                  Row(children: [
-                    const Text(
-                      'See All',
-                      style: TextStyle(fontSize: 11),
-                    ),
-                    SizedBox(
-                      height: 20,
-                      child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
-                        child: CupertinoSwitch(
-                          //thumbColor: kprimaryColor,
-                          activeColor: kprimaryColor,
-                          value: isSound,
-                          onChanged: (value) {
-                            setState(() {
-                              isSound = value;
-                            });
-                          },
+                  Row(
+                    children: [
+                      const Text(
+                        'See All',
+                        style: TextStyle(fontSize: 11),
+                      ),
+                      SizedBox(
+                        height: 20,
+                        child: Transform.scale(
+                          scaleX: 0.55,
+                          scaleY: 0.55,
+                          child: CupertinoSwitch(
+                            //thumbColor: kprimaryColor,
+                            activeColor: kprimaryColor,
+                            value: isSound,
+                            onChanged: (value) {
+                              setState(() {
+                                isSound = value;
+                              });
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  ])
+                    ],
+                  )
                 ],
               ),
               const Divider(
@@ -131,82 +133,83 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                     child: ListView.separated(
                       itemCount: con.unlikedPages.length,
                       itemBuilder: (context, index) => Material(
-                          child: ListTile(
-                        contentPadding:
-                            const EdgeInsets.only(left: 10, right: 10),
-                        leading: Padding(
-                            padding: EdgeInsets.only(top: 5),
-                            child: CircleAvatar(
-                                radius: 17,
-                                backgroundImage: NetworkImage(
-                                    con.unlikedPages[index]['data']
-                                                ['pagePicture'] ==
-                                            ''
-                                        ? Helper.blankPage
-                                        : con.unlikedPages[index]['data']
-                                            ['pagePicture']))),
-                        title: Padding(
-                            padding: EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              con.unlikedPages[index]['data']['pageName'],
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 11),
-                            )),
-                        subtitle: Padding(
-                            padding: EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              '${con.unlikedPages[index]['data']['pageLiked'].length} Likes',
-                              style: TextStyle(fontSize: 10),
-                            )),
-                        trailing: ElevatedButton(
-                            onPressed: () async {
-                              isLiked[index] = true;
-                              setState(() {});
-                              con
-                                  .likedPage(con.unlikedPages[index]['id'])
-                                  .then((value) async {
-                                con.unlikedPages = await con.getPage(
-                                    'unliked', userInfo['userName']);
-                                isLiked[index] = false;
+                        child: ListTile(
+                          contentPadding:
+                              const EdgeInsets.only(left: 10, right: 10),
+                          leading: Padding(
+                              padding: EdgeInsets.only(top: 5),
+                              child: CircleAvatar(
+                                  radius: 17,
+                                  backgroundImage: NetworkImage(
+                                      con.unlikedPages[index]['data']
+                                                  ['pagePicture'] ==
+                                              ''
+                                          ? Helper.blankPage
+                                          : con.unlikedPages[index]['data']
+                                              ['pagePicture']))),
+                          title: Padding(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                con.unlikedPages[index]['data']['pageName'],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 11),
+                              )),
+                          subtitle: Padding(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                '${con.unlikedPages[index]['data']['pageLiked'].length} Likes',
+                                style: TextStyle(fontSize: 10),
+                              )),
+                          trailing: ElevatedButton(
+                              onPressed: () async {
+                                isLiked[index] = true;
                                 setState(() {});
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2.0)),
-                                minimumSize:
-                                    isLiked[index] != null && isLiked[index]
-                                        ? const Size(60, 35)
-                                        : const Size(75, 35),
-                                maximumSize:
-                                    isLiked[index] != null && isLiked[index]
-                                        ? const Size(60, 35)
-                                        : const Size(75, 35)),
-                            child: isLiked[index] != null && isLiked[index]
-                                ? const SizedBox(
-                                    width: 10,
-                                    height: 10,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.black,
-                                    ),
-                                  )
-                                : Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.thumb_up,
+                                con
+                                    .likedPage(con.unlikedPages[index]['id'])
+                                    .then((value) async {
+                                  con.unlikedPages = await con.getPage(
+                                      'unliked', userInfo['userName']);
+                                  isLiked[index] = false;
+                                  setState(() {});
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(2.0)),
+                                  minimumSize:
+                                      isLiked[index] != null && isLiked[index]
+                                          ? const Size(60, 35)
+                                          : const Size(75, 35),
+                                  maximumSize:
+                                      isLiked[index] != null && isLiked[index]
+                                          ? const Size(60, 35)
+                                          : const Size(75, 35)),
+                              child: isLiked[index] != null && isLiked[index]
+                                  ? const SizedBox(
+                                      width: 10,
+                                      height: 10,
+                                      child: CircularProgressIndicator(
                                         color: Colors.black,
-                                        size: 18.0,
                                       ),
-                                      Text(' Like',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w900)),
-                                    ],
-                                  )),
-                      )),
+                                    )
+                                  : Row(
+                                      children: const [
+                                        Icon(
+                                          Icons.thumb_up,
+                                          color: Colors.black,
+                                          size: 18.0,
+                                        ),
+                                        Text(' Like',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w900)),
+                                      ],
+                                    )),
+                        ),
+                      ),
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
                         height: 1,

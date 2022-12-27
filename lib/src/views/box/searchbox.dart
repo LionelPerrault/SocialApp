@@ -1,18 +1,9 @@
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/colors.dart';
 
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-
-import '../../controllers/UserController.dart';
 
 class ShnatterSearchBox extends StatefulWidget {
   ShnatterSearchBox({Key? key}) : super(key: key);
@@ -81,22 +72,21 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
 
   @override
   Widget build(BuildContext context) {
-    var listTileSize = SizeConfig(context).screenWidth * 0.4 * 0.6;
     return ClipRRect(
         borderRadius: BorderRadius.circular(3),
         child: Column(
           children: [
             Container(
                 width: 400,
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: const Color.fromARGB(255, 255, 255, 255),
                 padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Padding(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
@@ -128,7 +118,7 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                                     const Color.fromARGB(255, 243, 243, 243),
                                 tileColor: Colors.white,
                                 enabled: true,
-                                leading: CircleAvatar(
+                                leading: const CircleAvatar(
                                   backgroundImage: NetworkImage(
                                       "https://test.shnatter.com/content/themes/default/images/blank_event.jpg"),
                                 ),
@@ -143,56 +133,48 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                                           child: Column(children: [
                                             Text(
                                               eventsData[index]['name'],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 12),
                                             ),
                                             Text(eventsData[index]['subname'],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     fontSize: 10)),
                                           ]),
                                         ),
-                                        Container(
-                                            child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.white,
-                                                  elevation: 3,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              2.0)),
-                                                  minimumSize:
-                                                      new Size(100, 35),
-                                                  maximumSize:
-                                                      new Size(100, 35),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.white,
+                                              elevation: 3,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          2.0)),
+                                              minimumSize: const Size(100, 35),
+                                              maximumSize: const Size(100, 35),
+                                            ),
+                                            onPressed: () {
+                                              () => {};
+                                            },
+                                            child: Row(
+                                              children: const [
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Color.fromARGB(
+                                                      255, 33, 37, 41),
+                                                  size: 18.0,
                                                 ),
-                                                onPressed: () {
-                                                  () => {};
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.star,
-                                                      color: Color.fromARGB(
-                                                          255, 33, 37, 41),
-                                                      size: 18.0,
-                                                    ),
-                                                    Text('Interested',
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    33,
-                                                                    37,
-                                                                    41),
-                                                            fontSize: 11,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                ))),
+                                                Text('Interested',
+                                                    style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 33, 37, 41),
+                                                        fontSize: 11,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                              ],
+                                            )),
                                       ],
                                     )
                                   ],
@@ -204,7 +186,7 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                         ),
                       ),
                     ),
-                    Divider(height: 1, indent: 0),
+                    const Divider(height: 1, indent: 0),
                     Container(
                         color: Colors.grey[300],
                         alignment: Alignment.center,
@@ -212,8 +194,10 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextButton(
-                                child: Text('Search All Result',
-                                    style: TextStyle(fontSize: 11)),
+                                child: const Text(
+                                  'Search All Result',
+                                  style: TextStyle(fontSize: 11),
+                                ),
                                 onPressed: () {}),
                           ],
                         ))

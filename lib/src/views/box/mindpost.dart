@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/widget/admin_list_text.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/widget/primaryInput.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../../widget/mprimary_button.dart';
-import './../footerbar.dart';
 
 class MindPost extends StatefulWidget {
-  MindPost({Key? key}) : super(key: key);
+  const MindPost({Key? key}) : super(key: key);
+  @override
   State createState() => MindPostState();
 }
 
@@ -25,7 +15,7 @@ class MindPost extends StatefulWidget {
 class MindPostState extends mvc.StateMVC<MindPost> {
   String dropdownValue = 'Public';
   final _focus = FocusNode();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   var show = false;
   var notActionShow = false;
   var state = false;
@@ -148,10 +138,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                const SizedBox(
                   width: 35,
                   height: 35,
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.green,
                     backgroundImage: NetworkImage(
                         "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
@@ -192,7 +182,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     }
                   },
                   child: AnimatedContainer(
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       height: show ? 360 : 0,
                       child: ListView(children: [
                         ListView(

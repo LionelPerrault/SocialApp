@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminThemes extends StatefulWidget {
-  AdminThemes({super.key});
+  const AdminThemes({super.key});
 
   @override
   State createState() => AdminThemesState();
@@ -91,100 +89,94 @@ class AdminThemesState extends mvc.StateMVC<AdminThemes> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            child: addroute == 'main' ? generalWidget() : addNewThemeWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          child: addroute == 'main' ? generalWidget() : addNewThemeWidget(),
+        ),
+      ],
     );
   }
 
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.display_settings),
-            pagename: 'Themes',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.white,
-              'icon': const Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-              'text': 'Add New Theme',
-              'valueColor': Colors.black,
-              'callback': () {
-                addroute = 'addNew';
-                setState(() {});
-              },
-              'size': Size(180, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.display_settings),
+          pagename: 'Themes',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.white,
+            'icon': const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            'text': 'Add New Theme',
+            'valueColor': Colors.black,
+            'callback': () {
+              addroute = 'addNew';
+              setState(() {});
+            },
+            'size': const Size(180, 50),
+          },
+        ),
+        Container(
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            configuration: const PlutoGridConfiguration(
+              columnSize: PlutoGridColumnSizeConfig(),
+            ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {
+              print(event);
             },
           ),
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              configuration: const PlutoGridConfiguration(
-                columnSize: PlutoGridColumnSizeConfig(),
-              ),
-              columns: columns,
-              rows: rows,
-              columnGroups: columnGroups,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget addNewThemeWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.display_settings),
-            pagename: 'Themes › Add New Theme',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.display_settings),
+          pagename: 'Themes › Add New Theme',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          textAndSelect('Default', 'Make it the default theme of the site'),
-          textAndSelect('Selectable',
-              'Make it enbaled so the user can translate the site to it'),
-          titleAndsubtitleInput('Code', 30, 1,
-              'Make it the selectable so users can change the theme. (You must have 2+ selectable themes)'),
-          titleAndsubtitleInput('Name', 30, 1,
-              'Theme name should not contain spaces or special characters. (Valid name examples: mytheme, material, custom_theme)'),
-          footer(),
-        ],
-      ),
+            'size': const Size(120, 50),
+          },
+        ),
+        textAndSelect('Default', 'Make it the default theme of the site'),
+        textAndSelect('Selectable',
+            'Make it enbaled so the user can translate the site to it'),
+        titleAndsubtitleInput('Code', 30, 1,
+            'Make it the selectable so users can change the theme. (You must have 2+ selectable themes)'),
+        titleAndsubtitleInput('Name', 30, 1,
+            'Theme name should not contain spaces or special characters. (Valid name examples: mytheme, material, custom_theme)'),
+        footer(),
+      ],
     );
   }
 
@@ -212,7 +204,7 @@ class AdminThemesState extends mvc.StateMVC<AdminThemes> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: 400,
                   height: height,
                   child: TextField(
@@ -228,7 +220,7 @@ class AdminThemesState extends mvc.StateMVC<AdminThemes> {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 400,
                   child: Text(
                     subtitle,
@@ -253,7 +245,7 @@ class AdminThemesState extends mvc.StateMVC<AdminThemes> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
-              child: Container(
+              child: SizedBox(
             width: SizeConfig(context).screenWidth * 0.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +259,7 @@ class AdminThemesState extends mvc.StateMVC<AdminThemes> {
                 ),
                 Text(content,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(fontSize: 13)),
+                    style: const TextStyle(fontSize: 13)),
               ],
             ),
           )),

@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
     storageBucket: 'shnatter-a69cd.appspot.com',
-    iosClientId: '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
+    iosClientId:
+        '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
     iosBundleId: 'com.example.shnatter',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
     storageBucket: 'shnatter-a69cd.appspot.com',
-    iosClientId: '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
+    iosClientId:
+        '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
     iosBundleId: 'com.example.shnatter',
   );
 }
