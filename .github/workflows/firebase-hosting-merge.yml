@@ -1,11 +1,12 @@
-name: CI for Master
+name: CI
 on: 
+  workflow_dispatch:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 jobs:
   build_web:
     name: Build Shnatter (Web)
