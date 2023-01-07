@@ -1,0 +1,35 @@
+name: Android Dev Build
+on: 
+  workflow_dispatch:
+  #push:
+  #  tags:
+  #  - '*'
+jobs:
+  deploy_functions:
+    name: Make Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v1
+    - uses: subosito/flutter-action@v1
+      with:
+          channel: 'stable'
+    - run: flutter pub get
+    - name: Build Android App
+      run: flutter build apk --flavor dev -t lib/main_dev.dart
+      #run: flutter build appbundle --flavor dev -t lib/main_dev.dart
+    - name: Firebase App Distribution
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+          appId: 1:464391709537:android:68bdff1b1b8e0980745b20
+          token: 1//0c09bZmdgm9DxCgYIARAAGAwSNwF-L9IrZJZq7fkbB3gs0XngXclrXcpiHJnSJaqGG8KrI29fvQKNoRCsp7d8MmvFLP55FbCQW4E
+          groups: ts
+          file: 'build/app/outputs/flutter-apk/app-dev-release.apk'
+          #file: 'build/app/outputs/bundle/devRelease/app-dev-release.aab'
+    #- name: Release Apps
+    #  uses: ncipollo/release-action@v1
+    #  with:
+    #     artifacts: 'build/app/outputs/flutter-apk/app-dev-release.apk'
+    #     token: ${{ secrets.GITHUB_TOKEN }} 
+    
