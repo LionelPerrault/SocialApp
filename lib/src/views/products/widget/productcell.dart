@@ -48,7 +48,6 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
 
   @override
   Widget build(BuildContext context) {
-    print('render');
     subFunctionList = [
       {
         'icon': product['productMarkAsSold']
