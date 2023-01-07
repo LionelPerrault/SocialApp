@@ -17,15 +17,17 @@ jobs:
           channel: 'stable'
     - run: flutter pub get
     - name: Build Android App
-      run: flutter build apk --flavor dev -t lib/main_dev.dart
+      run: flutter build apk 
+      # --flavor dev -t lib/main_dev.dart
       #run: flutter build appbundle --flavor dev -t lib/main_dev.dart
     - name: Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1
       with:
-          appId: 1:464391709537:android:68bdff1b1b8e0980745b20
-          token: 1//0c09bZmdgm9DxCgYIARAAGAwSNwF-L9IrZJZq7fkbB3gs0XngXclrXcpiHJnSJaqGG8KrI29fvQKNoRCsp7d8MmvFLP55FbCQW4E
+          appId: 1:444281700591:android:a55a5c768f8abcd6379b1a
+          token: 1//0c2LK7NixkZPYCgYIARAAGAwSNwF-L9IrsY2z0GTmmDTaVr0c5vQQ7ePwVeDqY_IEK0Y4IpqtQbTVqbWZjsxSKQDYSQonC3vY0uA
           groups: ts
-          file: 'build/app/outputs/flutter-apk/app-dev-release.apk'
+          #file: 'build/app/outputs/flutter-apk/app-dev-release.apk'
+          file: 'build/app/outputs/flutter-apk/app-release.apk'
           #file: 'build/app/outputs/bundle/devRelease/app-dev-release.aab'
     #- name: Release Apps
     #  uses: ncipollo/release-action@v1
