@@ -280,7 +280,7 @@ class UserController extends ControllerMVC {
   }
 
   void loginRelysia(context) {
-    print("try to login user....");
+    print("try to login user in relysia....");
     RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
           if (res['data'] != null)
             {

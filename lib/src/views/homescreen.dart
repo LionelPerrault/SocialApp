@@ -137,7 +137,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                           children: [
                             Expanded(child: MainPanel()),
                             SizeConfig(context).screenWidth >
-                                    SizeConfig.mediumScreenSize
+                                    SizeConfig.mediumScreenSize + 300
                                 ? RightPanel()
                                 : SizedBox(width: 0),
 
