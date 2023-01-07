@@ -28,6 +28,14 @@ class RouteGenerator {
     final args = settings.arguments;
     var url = settings.name;
     bool islogined = UserManager.isLogined;
+    switch (url) {
+      case RouteNames.terms:
+        return MaterialPageRoute(
+            builder: (context) => TermsScreen(), settings: settings);
+      case RouteNames.privacy:
+        return MaterialPageRoute(
+            builder: (context) => const PrivacyScreen(), settings: settings);
+    }
     if (islogined == true) {
       if (url == '/login' || url == '/register') {
         url = RouteNames.homePage;
@@ -84,12 +92,6 @@ class RouteGenerator {
       case RouteNames.register:
         return MaterialPageRoute(
             builder: (context) => RegisterScreen(), settings: settings);
-      case RouteNames.terms:
-        return MaterialPageRoute(
-            builder: (context) => TermsScreen(), settings: settings);
-      case RouteNames.privacy:
-        return MaterialPageRoute(
-            builder: (context) => const PrivacyScreen(), settings: settings);
       case RouteNames.login:
         return MaterialPageRoute(
             builder: (context) => LoginScreen(), settings: settings);
