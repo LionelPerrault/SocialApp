@@ -26,7 +26,7 @@ import '../views/setting/settings_main.dart';
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
-    var url = settings.name;
+    var url = settings.name.toString();
     bool islogined = UserManager.isLogined;
     switch (url) {
       case RouteNames.terms:
