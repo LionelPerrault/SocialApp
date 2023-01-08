@@ -53,6 +53,9 @@ class Helper {
   static var productsField = 'products';
   static var interestsField = 'interests';
   static var friendField = 'friends';
+  static var pages = 'staticContent';
+  static var terms = 'Terms';
+  static var privacy = 'Privacy';
   static var balance = 0;
   static var message = 'messages';
   static var newMessageSearch = 'userName';
@@ -187,5 +190,21 @@ class Helper {
         .get();
     var avatar = snapshot.docs[0]['avatar'];
     return avatar;
+  }
+
+  static Future<String> getPrivacy() async {
+    var str = await FirebaseFirestore.instance
+        .collection(Helper.pages)
+        .doc(Helper.privacy)
+        .get();
+    return str['content'] as String;
+  }
+
+  static Future<String> getTerms() async {
+    var str = await FirebaseFirestore.instance
+        .collection(Helper.pages)
+        .doc(Helper.terms)
+        .get();
+    return str['content'] as String;
   }
 }
