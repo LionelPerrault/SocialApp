@@ -210,249 +210,230 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
           SingleChildScrollView(
-              child: GestureDetector(
-                  onTap: () {
-                    if (!state) {
-                      notActionShow = true;
-                    }
-                  },
-                  child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 500),
-                      height: show ? 360 : 0,
-                      child: ListView(children: [
-                        ListView(
-                            shrinkWrap: true,
-                            controller: _scrollController,
+            child: GestureDetector(
+              onTap: () {
+                if (!state) {
+                  notActionShow = true;
+                }
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 500),
+                height: show ? 360 : 0,
+                child: ListView(
+                  children: [
+                    ListView(
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        children: [
+                          Column(
                             children: [
-                              Column(
+                              GridView.count(
+                                crossAxisCount:
+                                    SizeConfig(context).screenWidth >
+                                            SizeConfig.smallScreenSize
+                                        ? 2
+                                        : 1,
+                                childAspectRatio:
+                                    SizeConfig(context).screenWidth >
+                                            SizeConfig.smallScreenSize
+                                        ? 240 / 45
+                                        : 240 / 39,
+                                padding: const EdgeInsets.all(4.0),
+                                mainAxisSpacing: 4.0,
+                                shrinkWrap: true,
+                                crossAxisSpacing: 4.0,
+                                children: mindPostCase
+                                    .map(
+                                      (mind) => MindSlice(
+                                          onTap: () => {
+                                                if (!state)
+                                                  {notActionShow = true}
+                                              },
+                                          mindFunc: mind['mindFunc'],
+                                          label: mind['title'],
+                                          image: mind['image']),
+                                    )
+                                    .toList(),
+                              ),
+                              Row(
                                 children: [
-                                  GridView.count(
-                                    crossAxisCount:
-                                        SizeConfig(context).screenWidth >
-                                                SizeConfig.smallScreenSize
-                                            ? 2
-                                            : 1,
-                                    childAspectRatio:
-                                        SizeConfig(context).screenWidth >
-                                                SizeConfig.smallScreenSize
-                                            ? 240 / 45
-                                            : 240 / 39,
-                                    padding: const EdgeInsets.all(4.0),
-                                    mainAxisSpacing: 4.0,
-                                    shrinkWrap: true,
-                                    crossAxisSpacing: 4.0,
-                                    children: mindPostCase
-                                        .map(
-                                          (mind) => MindSlice(
-                                              onTap: () => {
-                                                    if (!state)
-                                                      {notActionShow = true}
-                                                  },
-                                              mindFunc: mind['mindFunc'],
-                                              label: mind['title'],
-                                              image: mind['image']),
-                                        )
-                                        .toList(),
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Flexible(
-                                          fit: FlexFit.tight,
-                                          child: SizedBox()),
-                                      Expanded(
-                                        child: SizedBox(
-                                          width: 100,
-                                          height: 38,
-                                          child: DecoratedBox(
-                                              decoration: BoxDecoration(
+                                  const Flexible(
+                                      fit: FlexFit.tight, child: SizedBox()),
+                                  Expanded(
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 38,
+                                      child: DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                255, 17, 205, 239),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            border: Border.all(
                                                 color: const Color.fromARGB(
                                                     255, 17, 205, 239),
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                border: Border.all(
-                                                    color: const Color.fromARGB(
-                                                        255, 17, 205, 239),
-                                                    width:
-                                                        0.1), //bordrder raiuds of dropdown button
-                                              ),
-                                              child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 7, left: 15),
-                                                  child: DropdownButton(
-                                                    onTap: () {
-                                                      if (!state) {
-                                                        notActionShow = true;
-                                                      }
-                                                    },
-                                                    hint: Row(
-                                                      children: const [
-                                                        Icon(
-                                                          Icons.language,
-                                                          color: Colors.white,
-                                                        ),
-                                                        Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 5)),
-                                                        Text(
-                                                          'Public',
-                                                          style: TextStyle(
-                                                            fontSize: 13,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                width:
+                                                    0.1), //bordrder raiuds of dropdown button
+                                          ),
+                                          child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 7, left: 15),
+                                              child: DropdownButton(
+                                                onTap: () {
+                                                  if (!state) {
+                                                    notActionShow = true;
+                                                  }
+                                                },
+                                                hint: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      Icons.language,
+                                                      color: Colors.white,
                                                     ),
-                                                    items: [
-                                                      DropdownMenuItem(
-                                                        value: "Public",
-                                                        child: Row(
-                                                            children: const [
-                                                              Icon(
-                                                                Icons.language,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                              Padding(
-                                                                  padding: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              5)),
-                                                              Text(
-                                                                "Public",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13),
-                                                              )
-                                                            ]),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "Friends",
-                                                        child: Row(
-                                                            children: const [
-                                                              Icon(
-                                                                Icons.groups,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                              Padding(
-                                                                  padding: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              5)),
-                                                              Text(
-                                                                "Friends",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13),
-                                                              )
-                                                            ]),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value:
-                                                            "Friends of Friends",
-                                                        child: Row(
-                                                            children: const [
-                                                              Icon(
-                                                                Icons.groups,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                              Padding(
-                                                                  padding: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              5)),
-                                                              Text(
-                                                                "Friends of Friends",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13),
-                                                              )
-                                                            ]),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "Only Me",
-                                                        child: Row(
-                                                            children: const [
-                                                              Icon(
-                                                                Icons
-                                                                    .lock_outline,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                              Padding(
-                                                                  padding: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              5)),
-                                                              Text(
-                                                                "Only Me",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13),
-                                                              )
-                                                            ]),
-                                                      ),
-                                                    ],
-                                                    onChanged: (String? value) {
-                                                      //get value when changed
-                                                      dropdownValue = value!;
-                                                      setState(() {});
-                                                    },
-                                                    icon: const Padding(
+                                                    Padding(
                                                         padding:
                                                             EdgeInsets.only(
-                                                                left: 20),
-                                                        child: Icon(Icons
-                                                            .arrow_drop_down)),
-                                                    iconEnabledColor: Colors
-                                                        .white, //Icon color
-                                                    style: const TextStyle(
-                                                      color: Colors
-                                                          .black, //Font color
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                                left: 5)),
+                                                    Text(
+                                                      'Public',
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.white,
+                                                      ),
                                                     ),
-                                                    dropdownColor: Colors.white,
-                                                    underline:
-                                                        Container(), //remove underline
-                                                    isExpanded: true,
-                                                    isDense: true,
-                                                  ))),
-                                        ),
-                                      ),
-                                      const Padding(
-                                          padding: EdgeInsets.only(left: 10)),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          elevation: 3,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(4.0)),
-                                          minimumSize: const Size(85, 45),
-                                          maximumSize: const Size(85, 45),
-                                        ),
-                                        onPressed: () {
-                                          () => {
-                                                if (!state) notActionShow = true
-                                              };
-                                        },
-                                        child: const Text('Post',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w900)),
-                                      )
-                                    ],
+                                                  ],
+                                                ),
+                                                items: [
+                                                  DropdownMenuItem(
+                                                    value: "Public",
+                                                    child: Row(children: const [
+                                                      Icon(
+                                                        Icons.language,
+                                                        color: Colors.black,
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5)),
+                                                      Text(
+                                                        "Public",
+                                                        style: TextStyle(
+                                                            fontSize: 13),
+                                                      )
+                                                    ]),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    value: "Friends",
+                                                    child: Row(children: const [
+                                                      Icon(
+                                                        Icons.groups,
+                                                        color: Colors.black,
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5)),
+                                                      Text(
+                                                        "Friends",
+                                                        style: TextStyle(
+                                                            fontSize: 13),
+                                                      )
+                                                    ]),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    value: "Friends of Friends",
+                                                    child: Row(children: const [
+                                                      Icon(
+                                                        Icons.groups,
+                                                        color: Colors.black,
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5)),
+                                                      Text(
+                                                        "Friends of Friends",
+                                                        style: TextStyle(
+                                                            fontSize: 13),
+                                                      )
+                                                    ]),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    value: "Only Me",
+                                                    child: Row(children: const [
+                                                      Icon(
+                                                        Icons.lock_outline,
+                                                        color: Colors.black,
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5)),
+                                                      Text(
+                                                        "Only Me",
+                                                        style: TextStyle(
+                                                            fontSize: 13),
+                                                      )
+                                                    ]),
+                                                  ),
+                                                ],
+                                                onChanged: (String? value) {
+                                                  //get value when changed
+                                                  dropdownValue = value!;
+                                                  setState(() {});
+                                                },
+                                                icon: const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20),
+                                                    child: Icon(
+                                                        Icons.arrow_drop_down)),
+                                                iconEnabledColor:
+                                                    Colors.white, //Icon color
+                                                style: const TextStyle(
+                                                  color:
+                                                      Colors.black, //Font color
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                dropdownColor: Colors.white,
+                                                underline:
+                                                    Container(), //remove underline
+                                                isExpanded: true,
+                                                isDense: true,
+                                              ))),
+                                    ),
+                                  ),
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 10)),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      elevation: 3,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4.0)),
+                                      minimumSize: const Size(85, 45),
+                                      maximumSize: const Size(85, 45),
+                                    ),
+                                    onPressed: () {
+                                      () => {if (!state) notActionShow = true};
+                                    },
+                                    child: const Text('Post',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w900)),
                                   )
                                 ],
                               )
-                            ])
-                      ])))),
+                            ],
+                          )
+                        ])
+                  ],
+                ),
+              ),
+            ),
+          ),
         ]));
   }
 }

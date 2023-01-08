@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/widget/createProductWidget.dart';
 
 class MarketPlaceLeftPanel extends StatefulWidget {
   MarketPlaceLeftPanel(
@@ -108,8 +109,63 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        Container(
+          padding: const EdgeInsets.only(top: 30),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(3),
+              backgroundColor: Colors.black,
+              // elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              minimumSize: Size(200, 40),
+              maximumSize: Size(200, 40),
+            ),
+            onPressed: () {
+              (showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                      title: Row(
+                        children: const [
+                          Icon(
+                            Icons.production_quantity_limits_sharp,
+                            color: Color.fromARGB(255, 33, 150, 243),
+                          ),
+                          Text(
+                            'Add New Product',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontStyle: FontStyle.italic),
+                          ),
+                        ],
+                      ),
+                      content: CreateProductModal(context: context))));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.production_quantity_limits,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 4)),
+                SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+                    ? const Text('Add New Product',
+                        style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold))
+                    : SizedBox()
+              ],
+            ),
+          ),
+        ),
+        Container(
           width: SizeConfig.leftBarWidth,
+          padding: const EdgeInsets.only(top: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
