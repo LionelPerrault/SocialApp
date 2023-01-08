@@ -6,6 +6,7 @@ import 'package:shnatter/src/views/events/panel/eventView/eventscreen.dart';
 import 'package:shnatter/src/views/groups/groupsscreen.dart';
 import 'package:shnatter/src/views/groups/panel/groupView/groupscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
+import 'package:shnatter/src/views/marketPlace/marketPlaceScreen.dart';
 import 'package:shnatter/src/views/pages/pagesscreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pagescreen.dart';
 import 'package:shnatter/src/views/people/peoplescreen.dart';
@@ -129,9 +130,11 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => AdminScreen(), settings: settings);
       case RouteNames.people:
-        Helper.showToast("ok now to admin");
         return MaterialPageRoute(
             builder: (context) => PeopleScreen(), settings: settings);
+      case RouteNames.market:
+        return MaterialPageRoute(
+            builder: (context) => MarketPlaceScreen(), settings: settings);
       case '/':
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);
