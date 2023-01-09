@@ -32,7 +32,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
     return _drawerSlideController.value == 0.0;
   }
 
-  String adminAllRouter = '';
+  String adminAllRouter = '/users';
   //
   @override
   void initState() {
@@ -127,6 +127,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                                         child: AdminLeftPanel(
                                           onClick: (value) {
                                             adminAllRouter = value;
+                                            print(value);
                                             setState(() {});
                                           },
                                         ),

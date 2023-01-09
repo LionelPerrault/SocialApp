@@ -22,12 +22,15 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/shnatter_tokens.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/themes.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/usersList.dart';
+
 
 import '../views/admin/admin_panel/pages/settingsSystempanel.dart';
 
 class AdminRouter {
   AdminRouter(String settingPage);
   static adminRouter(settingPage) {
+    print(settingPage);
     switch (settingPage) {
       case '':
         return AdminMainPanel();
@@ -75,6 +78,8 @@ class AdminRouter {
         return AdminGenders();
       case '/countries':
         return AdminCountries();
+      case '/users':
+        return AdminUserList();
     }
   }
 }

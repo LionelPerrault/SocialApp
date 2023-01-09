@@ -194,7 +194,7 @@ class AdminLeftPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/users')},
                               label: 'List Users',
                               icon: const Icon(null)),
                           ListText(

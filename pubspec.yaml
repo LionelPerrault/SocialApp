@@ -69,6 +69,7 @@ dependencies:
   cloud_functions: ^4.0.6
   flutter_window_close: ^0.2.2
   pluto_grid: ^5.4.9
+  syncfusion_flutter_datagrid: ^20.4.42
 
 dev_dependencies:
   flutter_test:
