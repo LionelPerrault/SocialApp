@@ -41,8 +41,8 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
       },
     },
     {
-      'value': 'Baby & Children\'s Product',
-      'title': 'Baby & Children\'s Product',
+      'value': 'Baby & Children\'s',
+      'title': 'Baby & Children\'s',
       'onTap': (value) {
         widget.changeCategory(value);
       },
