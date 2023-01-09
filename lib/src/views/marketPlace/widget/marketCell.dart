@@ -61,18 +61,20 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                 ? 208
                 : SizeConfig(context).screenWidth * 0.9,
             height: 380,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 10.0,
-                  spreadRadius: 4,
-                  offset: Offset(
-                    2,
-                    1,
-                  ),
-                )
+                readyShow
+                    ? const BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 10.0,
+                        spreadRadius: 4,
+                        offset: Offset(
+                          2,
+                          1,
+                        ),
+                      )
+                    : const BoxShadow()
               ],
             ),
             alignment: Alignment.centerLeft,

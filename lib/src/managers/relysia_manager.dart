@@ -98,7 +98,7 @@ class RelysiaManager {
                 paymail['paymail'] = resData['data']['paymail'],
                 paymail['address'] = resData['data']['address'],
               },
-            print("error in get paymail ${resData}"),
+            print("success in get paymail ${resData}"),
           });
     } catch (exception) {
       print(exception.toString());

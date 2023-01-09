@@ -478,38 +478,41 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       product['productAdmin']['userName']
                                   ? 0
                                   : 30)),
-                      /*UserManager.userInfo['userName'] ==
+                      UserManager.userInfo['userName'] ==
                               product['productAdmin']['userName']
                           ? Container()
-                          : */
-                      Container(
-                        height: 50,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 17, 205, 239),
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(3.0)),
+                          : Container(
+                              height: 50,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 17, 205, 239),
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(3.0)),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      // stepflag = true;
+                                    });
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.wechat_outlined),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 10)),
+                                      Text(
+                                        'Contact',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  )),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                // stepflag = true;
-                              });
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.wechat_outlined),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                                Text(
-                                  'Contact',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            )),
-                      ),
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       Container(
                         height: 50,
