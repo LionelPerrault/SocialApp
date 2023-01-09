@@ -61,18 +61,20 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                 ? 208
                 : SizeConfig(context).screenWidth * 0.9,
             height: 380,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 10.0,
-                  spreadRadius: 4,
-                  offset: Offset(
-                    2,
-                    1,
-                  ),
-                )
+                readyShow
+                    ? const BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 10.0,
+                        spreadRadius: 4,
+                        offset: Offset(
+                          2,
+                          1,
+                        ),
+                      )
+                    : const BoxShadow()
               ],
             ),
             alignment: Alignment.centerLeft,
@@ -91,9 +93,9 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                           : SizeConfig(context).screenWidth * 0.9,
                       height: 250,
                       child: Image.network(
-                          product['productPhoto'].isEmpty
+                          widget.data['data']['productPhoto'].isEmpty
                               ? Helper.productImage
-                              : product['productPhoto'][0]['url'],
+                              : widget.data['data']['productPhoto'][0]['url'],
                           fit: BoxFit.cover),
                     ),
                     Container(
@@ -104,7 +106,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                         badgeColor: const Color.fromRGBO(0, 0, 0, 0.65),
                         borderRadius: BorderRadius.circular(8),
                         badgeContent: Text(
-                          'SHN ${product["productPrice"]}',
+                          'SHN ${widget.data['data']["productPrice"]}',
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 13,
@@ -136,7 +138,8 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                                   maximumSize: const Size(70, 34),
                                 ),
                                 onPressed: () {
-                                  setState(() {});
+                                  Navigator.pushReplacementNamed(context,
+                                      '/products/${widget.data["id"]}');
                                 },
                                 child: Container(
                                   child: const Text('More',
@@ -154,13 +157,13 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                 Container(
                   width: 170,
                   margin: const EdgeInsets.only(top: 10, left: 10),
-                  child: Text(product['productName']),
+                  child: Text(widget.data['data']['productName']),
                 ),
                 Container(
                   width: 170,
                   margin: const EdgeInsets.only(top: 20, left: 13),
                   child: Text(
-                    'For ${product["productOffer"]}',
+                    'For ${widget.data['data']["productOffer"]}',
                     style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
@@ -176,7 +179,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                       size: 20,
                       color: Color.fromRGBO(31, 156, 255, 1),
                     ),
-                    Text('Type: ${product["productStatus"]}')
+                    Text('Type: ${widget.data['data']["productStatus"]}')
                   ]),
                 ),
                 Container(
@@ -188,7 +191,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                         Icons.location_on,
                         size: 20,
                       ),
-                      Text(product['productLocation'])
+                      Text(widget.data['data']['productLocation'])
                     ],
                   ),
                 ),
