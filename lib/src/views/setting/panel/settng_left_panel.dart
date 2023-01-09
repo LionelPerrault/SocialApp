@@ -162,7 +162,7 @@ class SettingsLeftPanel extends StatelessWidget {
             ListText(
                 onTap: () => {onClick('shnatter_token')},
                 label: 'Shnatter Token',
-                icon: const Icon(Icons.money,
+                icon: const Icon(Icons.attach_money,
                     color: Color.fromARGB(255, 76, 175, 80))),
             ListText(
                 onTap: () => {onClick('verification')},

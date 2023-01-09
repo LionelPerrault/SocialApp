@@ -34,6 +34,8 @@ dependencies:
   flutter_localizations: 
     sdk: flutter
   intl: ^0.17.0 
+  dropdown_button2: ^1.9.0
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -69,6 +71,7 @@ dependencies:
   cloud_functions: ^4.0.6
   flutter_window_close: ^0.2.2
   pluto_grid: ^5.4.9
+  syncfusion_flutter_datagrid: ^20.4.42
   flutter_html: ^3.0.0-alpha.6
 
 dev_dependencies:
