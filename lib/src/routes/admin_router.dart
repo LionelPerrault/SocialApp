@@ -86,10 +86,8 @@ class AdminRouter {
         return AdminGenders();
       case '/countries':
         return AdminCountries();
-<<<<<<< HEAD
       case '/users':
         return AdminUserList();
-=======
 
 
 
@@ -105,7 +103,6 @@ class AdminRouter {
         return AdminListGenres();  
       case '/games':
         return AdminGames();
->>>>>>> 13bb00db1a145183bb05ed183409a89b6377aaa1
     }
   }
 }
