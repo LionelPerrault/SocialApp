@@ -158,7 +158,7 @@ class AdminLeftPanel extends StatelessWidget {
             //     icon: const Icon(Icons.roundabout_left)),
             Row(children: const [
               Padding(padding: EdgeInsets.only(left: 30.0)),
-              Text('MODELS',
+              Text('MODULES',
                   style: TextStyle(
                       color: Color.fromARGB(255, 150, 150, 150), fontSize: 10)),
             ]),
@@ -574,15 +574,15 @@ class AdminLeftPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/forums/listForums')},
                               label: 'List Forums',
                               icon: const Icon(null)),
                           ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/forums/listThreads')},
                               label: 'List Threads',
                               icon: const Icon(null)),
                           ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/forums/listReplies')},
                               label: 'List Replies',
                               icon: const Icon(null)),
                         ],
@@ -624,11 +624,11 @@ class AdminLeftPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/movies/listMovies')},
                               label: 'List Movies',
                               icon: const Icon(null)),
                           ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/movies/listGenres')},
                               label: 'List Genres',
                               icon: const Icon(null)),
                         ],
@@ -639,9 +639,9 @@ class AdminLeftPanel extends StatelessWidget {
               ),
             ),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('/games')},
                 label: 'Games',
-                icon: const Icon(Icons.games_rounded)),
+                icon: const Icon(Icons.gamepad)),
             Row(children: const [
               Padding(padding: EdgeInsets.only(left: 30.0)),
               Text('MONEY',
