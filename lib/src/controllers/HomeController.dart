@@ -12,19 +12,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../routes/route_names.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 
-
 class HomeController extends ControllerMVC {
   factory HomeController([StateMVC? state]) =>
       _this ??= HomeController._(state);
   HomeController._(StateMVC? state) : super(state);
   static HomeController? _this;
-  
 
+  var leaderBoard = [];
   @override
   Future<bool> initAsync() async {
     //
-    
+
     return true;
   }
-
 }

@@ -55,8 +55,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
       'title': 'Autos & Vehicles',
     },
     {
-      'value': 'Baby & Children\'s...',
-      'title': 'Baby & Children\'s...',
+      'value': 'Baby & Children\'s',
+      'title': 'Baby & Children\'s',
     },
     {
       'value': 'Beauty Products & Services',

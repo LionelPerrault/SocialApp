@@ -22,10 +22,21 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/shnatter_tokens.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/themes.dart';
+<<<<<<< HEAD
 import 'package:shnatter/src/views/admin/admin_panel/pages/usersList.dart';
 
 
+=======
+ 
+>>>>>>> 13bb00db1a145183bb05ed183409a89b6377aaa1
 import '../views/admin/admin_panel/pages/settingsSystempanel.dart';
+
+import 'package:shnatter/src/views/admin/admin_panel/pages/listForums.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/listThreads.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/listReplies.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/listMovies.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/listGenres.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/games.dart';
 
 class AdminRouter {
   AdminRouter(String settingPage);
@@ -78,8 +89,26 @@ class AdminRouter {
         return AdminGenders();
       case '/countries':
         return AdminCountries();
+<<<<<<< HEAD
       case '/users':
         return AdminUserList();
+=======
+
+
+
+      case '/forums/listForums':
+        return AdminListForums();
+      case '/forums/listThreads':
+        return AdminListThreads();
+      case '/forums/listReplies':
+        return AdminListReplies();
+      case '/movies/listMovies':
+        return AdminListMovies();
+      case '/movies/listGenres':
+        return AdminListGenres();  
+      case '/games':
+        return AdminGames();
+>>>>>>> 13bb00db1a145183bb05ed183409a89b6377aaa1
     }
   }
 }

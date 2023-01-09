@@ -44,6 +44,8 @@ class Helper {
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_group.jpg?alt=media&token=92339ace-99df-41de-84c5-581260ffb6ec';
   static var eventImage =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_event.jpg?alt=media&token=aba15f40-0918-4ce8-965e-82f77ba34800';
+  static var productImage =
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_product.jpg?alt=media&token=0cd1281e-4dc7-4228-939f-f19b50c3afe1';
   static var userField = 'user';
   static var eventsField = 'events';
   static var pagesField = 'pages';
@@ -51,6 +53,9 @@ class Helper {
   static var productsField = 'products';
   static var interestsField = 'interests';
   static var friendField = 'friends';
+  static var pages = 'staticContent';
+  static var terms = 'Terms';
+  static var privacy = 'Privacy';
   static var balance = 0;
   static var message = 'messages';
   static var newMessageSearch = 'userName';
@@ -185,5 +190,21 @@ class Helper {
         .get();
     var avatar = snapshot.docs[0]['avatar'];
     return avatar;
+  }
+
+  static Future<String> getPrivacy() async {
+    var str = await FirebaseFirestore.instance
+        .collection(Helper.pages)
+        .doc(Helper.privacy)
+        .get();
+    return str['content'] as String;
+  }
+
+  static Future<String> getTerms() async {
+    var str = await FirebaseFirestore.instance
+        .collection(Helper.pages)
+        .doc(Helper.terms)
+        .get();
+    return str['content'] as String;
   }
 }
