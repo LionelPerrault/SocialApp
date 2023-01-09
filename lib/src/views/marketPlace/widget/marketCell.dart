@@ -63,9 +63,9 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
             height: 380,
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: [
-                readyShow
-                    ? const BoxShadow(
+              boxShadow: readyShow
+                  ? [
+                      const BoxShadow(
                         color: Colors.grey,
                         blurRadius: 10.0,
                         spreadRadius: 4,
@@ -74,8 +74,8 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                           1,
                         ),
                       )
-                    : const BoxShadow()
-              ],
+                    ]
+                  : [],
             ),
             alignment: Alignment.centerLeft,
             child: Column(

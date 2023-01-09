@@ -810,7 +810,7 @@ class PostController extends ControllerMVC {
       'productAdmin': {
         'userName': UserManager.userInfo['userName'],
         'userAvatar': UserManager.userInfo['avatar'],
-        'fullName': UserManager.userInfo['fullName']
+        'fullName': UserManager.userInfo['fullName'],
       },
       'productDate': DateTime.now().toString(),
       'productPost': false,
@@ -818,10 +818,21 @@ class PostController extends ControllerMVC {
       'productTimeline': true,
       'productOnOffCommenting': true,
     };
+    var postData;
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
         .then((value) async => {
+              postData = {
+                'postType': 'products',
+                'postId': value.id,
+                'postAdmin': {
+                  'userName': UserManager.userInfo['userName'],
+                  'userAvatar': UserManager.userInfo['avatar'],
+                  'fullName': UserManager.userInfo['fullName'],
+                }
+              },
+              savePost(postData),
               Navigator.pushReplacementNamed(
                   context, '${RouteNames.products}/${value.id}')
             });
@@ -1180,5 +1191,9 @@ class PostController extends ControllerMVC {
         .collection('reply')
         .doc(replyId)
         .update({'likes': a});
+  }
+
+  savePost(data) async {
+    await FirebaseFirestore.instance.collection(Helper.postField).add(data);
   }
 }
