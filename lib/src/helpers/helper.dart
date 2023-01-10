@@ -51,6 +51,7 @@ class Helper {
   static var pagesField = 'pages';
   static var groupsField = 'groups';
   static var productsField = 'products';
+  static var postField = 'posts';
   static var interestsField = 'interests';
   static var friendField = 'friends';
   static var pages = 'staticContent';

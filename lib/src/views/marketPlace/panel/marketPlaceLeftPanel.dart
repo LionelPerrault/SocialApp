@@ -180,29 +180,27 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
   }
 
   Widget CategoryCell(label, onTap, currentCategory) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(left: 15),
-      decoration: BoxDecoration(
-        color: currentCategory == label ? Colors.grey[200] : null,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      width: SizeConfig.leftBarAdminWidth,
-      height: 50,
-      child: RichText(
-        text: TextSpan(children: <TextSpan>[
-          TextSpan(
-              text: label,
-              style: TextStyle(
-                  color: currentCategory == label
-                      ? const Color.fromARGB(255, 94, 114, 228)
-                      : const Color.fromARGB(255, 90, 90, 90),
-                  fontSize: 14),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  onTap(label);
-                })
-        ]),
+    return GestureDetector(
+      onTap: () {
+        onTap(label);
+      },
+      child: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 15),
+        decoration: BoxDecoration(
+          color: currentCategory == label ? Colors.grey[200] : null,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        width: SizeConfig.leftBarAdminWidth,
+        height: 50,
+        child: Text(
+          label,
+          style: TextStyle(
+              color: currentCategory == label
+                  ? const Color.fromARGB(255, 94, 114, 228)
+                  : const Color.fromARGB(255, 90, 90, 90),
+              fontSize: 14),
+        ),
       ),
     );
   }

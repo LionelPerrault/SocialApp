@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 class RelysiaManager {
   static final apiUrlAuth = 'https://api.relysia.com/v1/auth';
   static final serviceId = '9ab1b69e-92ae-4612-9a4f-c5a102a6c068';
-  static final token_id1 = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-BNAF';
-  static final token_id = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-JB';
+  static final shnToken1 = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-BNAF';
+  static final shnToken = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-SHNATST';
+  static final adminEmail = 'kalininviktor848@gmail.com';
+  static final adminPassword = '1topnotch@';
   static var resToken = {};
   static Future<Map> authUser(String email, String password) async {
     Map responseData = {};
@@ -67,9 +69,10 @@ class RelysiaManager {
     try {
       await http.get(
           Uri.parse(
-              'https://api.relysia.com/v1/createWallet?serviceID=$serviceId&walletTitle=00000000-0000-0000-0000-000000000000&paymailActivate=true'),
+              'https://api.relysia.com/v1/createWallet?serviceID=$serviceId'),
           headers: {
             'authToken': token,
+            // 'serviceID': serviceId,
             'walletTitle': '00000000-0000-0000-0000-000000000000',
             'paymailActivate': 'true',
           }).then((res) => {
@@ -77,6 +80,7 @@ class RelysiaManager {
             respondData = jsonDecode(res.body),
             print(respondData),
           });
+      // ignore: empty_catches
     } catch (exception) {
       print(exception.toString());
     }
@@ -118,7 +122,7 @@ class RelysiaManager {
             print(resToken['data']['coins']),
             for (var i = 0; i < resToken['data']['coins'].length; i++)
               {
-                if (resToken['data']['coins'][i]['tokenId'] == token_id)
+                if (resToken['data']['coins'][i]['tokenId'] == shnToken)
                   {
                     balance = resToken['data']['coins'][i]['amount'],
                   }
@@ -130,23 +134,21 @@ class RelysiaManager {
     return balance;
   }
 
-  static Future<int> payNow(String token, String payMail, String amount) async {
+  static Future<int> payNow(
+      String token, String payMail, String amount, String notes) async {
     int r = 0;
     var respondData = {};
     try {
       await http
           .post(
-            Uri.parse(
-                'https://api.relysia.com/v1/send?serviceID=9ab1b61e-92ae-4612-9a4f-c5a102a6c068&authToken=$token'),
+            Uri.parse('https://api.relysia.com/v1/send'),
             headers: {
-              HttpHeaders.authorizationHeader: jsonEncode(
-                  <String, String>{'Key': serviceId, 'Value': 'true'}),
               'authToken': token,
               'content-type': 'application/json',
-              'note': 'enjoy your new tokens'
+              'serviceID': serviceId,
             },
             body:
-                '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$token_id"}]}',
+                '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$shnToken","notes":"$notes"}]}',
           )
           .then((res) => {
                 respondData = jsonDecode(res.body),
@@ -182,6 +184,6 @@ http
     'serviceID': '9ab1b69e-92ae-4612-9a4f-c5a102a6c068'
   },
   body:
-      '{ "dataArray" : [{"to" : "4064@shnatter.com","amount" : 10,"tokenId" : "$token_id"}]}',
+      '{ "dataArray" : [{"to" : "4064@shnatter.com","amount" : 10,"tokenId" : "$shnToken"}]}',
 )
 */
