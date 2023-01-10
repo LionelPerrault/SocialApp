@@ -29,7 +29,6 @@ class ProductCell extends StatefulWidget {
 
 class ProductCellState extends mvc.StateMVC<ProductCell> {
   late PostController con;
-  var loading = false;
   var product;
   var productId = '';
 
@@ -37,18 +36,15 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   @override
   void initState() {
     add(widget.con);
-    print(loading);
     con = controller as PostController;
     super.initState();
-    if (loading == false) {
-      product = widget.data['data'];
-    }
-    loading = true;
+    product = widget.data['data'];
     productId = widget.data['id'];
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.data);
     subFunctionList = [
       {
         'icon': product['productMarkAsSold']
@@ -236,7 +232,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                   ),
                                   Container(
                                     width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 210
+                                        ? SizeConfig(context).screenWidth - 240
                                         : 350,
                                     child: Text(
                                       ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
@@ -263,7 +259,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: 'minute ago',
+                                              text: Helper.formatDate(
+                                                  product['productDate']),
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 10),

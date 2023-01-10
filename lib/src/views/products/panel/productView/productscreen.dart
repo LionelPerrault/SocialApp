@@ -1,34 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageAvatarandTabscreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageEventsScreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageSettingsScreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageInviteScreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pagePhotosScreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageTimelineScreen.dart';
-import 'package:shnatter/src/views/pages/panel/pageView/pageVideosScreen.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
-
 import 'package:shnatter/src/views/products/widget/productcell.dart';
 
 class ProductEachScreen extends StatefulWidget {
@@ -52,6 +30,7 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
   bool showMenu = false;
   late AnimationController _drawerSlideController;
   double progress = 0;
+  bool loading = false;
   //
   var userInfo = UserManager.userInfo;
   @override
@@ -72,6 +51,8 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
 
   void getSelectedProduct(String docId) {
     con.getSelectedProduct(docId).then((value) => {
+          loading = true,
+          setState(() {}),
           print('You get selected product info!'),
         });
   }
@@ -171,10 +152,29 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
                                               ? 600
                                               : SizeConfig(context).screenWidth,
                                       padding: EdgeInsets.only(top: 100),
-                                      child: ProductCell(data: {
-                                        'data': con.product,
-                                        'id': con.viewProductId
-                                      }),
+                                      child: !loading
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                  Container(
+                                                    width: 50,
+                                                    height: 50,
+                                                    margin: EdgeInsets.only(
+                                                        top: SizeConfig(context)
+                                                                .screenHeight *
+                                                            2 /
+                                                            5),
+                                                    child:
+                                                        const CircularProgressIndicator(
+                                                      color: Colors.grey,
+                                                    ),
+                                                  )
+                                                ])
+                                          : ProductCell(data: {
+                                              'data': con.product,
+                                              'id': con.viewProductId
+                                            }),
                                     )
                                   ],
                                 ),

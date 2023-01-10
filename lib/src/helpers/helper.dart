@@ -208,4 +208,25 @@ class Helper {
         .get();
     return str['content'] as String;
   }
+
+  static String formatDate(String d) {
+    var date = DateTime.parse(d);
+    String trDate = '';
+    DateTime date2 = DateTime.now();
+    var dd = int.parse(date2.timeZoneOffset.toString().split(':')[0]);
+    date2 = date2.add(Duration(hours: -dd));
+    final difference = date2.difference(date);
+    if (difference.inMinutes < 1) {
+      trDate = 'Just Now';
+    } else if (difference.inHours < 1) {
+      trDate = '${difference.inMinutes}minutes ago';
+    } else if (difference.inDays < 1) {
+      trDate = '${difference.inHours}hours ago';
+    } else if (difference.inDays < 31) {
+      trDate = '${difference.inDays}days ago';
+    } else if (difference.inDays >= 31) {
+      trDate = '${(difference.inDays / 30 as String).split('.')[0]}days ago';
+    }
+    return trDate;
+  }
 }
