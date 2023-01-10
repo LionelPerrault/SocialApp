@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
 class ShnatterNotification extends StatefulWidget {
-  ShnatterNotification({Key? key}) : super(key: key);
-
+  ShnatterNotification({Key? key})
+      : con = PostController(),
+        super(key: key);
+  late PostController con;
   @override
   State createState() => ShnatterNotificationState();
 }
@@ -36,9 +40,18 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
       'icon': Icons.nature
     }
   ];
+  late PostController con;
+  var notifications = [];
   @override
   void initState() {
+    add(widget.con);
+    con = controller as PostController;
     super.initState();
+    final Stream<QuerySnapshot> stream = con.streamPosts();
+    stream.listen((event) {
+      notifications = event.docs;
+      setState(() {});
+    });
   }
 
   @override

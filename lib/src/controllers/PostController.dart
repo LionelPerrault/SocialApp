@@ -1196,4 +1196,15 @@ class PostController extends ControllerMVC {
   savePost(data) async {
     await FirebaseFirestore.instance.collection(Helper.postField).add(data);
   }
+
+  streamPosts() {
+    var stream = Helper.postsCollection.snapshots();
+    return stream;
+  }
+
+  getPostData(data) async {
+    var fData = await Helper.postsCollection.doc(data['postId']).get();
+    var eachPost = fData.data();
+    return eachPost;
+  }
 }
