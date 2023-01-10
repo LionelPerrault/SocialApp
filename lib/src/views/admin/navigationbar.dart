@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import '../../routes/route_names.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -54,6 +55,17 @@ class AdminShnatterNavigationState
 
   void onHomeClicked() {
     Navigator.pushReplacementNamed(context, RouteNames.homePage);
+  }
+
+  Future<void> onLogOut() async {
+    UserManager.isLogined = false;
+    Helper.makeOffline();
+
+    UserManager.userInfo = {};
+
+    await Helper.removeAllPreference();
+    // ignore: use_build_context_synchronously
+    await Navigator.pushReplacementNamed(context, RouteNames.login);
   }
 
   Widget buildSmallSize() {
@@ -122,20 +134,23 @@ class AdminShnatterNavigationState
                       //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                       ),
                   Container(
-                      padding: const EdgeInsets.all(9.0),
-                      child: PopupMenuButton(
-                        itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<Menu>>[
+                    padding: const EdgeInsets.all(9.0),
+                    child: PopupMenuButton(
+                      itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<Menu>>[
                           PopupMenuItem<Menu>(
-                              value: Menu.itemLogout,
-                              child: Row(children: const [
+                            onTap: () => {onLogOut()},
+                            value: Menu.itemLogout,
+                            child: Row(
+                              children: const [
                                 Icon(Icons.logout),
                                 SizedBox(width: 8),
                                 Text('Log Out'),
-                              ])),
+                              ]
+                            ),
+                          ),
                           const PopupMenuDivider(),
-                        ],
-                        onSelected: (Menu item) {},
+                        ],                
                         child: Row(
                           children: [
                             CircleAvatar(
@@ -150,10 +165,10 @@ class AdminShnatterNavigationState
                             //    size: 15, color: Colors.white)
                           ],
                         ),
-                      )),
-                ])
-              ],
-            )),
+                    )),
+              ])
+            ],
+          )),
       ],
     );
   }
@@ -241,16 +256,19 @@ class AdminShnatterNavigationState
                       padding: const EdgeInsets.all(9.0),
                       child: PopupMenuButton(
                         itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<Menu>>[
-                          PopupMenuItem<Menu>(
+                          <PopupMenuEntry<Menu>>[
+                            PopupMenuItem<Menu>(
+                              onTap: () => {onLogOut()},
                               value: Menu.itemLogout,
-                              child: Row(children: const [
-                                Icon(Icons.logout),
-                                SizedBox(width: 8),
-                                Text('Log Out'),
-                              ])),
-                        ],
-                        onSelected: (Menu item) {},
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.logout),
+                                  SizedBox(width: 8),
+                                  Text('Log Out'),
+                                ]
+                              ),
+                            ),
+                          ],
                         child: Row(
                           children: [
                             CircleAvatar(

@@ -1,16 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:shnatter/src/views/footerbar.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+
 
 // ignore: must_be_immutable
 class AdminUserList extends StatefulWidget {
@@ -56,21 +55,26 @@ class AdminUserListState extends mvc.StateMVC<AdminUserList> {
 
   Widget _buildProgressIndicator() {
     return Container(
-        height: 60.0,
+      height: 60.0,
+      alignment: Alignment.center,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFFFFF),
+        border: BorderDirectional(
+          top: BorderSide(
+              color: const Color.fromRGBO(0, 0, 0, 0.26)
+          ),
+        ),
+      ),
+      child: Container(
+        width: 40,
+        height: 40,
         alignment: Alignment.center,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: const Color(0xFFFFFFFF),
-            border: BorderDirectional(
-                top: BorderSide(
-                    color: const Color.fromRGBO(0, 0, 0, 0.26)))),
-        child: Container(
-            width: 40,
-            height: 40,
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.transparent,
-            )));
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.transparent,
+        )
+      )
+    );
   }
 
   Widget _buildLoadMoreView(BuildContext context, LoadMoreRows loadMoreRows) {
@@ -101,7 +105,7 @@ class AdminUserListState extends mvc.StateMVC<AdminUserList> {
       Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
       Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
       Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(10005, 'Martin', 'asdfasdfasdfasdfasdfasd asdfasd', '15000', '1005', 'Martin', 'Developer'),
+      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
       Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
       Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
     ];
