@@ -1,11 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:badges/badges.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingShnatterTokenScreen extends StatefulWidget {
   SettingShnatterTokenScreen({Key? key}) : super(key: key);
@@ -15,7 +18,8 @@ class SettingShnatterTokenScreen extends StatefulWidget {
 
 class Employee {
   /// Creates the employee class with required details.
-  Employee(this.id, this.name, this.username, this.joined, this.activated, this.balance, this.actions);
+  Employee(this.id, this.name, this.username, this.joined, this.activated,
+      this.balance, this.actions);
 
   /// Id of an employee.
   final int id;
@@ -46,74 +50,71 @@ class EmployeeDataSource extends DataGridSource {
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(columnName: 'id', value: e.id),
               DataGridCell<Widget>(
-                columnName: 'name', 
-                value: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.green,
-                      radius: 16,
-                      backgroundImage: NetworkImage('https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83'),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Text(e.name),
-                    )
-                    
-                  ],
-                )),
+                  columnName: 'name',
+                  value: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.green,
+                        radius: 16,
+                        backgroundImage: NetworkImage(
+                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83'),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5),
+                        child: Text(e.name),
+                      )
+                    ],
+                  )),
               DataGridCell(columnName: 'username', value: e.username),
               DataGridCell<String>(columnName: 'joined', value: e.joined),
               DataGridCell<Widget>(
-                columnName: 'activated', 
-                value: Badge(
-                  toAnimate: false,
-                  shape: BadgeShape.square,
-                  badgeColor: Colors.red,
-                  borderRadius: BorderRadius.circular(16),
-                  badgeContent: Text(
-                      'No'.toString(),
-                      style: const TextStyle(
-                          color: Colors.white, fontSize: 13)),
-                )),
+                  columnName: 'activated',
+                  value: Badge(
+                    toAnimate: false,
+                    shape: BadgeShape.square,
+                    badgeColor: Colors.red,
+                    borderRadius: BorderRadius.circular(16),
+                    badgeContent: Text('No'.toString(),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 13)),
+                  )),
               DataGridCell<Widget>(
-                columnName: 'balance', 
-                value: Badge(
-                  toAnimate: false,
-                  shape: BadgeShape.square,
-                  badgeColor: Colors.teal,
-                  borderRadius: BorderRadius.circular(16),
-                  badgeContent: Text(
-                      0.toString(),
-                      style: const TextStyle(
-                          color: Colors.white, fontSize: 13)),
-                )),
+                  columnName: 'balance',
+                  value: Badge(
+                    toAnimate: false,
+                    shape: BadgeShape.square,
+                    badgeColor: Colors.teal,
+                    borderRadius: BorderRadius.circular(16),
+                    badgeContent: Text(0.toString(),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 13)),
+                  )),
               DataGridCell<Widget>(
-                columnName: 'actions', 
-                value: Row(
-                  children: [
+                  columnName: 'actions',
+                  value: Row(children: [
                     Container(
-                      margin: EdgeInsets.only(left: (5)),
-                      width: 30,
-                      child: IconButton(
-                        onPressed: (){}, 
-                        iconSize: 20,
-                        icon: Icon(Icons.replay_5_outlined))),
+                        margin: EdgeInsets.only(left: (5)),
+                        width: 30,
+                        child: IconButton(
+                            onPressed: () {},
+                            iconSize: 20,
+                            icon: Icon(Icons.replay_5_outlined))),
                     Container(
-                      margin: EdgeInsets.only(left: (5)),
-                      width: 30,
-                      child: IconButton(
-                        onPressed: (){}, 
-                        iconSize: 20,
-                        icon: Icon(Icons.edit))),
+                        margin: EdgeInsets.only(left: (5)),
+                        width: 30,
+                        child: IconButton(
+                            onPressed: () {},
+                            iconSize: 20,
+                            icon: Icon(Icons.edit))),
                     Container(
-                      margin: EdgeInsets.only(left: (5)),
-                      width: 30,
-                      child: IconButton(
-                        onPressed: (){},
-                        iconSize: 20, 
-                        color: Colors.red,
-                        icon: Icon(Icons.delete)))
+                        margin: EdgeInsets.only(left: (5)),
+                        width: 30,
+                        child: IconButton(
+                            onPressed: () {},
+                            iconSize: 20,
+                            color: Colors.red,
+                            icon: const Icon(Icons.delete)))
                   ])),
             ]))
         .toList();
@@ -126,41 +127,55 @@ class EmployeeDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(cells: row.getCells().map<Widget>((dataGridCell) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
           alignment: Alignment.center,
           child: dataGridCell.columnName == 'activated'
-              ? 
-              LayoutBuilder(
+              ? LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    return dataGridCell.value;
-                  })
+                  return dataGridCell.value;
+                })
               : dataGridCell.columnName == 'balance'
-              ? 
-              LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    return dataGridCell.value;
-                  })
-              : dataGridCell.columnName == 'actions'
-              ? 
-              LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    return dataGridCell.value;
-                  })
-              : dataGridCell.columnName == 'name'
-              ? 
-              LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    return dataGridCell.value;
-                  })
-              :Text(dataGridCell.value.toString()));
+                  ? LayoutBuilder(builder:
+                      (BuildContext context, BoxConstraints constraints) {
+                      return dataGridCell.value;
+                    })
+                  : dataGridCell.columnName == 'actions'
+                      ? LayoutBuilder(builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                          return dataGridCell.value;
+                        })
+                      : dataGridCell.columnName == 'name'
+                          ? LayoutBuilder(builder: (BuildContext context,
+                              BoxConstraints constraints) {
+                              return dataGridCell.value;
+                            })
+                          : Text(dataGridCell.value.toString()));
     }).toList());
   }
 }
 
 // ignore: must_be_immutable
-class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> {
+class SettingShnatterTokenScreenState
+    extends mvc.StateMVC<SettingShnatterTokenScreen> {
   var setting_security = {};
+
+  late final PlutoGridStateManager stateManager;
+  List<Employee> employees = <Employee>[];
+  late EmployeeDataSource employeeDataSource;
+
+  @override
+  void initState() {
+    super.initState();
+    employees = getEmployeeData();
+    employeeDataSource = EmployeeDataSource(employeeData: employees);
+    UserController().getBalance();
+  }
+
+  bool check1 = false;
+  Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
+  double fontSize = 14;
 
   @override
   Widget build(BuildContext context) {
@@ -170,16 +185,12 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SettingHeader(
-            icon: const Icon(
-              Icons.attach_money,
-              color: Color.fromRGBO(76, 175, 80, 1)
-            ),
+            icon: const Icon(Icons.attach_money,
+                color: Color.fromRGBO(76, 175, 80, 1)),
             pagename: 'Shnatter Token',
-            button: {'flag': false },
+            button: {'flag': false},
           ),
-          Padding(padding: 
-            EdgeInsets.only(top: 20)
-          ),
+          Padding(padding: EdgeInsets.only(top: 20)),
           Container(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             width: SizeConfig(context).screenWidth > 800
@@ -191,8 +202,8 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: 
-                      Column(
+                    Expanded(
+                      child: Column(
                         children: [
                           Container(
                             margin: const EdgeInsets.only(bottom: 20),
@@ -207,10 +218,11 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: const [
                                 Icon(Icons.attach_money, color: Colors.black),
-                                Text('Balance', 
+                                Text(
+                                  'Balance',
                                   style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -219,7 +231,7 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                           Container(
                             width: 330,
                             height: 90,
-                            decoration: BoxDecoration (
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(3),
                               gradient: const LinearGradient(
                                 begin: Alignment.topLeft,
@@ -234,13 +246,13 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
+                              children: [
                                 Text(
-                                  '0.00', 
-                                  style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  Helper.balance.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -249,9 +261,11 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                         ],
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.only(left: 20.0),),
-                    Expanded(child: 
-                      Column(
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                    ),
+                    Expanded(
+                      child: Column(
                         children: [
                           Container(
                             margin: const EdgeInsets.only(bottom: 20),
@@ -266,10 +280,11 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: const [
                                 Icon(Icons.attach_money, color: Colors.black),
-                                Text('Reserved Balance', 
+                                Text(
+                                  'Reserved Balance',
                                   style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -278,7 +293,7 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                           Container(
                             width: 330,
                             height: 90,
-                            decoration: BoxDecoration (
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(3),
                               gradient: const LinearGradient(
                                 begin: Alignment.topLeft,
@@ -295,11 +310,11 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: const [
                                 Text(
-                                  '0.00', 
+                                  '0.00',
                                   style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -311,44 +326,41 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                   ],
                 ),
                 // const Padding(padding: EdgeInsets.only(top: 15)),
-                Container (
+                Container(
                   margin: EdgeInsets.all(20),
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(3),
-                      backgroundColor: const Color.fromARGB(255, 251, 99, 64),
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(3),
+                        backgroundColor: const Color.fromARGB(255, 251, 99, 64),
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(720, 40),
+                        maximumSize: const Size(720, 40),
                       ),
-                      minimumSize: const Size(720, 40),
-                      maximumSize: const Size(720, 40),
-                    ),
-                    onPressed: () {
-                      (()=>{});
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Buy Tokens', 
-                          style: TextStyle(
-                            fontSize: 11, 
-                            color: Colors.white, 
-                            fontWeight: FontWeight.bold
+                      onPressed: () {
+                        (() => {});
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Buy Tokens',
+                            style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
-                    )
-                  ),
+                        ],
+                      )),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Blockchain Address', 
+                      'Blockchain Address',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -362,30 +374,27 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                           padding: EdgeInsets.all(3),
                           elevation: 3,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3.0)
-                          ),
+                              borderRadius: BorderRadius.circular(3.0)),
                           minimumSize: const Size(330, 50),
                           maximumSize: const Size(330, 50),
                         ),
                         onPressed: () {
-                          (()=>{});
+                          (() => {});
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text(
-                              'paymail', 
-                              style: TextStyle(
+                              UserManager.userInfo['paymail'],
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
-                            Flexible(
-                              fit: FlexFit.tight, 
-                              child: SizedBox()
-                            ),
-                            Icon(
-                              Icons.file_copy, 
+                            const Flexible(
+                                fit: FlexFit.tight, child: SizedBox()),
+                            const Icon(
+                              Icons.file_copy,
                               color: Colors.black,
                             ),
                           ],
@@ -402,6 +411,7 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
       ),
     );
   }
+
   Widget button({url, text}) {
     return Expanded(
       flex: 1,
@@ -415,13 +425,12 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
             backgroundColor: Colors.white,
             elevation: 3,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3.0)
-            ),
+                borderRadius: BorderRadius.circular(3.0)),
             minimumSize: const Size(90, 90),
             maximumSize: const Size(90, 90),
           ),
           onPressed: () {
-            (()=>{});
+            (() => {});
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -431,18 +440,16 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                // color: Colors.grey,
-                  borderRadius: BorderRadius.all(Radius.circular(20))
-                ),
+                    // color: Colors.grey,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: SvgPicture.network(url),
               ),
               Text(
-                text, 
+                text,
                 style: TextStyle(
-                  fontSize: 11, 
-                  color: Colors.grey, 
-                  fontWeight: FontWeight.bold
-                ),
+                    fontSize: 11,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -451,43 +458,24 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
     );
   }
 
-  late final PlutoGridStateManager stateManager;
-  List<Employee> employees = <Employee>[];
-  late EmployeeDataSource employeeDataSource;
-
-  @override
-  void initState() {
-    super.initState();
-    employees = getEmployeeData();
-    employeeDataSource = EmployeeDataSource(employeeData: employees);
-  }
-
-  bool check1 = false;
-  Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
-  double fontSize = 14;
-
   Widget _buildProgressIndicator() {
     return Container(
-      height: 60.0,
-      alignment: Alignment.center,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFFFFF),
-        border: BorderDirectional(
-          top: BorderSide(
-              color: const Color.fromRGBO(0, 0, 0, 0.26)
+        height: 60.0,
+        alignment: Alignment.center,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFFFFF),
+          border: BorderDirectional(
+            top: BorderSide(color: const Color.fromRGBO(0, 0, 0, 0.26)),
           ),
         ),
-      ),
-      child: Container(
-        width: 40,
-        height: 40,
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.transparent,
-        )
-      )
-    );
+        child: Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.transparent,
+            )));
   }
 
   Widget _buildLoadMoreView(BuildContext context, LoadMoreRows loadMoreRows) {
@@ -513,14 +501,22 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
 
   List<Employee> getEmployeeData() {
     return [
-      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+      Employee(
+          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+      Employee(
+          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+      Employee(
+          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+      Employee(
+          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+      Employee(
+          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+      Employee(
+          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+      Employee(
+          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+      Employee(
+          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
     ];
   }
 
@@ -603,52 +599,48 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
     return Container(
       child: Column(
         children: [
-          SizeConfig(context).screenWidth > 800 
-          ?
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            padding: const EdgeInsets.all(15),
-            alignment: Alignment.center,
-            child: Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            // height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: SfDataGrid(
-              allowSorting: true,
-              allowFiltering: true,
-              loadMoreViewBuilder: _buildLoadMoreView,
-              source: employeeDataSource,
-              columns: _getColumns(),
-              gridLinesVisibility: GridLinesVisibility.both,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-            ),
-          ),
-
-          )
-          :
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            // height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: SfDataGrid(
-              allowSorting: true,
-              allowFiltering: true,
-              loadMoreViewBuilder: _buildLoadMoreView,
-              source: employeeDataSource,
-              columns: _getColumns(),
-              gridLinesVisibility: GridLinesVisibility.both,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-            ),
-          ),
+          SizeConfig(context).screenWidth > 800
+              ? Container(
+                  width: SizeConfig(context).screenWidth > 800
+                      ? SizeConfig(context).screenWidth * 0.85
+                      : SizeConfig(context).screenWidth,
+                  padding: const EdgeInsets.all(15),
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: SizeConfig(context).screenWidth > 800
+                        ? SizeConfig(context).screenWidth * 0.85
+                        : SizeConfig(context).screenWidth,
+                    // height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+                    padding: const EdgeInsets.all(15),
+                    child: SfDataGrid(
+                      allowSorting: true,
+                      allowFiltering: true,
+                      loadMoreViewBuilder: _buildLoadMoreView,
+                      source: employeeDataSource,
+                      columns: _getColumns(),
+                      gridLinesVisibility: GridLinesVisibility.both,
+                      headerGridLinesVisibility: GridLinesVisibility.both,
+                    ),
+                  ),
+                )
+              : Container(
+                  width: SizeConfig(context).screenWidth > 800
+                      ? SizeConfig(context).screenWidth * 0.85
+                      : SizeConfig(context).screenWidth,
+                  // height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+                  padding: const EdgeInsets.all(15),
+                  child: SfDataGrid(
+                    allowSorting: true,
+                    allowFiltering: true,
+                    loadMoreViewBuilder: _buildLoadMoreView,
+                    source: employeeDataSource,
+                    columns: _getColumns(),
+                    gridLinesVisibility: GridLinesVisibility.both,
+                    headerGridLinesVisibility: GridLinesVisibility.both,
+                  ),
+                ),
         ],
       ),
     );
   }
 }
-

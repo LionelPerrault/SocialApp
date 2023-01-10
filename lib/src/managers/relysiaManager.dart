@@ -223,15 +223,17 @@ class RelysiaManager {
         body:
             '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "${RelysiaHelper.tokenId}","notes":"$notes"}]}',
       )
-          .then((res) async {
-        respondData = jsonDecode(res.body);
-        if (respondData['statusCode'] == 200) {
-          r = 1;
-        } else if (respondData['statusCode'] == 401 &&
-            respondData['data']['msg'] == 'Invalid authToken provided') {
-          r = 2;
-        }
-      });
+          .then(
+        (res) async {
+          respondData = jsonDecode(res.body);
+          if (respondData['statusCode'] == 200) {
+            r = 1;
+          } else if (respondData['statusCode'] == 401 &&
+              respondData['data']['msg'] == 'Invalid authToken provided') {
+            r = 2;
+          }
+        },
+      );
     } catch (exception) {
       print(exception.toString());
     }

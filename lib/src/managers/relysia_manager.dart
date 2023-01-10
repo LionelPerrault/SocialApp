@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:shnatter/src/managers/user_manager.dart';
 
 class RelysiaManager {
   static final apiUrlAuth = 'https://api.relysia.com/v1/auth';
@@ -10,6 +11,7 @@ class RelysiaManager {
   static final shnToken = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-SHNATST';
   static final adminEmail = 'kalininviktor848@gmail.com';
   static final adminPassword = '1topnotch@';
+  static final adminPaymail = '3982@relysia.com';
   static var resToken = {};
   static Future<Map> authUser(String email, String password) async {
     Map responseData = {};
@@ -64,6 +66,9 @@ class RelysiaManager {
   }
 
   static Future<int> createWallet(String token) async {
+    var authData = await authUser(UserManager.userInfo['relysiaEmail'],
+        UserManager.userInfo['relysiaPassword']);
+    token = authData['data']['token'];
     var r = 0;
     var respondData = {};
     try {
@@ -88,6 +93,9 @@ class RelysiaManager {
   }
 
   static Future<Map> getPaymail(String token) async {
+    var authData = await authUser(UserManager.userInfo['relysiaEmail'],
+        UserManager.userInfo['relysiaPassword']);
+    token = authData['data']['token'];
     Map paymail = {};
     var resData = {};
     try {
@@ -111,6 +119,9 @@ class RelysiaManager {
   }
 
   static Future<int> getBalance(String token) async {
+    var authData = await authUser(UserManager.userInfo['relysiaEmail'],
+        UserManager.userInfo['relysiaPassword']);
+    token = authData['data']['token'];
     var balance = 0;
     try {
       await http.get(
@@ -135,7 +146,11 @@ class RelysiaManager {
   }
 
   static Future<int> payNow(
-      String token, String payMail, String amount, String notes) async {
+      Map senderInfo, String payMail, String amount, String notes) async {
+    var authData = await authUser(
+        senderInfo['relysiaEmail'], senderInfo['relysiaPassword']);
+    String sendToken = authData['data']['token'];
+    print(getBalance(sendToken));
     int r = 0;
     var respondData = {};
     try {
@@ -143,18 +158,20 @@ class RelysiaManager {
           .post(
             Uri.parse('https://api.relysia.com/v1/send'),
             headers: {
-              'authToken': token,
+              'authToken': sendToken,
               'content-type': 'application/json',
               'serviceID': serviceId,
             },
             body:
                 '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$shnToken","notes":"$notes"}]}',
           )
-          .then((res) => {
-                respondData = jsonDecode(res.body),
-                if (respondData['statusCode'] == 200) r = 1,
-                print("success" + respondData['statusCode'].toString())
-              });
+          .then(
+            (res) => {
+              respondData = jsonDecode(res.body),
+              if (respondData['statusCode'] == 200) r = 1,
+              print("success" + respondData['statusCode'].toString())
+            },
+          );
     } catch (exception) {
       print(exception.toString());
     }

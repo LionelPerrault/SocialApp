@@ -22,21 +22,21 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
       'avatarImg': '',
       'name': 'Adetola',
       'subname': 'now following you',
-      'subsubtitle': '2 days ago',
+      'subTitle': '2 days ago',
       'icon': Icons.nature
     },
     {
       'avatarImg': '',
       'name': 'Adetola',
       'subname': 'now following you',
-      'subsubtitle': '2 days ago',
+      'subTitle': '2 days ago',
       'icon': Icons.nature
     },
     {
       'avatarImg': '',
       'name': 'Adetola',
       'subname': 'now following you',
-      'subsubtitle': '2 days ago',
+      'subTitle': '2 days ago',
       'icon': Icons.nature
     }
   ];
@@ -115,34 +115,34 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 child: ListView.separated(
                   itemCount: sampleData.length,
                   itemBuilder: (context, index) => Material(
-                      child: ListTile(
-                          onTap: () {
-                            print("tap!");
-                          },
-                          hoverColor: const Color.fromARGB(255, 243, 243, 243),
-                          enabled: true,
-                          leading: const CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
+                    child: ListTile(
+                      onTap: () {
+                        print("tap!");
+                      },
+                      hoverColor: const Color.fromARGB(255, 243, 243, 243),
+                      enabled: true,
+                      leading: const CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
+                      ),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            sampleData[index]['name'],
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 10),
                           ),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                sampleData[index]['name'],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 10),
-                              ),
-                              Text(sampleData[index]['subname'],
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 10)),
-                              Text(sampleData[index]['subsubtitle'],
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 8))
-                            ],
-                          ))),
+                          Text(sampleData[index]['subname'],
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal, fontSize: 10)),
+                          Text(sampleData[index]['subTitle'],
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal, fontSize: 8))
+                        ],
+                      ),
+                    ),
+                  ),
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(
                     height: 1,

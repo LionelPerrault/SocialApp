@@ -1,7 +1,4 @@
-import 'package:universal_html/html.dart' as html;
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter_window_close/flutter_window_close.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/helpers/helper.dart';

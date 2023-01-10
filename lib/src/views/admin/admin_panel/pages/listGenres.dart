@@ -4,7 +4,6 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:universal_html/html.dart';
 
 // ignore: must_be_immutable
 class AdminListGenres extends StatefulWidget {
@@ -126,7 +125,8 @@ class AdminListGenresState extends mvc.StateMVC<AdminListGenres> {
     PlutoColumnGroup(title: 'Id', fields: ['id'], expandedColumn: true),
     PlutoColumnGroup(title: 'Title', fields: ['title'], expandedColumn: true),
     PlutoColumnGroup(title: 'Order', fields: ['order'], expandedColumn: true),
-    PlutoColumnGroup(title: 'Actions', fields: ['actions'], expandedColumn: true),
+    PlutoColumnGroup(
+        title: 'Actions', fields: ['actions'], expandedColumn: true),
   ];
 
   /// [PlutoGridStateManager] has many methods and properties to dynamically manipulate the grid.
@@ -137,7 +137,7 @@ class AdminListGenresState extends mvc.StateMVC<AdminListGenres> {
     super.initState();
   }
 
-String? selectedValue;
+  String? selectedValue;
 
   bool check1 = false;
   Color fontColor = Color.fromARGB(255, 10, 10, 10);
@@ -146,9 +146,7 @@ String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
-      
       child: Column(
         children: [
           Container(
@@ -156,8 +154,7 @@ String? selectedValue;
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.75
                 : SizeConfig(context).screenWidth,
-            child:
-                addroute == 'main' ? generalWidget() : addNewGenreWidget(),
+            child: addroute == 'main' ? generalWidget() : addNewGenreWidget(),
           ),
         ],
       ),
@@ -165,7 +162,6 @@ String? selectedValue;
   }
 
   @override
-
   Widget generalWidget() {
     return Container(
       child: Column(
@@ -191,7 +187,6 @@ String? selectedValue;
               'size': Size(180, 50),
             },
           ),
-          
           Container(
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.85
@@ -219,7 +214,7 @@ String? selectedValue;
     );
   }
 
-    Widget addNewGenreWidget() {
+  Widget addNewGenreWidget() {
     return Container(
       child: Column(
         children: [
@@ -238,12 +233,9 @@ String? selectedValue;
               'size': Size(120, 50),
             },
           ),
-          titleAndsubtitleInput('Name', 40, 1,
-            ''  ),
-          titleAndsubtitleInput('Order', 40, 1,
-            '' ),
-          titleAndsubtitleInput('description', 200, 8,
-            '' ),
+          titleAndsubtitleInput('Name', 40, 1, ''),
+          titleAndsubtitleInput('Order', 40, 1, ''),
+          titleAndsubtitleInput('description', 200, 8, ''),
           // titleAndsubtitleTextarea('Description',4,''),
           footer(),
         ],
@@ -279,7 +271,7 @@ String? selectedValue;
   //                   width: 500,
   //                   child:TextField(
   //                   maxLines: 4,
-  //                   decoration: 
+  //                   decoration:
   //                     InputDecoration(
   //                       labelText: 'Description',
   //                       fillColor: Colors.white,
@@ -391,11 +383,10 @@ String? selectedValue;
         ));
   }
 
-    Widget titleAndUpload(title) {
+  Widget titleAndUpload(title) {
     return Container(
       margin: const EdgeInsets.only(left: 20, top: 20),
-      child: 
-      Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -440,5 +431,3 @@ String? selectedValue;
     );
   }
 }
-
-
