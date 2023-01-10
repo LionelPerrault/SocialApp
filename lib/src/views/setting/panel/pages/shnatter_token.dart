@@ -163,6 +163,17 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
   var setting_security = {};
 
   @override
+  void initState() {
+    super.initState();
+    employees = getEmployeeData();
+    employeeDataSource = EmployeeDataSource(employeeData: employees);
+  }
+
+  bool check1 = false;
+  Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
+  double fontSize = 14;
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
@@ -454,17 +465,6 @@ class SettingShnatterTokenScreenState extends State<SettingShnatterTokenScreen> 
   late final PlutoGridStateManager stateManager;
   List<Employee> employees = <Employee>[];
   late EmployeeDataSource employeeDataSource;
-
-  @override
-  void initState() {
-    super.initState();
-    employees = getEmployeeData();
-    employeeDataSource = EmployeeDataSource(employeeData: employees);
-  }
-
-  bool check1 = false;
-  Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
-  double fontSize = 14;
 
   Widget _buildProgressIndicator() {
     return Container(

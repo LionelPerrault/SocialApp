@@ -14,7 +14,7 @@ class SettingHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 40, top: 20, right: 40),
+      padding: EdgeInsets.only(top: 20, right: 20),
       child: Container(
         height: 65,
         decoration: const BoxDecoration(
