@@ -7,6 +7,7 @@ import 'package:shnatter/src/views/groups/groupsscreen.dart';
 import 'package:shnatter/src/views/groups/panel/groupView/groupscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/marketPlace/marketPlaceScreen.dart';
+import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
 import 'package:shnatter/src/views/pages/pagesscreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pagescreen.dart';
 import 'package:shnatter/src/views/people/peoplescreen.dart';
@@ -50,7 +51,7 @@ class RouteGenerator {
       return MaterialPageRoute(
           builder: (context) => UserProfileScreen(), settings: settings);
     }
-    if (url!.split('/')[1] == RouteNames.eventsName &&
+    if (url.split('/')[1] == RouteNames.eventsName &&
         url.split('/').length > 2) {
       return MaterialPageRoute(
           builder: (context) =>
@@ -135,13 +136,16 @@ class RouteGenerator {
       case RouteNames.market:
         return MaterialPageRoute(
             builder: (context) => MarketPlaceScreen(), settings: settings);
+      case RouteNames.messages:
+        return MaterialPageRoute(
+            builder: (context) => MessageScreen(), settings: settings);
       case '/':
         return MaterialPageRoute(
             builder: (context) => HomeScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (context) =>
-                UserProfileScreen(userName: url!.split('/')[1]),
+                UserProfileScreen(userName: url.split('/')[1]),
             settings: settings);
     }
   }
