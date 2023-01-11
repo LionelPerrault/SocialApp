@@ -90,7 +90,6 @@ class RelysiaManager {
   static Future<Map> getPaymail(String token) async {
     Map paymail = {};
     var resData = {};
-    print(token +'adfasdfasdfasdfasdf');
     try {
       await http.get(Uri.parse('https://api.relysia.com/v1/address'), headers: {
         'authToken': token,
@@ -110,16 +109,17 @@ class RelysiaManager {
   }
 
   static Future<int> getBalance(String token) async {
+    print(UserManager.userInfo['relysiaPassword'] + UserManager.userInfo['relysiaEmail']);
+
     var authData = await authUser(UserManager.userInfo['relysiaEmail'],
         UserManager.userInfo['relysiaPassword']);
     token = authData['data']['token'];
     var balance = 0;
     try {
-      await http.get(
-          Uri.parse('https://api.relysia.com/v1/balance?serviceID=$serviceId'),
-          headers: {
-            'authToken': token,
-          }).then((res) => {
+      await http.get(Uri.parse('https://api.relysia.com/v1/address'), headers: {
+        'authToken': token,
+        'serviceID': serviceId,
+      }).then((res) => {
             resToken = jsonDecode(res.body),
             print(resToken['data']['coins']),
             for (var i = 0; i < resToken['data']['coins'].length; i++)

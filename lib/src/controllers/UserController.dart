@@ -172,10 +172,12 @@ class UserController extends ControllerMVC {
       'walletAddress': walletAddress,
       'relysiaEmail': relysiaEmail,
       'relysiaPassword': relysiaPassword,
+      'paywall': {},
       'isStarted': false,
     });
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
+      'paywall': {},
       'paymail': paymail,
       'fullName':
           '${signUpUserInfo['firstName']} ${signUpUserInfo['lastName']}',
