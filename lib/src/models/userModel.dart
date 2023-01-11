@@ -30,7 +30,6 @@ class TokenLogin {
       relysiaPassword = json['relysiaPassword'] as String;
       paymail = json['paymail'] as String;
       walletAddress = json['walletAddress'] as String;
-      password = json['password'] as String;
       isStarted = json['isStarted'] as bool;
       userAvatar = json['avatar'] as String;
       userInfo = json;
