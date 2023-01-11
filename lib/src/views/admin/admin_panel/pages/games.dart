@@ -46,7 +46,8 @@ class AdminGamesState extends mvc.StateMVC<AdminGames> {
   final List<PlutoColumnGroup> columnGroups = [
     PlutoColumnGroup(title: 'Id', fields: ['id'], expandedColumn: true),
     PlutoColumnGroup(title: 'Game', fields: ['game'], expandedColumn: true),
-    PlutoColumnGroup(title: 'Actions', fields: ['actions'], expandedColumn: true),
+    PlutoColumnGroup(
+        title: 'Actions', fields: ['actions'], expandedColumn: true),
   ];
 
   /// [PlutoGridStateManager] has many methods and properties to dynamically manipulate the grid.
@@ -57,7 +58,7 @@ class AdminGamesState extends mvc.StateMVC<AdminGames> {
     super.initState();
   }
 
-String? selectedValue;
+  String? selectedValue;
 
   bool check1 = false;
   Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
@@ -66,9 +67,7 @@ String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
-      
       child: Column(
         children: [
           Container(
@@ -76,8 +75,7 @@ String? selectedValue;
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.75
                 : SizeConfig(context).screenWidth,
-            child:
-                addroute == 'main' ? generalWidget() : addNewGameWidget(),
+            child: addroute == 'main' ? generalWidget() : addNewGameWidget(),
           ),
         ],
       ),
@@ -85,7 +83,6 @@ String? selectedValue;
   }
 
   @override
-
   Widget generalWidget() {
     return Container(
       child: Column(
@@ -111,7 +108,6 @@ String? selectedValue;
               'size': Size(180, 50),
             },
           ),
-          
           Container(
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.62
@@ -139,7 +135,7 @@ String? selectedValue;
     );
   }
 
-    Widget addNewGameWidget() {
+  Widget addNewGameWidget() {
     return Container(
       child: Column(
         children: [
@@ -158,12 +154,10 @@ String? selectedValue;
               'size': Size(120, 50),
             },
           ),
-          titleAndsubtitleInput('Game Name', 40, 1,
-            ''  ),
-          titleAndsubtitleInput('Description', 80, 4,
-            '' ),
-          titleAndsubtitleInput('Game Source', 80, 4,
-            'The source link of your embedded game' ),
+          titleAndsubtitleInput('Game Name', 40, 1, ''),
+          titleAndsubtitleInput('Description', 80, 4, ''),
+          titleAndsubtitleInput(
+              'Game Source', 80, 4, 'The source link of your embedded game'),
           titleAndUpload('Thumbnail'),
           const Divider(thickness: 0.1, color: Colors.black),
           footer(),
@@ -171,7 +165,8 @@ String? selectedValue;
       ),
     );
   }
-    Widget titleAndsubtitleInput(title, height, line, subtitle) {
+
+  Widget titleAndsubtitleInput(title, height, line, subtitle) {
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
       child: Row(
@@ -256,7 +251,7 @@ String? selectedValue;
         ));
   }
 
-    Widget titleAndUpload(title) {
+  Widget titleAndUpload(title) {
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 400, top: 20),
       child: Row(
@@ -304,5 +299,3 @@ String? selectedValue;
     );
   }
 }
-
-

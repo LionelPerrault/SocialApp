@@ -56,11 +56,13 @@ class AdminListForumsState extends mvc.StateMVC<AdminListForums> {
   /// columnGroups that can group columns can be omitted.
   final List<PlutoColumnGroup> columnGroups = [
     PlutoColumnGroup(title: 'Title', fields: ['title'], expandedColumn: true),
-    PlutoColumnGroup(title: 'Description', fields: ['description'], expandedColumn: true),
-    PlutoColumnGroup(title: 'Threads', fields: ['threads'], expandedColumn: true),
+    PlutoColumnGroup(
+        title: 'Description', fields: ['description'], expandedColumn: true),
+    PlutoColumnGroup(
+        title: 'Threads', fields: ['threads'], expandedColumn: true),
     PlutoColumnGroup(title: 'Order', fields: ['order'], expandedColumn: true),
-    PlutoColumnGroup(title: 'Actions', fields: ['actions'], expandedColumn: true),
-
+    PlutoColumnGroup(
+        title: 'Actions', fields: ['actions'], expandedColumn: true),
   ];
 
   /// [PlutoGridStateManager] has many methods and properties to dynamically manipulate the grid.
@@ -71,7 +73,7 @@ class AdminListForumsState extends mvc.StateMVC<AdminListForums> {
     super.initState();
   }
 
-String? selectedValue;
+  String? selectedValue;
 
   bool check1 = false;
   Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
@@ -80,9 +82,7 @@ String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
-      
       child: Column(
         children: [
           Container(
@@ -90,8 +90,7 @@ String? selectedValue;
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.85
                 : SizeConfig(context).screenWidth,
-            child:
-                addroute == 'main' ? generalWidget() : addNewForumWidget(),
+            child: addroute == 'main' ? generalWidget() : addNewForumWidget(),
           ),
         ],
       ),
@@ -99,7 +98,6 @@ String? selectedValue;
   }
 
   @override
-
   Widget generalWidget() {
     return Container(
       child: Column(
@@ -125,7 +123,6 @@ String? selectedValue;
               'size': Size(180, 50),
             },
           ),
-          
           Container(
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.85
@@ -153,7 +150,7 @@ String? selectedValue;
     );
   }
 
-    Widget addNewForumWidget() {
+  Widget addNewForumWidget() {
     return Container(
       child: Column(
         children: [
@@ -172,39 +169,36 @@ String? selectedValue;
               'size': Size(120, 50),
             },
           ),
-          titleAndsubtitleInput('Name', 40, 1,
-            ''  ),
-          titleAndsubtitleInput('Description', 80, 4,
-            '' ),
-          titleAndsubtitleInput('Order', 40, 1,
-            '' ),
+          titleAndsubtitleInput('Name', 40, 1, ''),
+          titleAndsubtitleInput('Description', 80, 4, ''),
+          titleAndsubtitleInput('Order', 40, 1, ''),
           footer(),
         ],
       ),
     );
   }
+
   Widget titleAndsubtitleInput(title, height, line, subtitle) {
-  return Container(
-    margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 100,
-          alignment: Alignment.topLeft,
-          child: Text(
-            title,
-            style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 3, 3, 3)),
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 100,
+            alignment: Alignment.topLeft,
+            child: Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 3, 3, 3)),
+            ),
           ),
-        ),
-        Expanded(
-          flex: 2,
-          child: 
-            SizedBox(
+          Expanded(
+            flex: 2,
+            child: SizedBox(
               width: 500,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -243,35 +237,29 @@ String? selectedValue;
 
   Widget footer() {
     return Container(
-      height: 80,
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(240, 240, 240, 1),
-        border: Border(top: BorderSide(width: 0.5, color: Colors.grey))
-      ),
-      alignment: Alignment.centerRight,
-      padding: const EdgeInsets.only(right: 15),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          elevation: 3,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(2.0)),
-          minimumSize: const Size(150, 50),
-          maximumSize: const Size(150, 50),
-        ),
-        onPressed: () {
-          () => {};
-        },
-        child: const Text('Save Changes',
-          style: TextStyle(
-            color: Color.fromARGB(255, 33, 37, 41),
-            fontSize: 11.0,
-            fontWeight: FontWeight.bold
-          )
-        ),
-      )
-    );
+        height: 80,
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(240, 240, 240, 1),
+            border: Border(top: BorderSide(width: 0.5, color: Colors.grey))),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 15),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(2.0)),
+            minimumSize: const Size(150, 50),
+            maximumSize: const Size(150, 50),
+          ),
+          onPressed: () {
+            () => {};
+          },
+          child: const Text('Save Changes',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 33, 37, 41),
+                  fontSize: 11.0,
+                  fontWeight: FontWeight.bold)),
+        ));
   }
 }
-
-
