@@ -796,49 +796,49 @@ class PostController extends ControllerMVC {
 
   Future<String> createProduct(
       context, Map<String, dynamic> productData) async {
-    // if (productData['productName'] == null ||
-    //     productData['productName'] == '') {
-    //   return 'Please add your product name';
-    // } else if (productData['productPrice'] == null ||
-    //     productData['productPrice'] == '') {
-    //   return 'Please add your product price';
-    // } else if (productData['productCategory'] == null ||
-    //     productData['productCategory'] == '') {
-    //   return 'Please add your product category';
-    // }
-    // productData = {
-    //   ...productData,
-    //   'productAdmin': {
-    //     'userName': UserManager.userInfo['userName'],
-    //     'userAvatar': UserManager.userInfo['avatar'],
-    //     'fullName': UserManager.userInfo['fullName'],
-    //   },
-    //   'productDate': DateTime.now().toString(),
-    //   'productPost': false,
-    //   'productMarkAsSold': false,
-    //   'productTimeline': true,
-    //   'productOnOffCommenting': true,
-    // };
-    // var postData;
-    // await FirebaseFirestore.instance
-    //     .collection(Helper.productsField)
-    //     .add(productData)
-    //     .then((value) async => {
-    //           postData = {
-    //             'postType': 'products',
-    //             'postId': value.id,
-    //             'postAdmin': {
-    //               'userName': UserManager.userInfo['userName'],
-    //               'userAvatar': UserManager.userInfo['avatar'],
-    //               'fullName': UserManager.userInfo['fullName'],
-    //             }
-    //           },
-    //           savePost(postData),
-    //           Navigator.pushReplacementNamed(
-    //               context, '${RouteNames.products}/${value.id}')
-    //         });
-    RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
-        '10', 'for create product');
+    if (productData['productName'] == null ||
+        productData['productName'] == '') {
+      return 'Please add your product name';
+    } else if (productData['productPrice'] == null ||
+        productData['productPrice'] == '') {
+      return 'Please add your product price';
+    } else if (productData['productCategory'] == null ||
+        productData['productCategory'] == '') {
+      return 'Please add your product category';
+    }
+    productData = {
+      ...productData,
+      'productAdmin': {
+        'userName': UserManager.userInfo['userName'],
+        'userAvatar': UserManager.userInfo['avatar'],
+        'fullName': UserManager.userInfo['fullName'],
+      },
+      'productDate': DateTime.now().toString(),
+      'productPost': false,
+      'productMarkAsSold': false,
+      'productTimeline': true,
+      'productOnOffCommenting': true,
+    };
+    var postData;
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .add(productData)
+        .then((value) async => {
+              postData = {
+                'postType': 'products',
+                'postId': value.id,
+                'postAdmin': {
+                  'userName': UserManager.userInfo['userName'],
+                  'userAvatar': UserManager.userInfo['avatar'],
+                  'fullName': UserManager.userInfo['fullName'],
+                }
+              },
+              savePost(postData),
+              Navigator.pushReplacementNamed(
+                  context, '${RouteNames.products}/${value.id}')
+            });
+    // RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
+    //     '10', 'for create product');
     return 'Successfully created';
   }
 
