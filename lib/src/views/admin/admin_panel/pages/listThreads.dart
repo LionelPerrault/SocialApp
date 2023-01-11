@@ -49,8 +49,8 @@ class AdminListThreadsState extends mvc.StateMVC<AdminListThreads> {
   final List<PlutoRow> rows = [
     PlutoRow(
       cells: {
-        'id': PlutoCell(value: 1 ),
-        'author': PlutoCell(value: 'Krystiyan' ),
+        'id': PlutoCell(value: 1),
+        'author': PlutoCell(value: 'Krystiyan'),
         'title': PlutoCell(value: 'Environment Problem'),
         'time': PlutoCell(value: '8:00/12:00'),
         'link': PlutoCell(value: ''),
@@ -66,8 +66,8 @@ class AdminListThreadsState extends mvc.StateMVC<AdminListThreads> {
     PlutoColumnGroup(title: 'Title', fields: ['title'], expandedColumn: true),
     PlutoColumnGroup(title: 'Time', fields: ['time'], expandedColumn: true),
     PlutoColumnGroup(title: 'Link', fields: ['link'], expandedColumn: true),
-    PlutoColumnGroup(title: 'Actions', fields: ['actions'], expandedColumn: true),
-
+    PlutoColumnGroup(
+        title: 'Actions', fields: ['actions'], expandedColumn: true),
   ];
 
   /// [PlutoGridStateManager] has many methods and properties to dynamically manipulate the grid.
@@ -78,7 +78,7 @@ class AdminListThreadsState extends mvc.StateMVC<AdminListThreads> {
     super.initState();
   }
 
-String? selectedValue;
+  String? selectedValue;
 
   bool check1 = false;
   Color fontColor = const Color.fromRGBO(82, 95, 127, 1);
@@ -87,9 +87,7 @@ String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
-      
       child: Column(
         children: [
           Container(
@@ -97,8 +95,7 @@ String? selectedValue;
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.85
                 : SizeConfig(context).screenWidth,
-            child:
-                addroute == 'main' ? generalWidget() : threadFindWidget(),
+            child: addroute == 'main' ? generalWidget() : threadFindWidget(),
           ),
         ],
       ),
@@ -106,7 +103,6 @@ String? selectedValue;
   }
 
   @override
-
   Widget generalWidget() {
     return Container(
       child: Column(
@@ -133,38 +129,32 @@ String? selectedValue;
             },
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(3),
-              backgroundColor: Colors.white,
-              // elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(3.0)),
-              maximumSize: Size(100, 50),
-              minimumSize: Size(100, 50)
-            ),
-            onPressed: () {
-              
-              setState(() {});
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ),
-                Text(
-                  'Search',
-                  style: TextStyle(
-                    fontSize: 11,
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(3),
+                  backgroundColor: Colors.white,
+                  // elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3.0)),
+                  maximumSize: Size(100, 50),
+                  minimumSize: Size(100, 50)),
+              onPressed: () {
+                setState(() {});
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.search,
                     color: Colors.black,
-                    fontWeight: FontWeight.bold
-                  )
-                )
-              ],
-            )
-          ),
+                  ),
+                  Text('Search',
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold))
+                ],
+              )),
           Container(
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.85
@@ -192,7 +182,7 @@ String? selectedValue;
     );
   }
 
-    Widget threadFindWidget() {
+  Widget threadFindWidget() {
     return Container(
       child: Column(
         children: [
@@ -237,28 +227,28 @@ String? selectedValue;
       ),
     );
   }
+
   Widget titleAndsubtitleInput(title, height, line, subtitle) {
-  return Container(
-    margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 100,
-          alignment: Alignment.topLeft,
-          child: Text(
-            title,
-            style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 3, 3, 3)),
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 100,
+            alignment: Alignment.topLeft,
+            child: Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 3, 3, 3)),
+            ),
           ),
-        ),
-        Expanded(
-          flex: 2,
-          child: 
-            SizedBox(
+          Expanded(
+            flex: 2,
+            child: SizedBox(
               width: 500,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -297,35 +287,29 @@ String? selectedValue;
 
   Widget footer() {
     return Container(
-      height: 80,
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(240, 240, 240, 1),
-        border: Border(top: BorderSide(width: 0.5, color: Colors.grey))
-      ),
-      alignment: Alignment.centerRight,
-      padding: const EdgeInsets.only(right: 15),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          elevation: 3,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(2.0)),
-          minimumSize: const Size(150, 50),
-          maximumSize: const Size(150, 50),
-        ),
-        onPressed: () {
-          () => {};
-        },
-        child: const Text('Save Changes',
-          style: TextStyle(
-            color: Color.fromARGB(255, 33, 37, 41),
-            fontSize: 11.0,
-            fontWeight: FontWeight.bold
-          )
-        ),
-      )
-    );
+        height: 80,
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(240, 240, 240, 1),
+            border: Border(top: BorderSide(width: 0.5, color: Colors.grey))),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 15),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(2.0)),
+            minimumSize: const Size(150, 50),
+            maximumSize: const Size(150, 50),
+          ),
+          onPressed: () {
+            () => {};
+          },
+          child: const Text('Save Changes',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 33, 37, 41),
+                  fontSize: 11.0,
+                  fontWeight: FontWeight.bold)),
+        ));
   }
 }
-
-
