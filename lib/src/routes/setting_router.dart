@@ -1,6 +1,7 @@
 import 'package:shnatter/src/views/setting/panel/pages/delete.dart';
 import 'package:shnatter/src/views/setting/panel/pages/information.dart';
 import 'package:shnatter/src/views/setting/panel/pages/notifications.dart';
+import 'package:shnatter/src/views/setting/panel/pages/paywall.dart';
 import 'package:shnatter/src/views/setting/panel/pages/privacy.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_basic_page.dart';
 import 'package:shnatter/src/views/setting/panel/pages/profile_design_page.dart';
@@ -45,6 +46,8 @@ class SettingRouter {
         return SettingNotificationScreen();
       case 'shnatter_token':
         return SettingShnatterTokenScreen();
+      case 'paywall':
+        return SettingPaywallForUser();
       case 'verification':
         return SettingVerificationScreen();
       case 'information':
