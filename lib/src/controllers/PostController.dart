@@ -837,7 +837,7 @@ class PostController extends ControllerMVC {
     //           Navigator.pushReplacementNamed(
     //               context, '${RouteNames.products}/${value.id}')
     //         });
-    RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
+    RelysiaManager.payNow(UserController().token, RelysiaManager.adminPaymail,
         '10', 'for create product');
     return 'Successfully created';
   }
