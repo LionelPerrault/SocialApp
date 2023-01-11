@@ -161,6 +161,7 @@ class UserController extends ControllerMVC {
 
   Future<void> registerUserInfo() async {
     var uuid = await sendEmailVeryfication();
+    signUpUserInfo.removeWhere((key, value) => key == 'password');
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(uuid)
