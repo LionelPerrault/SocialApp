@@ -165,6 +165,11 @@ class SettingsLeftPanel extends StatelessWidget {
                 icon: const Icon(Icons.attach_money,
                     color: Color.fromARGB(255, 76, 175, 80))),
             ListText(
+                onTap: () => {onClick('paywall')},
+                label: 'Paywall for User',
+                icon: const Icon(Icons.money_sharp,
+                    color: Color.fromARGB(255, 76, 175, 80))),
+            ListText(
                 onTap: () => {onClick('verification')},
                 label: 'Verification',
                 icon: const Icon(
