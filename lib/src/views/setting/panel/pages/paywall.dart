@@ -49,7 +49,17 @@ class SettingPaywallForUserState extends mvc.StateMVC<SettingPaywallForUser> {
                       : SizeConfig(context).screenWidth * 0.9 - 30,
               child: Column(
                 children: [
-                  titleAndsubtitleInput('Visit Profile', 50, 1, () {}, '')
+                  titleAndsubtitleInput('Visit Profile', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Chat with Me', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Interest my Event', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Like my Page', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Join my Group', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
                 ],
               ),
             ),
