@@ -66,9 +66,6 @@ class RelysiaManager {
   }
 
   static Future<int> createWallet(String token) async {
-    var authData = await authUser(UserManager.userInfo['relysiaEmail'],
-        UserManager.userInfo['relysiaPassword']);
-    token = authData['data']['token'];
     var r = 0;
     var respondData = {};
     try {
@@ -93,9 +90,6 @@ class RelysiaManager {
   }
 
   static Future<Map> getPaymail(String token) async {
-    var authData = await authUser(UserManager.userInfo['relysiaEmail'],
-        UserManager.userInfo['relysiaPassword']);
-    token = authData['data']['token'];
     Map paymail = {};
     var resData = {};
     try {
@@ -145,67 +139,36 @@ class RelysiaManager {
     return balance;
   }
 
-  // static Future<int> payNow(
-  //     Map senderInfo, String payMail, String amount, String notes) async {
-  //   var authData = await authUser(
-  //       senderInfo['relysiaEmail'], senderInfo['relysiaPassword']);
-  //   String sendToken = authData['data']['token'];
-  //   int r = 0;
-  //   var respondData = {};
-  //   try {
-  //     await http
-  //         .post(
-  //           Uri.parse('https://api.relysia.com/v1/send'),
-  //           headers: {
-  //             'authToken': sendToken,
-  //             'content-type': 'application/json',
-  //             'serviceID': serviceId,
-  //           },
-  //           body:
-  //               '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$shnToken","notes":"$notes"}]}',
-  //         )
-  //         .then(
-  //           (res) => {
-  //             respondData = jsonDecode(res.body),
-  //             if (respondData['statusCode'] == 200) r = 1,
-  //             print("success" + respondData['statusCode'].toString())
-  //           },
-  //         );
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return r;
-  // }
-
-  static Future<Map> payNow(
-      String token, String payMail, String amount, String notes) async {
+  static Future<int> payNow(
+      Map senderInfo, String payMail, String amount, String notes) async {
+    var authData = await authUser(
+        senderInfo['relysiaEmail'], senderInfo['relysiaPassword']);
+    String sendToken = authData['data']['token'];
     int r = 0;
     var respondData = {};
     try {
       await http
           .post(
-        Uri.parse('https://api.relysia.com/v1/send'),
-        headers: {
-          'authToken': token,
-          'content-type': 'application/json',
-          'serviceID': serviceId,
-        },
-        body:
-            '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$shnToken","notes":"$notes"}]}',
-      )
-          .then((res) async {
-        respondData = jsonDecode(res.body);
-        if (respondData['statusCode'] == 200) {
-          r = 1;
-        } else if (respondData['statusCode'] == 401 &&
-            respondData['data']['msg'] == 'Invalid authToken provided') {
-          r = 2;
-        }
-      });
+            Uri.parse('https://api.relysia.com/v1/send'),
+            headers: {
+              'authToken': sendToken,
+              'content-type': 'application/json',
+              'serviceID': serviceId,
+            },
+            body:
+                '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$shnToken","notes":"$notes"}]}',
+          )
+          .then(
+            (res) => {
+              respondData = jsonDecode(res.body),
+              if (respondData['statusCode'] == 200) r = 1,
+              print("success" + respondData['statusCode'].toString())
+            },
+          );
     } catch (exception) {
       print(exception.toString());
     }
-    return {'success': r};
+    return r;
   }
 }
 
