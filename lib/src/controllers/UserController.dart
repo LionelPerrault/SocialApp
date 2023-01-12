@@ -167,8 +167,8 @@ class UserController extends ControllerMVC {
       'paymail': paymail,
       'avatar': '',
       'walletAddress': walletAddress,
-      'relysiaEmail': relysiaEmail,
-      'relysiaPassword': relysiaPassword,
+      // 'relysiaEmail': relysiaEmail,
+      // 'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
     });
@@ -179,8 +179,9 @@ class UserController extends ControllerMVC {
       'fullName':
           '${signUpUserInfo['firstName']} ${signUpUserInfo['lastName']}',
       'walletAddress': walletAddress,
-      'relysiaEmail': relysiaEmail,
-      'relysiaPassword': relysiaPassword,
+      // 'relysiaEmail': relysiaEmail,
+      // 'relysiaPassword': relysiaPassword,
+      'password': password,
       'isStarted': 'false',
       'isVerify': 'false',
       'isRememberme': 'false',
@@ -241,8 +242,8 @@ class UserController extends ControllerMVC {
           await Helper.authdata.where('email', isEqualTo: email).get();
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
-        relysiaEmail = user.relysiaEmail;
-        relysiaPassword = user.relysiaPassword;
+        relysiaEmail = user.email;
+        relysiaPassword = password;
         isStarted = user.isStarted;
         isVerify = userCredential.user!.emailVerified;
         var b = user.userInfo;
@@ -253,11 +254,13 @@ class UserController extends ControllerMVC {
         userInfo = {
           ...j,
           'fullName': '${j['firstName']} ${j['lastName']}',
+          'password': password,
           'isVerify': isVerify.toString(),
           'isRememberme': isRememberme.toString(),
           'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
+        print(user.password);
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
         UserManager.getUserInfo();
         RouteNames.userName = user.userName;
@@ -359,8 +362,8 @@ class UserController extends ControllerMVC {
   }
 
   void createRelysiaAccount() async {
-    relysiaEmail = createRandEmail();
-    relysiaPassword = createPassword();
+    relysiaEmail = signUpUserInfo['email'];
+    relysiaPassword = signUpUserInfo['password'];
     print(1);
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);

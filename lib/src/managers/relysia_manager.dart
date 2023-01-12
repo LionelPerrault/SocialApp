@@ -107,12 +107,7 @@ class RelysiaManager {
   }
 
   static Future<int> getBalance(String token) async {
-    print(UserManager.userInfo['relysiaPassword'] +
-        UserManager.userInfo['relysiaEmail']);
-
-    var authData = await authUser(UserManager.userInfo['relysiaEmail'],
-        UserManager.userInfo['relysiaPassword']);
-    token = authData['data']['token'];
+    print(UserManager.userInfo);
     var balance = 0;
     try {
       await http.get(Uri.parse('https://api.relysia.com/v1/address'), headers: {
