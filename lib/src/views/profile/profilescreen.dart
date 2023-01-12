@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/FileManager.dart';
-import 'package:shnatter/src/managers/relysiaManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
