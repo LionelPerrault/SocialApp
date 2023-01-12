@@ -67,19 +67,17 @@ class RelysiaManager {
     var r = 0;
     var respondData = {};
     try {
-      await http.get(
-          Uri.parse(
-              'https://api.relysia.com/v1/createWallet'),
-          headers: {
-            'authToken': token,
-            'serviceID': serviceId,
-            'walletTitle': '00000000-0000-0000-0000-000000000000',
-            'paymailActivate': 'true',
-          }).then((res) => {
-            r = 1,
-            respondData = jsonDecode(res.body),
-            print(respondData),
-          });
+      await http
+          .get(Uri.parse('https://api.relysia.com/v1/createWallet'), headers: {
+        'authToken': token,
+        'serviceID': serviceId,
+        'walletTitle': '00000000-0000-0000-0000-000000000000',
+        'paymailActivate': 'true',
+      }).then((res) => {
+                r = 1,
+                respondData = jsonDecode(res.body),
+                print(respondData),
+              });
       // ignore: empty_catches
     } catch (exception) {
       print(exception.toString());
@@ -109,7 +107,8 @@ class RelysiaManager {
   }
 
   static Future<int> getBalance(String token) async {
-    print(UserManager.userInfo['relysiaPassword'] + UserManager.userInfo['relysiaEmail']);
+    print(UserManager.userInfo['relysiaPassword'] +
+        UserManager.userInfo['relysiaEmail']);
 
     var authData = await authUser(UserManager.userInfo['relysiaEmail'],
         UserManager.userInfo['relysiaPassword']);
@@ -136,36 +135,45 @@ class RelysiaManager {
     return balance;
   }
 
-  static Future<int> payNow(
-      Map senderInfo, String payMail, String amount, String notes) async {
-    var authData = await authUser(
-        senderInfo['relysiaEmail'], senderInfo['relysiaPassword']);
-    String sendToken = authData['data']['token'];
-    int r = 0;
+  static Future<String> payNow(
+      String token, String payMail, String amount, String notes) async {
+    String returnData = '';
     var respondData = {};
     try {
-      await http
-          .post(
-            Uri.parse('https://api.relysia.com/v1/send'),
-            headers: {
-              'authToken': sendToken,
-              'content-type': 'application/json',
-              'serviceID': serviceId,
-            },
-            body:
-                '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$shnToken","notes":"$notes"}]}',
-          )
-          .then(
-            (res) => {
-              respondData = jsonDecode(res.body),
-              if (respondData['statusCode'] == 200) r = 1,
-              print("success" + respondData['statusCode'].toString())
-            },
-          );
+      var senderBalance = await getBalance(token);
+      if (senderBalance < double.parse(amount)) {
+        returnData = 'Not enough token amount';
+      } else {
+        await http
+            .post(
+              Uri.parse('https://api.relysia.com/v1/send'),
+              headers: {
+                'authToken': token,
+                'content-type': 'application/json',
+                'serviceID': serviceId,
+              },
+              body:
+                  '{ "dataArray" : [{"to" : "$payMail","amount" : $amount ,"tokenId" : "$shnToken","notes":"$notes"}]}',
+            )
+            .then(
+              (res) => {
+                respondData = jsonDecode(res.body),
+                if (respondData['statusCode'] == 200)
+                  {
+                    returnData = 'Successfully paid',
+                    print("success" + respondData['statusCode'].toString()),
+                  }
+                else
+                  {
+                    returnData = 'Failed payment',
+                  },
+              },
+            );
+      }
     } catch (exception) {
       print(exception.toString());
     }
-    return r;
+    return returnData;
   }
 }
 

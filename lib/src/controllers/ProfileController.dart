@@ -51,4 +51,20 @@ class ProfileController extends ControllerMVC {
         );
     return true;
   }
+
+  //get user profile info
+  Future<void> getProfileInfo() async {
+    FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('userName', isEqualTo: viewProfileUserName)
+        .get()
+        .then((value) {
+      viewProfileFullName =
+          '${value.docs[0].data()['firstName']} ${value.docs[0].data()['lastName']}';
+      userData = value.docs[0].data();
+      profile_cover = userData['profile_cover'] ?? '';
+      setState(() {});
+      return true;
+    });
+  }
 }

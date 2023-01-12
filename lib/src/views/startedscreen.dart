@@ -1809,12 +1809,9 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         ),
                                                       )
                                                     : Container(),
-                                                isShowProgressive
-                                                    ? const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 10))
-                                                    : Container(),
+                                                const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10)),
                                                 const Padding(
                                                     padding: EdgeInsets.only(
                                                         top: 17)),

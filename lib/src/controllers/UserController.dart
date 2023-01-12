@@ -1,18 +1,15 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:convert';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
 import '../models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../routes/route_names.dart';
-import 'package:time_elapsed/time_elapsed.dart';
 
 enum EmailType { emailVerify, googleVerify }
 
@@ -106,7 +103,7 @@ class UserController extends ControllerMVC {
     signUpUserInfo = info;
     email = signUpUserInfo['email'];
     password = signUpUserInfo['password'];
-    var check = email.contains('@gmail.com'); //return true if contains
+    var check = email.contains('@'); //return true if contains
     if (!check) {
       failRegister = 'Invalid Email';
       isSendRegisterInfo = false;
@@ -653,7 +650,7 @@ class UserController extends ControllerMVC {
       });
       var j = {};
       userManager.forEach((key, value) {
-        j = {...j, key.toString(): value.toString()};
+        j = {...j, key.toString(): value};
       });
       await Helper.saveJSONPreference(Helper.userField, {...j});
       await UserManager.getUserInfo();
@@ -693,5 +690,19 @@ class UserController extends ControllerMVC {
         ...UserManager.userInfo['uid'],
       ]
     });
+  }
+
+  //for Paywall
+  payShnToken(payMail, amount, notes) async {
+    if (token == '') {
+      var relysiaAuth = await RelysiaManager.authUser(
+          UserManager.userInfo['userName'], UserManager.userInfo['password']);
+      token = relysiaAuth['data']['token'];
+    }
+    RelysiaManager.payNow(token, payMail, amount, notes).then(
+      (value) => {
+        Helper.showToast(value),
+      },
+    );
   }
 }
