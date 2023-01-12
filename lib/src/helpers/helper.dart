@@ -117,7 +117,7 @@ class Helper {
               ));
   }
 
-  static saveJSONPreference(String field, Map<String, String> data) async {
+  static saveJSONPreference(String field, Map<String, dynamic> data) async {
     final prefs = await SharedPreferences.getInstance();
     String saveData = jsonEncode(data);
     prefs.setString(field, saveData);

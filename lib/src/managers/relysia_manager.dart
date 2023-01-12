@@ -22,9 +22,8 @@ class RelysiaManager {
           .post(
             Uri.parse(apiUrlAuth),
             headers: <String, String>{
-              HttpHeaders.authorizationHeader: jsonEncode(
-                  <String, String>{'Key': serviceId, 'Value': 'true'}),
               'Content-Type': 'application/json; charset=UTF-8',
+              'serviceID': serviceId
             },
             body: bodyCode,
           )
@@ -48,9 +47,8 @@ class RelysiaManager {
           .post(
             Uri.parse('https://api.relysia.com/v1/signUp'),
             headers: <String, String>{
-              HttpHeaders.authorizationHeader: jsonEncode(
-                  <String, String>{'Key': serviceId, 'Value': 'true'}),
               'Content-Type': 'application/json; charset=UTF-8',
+              'serviceID': serviceId
             },
             body: bodyCode,
           )
@@ -71,10 +69,10 @@ class RelysiaManager {
     try {
       await http.get(
           Uri.parse(
-              'https://api.relysia.com/v1/createWallet?serviceID=$serviceId'),
+              'https://api.relysia.com/v1/createWallet'),
           headers: {
             'authToken': token,
-            // 'serviceID': serviceId,
+            'serviceID': serviceId,
             'walletTitle': '00000000-0000-0000-0000-000000000000',
             'paymailActivate': 'true',
           }).then((res) => {
@@ -93,18 +91,16 @@ class RelysiaManager {
     Map paymail = {};
     var resData = {};
     try {
-      await http.get(
-          Uri.parse('https://api.relysia.com/v1/address?serviceID=$serviceId'),
-          headers: {
-            'authToken': token,
-          }).then((res) => {
+      await http.get(Uri.parse('https://api.relysia.com/v1/address'), headers: {
+        'authToken': token,
+        'serviceID': serviceId,
+      }).then((res) => {
             resData = jsonDecode(res.body),
             if (resData['statusCode'] == 200)
               {
                 paymail['paymail'] = resData['data']['paymail'],
                 paymail['address'] = resData['data']['address'],
               },
-            print("success in get paymail ${resData}"),
           });
     } catch (exception) {
       print(exception.toString());
@@ -113,16 +109,17 @@ class RelysiaManager {
   }
 
   static Future<int> getBalance(String token) async {
+    print(UserManager.userInfo['relysiaPassword'] + UserManager.userInfo['relysiaEmail']);
+
     var authData = await authUser(UserManager.userInfo['relysiaEmail'],
         UserManager.userInfo['relysiaPassword']);
     token = authData['data']['token'];
     var balance = 0;
     try {
-      await http.get(
-          Uri.parse('https://api.relysia.com/v1/balance?serviceID=$serviceId'),
-          headers: {
-            'authToken': token,
-          }).then((res) => {
+      await http.get(Uri.parse('https://api.relysia.com/v1/address'), headers: {
+        'authToken': token,
+        'serviceID': serviceId,
+      }).then((res) => {
             resToken = jsonDecode(res.body),
             print(resToken['data']['coins']),
             for (var i = 0; i < resToken['data']['coins'].length; i++)
