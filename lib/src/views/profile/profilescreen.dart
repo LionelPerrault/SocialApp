@@ -19,6 +19,7 @@ import 'package:shnatter/src/views/profile/profileLikesScreen.dart';
 import 'package:shnatter/src/views/profile/profilePhotosScreen.dart';
 import 'package:shnatter/src/views/profile/profileTimelineScreen.dart';
 import 'package:shnatter/src/views/profile/profileVideosScreen.dart';
+import 'package:shnatter/src/widget/yesNoWidget.dart';
 import '../../utils/size_config.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -58,20 +59,16 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
     }
     print('this is profile username:${widget.userName}');
     con.getProfileInfo().then((value) {
+      print('now get profile');
       profileImage = con.userData['profileImage'] ?? '';
+      if (con.userData['paywall']['visitProfile'] == null ||
+          con.userData['paywall']['visitProfile'] == '0' ||
+          con.userData['userName'] == UserManager.userInfo['userName']) {
+        isProfileView = true;
+      }
       isgetdata = true;
       setState(() {});
     });
-    // FirebaseFirestore.instance
-    //     .collection(Helper.userField)
-    //     .where('userName', isEqualTo: con.viewProfileUserName)
-    //     .get()
-    //     .then((value) {
-    //   con.viewProfileFullName =
-    //       '${value.docs[0].data()['firstName']} ${value.docs[0].data()['lastName']}';
-    //   con.userData = value.docs[0].data();
-    //   con.profile_cover = con.userData['profile_cover'] ?? '';
-    // });
     filecon = FileController();
     setState(() {});
     super.initState();
@@ -84,9 +81,26 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
 
   void payForViewProfile() async {
     isPayProgressive = true;
-    await UserController().payShnToken(userInfo['payMail'],
-        userInfo['paywall']['visitProfile'], 'Pay for view profile of user');
-    isPayProgressive = false;
+    setState(() {});
+    if (!isProfileView) {
+      await UserController()
+          .payShnToken(
+              con.userData['paymail'].toString(),
+              con.userData['paywall']['visitProfile'],
+              'Pay for view profile of user')
+          .then(
+            (value) => {
+              print(value),
+              print('this is end'),
+              if (value)
+                {
+                  isProfileView = true,
+                  isPayProgressive = false,
+                  setState(() {}),
+                }
+            },
+          );
+    }
   }
 
   late ProfileController con;
@@ -162,240 +176,83 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
             Padding(
               padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
               child: SingleChildScrollView(
-                  child: GestureDetector(
-                child: Container(
-                  alignment: Alignment.center,
-                  width: SizeConfig(context).screenWidth,
-                  height: SizeConfig(context).screenHeight -
-                      SizeConfig.navbarHeight,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(0, 0, 0, 0.5),
-                  ),
-                  child: Container(
-                      width: 400,
-                      height: 300,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 4,
-                            offset: Offset(0, 0), // Shadow position
-                          ),
-                        ],
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
+                child: !isgetdata
+                    ? Container()
+                    : !isProfileView
+                        ? YesNoWidget(
+                            yesFunc: () {
+                              payForViewProfile();
+                            },
+                            noFunc: () {
+                              Navigator.pushReplacementNamed(
+                                  context, RouteNames.homePage);
+                            },
+                            header: 'Pay for View Profile',
+                            text:
+                                'This user set view profile price is ${con.userData["paywall"]["visitProfile"]}',
+                            progress: isPayProgressive,
+                          )
+                        : Container(
+                            decoration: profileImage != ''
+                                ? BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(profileImage),
+                                        fit: BoxFit.cover))
+                                : const BoxDecoration(),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  margin: const EdgeInsets.only(top: 30),
-                                  child: Column(
-                                    children: [
-                                      const Text(
-                                        'Pay for View Profile',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        'This user set view profile price is ${userInfo["paywall"]["visitProfile"]}',
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                ProfileAvatarandTabScreen(
+                                  onClick: (value) {
+                                    print(value);
+                                    con.tab = value;
+                                    setState(() {});
+                                  },
+                                ),
+                                con.tab == 'Timeline' && isgetdata
+                                    ? ProfileTimelineScreen(
+                                        onClick: (value) {
+                                          con.tab = value;
+                                          setState(() {});
+                                        },
+                                        userName: widget.userName,
                                       )
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.bottomCenter,
-                                  margin: const EdgeInsets.only(top: 180),
-                                  child: Row(
-                                    children: [
-                                      const Padding(
-                                          padding: EdgeInsets.only(left: 10)),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white,
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4.0)),
-                                            minimumSize: const Size(110, 40),
-                                            maximumSize: const Size(110, 40),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.pushReplacementNamed(
-                                                context, RouteNames.homePage);
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const [
-                                              SizedBox(
-                                                width: 10,
-                                                height: 10,
-                                              ),
-                                              Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 17, left: 10)),
-                                              Icon(
-                                                Icons.arrow_back,
-                                                color: Colors.grey,
-                                                size: 14.0,
-                                              ),
-                                              Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 10)),
-                                              Text('Back to Home',
-                                                  style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w600)),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      const Padding(
-                                          padding: EdgeInsets.only(left: 10)),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blue,
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4.0)),
-                                            minimumSize: const Size(110, 40),
-                                            maximumSize: const Size(110, 40),
-                                          ),
-                                          onPressed: () {
-                                            payForViewProfile();
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              isPayProgressive
-                                                  ? const SizedBox(
-                                                      width: 10,
-                                                      height: 10.0,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color: Colors.grey,
-                                                      ),
-                                                    )
-                                                  : const SizedBox(
-                                                      width: 10,
-                                                      height: 10,
-                                                    ),
-                                              const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 17, left: 10)),
-                                              const Icon(
-                                                Icons.check_circle,
-                                                color: Colors.white,
-                                                size: 14.0,
-                                              ),
-                                              const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 10)),
-                                              const Text('Finish',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w600)),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      const Padding(
-                                          padding: EdgeInsets.only(left: 10))
-                                    ],
-                                  ),
-                                ),
+                                    : con.tab == 'Friends'
+                                        ? ProfileFriendScreen(onClick: (value) {
+                                            con.tab = value;
+                                            setState(() {});
+                                          })
+                                        : con.tab == 'Photos'
+                                            ? ProfilePhotosScreen(
+                                                onClick: (value) {
+                                                con.tab = value;
+                                                setState(() {});
+                                              })
+                                            : con.tab == 'Videos'
+                                                ? ProfileVideosScreen(
+                                                    onClick: (value) {
+                                                    con.tab = value;
+                                                    setState(() {});
+                                                  })
+                                                : con.tab == 'Likes'
+                                                    ? ProfileLikesScreen(
+                                                        onClick: (value) {
+                                                        con.tab = value;
+                                                        setState(() {});
+                                                      })
+                                                    : con.tab == 'Groups'
+                                                        ? ProfileGroupsScreen(
+                                                            onClick: (value) {
+                                                            con.tab = value;
+                                                            setState(() {});
+                                                          })
+                                                        : ProfileEventsScreen()
+                                // ProfileFriendScreen(),
                               ],
                             ),
                           ),
-                        ],
-                      )),
-                ),
-              )
-
-                  // Container(
-                  //   decoration: profileImage != ''
-                  //       ? BoxDecoration(
-                  //           image: DecorationImage(
-                  //               image: NetworkImage(profileImage),
-                  //               fit: BoxFit.cover))
-                  //       : const BoxDecoration(),
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.start,
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       !isgetdata
-                  //           ? Container()
-                  //           : ProfileAvatarandTabScreen(
-                  //               onClick: (value) {
-                  //                 print(value);
-                  //                 con.tab = value;
-                  //                 setState(() {});
-                  //               },
-                  //             ),
-                  //       con.tab == 'Timeline' && isgetdata
-                  //           ? ProfileTimelineScreen(
-                  //               onClick: (value) {
-                  //                 con.tab = value;
-                  //                 setState(() {});
-                  //               },
-                  //               userName: widget.userName,
-                  //             )
-                  //           : con.tab == 'Friends'
-                  //               ? ProfileFriendScreen(onClick: (value) {
-                  //                   con.tab = value;
-                  //                   setState(() {});
-                  //                 })
-                  //               : con.tab == 'Photos'
-                  //                   ? ProfilePhotosScreen(onClick: (value) {
-                  //                       con.tab = value;
-                  //                       setState(() {});
-                  //                     })
-                  //                   : con.tab == 'Videos'
-                  //                       ? ProfileVideosScreen(onClick: (value) {
-                  //                           con.tab = value;
-                  //                           setState(() {});
-                  //                         })
-                  //                       : con.tab == 'Likes'
-                  //                           ? ProfileLikesScreen(
-                  //                               onClick: (value) {
-                  //                               con.tab = value;
-                  //                               setState(() {});
-                  //                             })
-                  //                           : con.tab == 'Groups'
-                  //                               ? ProfileGroupsScreen(
-                  //                                   onClick: (value) {
-                  //                                   con.tab = value;
-                  //                                   setState(() {});
-                  //                                 })
-                  //                               : ProfileEventsScreen()
-                  //       // ProfileFriendScreen(),
-                  //     ],
-                  //   ),
-                  // ),
-                  ),
+              ),
             ),
             showSearch
                 ? GestureDetector(

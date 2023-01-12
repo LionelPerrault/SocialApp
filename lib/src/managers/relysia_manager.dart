@@ -107,10 +107,9 @@ class RelysiaManager {
   }
 
   static Future<int> getBalance(String token) async {
-    print(UserManager.userInfo);
     var balance = 0;
     try {
-      await http.get(Uri.parse('https://api.relysia.com/v1/address'), headers: {
+      await http.get(Uri.parse('https://api.relysia.com/v2/balance'), headers: {
         'authToken': token,
         'serviceID': serviceId,
       }).then((res) => {
@@ -136,7 +135,7 @@ class RelysiaManager {
     var respondData = {};
     try {
       var senderBalance = await getBalance(token);
-      if (senderBalance < double.parse(amount)) {
+      if (senderBalance < int.parse(amount)) {
         returnData = 'Not enough token amount';
       } else {
         await http

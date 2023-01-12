@@ -36,7 +36,7 @@ class ProfileController extends ControllerMVC {
   var userInfo = {};
   // ignore: prefer_typing_uninitialized_variables
   var responseData;
-  var userData = {};
+  Map<String, dynamic> userData = {};
   var signUpUserInfo = {};
 
   @override
@@ -53,8 +53,9 @@ class ProfileController extends ControllerMVC {
   }
 
   //get user profile info
-  Future<void> getProfileInfo() async {
-    FirebaseFirestore.instance
+  Future<bool> getProfileInfo() async {
+    bool getFlag = false;
+    await FirebaseFirestore.instance
         .collection(Helper.userField)
         .where('userName', isEqualTo: viewProfileUserName)
         .get()
@@ -64,7 +65,8 @@ class ProfileController extends ControllerMVC {
       userData = value.docs[0].data();
       profile_cover = userData['profile_cover'] ?? '';
       setState(() {});
-      return true;
+      getFlag = true;
     });
+    return getFlag;
   }
 }
