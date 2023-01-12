@@ -36,8 +36,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.productLikeCommentField);
   static var allInterests =
       FirebaseFirestore.instance.collection(Helper.interestsField);
-  static var postsCollection =
-      FirebaseFirestore.instance.collection(Helper.postField);
+  static var notifiCollection =
+      FirebaseFirestore.instance.collection(Helper.notificationField);
   static var avatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82';
   static var pageAvatar =
@@ -53,7 +53,7 @@ class Helper {
   static var pagesField = 'pages';
   static var groupsField = 'groups';
   static var productsField = 'products';
-  static var postField = 'posts';
+  static var notificationField = 'notifications';
   static var interestsField = 'interests';
   static var friendField = 'friends';
   static var pages = 'staticContent';

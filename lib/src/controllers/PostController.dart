@@ -819,21 +819,22 @@ class PostController extends ControllerMVC {
       'productTimeline': true,
       'productOnOffCommenting': true,
     };
-    var postData;
+    var notificationData;
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
         .then((value) async => {
-              postData = {
+              notificationData = {
                 'postType': 'products',
                 'postId': value.id,
                 'postAdmin': {
                   'userName': UserManager.userInfo['userName'],
                   'userAvatar': UserManager.userInfo['avatar'],
                   'fullName': UserManager.userInfo['fullName'],
-                }
+                },
+                'userList': [],
               },
-              savePost(postData),
+              saveNotifications(notificationData),
               Navigator.pushReplacementNamed(
                   context, '${RouteNames.products}/${value.id}')
             });
@@ -1196,17 +1197,82 @@ class PostController extends ControllerMVC {
         .update({'likes': a});
   }
 
-  savePost(data) async {
-    await FirebaseFirestore.instance.collection(Helper.postField).add(data);
+  saveNotifications(data) async {
+    await FirebaseFirestore.instance
+        .collection(Helper.notificationField)
+        .add(data);
   }
 
+  var realNotifi = [];
+
+  userNotLookNotifi() async {
+    List allNotifi = [];
+    List realNotifi = [];
+    setState(() {});
+    print('not look');
+    await FirebaseFirestore.instance
+        .collection(Helper.notificationField)
+        .get()
+        .then((value) => {
+              allNotifi = value.docs,
+              for (int i = 0; i < allNotifi.length; i++)
+                {
+                  for (int j = 0; j < allNotifi[i]['userList'].length; j++)
+                    {
+                      if (allNotifi[i]['userList'][j]['userName'] ==
+                          UserManager.userInfo['userName'])
+                        {realNotifi.add(allNotifi[i]), setState(() {})}
+                    }
+                },
+              print(realNotifi)
+            });
+  }
+
+  userLookNotifiFlag() async {
+    List allNotifi = [];
+    List addUser = [];
+    var flag = false;
+    await FirebaseFirestore.instance
+        .collection(Helper.notificationField)
+        .get()
+        .then((value) => {
+              allNotifi = value.docs,
+              for (int i = 0; i < allNotifi.length; i++)
+                {
+                  flag = false,
+                  for (int j = 0; j < allNotifi[i]['userList'].length; j++)
+                    {
+                      if (allNotifi[i]['userList'][j]['userName'] ==
+                          UserManager.userInfo['userName'])
+                        {flag = true}
+                    },
+                  if (!flag)
+                    {
+                      print('not look if'),
+                      addUser = allNotifi[i]['userList'],
+                      addUser.add({
+                        'userName': UserManager.userInfo['userName'],
+                      }),
+                      FirebaseFirestore.instance
+                          .collection(Helper.notificationField)
+                          .doc(value.docs[i].id)
+                          .update({'userList': addUser})
+                    }
+                }
+            });
+  }
+
+  var notifications;
+
+  var notifiCount = 0;
+
   streamPosts() {
-    var stream = Helper.postsCollection.snapshots();
+    var stream = Helper.notifiCollection.snapshots();
     return stream;
   }
 
   getPostData(data) async {
-    var fData = await Helper.postsCollection.doc(data['postId']).get();
+    var fData = await Helper.notifiCollection.doc(data['postId']).get();
     var eachPost = fData.data();
     return eachPost;
   }

@@ -42,16 +42,13 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   ];
   late PostController con;
   var notifications = [];
+
   @override
   void initState() {
     add(widget.con);
     con = controller as PostController;
+    con.userLookNotifiFlag();
     super.initState();
-    final Stream<QuerySnapshot> stream = con.streamPosts();
-    stream.listen((event) {
-      notifications = event.docs;
-      setState(() {});
-    });
   }
 
   @override

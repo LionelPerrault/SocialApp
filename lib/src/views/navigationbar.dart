@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
@@ -52,6 +53,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   bool onHover = false;
   var chatCon = ChatController();
   var peopleCon = PeopleController();
+  var postCon = PostController();
   //
   @override
   void initState() {
@@ -114,6 +116,17 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         );
       },
     );
+    var notifications;
+    final Stream<QuerySnapshot> stream = postCon.streamPosts();
+    stream.listen((event) async {
+      postCon.notifications = event.docs;
+      await postCon.userNotLookNotifi();
+      postCon.notifiCount = postCon.realNotifi.length;
+      print(postCon.realNotifi);
+      print('here is widget');
+      setState(() {});
+      print("listen value");
+    });
     super.initState();
   }
 
@@ -307,15 +320,31 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       menuBuilder: () => ShnatterNotification(),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
-                      child: SvgPicture.network(
-                        placeholderBuilder: (context) => const Icon(
-                            Icons.logo_dev,
-                            size: 30,
-                            color: Colors.white),
-                        SVGPath.notification,
-                        color: Colors.white,
-                        width: 20,
-                        height: 20,
+                      child: Row(
+                        children: [
+                          SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.notification,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          ),
+                          postCon.notifiCount == 0
+                              ? const SizedBox()
+                              : Badge(
+                                  toAnimate: false,
+                                  shape: BadgeShape.square,
+                                  badgeColor: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(8),
+                                  badgeContent: Text(
+                                      postCon.notifiCount.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 13)),
+                                ),
+                        ],
                       ),
                     ),
                   ),
@@ -600,15 +629,31 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       menuBuilder: () => ShnatterNotification(),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
-                      child: SvgPicture.network(
-                        placeholderBuilder: (context) => const Icon(
-                            Icons.logo_dev,
-                            size: 30,
-                            color: Colors.white),
-                        SVGPath.notification,
-                        color: Colors.white,
-                        width: 20,
-                        height: 20,
+                      child: Row(
+                        children: [
+                          SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.notification,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          ),
+                          postCon.notifiCount == 0
+                              ? const SizedBox()
+                              : Badge(
+                                  toAnimate: false,
+                                  shape: BadgeShape.square,
+                                  badgeColor: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(8),
+                                  badgeContent: Text(
+                                      postCon.notifiCount.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 13)),
+                                ),
+                        ],
                       ),
                     ),
                   ),
