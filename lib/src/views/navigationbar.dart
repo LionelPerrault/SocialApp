@@ -116,16 +116,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         );
       },
     );
-    var notifications;
     final Stream<QuerySnapshot> stream = postCon.streamPosts();
     stream.listen((event) async {
       postCon.notifications = event.docs;
       await postCon.userNotLookNotifi();
       postCon.notifiCount = postCon.realNotifi.length;
-      print(postCon.realNotifi);
-      print('here is widget');
       setState(() {});
-      print("listen value");
+      print('hey here!!!!');
     });
     super.initState();
   }
