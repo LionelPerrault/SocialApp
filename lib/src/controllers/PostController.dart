@@ -1207,59 +1207,53 @@ class PostController extends ControllerMVC {
 
   userNotLookNotifi() async {
     List allNotifi = [];
-    List realNotifi = [];
+    bool flag = false;
     setState(() {});
-    print('not look');
-    await FirebaseFirestore.instance
-        .collection(Helper.notificationField)
+    await FirebaseFirestore.instance.collection(Helper.notificationField)
         .get()
         .then((value) => {
-              allNotifi = value.docs,
-              for (int i = 0; i < allNotifi.length; i++)
+          allNotifi = value.docs,
+          realNotifi = [],
+          for (int i = 0; i < allNotifi.length; i++){
+            flag = false,
+              for (int j = 0; j < allNotifi[i]['userList'].length; j++)
                 {
-                  for (int j = 0; j < allNotifi[i]['userList'].length; j++)
-                    {
-                      if (allNotifi[i]['userList'][j]['userName'] ==
-                          UserManager.userInfo['userName'])
-                        {realNotifi.add(allNotifi[i]), setState(() {})}
-                    }
+                  if (allNotifi[i]['userList'][j]['userName'] ==
+                      UserManager.userInfo['userName'])
+                    {flag = true}
                 },
-              print(realNotifi)
-            });
+                if(!flag){
+                  realNotifi.add(allNotifi[i]), setState(() {}),
+                }
+          },
+        });
   }
 
   userLookNotifiFlag() async {
     List allNotifi = [];
     List addUser = [];
     var flag = false;
-    await FirebaseFirestore.instance
-        .collection(Helper.notificationField)
+    await FirebaseFirestore.instance.collection(Helper.notificationField)
         .get()
         .then((value) => {
-              allNotifi = value.docs,
-              for (int i = 0; i < allNotifi.length; i++)
-                {
-                  flag = false,
-                  for (int j = 0; j < allNotifi[i]['userList'].length; j++)
-                    {
-                      if (allNotifi[i]['userList'][j]['userName'] ==
-                          UserManager.userInfo['userName'])
-                        {flag = true}
-                    },
-                  if (!flag)
-                    {
-                      print('not look if'),
-                      addUser = allNotifi[i]['userList'],
-                      addUser.add({
-                        'userName': UserManager.userInfo['userName'],
-                      }),
-                      FirebaseFirestore.instance
-                          .collection(Helper.notificationField)
-                          .doc(value.docs[i].id)
-                          .update({'userList': addUser})
-                    }
-                }
-            });
+          allNotifi = value.docs,
+          for(int i = 0; i < allNotifi.length; i ++){
+            for(int j = 0; j < allNotifi[i]['userList'].length; j ++){
+              if(allNotifi[i]['userList'][j]['userName'] == UserManager.userInfo){
+                flag = true,
+              },
+            },
+            if(!flag){
+                addUser = allNotifi[i]['userList'],
+                addUser.add({
+                  'userName': UserManager.userInfo['userName'],
+                  }),
+                FirebaseFirestore.instance.collection(Helper.notificationField)
+                    .doc(value.docs[i].id)
+                    .update({'userList': addUser}),
+            },
+          }
+        });
   }
 
   var notifications;
