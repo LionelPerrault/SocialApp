@@ -17,6 +17,7 @@ class TokenLogin {
   late String userName = '';
   late String userAvatar = '';
   late bool isStarted = false;
+  late var paywall = {};
   late var userInfo = {};
   TokenLogin();
 
@@ -32,6 +33,7 @@ class TokenLogin {
       walletAddress = json['walletAddress'] as String;
       isStarted = json['isStarted'] as bool;
       userAvatar = json['avatar'] as String;
+      paywall = json['paywall'];
       userInfo = json;
     } catch (e) {}
   }
@@ -48,7 +50,8 @@ class TokenLogin {
       'relysiaPassword': relysiaPassword,
       'walletAddress': walletAddress,
       'paymail': paymail,
-      'isStarted': isStarted
+      'isStarted': isStarted,
+      'paywall': paywall
     };
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
@@ -49,23 +50,32 @@ class SettingPaywallForUserState extends mvc.StateMVC<SettingPaywallForUser> {
                       : SizeConfig(context).screenWidth * 0.9 - 30,
               child: Column(
                 children: [
-                  titleAndsubtitleInput('Visit Profile', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Chat with Me', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Interest my Event', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Like my Page', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Join my Group', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
-                  titleAndsubtitleInput('Going my Event', 50, 1, () {}, ''),
+                  titleAndsubtitleInput('Visit Profile', 50, 1, (value) {
+                    userInfo['paywall']['visitProfile'] = value;
+                  }, userInfo['paywall']['visitProfile'] ?? ''),
+                  titleAndsubtitleInput('Chat with Me', 50, 1, (value) {
+                    userInfo['paywall']['chatWithMe'] = value;
+                  }, userInfo['paywall']['chatWithMe'] ?? ''),
+                  titleAndsubtitleInput('Interest my Event', 50, 1, (value) {
+                    userInfo['paywall']['interestMyEvent'] = value;
+                  }, userInfo['paywall']['interestMyEvent'] ?? ''),
+                  titleAndsubtitleInput('Going my Event', 50, 1, (value) {
+                    userInfo['paywall']['goingMyEvent'] = value;
+                  }, userInfo['paywall']['goingMyEvent'] ?? ''),
+                  titleAndsubtitleInput('Like my Page', 50, 1, (value) {
+                    userInfo['paywall']['likeMyPage'] = value;
+                  }, userInfo['paywall']['likeMyPage'] ?? ''),
+                  titleAndsubtitleInput('Join my Group', 50, 1, (value) {
+                    userInfo['paywall']['joinMyGroup'] = value;
+                  }, userInfo['paywall']['joinMyGroup'] ?? ''),
                 ],
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             SettingFooter(
-              onClick: () {},
+              onClick: () {
+                con.profileChange({'paywall': userInfo['paywall']});
+              },
               isChange: con.isProfileChange,
             )
           ],

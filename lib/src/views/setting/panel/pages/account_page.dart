@@ -30,7 +30,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
   void initState() {
     emailController.text = userInfo['email'];
     userNameController.text = userInfo['userName'];
-    passwordController.text = userInfo['password'];
+    // passwordController.text = userInfo['password'];
     add(widget.con);
     con = controller as UserController;
     super.initState();

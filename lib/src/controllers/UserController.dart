@@ -44,7 +44,7 @@ class UserController extends ControllerMVC {
   String failRegister = '';
   String userAvatar = '';
   var resData = {};
-  var userInfo = {};
+  Map<dynamic, dynamic> userInfo = {};
   // ignore: prefer_typing_uninitialized_variables
   var responseData;
   var context;
@@ -251,7 +251,7 @@ class UserController extends ControllerMVC {
         var b = user.userInfo;
         var j = {};
         b.forEach((key, value) {
-          j = {...j, key.toString(): value.toString()};
+          j = {...j, key.toString(): value};
         });
         userInfo = {
           ...j,

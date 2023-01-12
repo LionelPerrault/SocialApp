@@ -13,6 +13,11 @@ import 'package:http/http.dart' as http;
 import '../models/userModel.dart';
 
 class Helper {
+  static var snapShot = FirebaseFirestore.instance
+      .collection(Helper.adminPanel)
+      .doc(Helper.adminConfig)
+      .get();
+  static var system = snapShot;
   static ValueNotifier<Setting> setting = ValueNotifier(Setting());
   //BuildContext context;
   // for mapping data retrieved form json array
@@ -48,6 +53,8 @@ class Helper {
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_event.jpg?alt=media&token=aba15f40-0918-4ce8-965e-82f77ba34800';
   static var productImage =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_product.jpg?alt=media&token=0cd1281e-4dc7-4228-939f-f19b50c3afe1';
+  static var adminPanel = 'adminPanel';
+  static var adminConfig = 'config';
   static var userField = 'user';
   static var eventsField = 'events';
   static var pagesField = 'pages';
