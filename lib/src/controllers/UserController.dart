@@ -359,8 +359,7 @@ class UserController extends ControllerMVC {
     }
 
     ActionCodeSettings acs = ActionCodeSettings(
-        url:
-            " https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
+        url: "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;
