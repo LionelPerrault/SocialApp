@@ -1,0 +1,19 @@
+name: Deploy Dev Functions
+on: 
+  workflow_dispatch:
+jobs:
+  deploy_functions:
+    name: Deploy Functions
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: |
+        cd functions
+        npm install    
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only functions
+      env:
+        FIREBASE_TOKEN: '1//0c2LK7NixkZPYCgYIARAAGAwSNwF-L9IrsY2z0GTmmDTaVr0c5vQQ7ePwVeDqY_IEK0Y4IpqtQbTVqbWZjsxSKQDYSQonC3vY0uA'
+        PROJECT_ID: default
