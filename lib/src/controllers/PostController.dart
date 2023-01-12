@@ -819,7 +819,10 @@ class PostController extends ControllerMVC {
       'productTimeline': true,
       'productOnOffCommenting': true,
     };
+
+
     var notificationData;
+
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
@@ -1222,7 +1225,7 @@ class PostController extends ControllerMVC {
                       UserManager.userInfo['userName'])
                     {flag = true}
                 },
-                if(!flag){
+                if(!flag && allNotifi[i]['postAdmin']['userName']!=UserManager.userInfo['userName']){
                   realNotifi.add(allNotifi[i]), setState(() {}),
                 }
           },
