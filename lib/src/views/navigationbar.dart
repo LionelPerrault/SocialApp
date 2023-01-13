@@ -119,7 +119,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     final Stream<QuerySnapshot> stream = postCon.streamPosts();
     stream.listen((event) async {
       postCon.notifications = event.docs;
-      await postCon.userNotLookNotifi();
+      await postCon.userLookDistiniction();
       postCon.notifiCount = postCon.realNotifi.length;
       setState(() {});
       print('hey here!!!!');
@@ -335,7 +335,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   toAnimate: false,
                                   shape: BadgeShape.square,
                                   badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(
                                       postCon.notifiCount.toString(),
                                       style: const TextStyle(
@@ -644,7 +644,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   toAnimate: false,
                                   shape: BadgeShape.square,
                                   badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(
                                       postCon.notifiCount.toString(),
                                       style: const TextStyle(

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/utils/colors.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 
 class ShnatterNotification extends StatefulWidget {
   ShnatterNotification({Key? key})
@@ -17,31 +19,8 @@ class ShnatterNotification extends StatefulWidget {
 class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   //
   bool isSound = false;
-  List<Map> sampleData = [
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': 'now following you',
-      'subTitle': '2 days ago',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': 'now following you',
-      'subTitle': '2 days ago',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': 'now following you',
-      'subTitle': '2 days ago',
-      'icon': Icons.nature
-    }
-  ];
+  
   late PostController con;
-  var notifications = [];
 
   @override
   void initState() {
@@ -110,7 +89,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 height: 300,
                 //size: Size(100,100),
                 child: ListView.separated(
-                  itemCount: sampleData.length,
+                  itemCount: con.realNotifi.length,
                   itemBuilder: (context, index) => Material(
                     child: ListTile(
                       onTap: () {
@@ -118,24 +97,35 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                       },
                       hoverColor: const Color.fromARGB(255, 243, 243, 243),
                       enabled: true,
-                      leading: const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
-                      ),
+                      leading: con.realNotifi[index]['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  con.realNotifi[index]['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child : SvgPicture.network(Helper.avatar),
+                               ),
+                              
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            sampleData[index]['name'],
+                            con.realNotifi[index]['userName'],
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 10),
                           ),
-                          Text(sampleData[index]['subname'],
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal, fontSize: 10)),
-                          Text(sampleData[index]['subTitle'],
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal, fontSize: 8))
+                          Text(
+                            con.realNotifi[index]['text'],
+                            style: const TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 10
+                            )
+                          ),
+                          Text(
+                            con.realNotifi[index]['date'],
+                            style: const TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 8
+                            ),  
+                          ),
                         ],
                       ),
                     ),
