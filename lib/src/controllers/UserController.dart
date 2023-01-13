@@ -191,7 +191,12 @@ class UserController extends ControllerMVC {
     });
   }
 
-  void getBalance() {
+  void getBalance() async {
+    if (token == '') {
+      var relysiaAuth = await RelysiaManager.authUser(
+          UserManager.userInfo['email'], UserManager.userInfo['password']);
+      token = relysiaAuth['data']['token'];
+    }
     RelysiaManager.getBalance(token).then((res) => {
           print('balance is $res'),
           balance = res,
@@ -354,8 +359,7 @@ class UserController extends ControllerMVC {
     }
 
     ActionCodeSettings acs = ActionCodeSettings(
-        url:
-            " https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
+        url: "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;
@@ -696,16 +700,23 @@ class UserController extends ControllerMVC {
   }
 
   //for Paywall
-  payShnToken(payMail, amount, notes) async {
+  Future<bool> payShnToken(String payMail, String amount, String notes) async {
+    bool payResult = false;
     if (token == '') {
       var relysiaAuth = await RelysiaManager.authUser(
-          UserManager.userInfo['userName'], UserManager.userInfo['password']);
+          UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-    RelysiaManager.payNow(token, payMail, amount, notes).then(
+    await RelysiaManager.payNow(token, payMail, amount, notes).then(
       (value) => {
+        print(value),
         Helper.showToast(value),
+        if (value == 'Successfully paid')
+          {
+            payResult = true,
+          }
       },
     );
+    return payResult;
   }
 }
