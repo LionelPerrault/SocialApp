@@ -11,22 +11,9 @@ import 'package:shnatter/src/helpers/helper.dart';
 class PageCell extends StatefulWidget {
   PageCell({
     super.key,
-    required this.pageTap,
-    required this.picture,
-    required this.likes,
-    required this.header,
-    required this.liked,
-    required this.status,
-    required this.buttonFun,
-  });
-  Function pageTap;
-  Function buttonFun;
-  bool status;
-  String picture;
-  int likes;
-  String header;
-  bool liked;
-
+    required this.pageInfo,
+  }) : con = PostController();
+  Map pageInfo;
   late PostController con;
   @override
   State createState() => PageCellState();
@@ -38,7 +25,19 @@ class PageCellState extends mvc.StateMVC<PageCell> {
   @override
   void initState() {
     // TODO: implement initState
+    add(widget.con);
+    con = controller as PostController;
     super.initState();
+  }
+
+  pageLikeFunc() async {
+    loading = true;
+    setState(() {});
+    await con.likedPage(widget.pageInfo['id']).then((value) {
+      // getPageNow();
+    });
+    loading = false;
+    setState(() {});
   }
 
   @override
@@ -66,20 +65,21 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
-                            text: widget.header,
+                            text: widget.pageInfo['data']['pageName'],
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                widget.pageTap();
+                                Navigator.pushReplacementNamed(context,
+                                    '/pages/${widget.pageInfo['data']['pageUserName']}');
                               }),
                       ]),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 5)),
                     Text(
-                      '${widget.likes} Likes',
+                      '${widget.pageInfo['data']['pageLiked'].length} Likes',
                       style: const TextStyle(color: Colors.black, fontSize: 13),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 20)),
@@ -91,10 +91,8 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                                 borderRadius: BorderRadius.circular(2.0)),
                             minimumSize: const Size(120, 35),
                             maximumSize: const Size(120, 35)),
-                        onPressed: () {
-                          loading = true;
-                          setState(() {});
-                          widget.buttonFun();
+                        onPressed: () async {
+                          pageLikeFunc();
                         },
                         child: loading
                             ? Container(
@@ -115,14 +113,17 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                                   ),
                                   const Padding(
                                       padding: EdgeInsets.only(left: 3)),
-                                  Text(widget.liked ? 'Unlike' : 'Like',
+                                  Text(
+                                      widget.pageInfo['liked']
+                                          ? 'Unlike'
+                                          : 'Like',
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold)),
                                 ],
                               )),
-                    Padding(padding: EdgeInsets.only(top: 30))
+                    const Padding(padding: EdgeInsets.only(top: 30))
                   ],
                 ),
               ),
@@ -133,9 +134,10 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.picture != ''
-                          ? widget.picture
-                          : Helper.pageAvatar),
+                      image: NetworkImage(
+                          widget.pageInfo['data']['pagePicture'] != ''
+                              ? widget.pageInfo['data']['pagePicture']
+                              : Helper.pageAvatar),
                       fit: BoxFit.cover,
                     ),
                     color: Color.fromARGB(255, 150, 99, 99),

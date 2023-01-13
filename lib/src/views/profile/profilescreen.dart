@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
@@ -16,20 +16,8 @@ import 'package:shnatter/src/views/profile/profileLikesScreen.dart';
 import 'package:shnatter/src/views/profile/profilePhotosScreen.dart';
 import 'package:shnatter/src/views/profile/profileTimelineScreen.dart';
 import 'package:shnatter/src/views/profile/profileVideosScreen.dart';
-import '../../controllers/HomeController.dart';
+import 'package:shnatter/src/widget/yesNoWidget.dart';
 import '../../utils/size_config.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
 
 class UserProfileScreen extends StatefulWidget {
   UserProfileScreen({Key? key, this.userName = ''})
@@ -56,6 +44,8 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   var userInfo = UserManager.userInfo;
   String profileImage = '';
   bool isgetdata = false;
+  bool isProfileView = false;
+  bool isPayProgressive = false;
   @override
   void initState() {
     add(widget.con);
@@ -65,17 +55,15 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
       con.viewProfileUserName = userInfo['userName'];
     }
     print('this is profile username:${widget.userName}');
-    FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .where('userName', isEqualTo: con.viewProfileUserName)
-        .get()
-        .then((value) {
-      isgetdata = true;
-      con.viewProfileFullName =
-          '${value.docs[0].data()['firstName']} ${value.docs[0].data()['lastName']}';
-      con.userData = value.docs[0].data();
-      con.profile_cover = con.userData['profile_cover'] ?? '';
+    con.getProfileInfo().then((value) {
+      print('now get profile');
       profileImage = con.userData['profileImage'] ?? '';
+      if (con.userData['paywall']['visitProfile'] == null ||
+          con.userData['paywall']['visitProfile'] == '0' ||
+          con.userData['userName'] == UserManager.userInfo['userName']) {
+        isProfileView = true;
+      }
+      isgetdata = true;
       setState(() {});
     });
     filecon = FileController();
@@ -86,6 +74,30 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+  }
+
+  void payForViewProfile() async {
+    isPayProgressive = true;
+    setState(() {});
+    if (!isProfileView) {
+      await UserController()
+          .payShnToken(
+              con.userData['paymail'].toString(),
+              con.userData['paywall']['visitProfile'],
+              'Pay for view profile of user')
+          .then(
+            (value) => {
+              print(value),
+              print('this is end'),
+              if (value)
+                {
+                  isProfileView = true,
+                  isPayProgressive = false,
+                  setState(() {}),
+                }
+            },
+          );
+    }
   }
 
   late ProfileController con;
@@ -159,74 +171,86 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
               drawClicked: clickMenu,
             ),
             Padding(
-                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                child:
-                    //AnimatedPositioned(
-                    //top: showMenu ? 0 : -150.0,
-                    //duration: const Duration(seconds: 2),
-                    //curve: Curves.fastOutSlowIn,
-                    //child:
-                    SingleChildScrollView(
-                  child: Container(
-                      decoration: profileImage != ''
-                          ? BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(profileImage),
-                                  fit: BoxFit.cover))
-                          : const BoxDecoration(),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            !isgetdata
-                                ? Container()
-                                : ProfileAvatarandTabScreen(
-                                    onClick: (value) {
-                                      print(value);
-                                      con.tab = value;
-                                      setState(() {});
-                                    },
-                                  ),
-                            con.tab == 'Timeline' && isgetdata
-                                ? ProfileTimelineScreen(
-                                    onClick: (value) {
-                                      con.tab = value;
-                                      setState(() {});
-                                    },
-                                    userName: widget.userName,
-                                  )
-                                : con.tab == 'Friends'
-                                    ? ProfileFriendScreen(onClick: (value) {
-                                        con.tab = value;
-                                        setState(() {});
-                                      })
-                                    : con.tab == 'Photos'
-                                        ? ProfilePhotosScreen(onClick: (value) {
+              padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
+              child: SingleChildScrollView(
+                child: !isgetdata
+                    ? Container()
+                    : !isProfileView
+                        ? YesNoWidget(
+                            yesFunc: () {
+                              payForViewProfile();
+                            },
+                            noFunc: () {
+                              Navigator.pushReplacementNamed(
+                                  context, RouteNames.homePage);
+                            },
+                            header: 'Pay for View Profile',
+                            text:
+                                'This user set view profile price is ${con.userData["paywall"]["visitProfile"]}',
+                            progress: isPayProgressive,
+                          )
+                        : Container(
+                            decoration: profileImage != ''
+                                ? BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(profileImage),
+                                        fit: BoxFit.cover))
+                                : const BoxDecoration(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ProfileAvatarandTabScreen(
+                                  onClick: (value) {
+                                    print(value);
+                                    con.tab = value;
+                                    setState(() {});
+                                  },
+                                ),
+                                con.tab == 'Timeline' && isgetdata
+                                    ? ProfileTimelineScreen(
+                                        onClick: (value) {
+                                          con.tab = value;
+                                          setState(() {});
+                                        },
+                                        userName: widget.userName,
+                                      )
+                                    : con.tab == 'Friends'
+                                        ? ProfileFriendScreen(onClick: (value) {
                                             con.tab = value;
                                             setState(() {});
                                           })
-                                        : con.tab == 'Videos'
-                                            ? ProfileVideosScreen(
+                                        : con.tab == 'Photos'
+                                            ? ProfilePhotosScreen(
                                                 onClick: (value) {
                                                 con.tab = value;
                                                 setState(() {});
                                               })
-                                            : con.tab == 'Likes'
-                                                ? ProfileLikesScreen(
+                                            : con.tab == 'Videos'
+                                                ? ProfileVideosScreen(
                                                     onClick: (value) {
                                                     con.tab = value;
                                                     setState(() {});
                                                   })
-                                                : con.tab == 'Groups'
-                                                    ? ProfileGroupsScreen(
+                                                : con.tab == 'Likes'
+                                                    ? ProfileLikesScreen(
                                                         onClick: (value) {
                                                         con.tab = value;
                                                         setState(() {});
                                                       })
-                                                    : ProfileEventsScreen()
-                            // ProfileFriendScreen(),
-                          ])),
-                )),
+                                                    : con.tab == 'Groups'
+                                                        ? ProfileGroupsScreen(
+                                                            onClick: (value) {
+                                                            con.tab = value;
+                                                            setState(() {});
+                                                          })
+                                                        : ProfileEventsScreen()
+                                // ProfileFriendScreen(),
+                              ],
+                            ),
+                          ),
+              ),
+            ),
             showSearch
                 ? GestureDetector(
                     onTap: () {

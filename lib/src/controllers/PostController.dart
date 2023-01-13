@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
@@ -416,7 +417,7 @@ class PostController extends ControllerMVC {
   String pageSubRoute;
 
   //get all page function
-  Future<List> getPage(String condition, String userName) async {
+  Future<List> getPage(String condition, String uid) async {
     List<Map> realAllpage = [];
     await Helper.pagesData.get().then((value) async {
       var doc = value.docs;
@@ -424,8 +425,7 @@ class PostController extends ControllerMVC {
         var id = doc[i].id;
         var data = doc[i];
         var liked = await boolLiked(data, UserManager.userInfo['userName']);
-        if (userName == data['pageAdmin'][0]['userName'] &&
-            condition == 'manage') {
+        if (uid == data['pageAdmin'][0]['uid'] && condition == 'manage') {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
         } else if (condition == 'all') {
           if (data['pagePost']) {
@@ -452,9 +452,20 @@ class PostController extends ControllerMVC {
         .where('pageUserName', isEqualTo: viewPageName)
         .get();
     var value = reuturnValue.docs;
-    page = value[0];
-    viewPageId = page.id;
+    viewPageId = value[0].id;
+    page = value[0].data();
     viewPageLiked = await boolLiked(page, UserManager.userInfo['userName']);
+    for (var i = 0; i < page['pageAdmin'].length; i++) {
+      var addAdmin =
+          await ProfileController().getUserInfo(page['pageAdmin'][i]['uid']);
+      page['pageAdmin'][i] = {
+        ...page['pageAdmin'][i],
+        'userName': addAdmin!['userName'],
+        'avatar': addAdmin['avatar'],
+      };
+    }
+    print(page);
+    print('wanna pageinfo');
     setState(() {});
     print('This page was posted by ${page['pageAdmin'][0]}');
     return true;
@@ -474,7 +485,7 @@ class PostController extends ControllerMVC {
     pageData = {
       ...pageData,
       'pageAdmin': [
-        {'userName': UserManager.userInfo['userName']}
+        {'uid': UserManager.userInfo['uid']}
       ],
       'pageDate': DateTime.now().toString(),
       'pageLiked': [],
@@ -542,8 +553,7 @@ class PostController extends ControllerMVC {
     if (liked == null) {
       return false;
     }
-    var returnData =
-        liked.where((eachUser) => eachUser['userName'] == userName);
+    var returnData = liked.where((eachUser) => eachUser['uid'] == userName);
     print('you get bool of liked page');
     if (returnData.length == 0) {
       return false;
@@ -593,11 +603,11 @@ class PostController extends ControllerMVC {
     return 'success';
   }
 
-  Future<String> removeAdmin(String userName) async {
-    if (page['pageAdmin'][0]['userName'] == userName) {
+  Future<String> removeAdmin(String uid) async {
+    if (page['pageAdmin'][0] == uid) {
       return 'superAdmin';
     }
-    page['pageAdmin'].removeWhere((item) => item['userName'] == userName);
+    page['pageAdmin'].removeWhere((item) => item == uid);
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .doc(viewPageId)
@@ -819,7 +829,9 @@ class PostController extends ControllerMVC {
       'productTimeline': true,
       'productOnOffCommenting': true,
     };
+
     var notificationData;
+
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
@@ -827,12 +839,9 @@ class PostController extends ControllerMVC {
               notificationData = {
                 'postType': 'products',
                 'postId': value.id,
-                'postAdmin': {
-                  'userName': UserManager.userInfo['userName'],
-                  'userAvatar': UserManager.userInfo['avatar'],
-                  'fullName': UserManager.userInfo['fullName'],
-                },
+                'postAdminId': UserManager.userInfo['uid'],
                 'userList': [],
+                'notifyTime': DateTime.now().toString(),
               },
               saveNotifications(notificationData),
               Navigator.pushReplacementNamed(
@@ -1205,26 +1214,61 @@ class PostController extends ControllerMVC {
 
   var realNotifi = [];
 
-  userNotLookNotifi() async {
+  userLookDistiniction() async {
     List allNotifi = [];
-    List realNotifi = [];
+    Map addData = {};
+    bool flag = false;
     setState(() {});
-    print('not look');
     await FirebaseFirestore.instance
         .collection(Helper.notificationField)
         .get()
-        .then((value) => {
+        .then((value) async => {
               allNotifi = value.docs,
+              realNotifi = [],
               for (int i = 0; i < allNotifi.length; i++)
                 {
+                  flag = false,
                   for (int j = 0; j < allNotifi[i]['userList'].length; j++)
                     {
-                      if (allNotifi[i]['userList'][j]['userName'] ==
-                          UserManager.userInfo['userName'])
-                        {realNotifi.add(allNotifi[i]), setState(() {})}
+                      flag = false,
+                      for (int j = 0; j < allNotifi[i]['userList'].length; j++)
+                        {
+                          if (allNotifi[i]['userList'][j]['userName'] ==
+                              UserManager.userInfo['userName'])
+                            {flag = true}
+                        },
+                      if (!flag &&
+                          allNotifi[i]['postAdmin']['userName'] !=
+                              UserManager.userInfo['userName'])
+                        {
+                          realNotifi.add(allNotifi[i]),
+                          setState(() {}),
+                        }
+                    },
+                  if (!flag &&
+                      allNotifi[i]['postAdminId'] !=
+                          UserManager.userInfo['uid'])
+                    {
+                      await FirebaseFirestore.instance
+                          .collection(Helper.userField)
+                          .doc(allNotifi[i]['postAdminId'])
+                          .get()
+                          .then((value) => {
+                                realNotifi = [],
+                                addData = {
+                                  ...addData,
+                                  'avatar': value.data()!['avatar'],
+                                  'userName': value.data()!['userName'],
+                                  'text': Helper.notificationText[allNotifi[i]
+                                      ['postType']]['text'],
+                                  'date': Helper.formatDate(
+                                      allNotifi[i]['notifyTime']),
+                                },
+                              }),
+                      realNotifi.add(addData),
+                      setState(() {}),
                     }
                 },
-              print(realNotifi)
             });
   }
 
@@ -1239,16 +1283,16 @@ class PostController extends ControllerMVC {
               allNotifi = value.docs,
               for (int i = 0; i < allNotifi.length; i++)
                 {
-                  flag = false,
                   for (int j = 0; j < allNotifi[i]['userList'].length; j++)
                     {
                       if (allNotifi[i]['userList'][j]['userName'] ==
-                          UserManager.userInfo['userName'])
-                        {flag = true}
+                          UserManager.userInfo)
+                        {
+                          flag = true,
+                        },
                     },
                   if (!flag)
                     {
-                      print('not look if'),
                       addUser = allNotifi[i]['userList'],
                       addUser.add({
                         'userName': UserManager.userInfo['userName'],
@@ -1256,8 +1300,8 @@ class PostController extends ControllerMVC {
                       FirebaseFirestore.instance
                           .collection(Helper.notificationField)
                           .doc(value.docs[i].id)
-                          .update({'userList': addUser})
-                    }
+                          .update({'userList': addUser}),
+                    },
                 }
             });
   }

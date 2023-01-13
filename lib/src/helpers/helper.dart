@@ -88,6 +88,12 @@ class Helper {
         .hasMatch(input);
   }
 
+  static Map notificationText = {
+    'products':{
+      'text':'added product',
+    }
+  };
+
   static showToast(String message) {
     Fluttertoast.showToast(
         msg: message,
@@ -228,13 +234,13 @@ class Helper {
     if (difference.inMinutes < 1) {
       trDate = 'Just Now';
     } else if (difference.inHours < 1) {
-      trDate = '${difference.inMinutes}minutes ago';
+      trDate = '${difference.inMinutes} minutes ago';
     } else if (difference.inDays < 1) {
-      trDate = '${difference.inHours}hours ago';
+      trDate = '${difference.inHours} hours ago';
     } else if (difference.inDays < 31) {
-      trDate = '${difference.inDays}days ago';
+      trDate = '${difference.inDays} days ago';
     } else if (difference.inDays >= 31) {
-      trDate = '${(difference.inDays / 30 as String).split('.')[0]}days ago';
+      trDate = '${(difference.inDays / 30 as String).split('.')[0]} days ago';
     }
     return trDate;
   }

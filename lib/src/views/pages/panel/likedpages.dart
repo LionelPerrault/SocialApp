@@ -35,7 +35,7 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
   }
 
   void getPageNow() {
-    con.getPage('liked', UserManager.userInfo['userName']).then((value) => {
+    con.getPage('liked', UserManager.userInfo['uid']).then((value) => {
           likedPages = value,
           likedPages.where((event) => event['data']['eventPost'] == true),
           print(likedPages),
@@ -65,21 +65,11 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: likedPages
-                  .map((page) => PageCell(
-                      pageTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/pages/${page['pageUserName']}');
-                      },
-                      buttonFun: () {
-                        con.likedPage(page['id']).then((value) {
-                          getPageNow();
-                        });
-                      },
-                      picture: '',
-                      status: false,
-                      likes: page['data']['pageLiked'].length,
-                      header: page['data']['pageName'],
-                      liked: page['liked']))
+                  .map(
+                    (page) => PageCell(
+                      pageInfo: page,
+                    ),
+                  )
                   .toList(),
             ),
           ),

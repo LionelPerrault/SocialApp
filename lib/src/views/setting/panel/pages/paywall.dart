@@ -26,6 +26,7 @@ class SettingPaywallForUserState extends mvc.StateMVC<SettingPaywallForUser> {
     add(widget.con);
     con = controller as UserController;
     super.initState();
+    print(userInfo['paywall'].runtimeType);
   }
 
   @override

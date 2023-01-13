@@ -1,18 +1,15 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:convert';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
 import '../models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../routes/route_names.dart';
-import 'package:time_elapsed/time_elapsed.dart';
 
 enum EmailType { emailVerify, googleVerify }
 
@@ -106,7 +103,7 @@ class UserController extends ControllerMVC {
     signUpUserInfo = info;
     email = signUpUserInfo['email'];
     password = signUpUserInfo['password'];
-    var check = email.contains('@gmail.com'); //return true if contains
+    var check = email.contains('@'); //return true if contains
     if (!check) {
       failRegister = 'Invalid Email';
       isSendRegisterInfo = false;
@@ -170,8 +167,8 @@ class UserController extends ControllerMVC {
       'paymail': paymail,
       'avatar': '',
       'walletAddress': walletAddress,
-      'relysiaEmail': relysiaEmail,
-      'relysiaPassword': relysiaPassword,
+      // 'relysiaEmail': relysiaEmail,
+      // 'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
     });
@@ -182,8 +179,9 @@ class UserController extends ControllerMVC {
       'fullName':
           '${signUpUserInfo['firstName']} ${signUpUserInfo['lastName']}',
       'walletAddress': walletAddress,
-      'relysiaEmail': relysiaEmail,
-      'relysiaPassword': relysiaPassword,
+      // 'relysiaEmail': relysiaEmail,
+      // 'relysiaPassword': relysiaPassword,
+      'password': password,
       'isStarted': 'false',
       'isVerify': 'false',
       'isRememberme': 'false',
@@ -193,13 +191,19 @@ class UserController extends ControllerMVC {
     });
   }
 
-  void getBalance() {
-    RelysiaManager.getBalance(token).then((res) => {
+  Future<int> getBalance() async {
+    if (token == '') {
+      var relysiaAuth = await RelysiaManager.authUser(
+          UserManager.userInfo['email'], UserManager.userInfo['password']);
+      token = relysiaAuth['data']['token'];
+    }
+    await RelysiaManager.getBalance(token).then((res) => {
           print('balance is $res'),
           balance = res,
           Helper.balance = balance,
           setState(() {})
         });
+    return balance;
   }
 
   void getWalletFromPref(context) async {}
@@ -244,8 +248,8 @@ class UserController extends ControllerMVC {
           await Helper.authdata.where('email', isEqualTo: email).get();
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
-        relysiaEmail = user.relysiaEmail;
-        relysiaPassword = user.relysiaPassword;
+        relysiaEmail = user.email;
+        relysiaPassword = password;
         isStarted = user.isStarted;
         isVerify = userCredential.user!.emailVerified;
         var b = user.userInfo;
@@ -256,11 +260,13 @@ class UserController extends ControllerMVC {
         userInfo = {
           ...j,
           'fullName': '${j['firstName']} ${j['lastName']}',
+          'password': password,
           'isVerify': isVerify.toString(),
           'isRememberme': isRememberme.toString(),
           'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
+        print(user.password);
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
         UserManager.getUserInfo();
         RouteNames.userName = user.userName;
@@ -355,15 +361,15 @@ class UserController extends ControllerMVC {
 
     ActionCodeSettings acs = ActionCodeSettings(
         url:
-            " https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
+            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;
   }
 
   void createRelysiaAccount() async {
-    relysiaEmail = createRandEmail();
-    relysiaPassword = createPassword();
+    relysiaEmail = signUpUserInfo['email'];
+    relysiaPassword = signUpUserInfo['password'];
     print(1);
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
@@ -653,7 +659,7 @@ class UserController extends ControllerMVC {
       });
       var j = {};
       userManager.forEach((key, value) {
-        j = {...j, key.toString(): value.toString()};
+        j = {...j, key.toString(): value};
       });
       await Helper.saveJSONPreference(Helper.userField, {...j});
       await UserManager.getUserInfo();
@@ -693,5 +699,26 @@ class UserController extends ControllerMVC {
         ...UserManager.userInfo['uid'],
       ]
     });
+  }
+
+  //for Paywall
+  Future<bool> payShnToken(String payMail, String amount, String notes) async {
+    bool payResult = false;
+    if (token == '') {
+      var relysiaAuth = await RelysiaManager.authUser(
+          UserManager.userInfo['email'], UserManager.userInfo['password']);
+      token = relysiaAuth['data']['token'];
+    }
+    await RelysiaManager.payNow(token, payMail, amount, notes).then(
+      (value) => {
+        print(value),
+        Helper.showToast(value),
+        if (value == 'Successfully paid')
+          {
+            payResult = true,
+          }
+      },
+    );
+    return payResult;
   }
 }

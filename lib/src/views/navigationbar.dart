@@ -116,16 +116,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         );
       },
     );
-    var notifications;
     final Stream<QuerySnapshot> stream = postCon.streamPosts();
     stream.listen((event) async {
       postCon.notifications = event.docs;
-      await postCon.userNotLookNotifi();
+      await postCon.userLookDistiniction();
       postCon.notifiCount = postCon.realNotifi.length;
-      print(postCon.realNotifi);
-      print('here is widget');
       setState(() {});
-      print("listen value");
+      print('hey here!!!!');
     });
     super.initState();
   }
@@ -338,7 +335,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   toAnimate: false,
                                   shape: BadgeShape.square,
                                   badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(
                                       postCon.notifiCount.toString(),
                                       style: const TextStyle(
@@ -647,7 +644,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   toAnimate: false,
                                   shape: BadgeShape.square,
                                   badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(
                                       postCon.notifiCount.toString(),
                                       style: const TextStyle(
