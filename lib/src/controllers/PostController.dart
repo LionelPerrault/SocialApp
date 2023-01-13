@@ -823,6 +823,7 @@ class PostController extends ControllerMVC {
 
     var notificationData;
 
+
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
@@ -830,12 +831,9 @@ class PostController extends ControllerMVC {
               notificationData = {
                 'postType': 'products',
                 'postId': value.id,
-                'postAdmin': {
-                  'userName': UserManager.userInfo['userName'],
-                  'userAvatar': UserManager.userInfo['avatar'],
-                  'fullName': UserManager.userInfo['fullName'],
-                },
+                'postAdminId': UserManager.userInfo['uid'],
                 'userList': [],
+                'notifyTime': DateTime.now().toString(),
               },
               saveNotifications(notificationData),
               Navigator.pushReplacementNamed(
@@ -1208,13 +1206,15 @@ class PostController extends ControllerMVC {
 
   var realNotifi = [];
 
-  userNotLookNotifi() async {
+
+  userLookDistiniction() async {
     List allNotifi = [];
+    Map addData = {};
     bool flag = false;
     setState(() {});
     await FirebaseFirestore.instance.collection(Helper.notificationField)
         .get()
-        .then((value) => {
+        .then((value) async => {
           allNotifi = value.docs,
           realNotifi = [],
           for (int i = 0; i < allNotifi.length; i++){
@@ -1225,8 +1225,21 @@ class PostController extends ControllerMVC {
                       UserManager.userInfo['userName'])
                     {flag = true}
                 },
-                if(!flag && allNotifi[i]['postAdmin']['userName']!=UserManager.userInfo['userName']){
-                  realNotifi.add(allNotifi[i]), setState(() {}),
+                if(!flag && allNotifi[i]['postAdminId'] != UserManager.userInfo['uid']){
+                  await FirebaseFirestore.instance.collection(Helper.userField)
+                    .doc(allNotifi[i]['postAdminId'])
+                    .get()
+                    .then((value) => {
+                        realNotifi = [],
+                        addData = {
+                          ...addData,
+                          'avatar': value.data()!['avatar'],
+                          'userName':value.data()!['userName'],
+                          'text':Helper.notificationText[allNotifi[i]['postType']]['text'],
+                          'date':Helper.formatDate(allNotifi[i]['notifyTime']),
+                      },  
+                    }),
+                  realNotifi.add(addData), setState(() {}),
                 }
           },
         });
@@ -1259,6 +1272,7 @@ class PostController extends ControllerMVC {
         });
   }
 
+ 
   var notifications;
 
   var notifiCount = 0;
