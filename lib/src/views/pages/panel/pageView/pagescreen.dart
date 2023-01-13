@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -16,18 +14,6 @@ import 'package:shnatter/src/views/pages/panel/pageView/pageInviteScreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pagePhotosScreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageTimelineScreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageVideosScreen.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
 
 class PageEachScreen extends StatefulWidget {
   PageEachScreen({Key? key, required this.docId})

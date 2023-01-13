@@ -1808,10 +1808,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                           color: Colors.grey,
                                                         ),
                                                       )
-                                                    : Container(),
-                                                const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10)),
+                                                    : const SizedBox(),
                                                 const Padding(
                                                     padding: EdgeInsets.only(
                                                         top: 17)),

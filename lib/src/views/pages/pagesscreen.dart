@@ -37,7 +37,6 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
   //route variable
   String pageSubRoute = '';
 
-
   @override
   void initState() {
     add(widget.con);
@@ -114,10 +113,9 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
             ),
             Padding(
                 padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
-                child:
-                    SingleChildScrollView(
+                child: SingleChildScrollView(
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -134,161 +132,331 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                             Expanded(
                                 child: Column(
                               children: [
-                                Container(padding: const EdgeInsets.only(top: 20, left:0),
-                                  child: 
-                                    Column(children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 0),
+                                  child: Column(
+                                    children: [
                                       Container(
-                                        width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.6 : SizeConfig(context).screenWidth * 1,
-                                        height: 70,
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey,
-                                              blurRadius: 1.0,
-                                              spreadRadius: 0.1,
-                                              offset: Offset(
-                                                0.1,
-                                                0.11,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        child: Row(children: [
-                                          Container(
-                                            width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize ? SizeConfig(context).screenWidth * 0.4 + 40 : SizeConfig(context).screenWidth * 0.9 - 30,
-                                            child: Row(
-                                              children: [
-                                                const Padding(padding: EdgeInsets.only(left: 30)),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == '' ? 26 : 0)),
-                                                      RichText(
-                                                        text: TextSpan(children: <TextSpan>[
-                                                          TextSpan(
-                                                            text: 'Discover',
-                                                            style: const TextStyle(
-                                                                color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
-                                                            recognizer: TapGestureRecognizer()
-                                                              ..onTap = () {
-                                                                pageSubRoute = '';
-                                                                setState(() { });
-                                                              }
-                                                          ),
-                                                        ]),
-                                                      ),
-                                                      pageSubRoute == '' ? Container(
-                                                        margin: EdgeInsets.only(top: 26),
-                                                        height: 1,
-                                                        color: Colors.black,
-                                                      ) : SizedBox()
-                                                    ],
-                                                  )
+                                          width:
+                                              SizeConfig(context).screenWidth >
+                                                      SizeConfig.smallScreenSize
+                                                  ? SizeConfig(context)
+                                                          .screenWidth *
+                                                      0.6
+                                                  : SizeConfig(context)
+                                                          .screenWidth *
+                                                      1,
+                                          height: 70,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 1.0,
+                                                spreadRadius: 0.1,
+                                                offset: Offset(
+                                                  0.1,
+                                                  0.11,
                                                 ),
-                                                const Padding(padding: EdgeInsets.only(left: 5)),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == 'liked' ? 26 : 0)),
-                                                      RichText(
-                                                      text: TextSpan(children: <TextSpan>[
-                                                        TextSpan(
-                                                          text: 'Liked Pages',
-                                                          style: const TextStyle(
-                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
-                                                          recognizer: TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              pageSubRoute = 'liked';
-                                                              setState(() { });
-                                                            }
-                                                          ),
-                                                        ]),
-                                                      ),
-                                                      pageSubRoute == 'liked' ? Container(
-                                                        margin: EdgeInsets.only(top: 26),
-                                                        height: 1,
-                                                        color: Colors.black,
-                                                      ) : SizedBox()
-                                                    ],
-                                                  )
-                                                ),
-                                                const Padding(padding: EdgeInsets.only(left: 5)),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(padding: EdgeInsets.only(top: pageSubRoute == 'manage' ? 26 : 0)),
-                                                      RichText(
-                                                      text: TextSpan(children: <TextSpan>[
-                                                        TextSpan(
-                                                          text: 'My Pages',
-                                                          style: const TextStyle(
-                                                              color: Color.fromARGB(255, 90, 90, 90), fontSize: 14),
-                                                          recognizer: TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              pageSubRoute = 'manage';
-                                                              setState(() { });
-                                                            }
-                                                          ),
-                                                        ]),
-                                                      ),
-                                                      pageSubRoute == 'manage' ? Container(
-                                                        margin: EdgeInsets.only(top: 26),
-                                                        height: 1,
-                                                        color: Colors.black,
-                                                      ) : SizedBox()
-                                                    ],
-                                                  )
-                                                ),
-                                            ]),
+                                              )
+                                            ],
                                           ),
-                                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                                          Container(
-                                            width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? 120 : 50,
-                                            margin: const EdgeInsets.only(right: 20),
-                                            child: ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(
-                                                      padding: EdgeInsets.all(3),
-                                                      backgroundColor: Color.fromARGB(255, 45, 206, 137),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: SizeConfig(context)
+                                                            .screenWidth >
+                                                        SizeConfig
+                                                            .smallScreenSize
+                                                    ? SizeConfig(context)
+                                                                .screenWidth *
+                                                            0.4 +
+                                                        40
+                                                    : SizeConfig(context)
+                                                                .screenWidth *
+                                                            0.9 -
+                                                        30,
+                                                child: Row(children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 30)),
+                                                  Expanded(
+                                                      child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Padding(
+                                                          padding: EdgeInsets.only(
+                                                              top:
+                                                                  pageSubRoute ==
+                                                                          ''
+                                                                      ? 26
+                                                                      : 0)),
+                                                      RichText(
+                                                        text: TextSpan(
+                                                            children: <
+                                                                TextSpan>[
+                                                              TextSpan(
+                                                                  text:
+                                                                      'Discover',
+                                                                  style: const TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          90,
+                                                                          90,
+                                                                          90),
+                                                                      fontSize:
+                                                                          14),
+                                                                  recognizer:
+                                                                      TapGestureRecognizer()
+                                                                        ..onTap =
+                                                                            () {
+                                                                          pageSubRoute =
+                                                                              '';
+                                                                          setState(
+                                                                              () {});
+                                                                        }),
+                                                            ]),
+                                                      ),
+                                                      pageSubRoute == ''
+                                                          ? Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      top: 26),
+                                                              height: 1,
+                                                              color:
+                                                                  Colors.black,
+                                                            )
+                                                          : SizedBox()
+                                                    ],
+                                                  )),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5)),
+                                                  Expanded(
+                                                      child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Padding(
+                                                          padding: EdgeInsets.only(
+                                                              top: pageSubRoute ==
+                                                                      'liked'
+                                                                  ? 26
+                                                                  : 0)),
+                                                      RichText(
+                                                        text: TextSpan(
+                                                            children: <
+                                                                TextSpan>[
+                                                              TextSpan(
+                                                                  text:
+                                                                      'Liked Pages',
+                                                                  style: const TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          90,
+                                                                          90,
+                                                                          90),
+                                                                      fontSize:
+                                                                          14),
+                                                                  recognizer:
+                                                                      TapGestureRecognizer()
+                                                                        ..onTap =
+                                                                            () {
+                                                                          pageSubRoute =
+                                                                              'liked';
+                                                                          setState(
+                                                                              () {});
+                                                                        }),
+                                                            ]),
+                                                      ),
+                                                      pageSubRoute == 'liked'
+                                                          ? Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 26),
+                                                              height: 1,
+                                                              color:
+                                                                  Colors.black,
+                                                            )
+                                                          : SizedBox()
+                                                    ],
+                                                  )),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5)),
+                                                  Expanded(
+                                                      child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Padding(
+                                                          padding: EdgeInsets.only(
+                                                              top: pageSubRoute ==
+                                                                      'manage'
+                                                                  ? 26
+                                                                  : 0)),
+                                                      RichText(
+                                                        text: TextSpan(
+                                                            children: <
+                                                                TextSpan>[
+                                                              TextSpan(
+                                                                  text:
+                                                                      'My Pages',
+                                                                  style: const TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          90,
+                                                                          90,
+                                                                          90),
+                                                                      fontSize:
+                                                                          14),
+                                                                  recognizer:
+                                                                      TapGestureRecognizer()
+                                                                        ..onTap =
+                                                                            () {
+                                                                          pageSubRoute =
+                                                                              'manage';
+                                                                          setState(
+                                                                              () {});
+                                                                        }),
+                                                            ]),
+                                                      ),
+                                                      pageSubRoute == 'manage'
+                                                          ? Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      top: 26),
+                                                              height: 1,
+                                                              color:
+                                                                  Colors.black,
+                                                            )
+                                                          : SizedBox()
+                                                    ],
+                                                  )),
+                                                ]),
+                                              ),
+                                              const Flexible(
+                                                  fit: FlexFit.tight,
+                                                  child: SizedBox()),
+                                              Container(
+                                                width: SizeConfig(context)
+                                                            .screenWidth >
+                                                        SizeConfig
+                                                                .mediumScreenSize +
+                                                            100
+                                                    ? 120
+                                                    : 50,
+                                                margin: const EdgeInsets.only(
+                                                    right: 20),
+                                                child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding:
+                                                          EdgeInsets.all(3),
+                                                      backgroundColor:
+                                                          Color.fromARGB(255,
+                                                              45, 206, 137),
                                                       // elevation: 3,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(3.0)),
-                                                      minimumSize: Size(SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? 120 : 50, 50),
-                                                      maximumSize: Size(SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? 120 : 50, 50),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          3.0)),
+                                                      minimumSize: Size(
+                                                          SizeConfig(context)
+                                                                      .screenWidth >
+                                                                  SizeConfig
+                                                                          .mediumScreenSize +
+                                                                      100
+                                                              ? 120
+                                                              : 50,
+                                                          50),
+                                                      maximumSize: Size(
+                                                          SizeConfig(context)
+                                                                      .screenWidth >
+                                                                  SizeConfig
+                                                                          .mediumScreenSize +
+                                                                      100
+                                                              ? 120
+                                                              : 50,
+                                                          50),
                                                     ),
                                                     onPressed: () {
                                                       (showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) =>
-                                                          AlertDialog(
-                                                            title: Row(children: const [
-                                                              Icon(Icons.flag,color: Color.fromARGB(255, 33, 150, 243),),
-                                                              Text('Create New Page',
-                                                              style: TextStyle(
-                                                                fontSize: 15,
-                                                                fontStyle: FontStyle.italic
-                                                              ),),
-                                                            ],),
-                                                            content: CreatePageModal(context: context)
-                                                          )
-                                                    ));
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              AlertDialog(
+                                                                  title: Row(
+                                                                    children: const [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .flag,
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            33,
+                                                                            150,
+                                                                            243),
+                                                                      ),
+                                                                      Text(
+                                                                        'Create New Page',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontStyle:
+                                                                                FontStyle.italic),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  content: CreatePageModal(
+                                                                      context:
+                                                                          context))));
                                                     },
                                                     child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
                                                       children: [
-                                                      const Icon(Icons.add_circle),
-                                                      const Padding(padding: EdgeInsets.only(left: 4)),
-                                                      SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize ? const Text('Create Page', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.bold)) : SizedBox()
-                                                    ],)),
-                                          )
-                                        ],)
-                                      )
-                                    ],),
+                                                        const Icon(
+                                                            Icons.add_circle),
+                                                        const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 4)),
+                                                        SizeConfig(context)
+                                                                    .screenWidth >
+                                                                SizeConfig
+                                                                        .mediumScreenSize +
+                                                                    100
+                                                            ? const Text(
+                                                                'Create Page',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        11,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold))
+                                                            : SizedBox()
+                                                      ],
+                                                    )),
+                                              )
+                                            ],
+                                          ))
+                                    ],
                                   ),
+                                ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
                                 pageSubRoute == ''

@@ -14,7 +14,7 @@ import 'package:flutter/foundation.dart'
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
-class DefaultFirebaseOptions { 
+class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       return web;
@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
     authDomain: 'shnatter-a69cd.firebaseapp.com',
+    databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
     measurementId: 'G-XGX27JVMQK',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:444281700591:android:a55a5c768f8abcd6379b1a',
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
+    databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
   );
 
@@ -66,9 +68,9 @@ class DefaultFirebaseOptions {
     appId: '1:444281700591:ios:81f6abe04b42f719379b1a',
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
+    databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
-    iosClientId:
-        '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
+    iosClientId: '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
     iosBundleId: 'com.example.shnatter',
   );
 
@@ -77,9 +79,9 @@ class DefaultFirebaseOptions {
     appId: '1:444281700591:ios:81f6abe04b42f719379b1a',
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
+    databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
-    iosClientId:
-        '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
+    iosClientId: '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
     iosBundleId: 'com.example.shnatter',
   );
 }

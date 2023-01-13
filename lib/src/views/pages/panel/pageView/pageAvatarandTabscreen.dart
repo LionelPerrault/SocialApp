@@ -51,7 +51,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
     add(widget.con);
     con = controller as PostController;
     var pageInfo = con.page;
-    print(con.page);
+    print(con.page['pageAdminInfo']);
     print('this is pageInfo');
     avatar = con.page['pagePicture'];
     cover = con.page['pageCover'];
@@ -105,7 +105,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                      userAvatarWidget(),
+                      pageAvatarWidget(),
                       Container(
                         child: mainTabWidget(),
                       )
@@ -113,7 +113,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
               : Row(children: [
                   Container(
                     padding: const EdgeInsets.only(left: 30),
-                    child: userAvatarWidget(),
+                    child: pageAvatarWidget(),
                   ),
                   Container(
                       width: SizeConfig(context).screenWidth - 246,
@@ -142,27 +142,17 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
     );
   }
 
-  Widget userAvatarWidget() {
+  Widget pageAvatarWidget() {
     return Stack(
       children: [
-        avatar != ''
-            ? CircleAvatar(
-                radius: 78,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                    radius: 75, backgroundImage: NetworkImage(avatar)),
-              )
-            : CircleAvatar(
-                radius: 78,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 75,
-                  child: SvgPicture.network(
-                    Helper.pageAvatar,
-                    width: 150,
-                  ),
-                ),
-              ),
+        CircleAvatar(
+          radius: 78,
+          backgroundColor: Colors.white,
+          child: CircleAvatar(
+              radius: 75,
+              backgroundImage:
+                  NetworkImage(avatar != '' ? avatar : Helper.pageAvatar)),
+        ),
         (avatarProgress != 0 && avatarProgress != 100)
             ? AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
