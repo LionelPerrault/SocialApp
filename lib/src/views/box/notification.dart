@@ -95,12 +95,13 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                     child: ListTile(
                       onTap: () {
                         print("tap!");
-                        // con.userLookNotifiFlag(con.realNotifi[index]['uid']);
-                        con.checkNotifyTime = {
-                          'checkNotifyTime': DateTime.now().toString()
+                        con.userCheckTime = DateTime.now().millisecondsSinceEpoch;
+                        con.para = {
+                          'checkNotifyTime': con.userCheckTime
                         };
-                        con.checkNotify(con.checkNotifyTime);
-                        print('above is checknotifyTime');
+                        con.checkNotify(con.para);
+                        print(con.userCheckTime);
+                        print('above is userCheckTime');
                         setState(() {});
                       },
                       hoverColor: const Color.fromARGB(255, 243, 243, 243),
