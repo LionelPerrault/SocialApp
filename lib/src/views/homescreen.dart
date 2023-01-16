@@ -106,7 +106,6 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    print('$isEmailVerify,.....111111111111111111111111111111111111');
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
@@ -285,17 +284,21 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
     );
   }
   Future<void> triggerEmailVerify () async {
-    var user = FirebaseAuth.instance.currentUser!;
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       await FirebaseAuth.instance.currentUser!.reload();
-      var user = FirebaseAuth.instance.currentUser!;
+      var user = await FirebaseAuth.instance.currentUser!;
       if (user.emailVerified) {
-        print("$isEmailVerify ..dsafjeifjwlkefjid");
+        print('$isEmailVerify, 111111111111111111111111111111bject');
+        setState(() { 
+          isEmailVerify = true;
+        });
         timer.cancel();
+      }else{
+        print('$isEmailVerify, oasdfi9wi390ruoasdjf9uw38japsdjfp8aue3111111111111111111111111111111111bject');
+        setState(() {
+          isEmailVerify = false;
+        });
       }
-      setState(() {
-        isEmailVerify = user.emailVerified;
-      });
     });
   }
 }
