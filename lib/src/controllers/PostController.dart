@@ -645,16 +645,15 @@ class PostController extends ControllerMVC {
   String groupSubRoute;
 
   //get all group function
-  Future<List> getGroup(String condition, String userName) async {
+  Future<List> getGroup(String condition, String uid) async {
     List<Map> realAllGroups = [];
     await Helper.groupsData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        var joined = await boolJoined(data, UserManager.userInfo['userName']);
-        if (userName == data['groupAdmin'][0]['userName'] &&
-            condition == 'manage') {
+        var joined = await boolJoined(data, UserManager.userInfo['uid']);
+        if (uid == data['groupAdmin'][0]['uid'] && condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
         } else if (condition == 'all') {
           if (data['groupPost']) {
@@ -683,9 +682,28 @@ class PostController extends ControllerMVC {
         .where('groupUserName', isEqualTo: viewGroupName)
         .get();
     var value = reuturnValue.docs;
-    group = value[0];
-    viewGroupId = group.id;
+    viewGroupId = value[0].id;
+    group = value[0].data();
     viewGroupJoined = await boolJoined(group, UserManager.userInfo['userName']);
+    for (var i = 0; i < group['groupAdmin'].length; i++) {
+      var addAdmin =
+          await ProfileController().getUserInfo(group['groupAdmin'][i]['uid']);
+      group['groupAdmin'][i] = {
+        ...group['groupAdmin'][i],
+        'userName': addAdmin!['userName'],
+        'avatar': addAdmin['avatar'],
+      };
+    }
+    for (var i = 0; i < group['groupJoined'].length; i++) {
+      var groupUser =
+          await ProfileController().getUserInfo(group['groupJoined'][i]['uid']);
+      group['groupJoined'][i] = {
+        ...group['groupJoined'][i],
+        'userName': groupUser!['userName'],
+        'avatar': groupUser['avatar'],
+        'fullName': '${groupUser["firstName"]} ${groupUser["lastName"]}'
+      };
+    }
     setState(() {});
     print('This group was posted by ${group['groupAdmin'][0]['userName']}');
     return true;
@@ -705,7 +723,7 @@ class PostController extends ControllerMVC {
     groupData = {
       ...groupData,
       'groupAdmin': [
-        {'userName': UserManager.userInfo['userName']},
+        {'uid': UserManager.userInfo['uid']},
       ],
       'groupDate': DateTime.now().toString(),
       'groupJoined': [],
@@ -755,10 +773,7 @@ class PostController extends ControllerMVC {
       return true;
     } else {
       joined.add({
-        'userName': UserManager.userInfo['userName'],
-        'fullName':
-            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
-        'userAvatar': UserManager.userInfo['avatar']
+        'uid': UserManager.userInfo['uid'],
       });
       await FirebaseFirestore.instance
           .collection(Helper.groupsField)
@@ -769,13 +784,12 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in group interested or not
-  Future<bool> boolJoined(var groupData, String userName) async {
+  Future<bool> boolJoined(var groupData, String uid) async {
     var joined = groupData['groupJoined'];
     if (joined == null) {
       return false;
     }
-    var returnData =
-        joined.where((eachUser) => eachUser['userName'] == userName);
+    var returnData = joined.where((eachUser) => eachUser['uid'] == uid);
     print('you get bool of joined group');
     if (returnData.length == 0) {
       return false;

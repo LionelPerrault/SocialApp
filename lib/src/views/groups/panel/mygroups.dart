@@ -35,7 +35,7 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
   }
 
   void getGroupNow() {
-    con.getGroup('manage', UserManager.userInfo['userName']).then((value) => {
+    con.getGroup('manage', UserManager.userInfo['uid']).then((value) => {
           myGroups = [...value],
           myGroups.where((group) =>
               group['data']['groupAdmin'][0]['userName'] ==
@@ -67,21 +67,14 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: myGroups
-                  .map((group) => GroupCell(
-                      groupTap: () {
-                        Navigator.pushReplacementNamed(context,
-                            '/groups/${group['data']['groupUserName']}');
+                  .map(
+                    (group) => GroupCell(
+                      groupData: group,
+                      refreshFunc: () {
+                        getGroupNow();
                       },
-                      buttonFun: () {
-                        con.joinedGroup(group['id']).then((value) {
-                          getGroupNow();
-                        });
-                      },
-                      picture: group['data']['groupPicture'],
-                      status: false,
-                      joins: group['data']['groupJoined'].length,
-                      header: group['data']['groupName'],
-                      joined: group['joined']))
+                    ),
+                  )
                   .toList(),
             ),
           ),
