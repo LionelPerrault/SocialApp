@@ -166,7 +166,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                             Navigator.pushReplacementNamed(
                                 context, '/${user["userName"]}');
                           },
-                          picture: user['userAvatar'] ?? '',
+                          picture: user['avatar'] ?? '',
                           header: user['fullName']))
                       .toList(),
                 ),
@@ -263,21 +263,37 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                 ),
               ),
               Container(
-                  alignment: Alignment.topCenter,
-                  width: 100,
-                  height: 100,
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50)),
-                  child: CircleAvatar(
-                    radius: 78,
-                    backgroundColor: Colors.white,
-                    child: CircleAvatar(
-                        radius: 75,
-                        backgroundImage: NetworkImage(
-                            picture != '' ? picture : Helper.avatar)),
-                  )),
+                alignment: Alignment.topCenter,
+                width: 100,
+                height: 100,
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50)),
+                child: picture != ''
+                    ? CircleAvatar(
+                        radius: 78,
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                            radius: 75,
+                            backgroundImage:
+                                NetworkImage(con.group['groupPicture'])),
+                      )
+                    : CircleAvatar(
+                        radius: 78,
+                        backgroundColor: Colors.white,
+                        child: SvgPicture.network(
+                          Helper.avatar,
+                          width: 96,
+                          height: 96,
+                        ),
+                      ),
+                // picture == ''
+                //     ? CircleAvatar(
+                //         radius: 100, child: SvgPicture.network(Helper.avatar))
+                //     : CircleAvatar(
+                //         radius: 100, backgroundImage: NetworkImage(picture)),
+              )
             ],
           ),
         )

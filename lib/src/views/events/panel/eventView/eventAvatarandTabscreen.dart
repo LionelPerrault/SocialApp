@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -14,6 +15,8 @@ import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
+
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 class EventAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -44,14 +47,14 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
   var goingStatus = false;
   var selectedEvent = {};
   var date;
+  bool payLoading = false;
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
     _gotoHome();
-    if (UserManager.userInfo['userName'] ==
-        con.event['eventAdmin'][0]['userName']) {
+    if (UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']) {
       mainTabList.add({'title': 'Settings', 'icon': Icons.settings});
     }
     date = con.event['eventStartDate'].split('-');
@@ -64,6 +67,75 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
       itemWidth = 100;
       setState(() {});
     });
+  }
+
+  eventInterestedFunc() async {
+    print(con.event['eventAdmin'][0]['uid']);
+    var eventAdminInfo = await ProfileController()
+        .getUserInfo(con.event['eventAdmin'][0]['uid']);
+    print(eventAdminInfo);
+    if (eventAdminInfo!['paywall']['interestMyEvent'] == null ||
+        eventAdminInfo['paywall']['interestMyEvent'] == '0' ||
+        con.event['groupAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
+      interestedStatus = true;
+      setState(() {});
+      await con.interestedEvent(con.viewEventId).then((value) {
+        con.getSelectedEvent(con.viewEventId).then((value) => {
+              interestedStatus = false,
+              setState(() {}),
+            });
+      });
+      interestedStatus = false;
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        eventAdminInfo['paymail'].toString(),
+                        eventAdminInfo['paywall']['interestMyEvent'],
+                        'Pay for interested event of user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            interestedStatus = true,
+                            setState(() {}),
+                            await con.interestedEvent(con.viewEventId).then(
+                              (value) {
+                                con
+                                    .getSelectedEvent(con.viewEventId)
+                                    .then((value) => {
+                                          interestedStatus = false,
+                                          setState(() {}),
+                                        });
+                              },
+                            ),
+                            interestedStatus = false,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for interested or uninterested this page',
+              text:
+                  'Admin of this event set price is ${eventAdminInfo['paywall']['interestMyEvent']} for interested or uninterested this page',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -267,16 +339,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                         minimumSize: const Size(120, 45),
                         maximumSize: const Size(120, 45)),
                     onPressed: () {
-                      interestedStatus = true;
-                      setState(() {});
-                      con.interestedEvent(con.viewEventId).then((value) => {
-                            con
-                                .getSelectedEvent(con.viewEventId)
-                                .then((value) => {
-                                      interestedStatus = false,
-                                      setState(() {}),
-                                    })
-                          });
+                      eventInterestedFunc();
                     },
                     child: interestedStatus
                         ? Container(

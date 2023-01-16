@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -14,6 +15,8 @@ import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
+
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 class GroupAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -43,14 +46,77 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   var interestedStatus = false;
   var joinStatus = false;
   var selectedGroup = {};
+  bool payLoading = false;
+
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
     _gotoHome();
-    if (userInfo['userName'] == con.group['groupAdmin'][0]['userName']) {
+    if (userInfo['uid'] == con.group['groupAdmin'][0]['uid']) {
       mainTabList.add({'title': 'Settings', 'icon': Icons.settings});
+    }
+  }
+
+  groupJoinFunc() async {
+    print(con.group['groupAdmin'][0]['uid']);
+    var groupAdminInfo = await ProfileController()
+        .getUserInfo(con.group['groupAdmin'][0]['uid']);
+    print(groupAdminInfo);
+    if (groupAdminInfo!['paywall']['joinMyGroup'] == null ||
+        groupAdminInfo['paywall']['joinMyGroup'] == '0' ||
+        con.group['groupAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
+      joinStatus = true;
+      setState(() {});
+      await con.joinedGroup(con.viewGroupId).then((value) {
+        con.getSelectedGroup(con.viewGroupName);
+      });
+      joinStatus = false;
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        groupAdminInfo['paymail'].toString(),
+                        groupAdminInfo['paywall']['joinMyGroup'],
+                        'Pay for join or unjoin group')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            joinStatus = true,
+                            setState(() {}),
+                            await con.joinedGroup(con.viewGroupId).then(
+                              (value) {
+                                con.getSelectedGroup(con.viewGroupName);
+                              },
+                            ),
+                            joinStatus = false,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for join or unjoin this page',
+              text:
+                  'Admin of this group set price is ${groupAdminInfo['paywall']['joinMyGroup']} for join or unjoin this page',
+              progress: payLoading),
+        ),
+      );
     }
   }
 
@@ -243,8 +309,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                         minimumSize: const Size(120, 45),
                         maximumSize: const Size(120, 45)),
                     onPressed: () {
-                      joinStatus = true;
-                      setState(() {});
+                      groupJoinFunc();
                     },
                     child: joinStatus
                         ? Container(
