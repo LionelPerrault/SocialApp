@@ -26,9 +26,9 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.userLookNotifiFlag();
     super.initState();
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +90,18 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 //size: Size(100,100),
                 child: ListView.separated(
                   itemCount: con.realNotifi.length,
-                  itemBuilder: (context, index) => Material(
+                  itemBuilder: 
+                  (context, index) => Material(
                     child: ListTile(
                       onTap: () {
                         print("tap!");
+                        // con.userLookNotifiFlag(con.realNotifi[index]['uid']);
+                        con.checkNotifyTime = {
+                          'checkNotifyTime': DateTime.now().toString()
+                        };
+                        con.checkNotify(con.checkNotifyTime);
+                        print('above is checknotifyTime');
+                        setState(() {});
                       },
                       hoverColor: const Color.fromARGB(255, 243, 243, 243),
                       enabled: true,
@@ -136,7 +144,8 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                     endIndent: 10,
                   ),
                 ),
-              ),
+              )
+              ,
               const Divider(height: 1, indent: 0),
               Container(
                   color: Colors.grey[300],

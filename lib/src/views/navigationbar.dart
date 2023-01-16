@@ -8,17 +8,20 @@ import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/models/user.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
+import 'package:shnatter/src/views/box/notification.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'box/notification.dart';
+
 
 enum Menu {
   itemProfile,
@@ -118,9 +121,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     );
     final Stream<QuerySnapshot> stream = postCon.streamPosts();
     stream.listen((event) async {
-      postCon.notifications = event.docs;
       await postCon.userLookDistiniction();
-      postCon.notifiCount = postCon.realNotifi.length;
       setState(() {});
       print('hey here!!!!');
     });
@@ -329,7 +330,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             width: 20,
                             height: 20,
                           ),
-                          postCon.notifiCount == 0
+                          postCon.realNotifi.isEmpty
                               ? const SizedBox()
                               : Badge(
                                   toAnimate: false,
@@ -337,7 +338,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   badgeColor: Colors.deepPurple,
                                   borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(
-                                      postCon.notifiCount.toString(),
+                                      postCon.realNotifi.length.toString(),
                                       style: const TextStyle(
                                           color: Colors.white, fontSize: 13)),
                                 ),
@@ -442,14 +443,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         onSelected: (Menu item) {},
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.green,
-                              backgroundImage: NetworkImage(UserManager
-                                          .userInfo['avatar'] ==
-                                      ''
-                                  ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
-                                  : UserManager.userInfo['avatar']),
-                            ),
+                            UserManager.userInfo['avatar'] != ''
+                            ? CircleAvatar(
+                              backgroundImage:  NetworkImage(
+                                  UserManager.userInfo['avatar'],
+                                ))
+                            : CircleAvatar(
+                                  child : SvgPicture.network(Helper.avatar),
+                               ),
                             //Icon(Icons.arrow_downward,
                             //    size: 15, color: Colors.white)
                           ],
@@ -638,7 +639,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             width: 20,
                             height: 20,
                           ),
-                          postCon.notifiCount == 0
+                          postCon.realNotifi.isEmpty
                               ? const SizedBox()
                               : Badge(
                                   toAnimate: false,
@@ -646,7 +647,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   badgeColor: Colors.deepPurple,
                                   borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(
-                                      postCon.notifiCount.toString(),
+                                      postCon.realNotifi.length.toString(),
                                       style: const TextStyle(
                                           color: Colors.white, fontSize: 13)),
                                 ),
@@ -717,14 +718,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         onSelected: (Menu item) {},
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.green,
-                              backgroundImage: NetworkImage(UserManager
-                                          .userInfo['avatar'] ==
-                                      ''
-                                  ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
-                                  : UserManager.userInfo['avatar']),
-                            ),
+                            UserManager.userInfo['avatar'] != ''
+                            ? CircleAvatar(
+                              backgroundImage:  NetworkImage(
+                                  UserManager.userInfo['avatar'],
+                                ))
+                            : CircleAvatar(
+                                  child : SvgPicture.network(Helper.avatar),
+                               ),
                             //Icon(Icons.arrow_downward,
                             //    size: 15, color: Colors.white)
                           ],
