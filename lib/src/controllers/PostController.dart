@@ -847,6 +847,7 @@ class PostController extends ControllerMVC {
                 'postId': value.id,
                 'postAdminId': UserManager.userInfo['uid'],
                 'notifyTime': DateTime.now().toString(),
+                'tsNT': DateTime.now().millisecondsSinceEpoch,
               },
               saveNotifications(notificationData),
               Navigator.pushReplacementNamed(
@@ -1218,11 +1219,12 @@ class PostController extends ControllerMVC {
   }
 
   var realNotifi = [];
+  var tsNotifyTime = 0;
+  var userCheckTime = 0;
 
   userLookDistiniction() async {
     List allNotifi = [];
     Map addData = {};
-    bool flag = false;
     setState(() {});
     await FirebaseFirestore.instance
         .collection(Helper.notificationField)
@@ -1230,13 +1232,11 @@ class PostController extends ControllerMVC {
         .then((value) async => {
           allNotifi = value.docs,
           realNotifi = [],
-          print(realNotifi),
-          print('realALL'),
-          // var currentUserInfo = ProfileController().
-          for (int i = 0; i < allNotifi.length; i++){    
-            if(allNotifi[i]['postAdminId'] != UserManager.userInfo['uid'] && 
-              UserManager.userInfo['checkNotifyTime'] < allNotifi[i]['notifyTime']
-            ){
+          for (int i = 0; i < allNotifi.length; i++){
+            print('in for loof'),
+            if(allNotifi[i]['postAdminId'] != UserManager.userInfo['uid'] )
+            {
+              print('in if conditions'),
               await FirebaseFirestore.instance.collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
                 .get()
@@ -1251,36 +1251,18 @@ class PostController extends ControllerMVC {
                   },
               }),
               realNotifi.add(addData),
-              print('here is a realNotifi'),
+              tsNotifyTime = allNotifi[i]['tsNT'],
+              userCheckTime = UserManager.userInfo[i]['checkNotifyTime'],
+              print(tsNotifyTime),
+              print(userCheckTime),
+              print('why not show'),
             }
           },
-           setState(() {}),
-                      
+           setState(() {}),              
         });
   }
 
-  // userLookNotifiFlag(uid) async {
-  //   List allNotifi = [];
-  //   List addUser = [];
-  //   print(uid);
-  //   var notifyData;
-  //   await Helper.notifiCollection.doc(uid).get().then((value) => {
-  //     notifyData = value.data(),
-  //     print(notifyData),
-  //     addUser = notifyData['userList'],
-  //     addUser.add({
-  //       'userName': UserManager.userInfo['userName'],
-  //       }),
-  //     Helper.notifiCollection
-  //         .doc(uid)
-  //         .update({'userList': addUser}),
-  //   });
-  // }
-
-  var checkNotifyTime;
-
-  Future checkNotify (
-      Map<String,dynamic> check) async {
+  Future checkNotify (Map<String,dynamic> check) async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
@@ -1289,7 +1271,7 @@ class PostController extends ControllerMVC {
     setState(() { });
   }
 
-  var notifiCount = 0;
+  var para;
 
   streamPosts() {
     var stream = Helper.notifiCollection.snapshots();
