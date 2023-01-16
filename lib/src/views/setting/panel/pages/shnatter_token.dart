@@ -11,7 +11,10 @@ import 'package:badges/badges.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingShnatterTokenScreen extends StatefulWidget {
-  SettingShnatterTokenScreen({Key? key}) : super(key: key);
+  SettingShnatterTokenScreen({Key? key})
+      : con = UserController(),
+        super(key: key);
+  late UserController con;
   @override
   State createState() => SettingShnatterTokenScreenState();
 }
@@ -164,10 +167,12 @@ class SettingShnatterTokenScreenState
   late final PlutoGridStateManager stateManager;
   List<Employee> employees = <Employee>[];
   late EmployeeDataSource employeeDataSource;
-
+  late UserController con;
   @override
   void initState() {
+    add(widget.con);
     super.initState();
+    con = controller as UserController;
     employees = getEmployeeData();
     employeeDataSource = EmployeeDataSource(employeeData: employees);
     UserController().getBalance();
@@ -248,7 +253,7 @@ class SettingShnatterTokenScreenState
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  Helper.balance.toString(),
+                                  con.balance.toString(),
                                   style: const TextStyle(
                                     fontSize: 25,
                                     color: Colors.white,

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
@@ -796,10 +799,15 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                 const Color.fromARGB(255, 243, 243, 243),
                             // tileColor: Colors.white,
                             enabled: true,
-                            leading: const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
-                            ),
+                            leading: con.page['pageAdmin'][index]['avatar'] ==
+                                    ''
+                                ? CircleAvatar(
+                                    radius: 17,
+                                    child: SvgPicture.network(Helper.avatar))
+                                : CircleAvatar(
+                                    radius: 17,
+                                    backgroundImage: NetworkImage(con
+                                        .page['pageAdmin'][index]['avatar'])),
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -916,10 +924,15 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                 const Color.fromARGB(255, 243, 243, 243),
                             // tileColor: Colors.white,
                             enabled: true,
-                            leading: const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
-                            ),
+                            leading: con.page['pageLiked'][index]['avatar'] ==
+                                    ''
+                                ? CircleAvatar(
+                                    radius: 17,
+                                    child: SvgPicture.network(Helper.avatar))
+                                : CircleAvatar(
+                                    radius: 17,
+                                    backgroundImage: NetworkImage(con
+                                        .page['pageAdmin'][index]['avatar'])),
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

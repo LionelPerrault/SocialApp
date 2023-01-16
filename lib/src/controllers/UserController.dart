@@ -191,18 +191,19 @@ class UserController extends ControllerMVC {
     });
   }
 
-  void getBalance() async {
+  Future<int> getBalance() async {
     if (token == '') {
       var relysiaAuth = await RelysiaManager.authUser(
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-    RelysiaManager.getBalance(token).then((res) => {
+    await RelysiaManager.getBalance(token).then((res) => {
           print('balance is $res'),
           balance = res,
           Helper.balance = balance,
           setState(() {})
         });
+    return balance;
   }
 
   void getWalletFromPref(context) async {}
@@ -359,7 +360,8 @@ class UserController extends ControllerMVC {
     }
 
     ActionCodeSettings acs = ActionCodeSettings(
-        url: "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
+        url:
+            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;

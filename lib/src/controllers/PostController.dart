@@ -418,16 +418,15 @@ class PostController extends ControllerMVC {
   String pageSubRoute;
 
   //get all page function
-  Future<List> getPage(String condition, String userName) async {
+  Future<List> getPage(String condition, String uid) async {
     List<Map> realAllpage = [];
     await Helper.pagesData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        var liked = await boolLiked(data, UserManager.userInfo['userName']);
-        if (userName == data['pageAdmin'][0]['userName'] &&
-            condition == 'manage') {
+        var liked = await boolLiked(data, UserManager.userInfo['uid']);
+        if (uid == data['pageAdmin'][0]['uid'] && condition == 'manage') {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
         } else if (condition == 'all') {
           if (data['pagePost']) {
@@ -454,9 +453,29 @@ class PostController extends ControllerMVC {
         .where('pageUserName', isEqualTo: viewPageName)
         .get();
     var value = reuturnValue.docs;
-    page = value[0];
-    viewPageId = page.id;
-    viewPageLiked = await boolLiked(page, UserManager.userInfo['userName']);
+    viewPageId = value[0].id;
+    page = value[0].data();
+    viewPageLiked = await boolLiked(page, UserManager.userInfo['uid']);
+    for (var i = 0; i < page['pageAdmin'].length; i++) {
+      var addAdmin =
+          await ProfileController().getUserInfo(page['pageAdmin'][i]['uid']);
+      page['pageAdmin'][i] = {
+        ...page['pageAdmin'][i],
+        'userName': addAdmin!['userName'],
+        'avatar': addAdmin['avatar'],
+      };
+    }
+    for (var i = 0; i < page['pageLiked'].length; i++) {
+      var pageUser =
+          await ProfileController().getUserInfo(page['pageLiked'][i]['uid']);
+      page['pageLiked'][i] = {
+        ...page['pageLiked'][i],
+        'userName': pageUser!['userName'],
+        'avatar': pageUser['avatar'],
+      };
+    }
+    print(page);
+    print('wanna pageinfo');
     setState(() {});
     print('This page was posted by ${page['pageAdmin'][0]}');
     return true;
@@ -476,7 +495,7 @@ class PostController extends ControllerMVC {
     pageData = {
       ...pageData,
       'pageAdmin': [
-        {'userName': UserManager.userInfo['userName']}
+        {'uid': UserManager.userInfo['uid']}
       ],
       'pageDate': DateTime.now().toString(),
       'pageLiked': [],
@@ -514,10 +533,10 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.pagesData.doc(pageId).get();
     var doc = querySnapshot;
     var liked = doc['pageLiked'];
-    var respon = await boolLiked(doc, UserManager.userInfo['userName']);
+    var respon = await boolLiked(doc, UserManager.userInfo['uid']);
+    print('respon$respon');
     if (respon) {
-      liked.removeWhere(
-          (item) => item['userName'] == UserManager.userInfo['userName']);
+      liked.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
           .collection(Helper.pagesField)
           .doc(pageId)
@@ -525,10 +544,7 @@ class PostController extends ControllerMVC {
       return true;
     } else {
       liked.add({
-        'userName': UserManager.userInfo['userName'],
-        'fullName':
-            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
-        'userAvatar': UserManager.userInfo['avatar']
+        'uid': UserManager.userInfo['uid'],
       });
       await FirebaseFirestore.instance
           .collection(Helper.pagesField)
@@ -539,13 +555,12 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in page interested or not
-  Future<bool> boolLiked(var pageData, String userName) async {
+  Future<bool> boolLiked(var pageData, String uid) async {
     var liked = pageData['pageLiked'];
     if (liked == null) {
       return false;
     }
-    var returnData =
-        liked.where((eachUser) => eachUser['userName'] == userName);
+    var returnData = liked.where((eachUser) => eachUser['uid'] == uid);
     print('you get bool of liked page');
     if (returnData.length == 0) {
       return false;
@@ -595,11 +610,11 @@ class PostController extends ControllerMVC {
     return 'success';
   }
 
-  Future<String> removeAdmin(String userName) async {
-    if (page['pageAdmin'][0]['userName'] == userName) {
+  Future<String> removeAdmin(String uid) async {
+    if (page['pageAdmin'][0] == uid) {
       return 'superAdmin';
     }
-    page['pageAdmin'].removeWhere((item) => item['userName'] == userName);
+    page['pageAdmin'].removeWhere((item) => item == uid);
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .doc(viewPageId)
@@ -821,7 +836,6 @@ class PostController extends ControllerMVC {
       'productTimeline': true,
       'productOnOffCommenting': true,
     };
-
 
     var notificationData;
     await FirebaseFirestore.instance
@@ -1210,7 +1224,8 @@ class PostController extends ControllerMVC {
     Map addData = {};
     bool flag = false;
     setState(() {});
-    await FirebaseFirestore.instance.collection(Helper.notificationField)
+    await FirebaseFirestore.instance
+        .collection(Helper.notificationField)
         .get()
         .then((value) async => {
           allNotifi = value.docs,
