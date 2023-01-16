@@ -1266,7 +1266,6 @@ class PostController extends ControllerMVC {
         .collection(Helper.notificationField)
         .get()
         .then((value) async => {
-<<<<<<< HEAD
           allNotifi = value.docs,
           realNotifi = [],
           for (int i = 0; i < allNotifi.length; i++){
@@ -1300,65 +1299,6 @@ class PostController extends ControllerMVC {
   }
 
   Future checkNotify (Map<String,dynamic> check) async {
-=======
-              allNotifi = value.docs,
-              realNotifi = [],
-              print(realNotifi),
-              print('realALL'),
-              // var currentUserInfo = ProfileController().
-              for (int i = 0; i < allNotifi.length; i++)
-                {
-                  if (allNotifi[i]['postAdminId'] !=
-                          UserManager.userInfo['uid'] &&
-                      UserManager.userInfo['checkNotifyTime'] <
-                          allNotifi[i]['notifyTime'])
-                    {
-                      await FirebaseFirestore.instance
-                          .collection(Helper.userField)
-                          .doc(allNotifi[i]['postAdminId'])
-                          .get()
-                          .then((userV) => {
-                                addData = {
-                                  ...addData,
-                                  'uid': value.docs[i].id,
-                                  'avatar': userV.data()!['avatar'],
-                                  'userName': userV.data()!['userName'],
-                                  'text': Helper.notificationText[allNotifi[i]
-                                      ['postType']]['text'],
-                                  'date': Helper.formatDate(
-                                      allNotifi[i]['notifyTime']),
-                                },
-                              }),
-                      realNotifi.add(addData),
-                      print('here is a realNotifi'),
-                    }
-                },
-              setState(() {}),
-            });
-  }
-
-  // userLookNotifiFlag(uid) async {
-  //   List allNotifi = [];
-  //   List addUser = [];
-  //   print(uid);
-  //   var notifyData;
-  //   await Helper.notifiCollection.doc(uid).get().then((value) => {
-  //     notifyData = value.data(),
-  //     print(notifyData),
-  //     addUser = notifyData['userList'],
-  //     addUser.add({
-  //       'userName': UserManager.userInfo['userName'],
-  //       }),
-  //     Helper.notifiCollection
-  //         .doc(uid)
-  //         .update({'userList': addUser}),
-  //   });
-  // }
-
-  var checkNotifyTime;
-
-  Future checkNotify(Map<String, dynamic> check) async {
->>>>>>> 70c82d0b226528535c1a25aad73633090a37f7cc
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
