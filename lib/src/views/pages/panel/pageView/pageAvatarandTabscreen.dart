@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -15,6 +16,7 @@ import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
 
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 class PageAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -45,6 +47,9 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
     {'title': 'Invite Friends', 'icon': Icons.person_add_alt_rounded},
     {'title': 'Settings', 'icon': Icons.settings},
   ];
+  bool payLoading = false;
+  bool likeStatus = false;
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +61,65 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
     avatar = con.page['pagePicture'];
     cover = con.page['pageCover'];
     _gotoHome();
+  }
+
+  pageLikeFunc() async {
+    print(con.page['pageAdmin'][0]['uid']);
+    var pageAdminInfo =
+        await ProfileController().getUserInfo(con.page['pageAdmin'][0]['uid']);
+    print(pageAdminInfo);
+    if (pageAdminInfo!['paywall']['likeMyPage'] == null ||
+        pageAdminInfo['paywall']['likeMyPage'] == '0' ||
+        con.page['pageAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
+      likeStatus = true;
+      setState(() {});
+      await con.likedPage(con.viewPageId).then((value) {
+        con.getSelectedPage(con.viewPageName);
+      });
+      likeStatus = false;
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        pageAdminInfo['paymail'].toString(),
+                        pageAdminInfo['paywall']['likeMyPage'],
+                        'Pay for view profile of user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            likeStatus = true,
+                            setState(() {}),
+                            await con.likedPage(con.viewPageId).then((value) {
+                              con.getSelectedPage(con.viewPageName);
+                            }),
+                            likeStatus = false,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for like or unlike this page',
+              text:
+                  'Admin of this page set price is ${pageAdminInfo['paywall']['likeMyPage']} for like or unlike this page',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   late PostController con;
