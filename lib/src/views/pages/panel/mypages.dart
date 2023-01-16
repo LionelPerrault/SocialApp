@@ -33,8 +33,8 @@ class MyPagesState extends mvc.StateMVC<MyPages> {
     getPageNow();
   }
 
-  void getPageNow() {
-    con.getPage('manage', UserManager.userInfo['userName']).then((value) => {
+  getPageNow() {
+    con.getPage('manage', UserManager.userInfo['uid']).then((value) => {
           myPages = value,
           print(myPages),
           setState(() {}),
@@ -63,21 +63,14 @@ class MyPagesState extends mvc.StateMVC<MyPages> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: myPages
-                  .map((page) => PageCell(
-                      pageTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/pages/${page['data']['pageUserName']}');
+                  .map(
+                    (page) => PageCell(
+                      pageInfo: page,
+                      refreshFunc: () {
+                        getPageNow();
                       },
-                      buttonFun: () {
-                        con.likedPage(page['id']).then((value) {
-                          getPageNow();
-                        });
-                      },
-                      picture: '',
-                      status: false,
-                      likes: page['data']['pageLiked'].length,
-                      header: page['data']['pageName'],
-                      liked: page['liked']))
+                    ),
+                  )
                   .toList(),
             ),
           ),

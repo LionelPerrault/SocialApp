@@ -49,7 +49,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
     add(widget.con);
     con = controller as PostController;
     _gotoHome();
-    if (userInfo['userName'] == con.group['groupAdmin'][0]['userName']) {
+    if (userInfo['uid'] == con.group['groupAdmin'][0]['uid']) {
       mainTabList.add({'title': 'Settings', 'icon': Icons.settings});
     }
   }

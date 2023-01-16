@@ -63,7 +63,7 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
   @override
   void initState() {
     Future.delayed(const Duration(milliseconds: 0), () async {
-      con.unlikedPages = await con.getPage('unliked', userInfo['userName']);
+      con.unlikedPages = await con.getPage('unliked', userInfo['uid']);
       setState(() {});
     });
     super.initState();
@@ -168,7 +168,7 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                                     .likedPage(con.unlikedPages[index]['id'])
                                     .then((value) async {
                                   con.unlikedPages = await con.getPage(
-                                      'unliked', userInfo['userName']);
+                                      'unliked', userInfo['uid']);
                                   isLiked[index] = false;
                                   setState(() {});
                                 });

@@ -69,4 +69,14 @@ class ProfileController extends ControllerMVC {
     });
     return getFlag;
   }
+
+  //get user user info using uid
+  Future<Map<String, dynamic>?> getUserInfo(uid) async {
+    var getShot = await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .doc(uid)
+        .get();
+    var getUser = getShot.data();
+    return getUser;
+  }
 }

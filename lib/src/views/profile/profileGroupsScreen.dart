@@ -140,23 +140,14 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
                         shrinkWrap: true,
                         crossAxisSpacing: 4.0,
                         children: myGroups
-                            .map((group) => GroupCell(
-                                groupTap: () {
-                                  Navigator.pushReplacementNamed(context,
-                                      '/groups/${group['data']['groupUserName']}');
+                            .map(
+                              (group) => GroupCell(
+                                groupData: group,
+                                refreshFunc: () {
+                                  getGroupNow();
                                 },
-                                buttonFun: () {
-                                  PostController()
-                                      .joinedGroup(group['id'])
-                                      .then((value) {
-                                    getGroupNow();
-                                  });
-                                },
-                                picture: group['data']['groupPicture'],
-                                status: false,
-                                joins: group['data']['groupJoined'].length,
-                                header: group['data']['groupName'],
-                                joined: group['joined']))
+                              ),
+                            )
                             .toList(),
                       ),
                     ),

@@ -5,8 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:uuid/uuid.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
 import '../models/userModel.dart';
@@ -416,16 +418,15 @@ class PostController extends ControllerMVC {
   String pageSubRoute;
 
   //get all page function
-  Future<List> getPage(String condition, String userName) async {
+  Future<List> getPage(String condition, String uid) async {
     List<Map> realAllpage = [];
     await Helper.pagesData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        var liked = await boolLiked(data, UserManager.userInfo['userName']);
-        if (userName == data['pageAdmin'][0]['userName'] &&
-            condition == 'manage') {
+        var liked = await boolLiked(data, UserManager.userInfo['uid']);
+        if (uid == data['pageAdmin'][0]['uid'] && condition == 'manage') {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
         } else if (condition == 'all') {
           if (data['pagePost']) {
@@ -452,9 +453,29 @@ class PostController extends ControllerMVC {
         .where('pageUserName', isEqualTo: viewPageName)
         .get();
     var value = reuturnValue.docs;
-    page = value[0];
-    viewPageId = page.id;
-    viewPageLiked = await boolLiked(page, UserManager.userInfo['userName']);
+    viewPageId = value[0].id;
+    page = value[0].data();
+    viewPageLiked = await boolLiked(page, UserManager.userInfo['uid']);
+    for (var i = 0; i < page['pageAdmin'].length; i++) {
+      var addAdmin =
+          await ProfileController().getUserInfo(page['pageAdmin'][i]['uid']);
+      page['pageAdmin'][i] = {
+        ...page['pageAdmin'][i],
+        'userName': addAdmin!['userName'],
+        'avatar': addAdmin['avatar'],
+      };
+    }
+    for (var i = 0; i < page['pageLiked'].length; i++) {
+      var pageUser =
+          await ProfileController().getUserInfo(page['pageLiked'][i]['uid']);
+      page['pageLiked'][i] = {
+        ...page['pageLiked'][i],
+        'userName': pageUser!['userName'],
+        'avatar': pageUser['avatar'],
+      };
+    }
+    print(page);
+    print('wanna pageinfo');
     setState(() {});
     print('This page was posted by ${page['pageAdmin'][0]}');
     return true;
@@ -474,7 +495,7 @@ class PostController extends ControllerMVC {
     pageData = {
       ...pageData,
       'pageAdmin': [
-        {'userName': UserManager.userInfo['userName']}
+        {'uid': UserManager.userInfo['uid']}
       ],
       'pageDate': DateTime.now().toString(),
       'pageLiked': [],
@@ -512,10 +533,10 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.pagesData.doc(pageId).get();
     var doc = querySnapshot;
     var liked = doc['pageLiked'];
-    var respon = await boolLiked(doc, UserManager.userInfo['userName']);
+    var respon = await boolLiked(doc, UserManager.userInfo['uid']);
+    print('respon$respon');
     if (respon) {
-      liked.removeWhere(
-          (item) => item['userName'] == UserManager.userInfo['userName']);
+      liked.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
           .collection(Helper.pagesField)
           .doc(pageId)
@@ -523,10 +544,7 @@ class PostController extends ControllerMVC {
       return true;
     } else {
       liked.add({
-        'userName': UserManager.userInfo['userName'],
-        'fullName':
-            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
-        'userAvatar': UserManager.userInfo['avatar']
+        'uid': UserManager.userInfo['uid'],
       });
       await FirebaseFirestore.instance
           .collection(Helper.pagesField)
@@ -537,13 +555,12 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in page interested or not
-  Future<bool> boolLiked(var pageData, String userName) async {
+  Future<bool> boolLiked(var pageData, String uid) async {
     var liked = pageData['pageLiked'];
     if (liked == null) {
       return false;
     }
-    var returnData =
-        liked.where((eachUser) => eachUser['userName'] == userName);
+    var returnData = liked.where((eachUser) => eachUser['uid'] == uid);
     print('you get bool of liked page');
     if (returnData.length == 0) {
       return false;
@@ -593,11 +610,11 @@ class PostController extends ControllerMVC {
     return 'success';
   }
 
-  Future<String> removeAdmin(String userName) async {
-    if (page['pageAdmin'][0]['userName'] == userName) {
+  Future<String> removeAdmin(String uid) async {
+    if (page['pageAdmin'][0] == uid) {
       return 'superAdmin';
     }
-    page['pageAdmin'].removeWhere((item) => item['userName'] == userName);
+    page['pageAdmin'].removeWhere((item) => item == uid);
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .doc(viewPageId)
@@ -629,16 +646,15 @@ class PostController extends ControllerMVC {
   String groupSubRoute;
 
   //get all group function
-  Future<List> getGroup(String condition, String userName) async {
+  Future<List> getGroup(String condition, String uid) async {
     List<Map> realAllGroups = [];
     await Helper.groupsData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        var joined = await boolJoined(data, UserManager.userInfo['userName']);
-        if (userName == data['groupAdmin'][0]['userName'] &&
-            condition == 'manage') {
+        var joined = await boolJoined(data, UserManager.userInfo['uid']);
+        if (uid == data['groupAdmin'][0]['uid'] && condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
         } else if (condition == 'all') {
           if (data['groupPost']) {
@@ -667,9 +683,28 @@ class PostController extends ControllerMVC {
         .where('groupUserName', isEqualTo: viewGroupName)
         .get();
     var value = reuturnValue.docs;
-    group = value[0];
-    viewGroupId = group.id;
+    viewGroupId = value[0].id;
+    group = value[0].data();
     viewGroupJoined = await boolJoined(group, UserManager.userInfo['userName']);
+    for (var i = 0; i < group['groupAdmin'].length; i++) {
+      var addAdmin =
+          await ProfileController().getUserInfo(group['groupAdmin'][i]['uid']);
+      group['groupAdmin'][i] = {
+        ...group['groupAdmin'][i],
+        'userName': addAdmin!['userName'],
+        'avatar': addAdmin['avatar'],
+      };
+    }
+    for (var i = 0; i < group['groupJoined'].length; i++) {
+      var groupUser =
+          await ProfileController().getUserInfo(group['groupJoined'][i]['uid']);
+      group['groupJoined'][i] = {
+        ...group['groupJoined'][i],
+        'userName': groupUser!['userName'],
+        'avatar': groupUser['avatar'],
+        'fullName': '${groupUser["firstName"]} ${groupUser["lastName"]}'
+      };
+    }
     setState(() {});
     print('This group was posted by ${group['groupAdmin'][0]['userName']}');
     return true;
@@ -689,7 +724,7 @@ class PostController extends ControllerMVC {
     groupData = {
       ...groupData,
       'groupAdmin': [
-        {'userName': UserManager.userInfo['userName']},
+        {'uid': UserManager.userInfo['uid']},
       ],
       'groupDate': DateTime.now().toString(),
       'groupJoined': [],
@@ -739,10 +774,7 @@ class PostController extends ControllerMVC {
       return true;
     } else {
       joined.add({
-        'userName': UserManager.userInfo['userName'],
-        'fullName':
-            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
-        'userAvatar': UserManager.userInfo['avatar']
+        'uid': UserManager.userInfo['uid'],
       });
       await FirebaseFirestore.instance
           .collection(Helper.groupsField)
@@ -753,13 +785,12 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in group interested or not
-  Future<bool> boolJoined(var groupData, String userName) async {
+  Future<bool> boolJoined(var groupData, String uid) async {
     var joined = groupData['groupJoined'];
     if (joined == null) {
       return false;
     }
-    var returnData =
-        joined.where((eachUser) => eachUser['userName'] == userName);
+    var returnData = joined.where((eachUser) => eachUser['uid'] == uid);
     print('you get bool of joined group');
     if (returnData.length == 0) {
       return false;
@@ -820,9 +851,7 @@ class PostController extends ControllerMVC {
       'productOnOffCommenting': true,
     };
 
-
     var notificationData;
-
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
@@ -830,12 +859,8 @@ class PostController extends ControllerMVC {
               notificationData = {
                 'postType': 'products',
                 'postId': value.id,
-                'postAdmin': {
-                  'userName': UserManager.userInfo['userName'],
-                  'userAvatar': UserManager.userInfo['avatar'],
-                  'fullName': UserManager.userInfo['fullName'],
-                },
-                'userList': [],
+                'postAdminId': UserManager.userInfo['uid'],
+                'notifyTime': DateTime.now().toString(),
               },
               saveNotifications(notificationData),
               Navigator.pushReplacementNamed(
@@ -1208,58 +1233,75 @@ class PostController extends ControllerMVC {
 
   var realNotifi = [];
 
-  userNotLookNotifi() async {
+  userLookDistiniction() async {
     List allNotifi = [];
+    Map addData = {};
     bool flag = false;
     setState(() {});
-    await FirebaseFirestore.instance.collection(Helper.notificationField)
+    await FirebaseFirestore.instance
+        .collection(Helper.notificationField)
         .get()
-        .then((value) => {
+        .then((value) async => {
           allNotifi = value.docs,
           realNotifi = [],
-          for (int i = 0; i < allNotifi.length; i++){
-            flag = false,
-              for (int j = 0; j < allNotifi[i]['userList'].length; j++)
-                {
-                  if (allNotifi[i]['userList'][j]['userName'] ==
-                      UserManager.userInfo['userName'])
-                    {flag = true}
-                },
-                if(!flag && allNotifi[i]['postAdmin']['userName']!=UserManager.userInfo['userName']){
-                  realNotifi.add(allNotifi[i]), setState(() {}),
-                }
+          print(realNotifi),
+          print('realALL'),
+          // var currentUserInfo = ProfileController().
+          for (int i = 0; i < allNotifi.length; i++){    
+            if(allNotifi[i]['postAdminId'] != UserManager.userInfo['uid'] && 
+              UserManager.userInfo['checkNotifyTime'] < allNotifi[i]['notifyTime']
+            ){
+              await FirebaseFirestore.instance.collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                    addData = {
+                      ...addData,
+                      'uid': value.docs[i].id,
+                      'avatar': userV.data()!['avatar'],
+                      'userName':userV.data()!['userName'],
+                      'text':Helper.notificationText[allNotifi[i]['postType']]['text'],
+                      'date':Helper.formatDate(allNotifi[i]['notifyTime']),
+                  },
+              }),
+              realNotifi.add(addData),
+              print('here is a realNotifi'),
+            }
           },
+           setState(() {}),
+                      
         });
   }
 
-  userLookNotifiFlag() async {
-    List allNotifi = [];
-    List addUser = [];
-    var flag = false;
-    await FirebaseFirestore.instance.collection(Helper.notificationField)
-        .get()
-        .then((value) => {
-          allNotifi = value.docs,
-          for(int i = 0; i < allNotifi.length; i ++){
-            for(int j = 0; j < allNotifi[i]['userList'].length; j ++){
-              if(allNotifi[i]['userList'][j]['userName'] == UserManager.userInfo){
-                flag = true,
-              },
-            },
-            if(!flag){
-                addUser = allNotifi[i]['userList'],
-                addUser.add({
-                  'userName': UserManager.userInfo['userName'],
-                  }),
-                FirebaseFirestore.instance.collection(Helper.notificationField)
-                    .doc(value.docs[i].id)
-                    .update({'userList': addUser}),
-            },
-          }
-        });
-  }
+  // userLookNotifiFlag(uid) async {
+  //   List allNotifi = [];
+  //   List addUser = [];
+  //   print(uid);
+  //   var notifyData;
+  //   await Helper.notifiCollection.doc(uid).get().then((value) => {
+  //     notifyData = value.data(),
+  //     print(notifyData),
+  //     addUser = notifyData['userList'],
+  //     addUser.add({
+  //       'userName': UserManager.userInfo['userName'],
+  //       }),
+  //     Helper.notifiCollection
+  //         .doc(uid)
+  //         .update({'userList': addUser}),
+  //   });
+  // }
 
-  var notifications;
+  var checkNotifyTime;
+
+  Future checkNotify (
+      Map<String,dynamic> check) async {
+    await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .doc(UserManager.userInfo['uid'])
+        .update(check);
+    print('check notify time');
+    setState(() { });
+  }
 
   var notifiCount = 0;
 

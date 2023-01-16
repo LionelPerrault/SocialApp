@@ -35,7 +35,7 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
   }
 
   void getGroupNow() {
-    con.getGroup('all', UserManager.userInfo['userName']).then((value) => {
+    con.getGroup('all', UserManager.userInfo['uid']).then((value) => {
           realAllGroups = value,
           realAllGroups.where((group) => group['data']['groupPost'] == true),
           print(realAllGroups),
@@ -65,21 +65,14 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: realAllGroups
-                  .map((group) => GroupCell(
-                      groupTap: () {
-                        Navigator.pushReplacementNamed(context,
-                            '/groups/${group['data']['groupUserName']}');
+                  .map(
+                    (group) => GroupCell(
+                      groupData: group,
+                      refreshFunc: () {
+                        getGroupNow();
                       },
-                      buttonFun: () {
-                        con.joinedGroup(group['id']).then((value) {
-                          getGroupNow();
-                        });
-                      },
-                      picture: group['data']['groupPicture'],
-                      status: false,
-                      joins: group['data']['groupJoined'].length,
-                      header: group['data']['groupName'],
-                      joined: group['joined']))
+                    ),
+                  )
                   .toList(),
             ),
           ),
