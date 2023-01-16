@@ -35,7 +35,7 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   }
 
   void getEventNow() {
-    con.getEvent('all', UserManager.userInfo['userName']).then((value) => {
+    con.getEvent('all', UserManager.userInfo['uid']).then((value) => {
           realAllEvents = value,
           print(realAllEvents),
           setState(() {}),

@@ -44,11 +44,9 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
         .getUserInfo(widget.groupData['data']['groupAdmin'][0]['uid']);
     print(groupAdminInfo);
     if (groupAdminInfo!['paywall']['joinMyGroup'] == null ||
-            groupAdminInfo['paywall']['joinMyGroup'] ==
-                '0' /*||
+        groupAdminInfo['paywall']['joinMyGroup'] == '0' ||
         widget.groupData['data']['groupAdmin'][0]['uid'] ==
-            UserManager.userInfo['uid']*/
-        ) {
+            UserManager.userInfo['uid']) {
       loading = true;
       setState(() {});
       await con.joinedGroup(widget.groupData['id']).then((value) {

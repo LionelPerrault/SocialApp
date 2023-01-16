@@ -115,7 +115,7 @@ class PostController extends ControllerMVC {
   String eventSubRoute;
 
   //get all event function
-  Future<List> getEvent(String condition, String userName) async {
+  Future<List> getEvent(String condition, String uid) async {
     var ae = await Helper.eventsData.get();
     allEvent = ae.docs;
     setState(() {});
@@ -127,11 +127,10 @@ class PostController extends ControllerMVC {
         var id = doc[i].id;
         var data = doc[i];
         var interested =
-            await boolInterested(data, UserManager.userInfo['userName']);
+            await boolInterested(data, UserManager.userInfo['uid']);
         //closed event
         if (data['eventPrivacy'] == 'closed') {
-          if (data['eventAdmin'][0]['userName'] == userName &&
-              condition == 'manage') {
+          if (data['eventAdmin'][0]['uid'] == uid && condition == 'manage') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
           }
@@ -139,10 +138,9 @@ class PostController extends ControllerMVC {
         //security event
         else /*if (data['eventPrivacy'] == 'security') */ {
           var inInterested =
-              await boolInterested(data, UserManager.userInfo['userName']);
-          var inInvited =
-              await boolInvited(data, UserManager.userInfo['userName']);
-          var inGoing = await boolGoing(data, UserManager.userInfo['userName']);
+              await boolInterested(data, UserManager.userInfo['uid']);
+          var inInvited = await boolInvited(data, UserManager.userInfo['uid']);
+          var inGoing = await boolGoing(data, UserManager.userInfo['uid']);
           if (inInterested && condition == 'interested') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
@@ -152,7 +150,7 @@ class PostController extends ControllerMVC {
           } else if (inGoing && condition == 'going') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
-          } else if (userName == data['eventAdmin'][0]['userName'] &&
+          } else if (uid == data['eventAdmin'][0]['uid'] &&
               condition == 'manage') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
@@ -182,12 +180,51 @@ class PostController extends ControllerMVC {
     await Helper.eventsData.doc(id).get().then((value) async {
       event = value.data();
       viewEventInterested =
-          await boolInterested(value, UserManager.userInfo['userName']);
-      viewEventGoing = await boolGoing(value, UserManager.userInfo['userName']);
-      viewEventInvited =
-          await boolInvited(value, UserManager.userInfo['userName']);
+          await boolInterested(value, UserManager.userInfo['uid']);
+      viewEventGoing = await boolGoing(value, UserManager.userInfo['uid']);
+      viewEventInvited = await boolInvited(value, UserManager.userInfo['uid']);
+      for (var i = 0; i < event['eventAdmin'].length; i++) {
+        var addAdmin = await ProfileController()
+            .getUserInfo(event['eventAdmin'][i]['uid']);
+        event['eventAdmin'][i] = {
+          ...event['eventAdmin'][i],
+          'userName': addAdmin!['userName'],
+          'avatar': addAdmin['avatar'],
+          'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+        };
+      }
+      for (var i = 0; i < event['eventInterested'].length; i++) {
+        var addAdmin = await ProfileController()
+            .getUserInfo(event['eventInterested'][i]['uid']);
+        event['eventInterested'][i] = {
+          ...event['eventInterested'][i],
+          'userName': addAdmin!['userName'],
+          'avatar': addAdmin['avatar'],
+          'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+        };
+      }
+      for (var i = 0; i < event['eventInvited'].length; i++) {
+        var addAdmin = await ProfileController()
+            .getUserInfo(event['eventInvited'][i]['uid']);
+        event['eventInvited'][i] = {
+          ...event['eventInvited'][i],
+          'userName': addAdmin!['userName'],
+          'avatar': addAdmin['avatar'],
+          'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+        };
+      }
+      for (var i = 0; i < event['eventInvites'].length; i++) {
+        var addAdmin = await ProfileController()
+            .getUserInfo(event['eventInvites'][i]['uid']);
+        event['eventInvites'][i] = {
+          ...event['eventInvites'][i],
+          'userName': addAdmin!['userName'],
+          'avatar': addAdmin['avatar'],
+          'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+        };
+      }
       setState(() {});
-      print('This event was posted by ${event['eventAdmin']}');
+      print('This event was posted by ${event['eventAdmin'][0]["fullName"]}');
     });
     return true;
   }
@@ -210,14 +247,14 @@ class PostController extends ControllerMVC {
       ...eventData,
       'eventAdmin': [
         {
-          'userName': UserManager.userInfo['userName'],
-          'fullName': UserManager.userInfo['fullName']
+          'uid': UserManager.userInfo['uid'],
         }
       ],
       'eventDate': DateTime.now().toString(),
       'eventGoing': [],
       'eventInterested': [],
       'eventInvited': [],
+      'eventInvites': [],
       'eventPost': false,
       'eventPicture': '',
       'eventCanPub': true,
@@ -251,10 +288,10 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var interested = doc['eventInterested'];
-    var respon = await boolInterested(doc, UserManager.userInfo['userName']);
+    var respon = await boolInterested(doc, UserManager.userInfo['uid']);
     if (respon) {
-      interested.removeWhere(
-          (item) => item['userName'] == UserManager.userInfo['userName']);
+      interested
+          .removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
           .collection(Helper.eventsField)
           .doc(eventId)
@@ -262,10 +299,7 @@ class PostController extends ControllerMVC {
       return true;
     } else {
       interested.add({
-        'userName': UserManager.userInfo['userName'],
-        'fullName':
-            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
-        'userAvatar': UserManager.userInfo['avatar']
+        'uid': UserManager.userInfo['uid'],
       });
       await FirebaseFirestore.instance
           .collection(Helper.eventsField)
@@ -276,13 +310,12 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event interested or not
-  Future<bool> boolInterested(var eventData, String userName) async {
+  Future<bool> boolInterested(var eventData, String uid) async {
     var interested = eventData['eventInterested'];
     if (interested == null) {
       return false;
     }
-    var returnData =
-        interested.where((eachUser) => eachUser['userName'] == userName);
+    var returnData = interested.where((eachUser) => eachUser['uid'] == uid);
     print('you get bool of interested event');
     if (returnData.length == 0) {
       return false;
@@ -297,10 +330,9 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var going = doc['eventGoing'];
-    var respon = await boolGoing(doc, UserManager.userInfo['userName']);
+    var respon = await boolGoing(doc, UserManager.userInfo['uid']);
     if (respon) {
-      going.removeWhere(
-          (item) => item['userName'] == UserManager.userInfo['userName']);
+      going.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
           .collection(Helper.eventsField)
           .doc(eventId)
@@ -308,10 +340,7 @@ class PostController extends ControllerMVC {
       return true;
     } else {
       going.add({
-        'userName': UserManager.userInfo['userName'],
-        'fullName':
-            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
-        'userAvatar': UserManager.userInfo['avatar']
+        'uid': UserManager.userInfo['uid'],
       });
       await FirebaseFirestore.instance
           .collection(Helper.eventsField)
@@ -322,13 +351,12 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event going or not
-  Future<bool> boolGoing(var eventData, String userName) async {
+  Future<bool> boolGoing(var eventData, String uid) async {
     var going = eventData['eventGoing'];
     if (going == null) {
       return false;
     }
-    var returnData =
-        going.where((eachUser) => eachUser['userName'] == userName);
+    var returnData = going.where((eachUser) => eachUser['uid'] == uid);
     print('you get bool of going event');
     if (returnData.length == 0) {
       return false;
@@ -343,10 +371,10 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var invited = doc['eventInvited'];
-    var respon = await boolInvited(doc, UserManager.userInfo['userName']);
+    var respon = await boolInvited(doc, UserManager.userInfo['uid']);
     if (respon) {
       invited.removeWhere(
-          (item) => item['userName'] == UserManager.userInfo['userName']);
+          (item) => item['userName'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
           .collection(Helper.eventsField)
           .doc(eventId)
@@ -354,10 +382,7 @@ class PostController extends ControllerMVC {
       return true;
     } else {
       invited.add({
-        'userName': UserManager.userInfo['userName'],
-        'fullName':
-            '${UserManager.userInfo['firstName']} ${UserManager.userInfo['lastName']}',
-        'userAvatar': UserManager.userInfo['avatar']
+        'uid': UserManager.userInfo['uid'],
       });
       await FirebaseFirestore.instance
           .collection(Helper.eventsField)
@@ -368,13 +393,12 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event invited or not
-  Future<bool> boolInvited(var eventData, String userName) async {
+  Future<bool> boolInvited(var eventData, String uid) async {
     var invited = eventData['eventInvited'];
     if (invited == null) {
       return false;
     }
-    var returnData =
-        invited.where((eachUser) => eachUser['userName'] == userName);
+    var returnData = invited.where((eachUser) => eachUser['uid'] == uid);
     print('you get bool of invited event');
     if (returnData.length == 0) {
       return false;
@@ -685,7 +709,8 @@ class PostController extends ControllerMVC {
     var value = reuturnValue.docs;
     viewGroupId = value[0].id;
     group = value[0].data();
-    viewGroupJoined = await boolJoined(group, UserManager.userInfo['userName']);
+    viewGroupJoined = await boolJoined(group, UserManager.userInfo['uid']);
+    setState(() {});
     for (var i = 0; i < group['groupAdmin'].length; i++) {
       var addAdmin =
           await ProfileController().getUserInfo(group['groupAdmin'][i]['uid']);
@@ -763,10 +788,9 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
     var joined = doc['groupJoined'];
-    var respon = await boolJoined(doc, UserManager.userInfo['userName']);
+    var respon = await boolJoined(doc, UserManager.userInfo['uid']);
     if (respon) {
-      joined.removeWhere(
-          (item) => item['userName'] == UserManager.userInfo['userName']);
+      joined.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
           .collection(Helper.groupsField)
           .doc(groupId)
@@ -840,9 +864,7 @@ class PostController extends ControllerMVC {
     productData = {
       ...productData,
       'productAdmin': {
-        'userName': UserManager.userInfo['userName'],
-        'userAvatar': UserManager.userInfo['avatar'],
-        'fullName': UserManager.userInfo['fullName'],
+        'uid': UserManager.userInfo['uid'],
       },
       'productDate': DateTime.now().toString(),
       'productPost': false,
@@ -1242,35 +1264,40 @@ class PostController extends ControllerMVC {
         .collection(Helper.notificationField)
         .get()
         .then((value) async => {
-          allNotifi = value.docs,
-          realNotifi = [],
-          print(realNotifi),
-          print('realALL'),
-          // var currentUserInfo = ProfileController().
-          for (int i = 0; i < allNotifi.length; i++){    
-            if(allNotifi[i]['postAdminId'] != UserManager.userInfo['uid'] && 
-              UserManager.userInfo['checkNotifyTime'] < allNotifi[i]['notifyTime']
-            ){
-              await FirebaseFirestore.instance.collection(Helper.userField)
-                .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) => {
-                    addData = {
-                      ...addData,
-                      'uid': value.docs[i].id,
-                      'avatar': userV.data()!['avatar'],
-                      'userName':userV.data()!['userName'],
-                      'text':Helper.notificationText[allNotifi[i]['postType']]['text'],
-                      'date':Helper.formatDate(allNotifi[i]['notifyTime']),
-                  },
-              }),
-              realNotifi.add(addData),
-              print('here is a realNotifi'),
-            }
-          },
-           setState(() {}),
-                      
-        });
+              allNotifi = value.docs,
+              realNotifi = [],
+              print(realNotifi),
+              print('realALL'),
+              // var currentUserInfo = ProfileController().
+              for (int i = 0; i < allNotifi.length; i++)
+                {
+                  if (allNotifi[i]['postAdminId'] !=
+                          UserManager.userInfo['uid'] &&
+                      UserManager.userInfo['checkNotifyTime'] <
+                          allNotifi[i]['notifyTime'])
+                    {
+                      await FirebaseFirestore.instance
+                          .collection(Helper.userField)
+                          .doc(allNotifi[i]['postAdminId'])
+                          .get()
+                          .then((userV) => {
+                                addData = {
+                                  ...addData,
+                                  'uid': value.docs[i].id,
+                                  'avatar': userV.data()!['avatar'],
+                                  'userName': userV.data()!['userName'],
+                                  'text': Helper.notificationText[allNotifi[i]
+                                      ['postType']]['text'],
+                                  'date': Helper.formatDate(
+                                      allNotifi[i]['notifyTime']),
+                                },
+                              }),
+                      realNotifi.add(addData),
+                      print('here is a realNotifi'),
+                    }
+                },
+              setState(() {}),
+            });
   }
 
   // userLookNotifiFlag(uid) async {
@@ -1293,14 +1320,13 @@ class PostController extends ControllerMVC {
 
   var checkNotifyTime;
 
-  Future checkNotify (
-      Map<String,dynamic> check) async {
+  Future checkNotify(Map<String, dynamic> check) async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
         .update(check);
     print('check notify time');
-    setState(() { });
+    setState(() {});
   }
 
   var notifiCount = 0;

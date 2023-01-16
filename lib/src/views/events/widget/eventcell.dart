@@ -5,7 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
 class EventCell extends StatefulWidget {
@@ -24,13 +28,76 @@ class EventCell extends StatefulWidget {
 
 class EventCellState extends mvc.StateMVC<EventCell> {
   late PostController con;
-  var loading = false;
+  bool loading = false;
+  bool payLoading = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     add(widget.con);
     con = controller as PostController;
+  }
+
+  eventInterestedFunc() async {
+    print(widget.eventData['data']['eventAdmin'][0]['uid']);
+    var eventAdminInfo = await ProfileController()
+        .getUserInfo(widget.eventData['data']['eventAdmin'][0]['uid']);
+    print(eventAdminInfo);
+    if (eventAdminInfo!['paywall']['interestMyEvent'] == null ||
+        eventAdminInfo['paywall']['interestMyEvent'] == '0' ||
+        widget.eventData['data']['groupAdmin'][0]['uid'] ==
+            UserManager.userInfo['uid']) {
+      loading = true;
+      setState(() {});
+      await con.interestedEvent(widget.eventData['id']).then((value) {
+        widget.buttonFun();
+      });
+      loading = false;
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        eventAdminInfo['paymail'].toString(),
+                        eventAdminInfo['paywall']['interestMyEvent'],
+                        'Pay for interested event of user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            loading = true,
+                            setState(() {}),
+                            await con
+                                .interestedEvent(widget.eventData['id'])
+                                .then((value) {
+                              widget.buttonFun();
+                            }),
+                            loading = false,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for interested or uninterested this page',
+              text:
+                  'Admin of this event set price is ${eventAdminInfo['paywall']['interestMyEvent']} for interested or uninterested this page',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -85,15 +152,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                             minimumSize: const Size(120, 35),
                             maximumSize: const Size(120, 35)),
                         onPressed: () async {
-                          loading = true;
-                          setState(() {});
-                          con.interestedEvent(widget.eventData['id']).then(
-                            (value) async {
-                              await widget.buttonFun();
-                              loading = false;
-                              setState(() {});
-                            },
-                          );
+                          eventInterestedFunc();
                         },
                         child: loading
                             ? Container(
