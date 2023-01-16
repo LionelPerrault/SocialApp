@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -166,6 +167,7 @@ class UserController extends ControllerMVC {
       ...signUpUserInfo,
       'paymail': paymail,
       'avatar': '',
+      'isEmailVerify': false,
       'walletAddress': walletAddress,
       // 'relysiaEmail': relysiaEmail,
       // 'relysiaPassword': relysiaPassword,
@@ -183,7 +185,7 @@ class UserController extends ControllerMVC {
       // 'relysiaPassword': relysiaPassword,
       'password': password,
       'isStarted': 'false',
-      'isVerify': 'false',
+      'isEmailVerify': false,
       'isRememberme': 'false',
       'avatar': '',
       'uid': uuid,
@@ -261,7 +263,7 @@ class UserController extends ControllerMVC {
           ...j,
           'fullName': '${j['firstName']} ${j['lastName']}',
           'password': password,
-          'isVerify': isVerify.toString(),
+          'isVerify': isVerify,
           'isRememberme': isRememberme.toString(),
           'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
@@ -360,8 +362,7 @@ class UserController extends ControllerMVC {
     }
 
     ActionCodeSettings acs = ActionCodeSettings(
-        url:
-            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification",
+        url: "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;
@@ -722,3 +723,4 @@ class UserController extends ControllerMVC {
     return payResult;
   }
 }
+      
