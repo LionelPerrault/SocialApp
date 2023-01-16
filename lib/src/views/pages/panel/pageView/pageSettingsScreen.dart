@@ -924,10 +924,15 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                 const Color.fromARGB(255, 243, 243, 243),
                             // tileColor: Colors.white,
                             enabled: true,
-                            leading: const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
-                            ),
+                            leading: con.page['pageLiked'][index]['avatar'] ==
+                                    ''
+                                ? CircleAvatar(
+                                    radius: 17,
+                                    child: SvgPicture.network(Helper.avatar))
+                                : CircleAvatar(
+                                    radius: 17,
+                                    backgroundImage: NetworkImage(con
+                                        .page['pageAdmin'][index]['avatar'])),
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

@@ -36,7 +36,7 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
     getPageNow();
   }
 
-  void getPageNow() {
+  getPageNow() {
     PostController()
         .getPage('manage', UserManager.userInfo['uid'])
         .then((value) => {
@@ -144,6 +144,9 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
                             .map(
                               (page) => PageCell(
                                 pageInfo: page,
+                                refreshFunc: () {
+                                  getPageNow();
+                                },
                               ),
                             )
                             .toList(),

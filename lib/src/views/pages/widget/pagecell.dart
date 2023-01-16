@@ -5,16 +5,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
 class PageCell extends StatefulWidget {
   PageCell({
     super.key,
     required this.pageInfo,
+    required this.refreshFunc,
   }) : con = PostController();
   Map pageInfo;
   late PostController con;
+  var refreshFunc;
   @override
   State createState() => PageCellState();
 }
@@ -22,6 +28,7 @@ class PageCell extends StatefulWidget {
 class PageCellState extends mvc.StateMVC<PageCell> {
   late PostController con;
   var loading = false;
+  var payLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -31,13 +38,65 @@ class PageCellState extends mvc.StateMVC<PageCell> {
   }
 
   pageLikeFunc() async {
-    loading = true;
-    setState(() {});
-    await con.likedPage(widget.pageInfo['id']).then((value) {
-      // getPageNow();
-    });
-    loading = false;
-    setState(() {});
+    print(widget.pageInfo['data']['pageAdmin'][0]['uid']);
+    var pageAdminInfo = await ProfileController()
+        .getUserInfo(widget.pageInfo['data']['pageAdmin'][0]['uid']);
+    print(pageAdminInfo);
+    if (pageAdminInfo!['paywall']['likeMyPage'] == null ||
+        pageAdminInfo['paywall']['likeMyPage'] == '0' ||
+        widget.pageInfo['data']['pageAdmin'][0]['uid'] ==
+            UserManager.userInfo['uid']) {
+      loading = true;
+      setState(() {});
+      await con.likedPage(widget.pageInfo['id']).then((value) {
+        widget.refreshFunc();
+      });
+      loading = false;
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        pageAdminInfo['paymail'].toString(),
+                        pageAdminInfo['paywall']['likeMyPage'],
+                        'Pay for view profile of user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            loading = true,
+                            setState(() {}),
+                            await con
+                                .likedPage(widget.pageInfo['id'])
+                                .then((value) {
+                              widget.refreshFunc();
+                            }),
+                            loading = false,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for like or unlike this page',
+              text:
+                  'Admin of this page set price is ${pageAdminInfo['paywall']['likeMyPage']} for like or unlike this page',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override

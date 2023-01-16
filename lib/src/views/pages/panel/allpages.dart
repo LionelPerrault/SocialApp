@@ -34,7 +34,7 @@ class AllPagesState extends mvc.StateMVC<AllPages> {
     getPageNow();
   }
 
-  void getPageNow() {
+  getPageNow() {
     con.getPage('all', UserManager.userInfo['uid']).then((value) => {
           realAllPage = value,
           realAllPage.where((event) => event['data']['eventPost'] == true),
@@ -68,6 +68,9 @@ class AllPagesState extends mvc.StateMVC<AllPages> {
                   .map(
                     (page) => PageCell(
                       pageInfo: page,
+                      refreshFunc: () {
+                        getPageNow();
+                      },
                     ),
                   )
                   .toList(),

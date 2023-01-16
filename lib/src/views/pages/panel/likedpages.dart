@@ -34,7 +34,7 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
     getPageNow();
   }
 
-  void getPageNow() {
+  getPageNow() {
     con.getPage('liked', UserManager.userInfo['uid']).then((value) => {
           likedPages = value,
           likedPages.where((event) => event['data']['eventPost'] == true),
@@ -68,6 +68,9 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
                   .map(
                     (page) => PageCell(
                       pageInfo: page,
+                      refreshFunc: () {
+                        getPageNow();
+                      },
                     ),
                   )
                   .toList(),

@@ -33,7 +33,7 @@ class MyPagesState extends mvc.StateMVC<MyPages> {
     getPageNow();
   }
 
-  void getPageNow() {
+  getPageNow() {
     con.getPage('manage', UserManager.userInfo['uid']).then((value) => {
           myPages = value,
           print(myPages),
@@ -66,6 +66,9 @@ class MyPagesState extends mvc.StateMVC<MyPages> {
                   .map(
                     (page) => PageCell(
                       pageInfo: page,
+                      refreshFunc: () {
+                        getPageNow();
+                      },
                     ),
                   )
                   .toList(),
