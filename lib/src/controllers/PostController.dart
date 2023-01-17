@@ -884,6 +884,7 @@ class PostController extends ControllerMVC {
                 'postAdminId': UserManager.userInfo['uid'],
                 'notifyTime': DateTime.now().toString(),
                 'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'userList': [],
               },
               saveNotifications(notificationData),
               Navigator.pushReplacementNamed(
@@ -1253,85 +1254,25 @@ class PostController extends ControllerMVC {
         .collection(Helper.notificationField)
         .add(data);
   }
-  var tsNotifyTime = 0;
-  var userCheckTime = 0;
-  var uct = 0;
-  var allNotifiLength = 0;
-  Future<List> userLookDistiniction() async {
-    List allNotifi = [];
-    Map addData = {};
-    var realNotifi = [];
-    setState(() {});
-    await FirebaseFirestore.instance
-        .collection(Helper.notificationField)
-        .get()
-        .then((value) async => {
-          allNotifi = value.docs,
-          realNotifi = [],
-          setState(() {},),
-          for (int i = 0; i < allNotifi.length; i++){
-            await FirebaseFirestore.instance.collection(Helper.userField)
-                .doc(UserManager.userInfo['uid'])
-                .get()
-                .then((v) async=> {
-                  if(v.data()!['checkNotifyTime'] == null){
-                    await FirebaseFirestore.instance
-                      .collection(Helper.userField)
-                      .doc(UserManager.userInfo['uid'])
-                      .update({'checkNotifyTime': 0}),
-                  },
-                  uct = v.data()!['checkNotifyTime'],
-                  print(allNotifi[i]['tsNT']),
-                  print('above is time post product'),
-                  print(uct),
-                  print('above is time user checked'),
-                  if(allNotifi[i]['postAdminId'] != UserManager.userInfo['uid'] 
-                    && allNotifi[i]['tsNT'] > uct )
-                  {
-                    await FirebaseFirestore.instance.collection(Helper.userField)
-                      .doc(allNotifi[i]['postAdminId'])
-                      .get()
-                      .then((userV) => {
-                          addData = {
-                            ...addData,
-                            'uid': value.docs[i].id,
-                            'avatar': userV.data()!['avatar'],
-                            'userName':userV.data()!['userName'],
-                            'text':Helper.notificationText[allNotifi[i]['postType']]['text'],
-                            'date':Helper.formatDate(allNotifi[i]['notifyTime']),
-                        },
-                        realNotifi.add(addData),
-                        setState(() { }),
-                        }),
-                    print(realNotifi.length),            
-                    print('still no arrived'),
-                    allNotifiLength = realNotifi.length,
-                    print('all length'),
-                    setState((){}),
-                  },
-                }),
-                print(realNotifi.length),
-                print('above is rNlength'),
-            },
-        });
 
-        print(realNotifi.length);
-        print('above is realNotifi.length for last');
-        return realNotifi;
+  var realNotifi = [];
+  var allNotification = [];
+
+  checkNotification(notiUid, userUid) async {
+    var notiSnap = await Helper.notifiCollection.doc(notiUid).get();
+    var allNotifi = notiSnap.data();
+    allNotifi!['userList'].add(userUid);
+    await Helper.notifiCollection
+        .doc(notiUid)
+        .update({'userList': allNotifi['userList']});
   }
 
-  Future checkNotify (int check) async {
+  Future checkNotify(int check) async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
         .update({'checkNotifyTime': check});
     print('check notify time');
-  }
-
-
-  streamPosts() {
-    var stream = Helper.notifiCollection.snapshots();
-    return stream;
   }
 
   getPostData(data) async {
