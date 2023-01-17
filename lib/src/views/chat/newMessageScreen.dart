@@ -47,9 +47,8 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
 
   chatWithOtherUser(chatUserInfo) async {
     print(chatUserInfo);
-    if (/*chatUserInfo['paywall']['likeMyPage'] == null ||
-        chatUserInfo['paywall']['likeMyPage'] == '0'*/
-        false) {
+    if (chatUserInfo['paywall']['likeMyPage'] == null ||
+        chatUserInfo['paywall']['likeMyPage'] == '0') {
       con.avatar = chatUserInfo['avatar'];
       con.chattingUser = chatUserInfo['userName'];
       con.newRFirstName = chatUserInfo['firstName'];
