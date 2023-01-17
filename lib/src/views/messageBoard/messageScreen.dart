@@ -230,12 +230,10 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                 )
                               ],
                             ),
-                            ShnatterSearchBox()
                           ],
                         )),
                   )
                 : const SizedBox(),
-            ChatScreen(),
           ],
         ));
   }
@@ -265,27 +263,5 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
         ],
       )
     );
-  // Scaffold(
-    //   appBar: AppBar(
-    //       toolbarHeight: 40,
-    //       backgroundColor: Color.fromRGBO(51, 103, 214, 1),
-    //       automaticallyImplyLeading: false,
-    //       leading: IconButton(
-    //           icon: Icon(
-    //             Icons.arrow_upward,
-    //             color: Colors.white,
-    //             size: 16,
-    //           ),
-    //           onPressed: () {
-    //             // con.hidden = false;
-    //             // con.isMessageTap = 'all-list';
-    //             // setState(() {});
-    //           }),
-    //       title: Text(
-    //         'Chats',
-    //         style: TextStyle(color: Colors.white, fontSize: 16),
-    //       )),
-    //   body: Container(),
-    // );
   }
 }
