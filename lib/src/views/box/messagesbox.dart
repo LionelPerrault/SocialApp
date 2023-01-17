@@ -84,6 +84,7 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                   itemBuilder: (context, index) => Material(
                       child: ListTile(
                           onTap: () {
+                            print('.............................object');
                             con.avatar = con.newMessage[index]['avatar'];
                             con.isMessageTap = 'message-list';
                             con.hidden = false;

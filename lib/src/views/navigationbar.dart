@@ -121,7 +121,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     );
     final Stream<QuerySnapshot> stream = postCon.streamPosts();
     stream.listen((event) async {
-      await postCon.userLookDistiniction();
+      // await postCon.userLookDistiniction();
       setState(() {});
       print('hey here!!!!');
     });

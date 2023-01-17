@@ -288,13 +288,11 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
       await FirebaseAuth.instance.currentUser!.reload();
       var user = await FirebaseAuth.instance.currentUser!;
       if (user.emailVerified) {
-        print('$isEmailVerify, 111111111111111111111111111111bject');
         setState(() { 
           isEmailVerify = true;
         });
         timer.cancel();
       }else{
-        print('$isEmailVerify, oasdfi9wi390ruoasdjf9uw38japsdjfp8aue3111111111111111111111111111111111bject');
         setState(() {
           isEmailVerify = false;
         });
