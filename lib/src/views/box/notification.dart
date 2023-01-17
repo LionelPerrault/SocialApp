@@ -6,7 +6,7 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-
+import 'package:shnatter/src/views/navigationbar.dart';
 class ShnatterNotification extends StatefulWidget {
   ShnatterNotification({Key? key})
       : con = PostController(),
@@ -18,16 +18,19 @@ class ShnatterNotification extends StatefulWidget {
 
 class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   //
+  var navbar = ShnatterNavigationState;
   bool isSound = false;
   
   late PostController con;
-
+  var realNotification = [];
   @override
   void initState() {
     add(widget.con);
     con = controller as PostController;
     super.initState();
   }
+  
+  var userCheckTime = 0;
   
 
   @override
@@ -89,26 +92,23 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 height: 300,
                 //size: Size(100,100),
                 child: ListView.separated(
-                  itemCount: con.realNotifi.length,
+                  itemCount: realNotification.length,
                   itemBuilder: 
                   (context, index) => Material(
                     child: ListTile(
                       onTap: () {
-                        print("tap!");
-                        // con.userLookNotifiFlag(con.realNotifi[index]['uid']);
-                        con.checkNotifyTime = {
-                          'checkNotifyTime': DateTime.now().toString()
-                        };
-                        con.checkNotify(con.checkNotifyTime);
-                        print('above is checknotifyTime');
+                        userCheckTime = DateTime.now().millisecondsSinceEpoch;
+                        
+                        con.checkNotify(userCheckTime);
+                        realNotification[index].length = 0;
                         setState(() {});
                       },
                       hoverColor: const Color.fromARGB(255, 243, 243, 243),
                       enabled: true,
-                      leading: con.realNotifi[index]['avatar'] != ''
+                      leading: realNotification[index]['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                  con.realNotifi[index]['avatar'],
+                                  realNotification[index]['avatar'],
                                 ))
                               : CircleAvatar(
                                   child : SvgPicture.network(Helper.avatar),
@@ -118,18 +118,18 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            con.realNotifi[index]['userName'],
+                            realNotification[index]['userName'],
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 10),
                           ),
                           Text(
-                            con.realNotifi[index]['text'],
+                            realNotification[index]['text'],
                             style: const TextStyle(
                                 fontWeight: FontWeight.normal, fontSize: 10
                             )
                           ),
                           Text(
-                            con.realNotifi[index]['date'],
+                            realNotification[index]['date'],
                             style: const TextStyle(
                                 fontWeight: FontWeight.normal, fontSize: 8
                             ),  

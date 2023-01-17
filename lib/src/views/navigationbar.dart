@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -57,6 +58,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   var chatCon = ChatController();
   var peopleCon = PeopleController();
   var postCon = PostController();
+  var noti = ShnatterNotificationState();
+  var badgeCount = [];
   //
   @override
   void initState() {
@@ -121,9 +124,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     );
     final Stream<QuerySnapshot> stream = postCon.streamPosts();
     stream.listen((event) async {
-      // await postCon.userLookDistiniction();
-      setState(() {});
-      print('hey here!!!!');
+      await postCon.userLookDistiniction();
     });
     super.initState();
   }
@@ -161,9 +162,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   }
 
   Widget buildSmallSize() {
-    Future.delayed(
-        const Duration(microseconds: 300), () => {widget.onSearchBarDismiss()});
-
+    //Future.delayed(
+        // const Duration(microseconds: 300), () => {widget.onSearchBarDismiss()});
+    print(badgeCount.length);
+    print('navigationbar badge');
     return Stack(
       children: [
         Container(
@@ -330,18 +332,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             width: 20,
                             height: 20,
                           ),
-                          postCon.realNotifi.isEmpty
+                          badgeCount.length == 0
                               ? const SizedBox()
                               : Badge(
-                                  toAnimate: false,
-                                  shape: BadgeShape.square,
-                                  badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(20),
-                                  badgeContent: Text(
-                                      postCon.realNotifi.length.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                ),
+                                    toAnimate: false,
+                                    shape: BadgeShape.square,
+                                    badgeColor: Colors.deepPurple,
+                                    borderRadius: BorderRadius.circular(20),
+                                    badgeContent: Text(
+                                        badgeCount.length.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 13)),
+                                  ),
                         ],
                       ),
                     ),
@@ -639,7 +641,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             width: 20,
                             height: 20,
                           ),
-                          postCon.realNotifi.isEmpty
+                          false
                               ? const SizedBox()
                               : Badge(
                                   toAnimate: false,
@@ -647,7 +649,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   badgeColor: Colors.deepPurple,
                                   borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(
-                                      postCon.realNotifi.length.toString(),
+                                      1.toString(),
                                       style: const TextStyle(
                                           color: Colors.white, fontSize: 13)),
                                 ),
