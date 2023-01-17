@@ -129,7 +129,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
                 hoverColor: Color.fromRGBO(240, 240, 240, 1),
                 onTap: () {
                   con.avatar = e['avatar'];
-                  // widget.onBack('message-list');
+                  widget.onBack('new');
                   con.chattingUser = e['userName'];
                   con.newRFirstName = e['firstName'];
                   con.newRLastName = e['lastName'];

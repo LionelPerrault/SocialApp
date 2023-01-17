@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatMessageListScreen.dart';
@@ -100,7 +101,6 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   }
 
   Widget MobileScreen() {
-    print('${con.isMessageTap}.................................d.ddddddddd');
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
@@ -124,7 +124,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                       height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
                       child: SingleChildScrollView(
                         child: Column(children: [
-                          con.isMessageTap == 'all-list' ? NewMessageScreen(onBack: (value) {
+                          con.isMessageTap == 'all-list' 
+                          ? 
+                          NewMessageScreen(onBack: (value) {
                             if(value == true || value == false){
                               isShowChatUserList = value;
                             }else{
@@ -132,7 +134,8 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                             }
                             con.setState(() {});
                             setState(() {});
-                          }) : ChatScreenHeader(),
+                          }) 
+                          : ChatScreenHeader(),
                           
                           con.isMessageTap == 'all-list'
                             ? isShowChatUserList 
@@ -148,23 +151,27 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                 setState(() {});
                               })
                             : con.isMessageTap == 'new'
-                                ? NewMessageScreen(
-                                    onBack: (value) {
-                                      if (value == true) {
-                                        con.isShowEmoticon = value;
-                                      } else {
-                                        con.isMessageTap = value;
+                                ? 
+                                Padding(
+                                  padding: EdgeInsets.only(top: SizeConfig(context).screenHeight - 220),
+                                  child: WriteMessageScreen(
+                                    type: 'new',
+                                    goMessage: (value) {
+                                      con.isMessageTap = value;
+                                      if(value == 'message-list'){
+                                        isShowChatUserList = false;
                                       }
-                                      setState(() {});
+                                      setState(() { });
+                                      con.setState(() { });
                                     },
-                                  )
+                                  ),
+                                )
                                 : ChatMessageListScreen(
                                     showWriteMessage: !con.hidden,
                                     onBack: (value) {
                                       con.isShowEmoticon = value;
                                       setState(() {});
                                     },
-                                    // type: 'new',
                                   )
                         ])
                       ),
