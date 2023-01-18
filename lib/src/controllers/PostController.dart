@@ -250,7 +250,7 @@ class PostController extends ControllerMVC {
           'uid': UserManager.userInfo['uid'],
         }
       ],
-      'eventDate': DateTime.now().toString(),
+      'eventDate': FieldValue.serverTimestamp(),
       'eventGoing': [],
       'eventInterested': [],
       'eventInvited': [],
