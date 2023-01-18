@@ -16,6 +16,7 @@ import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 import 'package:shnatter/src/widget/createEventWidget.dart';
+import 'package:shnatter/src/widget/createPageWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
@@ -120,7 +121,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
-        drawer: Drawer(),
+        drawer: const Drawer(),
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -131,7 +132,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
               drawClicked: clickMenu,
             ),
             Padding(
-                padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child: SingleChildScrollView(
                   child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -183,7 +184,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                           ),
                                           child: Row(
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: SizeConfig(context)
                                                             .screenWidth >
                                                         SizeConfig
@@ -212,43 +213,51 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                                   eventSubRoute ==
                                                                           ''
                                                                       ? 26
-                                                                      : 0)),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            children: <
-                                                                TextSpan>[
-                                                              TextSpan(
-                                                                  text:
-                                                                      'Discover',
-                                                                  style: const TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                      fontSize:
-                                                                          14),
-                                                                  recognizer:
-                                                                      TapGestureRecognizer()
-                                                                        ..onTap =
-                                                                            () {
-                                                                          eventSubRoute =
-                                                                              '';
-                                                                          setState(
-                                                                              () {});
-                                                                        }),
-                                                            ]),
+                                                                      : 26)),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          eventSubRoute = '';
+                                                          setState(() {});
+                                                        },
+                                                        child: GestureDetector(
+                                                            child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Column(
+                                                              children: [
+                                                                Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: const Text(
+                                                                        'Discover',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                90,
+                                                                                90,
+                                                                                90),
+                                                                            fontSize:
+                                                                                14))),
+                                                                eventSubRoute ==
+                                                                        ''
+                                                                    ? Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                        height:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      )
+                                                                    : Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                      )
+                                                              ]),
+                                                        )),
                                                       ),
-                                                      eventSubRoute == ''
-                                                          ? Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      top: 26),
-                                                              height: 1,
-                                                              color:
-                                                                  Colors.black,
-                                                            )
-                                                          : SizedBox()
                                                     ],
                                                   )),
                                                   const Padding(
@@ -259,48 +268,61 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
                                                     children: [
                                                       Padding(
                                                           padding: EdgeInsets.only(
                                                               top: eventSubRoute ==
                                                                       'going'
                                                                   ? 26
-                                                                  : 0)),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            children: <
-                                                                TextSpan>[
-                                                              TextSpan(
-                                                                  text: 'Going',
-                                                                  style: const TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                      fontSize:
-                                                                          14),
-                                                                  recognizer:
-                                                                      TapGestureRecognizer()
-                                                                        ..onTap =
-                                                                            () {
-                                                                          eventSubRoute =
-                                                                              'going';
-                                                                          setState(
-                                                                              () {});
-                                                                        }),
-                                                            ]),
+                                                                  : 26)),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          eventSubRoute =
+                                                              'going';
+                                                          setState(() {});
+                                                        },
+                                                        child: GestureDetector(
+                                                            child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Column(
+                                                              children: [
+                                                                Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: const Text(
+                                                                        'Going',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                90,
+                                                                                90,
+                                                                                90),
+                                                                            fontSize:
+                                                                                14))),
+                                                                eventSubRoute ==
+                                                                        'going'
+                                                                    ? Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                        height:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      )
+                                                                    : Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                      )
+                                                              ]),
+                                                        )),
                                                       ),
-                                                      eventSubRoute == 'going'
-                                                          ? Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      top: 26),
-                                                              height: 1,
-                                                              color:
-                                                                  Colors.black,
-                                                            )
-                                                          : SizedBox()
                                                     ],
                                                   )),
                                                   const Padding(
@@ -317,44 +339,52 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               top: eventSubRoute ==
                                                                       'interested'
                                                                   ? 26
-                                                                  : 0)),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            children: <
-                                                                TextSpan>[
-                                                              TextSpan(
-                                                                  text:
-                                                                      'Interested',
-                                                                  style: const TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                      fontSize:
-                                                                          14),
-                                                                  recognizer:
-                                                                      TapGestureRecognizer()
-                                                                        ..onTap =
-                                                                            () {
-                                                                          eventSubRoute =
-                                                                              'interested';
-                                                                          setState(
-                                                                              () {});
-                                                                        }),
-                                                            ]),
+                                                                  : 26)),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          eventSubRoute =
+                                                              'interested';
+                                                          setState(() {});
+                                                        },
+                                                        child: GestureDetector(
+                                                            child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Column(
+                                                              children: [
+                                                                Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: const Text(
+                                                                        'Interested',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                90,
+                                                                                90,
+                                                                                90),
+                                                                            fontSize:
+                                                                                14))),
+                                                                eventSubRoute ==
+                                                                        'interested'
+                                                                    ? Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                        height:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      )
+                                                                    : Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                      )
+                                                              ]),
+                                                        )),
                                                       ),
-                                                      eventSubRoute ==
-                                                              'interested'
-                                                          ? Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      top: 26),
-                                                              height: 1,
-                                                              color:
-                                                                  Colors.black,
-                                                            )
-                                                          : SizedBox()
                                                     ],
                                                   )),
                                                   const Padding(
@@ -371,43 +401,52 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               top: eventSubRoute ==
                                                                       'invited'
                                                                   ? 26
-                                                                  : 0)),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            children: <
-                                                                TextSpan>[
-                                                              TextSpan(
-                                                                  text:
-                                                                      'Invited',
-                                                                  style: const TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                      fontSize:
-                                                                          14),
-                                                                  recognizer:
-                                                                      TapGestureRecognizer()
-                                                                        ..onTap =
-                                                                            () {
-                                                                          eventSubRoute =
-                                                                              'invited';
-                                                                          setState(
-                                                                              () {});
-                                                                        }),
-                                                            ]),
+                                                                  : 26)),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          eventSubRoute =
+                                                              'invited';
+                                                          setState(() {});
+                                                        },
+                                                        child: GestureDetector(
+                                                            child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Column(
+                                                              children: [
+                                                                Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: const Text(
+                                                                        'Invited',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                90,
+                                                                                90,
+                                                                                90),
+                                                                            fontSize:
+                                                                                14))),
+                                                                eventSubRoute ==
+                                                                        'invited'
+                                                                    ? Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                        height:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      )
+                                                                    : Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                      )
+                                                              ]),
+                                                        )),
                                                       ),
-                                                      eventSubRoute == 'invited'
-                                                          ? Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      top: 26),
-                                                              height: 1,
-                                                              color:
-                                                                  Colors.black,
-                                                            )
-                                                          : SizedBox()
                                                     ],
                                                   )),
                                                   const Padding(
@@ -424,43 +463,89 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               top: eventSubRoute ==
                                                                       'manage'
                                                                   ? 26
-                                                                  : 0)),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            children: <
-                                                                TextSpan>[
-                                                              TextSpan(
-                                                                  text:
-                                                                      'My Events',
-                                                                  style: const TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                      fontSize:
-                                                                          14),
-                                                                  recognizer:
-                                                                      TapGestureRecognizer()
-                                                                        ..onTap =
-                                                                            () {
-                                                                          eventSubRoute =
-                                                                              'manage';
-                                                                          setState(
-                                                                              () {});
-                                                                        }),
-                                                            ]),
+                                                                  : 26)),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          eventSubRoute =
+                                                              'manage';
+                                                          setState(() {});
+                                                        },
+                                                        child: GestureDetector(
+                                                            child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Column(
+                                                              children: [
+                                                                Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: const Text(
+                                                                        'My Events',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                90,
+                                                                                90,
+                                                                                90),
+                                                                            fontSize:
+                                                                                14))),
+                                                                eventSubRoute ==
+                                                                        'manage'
+                                                                    ? Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                        height:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      )
+                                                                    : Container(
+                                                                        margin: const EdgeInsets.only(
+                                                                            top:
+                                                                                26),
+                                                                      )
+                                                              ]),
+                                                        )),
                                                       ),
-                                                      eventSubRoute == 'manage'
-                                                          ? Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      top: 26),
-                                                              height: 1,
-                                                              color:
-                                                                  Colors.black,
-                                                            )
-                                                          : SizedBox()
+                                                      // RichText(
+                                                      //   text: TextSpan(
+                                                      //       children: <
+                                                      //           TextSpan>[
+                                                      //         TextSpan(
+                                                      //             text:
+                                                      //                 'My Events',
+                                                      //             style: const TextStyle(
+                                                      //                 color: Color.fromARGB(
+                                                      //                     255,
+                                                      //                     90,
+                                                      //                     90,
+                                                      //                     90),
+                                                      //                 fontSize:
+                                                      //                     14),
+                                                      //             recognizer:
+                                                      //                 TapGestureRecognizer()
+                                                      //                   ..onTap =
+                                                      //                       () {
+                                                      //                     eventSubRoute =
+                                                      //                         'manage';
+                                                      //                     setState(
+                                                      //                         () {});
+                                                      //                   }),
+                                                      //       ]),
+                                                      // ),
+                                                      // eventSubRoute == 'manage'
+                                                      //     ? Container(
+                                                      //         margin:
+                                                      //             const EdgeInsets
+                                                      //                     .only(
+                                                      //                 top: 26),
+                                                      //         height: 1,
+                                                      //         color:
+                                                      //             Colors.black,
+                                                      //       )
+                                                      //     : const SizedBox()
                                                     ],
                                                   )),
                                                 ]),
@@ -480,10 +565,14 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       padding:
-                                                          EdgeInsets.all(3),
+                                                          const EdgeInsets.all(
+                                                              3),
                                                       backgroundColor:
-                                                          Color.fromARGB(255,
-                                                              45, 206, 137),
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              45,
+                                                              206,
+                                                              137),
                                                       // elevation: 3,
                                                       shape:
                                                           RoundedRectangleBorder(
@@ -564,7 +653,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold))
-                                                            : SizedBox()
+                                                            : const SizedBox()
                                                       ],
                                                     )),
                                               )
