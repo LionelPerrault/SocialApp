@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
+import 'package:shnatter/src/views/box/notification.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'box/notification.dart';
 
 enum Menu {
   itemProfile,
@@ -35,7 +35,9 @@ class ShnatterNavigation extends StatefulWidget {
     required this.onSearchBarFocus,
     required this.onSearchBarDismiss,
     required this.drawClicked,
-  }) : super(key: key);
+  })  : postCon = PostController(),
+        super(key: key);
+  PostController postCon;
   final TextEditingController searchController;
   final VoidCallback onSearchBarFocus;
   final VoidCallback onSearchBarDismiss;
@@ -52,9 +54,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   bool onHover = false;
   var chatCon = ChatController();
   var peopleCon = PeopleController();
+  late PostController postCon;
+  var noti = ShnatterNotificationState();
+  var badgeCount = [];
   //
   @override
   void initState() {
+    add(widget.postCon);
+    postCon = controller as PostController;
     searhCon = widget.searchController;
     searchFocusNode = FocusNode();
     searchFocusNode.addListener(() {
@@ -114,6 +121,43 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         );
       },
     );
+    final Stream<QuerySnapshot> stream = Helper.notifiCollection.snapshots();
+    stream.listen((event) async {
+      var allNotifi = event.docs;
+      print('Stream Start');
+      var userSnap = await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .get();
+      var userInfo = userSnap.data();
+      var changeData = [];
+      for (var i = 0; i < allNotifi.length; i++) {
+        var notiTime = allNotifi[i]['tsNT'];
+        var adminUid = allNotifi[i]['postAdminId'];
+        if (adminUid != UserManager.userInfo['uid'] &&
+            notiTime > userInfo!['checkNotifyTime']) {
+          var addData;
+          await FirebaseFirestore.instance
+              .collection(Helper.userField)
+              .doc(allNotifi[i]['postAdminId'])
+              .get()
+              .then((userV) => {
+                    addData = {
+                      // ...allNotifi[i],
+                      'uid': allNotifi[i].id,
+                      'avatar': userV.data()!['avatar'],
+                      'userName': userV.data()!['userName'],
+                      'text': Helper.notificationText[allNotifi[i]['postType']]
+                          ['text'],
+                      'date': Helper.formatDate(allNotifi[i]['notifyTime']),
+                    },
+                    changeData.add(addData),
+                  });
+        }
+      }
+      postCon.realNotifi = changeData;
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -150,9 +194,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   }
 
   Widget buildSmallSize() {
-    Future.delayed(
-        const Duration(microseconds: 300), () => {widget.onSearchBarDismiss()});
-
+    //Future.delayed(
+    // const Duration(microseconds: 300), () => {widget.onSearchBarDismiss()});
     return Stack(
       children: [
         Container(
@@ -307,15 +350,31 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       menuBuilder: () => ShnatterNotification(),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
-                      child: SvgPicture.network(
-                        placeholderBuilder: (context) => const Icon(
-                            Icons.logo_dev,
-                            size: 30,
-                            color: Colors.white),
-                        SVGPath.notification,
-                        color: Colors.white,
-                        width: 20,
-                        height: 20,
+                      child: Row(
+                        children: [
+                          SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.notification,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          ),
+                          postCon.realNotifi.isEmpty
+                              ? const SizedBox()
+                              : Badge(
+                                  toAnimate: false,
+                                  shape: BadgeShape.square,
+                                  badgeColor: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(20),
+                                  badgeContent: Text(
+                                      postCon.realNotifi.length.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 13)),
+                                ),
+                        ],
                       ),
                     ),
                   ),
@@ -416,14 +475,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         onSelected: (Menu item) {},
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.green,
-                              backgroundImage: NetworkImage(UserManager
-                                          .userInfo['avatar'] ==
-                                      ''
-                                  ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
-                                  : UserManager.userInfo['avatar']),
-                            ),
+                            UserManager.userInfo['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                    UserManager.userInfo['avatar'],
+                                  ))
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
                             //Icon(Icons.arrow_downward,
                             //    size: 15, color: Colors.white)
                           ],
@@ -600,15 +659,31 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       menuBuilder: () => ShnatterNotification(),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
-                      child: SvgPicture.network(
-                        placeholderBuilder: (context) => const Icon(
-                            Icons.logo_dev,
-                            size: 30,
-                            color: Colors.white),
-                        SVGPath.notification,
-                        color: Colors.white,
-                        width: 20,
-                        height: 20,
+                      child: Row(
+                        children: [
+                          SvgPicture.network(
+                            placeholderBuilder: (context) => const Icon(
+                                Icons.logo_dev,
+                                size: 30,
+                                color: Colors.white),
+                            SVGPath.notification,
+                            color: Colors.white,
+                            width: 20,
+                            height: 20,
+                          ),
+                          postCon.realNotifi.isEmpty
+                              ? const SizedBox()
+                              : Badge(
+                                  toAnimate: false,
+                                  shape: BadgeShape.square,
+                                  badgeColor: Colors.deepPurple,
+                                  borderRadius: BorderRadius.circular(20),
+                                  badgeContent: Text(
+                                      postCon.realNotifi.length.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 13)),
+                                ),
+                        ],
                       ),
                     ),
                   ),
@@ -705,14 +780,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         },
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.green,
-                              backgroundImage: NetworkImage(UserManager
-                                          .userInfo['avatar'] ==
-                                      ''
-                                  ? "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"
-                                  : UserManager.userInfo['avatar']),
-                            ),
+                            UserManager.userInfo['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                    UserManager.userInfo['avatar'],
+                                  ))
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
                             //Icon(Icons.arrow_downward,
                             //    size: 15, color: Colors.white)
                           ],

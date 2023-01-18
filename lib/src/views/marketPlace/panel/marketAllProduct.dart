@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/marketPlace/widget/marketCell.dart';
 import 'package:shnatter/src/views/products/widget/productcell.dart';
 
 import '../../../controllers/PostController.dart';
@@ -22,6 +23,7 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var roundFlag = true;
+  var allProducts = [];
   @override
   void initState() {
     add(widget.con);
@@ -30,12 +32,21 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
     super.initState();
     getProductNow();
     con.getProductLikes();
+    if (con.allProduct.isEmpty) {
+      roundFlag = false;
+    }
+    print('this is reload');
   }
 
   void getProductNow() {
     con.getProduct().then(
           (value) => {
-            roundFlag = false,
+            if (con.allProduct.isEmpty)
+              {
+                roundFlag = false,
+              },
+            allProducts = con.allProduct,
+            setState(() {}),
             setState(() => {}),
           },
         );
@@ -43,11 +54,23 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.productCategory != 'All') {
+      allProducts = con.allProduct
+          .where((element) =>
+              element['data']['productCategory'] == widget.productCategory)
+          .toList();
+      print(widget.productCategory);
+      print(allProducts);
+    } else {
+      allProducts = con.allProduct;
+    }
+
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
     return Container(
-      width: SizeConfig(context).screenWidth < 600
+      width: SizeConfig(context).screenWidth < 800
           ? SizeConfig(context).screenWidth
-          : 600,
+          : (SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth) *
+              0.8,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -64,11 +87,21 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
                       ),
                     )
                   ])
-                : Column(
-                    children: con.allProduct
-                        .map((product) => ProductCell(data: product))
-                        .toList(),
-                  ),
+                : GridView.count(
+                    crossAxisCount: screenWidth > 800
+                        ? 3
+                        : screenWidth > 600
+                            ? 2
+                            : 1,
+                    childAspectRatio: 1 / 2,
+                    padding: const EdgeInsets.all(4.0),
+                    mainAxisSpacing: 10.0,
+                    shrinkWrap: true,
+                    crossAxisSpacing: 10.0,
+                    primary: false,
+                    children: allProducts
+                        .map((product) => MarketCell(data: product))
+                        .toList()),
           ),
         ],
       ),

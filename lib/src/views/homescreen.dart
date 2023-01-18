@@ -1,5 +1,10 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
@@ -7,15 +12,15 @@ import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 
-import '../controllers/HomeController.dart';
+import '../controllers/UserController.dart';
 import '../managers/user_manager.dart';
 import '../utils/size_config.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key})
-      : con = HomeController(),
+      : con = UserController(),
         super(key: key);
-  final HomeController con;
+  final UserController con;
 
   @override
   State createState() => HomeScreenState();
@@ -29,6 +34,8 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
   bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
+  bool isEmailVerify = true;
+  late Timer _timer;
   late AnimationController _drawerSlideController;
   var suggest = <String, bool>{
     'friends': true,
@@ -36,21 +43,21 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
     'groups': true,
     'events': true
   };
-  //
   @override
   void initState() {
     add(widget.con);
-    con = controller as HomeController;
-    print(UserManager.userInfo);
+    con = controller as UserController;
+    // print(UserManager.userInfo);
     super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    triggerEmailVerify();
   }
 
-  late HomeController con;
+  late UserController con;
   void onSearchBarFocus() {
     searchFocusNode.requestFocus();
     setState(() {
@@ -121,31 +128,32 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                     //curve: Curves.fastOutSlowIn,
                     //child:
                     SingleChildScrollView(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizeConfig(context).screenWidth <
-                                SizeConfig.mediumScreenSize
-                            ? const SizedBox()
-                            : LeftPanel(),
-                        //    : SizedBox(width: 0),
-                        Expanded(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(child: MainPanel()),
-                            SizeConfig(context).screenWidth >
-                                    SizeConfig.mediumScreenSize + 300
-                                ? RightPanel()
-                                : SizedBox(width: 0),
-
-                            // ChatScreen()
-                          ],
-                        )),
-                        //MainPanel(),
-                      ]),
+                  child: Column(children: [
+                    isEmailVerify ? const SizedBox() : emailVerificationNoify(),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizeConfig(context).screenWidth <
+                                  SizeConfig.mediumScreenSize
+                              ? const SizedBox()
+                              : LeftPanel(),
+                          //    : SizedBox(width: 0),
+                          Expanded(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(child: MainPanel()),
+                              SizeConfig(context).screenWidth >
+                                      SizeConfig.mediumScreenSize + 300
+                                  ? RightPanel()
+                                  : SizedBox(width: 0),
+                            ],
+                          )),
+                          //MainPanel(),
+                        ])
+                  ]),
                 )),
             AnimatedBuilder(
                 animation: _drawerSlideController,
@@ -236,5 +244,58 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
             ChatScreen(),
           ],
         ));
+  }
+
+  Widget emailVerificationNoify() {
+    return Container(
+      width: SizeConfig(context).screenWidth,
+      height: 50,
+      color: Colors.red,
+      padding: EdgeInsets.only(left: 30, top: 3),
+      child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                width: SizeConfig(context).screenWidth * 0.7 - 30,
+                child: Text(
+                  'You have not completed the email verification',
+                  style: const TextStyle(color: Colors.white),
+                )),
+            const Flexible(fit: FlexFit.tight, child: SizedBox()),
+            Container(
+              alignment: Alignment.center,
+              width: SizeConfig(context).screenWidth * 0.3,
+              child: TextButton(
+                  onPressed: () async {
+                    con.sendEmailVeryfication();
+                    Helper.showToast('Email sent');
+                  },
+                  child: Text(
+                    '> Resend email',
+                    style: TextStyle(color: Colors.white),
+                  )),
+            )
+          ]),
+    );
+  }
+
+  Future<void> triggerEmailVerify() async {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      await FirebaseAuth.instance.currentUser!.reload();
+      var user = await FirebaseAuth.instance.currentUser!;
+      if (user.emailVerified) {
+        print('$isEmailVerify, already get email verification');
+        setState(() {
+          isEmailVerify = true;
+        });
+        timer.cancel();
+      } else {
+        print('$isEmailVerify, didn\' get email verification yet');
+        setState(() {
+          isEmailVerify = false;
+        });
+      }
+    });
   }
 }

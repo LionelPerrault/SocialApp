@@ -13,6 +13,11 @@ import 'package:http/http.dart' as http;
 import '../models/userModel.dart';
 
 class Helper {
+  static var snapShot = FirebaseFirestore.instance
+      .collection(Helper.adminPanel)
+      .doc(Helper.adminConfig)
+      .get();
+  static var system = snapShot;
   static ValueNotifier<Setting> setting = ValueNotifier(Setting());
   //BuildContext context;
   // for mapping data retrieved form json array
@@ -22,6 +27,8 @@ class Helper {
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
         toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
       );
+  static var userCollection =
+      FirebaseFirestore.instance.collection(Helper.userField);
   static var messageCollection =
       FirebaseFirestore.instance.collection(Helper.message);
   static var eventsData =
@@ -36,6 +43,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.productLikeCommentField);
   static var allInterests =
       FirebaseFirestore.instance.collection(Helper.interestsField);
+  static var notifiCollection =
+      FirebaseFirestore.instance.collection(Helper.notificationField);
   static var avatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82';
   static var pageAvatar =
@@ -44,11 +53,16 @@ class Helper {
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_group.jpg?alt=media&token=92339ace-99df-41de-84c5-581260ffb6ec';
   static var eventImage =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_event.jpg?alt=media&token=aba15f40-0918-4ce8-965e-82f77ba34800';
+  static var productImage =
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_product.jpg?alt=media&token=0cd1281e-4dc7-4228-939f-f19b50c3afe1';
+  static var adminPanel = 'adminPanel';
+  static var adminConfig = 'config';
   static var userField = 'user';
   static var eventsField = 'events';
   static var pagesField = 'pages';
   static var groupsField = 'groups';
   static var productsField = 'products';
+  static var notificationField = 'notifications';
   static var interestsField = 'interests';
   static var friendField = 'friends';
   static var pages = 'staticContent';
@@ -75,6 +89,12 @@ class Helper {
             "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
         .hasMatch(input);
   }
+
+  static Map notificationText = {
+    'products': {
+      'text': 'added product',
+    }
+  };
 
   static showToast(String message) {
     Fluttertoast.showToast(
@@ -112,7 +132,7 @@ class Helper {
               ));
   }
 
-  static saveJSONPreference(String field, Map<String, String> data) async {
+  static saveJSONPreference(String field, Map<String, dynamic> data) async {
     final prefs = await SharedPreferences.getInstance();
     String saveData = jsonEncode(data);
     prefs.setString(field, saveData);
@@ -204,5 +224,26 @@ class Helper {
         .doc(Helper.terms)
         .get();
     return str['content'] as String;
+  }
+
+  static String formatDate(String d) {
+    var date = DateTime.parse(d);
+    String trDate = '';
+    DateTime date2 = DateTime.now();
+    var dd = int.parse(date2.timeZoneOffset.toString().split(':')[0]);
+    date2 = date2.add(Duration(hours: -dd));
+    final difference = date2.difference(date);
+    if (difference.inMinutes < 1) {
+      trDate = 'Just Now';
+    } else if (difference.inHours < 1) {
+      trDate = '${difference.inMinutes} minutes ago';
+    } else if (difference.inDays < 1) {
+      trDate = '${difference.inHours} hours ago';
+    } else if (difference.inDays < 31) {
+      trDate = '${difference.inDays} days ago';
+    } else if (difference.inDays >= 31) {
+      trDate = '${(difference.inDays / 30 as String).split('.')[0]} days ago';
+    }
+    return trDate;
   }
 }

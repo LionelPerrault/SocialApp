@@ -53,4 +53,5 @@ class RouteNames {
   static const adp_settings_chat = '/adminpanel/settings/chat';
   static const people = '/people';
   static const market = '/market';
+  static const messages = '/messages';
 }

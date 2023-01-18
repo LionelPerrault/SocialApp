@@ -67,6 +67,9 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
                   ])
                 : Column(
                     children: con.allProduct
+                        .where((product) =>
+                            product['data']['productAdmin']['userName'] ==
+                            UserManager.userInfo['userName'])
                         .map((product) => ProductCell(data: product))
                         .toList(),
                   ),

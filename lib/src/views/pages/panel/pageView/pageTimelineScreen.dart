@@ -75,8 +75,7 @@ class PageTimelineScreenState extends mvc.StateMVC<PageTimelineScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                   pageInfowidget(),
-                  con.page['pageAdmin'][0]['userName'] ==
-                          UserManager.userInfo['userName']
+                  con.page['pageAdmin'][0] == UserManager.userInfo['uid']
                       ? MindPost()
                       : Container()
                 ]),

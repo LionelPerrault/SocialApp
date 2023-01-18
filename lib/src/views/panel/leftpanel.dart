@@ -28,7 +28,9 @@ class LeftPanel extends StatelessWidget {
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile.svg?alt=media&token=c40823c5-872b-49b8-8f59-70c7b9314263'),
           ListText(
-              onTap: () => {},
+              onTap: () => {
+                    Navigator.pushReplacementNamed(context, RouteNames.messages)
+                  },
               label: 'Messages',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmessages.svg?alt=media&token=9893a9e0-1f09-4bca-82de-b829ba0f0bb5'),

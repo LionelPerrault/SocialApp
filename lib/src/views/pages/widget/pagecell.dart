@@ -5,29 +5,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
 class PageCell extends StatefulWidget {
   PageCell({
     super.key,
-    required this.pageTap,
-    required this.picture,
-    required this.likes,
-    required this.header,
-    required this.liked,
-    required this.status,
-    required this.buttonFun,
-  });
-  Function pageTap;
-  Function buttonFun;
-  bool status;
-  String picture;
-  int likes;
-  String header;
-  bool liked;
-
+    required this.pageInfo,
+    required this.refreshFunc,
+  }) : con = PostController();
+  Map pageInfo;
   late PostController con;
+  var refreshFunc;
   @override
   State createState() => PageCellState();
 }
@@ -35,10 +28,75 @@ class PageCell extends StatefulWidget {
 class PageCellState extends mvc.StateMVC<PageCell> {
   late PostController con;
   var loading = false;
+  var payLoading = false;
   @override
   void initState() {
     // TODO: implement initState
+    add(widget.con);
+    con = controller as PostController;
     super.initState();
+  }
+
+  pageLikeFunc() async {
+    print(widget.pageInfo['data']['pageAdmin'][0]['uid']);
+    var pageAdminInfo = await ProfileController()
+        .getUserInfo(widget.pageInfo['data']['pageAdmin'][0]['uid']);
+    print(pageAdminInfo);
+    if (pageAdminInfo!['paywall']['likeMyPage'] == null ||
+        pageAdminInfo['paywall']['likeMyPage'] == '0' ||
+        widget.pageInfo['data']['pageAdmin'][0]['uid'] ==
+            UserManager.userInfo['uid']) {
+      loading = true;
+      setState(() {});
+      await con.likedPage(widget.pageInfo['id']).then((value) {
+        widget.refreshFunc();
+      });
+      loading = false;
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        pageAdminInfo['paymail'].toString(),
+                        pageAdminInfo['paywall']['likeMyPage'],
+                        'Pay for view profile of user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            loading = true,
+                            setState(() {}),
+                            await con
+                                .likedPage(widget.pageInfo['id'])
+                                .then((value) {
+                              widget.refreshFunc();
+                            }),
+                            loading = false,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for like or unlike this page',
+              text:
+                  'Admin of this page set price is ${pageAdminInfo['paywall']['likeMyPage']} for like or unlike this page',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -66,20 +124,21 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
-                            text: widget.header,
+                            text: widget.pageInfo['data']['pageName'],
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                widget.pageTap();
+                                Navigator.pushReplacementNamed(context,
+                                    '/pages/${widget.pageInfo['data']['pageUserName']}');
                               }),
                       ]),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 5)),
                     Text(
-                      '${widget.likes} Likes',
+                      '${widget.pageInfo['data']['pageLiked'].length} Likes',
                       style: const TextStyle(color: Colors.black, fontSize: 13),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 20)),
@@ -91,10 +150,8 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                                 borderRadius: BorderRadius.circular(2.0)),
                             minimumSize: const Size(120, 35),
                             maximumSize: const Size(120, 35)),
-                        onPressed: () {
-                          loading = true;
-                          setState(() {});
-                          widget.buttonFun();
+                        onPressed: () async {
+                          pageLikeFunc();
                         },
                         child: loading
                             ? Container(
@@ -115,14 +172,17 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                                   ),
                                   const Padding(
                                       padding: EdgeInsets.only(left: 3)),
-                                  Text(widget.liked ? 'Unlike' : 'Like',
+                                  Text(
+                                      widget.pageInfo['liked']
+                                          ? 'Unlike'
+                                          : 'Like',
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold)),
                                 ],
                               )),
-                    Padding(padding: EdgeInsets.only(top: 30))
+                    const Padding(padding: EdgeInsets.only(top: 30))
                   ],
                 ),
               ),
@@ -133,9 +193,10 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.picture != ''
-                          ? widget.picture
-                          : Helper.pageAvatar),
+                      image: NetworkImage(
+                          widget.pageInfo['data']['pagePicture'] != ''
+                              ? widget.pageInfo['data']['pagePicture']
+                              : Helper.pageAvatar),
                       fit: BoxFit.cover,
                     ),
                     color: Color.fromARGB(255, 150, 99, 99),

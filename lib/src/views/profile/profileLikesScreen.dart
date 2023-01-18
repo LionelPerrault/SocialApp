@@ -36,9 +36,9 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
     getPageNow();
   }
 
-  void getPageNow() {
+  getPageNow() {
     PostController()
-        .getPage('manage', UserManager.userInfo['userName'])
+        .getPage('manage', UserManager.userInfo['uid'])
         .then((value) => {
               myPages = value,
               getFlag = false,
@@ -141,23 +141,14 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
                         shrinkWrap: true,
                         crossAxisSpacing: 4.0,
                         children: myPages
-                            .map((page) => PageCell(
-                                pageTap: () {
-                                  Navigator.pushReplacementNamed(context,
-                                      '/pages/${page['data']['pageUserName']}');
+                            .map(
+                              (page) => PageCell(
+                                pageInfo: page,
+                                refreshFunc: () {
+                                  getPageNow();
                                 },
-                                buttonFun: () {
-                                  PostController()
-                                      .likedPage(page['id'])
-                                      .then((value) {
-                                    getPageNow();
-                                  });
-                                },
-                                picture: '',
-                                status: false,
-                                likes: page['data']['pageLiked'].length,
-                                header: page['data']['pageName'],
-                                liked: page['liked']))
+                              ),
+                            )
                             .toList(),
                       ),
                     ),

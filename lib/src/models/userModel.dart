@@ -6,17 +6,16 @@ class TokenLogin {
   late String birthM = '';
   late String u_class = '';
   late String country = '';
-  late String relysiaEmail = '';
   late String firstName = '';
   late String lastName = '';
   late String password = '';
   late String paymail = '';
   late String walletAddress = '';
   late String documentId = '';
-  late String relysiaPassword = '';
   late String userName = '';
   late String userAvatar = '';
   late bool isStarted = false;
+  late var paywall = {};
   late var userInfo = {};
   TokenLogin();
 
@@ -26,13 +25,11 @@ class TokenLogin {
       firstName = json['firstName'] as String;
       lastName = json['lastName'] as String;
       userName = json['userName'] as String;
-      relysiaEmail = json['relysiaEmail'] as String;
-      relysiaPassword = json['relysiaPassword'] as String;
       paymail = json['paymail'] as String;
       walletAddress = json['walletAddress'] as String;
-      password = json['password'] as String;
       isStarted = json['isStarted'] as bool;
       userAvatar = json['avatar'] as String;
+      paywall = json['paywall'];
       userInfo = json;
     } catch (e) {}
   }
@@ -45,11 +42,10 @@ class TokenLogin {
       'lastName': lastName,
       'userName': userName,
       'password': password,
-      'relysiaEmail': relysiaEmail,
-      'relysiaPassword': relysiaPassword,
       'walletAddress': walletAddress,
       'paymail': paymail,
-      'isStarted': isStarted
+      'isStarted': isStarted,
+      'paywall': paywall
     };
   }
 }

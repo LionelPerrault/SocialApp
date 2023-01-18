@@ -35,7 +35,7 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
   }
 
   void getEventNow() {
-    con.getEvent('invited', UserManager.userInfo['userName']).then((value) => {
+    con.getEvent('invited', UserManager.userInfo['uid']).then((value) => {
           returnValue = value,
           invitedEvents = value,
           print(invitedEvents),

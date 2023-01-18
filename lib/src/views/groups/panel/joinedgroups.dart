@@ -35,7 +35,7 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
   }
 
   void getGroupNow() {
-    con.getGroup('joined', UserManager.userInfo['userName']).then((value) => {
+    con.getGroup('joined', UserManager.userInfo['uid']).then((value) => {
           returnValue = value,
           joinedGroups = value,
         });
@@ -63,21 +63,14 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: joinedGroups
-                  .map((group) => GroupCell(
-                      groupTap: () {
-                        Navigator.pushReplacementNamed(context,
-                            '/groups/${group['data']['groupUserName']}');
+                  .map(
+                    (group) => GroupCell(
+                      groupData: group,
+                      refreshFunc: () {
+                        getGroupNow();
                       },
-                      buttonFun: () {
-                        con.joinedGroup(group['id']).then((value) {
-                          getGroupNow();
-                        });
-                      },
-                      picture: group['data']['groupPicture'],
-                      status: false,
-                      joins: group['data']['groupJoined'].length,
-                      header: group['data']['groupName'],
-                      joined: group['joined']))
+                    ),
+                  )
                   .toList(),
             ),
           ),

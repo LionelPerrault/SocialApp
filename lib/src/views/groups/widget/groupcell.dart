@@ -5,27 +5,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
 class GroupCell extends StatefulWidget {
   GroupCell({
     super.key,
-    required this.groupTap,
-    required this.picture,
-    required this.joins,
-    required this.header,
-    required this.joined,
-    required this.status,
-    required this.buttonFun,
-  });
-  Function groupTap;
-  Function buttonFun;
-  bool status;
-  String picture;
-  int joins;
-  String header;
-  bool joined;
+    required this.groupData,
+    required this.refreshFunc,
+  }) : con = PostController();
+  var groupData;
+  Function refreshFunc;
 
   late PostController con;
   @override
@@ -35,10 +29,75 @@ class GroupCell extends StatefulWidget {
 class GroupCellState extends mvc.StateMVC<GroupCell> {
   late PostController con;
   var loading = false;
+  bool payLoading = false;
   @override
   void initState() {
+    add(widget.con);
+    con = controller as PostController;
     // TODO: implement initState
     super.initState();
+  }
+
+  groupJoinFunc() async {
+    print(widget.groupData['data']['groupAdmin'][0]['uid']);
+    var groupAdminInfo = await ProfileController()
+        .getUserInfo(widget.groupData['data']['groupAdmin'][0]['uid']);
+    print(groupAdminInfo);
+    if (groupAdminInfo!['paywall']['joinMyGroup'] == null ||
+        groupAdminInfo['paywall']['joinMyGroup'] == '0' ||
+        widget.groupData['data']['groupAdmin'][0]['uid'] ==
+            UserManager.userInfo['uid']) {
+      loading = true;
+      setState(() {});
+      await con.joinedGroup(widget.groupData['id']).then((value) {
+        widget.refreshFunc();
+      });
+      loading = false;
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        groupAdminInfo['paymail'].toString(),
+                        groupAdminInfo['paywall']['joinMyGroup'],
+                        'Pay for view profile of user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            loading = true,
+                            setState(() {}),
+                            await con
+                                .joinedGroup(widget.groupData['id'])
+                                .then((value) {
+                              widget.refreshFunc();
+                            }),
+                            loading = false,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for join or unjoin this page',
+              text:
+                  'Admin of this group set price is ${groupAdminInfo['paywall']['joinMyGroup']} for join or unjoin this page',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -66,20 +125,21 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
-                            text: widget.header,
+                            text: widget.groupData['data']['groupName'],
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                widget.groupTap();
+                                Navigator.pushReplacementNamed(context,
+                                    '/groups/${widget.groupData['data']['groupUserName']}');
                               }),
                       ]),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 5)),
                     Text(
-                      '${widget.joins} Members',
+                      '${widget.groupData['data']['groupJoined'].length} Members',
                       style: const TextStyle(color: Colors.black, fontSize: 13),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 20)),
@@ -92,9 +152,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                             minimumSize: const Size(120, 35),
                             maximumSize: const Size(120, 35)),
                         onPressed: () {
-                          loading = true;
-                          setState(() {});
-                          widget.buttonFun();
+                          groupJoinFunc();
                         },
                         child: loading
                             ? Container(
@@ -108,20 +166,23 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  widget.joined
-                                      ? Icon(
+                                  widget.groupData['joined']
+                                      ? const Icon(
                                           Icons.star,
                                           color: Colors.black,
                                           size: 18.0,
                                         )
                                       : Icon(
-                                          widget.joined
+                                          widget.groupData['joined']
                                               ? Icons.check
                                               : Icons.group_add,
                                           color: Colors.black,
                                           size: 18.0,
                                         ),
-                                  Text(widget.joined ? 'Joined' : 'Join',
+                                  Text(
+                                      widget.groupData['joined']
+                                          ? 'Joined'
+                                          : 'Join',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 11,
@@ -148,9 +209,10 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                     radius: 75,
-                    backgroundImage: NetworkImage(widget.picture == ''
-                        ? Helper.groupImage
-                        : widget.picture)),
+                    backgroundImage: NetworkImage(
+                        widget.groupData['data']['groupPicture'] == ''
+                            ? Helper.groupImage
+                            : widget.groupData['data']['groupPicture'])),
               )
             ],
           ),

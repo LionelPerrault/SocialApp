@@ -34,8 +34,8 @@ class AllPagesState extends mvc.StateMVC<AllPages> {
     getPageNow();
   }
 
-  void getPageNow() {
-    con.getPage('all', UserManager.userInfo['userName']).then((value) => {
+  getPageNow() {
+    con.getPage('all', UserManager.userInfo['uid']).then((value) => {
           realAllPage = value,
           realAllPage.where((event) => event['data']['eventPost'] == true),
           print(realAllPage),
@@ -65,21 +65,14 @@ class AllPagesState extends mvc.StateMVC<AllPages> {
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
               children: realAllPage
-                  .map((page) => PageCell(
-                      pageTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/pages/${page['data']['pageUserName']}');
+                  .map(
+                    (page) => PageCell(
+                      pageInfo: page,
+                      refreshFunc: () {
+                        getPageNow();
                       },
-                      buttonFun: () {
-                        con.likedPage(page['id']).then((value) {
-                          getPageNow();
-                        });
-                      },
-                      picture: '',
-                      status: false,
-                      likes: page['data']['pageLiked'].length,
-                      header: page['data']['pageName'],
-                      liked: page['liked']))
+                    ),
+                  )
                   .toList(),
             ),
           ),

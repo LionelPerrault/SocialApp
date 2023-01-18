@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
@@ -28,7 +29,6 @@ class ProductCell extends StatefulWidget {
 
 class ProductCellState extends mvc.StateMVC<ProductCell> {
   late PostController con;
-  var loading = false;
   var product;
   var productId = '';
 
@@ -36,18 +36,15 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   @override
   void initState() {
     add(widget.con);
-    print(loading);
     con = controller as PostController;
     super.initState();
-    if (loading == false) {
-      product = widget.data['data'];
-    }
-    loading = true;
+    product = widget.data['data'];
     productId = widget.data['id'];
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.data);
     subFunctionList = [
       {
         'icon': product['productMarkAsSold']
@@ -235,7 +232,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                   ),
                                   Container(
                                     width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 210
+                                        ? SizeConfig(context).screenWidth - 240
                                         : 350,
                                     child: Text(
                                       ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
@@ -262,7 +259,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: 'minute ago',
+                                              text: Helper.formatDate(
+                                                  product['productDate']),
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 10),
@@ -270,7 +268,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                 ..onTap = () {
                                                   Navigator.pushReplacementNamed(
                                                       context,
-                                                      '${RouteNames.products}/${product['id']}');
+                                                      '${RouteNames.products}/$productId');
                                                 })
                                         ]),
                                   ),
@@ -471,7 +469,48 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                               )),
                             ]),
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              top: UserManager.userInfo['userName'] ==
+                                      product['productAdmin']['userName']
+                                  ? 0
+                                  : 30)),
+                      UserManager.userInfo['userName'] ==
+                              product['productAdmin']['userName']
+                          ? Container()
+                          : Container(
+                              height: 50,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 17, 205, 239),
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(3.0)),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      // stepflag = true;
+                                    });
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.wechat_outlined),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 10)),
+                                      Text(
+                                        'Contact',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                      const Padding(padding: EdgeInsets.only(top: 10)),
                       Container(
                         height: 50,
                         child: ElevatedButton(
@@ -491,7 +530,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
-                                Icon(Icons.chat),
+                                Icon(Icons.wechat_outlined),
                                 Padding(padding: EdgeInsets.only(left: 10)),
                                 Text(
                                   'Buy',
