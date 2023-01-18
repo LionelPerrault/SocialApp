@@ -71,10 +71,11 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
   }
 
   void onSearchBarDismiss() {
-    if (showSearch)
+    if (showSearch) {
       setState(() {
         showSearch = false;
       });
+    }
   }
 
   bool _isDrawerOpen() {
@@ -83,10 +84,6 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
 
   bool _isDrawerOpening() {
     return _drawerSlideController.status == AnimationStatus.forward;
-  }
-
-  bool _isDrawerClosed() {
-    return _drawerSlideController.value == 0.0;
   }
 
   @override
@@ -101,7 +98,7 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
-        drawer: Drawer(),
+        drawer: const Drawer(),
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -112,7 +109,7 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
               drawClicked: clickMenu,
             ),
             Padding(
-                padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child: SingleChildScrollView(
                   child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -164,7 +161,7 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                           ),
                                           child: Row(
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: SizeConfig(context)
                                                             .screenWidth >
                                                         SizeConfig
@@ -182,163 +179,161 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                                       padding: EdgeInsets.only(
                                                           left: 30)),
                                                   Expanded(
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        pageSubRoute = '';
+                                                        setState(() {});
+                                                      },
                                                       child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top:
-                                                                  pageSubRoute ==
-                                                                          ''
-                                                                      ? 26
-                                                                      : 0)),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            children: <
-                                                                TextSpan>[
-                                                              TextSpan(
-                                                                  text:
-                                                                      'Discover',
-                                                                  style: const TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                      fontSize:
-                                                                          14),
-                                                                  recognizer:
-                                                                      TapGestureRecognizer()
-                                                                        ..onTap =
-                                                                            () {
-                                                                          pageSubRoute =
-                                                                              '';
-                                                                          setState(
-                                                                              () {});
-                                                                        }),
-                                                            ]),
-                                                      ),
-                                                      pageSubRoute == ''
-                                                          ? Container(
-                                                              margin: EdgeInsets
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                              padding: EdgeInsets
                                                                   .only(
-                                                                      top: 26),
-                                                              height: 1,
-                                                              color:
-                                                                  Colors.black,
-                                                            )
-                                                          : SizedBox()
-                                                    ],
-                                                  )),
-                                                  const Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 5)),
-                                                  Expanded(
-                                                      child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top: pageSubRoute ==
-                                                                      'liked'
-                                                                  ? 26
-                                                                  : 0)),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            children: <
-                                                                TextSpan>[
-                                                              TextSpan(
-                                                                  text:
-                                                                      'Liked Pages',
-                                                                  style: const TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                      fontSize:
-                                                                          14),
-                                                                  recognizer:
-                                                                      TapGestureRecognizer()
-                                                                        ..onTap =
-                                                                            () {
-                                                                          pageSubRoute =
-                                                                              'liked';
-                                                                          setState(
-                                                                              () {});
-                                                                        }),
-                                                            ]),
-                                                      ),
-                                                      pageSubRoute == 'liked'
-                                                          ? Container(
-                                                              margin:
-                                                                  const EdgeInsets
+                                                                      top: pageSubRoute ==
+                                                                              ''
+                                                                          ? 26
+                                                                          : 0)),
+                                                          RichText(
+                                                            text: const TextSpan(
+                                                                children: <
+                                                                    TextSpan>[
+                                                                  TextSpan(
+                                                                    text:
+                                                                        'Discover',
+                                                                    style: TextStyle(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            90,
+                                                                            90,
+                                                                            90),
+                                                                        fontSize:
+                                                                            14),
+                                                                  ),
+                                                                ]),
+                                                          ),
+                                                          pageSubRoute == ''
+                                                              ? Container(
+                                                                  margin: const EdgeInsets
                                                                           .only(
                                                                       top: 26),
-                                                              height: 1,
-                                                              color:
-                                                                  Colors.black,
-                                                            )
-                                                          : SizedBox()
-                                                    ],
-                                                  )),
+                                                                  height: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                )
+                                                              : const SizedBox()
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
                                                   const Padding(
                                                       padding: EdgeInsets.only(
                                                           left: 5)),
                                                   Expanded(
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        pageSubRoute = 'liked';
+                                                        setState(() {});
+                                                      },
                                                       child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top: pageSubRoute ==
-                                                                      'manage'
-                                                                  ? 26
-                                                                  : 0)),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            children: <
-                                                                TextSpan>[
-                                                              TextSpan(
-                                                                  text:
-                                                                      'My Pages',
-                                                                  style: const TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                      fontSize:
-                                                                          14),
-                                                                  recognizer:
-                                                                      TapGestureRecognizer()
-                                                                        ..onTap =
-                                                                            () {
-                                                                          pageSubRoute =
-                                                                              'manage';
-                                                                          setState(
-                                                                              () {});
-                                                                        }),
-                                                            ]),
-                                                      ),
-                                                      pageSubRoute == 'manage'
-                                                          ? Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                              padding: EdgeInsets.only(
+                                                                  top: pageSubRoute ==
+                                                                          'liked'
+                                                                      ? 26
+                                                                      : 0)),
+                                                          RichText(
+                                                            text: const TextSpan(
+                                                                children: <
+                                                                    TextSpan>[
+                                                                  TextSpan(
+                                                                    text:
+                                                                        'Liked Pages',
+                                                                    style: TextStyle(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            90,
+                                                                            90,
+                                                                            90),
+                                                                        fontSize:
+                                                                            14),
+                                                                  ),
+                                                                ]),
+                                                          ),
+                                                          pageSubRoute ==
+                                                                  'liked'
+                                                              ? Container(
+                                                                  margin: const EdgeInsets
+                                                                          .only(
                                                                       top: 26),
-                                                              height: 1,
-                                                              color:
-                                                                  Colors.black,
-                                                            )
-                                                          : SizedBox()
-                                                    ],
-                                                  )),
+                                                                  height: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                )
+                                                              : const SizedBox()
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5)),
+                                                  Expanded(
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        pageSubRoute = 'manage';
+                                                        setState(() {});
+                                                      },
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                              padding: EdgeInsets.only(
+                                                                  top: pageSubRoute ==
+                                                                          'manage'
+                                                                      ? 26
+                                                                      : 0)),
+                                                          RichText(
+                                                            text: const TextSpan(
+                                                                children: <
+                                                                    TextSpan>[
+                                                                  TextSpan(
+                                                                    text:
+                                                                        'My Pages',
+                                                                    style: TextStyle(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            90,
+                                                                            90,
+                                                                            90),
+                                                                        fontSize:
+                                                                            14),
+                                                                  ),
+                                                                ]),
+                                                          ),
+                                                          pageSubRoute ==
+                                                                  'manage'
+                                                              ? Container(
+                                                                  margin: const EdgeInsets
+                                                                          .only(
+                                                                      top: 26),
+                                                                  height: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                )
+                                                              : const SizedBox()
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ]),
                                               ),
                                               const Flexible(
@@ -358,10 +353,14 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       padding:
-                                                          EdgeInsets.all(3),
+                                                          const EdgeInsets.all(
+                                                              3),
                                                       backgroundColor:
-                                                          Color.fromARGB(255,
-                                                              45, 206, 137),
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              45,
+                                                              206,
+                                                              137),
                                                       // elevation: 3,
                                                       shape:
                                                           RoundedRectangleBorder(
@@ -448,7 +447,7 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold))
-                                                            : SizedBox()
+                                                            : const SizedBox()
                                                       ],
                                                     )),
                                               )
