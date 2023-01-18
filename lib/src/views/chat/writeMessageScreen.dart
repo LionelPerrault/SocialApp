@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../../controllers/ChatController.dart';
+
 // ignore: must_be_immutable
 class WriteMessageScreen extends StatefulWidget {
   String type;
@@ -40,33 +41,33 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             sendMessage();
           }
           return KeyEventResult.handled;
-        }
-        else {
+        } else {
           return KeyEventResult.ignored;
         }
       },
     );
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return
-     Column(
+    return Column(
       children: [
-        con.progress == 0 ? Container() :
-        AnimatedContainer(
-          duration: Duration(milliseconds: 500),
-          width: double.infinity,
-          margin: EdgeInsets.only(right: 300 - (300*con.progress/100)),
-          height: 2,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.all(Radius.circular(2))),
-        ),
+        con.progress == 0
+            ? Container()
+            : AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                width: double.infinity,
+                margin:
+                    EdgeInsets.only(right: 300 - (300 * con.progress / 100)),
+                height: 2,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(Radius.circular(2))),
+              ),
         SizedBox(
           height: 35,
-          child:
-            TextFormField(
+          child: TextFormField(
             focusNode: _focusNode,
             controller: con.textController,
             onChanged: ((value) {
@@ -87,16 +88,16 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               contentPadding:
                   EdgeInsets.only(left: 15, bottom: 11, top: 0, right: 15),
             ),
-          ),)
-        ,
+          ),
+        ),
         Container(
           child: Row(children: [
             const Padding(padding: EdgeInsets.only(left: 10)),
             MouseRegion(
               child: GestureDetector(
                 onTap: () {
-                  con.uploadImage(widget.type,'image');
-                  if(widget.type == 'new') {
+                  con.uploadImage(widget.type, 'image');
+                  if (widget.type == 'new') {
                     widget.goMessage('message-list');
                   }
                 },
@@ -150,8 +151,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   }
 
   sendMessage() async {
-    if(con.textController.text.isEmpty){
-      setState(() { });
+    if (con.textController.text.isEmpty) {
+      setState(() {});
       return;
     }
     bool success =

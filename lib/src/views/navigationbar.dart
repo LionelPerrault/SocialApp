@@ -692,41 +692,41 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       child: PopupMenuButton(
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<Menu>>[
-                          PopupMenuItem<Menu>(
+                          const PopupMenuItem<Menu>(
                               value: Menu.itemProfile,
-                              child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushReplacementNamed(context,
-                                        '/${UserManager.userInfo['userName']}');
-                                  },
-                                  child: const Text('Profile'))),
+                              // child: InkWell(
+                              //     // onTap: () {
+                              //     //   Navigator.pushReplacementNamed(context,
+                              //     //       '/${UserManager.userInfo['userName']}');
+                              //     // },
+                              child: Text('Profile')),
                           PopupMenuItem<Menu>(
                             value: Menu.itemSettings,
                             child: GestureDetector(
-                                onTap: () {
-                                  onSettingClicked();
-                                },
+                                // onTap: () {
+                                //   onSettingClicked();
+                                // },
                                 child: const Text('Settings')),
                           ),
                           PopupMenuItem<Menu>(
                             value: Menu.itemPrivacy,
                             child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                    context,
-                                    RouteNames.settings,
-                                  );
-                                },
+                                // onTap: () {
+                                //   Navigator.pushReplacementNamed(
+                                //     context,
+                                //     RouteNames.settings,
+                                //   );
+                                // },
                                 child: const Text('Privacy')),
                           ),
                           const PopupMenuDivider(),
                           PopupMenuItem<Menu>(
                             value: Menu.itemAdminPanel,
                             child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, RouteNames.adp);
-                                },
+                                // onTap: () {
+                                //   Navigator.pushReplacementNamed(
+                                //       context, RouteNames.adp);
+                                // },
                                 child: const Text('AdminPanel')),
                           ),
                           const PopupMenuDivider(),
@@ -747,7 +747,37 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ),
                           const PopupMenuDivider(),
                         ],
-                        onSelected: (Menu item) {},
+                        onSelected: (Menu item) {
+                          switch (item) {
+                            case Menu.itemProfile:
+                              {
+                                Navigator.pushReplacementNamed(context,
+                                    '/${UserManager.userInfo['userName']}');
+                                break;
+                              }
+
+                            case Menu.itemSettings:
+                              {
+                                onSettingClicked();
+                                break;
+                              }
+                            case Menu.itemPrivacy:
+                              {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  RouteNames.settings,
+                                );
+                                break;
+                              }
+                            case Menu.itemAdminPanel:
+                              {
+                                Navigator.pushReplacementNamed(
+                                    context, RouteNames.adp);
+                                break;
+                              }
+                            default:
+                          }
+                        },
                         child: Row(
                           children: [
                             UserManager.userInfo['avatar'] != ''
