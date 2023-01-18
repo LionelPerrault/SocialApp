@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatMessageListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatUserListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/newMessageScreen.dart';
+import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 
 import '../../controllers/ChatController.dart';
@@ -14,7 +16,7 @@ class MessageScreen extends StatefulWidget {
   MessageScreen({Key? key})
       : con = ChatController(),
         super(key: key);
-  final ChatController con;
+  ChatController? con;
 
   @override
   State createState() => MessageScreenState();
@@ -26,6 +28,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
+  bool isShowChatUserList = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
@@ -42,6 +45,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    setState(() { });
   }
 
   late ChatController con;
@@ -65,7 +69,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     }
   }
 
-  void onSearchBarDismiss() {
+  void onSearchBarDismiss () {
     if (showSearch)
       setState(() {
         showSearch = false;
@@ -93,6 +97,10 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
 
   @override
   Widget build(BuildContext context) {
+    return MobileScreen();
+  }
+
+  Widget MobileScreen() {
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
@@ -112,15 +120,60 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                 child: Row(
                   children: [
                     Container(
-                      width: 300,
+                      width: SizeConfig(context).screenWidth,
+                      height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
                       child: SingleChildScrollView(
-                        child: ChatUserListScreen(onBack: () {}),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 100),
-                        child: ChatScreen(),
+                        child: Column(children: [
+                          con.isMessageTap == 'all-list' 
+                          ? 
+                          NewMessageScreen(onBack: (value) {
+                            if(value == true || value == false){
+                              isShowChatUserList = value;
+                            }else{
+                              con.isMessageTap = value;
+                            }
+                            con.setState(() {});
+                            setState(() {});
+                          }) 
+                          : ChatScreenHeader(),
+                          
+                          con.isMessageTap == 'all-list'
+                            ? isShowChatUserList 
+                              ? const SizedBox() 
+                              : ChatUserListScreen(onBack: (value) {
+                                if (value == 'hidden') {
+                                  con.hidden = con.hidden ? false : true;
+                                } else {
+                                  con.isMessageTap = value;
+                                  if (con.hidden == true) con.hidden = false;
+                                }
+                                con.setState(() {});
+                                setState(() {});
+                              })
+                            : con.isMessageTap == 'new'
+                                ? 
+                                Padding(
+                                  padding: EdgeInsets.only(top: SizeConfig(context).screenHeight - 220),
+                                  child: WriteMessageScreen(
+                                    type: 'new',
+                                    goMessage: (value) {
+                                      con.isMessageTap = value;
+                                      if(value == 'message-list'){
+                                        isShowChatUserList = false;
+                                      }
+                                      setState(() { });
+                                      con.setState(() { });
+                                    },
+                                  ),
+                                )
+                                : ChatMessageListScreen(
+                                    showWriteMessage: !con.hidden,
+                                    onBack: (value) {
+                                      con.isShowEmoticon = value;
+                                      setState(() {});
+                                    },
+                                  )
+                        ])
                       ),
                     ),
                   ],
@@ -177,13 +230,38 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                 )
                               ],
                             ),
-                            ShnatterSearchBox()
                           ],
                         )),
                   )
                 : const SizedBox(),
-            ChatScreen(),
           ],
         ));
+  }
+
+  Widget ChatScreenHeader() {
+    return Container(
+      width: SizeConfig(context).screenWidth,
+      height: 70,
+      child: Column(
+        children: [
+          AppBar(
+          toolbarHeight: 60,
+          backgroundColor: Color.fromRGBO(51, 103, 214, 1),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 26,
+              ),
+              onPressed: () {
+                con.hidden = false;
+                con.isMessageTap = 'all-list';
+                setState(() {});
+              }),
+          ),
+        ],
+      )
+    );
   }
 }

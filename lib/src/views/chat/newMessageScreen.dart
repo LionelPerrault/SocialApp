@@ -4,9 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/chat/writeMessageScreen.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import '../../controllers/ChatController.dart';
 import '../../helpers/helper.dart';
 
@@ -27,6 +29,8 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
   var userInfo = UserManager.userInfo;
   var allUsersList = [];
   var searchUser = [];
+  bool payLoading = false;
+
   @override
   void initState() {
     add(widget.con);
@@ -39,6 +43,59 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
     con.setState(() {});
     setState(() {});
     super.initState();
+  }
+
+  chatWithOtherUser(chatUserInfo) async {
+    print(chatUserInfo);
+    if (chatUserInfo['paywall']['likeMyPage'] == null ||
+        chatUserInfo['paywall']['likeMyPage'] == '0') {
+      con.avatar = chatUserInfo['avatar'];
+      con.chattingUser = chatUserInfo['userName'];
+      con.newRFirstName = chatUserInfo['firstName'];
+      con.newRLastName = chatUserInfo['lastName'];
+      con.setState(() {});
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        chatUserInfo['paymail'].toString(),
+                        chatUserInfo['paywall']['chatWithMe'],
+                        'Pay for chat with other user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            con.avatar = chatUserInfo['avatar'],
+                            con.chattingUser = chatUserInfo['userName'],
+                            con.newRFirstName = chatUserInfo['firstName'],
+                            con.newRLastName = chatUserInfo['lastName'],
+                            con.setState(() {}),
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for like or unlike this page',
+              text:
+                  'Admin of this page set price is ${chatUserInfo['paywall']['likeMyPage']} for like or unlike this page',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -125,14 +182,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
                     : Colors.white,
                 hoverColor: Color.fromRGBO(240, 240, 240, 1),
                 onTap: () {
-                  con.avatar = e['avatar'];
-                  con.chattingUser = e['userName'];
-                  con.newRFirstName = e['firstName'];
-                  con.newRLastName = e['lastName'];
-                  con.setState(() {});
-                  setState(
-                    () {},
-                  );
+                  chatWithOtherUser(e);
                 },
                 leading: e['avatar'] == ''
                     ? CircleAvatar(

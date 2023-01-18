@@ -250,7 +250,7 @@ class PostController extends ControllerMVC {
           'uid': UserManager.userInfo['uid'],
         }
       ],
-      'eventDate': DateTime.now().toString(),
+      'eventDate': FieldValue.serverTimestamp(),
       'eventGoing': [],
       'eventInterested': [],
       'eventInvited': [],
@@ -883,6 +883,8 @@ class PostController extends ControllerMVC {
                 'postId': value.id,
                 'postAdminId': UserManager.userInfo['uid'],
                 'notifyTime': DateTime.now().toString(),
+                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'userList': [],
               },
               saveNotifications(notificationData),
               Navigator.pushReplacementNamed(
@@ -975,6 +977,10 @@ class PostController extends ControllerMVC {
         .update({'productOnOffCommenting': value}).then((e) async {
       getProduct();
     });
+  }
+
+  changeProductSellState(productId) async {
+    await Helper.productsData.doc(productId).update({'productSellState': true});
   }
 
   var productLikes = {};
@@ -1254,86 +1260,23 @@ class PostController extends ControllerMVC {
   }
 
   var realNotifi = [];
+  var allNotification = [];
 
-  userLookDistiniction() async {
-    List allNotifi = [];
-    Map addData = {};
-    bool flag = false;
-    setState(() {});
-    await FirebaseFirestore.instance
-        .collection(Helper.notificationField)
-        .get()
-        .then((value) async => {
-              allNotifi = value.docs,
-              realNotifi = [],
-              print(realNotifi),
-              print('realALL'),
-              // var currentUserInfo = ProfileController().
-              for (int i = 0; i < allNotifi.length; i++)
-                {
-                  if (allNotifi[i]['postAdminId'] !=
-                          UserManager.userInfo['uid'] &&
-                      UserManager.userInfo['checkNotifyTime'] <
-                          allNotifi[i]['notifyTime'])
-                    {
-                      await FirebaseFirestore.instance
-                          .collection(Helper.userField)
-                          .doc(allNotifi[i]['postAdminId'])
-                          .get()
-                          .then((userV) => {
-                                addData = {
-                                  ...addData,
-                                  'uid': value.docs[i].id,
-                                  'avatar': userV.data()!['avatar'],
-                                  'userName': userV.data()!['userName'],
-                                  'text': Helper.notificationText[allNotifi[i]
-                                      ['postType']]['text'],
-                                  'date': Helper.formatDate(
-                                      allNotifi[i]['notifyTime']),
-                                },
-                              }),
-                      realNotifi.add(addData),
-                      print('here is a realNotifi'),
-                    }
-                },
-              setState(() {}),
-            });
+  checkNotification(notiUid, userUid) async {
+    var notiSnap = await Helper.notifiCollection.doc(notiUid).get();
+    var allNotifi = notiSnap.data();
+    allNotifi!['userList'].add(userUid);
+    await Helper.notifiCollection
+        .doc(notiUid)
+        .update({'userList': allNotifi['userList']});
   }
 
-  // userLookNotifiFlag(uid) async {
-  //   List allNotifi = [];
-  //   List addUser = [];
-  //   print(uid);
-  //   var notifyData;
-  //   await Helper.notifiCollection.doc(uid).get().then((value) => {
-  //     notifyData = value.data(),
-  //     print(notifyData),
-  //     addUser = notifyData['userList'],
-  //     addUser.add({
-  //       'userName': UserManager.userInfo['userName'],
-  //       }),
-  //     Helper.notifiCollection
-  //         .doc(uid)
-  //         .update({'userList': addUser}),
-  //   });
-  // }
-
-  var checkNotifyTime;
-
-  Future checkNotify(Map<String, dynamic> check) async {
+  Future checkNotify(int check) async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
-        .update(check);
+        .update({'checkNotifyTime': check});
     print('check notify time');
-    setState(() {});
-  }
-
-  var notifiCount = 0;
-
-  streamPosts() {
-    var stream = Helper.notifiCollection.snapshots();
-    return stream;
   }
 
   getPostData(data) async {

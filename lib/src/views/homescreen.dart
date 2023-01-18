@@ -96,7 +96,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
   bool _isDrawerClosed() {
     return _drawerSlideController.value == 0.0;
   }
-  
+
   @override
   void dispose() {
     searchFocusNode.dispose();
@@ -119,43 +119,40 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               onSearchBarDismiss: onSearchBarDismiss,
               drawClicked: clickMenu,
             ),
-            
             Padding(
                 padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child:
-                    //AnimatedPositioned( 
+                    //AnimatedPositioned(
                     //top: showMenu ? 0 : -150.0,
                     //duration: const Duration(seconds: 2),
                     //curve: Curves.fastOutSlowIn,
                     //child:
                     SingleChildScrollView(
                   child: Column(children: [
-                    isEmailVerify?const SizedBox(): emailVerificationNoify(),
+                    isEmailVerify ? const SizedBox() : emailVerificationNoify(),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizeConfig(context).screenWidth <
-                                SizeConfig.mediumScreenSize
-                            ? const SizedBox()
-                            : LeftPanel(),
-                        //    : SizedBox(width: 0),
-                        Expanded(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(child: MainPanel()),
-                            SizeConfig(context).screenWidth >
-                                    SizeConfig.mediumScreenSize + 300
-                                ? RightPanel()
-                                : SizedBox(width: 0),
-
-                            // ChatScreen()
-                          ],
-                        )),
-                        //MainPanel(),
-                      ])
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizeConfig(context).screenWidth <
+                                  SizeConfig.mediumScreenSize
+                              ? const SizedBox()
+                              : LeftPanel(),
+                          //    : SizedBox(width: 0),
+                          Expanded(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(child: MainPanel()),
+                              SizeConfig(context).screenWidth >
+                                      SizeConfig.mediumScreenSize + 300
+                                  ? RightPanel()
+                                  : SizedBox(width: 0),
+                            ],
+                          )),
+                          //MainPanel(),
+                        ])
                   ]),
                 )),
             AnimatedBuilder(
@@ -260,11 +257,11 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: SizeConfig(context).screenWidth * 0.7 - 30,
-              child: Text(
-                'You have not completed the email verification',
-                style: const TextStyle(color: Colors.white),
-              )),
+                width: SizeConfig(context).screenWidth * 0.7 - 30,
+                child: Text(
+                  'You have not completed the email verification',
+                  style: const TextStyle(color: Colors.white),
+                )),
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Container(
               alignment: Alignment.center,
@@ -272,8 +269,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               child: TextButton(
                   onPressed: () async {
                     con.sendEmailVeryfication();
-                    Helper.showToast(
-                        'Email sent');
+                    Helper.showToast('Email sent');
                   },
                   child: Text(
                     '> Resend email',
@@ -283,18 +279,19 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
           ]),
     );
   }
-  Future<void> triggerEmailVerify () async {
+
+  Future<void> triggerEmailVerify() async {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       await FirebaseAuth.instance.currentUser!.reload();
       var user = await FirebaseAuth.instance.currentUser!;
       if (user.emailVerified) {
-        print('$isEmailVerify, 111111111111111111111111111111bject');
-        setState(() { 
+        print('$isEmailVerify, already get email verification');
+        setState(() {
           isEmailVerify = true;
         });
         timer.cancel();
-      }else{
-        print('$isEmailVerify, oasdfi9wi390ruoasdjf9uw38japsdjfp8aue3111111111111111111111111111111111bject');
+      } else {
+        print('$isEmailVerify, didn\' get email verification yet');
         setState(() {
           isEmailVerify = false;
         });

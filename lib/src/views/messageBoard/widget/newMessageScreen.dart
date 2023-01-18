@@ -8,6 +8,7 @@ import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
 
 class NewMessageScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class NewMessageScreen extends StatefulWidget {
   NewMessageScreen({Key? key, required this.onBack})
       : con = ChatController(),
         super(key: key);
-  late ChatController con;
+  final ChatController con;
   @override
   State createState() => NewMessageScreenState();
 }
@@ -37,22 +38,28 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
     con = controller as ChatController;
     con.chattingUser = '';
     con.setState(() {});
-    setState(() {});
     super.initState();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Column(children: [
-      TextField(
+          Stack(
+            children: [TextField(
         onChanged: ((value) async {
           var list = [];
           if (value == '') {
+            print('$value');
             searchUser = [];
-            setState(() {});
+            widget.onBack(false);
+            setState(
+              () {},
+            );
             return;
           }
+          widget.onBack(true);
           for (int i = 0; i < allUsersList.length; i++) {
             if (allUsersList[i]['userName'].contains(value)) {
               var flag = 0;
@@ -98,18 +105,14 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
         ),
       ),
       SizedBox(
-          height: SizeConfig(context).screenHeight - 260,
-          child: searchUser.isNotEmpty ? userList() : Container()),
-      con.chattingUser == ''
-          ? Container()
-          : WriteMessageScreen(
-              type: 'new',
-              goMessage: (value) {
-                widget.onBack(value);
-                // con.docId = '';
-              },
-            )
-    ]));
+          // height: SizeConfig(context).screenHeight,
+          child: Padding(
+            padding: EdgeInsets.only(top: 60),
+            child: searchUser.isNotEmpty ? userList() : Container()),
+          ),
+    ],
+          )
+      ]));
   }
 
   Widget userList() {
@@ -126,6 +129,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
                 hoverColor: Color.fromRGBO(240, 240, 240, 1),
                 onTap: () {
                   con.avatar = e['avatar'];
+                  widget.onBack('new');
                   con.chattingUser = e['userName'];
                   con.newRFirstName = e['firstName'];
                   con.newRLastName = e['lastName'];

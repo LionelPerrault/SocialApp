@@ -27,6 +27,8 @@ class Helper {
         fromFirestore: (snapshots, _) => TokenLogin.fromJSON(snapshots.data()!),
         toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
       );
+  static var userCollection =
+      FirebaseFirestore.instance.collection(Helper.userField);
   static var messageCollection =
       FirebaseFirestore.instance.collection(Helper.message);
   static var eventsData =
@@ -89,8 +91,8 @@ class Helper {
   }
 
   static Map notificationText = {
-    'products':{
-      'text':'added product',
+    'products': {
+      'text': 'added product',
     }
   };
 
