@@ -153,7 +153,7 @@ class ChatController extends ControllerMVC {
         //print(bytes);
         Reference _reference = await _firebaseStorage
             .ref()
-            .child('chat-assets/${PPath.basename(pickedFile!.path)}');
+            .child('chat-assets/${PPath.basename(pickedFile.path)}');
         final uploadTask = _reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
@@ -200,7 +200,7 @@ class ChatController extends ControllerMVC {
       //write a code for android or ios
       Reference _reference = await _firebaseStorage
           .ref()
-          .child('chat-assets/${PPath.basename(pickedFile!.path)}');
+          .child('chat-assets/${PPath.basename(pickedFile.path)}');
       _reference.putFile(file).whenComplete(() async {
         print('value');
         var downloadUrl = await _reference.getDownloadURL();

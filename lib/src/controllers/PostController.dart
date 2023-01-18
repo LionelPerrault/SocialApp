@@ -250,7 +250,7 @@ class PostController extends ControllerMVC {
           'uid': UserManager.userInfo['uid'],
         }
       ],
-      'eventDate': DateTime.now().toString(),
+      'eventDate': FieldValue.serverTimestamp(),
       'eventGoing': [],
       'eventInterested': [],
       'eventInvited': [],
@@ -977,6 +977,10 @@ class PostController extends ControllerMVC {
         .update({'productOnOffCommenting': value}).then((e) async {
       getProduct();
     });
+  }
+
+  changeProductSellState(productId) async {
+    await Helper.productsData.doc(productId).update({'productSellState': true});
   }
 
   var productLikes = {};
