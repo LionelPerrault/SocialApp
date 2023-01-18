@@ -206,14 +206,10 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
                                                     children: [
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top:
-                                                                  eventSubRoute ==
-                                                                          ''
-                                                                      ? 26
-                                                                      : 26)),
                                                       InkWell(
                                                         onTap: () {
                                                           eventSubRoute = '';
@@ -225,6 +221,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               Alignment.center,
                                                           child: Column(
                                                               children: [
+                                                                Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        top: eventSubRoute ==
+                                                                                ''
+                                                                            ? 26
+                                                                            : 26)),
                                                                 Container(
                                                                     alignment:
                                                                         Alignment
@@ -272,12 +274,6 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         CrossAxisAlignment
                                                             .stretch,
                                                     children: [
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top: eventSubRoute ==
-                                                                      'going'
-                                                                  ? 26
-                                                                  : 26)),
                                                       InkWell(
                                                         onTap: () {
                                                           eventSubRoute =
@@ -290,6 +286,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               Alignment.center,
                                                           child: Column(
                                                               children: [
+                                                                Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        top: eventSubRoute ==
+                                                                                'going'
+                                                                            ? 26
+                                                                            : 26)),
                                                                 Container(
                                                                     alignment:
                                                                         Alignment
@@ -334,12 +336,6 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top: eventSubRoute ==
-                                                                      'interested'
-                                                                  ? 26
-                                                                  : 26)),
                                                       InkWell(
                                                         onTap: () {
                                                           eventSubRoute =
@@ -352,6 +348,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               Alignment.center,
                                                           child: Column(
                                                               children: [
+                                                                Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        top: eventSubRoute ==
+                                                                                'interested'
+                                                                            ? 26
+                                                                            : 26)),
                                                                 Container(
                                                                     alignment:
                                                                         Alignment
@@ -396,12 +398,6 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top: eventSubRoute ==
-                                                                      'invited'
-                                                                  ? 26
-                                                                  : 26)),
                                                       InkWell(
                                                         onTap: () {
                                                           eventSubRoute =
@@ -414,6 +410,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               Alignment.center,
                                                           child: Column(
                                                               children: [
+                                                                Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        top: eventSubRoute ==
+                                                                                'invited'
+                                                                            ? 26
+                                                                            : 26)),
                                                                 Container(
                                                                     alignment:
                                                                         Alignment
@@ -458,12 +460,6 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top: eventSubRoute ==
-                                                                      'manage'
-                                                                  ? 26
-                                                                  : 26)),
                                                       InkWell(
                                                         onTap: () {
                                                           eventSubRoute =
@@ -476,6 +472,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               Alignment.center,
                                                           child: Column(
                                                               children: [
+                                                                Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        top: eventSubRoute ==
+                                                                                'manage'
+                                                                            ? 26
+                                                                            : 26)),
                                                                 Container(
                                                                     alignment:
                                                                         Alignment
@@ -509,43 +511,6 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                               ]),
                                                         )),
                                                       ),
-                                                      // RichText(
-                                                      //   text: TextSpan(
-                                                      //       children: <
-                                                      //           TextSpan>[
-                                                      //         TextSpan(
-                                                      //             text:
-                                                      //                 'My Events',
-                                                      //             style: const TextStyle(
-                                                      //                 color: Color.fromARGB(
-                                                      //                     255,
-                                                      //                     90,
-                                                      //                     90,
-                                                      //                     90),
-                                                      //                 fontSize:
-                                                      //                     14),
-                                                      //             recognizer:
-                                                      //                 TapGestureRecognizer()
-                                                      //                   ..onTap =
-                                                      //                       () {
-                                                      //                     eventSubRoute =
-                                                      //                         'manage';
-                                                      //                     setState(
-                                                      //                         () {});
-                                                      //                   }),
-                                                      //       ]),
-                                                      // ),
-                                                      // eventSubRoute == 'manage'
-                                                      //     ? Container(
-                                                      //         margin:
-                                                      //             const EdgeInsets
-                                                      //                     .only(
-                                                      //                 top: 26),
-                                                      //         height: 1,
-                                                      //         color:
-                                                      //             Colors.black,
-                                                      //       )
-                                                      //     : const SizedBox()
                                                     ],
                                                   )),
                                                 ]),
