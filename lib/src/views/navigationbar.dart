@@ -1,8 +1,10 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
@@ -28,6 +30,7 @@ enum Menu {
   itemKeyboardShortcut
 }
 
+// ignore: must_be_immutable
 class ShnatterNavigation extends StatefulWidget {
   ShnatterNavigation({
     Key? key,
@@ -132,10 +135,12 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       var userInfo = userSnap.data();
       var changeData = [];
       for (var i = 0; i < allNotifi.length; i++) {
-        var notiTime = allNotifi[i]['tsNT'];
+        var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
+        print('tsNT is $tsNT');
+        print(userInfo!['checkNotifyTime']);
         var adminUid = allNotifi[i]['postAdminId'];
         if (adminUid != UserManager.userInfo['uid'] &&
-            notiTime > userInfo!['checkNotifyTime']) {
+            tsNT > userInfo['checkNotifyTime']) {
           var addData;
           await FirebaseFirestore.instance
               .collection(Helper.userField)
@@ -147,9 +152,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       'uid': allNotifi[i].id,
                       'avatar': userV.data()!['avatar'],
                       'userName': userV.data()!['userName'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                      'date': Helper.formatDate(allNotifi[i]['notifyTime']),
+                      'text': Helper.notificationText[allNotifi[i]['postType']]['text'],
                     },
                     changeData.add(addData),
                   });

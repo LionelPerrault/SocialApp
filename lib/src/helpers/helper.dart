@@ -76,6 +76,8 @@ class Helper {
   static var onlineStatusField = 'onlineStatus';
   static var productLikeCommentField = 'productLikeComment';
   static var passwordMinLength = 9;
+  static var systemAvatar = 
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsystem_avatar.svg?alt=media&token=1b903903-95d8-4826-808d-ddbde4ac55c3';
   static var emptySVG =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fnodaa.svg?alt=media&token=ebfb99db-2cf6-4dd4-ba96-2ca150ba1352';
   static var blankGroup =
@@ -91,9 +93,25 @@ class Helper {
   }
 
   static Map notificationText = {
+    'storys': {
+      'text': 'added story',
+    },
+    'news': {
+      'text': 'added news',
+    },
     'products': {
       'text': 'added product',
-    }
+    },
+    'pages': {
+      'text': 'added page'
+    },
+    'groups': {
+      'text': 'added group'
+    },
+    'events': {
+      'text': 'added event'
+    },
+
   };
 
   static showToast(String message) {
