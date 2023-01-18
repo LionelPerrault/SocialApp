@@ -979,6 +979,10 @@ class PostController extends ControllerMVC {
     });
   }
 
+  changeProductSellState(productId) async {
+    await Helper.productsData.doc(productId).update({'productSellState': true});
+  }
+
   var productLikes = {};
   saveProductLikes(productId, likes) async {
     var userInfo = UserManager.userInfo;

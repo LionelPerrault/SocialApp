@@ -6,11 +6,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/utils/svg.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
 
@@ -31,6 +34,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   late PostController con;
   var product;
   var productId = '';
+  bool payLoading = false;
+  bool loading = false;
 
   List<Map> subFunctionList = [];
   @override
@@ -40,6 +45,46 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     super.initState();
     product = widget.data['data'];
     productId = widget.data['id'];
+  }
+
+  buyProduct() async {
+    var eventAdminInfo =
+        await ProfileController().getUserInfo(product['productAdmin']['uid']);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const SizedBox(),
+        content: AlertYesNoWidget(
+            yesFunc: () async {
+              payLoading = true;
+              setState(() {});
+              await UserController()
+                  .payShnToken(eventAdminInfo!['paymail'].toString(),
+                      product['productPrice'], 'Pay for buy product')
+                  .then(
+                    (value) async => {
+                      if (value)
+                        {
+                          payLoading = false,
+                          setState(() {}),
+                          Navigator.of(context).pop(true),
+                          loading = true,
+                          setState(() {}),
+                          await con.changeProductSellState(productId),
+                          loading = false,
+                          setState(() {}),
+                        }
+                    },
+                  );
+            },
+            noFunc: () {
+              Navigator.of(context).pop(true);
+            },
+            header: 'Pay Token',
+            text: 'Are you sure about pay token',
+            progress: payLoading),
+      ),
+    );
   }
 
   @override
@@ -522,9 +567,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                   borderRadius: BorderRadius.circular(3.0)),
                             ),
                             onPressed: () {
-                              setState(() {
-                                // stepflag = true;
-                              });
+                              buyProduct();
                             },
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
