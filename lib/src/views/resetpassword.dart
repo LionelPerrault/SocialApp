@@ -235,7 +235,7 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                 child: Row(
                   children: [
                     const Padding(padding: EdgeInsets.only(left: 10)),
-                    text('@ 2022 Shnatter',
+                    text('@ 2023 Shnatter',
                         const Color.fromRGBO(150, 150, 150, 1), 11),
                     const Padding(padding: EdgeInsets.only(left: 20)),
                     Image.network(

@@ -75,7 +75,7 @@ class footbarState extends State<footbar> {
         child: Row(
           children: [
             const Padding(padding: EdgeInsets.only(left: 10)),
-            text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 11),
+            text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 11),
             const Padding(padding: EdgeInsets.only(left: 20)),
             Container(
               width: 200,
@@ -170,7 +170,7 @@ class footbarMState extends State<footbarM> {
             Row(
               children: [
                 const Padding(padding: EdgeInsets.only(left: 10)),
-                text('@ 2022 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
+                text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
                     13),
                 const Padding(padding: EdgeInsets.only(left: 15)),
                 Container(
