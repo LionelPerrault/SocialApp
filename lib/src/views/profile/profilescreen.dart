@@ -58,8 +58,9 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
     con.getProfileInfo().then((value) {
       print('now get profile');
       profileImage = con.userData['profileImage'] ?? '';
-      if (con.userData['paywall']['visitProfile'] == null ||
-          con.userData['paywall']['visitProfile'] == '0' ||
+      print(con.userData['paywall']);
+      if (con.userData['paywall'][UserManager.userInfo['uid']] == null ||
+          con.userData['paywall'][UserManager.userInfo['uid']] == '0' ||
           con.userData['userName'] == UserManager.userInfo['userName']) {
         isProfileView = true;
       }
@@ -83,7 +84,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
       await UserController()
           .payShnToken(
               con.userData['paymail'].toString(),
-              con.userData['paywall']['visitProfile'],
+              con.userData['paywall'][UserManager.userInfo['uid']],
               'Pay for view profile of user')
           .then(
             (value) => {
@@ -186,7 +187,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                             },
                             header: 'Pay for View Profile',
                             text:
-                                'This user set view profile price is ${con.userData["paywall"]["visitProfile"]}',
+                                'This user set paywall price is ${con.userData['paywall'][UserManager.userInfo['uid']]}',
                             progress: isPayProgressive,
                           )
                         : Container(

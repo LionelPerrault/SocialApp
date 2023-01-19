@@ -44,6 +44,9 @@ class ProfileAvatarandTabScreenState extends mvc
     {'title': 'Groups', 'icon': Icons.group_sharp},
     {'title': 'Events', 'icon': Icons.gif_box},
   ];
+  bool setPaywallProgress = false;
+  String paywallPrice = '';
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +65,36 @@ class ProfileAvatarandTabScreenState extends mvc
       itemWidth = 100;
       setState(() {});
     });
+  }
+
+  modalView() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const SizedBox(),
+        content: setPaywallWidget(),
+      ),
+    );
+  }
+
+  setPaywallPrice() async {
+    if (paywallPrice == '' || int.tryParse(paywallPrice) == null) {
+      Helper.showToast('Please insert price correctly');
+      return;
+    } else {
+      setPaywallProgress = true;
+      setState(() {});
+      await UserController().profileChange({
+        'paywall': {
+          ...UserManager.userInfo['paywall'],
+          con.viewProfileUid: paywallPrice,
+        }
+      });
+      Helper.showToast('Successfully saved');
+      Navigator.of(context).pop(true);
+      setPaywallProgress = false;
+      setState(() {});
+    }
   }
 
   @override
@@ -205,14 +238,51 @@ class ProfileAvatarandTabScreenState extends mvc
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '${con.userData['firstName']} ${con.userData['lastName']}',
-          style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: SizeConfig(context).screenWidth < 800
-                  ? const Color.fromRGBO(51, 51, 51, 1)
-                  : Colors.white),
+        Row(
+          children: [
+            Text(
+              '${con.userData['firstName']} ${con.userData['lastName']}',
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: SizeConfig(context).screenWidth < 800
+                      ? const Color.fromRGBO(51, 51, 51, 1)
+                      : Colors.white),
+            ),
+            const Flexible(fit: FlexFit.tight, child: SizedBox()),
+            con.userData['userName'] == UserManager.userInfo['userName']
+                ? const SizedBox()
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 45, 205, 137),
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2.0)),
+                        minimumSize: const Size(90, 40),
+                        maximumSize: const Size(90, 40)),
+                    onPressed: () {
+                      modalView();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.person_add,
+                          size: 20,
+                        ),
+                        Text(
+                          'Paywall',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+          ],
         ),
         SingleChildScrollView(
             controller: _scrollController,
@@ -227,53 +297,217 @@ class ProfileAvatarandTabScreenState extends mvc
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: mainTabList
-                      .map((e) => MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: InkWell(
-                                onTap: () {
-                                  widget.onClick(e['title']);
-                                  setState(() {});
-                                },
-                                child: Container(
-                                    padding: const EdgeInsets.only(top: 30),
-                                    width: itemWidth,
-                                    child: Column(
+                      .map(
+                        (e) => MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: InkWell(
+                            onTap: () {
+                              widget.onClick(e['title']);
+                              setState(() {});
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(top: 30),
+                              width: itemWidth,
+                              child: Column(
+                                children: [
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                e['icon'],
-                                                size: 15,
+                                        Icon(
+                                          e['icon'],
+                                          size: 15,
+                                          color: Color.fromRGBO(76, 76, 76, 1),
+                                        ),
+                                        const Padding(
+                                            padding: EdgeInsets.only(left: 5)),
+                                        Text(e['title'],
+                                            style: const TextStyle(
+                                                fontSize: 13,
                                                 color: Color.fromRGBO(
                                                     76, 76, 76, 1),
-                                              ),
-                                              const Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 5)),
-                                              Text(e['title'],
-                                                  style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Color.fromRGBO(
-                                                          76, 76, 76, 1),
-                                                      fontWeight:
-                                                          FontWeight.bold))
-                                            ]),
-                                        e['title'] == con.tab
-                                            ? Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 23),
-                                                height: 2,
-                                                color: Colors.grey,
-                                              )
-                                            : Container()
-                                      ],
-                                    ))),
-                          ))
+                                                fontWeight: FontWeight.bold))
+                                      ]),
+                                  e['title'] == con.tab
+                                      ? Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 23),
+                                          height: 2,
+                                          color: Colors.grey,
+                                        )
+                                      : Container()
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
                       .toList()),
             ))
       ],
+    );
+  }
+
+  Widget setPaywallWidget() {
+    return Container(
+      width: 400,
+      height: 300,
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 30),
+                  height: 230,
+                  child: Column(
+                    children: [
+                      Text(
+                        'Set paywall for ${con.userData['firstName']} ${con.userData['lastName']}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 10)),
+                      const Text(
+                        'Enter the amount of tokens as the paywall value',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 400,
+                                    height: 30,
+                                    child: TextField(
+                                      maxLines: 1,
+                                      minLines: 1,
+                                      onChanged: (value) {
+                                        paywallPrice = value;
+                                        setState(() {});
+                                      },
+                                      decoration: const InputDecoration(
+                                        contentPadding:
+                                            EdgeInsets.only(top: 10, left: 10),
+                                        border: OutlineInputBorder(),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.blue, width: 1.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 10)),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0)),
+                            minimumSize: const Size(110, 40),
+                            maximumSize: const Size(110, 40),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: const [
+                              Padding(padding: EdgeInsets.only(top: 17)),
+                              Icon(
+                                Icons.arrow_back,
+                                color: Colors.grey,
+                                size: 14.0,
+                              ),
+                              Padding(padding: EdgeInsets.only(left: 10)),
+                              Text('Cancel',
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(left: 10)),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0)),
+                            minimumSize: const Size(110, 40),
+                            maximumSize: const Size(110, 40),
+                          ),
+                          onPressed: () {
+                            setPaywallPrice();
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              setPaywallProgress
+                                  ? const SizedBox(
+                                      width: 10,
+                                      height: 10.0,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.grey,
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                              const Padding(padding: EdgeInsets.only(top: 17)),
+                              const Icon(
+                                Icons.check_circle,
+                                color: Colors.white,
+                                size: 14.0,
+                              ),
+                              const Padding(padding: EdgeInsets.only(left: 10)),
+                              const Text('Confirm',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(left: 10))
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

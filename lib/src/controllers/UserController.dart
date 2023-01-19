@@ -171,12 +171,12 @@ class UserController extends ControllerMVC {
       'walletAddress': walletAddress,
       // 'relysiaEmail': relysiaEmail,
       // 'relysiaPassword': relysiaPassword,
-      'paywall': {},
+      'paywall': [],
       'isStarted': false,
     });
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
-      'paywall': {},
+      'paywall': [],
       'paymail': paymail,
       'fullName':
           '${signUpUserInfo['firstName']} ${signUpUserInfo['lastName']}',
@@ -362,7 +362,8 @@ class UserController extends ControllerMVC {
     }
 
     ActionCodeSettings acs = ActionCodeSettings(
-        url: "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
+        url:
+            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;
@@ -723,4 +724,3 @@ class UserController extends ControllerMVC {
     return payResult;
   }
 }
-      
