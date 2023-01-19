@@ -43,8 +43,8 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
     var groupAdminInfo = await ProfileController()
         .getUserInfo(widget.groupData['data']['groupAdmin'][0]['uid']);
     print(groupAdminInfo);
-    if (groupAdminInfo!['paywall']['joinMyGroup'] == null ||
-        groupAdminInfo['paywall']['joinMyGroup'] == '0' ||
+    if (groupAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
+        groupAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         widget.groupData['data']['groupAdmin'][0]['uid'] ==
             UserManager.userInfo['uid']) {
       loading = true;
@@ -66,7 +66,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                 await UserController()
                     .payShnToken(
                         groupAdminInfo['paymail'].toString(),
-                        groupAdminInfo['paywall']['joinMyGroup'],
+                        groupAdminInfo['paywall'][UserManager.userInfo['uid']],
                         'Pay for view profile of user')
                     .then(
                       (value) async => {
@@ -91,9 +91,9 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
               noFunc: () {
                 Navigator.of(context).pop(true);
               },
-              header: 'Pay token for join or unjoin this page',
+              header: 'Pay token for paywall',
               text:
-                  'Admin of this group set price is ${groupAdminInfo['paywall']['joinMyGroup']} for join or unjoin this page',
+                  'Admin of this group set paywall price is ${groupAdminInfo['paywall'][UserManager.userInfo['uid']]}',
               progress: payLoading),
         ),
       );

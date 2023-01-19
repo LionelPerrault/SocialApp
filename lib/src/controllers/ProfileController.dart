@@ -30,6 +30,7 @@ class ProfileController extends ControllerMVC {
   String profile_cover = '';
   String viewProfileUserName = '';
   String viewProfileFullName = '';
+  String viewProfileUid = '';
   String tab = 'Timeline';
   double progress;
   var resData = {};
@@ -62,6 +63,7 @@ class ProfileController extends ControllerMVC {
         .then((value) {
       viewProfileFullName =
           '${value.docs[0].data()['firstName']} ${value.docs[0].data()['lastName']}';
+      viewProfileUid = value.docs[0].id;
       userData = value.docs[0].data();
       profile_cover = userData['profile_cover'] ?? '';
       setState(() {});
