@@ -74,8 +74,8 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     var eventAdminInfo = await ProfileController()
         .getUserInfo(con.event['eventAdmin'][0]['uid']);
     print(eventAdminInfo);
-    if (eventAdminInfo!['paywall']['interestMyEvent'] == null ||
-        eventAdminInfo['paywall']['interestMyEvent'] == '0' ||
+    if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
+        eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         con.event['groupAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
       interestedStatus = true;
       setState(() {});
@@ -99,7 +99,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                 await UserController()
                     .payShnToken(
                         eventAdminInfo['paymail'].toString(),
-                        eventAdminInfo['paywall']['interestMyEvent'],
+                        eventAdminInfo['paywall'][UserManager.userInfo['uid']],
                         'Pay for interested event of user')
                     .then(
                       (value) async => {
@@ -129,9 +129,9 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               noFunc: () {
                 Navigator.of(context).pop(true);
               },
-              header: 'Pay token for interested or uninterested this page',
+              header: 'Pay token for paywall',
               text:
-                  'Admin of this event set price is ${eventAdminInfo['paywall']['interestMyEvent']} for interested or uninterested this page',
+                  'Admin of this event set paywall price is ${eventAdminInfo['paywall'][UserManager.userInfo['uid']]}',
               progress: payLoading),
         ),
       );

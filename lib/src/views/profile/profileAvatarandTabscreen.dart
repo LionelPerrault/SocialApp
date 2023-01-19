@@ -282,6 +282,41 @@ class ProfileAvatarandTabScreenState extends mvc
                       ],
                     ),
                   ),
+            PopupMenuButton(
+              onSelected: (value) {
+                // your logic
+              },
+              icon: const Icon(
+                Icons.settings,
+                size: 16,
+                color: Colors.white,
+              ),
+              itemBuilder: (BuildContext bc) {
+                return const [
+                  PopupMenuItem(
+                    value: 'block',
+                    child: Text(
+                      "Manage Blocking",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'privacy',
+                    child: Text(
+                      "Privacy Settings",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'turn_off',
+                    child: Text(
+                      "Turn Off Chat",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  )
+                ];
+              },
+            )
           ],
         ),
         SingleChildScrollView(
