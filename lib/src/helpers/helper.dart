@@ -45,6 +45,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.interestsField);
   static var notifiCollection =
       FirebaseFirestore.instance.collection(Helper.notificationField);
+  static var systemAvatar = 
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsystem_avatar.svg?alt=media&token=1b903903-95d8-4826-808d-ddbde4ac55c3';
   static var avatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82';
   static var pageAvatar =
@@ -76,8 +78,7 @@ class Helper {
   static var onlineStatusField = 'onlineStatus';
   static var productLikeCommentField = 'productLikeComment';
   static var passwordMinLength = 9;
-  static var systemAvatar = 
-      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsystem_avatar.svg?alt=media&token=1b903903-95d8-4826-808d-ddbde4ac55c3';
+  
   static var emptySVG =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fnodaa.svg?alt=media&token=ebfb99db-2cf6-4dd4-ba96-2ca150ba1352';
   static var blankGroup =
@@ -111,7 +112,16 @@ class Helper {
     'events': {
       'text': 'added event'
     },
+    'requestFriend': {
+      'text': 'Friend request sent'
+    }
 
+  };
+
+  static Map notificationName = {
+    'requestFriend': {
+      'name': 'System Message'
+    }
   };
 
   static showToast(String message) {

@@ -139,10 +139,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         print('tsNT is $tsNT');
         print(userInfo!['checkNotifyTime']);
         var adminUid = allNotifi[i]['postAdminId'];
-        if (adminUid != UserManager.userInfo['uid'] &&
-            tsNT > userInfo['checkNotifyTime']) {
+        var postType = allNotifi[i]['postType'];
+        if (tsNT > userInfo['checkNotifyTime']) {
           var addData;
-          await FirebaseFirestore.instance
+          if(adminUid != UserManager.userInfo['uid']){
+            await FirebaseFirestore.instance
               .collection(Helper.userField)
               .doc(allNotifi[i]['postAdminId'])
               .get()
@@ -152,10 +153,31 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       'uid': allNotifi[i].id,
                       'avatar': userV.data()!['avatar'],
                       'userName': userV.data()!['userName'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]['text'],
+                      'text': Helper.notificationText[allNotifi[i]['postType']]
+                          ['text'],
                     },
                     changeData.add(addData),
                   });
+          }
+          if(postType == 'requestFriend' 
+            && adminUid == UserManager.userInfo['uid']){
+            print('here is requestFriend');
+            await FirebaseFirestore.instance
+              .collection(Helper.userField)
+              .doc(allNotifi[i]['postAdminId'])
+              .get()
+              .then((userV) => {
+                    addData = {
+                      // ...allNotifi[i],
+                      'uid': allNotifi[i].id,
+                      'avatar': Helper.systemAvatar,
+                      'userName': Helper.notificationName[allNotifi[i]['postType']]['name'],
+                      'text': Helper.notificationText[allNotifi[i]['postType']]
+                          ['text'],
+                    },
+                    changeData.add(addData),
+                  });
+          }
         }
       }
       postCon.realNotifi = changeData;
