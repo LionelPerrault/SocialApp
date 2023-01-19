@@ -72,6 +72,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     fullName = UserManager.userInfo['firstName'] +
         ' ' +
         UserManager.userInfo['lastName'];
+    print('this is full name:$fullName');
     progress = 0;
     selectFlag['jew'] = false;
     selectFlag['policy1'] = false;
