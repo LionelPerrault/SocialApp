@@ -223,7 +223,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         children: [
           headerWidget(Icon(Icons.settings), 'Page Settings'),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(25),
             child: Column(
               children: [
                 const Padding(padding: EdgeInsets.only(top: 15)),
@@ -257,6 +257,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   ],
                 ),
                 Container(
+                  padding: EdgeInsets.only(top: 5),
                   width: 380,
                   child: const Text(
                     'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
@@ -733,22 +734,23 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
               color: Color.fromRGBO(82, 95, 127, 1),
               fontSize: 13,
               fontWeight: FontWeight.w600),
         ),
-        Padding(padding: EdgeInsets.only(top: 2)),
+        const Padding(padding: EdgeInsets.only(top: 2)),
         Container(
           height: 40,
+          padding: const EdgeInsets.only(top: 5),
           child: TextField(
             controller: controller,
             onChanged: onChange,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10, left: 10),
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
               ),
             ),
           ),
