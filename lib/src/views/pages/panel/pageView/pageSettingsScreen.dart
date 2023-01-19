@@ -141,7 +141,9 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Row(
+            child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize 
+            ?
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LeftSettingBar(),
@@ -159,7 +161,27 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                       : GroupDeleteWidget(),
                 ),
               ],
-            ),
+            )
+            :
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LeftSettingBar(),
+                Container(
+                  child: pageSettingTab == 'Page Settings'
+                      ? PageSettingsWidget()
+                      : pageSettingTab == 'Page Information'
+                          ? PageInformationWidget()
+                          : pageSettingTab == 'Admins'
+                              ? PageAdminsWidget()
+                              : pageSettingTab == 'Verification'
+                                  ? VerificationWidget()
+                                  : pageSettingTab == 'Interests'
+                                      ? GroupInterestsWidget()
+                                      : GroupDeleteWidget(),
+                ),
+              ],
+            )
           )
         ],
       ),
@@ -179,10 +201,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               .map(
                 (e) => ListText(
                   onTap: () => {onClick(e['text'])},
-                  label: SizeConfig(context).screenWidth >
-                          SizeConfig.mediumScreenSize
-                      ? e['text']
-                      : '',
+                  label: e['text'],
                   icon: Icon(
                     e['icon'],
                     color: pageSettingTab == e['text']
@@ -199,14 +218,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget PageSettingsWidget() {
     return Container(
-      width: SizeConfig(context).screenWidth > 600
-          ? 600
-          : SizeConfig(context).screenWidth - 100,
+      width: SizeConfig(context).screenWidth,
       child: Column(
         children: [
           headerWidget(Icon(Icons.settings), 'Page Settings'),
           Container(
-            padding: EdgeInsets.all(5),
+            padding: EdgeInsets.all(10),
             child: Column(
               children: [
                 const Padding(padding: EdgeInsets.only(top: 15)),
@@ -1364,7 +1381,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         color: Color.fromARGB(255, 240, 243, 246),
         // borderRadius: BorderRadius.all(Radius.circular(3)),
       ),
-      padding: const EdgeInsets.only(top: 5, left: 15),
+      padding: const EdgeInsets.only(top: 5, left: 30),
       child: Row(
         children: [
           icon,
