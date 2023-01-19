@@ -54,7 +54,7 @@ class RelysiaManager {
           )
           .then((res) => {
                 responseData = jsonDecode(res.body),
-                //print(responseData),
+                print('this is responseData in createUser: $responseData'),
               });
     } catch (exception) {
       print("occurs exception" + exception.toString());

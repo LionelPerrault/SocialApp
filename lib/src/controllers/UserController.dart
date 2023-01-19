@@ -375,6 +375,7 @@ class UserController extends ControllerMVC {
     print(1);
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
+    print('responseData is :${responseData['data']}');
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();

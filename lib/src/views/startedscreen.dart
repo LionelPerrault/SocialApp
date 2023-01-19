@@ -208,7 +208,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                   ),
                   const Padding(padding: EdgeInsets.only(top: 50)),
                   Container(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    padding: const EdgeInsets.only(left: 15, right: 15),
                     width: 760,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -251,23 +251,23 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                   child: Column(
                                     children: [
                                       const Padding(
-                                          padding: EdgeInsets.only(top: 17)),
+                                          padding: EdgeInsets.only(top: 15)),
                                       Text('Step 1',
                                           style: TextStyle(
                                               color: stepflag
                                                   ? Colors.white
                                                   : Colors.black,
-                                              fontSize: 22,
+                                              fontSize: 20,
                                               fontWeight: FontWeight.w600)),
                                       const Padding(
-                                          padding: EdgeInsets.only(top: 6)),
+                                          padding: EdgeInsets.only(top: 3)),
                                       Text(
                                         'Upload your photo',
                                         style: TextStyle(
                                             color: stepflag
                                                 ? Colors.white
                                                 : Colors.black,
-                                            fontSize: 13),
+                                            fontSize: 12),
                                       )
                                     ],
                                   )),
@@ -297,22 +297,22 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                   child: Column(
                                     children: [
                                       const Padding(
-                                          padding: EdgeInsets.only(top: 17)),
+                                          padding: EdgeInsets.only(top: 15)),
                                       Text('Step 2',
                                           style: TextStyle(
                                               color: stepflag
                                                   ? Colors.black
                                                   : Colors.white,
-                                              fontSize: 22,
+                                              fontSize: 20,
                                               fontWeight: FontWeight.w600)),
                                       const Padding(
-                                          padding: EdgeInsets.only(top: 6)),
+                                          padding: EdgeInsets.only(top: 3)),
                                       Text('Update your info',
                                           style: TextStyle(
                                               color: stepflag
                                                   ? Colors.black
                                                   : Colors.white,
-                                              fontSize: 13)),
+                                              fontSize: 12)),
                                     ],
                                   )),
                             )
@@ -327,16 +327,16 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Welcome',
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 22),
                                       ),
-                                      Padding(
+                                      const Padding(
                                           padding: EdgeInsets.only(left: 10)),
                                       Text(
                                         fullName,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color.fromARGB(
                                                 255, 0, 123, 255),
                                             fontSize: 22),
