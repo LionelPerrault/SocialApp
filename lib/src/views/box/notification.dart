@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
 
+// ignore: must_be_immutable
 class ShnatterNotification extends StatefulWidget {
   ShnatterNotification({Key? key})
       : con = PostController(),
@@ -41,17 +42,24 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
           .get();
+      // ignore: unused_local_variable
       var userInfo = userSnap.data();
       var changeData = [];
       for (var i = 0; i < allNotifi.length; i++) {
-        var notiTime = allNotifi[i]['tsNT'];
         var adminUid = allNotifi[i]['postAdminId'];
         var viewFlag = true;
+        
         for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
           if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
             viewFlag = false;
           }
         }
+        con.allNotification = [];
+        var notifyTime = 
+          DateTime.parse(allNotifi[i]['timeStamp'].toDate().toString());
+        var formattedNotifyTime =
+          DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+        print('notifications formatted notify time:$formattedNotifyTime');
         if (adminUid != UserManager.userInfo['uid'] && viewFlag) {
           var addData;
           await FirebaseFirestore.instance
@@ -66,7 +74,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                       'userName': userV.data()!['userName'],
                       'text': Helper.notificationText[allNotifi[i]['postType']]
                           ['text'],
-                      'date': Helper.formatDate(allNotifi[i]['notifyTime']),
+                      'date': Helper.formatDate(formattedNotifyTime),
                     },
                     changeData.add(addData),
                   });
