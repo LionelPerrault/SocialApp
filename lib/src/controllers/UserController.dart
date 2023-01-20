@@ -40,6 +40,7 @@ class UserController extends ControllerMVC {
   bool isLogined = false;
   String failLogin = '';
   String failRegister = '';
+  String isEmailExist = '';
   String userAvatar = '';
   var resData = {};
   Map<dynamic, dynamic> userInfo = {};
@@ -216,8 +217,17 @@ class UserController extends ControllerMVC {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       isSendResetPassword = true;
       setState(() {});
+      Helper.showToast('Email is sent');
     } catch (e) {
       print(e);
+      if (!email.contains('@')) {
+        isEmailExist = 'Not email type';
+        setState(() {});
+      } else {
+        isEmailExist = 'That email is not exist in database now';
+        setState(() {});
+      }
+      setState(() {});
     }
   }
 
