@@ -234,7 +234,6 @@ class ChatController extends ControllerMVC {
           chattingUser = user;
           chatUserFullName = chatUsers[user]['name'];
           docId = chatUsers.id;
-          print(isMessageTap);
         }
       }
     }
