@@ -16,6 +16,7 @@ import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
+import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
 
 // ignore: must_be_immutable
 class ProductCell extends StatefulWidget {
@@ -89,7 +90,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.data);
+    // print('${widget.data["data"]["productAdmin"]["uid"]}asddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
     subFunctionList = [
       {
         'icon': product['productMarkAsSold']
@@ -535,6 +536,13 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             BorderRadius.circular(3.0)),
                                   ),
                                   onPressed: () {
+                                    if(UserManager.userInfo['uid'] != widget.data["data"]["productAdmin"]["uid"]){
+                                      Navigator.pushNamed(
+                                        context,
+                                        RouteNames.messages,
+                                        arguments: widget.data["data"]["productAdmin"]["uid"].toString(),
+                                      );
+                                    }
                                     setState(() {
                                       // stepflag = true;
                                     });
@@ -591,6 +599,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
       ],
     );
   }
+
 
   Widget SubFunction() {
     return ClipRRect(
