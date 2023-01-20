@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -560,13 +561,13 @@ class ProfileAvatarandTabScreenState extends mvc
       var permissionStatus = await Permission.photos.status;
       print('permission is');
 
-      if (permissionStatus.isGranted) {
-        pickedFile = await _imagePicker.pickImage(
-          source: ImageSource.gallery,
-        );
-      } else {
-        print('Permission not granted. Try Again with permission access');
-      }
+      //if (permissionStatus.isGranted) {
+      pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+      //} else {
+      //  print('Permission not granted. Try Again with permission access');
+      //}
     }
     return pickedFile!;
   }
