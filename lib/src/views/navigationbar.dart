@@ -155,8 +155,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         'uid': allNotifi[i].id,
                         // 'avatar': userV.data()!['avatar'],
                         // 'userName': userV.data()!['userName'],
-                        'text': Helper
-                            .notificationText[allNotifi[i]['postType']]['text'],
+                        //'text': Helper
+                        //    .notificationText[allNotifi[i]['postType']]['text'],
                       },
                       changeData.add(addData),
                     });
