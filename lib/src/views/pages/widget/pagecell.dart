@@ -42,8 +42,8 @@ class PageCellState extends mvc.StateMVC<PageCell> {
     var pageAdminInfo = await ProfileController()
         .getUserInfo(widget.pageInfo['data']['pageAdmin'][0]['uid']);
     print(pageAdminInfo);
-    if (pageAdminInfo!['paywall']['likeMyPage'] == null ||
-        pageAdminInfo['paywall']['likeMyPage'] == '0' ||
+    if (pageAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
+        pageAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         widget.pageInfo['data']['pageAdmin'][0]['uid'] ==
             UserManager.userInfo['uid']) {
       loading = true;
@@ -65,7 +65,7 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                 await UserController()
                     .payShnToken(
                         pageAdminInfo['paymail'].toString(),
-                        pageAdminInfo['paywall']['likeMyPage'],
+                        pageAdminInfo['paywall'][UserManager.userInfo['uid']],
                         'Pay for view profile of user')
                     .then(
                       (value) async => {
@@ -90,9 +90,9 @@ class PageCellState extends mvc.StateMVC<PageCell> {
               noFunc: () {
                 Navigator.of(context).pop(true);
               },
-              header: 'Pay token for like or unlike this page',
+              header: 'Pay token for paywall',
               text:
-                  'Admin of this page set price is ${pageAdminInfo['paywall']['likeMyPage']} for like or unlike this page',
+                  'Admin of this page set paywall price is ${pageAdminInfo['paywall'][UserManager.userInfo['uid']]}',
               progress: payLoading),
         ),
       );

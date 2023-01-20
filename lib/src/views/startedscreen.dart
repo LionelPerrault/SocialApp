@@ -72,6 +72,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     fullName = UserManager.userInfo['firstName'] +
         ' ' +
         UserManager.userInfo['lastName'];
+    print('this is full name:$fullName');
     progress = 0;
     selectFlag['jew'] = false;
     selectFlag['policy1'] = false;
@@ -174,7 +175,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
-        drawer: Drawer(),
+        drawer: const Drawer(),
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -185,7 +186,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
               drawClicked: clickMenu,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 80),
+              padding: const EdgeInsets.only(top: 80),
               child: SingleChildScrollView(
                 child: Column(children: [
                   const Padding(padding: EdgeInsets.only(top: 50)),
@@ -207,7 +208,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                   ),
                   const Padding(padding: EdgeInsets.only(top: 50)),
                   Container(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    padding: const EdgeInsets.only(left: 15, right: 15),
                     width: 760,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -250,23 +251,23 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                   child: Column(
                                     children: [
                                       const Padding(
-                                          padding: EdgeInsets.only(top: 17)),
+                                          padding: EdgeInsets.only(top: 15)),
                                       Text('Step 1',
                                           style: TextStyle(
                                               color: stepflag
                                                   ? Colors.white
                                                   : Colors.black,
-                                              fontSize: 22,
+                                              fontSize: 20,
                                               fontWeight: FontWeight.w600)),
                                       const Padding(
-                                          padding: EdgeInsets.only(top: 6)),
+                                          padding: EdgeInsets.only(top: 3)),
                                       Text(
                                         'Upload your photo',
                                         style: TextStyle(
                                             color: stepflag
                                                 ? Colors.white
                                                 : Colors.black,
-                                            fontSize: 13),
+                                            fontSize: 12),
                                       )
                                     ],
                                   )),
@@ -296,22 +297,22 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                   child: Column(
                                     children: [
                                       const Padding(
-                                          padding: EdgeInsets.only(top: 17)),
+                                          padding: EdgeInsets.only(top: 15)),
                                       Text('Step 2',
                                           style: TextStyle(
                                               color: stepflag
                                                   ? Colors.black
                                                   : Colors.white,
-                                              fontSize: 22,
+                                              fontSize: 20,
                                               fontWeight: FontWeight.w600)),
                                       const Padding(
-                                          padding: EdgeInsets.only(top: 6)),
+                                          padding: EdgeInsets.only(top: 3)),
                                       Text('Update your info',
                                           style: TextStyle(
                                               color: stepflag
                                                   ? Colors.black
                                                   : Colors.white,
-                                              fontSize: 13)),
+                                              fontSize: 12)),
                                     ],
                                   )),
                             )
@@ -326,16 +327,16 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Welcome',
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 22),
                                       ),
-                                      Padding(
+                                      const Padding(
                                           padding: EdgeInsets.only(left: 10)),
                                       Text(
                                         fullName,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Color.fromARGB(
                                                 255, 0, 123, 255),
                                             fontSize: 22),
@@ -355,7 +356,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               height: 120,
                                               padding: const EdgeInsets.all(2),
                                               decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
+                                                  color: const Color.fromARGB(
                                                       255, 250, 250, 250),
                                                   borderRadius:
                                                       BorderRadius.circular(60),
@@ -371,7 +372,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               height: 120,
                                               padding: const EdgeInsets.all(2),
                                               decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
+                                                  color: const Color.fromARGB(
                                                       255, 250, 250, 250),
                                                   borderRadius:
                                                       BorderRadius.circular(60),
@@ -388,7 +389,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                           ? AnimatedContainer(
                                               duration: const Duration(
                                                   milliseconds: 500),
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                   top: 70, left: 10),
                                               width: 100,
                                               padding: EdgeInsets.only(
@@ -415,7 +416,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                         ),
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            padding: EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(4),
                                             backgroundColor: Colors.grey[300],
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -540,7 +541,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Country',
+                                                const Text('Country',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -550,8 +551,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                 Container(
                                                   width: 750,
                                                   decoration: BoxDecoration(
-                                                      color: Color.fromARGB(
-                                                          255, 250, 250, 250),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              250,
+                                                              250,
+                                                              250),
                                                       border: Border.all(
                                                           color: Colors.grey)),
                                                   padding:
@@ -619,7 +624,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Current City',
+                                                const Text('Current City',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -648,7 +653,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Hometown',
+                                                const Text('Hometown',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -683,7 +688,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Relationship Status',
+                                                const Text(
+                                                    'Relationship Status',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -693,8 +699,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                 Container(
                                                   width: 360,
                                                   decoration: BoxDecoration(
-                                                      color: Color.fromARGB(
-                                                          255, 250, 250, 250),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              250,
+                                                              250,
+                                                              250),
                                                       border: Border.all(
                                                           color: Colors.grey)),
                                                   padding:
@@ -841,7 +851,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Birthday',
+                                                const Text('Birthday',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -851,8 +861,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                 Container(
                                                   width: 230,
                                                   decoration: BoxDecoration(
-                                                      color: Color.fromARGB(
-                                                          255, 250, 250, 250),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              250,
+                                                              250,
+                                                              250),
                                                       border: Border.all(
                                                           color: Colors.grey)),
                                                   padding:
@@ -864,13 +878,14 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         .map((year) =>
                                                             DropdownMenuItem(
                                                               value: year,
-                                                              child: Text(year ==
-                                                                      'none'
-                                                                  ? "Select Month"
-                                                                  : year),
+                                                              child: Text(
+                                                                  year == 'none'
+                                                                      ? "Month"
+                                                                      : year),
                                                             ))
                                                         .toList(),
                                                     onChanged:
+                                                        // ignore: unnecessary_question_mark
                                                         (dynamic? value) {
                                                       //get value when changed
                                                       saveData['birthM'] =
@@ -903,7 +918,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('',
+                                                const Text('',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -913,8 +928,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                 Container(
                                                   width: 230,
                                                   decoration: BoxDecoration(
-                                                      color: Color.fromARGB(
-                                                          255, 250, 250, 250),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              250,
+                                                              250,
+                                                              250),
                                                       border: Border.all(
                                                           color: Colors.grey)),
                                                   padding:
@@ -926,10 +945,10 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         .map((year) =>
                                                             DropdownMenuItem(
                                                               value: year,
-                                                              child: Text(year ==
-                                                                      'none'
-                                                                  ? "Select Day"
-                                                                  : year),
+                                                              child: Text(
+                                                                  year == 'none'
+                                                                      ? "Day"
+                                                                      : year),
                                                             ))
                                                         .toList(),
                                                     onChanged:
@@ -965,7 +984,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('',
+                                                const Text('',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -975,8 +994,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                 Container(
                                                   width: 230,
                                                   decoration: BoxDecoration(
-                                                      color: Color.fromARGB(
-                                                          255, 250, 250, 250),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              250,
+                                                              250,
+                                                              250),
                                                       border: Border.all(
                                                           color: Colors.grey)),
                                                   padding:
@@ -988,10 +1011,10 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         .map((year) =>
                                                             DropdownMenuItem(
                                                               value: year,
-                                                              child: Text(year ==
-                                                                      'none'
-                                                                  ? "Select Year"
-                                                                  : year),
+                                                              child: Text(
+                                                                  year == 'none'
+                                                                      ? "Year"
+                                                                      : year),
                                                             ))
                                                         .toList(),
                                                     onChanged:
@@ -1033,7 +1056,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('About Me',
+                                                const Text('About Me',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -1043,8 +1066,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                 Container(
                                                   width: 750,
                                                   decoration: BoxDecoration(
-                                                      color: Color.fromARGB(
-                                                          255, 250, 250, 250),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              250,
+                                                              250,
+                                                              250),
                                                       border: Border.all(
                                                           color: Colors.grey)),
                                                   child: TextFormField(
@@ -1056,9 +1083,10 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     },
                                                     keyboardType:
                                                         TextInputType.multiline,
-                                                    style:
-                                                        TextStyle(fontSize: 12),
-                                                    decoration: InputDecoration(
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
+                                                    decoration:
+                                                        const InputDecoration(
                                                       border: InputBorder.none,
                                                       focusedBorder:
                                                           InputBorder.none,
@@ -1080,7 +1108,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     ),
                                     const Padding(
                                         padding: EdgeInsets.only(top: 20)),
-                                    new Divider(
+                                    const Divider(
                                       height: 0,
                                     ),
                                     const Padding(
@@ -1110,7 +1138,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Work Title',
+                                                const Text('Work Title',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -1145,7 +1173,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Work Place',
+                                                const Text('Work Place',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -1175,7 +1203,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Work Website',
+                                                const Text('Work Website',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -1199,7 +1227,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     ),
                                     const Padding(
                                         padding: EdgeInsets.only(top: 20)),
-                                    new Divider(
+                                    const Divider(
                                       height: 0,
                                     ),
                                     //EDUCATION
@@ -1229,7 +1257,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Major',
+                                                const Text('Major',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -1263,7 +1291,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('School',
+                                                const Text('School',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -1292,7 +1320,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Class',
+                                                const Text('Class',
                                                     style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 82, 95, 127),
@@ -1335,7 +1363,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     Flexible(
                                                         fit: FlexFit.tight,
                                                         child: SizedBox()),
-                                                    const Padding(
+                                                    Padding(
                                                       padding: EdgeInsets.only(
                                                           top: 30),
                                                     )
@@ -1542,7 +1570,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                     Flexible(
                                                         fit: FlexFit.tight,
                                                         child: SizedBox()),
-                                                    const Padding(
+                                                    Padding(
                                                       padding: EdgeInsets.only(
                                                           top: 30),
                                                     ),
@@ -1554,12 +1582,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                       Container(
                                                         width: 750,
                                                         decoration: BoxDecoration(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    250,
-                                                                    250,
-                                                                    250),
+                                                            color: const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                250,
+                                                                250,
+                                                                250),
                                                             border: Border.all(
                                                                 color: Colors
                                                                     .grey)),
@@ -1630,6 +1658,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                       ],
                                     ),
                                     //all interests
+                                    // ignore: avoid_unnecessary_containers
                                     Container(
                                       child: SingleChildScrollView(
                                         child: Column(children: [
@@ -1742,7 +1771,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                                     left: 30))
                                                       ],
                                                     ),
-                                                    Divider(
+                                                    const Divider(
                                                       thickness: 0.1,
                                                       color: Colors.black,
                                                     )
@@ -1849,15 +1878,15 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                   return FractionalTranslation(
                       translation: SizeConfig(context).screenWidth >
                               SizeConfig.smallScreenSize
-                          ? Offset(0, 0)
+                          ? const Offset(0, 0)
                           : Offset(_drawerSlideController.value * 0.001, 0.0),
                       child: SizeConfig(context).screenWidth >
                                   SizeConfig.smallScreenSize ||
                               _isDrawerClosed()
                           ? const SizedBox()
                           : Padding(
-                              padding:
-                                  EdgeInsets.only(top: SizeConfig.navbarHeight),
+                              padding: const EdgeInsets.only(
+                                  top: SizeConfig.navbarHeight),
                               child: Container(
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,

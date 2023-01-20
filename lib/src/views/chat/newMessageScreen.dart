@@ -47,8 +47,8 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
 
   chatWithOtherUser(chatUserInfo) async {
     print(chatUserInfo);
-    if (chatUserInfo['paywall']['likeMyPage'] == null ||
-        chatUserInfo['paywall']['likeMyPage'] == '0') {
+    if (chatUserInfo['paywall'][UserManager.userInfo['uid']] == null ||
+        chatUserInfo['paywall'][UserManager.userInfo['uid']] == '0') {
       con.avatar = chatUserInfo['avatar'];
       con.chattingUser = chatUserInfo['userName'];
       con.newRFirstName = chatUserInfo['firstName'];
@@ -67,7 +67,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
                 await UserController()
                     .payShnToken(
                         chatUserInfo['paymail'].toString(),
-                        chatUserInfo['paywall']['chatWithMe'],
+                        chatUserInfo['paywall'][UserManager.userInfo['uid']],
                         'Pay for chat with other user')
                     .then(
                       (value) async => {
@@ -91,7 +91,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
               },
               header: 'Pay token for like or unlike this page',
               text:
-                  'Admin of this page set price is ${chatUserInfo['paywall']['likeMyPage']} for like or unlike this page',
+                  'Admin of this page set paywall price is ${chatUserInfo['paywall'][UserManager.userInfo['uid']]}',
               progress: payLoading),
         ),
       );

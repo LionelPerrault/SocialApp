@@ -7,6 +7,7 @@ import 'package:shnatter/src/views/messageBoard/widget/chatScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatUserListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/newMessageScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
+import 'package:shnatter/src/views/products/widget/productcell.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 
 import '../../controllers/ChatController.dart';
@@ -17,7 +18,6 @@ class MessageScreen extends StatefulWidget {
       : con = ChatController(),
         super(key: key);
   ChatController? con;
-
   @override
   State createState() => MessageScreenState();
 }
@@ -88,6 +88,12 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     return _drawerSlideController.value == 0.0;
   }
 
+  void connectFrom(uidOfTarget) async {
+    await con.connectFromMarketPlace(uidOfTarget);
+    isShowChatUserList = true;
+    setState(() { });
+  }
+
   @override
   void dispose() {
     searchFocusNode.dispose();
@@ -96,7 +102,15 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build (BuildContext context) {
+    if(!isShowChatUserList){
+      final uidOfTarget = ModalRoute.of(context)!.settings.arguments;
+      if(uidOfTarget != null){
+        connectFrom(uidOfTarget);
+        // print("$uidOfTarget................zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+      }
+    }
+    
     return MobileScreen();
   }
 

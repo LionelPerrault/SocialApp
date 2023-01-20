@@ -43,8 +43,8 @@ class EventCellState extends mvc.StateMVC<EventCell> {
     var eventAdminInfo = await ProfileController()
         .getUserInfo(widget.eventData['data']['eventAdmin'][0]['uid']);
     print(eventAdminInfo);
-    if (eventAdminInfo!['paywall']['interestMyEvent'] == null ||
-        eventAdminInfo['paywall']['interestMyEvent'] == '0' ||
+    if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
+        eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         widget.eventData['data']['groupAdmin'][0]['uid'] ==
             UserManager.userInfo['uid']) {
       loading = true;
@@ -66,7 +66,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                 await UserController()
                     .payShnToken(
                         eventAdminInfo['paymail'].toString(),
-                        eventAdminInfo['paywall']['interestMyEvent'],
+                        eventAdminInfo['paywall'][UserManager.userInfo['uid']],
                         'Pay for interested event of user')
                     .then(
                       (value) async => {
@@ -91,9 +91,9 @@ class EventCellState extends mvc.StateMVC<EventCell> {
               noFunc: () {
                 Navigator.of(context).pop(true);
               },
-              header: 'Pay token for interested or uninterested this page',
+              header: 'Pay token for paywall',
               text:
-                  'Admin of this event set price is ${eventAdminInfo['paywall']['interestMyEvent']} for interested or uninterested this page',
+                  'Admin of this event set paywall price is ${eventAdminInfo['paywall'][UserManager.userInfo['uid']]}',
               progress: payLoading),
         ),
       );

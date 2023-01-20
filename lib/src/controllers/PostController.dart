@@ -260,14 +260,23 @@ class PostController extends ControllerMVC {
       'eventCanPub': true,
       'eventApproval': true
     };
+    Map<String,dynamic> notificationData; 
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .add(eventData)
-        .then(
-          (value) => {
+        .then((value) async => {
+            notificationData = {
+              'postType': 'events',
+              'postId': value.id,
+              'postAdminId': UserManager.userInfo['uid'],
+              'notifyTime': DateTime.now().toString(),
+              'tsNT': DateTime.now().millisecondsSinceEpoch,
+              'userList': [],
+              'timeStamp': FieldValue.serverTimestamp(),
+            },
+            saveNotifications(notificationData), 
             Navigator.pushReplacementNamed(context, '/events/${value.id}'),
-          },
-        );
+        });
     return 'Successfully created';
   }
 
@@ -538,14 +547,24 @@ class PostController extends ControllerMVC {
     if (value.isNotEmpty) {
       return 'Page Name should be unique';
     }
+    Map<String,dynamic> notificationData;
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .add(pageData)
         .then((value) => {
-              Navigator.pushReplacementNamed(
-                  context, '${RouteNames.pages}/${pageData['pageUserName']}'),
-            });
-
+          notificationData = {
+              'postType': 'pages',
+              'postId': value.id,
+              'postAdminId': UserManager.userInfo['uid'],
+              'notifyTime': DateTime.now().toString(),
+              'tsNT': DateTime.now().millisecondsSinceEpoch,
+              'userList': [],
+              'timeStamp': FieldValue.serverTimestamp(),
+            },
+          saveNotifications(notificationData), 
+          Navigator.pushReplacementNamed(
+              context, '${RouteNames.pages}/${pageData['pageUserName']}'),
+          });
     return 'Page was created successfully';
   }
 
@@ -770,13 +789,24 @@ class PostController extends ControllerMVC {
     if (value.isNotEmpty) {
       return 'Group name already exist';
     }
-
+    Map<String,dynamic> notificationData;
     await FirebaseFirestore.instance
         .collection(Helper.groupsField)
-        .add(groupData);
-
-    Navigator.pushReplacementNamed(
-        context, '${RouteNames.groups}/${groupData['groupUserName']}');
+        .add(groupData)
+        .then((value) async => {
+          notificationData = {
+              'postType': 'groups',
+              'postId': value.id,
+              'postAdminId': UserManager.userInfo['uid'],
+              'notifyTime': DateTime.now().toString(),
+              'tsNT': DateTime.now().millisecondsSinceEpoch,
+              'userList': [],
+              'timeStamp': FieldValue.serverTimestamp(),
+            },
+            saveNotifications(notificationData),
+            Navigator.pushReplacementNamed(
+              context, '${RouteNames.groups}/${groupData['groupUserName']}') 
+        });
     return 'Successfully created';
   }
 
@@ -851,48 +881,49 @@ class PostController extends ControllerMVC {
 
   Future<String> createProduct(
       context, Map<String, dynamic> productData) async {
-    if (productData['productName'] == null ||
-        productData['productName'] == '') {
-      return 'Please add your product name';
-    } else if (productData['productPrice'] == null ||
-        productData['productPrice'] == '') {
-      return 'Please add your product price';
-    } else if (productData['productCategory'] == null ||
-        productData['productCategory'] == '') {
-      return 'Please add your product category';
-    }
-    productData = {
-      ...productData,
-      'productAdmin': {
-        'uid': UserManager.userInfo['uid'],
-      },
-      'productDate': DateTime.now().toString(),
-      'productPost': false,
-      'productMarkAsSold': false,
-      'productTimeline': true,
-      'productOnOffCommenting': true,
-    };
+      if (productData['productName'] == null ||
+          productData['productName'] == '') {
+        return 'Please add your product name';
+      } else if (productData['productPrice'] == null ||
+          productData['productPrice'] == '') {
+        return 'Please add your product price';
+      } else if (productData['productCategory'] == null ||
+          productData['productCategory'] == '') {
+        return 'Please add your product category';
+      }
+      productData = {
+        ...productData,
+        'productAdmin': {
+          'uid': UserManager.userInfo['uid'],
+        },
+        'productDate': DateTime.now().toString(),
+        'productPost': false,
+        'productMarkAsSold': false,
+        'productTimeline': true,
+        'productOnOffCommenting': true,
+      };
 
-    var notificationData;
-    await FirebaseFirestore.instance
-        .collection(Helper.productsField)
-        .add(productData)
-        .then((value) async => {
-              notificationData = {
-                'postType': 'products',
-                'postId': value.id,
-                'postAdminId': UserManager.userInfo['uid'],
-                'notifyTime': DateTime.now().toString(),
-                'tsNT': DateTime.now().millisecondsSinceEpoch,
-                'userList': [],
-              },
-              saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(
-                  context, '${RouteNames.products}/${value.id}')
-            });
-    // RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
-    //     '10', 'for create product');
-    return 'Successfully created';
+      Map<String, dynamic> notificationData;
+      await FirebaseFirestore.instance
+          .collection(Helper.productsField)
+          .add(productData)
+          .then((value) async => {
+                notificationData = {
+                  'postType': 'products',
+                  'postId': value.id,
+                  'postAdminId': UserManager.userInfo['uid'],
+                  'notifyTime': DateTime.now().toString(),
+                  'tsNT': DateTime.now().millisecondsSinceEpoch,
+                  'userList': [],
+                  'timeStamp': FieldValue.serverTimestamp(),
+                },
+                saveNotifications(notificationData),
+                Navigator.pushReplacementNamed(
+                    context, '${RouteNames.products}/${value.id}')
+              });
+      // RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
+      //     '10', 'for create product');
+      return 'Successfully created';
   }
 
   List<Map> allProduct = [];
@@ -912,7 +943,9 @@ class PostController extends ControllerMVC {
     });
   }
 
+  // ignore: prefer_typing_uninitialized_variables
   var viewProductId;
+  // ignore: prefer_typing_uninitialized_variables
   var product;
   //get one page function that using uid of firebase database
   Future<bool> getSelectedProduct(String name) async {

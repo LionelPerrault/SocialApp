@@ -141,7 +141,9 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Row(
+            child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize 
+            ?
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LeftSettingBar(),
@@ -159,7 +161,27 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                       : GroupDeleteWidget(),
                 ),
               ],
-            ),
+            )
+            :
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LeftSettingBar(),
+                Container(
+                  child: pageSettingTab == 'Page Settings'
+                      ? PageSettingsWidget()
+                      : pageSettingTab == 'Page Information'
+                          ? PageInformationWidget()
+                          : pageSettingTab == 'Admins'
+                              ? PageAdminsWidget()
+                              : pageSettingTab == 'Verification'
+                                  ? VerificationWidget()
+                                  : pageSettingTab == 'Interests'
+                                      ? GroupInterestsWidget()
+                                      : GroupDeleteWidget(),
+                ),
+              ],
+            )
           )
         ],
       ),
@@ -179,10 +201,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
               .map(
                 (e) => ListText(
                   onTap: () => {onClick(e['text'])},
-                  label: SizeConfig(context).screenWidth >
-                          SizeConfig.mediumScreenSize
-                      ? e['text']
-                      : '',
+                  label: e['text'],
                   icon: Icon(
                     e['icon'],
                     color: pageSettingTab == e['text']
@@ -199,14 +218,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
 
   Widget PageSettingsWidget() {
     return Container(
-      width: SizeConfig(context).screenWidth > 600
-          ? 600
-          : SizeConfig(context).screenWidth - 100,
+      width: SizeConfig(context).screenWidth,
       child: Column(
         children: [
           headerWidget(Icon(Icons.settings), 'Page Settings'),
           Container(
-            padding: EdgeInsets.all(5),
+            padding: EdgeInsets.all(25),
             child: Column(
               children: [
                 const Padding(padding: EdgeInsets.only(top: 15)),
@@ -240,6 +257,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   ],
                 ),
                 Container(
+                  padding: EdgeInsets.only(top: 5),
                   width: 380,
                   child: const Text(
                     'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
@@ -716,22 +734,23 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
               color: Color.fromRGBO(82, 95, 127, 1),
               fontSize: 13,
               fontWeight: FontWeight.w600),
         ),
-        Padding(padding: EdgeInsets.only(top: 2)),
+        const Padding(padding: EdgeInsets.only(top: 2)),
         Container(
           height: 40,
+          padding: const EdgeInsets.only(top: 5),
           child: TextField(
             controller: controller,
             onChanged: onChange,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10, left: 10),
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
               ),
             ),
           ),
@@ -1364,7 +1383,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         color: Color.fromARGB(255, 240, 243, 246),
         // borderRadius: BorderRadius.all(Radius.circular(3)),
       ),
-      padding: const EdgeInsets.only(top: 5, left: 15),
+      padding: const EdgeInsets.only(top: 5, left: 30),
       child: Row(
         children: [
           icon,

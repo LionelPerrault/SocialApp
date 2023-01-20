@@ -71,6 +71,11 @@ class PeopleController extends ControllerMVC {
         );
     return true;
   }
+  saveNotifications(data) async {
+    await FirebaseFirestore.instance
+        .collection(Helper.notificationField)
+        .add(data);
+  }
 
   getFriends(name) async {
     var userInfo = UserManager.userInfo;
@@ -183,19 +188,33 @@ class PeopleController extends ControllerMVC {
       return;
     }
     setState(() {});
-    await FirebaseFirestore.instance.collection(Helper.friendField).add({
-      'requester': userInfo['userName'],
-      'receiver': receiver,
-      receiver: {'name': fullName, 'avatar': avatar},
-      userInfo['userName']: {
-        'name': userInfo['fullName'],
-        'avatar': userInfo['avatar']
-      },
-      'users': [userInfo['userName'], receiver],
-      'state': 0
-    }).then((value) async => {
+    Map<String, dynamic> notificationData;
+    await FirebaseFirestore.instance.collection(Helper.friendField)
+      .add({
+          'requester': userInfo['userName'],
+          'receiver': receiver,
+          receiver: {'name': fullName, 'avatar': avatar},
+          userInfo['userName']: {
+            'name': userInfo['fullName'],
+            'avatar': userInfo['avatar']
+          },
+          'users': [userInfo['userName'], receiver],
+          'state': 0
+      })
+      .then((value) async => {
           await getUserList(index: index),
+          notificationData = {
+            'postType': 'requestFriend',
+            'postId': value.id,
+            'postAdminId':UserManager.userInfo['uid'],
+            'notifyTime': DateTime.now().toString(),
+            'tsNT': DateTime.now().millisecondsSinceEpoch,
+            'userList': [],
+            'timeStamp': FieldValue.serverTimestamp(),
+          },
+          saveNotifications(notificationData),  
         });
+    return "Sent request";
   }
 
   getReceiveRequestsFriends() async {
@@ -354,4 +373,24 @@ class PeopleController extends ControllerMVC {
     print(sendFriends.length);
     setState(() {});
   }
+
+  // var realNotifi = [];
+  // var allNotification = [];
+
+  // checkNotification(notiUid, userUid) async {
+  //   var notiSnap = await Helper.notifiCollection.doc(notiUid).get();
+  //   var allNotifi = notiSnap.data();
+  //   allNotifi!['userList'].add(userUid);
+  //   await Helper.notifiCollection
+  //       .doc(notiUid)
+  //       .update({'userList': allNotifi['userList']});
+  // }
+
+  // Future checkNotify(int check) async {
+  //   await FirebaseFirestore.instance
+  //       .collection(Helper.userField)
+  //       .doc(UserManager.userInfo['uid'])
+  //       .update({'checkNotifyTime': check});
+  //   print('check notify time');
+  // }
 }

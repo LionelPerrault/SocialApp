@@ -217,4 +217,35 @@ class ChatController extends ControllerMVC {
     XFile? pickedFile = await chooseImage();
     uploadFile(pickedFile, newOrNot, messageType);
   }
+
+  Future<bool> connectFromMarketPlace (uid) async {
+    var snapshot = await FirebaseFirestore.instance
+      .collection(Helper.userField)
+      .doc(uid)
+      .get();
+    var targetUserName = 'new';
+    for (var chatUsers in listUsers) {
+      for(var user in chatUsers.data()['users']){
+        if(user == snapshot['userName']){
+          // targetUserName = chatUsers;
+          targetUserName = 'old';
+          avatar = chatUsers[user]['avatar'];
+          isMessageTap = 'message-list';
+          chattingUser = user;
+          chatUserFullName = chatUsers[user]['name'];
+          docId = chatUsers.id;
+          print(isMessageTap);
+        }
+      }
+    }
+    if(targetUserName == 'new'){
+      avatar = snapshot['avatar'];
+      isMessageTap = 'new';
+      chattingUser = snapshot['userName'];
+      newRFirstName = snapshot['firstName'];
+      newRLastName = snapshot['lastName'];
+    }
+    setState(() {});
+    return false;
+  }
 }

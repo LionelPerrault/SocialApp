@@ -127,7 +127,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
   void _gotoHome() {
     Future.delayed(Duration.zero, () {
       width = SizeConfig(context).screenWidth - 260;
-      itemWidth = 200;
+      itemWidth = 120;
       setState(() {});
     });
   }
@@ -281,20 +281,18 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                   SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
                       ? SizeConfig(context).screenWidth -
                           SizeConfig.leftBarAdminWidth
-                      : SizeConfig(context).screenWidth - 20,
+                      : null,
               height: 70,
-              padding: EdgeInsets.only(right: 50),
+              // padding: const EdgeInsets.only(right: 50),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(3),
               ),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: mainTabList
                       .map(
-                        (e) => Expanded(
-                          child: MouseRegion(
+                        (e) => MouseRegion(
                             cursor: SystemMouseCursors.click,
                             child: InkWell(
                               onTap: () {
@@ -320,25 +318,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                                               padding:
                                                   EdgeInsets.only(left: 5)),
                                           Text(
-                                              SizeConfig(
-                                                              context)
-                                                          .screenWidth >
-                                                      SizeConfig
-                                                              .mediumScreenSize +
-                                                          200
-                                                  ? e['title']
-                                                  : SizeConfig(
-                                                                  context)
-                                                              .screenWidth >
-                                                          SizeConfig
-                                                              .mediumScreenSize
-                                                      ? ''
-                                                      : SizeConfig(
-                                                                      context)
-                                                                  .screenWidth >
-                                                              600
-                                                          ? e['title']
-                                                          : '',
+                                              e['title'],
                                               style: const TextStyle(
                                                   fontSize: 13,
                                                   color: Color.fromRGBO(
@@ -358,7 +338,6 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                               ),
                             ),
                           ),
-                        ),
                       )
                       .toList()),
             ))

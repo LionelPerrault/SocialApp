@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
 
+// ignore: must_be_immutable
 class ShnatterNotification extends StatefulWidget {
   ShnatterNotification({Key? key})
       : con = PostController(),
@@ -22,16 +23,16 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   //
   bool isSound = false;
 
-  late PostController con;
+  late PostController postCon;
   var realNotification = [];
   var userCheckTime = 0;
 
   @override
   void initState() {
     add(widget.con);
-    con = controller as PostController;
+    postCon = controller as PostController;
     userCheckTime = DateTime.now().millisecondsSinceEpoch;
-    con.checkNotify(userCheckTime);
+    postCon.checkNotify(userCheckTime);
     final Stream<QuerySnapshot> stream = Helper.notifiCollection.snapshots();
     stream.listen((event) async {
       print('notification Stream');
@@ -41,20 +42,29 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
           .get();
+      // ignore: unused_local_variable
       var userInfo = userSnap.data();
       var changeData = [];
       for (var i = 0; i < allNotifi.length; i++) {
-        var notiTime = allNotifi[i]['tsNT'];
         var adminUid = allNotifi[i]['postAdminId'];
+        var postType = allNotifi[i]['postType'];
         var viewFlag = true;
+        
         for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
           if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
             viewFlag = false;
           }
         }
-        if (adminUid != UserManager.userInfo['uid'] && viewFlag) {
+        postCon.allNotification = [];
+        var notifyTime = 
+          DateTime.parse(allNotifi[i]['timeStamp'].toDate().toString());
+        var formattedNotifyTime =
+          DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+        print('notifications formatted notify time:$formattedNotifyTime');
+        if (viewFlag) {
           var addData;
-          await FirebaseFirestore.instance
+          if(adminUid != UserManager.userInfo['uid'])
+          {await FirebaseFirestore.instance
               .collection(Helper.userField)
               .doc(allNotifi[i]['postAdminId'])
               .get()
@@ -66,13 +76,34 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                       'userName': userV.data()!['userName'],
                       'text': Helper.notificationText[allNotifi[i]['postType']]
                           ['text'],
-                      'date': Helper.formatDate(allNotifi[i]['notifyTime']),
+                      'date': Helper.formatDate(formattedNotifyTime),
                     },
                     changeData.add(addData),
                   });
+          }
+          if(postType == 'requestFriend' 
+            && adminUid == UserManager.userInfo['uid']){
+            print('here is requestFriend');
+            await FirebaseFirestore.instance
+              .collection(Helper.userField)
+              .doc(allNotifi[i]['postAdminId'])
+              .get()
+              .then((userV) => {
+                    addData = {
+                      // ...allNotifi[i],
+                      'uid': allNotifi[i].id,
+                      'avatar': '',
+                      'userName': Helper.notificationName[allNotifi[i]['postType']]['name'],
+                      'text': Helper.notificationText[allNotifi[i]['postType']]
+                          ['text'],
+                      'date': Helper.formatDate(formattedNotifyTime),
+                    },
+                    changeData.add(addData),
+                  });
+          }
         }
       }
-      con.allNotification = changeData;
+      postCon.allNotification = changeData;
       setState(() {});
     });
     super.initState();
@@ -137,36 +168,40 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 height: 300,
                 //size: Size(100,100),
                 child: ListView.separated(
-                  itemCount: con.allNotification.length,
+                  itemCount: postCon.allNotification.length,
                   itemBuilder: (context, index) => Material(
                     child: ListTile(
                       onTap: () {
-                        con.checkNotification(con.allNotification[index]['uid'],
+                        postCon.checkNotification(postCon.allNotification[index]['uid'],
                             UserManager.userInfo['uid']);
                       },
                       hoverColor: const Color.fromARGB(255, 243, 243, 243),
                       enabled: true,
-                      leading: con.allNotification[index]['avatar'] != ''
+                      leading: postCon.allNotification[index]['avatar'] != ''
                           ? CircleAvatar(
                               backgroundImage: NetworkImage(
-                              con.allNotification[index]['avatar'],
+                              postCon.allNotification[index]['avatar'],
                             ))
-                          : CircleAvatar(
-                              child: SvgPicture.network(Helper.avatar),
-                            ),
+                          : postCon.allNotification[index]['userName'] == 'System Message'  
+                            ? CircleAvatar(
+                                child: SvgPicture.network(Helper.systemAvatar),
+                              )
+                            : CircleAvatar(
+                                child: SvgPicture.network(Helper.systemAvatar),
+                              ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            con.allNotification[index]['userName'],
+                            postCon.allNotification[index]['userName'],
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 10),
                           ),
-                          Text(con.allNotification[index]['text'],
+                          Text(postCon.allNotification[index]['text'],
                               style: const TextStyle(
                                   fontWeight: FontWeight.normal, fontSize: 10)),
                           Text(
-                            con.allNotification[index]['date'],
+                            postCon.allNotification[index]['date'],
                             style: const TextStyle(
                                 fontWeight: FontWeight.normal, fontSize: 8),
                           ),
