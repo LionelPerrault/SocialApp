@@ -54,7 +54,7 @@ class TermsScreenState extends mvc.StateMVC<TermsScreen> {
               top: 165,
             ),
             padding: const EdgeInsets.all(25),
-            width: 900,
+            width: 1000,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(2),

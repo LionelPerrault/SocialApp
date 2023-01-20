@@ -55,7 +55,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
-                  "https://test.shnatter.com/content/themes/default/images/main-background-min.jpg"),
+                  "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8"),
               fit: BoxFit.cover,
             ),
           ),
@@ -68,7 +68,12 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                     SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
                         ? SizeConfig.smallScreenSize * 0.94
                         : 300,
-                height: con.failLogin == '' ? 450 : 500,
+                height:
+                    SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
+                        ? 550
+                        : con.failLogin == ''
+                            ? 450
+                            : 500,
                 margin: EdgeInsets.only(
                   left: SizeConfig(context).screenWidth <
                           SizeConfig.smallScreenSize
@@ -88,8 +93,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                 child: ListView(
                   children: <Widget>[
                     Container(
-                      width: 445,
-                      height: 60,
+                      width: 455,
+                      height: 90,
                       margin: const EdgeInsets.only(top: 50.0),
                       color: const Color.fromARGB(255, 11, 35, 45),
                       child: Row(children: const <Widget>[
@@ -110,7 +115,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                           padding: EdgeInsets.only(left: 30.0),
                         ),
                         SvgPicture.network(
-                            'https://test.shnatter.com/content/themes/default/images/shnatter-logo-login.svg')
+                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719')
                       ]),
                     ),
                     Container(
@@ -239,13 +244,20 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 40)),
+            Padding(
+                padding:
+                    SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
+                        ? const EdgeInsets.only(top: 60)
+                        : const EdgeInsets.only(top: 40)),
             Container(
                 width:
                     SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
                         ? SizeConfig(context).screenWidth
                         : SizeConfig(context).screenWidth * 0.6,
-                margin: const EdgeInsets.only(top: 80, right: 0, bottom: 20),
+                margin: SizeConfig(context).screenWidth <
+                        SizeConfig.smallScreenSize
+                    ? const EdgeInsets.only(top: 60, right: 0, bottom: 130.35)
+                    : const EdgeInsets.only(top: 80, right: 0, bottom: 20),
                 child:
                     SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
                         ? footbarM()

@@ -40,6 +40,7 @@ class UserController extends ControllerMVC {
   bool isLogined = false;
   String failLogin = '';
   String failRegister = '';
+  String isEmailExist = '';
   String userAvatar = '';
   var resData = {};
   Map<dynamic, dynamic> userInfo = {};
@@ -102,7 +103,8 @@ class UserController extends ControllerMVC {
     print("------3--------");
     context = cont;
     signUpUserInfo = info;
-    email = signUpUserInfo['email'];
+    email = signUpUserInfo['email'].toLowerCase().trim();
+    print('email is :$email.end');
     password = signUpUserInfo['password'];
     var check = email.contains('@'); //return true if contains
     if (!check) {
@@ -215,8 +217,17 @@ class UserController extends ControllerMVC {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       isSendResetPassword = true;
       setState(() {});
+      Helper.showToast('Email is sent');
     } catch (e) {
       print(e);
+      if (!email.contains('@')) {
+        isEmailExist = 'Not email type';
+        setState(() {});
+      } else {
+        isEmailExist = 'That email is not exist in database now';
+        setState(() {});
+      }
+      setState(() {});
     }
   }
 
@@ -372,14 +383,16 @@ class UserController extends ControllerMVC {
   void createRelysiaAccount() async {
     relysiaEmail = signUpUserInfo['email'];
     relysiaPassword = signUpUserInfo['password'];
-    print(1);
+    print("asdfasdjfalskdfjsiejflskjfeisjdlfkjasldkfjesldkf");
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
+    print('responseData is :${responseData['data']}');
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();
       } else {
-        createRelysiaAccount();
+        print(responseData['statusCode']);
+        // createRelysiaAccount();
       }
     } else {
       createRelysiaAccount();

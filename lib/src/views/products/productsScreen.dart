@@ -144,7 +144,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                           child: Row(
                                             children: [
                                               Container(
-                                                child: Text(
+                                                child: const Text(
                                                   'My Products',
                                                   style: TextStyle(
                                                       fontWeight:
