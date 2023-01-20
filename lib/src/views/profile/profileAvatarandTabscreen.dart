@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -216,7 +217,7 @@ class ProfileAvatarandTabScreenState extends mvc
           ),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
               backgroundColor: Colors.grey[300],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13)),
@@ -554,15 +555,19 @@ class ProfileAvatarandTabScreenState extends mvc
         source: ImageSource.gallery,
       );
     } else {
+      print('xfile');
       //Check Permissions
       await Permission.photos.request();
-
       var permissionStatus = await Permission.photos.status;
+      print('permission is');
 
-      if (permissionStatus.isGranted) {
-      } else {
-        print('Permission not granted. Try Again with permission access');
-      }
+      //if (permissionStatus.isGranted) {
+      pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+      //} else {
+      //  print('Permission not granted. Try Again with permission access');
+      //}
     }
     return pickedFile!;
   }
@@ -658,6 +663,7 @@ class ProfileAvatarandTabScreenState extends mvc
 
   uploadImage(type) async {
     XFile? pickedFile = await chooseImage();
+    print('pickFile');
     uploadFile(pickedFile, type);
   }
 }
