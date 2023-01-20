@@ -14,7 +14,7 @@ class MindSlice extends StatelessWidget {
   Function onTap;
   String label;
   String image;
-  Function mindFunc;
+  var mindFunc;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -27,7 +27,8 @@ class MindSlice extends StatelessWidget {
         maximumSize: const Size(240, 42),
       ),
       onPressed: () {
-        mindFunc(context);
+        print('now click');
+        mindFunc();
       },
       child: Column(
         children: [
@@ -40,21 +41,14 @@ class MindSlice extends StatelessWidget {
                 width: 22,
               ),
               const Padding(padding: EdgeInsets.only(left: 12.0)),
-              RichText(
-                text: TextSpan(children: <TextSpan>[
-                  TextSpan(
-                      text: label,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 90, 90, 90),
-                          fontFamily: 'var(--body-font-family)',
-                          fontWeight: FontWeight.w900,
-                          fontSize: 15),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          onTap();
-                        })
-                ]),
-              ),
+              Text(
+                label,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 90, 90, 90),
+                    fontFamily: 'var(--body-font-family)',
+                    fontWeight: FontWeight.w900,
+                    fontSize: 15),
+              )
             ],
           ),
           const Padding(padding: EdgeInsets.only(top: 8.0)),
