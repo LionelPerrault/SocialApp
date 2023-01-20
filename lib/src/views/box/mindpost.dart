@@ -1,4 +1,11 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as PPath;
 
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
@@ -20,12 +27,19 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   var show = false;
   var notActionShow = false;
   var state = false;
+  var postPhoto = [];
+  var postFile = [];
+  int photoLength = 0;
+  int fileLength = 0;
+  double uploadPhotoProgress = 0;
+  double uploadVideoProgress = 0;
+  bool isShowPoll = false;
   List<Map> mindPostCase = [
     {
       'title': 'Upload Photos',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcamera.svg?alt=media&token=0b7478a3-c746-47ed-a4fc-7505accf22a5',
-      'mindFunc': (context) {}
+      'mindFunc': () {}
     },
     {
       'title': 'Create Album',
@@ -146,14 +160,20 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     });
   }
 
+  createPoll() {
+    isShowPoll = true;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-            ? 530
-            : 350,
-        padding: const EdgeInsets.only(left: 30, right: 30),
-        child: Column(children: [
+      width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+          ? 530
+          : 350,
+      padding: const EdgeInsets.only(left: 30, right: 30),
+      child: Column(
+        children: [
           Container(
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 250, 250, 250),
@@ -218,7 +238,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
-                height: show ? 360 : 0,
+                height: 360,
                 child: ListView(
                   children: [
                     ListView(
@@ -249,7 +269,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                                 if (!state)
                                                   {notActionShow = true}
                                               },
-                                          mindFunc: mind['mindFunc'],
+                                          mindFunc: () {
+                                            mind['title'] == 'Upload Photos'
+                                                ? uploadReady('photo')
+                                                : () {};
+                                          },
                                           label: mind['title'],
                                           image: mind['image']),
                                     )
@@ -434,6 +458,134 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               ),
             ),
           ),
-        ]));
+        ],
+      ),
+    );
+  }
+
+  // Widget createPollWidget(){
+  //   return
+  // }
+
+  Future<XFile> chooseImage() async {
+    final _imagePicker = ImagePicker();
+    XFile? pickedFile;
+    if (kIsWeb) {
+      pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+    } else {
+      //Check Permissions
+      await Permission.photos.request();
+
+      var permissionStatus = await Permission.photos.status;
+
+      if (permissionStatus.isGranted) {
+      } else {
+        print('Permission not granted. Try Again with permission access');
+      }
+    }
+    return pickedFile!;
+  }
+
+  uploadFile(XFile? pickedFile, type) async {
+    if (type == 'photo') {
+      postPhoto.add({'id': postPhoto.length, 'url': ''});
+      photoLength = postPhoto.length - 1;
+      setState(() {});
+    } else {
+      postFile.add({'id': postFile.length, 'url': ''});
+      fileLength = postFile.length - 1;
+      setState(() {});
+    }
+    final _firebaseStorage = FirebaseStorage.instance;
+    if (kIsWeb) {
+      try {
+        Uint8List bytes = await pickedFile!.readAsBytes();
+        Reference _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        final uploadTask = _reference.putData(
+          bytes,
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
+        uploadTask.whenComplete(() async {
+          var downloadUrl = await _reference.getDownloadURL();
+          if (type == 'photo') {
+            for (var i = 0; i < postPhoto.length; i++) {
+              if (postPhoto[i]['id'] == photoLength) {
+                postPhoto[i]['url'] = downloadUrl;
+                setState(() {});
+              }
+            }
+          } else {
+            for (var i = 0; i < postFile.length; i++) {
+              if (postFile[i]['id'] == fileLength) {
+                postFile[i]['url'] = downloadUrl;
+                setState(() {});
+              }
+            }
+          }
+          print(postFile);
+        });
+        uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+          switch (taskSnapshot.state) {
+            case TaskState.running:
+              if (type == 'photo') {
+                uploadPhotoProgress = 100.0 *
+                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                setState(() {});
+                print("Upload is $uploadPhotoProgress% complete.");
+              } else {
+                uploadVideoProgress = 100.0 *
+                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                setState(() {});
+                print("Upload is $uploadVideoProgress% complete.");
+              }
+
+              break;
+            case TaskState.paused:
+              print("Upload is paused.");
+              break;
+            case TaskState.canceled:
+              print("Upload was canceled");
+              break;
+            case TaskState.error:
+              // Handle unsuccessful uploads
+              break;
+            case TaskState.success:
+              print("Upload is completed");
+              uploadVideoProgress = 0;
+              setState(() {});
+              // Handle successful uploads on complete
+              // ...
+              //  var downloadUrl = await _reference.getDownloadURL();
+              break;
+          }
+        });
+      } catch (e) {
+        // print("Exception $e");
+      }
+    } else {
+      var file = File(pickedFile!.path);
+      //write a code for android or ios
+      Reference _reference = await _firebaseStorage
+          .ref()
+          .child('images/${PPath.basename(pickedFile.path)}');
+      _reference.putFile(file).whenComplete(() async {
+        print('value');
+        var downloadUrl = await _reference.getDownloadURL();
+        await _reference.getDownloadURL().then((value) {
+          // userCon.userAvatar = value;
+          // userCon.setState(() {});
+          // print(value);
+        });
+      });
+    }
+  }
+
+  uploadReady(type) async {
+    XFile? pickedFile = await chooseImage();
+    uploadFile(pickedFile, type);
   }
 }

@@ -231,14 +231,12 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                               );
                             },
                           )),
-                      widget.showWriteMessage
-                          ? WriteMessageScreen(
+                          WriteMessageScreen(
                               type: con.isMessageTap == 'new' ? 'new' : 'old',
                               goMessage: (value) {
                                 widget.onBack(value);
                               },
                             )
-                          : Container()
                     ]);
                   } else {
                     return SizedBox(

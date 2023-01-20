@@ -12,8 +12,6 @@ import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 
-import '../controllers/UserController.dart';
-import '../managers/user_manager.dart';
 import '../utils/size_config.dart';
 
 class HomeScreen extends StatefulWidget {
