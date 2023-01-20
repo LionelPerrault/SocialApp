@@ -148,7 +148,7 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                         style: TextStyle(color: Colors.white, fontSize: 12)),
                   ),
                   Container(
-                    width: 260,
+                    width: 300,
                     height: 30,
                     alignment: Alignment.center,
                     child: TextFormField(
