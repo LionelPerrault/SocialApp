@@ -6,7 +6,7 @@ class SizeConfig {
   late double screenHeight;
   late double defaultSize;
   late Orientation orientation;
-  static const mediumScreenSize = 800;
+  static const mediumScreenSize = 900;
   static const smallScreenSize = 600;
   static const leftBarWidth = 200.0;
   static const leftBarAdminWidth = 250.0;

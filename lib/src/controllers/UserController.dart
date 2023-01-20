@@ -362,7 +362,8 @@ class UserController extends ControllerMVC {
     }
 
     ActionCodeSettings acs = ActionCodeSettings(
-        url: "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
+        url:
+            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;
@@ -371,14 +372,15 @@ class UserController extends ControllerMVC {
   void createRelysiaAccount() async {
     relysiaEmail = signUpUserInfo['email'];
     relysiaPassword = signUpUserInfo['password'];
-    print(1);
+    print("asdfasdjfalskdfjsiejflskjfeisjdlfkjasldkfjesldkf");
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();
       } else {
-        createRelysiaAccount();
+        print(responseData['statusCode']);
+        // createRelysiaAccount();
       }
     } else {
       createRelysiaAccount();
@@ -723,4 +725,3 @@ class UserController extends ControllerMVC {
     return payResult;
   }
 }
-      

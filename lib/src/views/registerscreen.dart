@@ -43,7 +43,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
-                        "https://test.shnatter.com/content/themes/default/images/main-background-min.jpg"),
+                        "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -66,7 +66,12 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                               ? SizeConfig(context).screenWidth * 0.03
                               : SizeConfig(context).screenWidth * 0.03,
                         ),
-                        height: con.failRegister == '' ? 600 : 630,
+                        height: SizeConfig(context).screenWidth <
+                                SizeConfig.smallScreenSize
+                            ? 687
+                            : con.failRegister == ''
+                                ? 600
+                                : 630,
                         decoration: const BoxDecoration(
                           color: Color.fromRGBO(0, 0, 0, 1),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -94,7 +99,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: SvgPicture.network(
-                                      'https://test.shnatter.com/content/themes/default/images/shnatter-logo-login.svg'),
+                                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719'),
                                 ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
@@ -397,7 +402,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                 SizeConfig.smallScreenSize
                             ? SizeConfig(context).screenWidth
                             : SizeConfig(context).screenWidth * 0.6,
-                        margin: const EdgeInsets.only(top: 80, bottom: 20),
+                        margin: const EdgeInsets.only(top: 60, bottom: 53.5),
                         child: SizeConfig(context).screenWidth <
                                 SizeConfig.smallScreenSize
                             ? footbarM()
