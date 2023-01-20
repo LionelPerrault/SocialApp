@@ -102,7 +102,8 @@ class UserController extends ControllerMVC {
     print("------3--------");
     context = cont;
     signUpUserInfo = info;
-    email = signUpUserInfo['email'];
+    email = signUpUserInfo['email'].toLowerCase().trim();
+    print('email is :$email.end');
     password = signUpUserInfo['password'];
     var check = email.contains('@'); //return true if contains
     if (!check) {
