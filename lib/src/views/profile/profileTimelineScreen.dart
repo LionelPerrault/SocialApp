@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
@@ -27,11 +29,13 @@ class ProfileTimelineScreen extends StatefulWidget {
 class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  // ignore: unused_field
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
+  // ignore: unused_field
   late AnimationController _drawerSlideController;
   double width = 0;
   double itemWidth = 0;
@@ -40,6 +44,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   List<Map> mainInfoList = [];
   var userData = {};
   String userName = '';
+  var percent = 0.1;
   @override
   void initState() {
     super.initState();
@@ -92,7 +97,13 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
             : true
       },
     ];
+    setState(() {});
 
+    for (int i = 0; i < mainInfoList.length; i++) {
+      if (mainInfoList[i]['add'] == true) {
+        percent = percent + 0.1;
+      } else {}
+    }
     _gotoHome();
   }
 
@@ -114,7 +125,21 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
           ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               profileCompletion(),
               const Padding(padding: EdgeInsets.only(top: 30)),
-              MindPost()
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: LinearPercentIndicator(
+                  width: MediaQuery.of(context).size.width - 100,
+                  animation: true,
+                  lineHeight: 20.0,
+                  animationDuration: 2000,
+                  percent: percent,
+                  center: Text("Profile Completion  ${percent * 100}%"),
+                  // ignore: deprecated_member_use
+                  linearStrokeCap: LinearStrokeCap.roundAll,
+                  progressColor: Colors.blueAccent,
+                ),
+              ),
+              const MindPost()
             ])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
