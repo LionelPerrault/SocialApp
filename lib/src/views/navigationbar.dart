@@ -142,41 +142,42 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         var postType = allNotifi[i]['postType'];
         if (tsNT > userInfo['checkNotifyTime']) {
           var addData;
-          if(adminUid != UserManager.userInfo['uid']){
+          if (adminUid != UserManager.userInfo['uid']) {
             await FirebaseFirestore.instance
-              .collection(Helper.userField)
-              .doc(allNotifi[i]['postAdminId'])
-              .get()
-              .then((userV) => {
-                    addData = {
-                      // ...allNotifi[i],
-                      'uid': allNotifi[i].id,
-                      'avatar': userV.data()!['avatar'],
-                      'userName': userV.data()!['userName'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                    },
-                    changeData.add(addData),
-                  });
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        // ...allNotifi[i],
+                        'uid': allNotifi[i].id,
+                        'avatar': userV.data()!['avatar'],
+                        'userName': userV.data()!['userName'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                      },
+                      changeData.add(addData),
+                    });
           }
-          if(postType == 'requestFriend' 
-            && adminUid == UserManager.userInfo['uid']){
+          if (postType == 'requestFriend' &&
+              adminUid == UserManager.userInfo['uid']) {
             print('here is requestFriend');
             await FirebaseFirestore.instance
-              .collection(Helper.userField)
-              .doc(allNotifi[i]['postAdminId'])
-              .get()
-              .then((userV) => {
-                    addData = {
-                      // ...allNotifi[i],
-                      'uid': allNotifi[i].id,
-                      'avatar': Helper.systemAvatar,
-                      'userName': Helper.notificationName[allNotifi[i]['postType']]['name'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                    },
-                    changeData.add(addData),
-                  });
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        // ...allNotifi[i],
+                        'uid': allNotifi[i].id,
+                        'avatar': Helper.systemAvatar,
+                        'userName': Helper
+                            .notificationName[allNotifi[i]['postType']]['name'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                      },
+                      changeData.add(addData),
+                    });
           }
         }
       }
@@ -213,9 +214,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-        ? buildLargeSize()
-        : buildSmallSize();
+    return Scaffold(
+      body: SafeArea(
+        child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+            ? buildLargeSize()
+            : buildSmallSize(),
+      ),
+    );
   }
 
   Widget buildSmallSize() {
