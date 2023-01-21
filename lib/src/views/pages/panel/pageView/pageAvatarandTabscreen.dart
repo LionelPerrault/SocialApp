@@ -293,51 +293,48 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                   children: mainTabList
                       .map(
                         (e) => MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: InkWell(
-                              onTap: () {
-                                widget.onClick(e['title']);
-                                setState(() {});
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.only(top: 30),
-                                width: itemWidth,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            e['icon'],
-                                            size: 15,
-                                            color:
-                                                Color.fromRGBO(76, 76, 76, 1),
-                                          ),
-                                          const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 5)),
-                                          Text(
-                                              e['title'],
-                                              style: const TextStyle(
-                                                  fontSize: 13,
-                                                  color: Color.fromRGBO(
-                                                      76, 76, 76, 1),
-                                                  fontWeight: FontWeight.bold))
-                                        ]),
-                                    e['title'] == con.pageTab
-                                        ? Container(
-                                            margin:
-                                                const EdgeInsets.only(top: 23),
-                                            height: 2,
-                                            color: Colors.grey,
-                                          )
-                                        : Container()
-                                  ],
-                                ),
+                          cursor: SystemMouseCursors.click,
+                          child: InkWell(
+                            onTap: () {
+                              widget.onClick(e['title']);
+                              setState(() {});
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(top: 30),
+                              width: itemWidth,
+                              child: Column(
+                                children: [
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          e['icon'],
+                                          size: 15,
+                                          color: Color.fromRGBO(76, 76, 76, 1),
+                                        ),
+                                        const Padding(
+                                            padding: EdgeInsets.only(left: 5)),
+                                        Text(e['title'],
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Color.fromRGBO(
+                                                    76, 76, 76, 1),
+                                                fontWeight: FontWeight.bold))
+                                      ]),
+                                  e['title'] == con.pageTab
+                                      ? Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 23),
+                                          height: 2,
+                                          color: Colors.grey,
+                                        )
+                                      : Container()
+                                ],
                               ),
                             ),
                           ),
+                        ),
                       )
                       .toList()),
             ))
@@ -368,82 +365,81 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
 
   uploadFile(XFile? pickedFile, type) async {
     final _firebaseStorage = FirebaseStorage.instance;
-    if (kIsWeb) {
-      try {
+    var uploadTask;
+    Reference _reference;
+    try {
+      if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        Reference _reference = await _firebaseStorage
+        _reference = await _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        final uploadTask = _reference.putData(
+        uploadTask = _reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
-        uploadTask.whenComplete(() async {
-          var downloadUrl = await _reference.getDownloadURL();
-          if (type == 'avatar') {
-            con.updatePageInfo({
-              'pageUserName': con.page['pageUserName'],
-              'pagePicture': downloadUrl
-            });
-          } else {
-            con.updatePageInfo({
-              'pageUserName': con.page['pageUserName'],
-              'pageCover': downloadUrl
-            });
-            print(downloadUrl);
-          }
-          print(type);
-        });
-        uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-          switch (taskSnapshot.state) {
-            case TaskState.running:
-              if (type == 'avatar') {
-                avatarProgress = 100.0 *
-                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                setState(() {});
-                print("Upload is $avatarProgress% complete.");
-              } else {
-                coverProgress = 100.0 *
-                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                setState(() {});
-                print("Upload is $coverProgress% complete.");
-              }
-
-              break;
-            case TaskState.paused:
-              print("Upload is paused.");
-              break;
-            case TaskState.canceled:
-              print("Upload was canceled");
-              break;
-            case TaskState.error:
-              // Handle unsuccessful uploads
-              break;
-            case TaskState.success:
-              print("Upload is completed");
-              coverProgress = 0;
-              setState(() {});
-              // Handle successful uploads on complete
-              // ...
-              //  var downloadUrl = await _reference.getDownloadURL();
-              break;
-          }
-        });
-      } catch (e) {
-        // print("Exception $e");
+      } else {
+        var file = File(pickedFile!.path);
+        //write a code for android or ios
+        _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        uploadTask = _reference.putFile(file);
       }
-    } else {
-      var file = File(pickedFile!.path);
-      //write a code for android or ios
-      Reference _reference = await _firebaseStorage
-          .ref()
-          .child('images/${PPath.basename(pickedFile.path)}');
-      _reference.putFile(file).whenComplete(() async {
-        print('value');
+      uploadTask.whenComplete(() async {
         var downloadUrl = await _reference.getDownloadURL();
+        if (type == 'avatar') {
+          con.updatePageInfo({
+            'pageUserName': con.page['pageUserName'],
+            'pagePicture': downloadUrl
+          });
+        } else {
+          con.updatePageInfo({
+            'pageUserName': con.page['pageUserName'],
+            'pageCover': downloadUrl
+          });
+          print(downloadUrl);
+        }
+        print(type);
       });
+      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            if (type == 'avatar') {
+              avatarProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $avatarProgress% complete.");
+            } else {
+              coverProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $coverProgress% complete.");
+            }
+
+            break;
+          case TaskState.paused:
+            print("Upload is paused.");
+            break;
+          case TaskState.canceled:
+            print("Upload was canceled");
+            break;
+          case TaskState.error:
+            // Handle unsuccessful uploads
+            break;
+          case TaskState.success:
+            print("Upload is completed");
+            coverProgress = 0;
+            setState(() {});
+            // Handle successful uploads on complete
+            // ...
+            //  var downloadUrl = await _reference.getDownloadURL();
+            break;
+        }
+      });
+    } catch (e) {
+      // print("Exception $e");
     }
   }
 

@@ -1,10 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
@@ -137,46 +135,51 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       for (var i = 0; i < allNotifi.length; i++) {
         var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
         print('tsNT is $tsNT');
-        print(userInfo!['checkNotifyTime']);
+        print('check notify Time is ${userInfo!['checkNotifyTime']}');
+        if (userInfo['checkNotifyTime'] == null) {
+          userInfo['checkNotifyTime'] = 0;
+          setState(() {});
+        }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
         if (tsNT > userInfo['checkNotifyTime']) {
           var addData;
-          if(adminUid != UserManager.userInfo['uid']){
+          if (adminUid != UserManager.userInfo['uid']) {
             await FirebaseFirestore.instance
-              .collection(Helper.userField)
-              .doc(allNotifi[i]['postAdminId'])
-              .get()
-              .then((userV) => {
-                    addData = {
-                      // ...allNotifi[i],
-                      'uid': allNotifi[i].id,
-                      'avatar': userV.data()!['avatar'],
-                      'userName': userV.data()!['userName'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                    },
-                    changeData.add(addData),
-                  });
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        // ...allNotifi[i],
+                        'uid': allNotifi[i].id,
+                        // 'avatar': userV.data()!['avatar'],
+                        // 'userName': userV.data()!['userName'],
+                        //'text': Helper
+                        //    .notificationText[allNotifi[i]['postType']]['text'],
+                      },
+                      changeData.add(addData),
+                    });
           }
-          if(postType == 'requestFriend' 
-            && adminUid == UserManager.userInfo['uid']){
+          if (postType == 'requestFriend' &&
+              adminUid == UserManager.userInfo['uid']) {
             print('here is requestFriend');
             await FirebaseFirestore.instance
-              .collection(Helper.userField)
-              .doc(allNotifi[i]['postAdminId'])
-              .get()
-              .then((userV) => {
-                    addData = {
-                      // ...allNotifi[i],
-                      'uid': allNotifi[i].id,
-                      'avatar': Helper.systemAvatar,
-                      'userName': Helper.notificationName[allNotifi[i]['postType']]['name'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                    },
-                    changeData.add(addData),
-                  });
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        // ...allNotifi[i],
+                        'uid': allNotifi[i].id,
+                        'avatar': Helper.systemAvatar,
+                        'userName': Helper
+                            .notificationName[allNotifi[i]['postType']]['name'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                      },
+                      changeData.add(addData),
+                    });
           }
         }
       }
@@ -213,9 +216,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-        ? buildLargeSize()
-        : buildSmallSize();
+    return Scaffold(
+      body: SafeArea(
+        child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+            ? buildLargeSize()
+            : buildSmallSize(),
+      ),
+    );
   }
 
   Widget buildSmallSize() {

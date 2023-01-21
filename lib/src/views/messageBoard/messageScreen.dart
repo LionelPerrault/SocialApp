@@ -29,6 +29,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
   bool isShowChatUserList = false;
+  bool isCheckConnect = true;
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
@@ -90,7 +91,8 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
 
   void connectFrom(uidOfTarget) async {
     await con.connectFromMarketPlace(uidOfTarget);
-    isShowChatUserList = true;
+    isCheckConnect = false;
+    con.setState(() { });
     setState(() { });
   }
 
@@ -103,7 +105,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
 
   @override
   Widget build (BuildContext context) {
-    if(!isShowChatUserList){
+    if(isCheckConnect){
       final uidOfTarget = ModalRoute.of(context)!.settings.arguments;
       if(uidOfTarget != null){
         connectFrom(uidOfTarget);
@@ -155,12 +157,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                             ? isShowChatUserList 
                               ? const SizedBox() 
                               : ChatUserListScreen(onBack: (value) {
-                                if (value == 'hidden') {
-                                  con.hidden = con.hidden ? false : true;
-                                } else {
-                                  con.isMessageTap = value;
-                                  if (con.hidden == true) con.hidden = false;
-                                }
+                                con.isMessageTap = value;
                                 con.setState(() {});
                                 setState(() {});
                               })
@@ -181,7 +178,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                   ),
                                 )
                                 : ChatMessageListScreen(
-                                    showWriteMessage: !con.hidden,
+                                    showWriteMessage: true,
                                     onBack: (value) {
                                       con.isShowEmoticon = value;
                                       setState(() {});
@@ -269,8 +266,10 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                 size: 26,
               ),
               onPressed: () {
-                con.hidden = false;
+                // con.hidden = true;
+                isShowChatUserList = false;
                 con.isMessageTap = 'all-list';
+                con.setState(() {});
                 setState(() {});
               }),
           ),

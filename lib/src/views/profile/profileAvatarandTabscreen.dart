@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -216,7 +217,7 @@ class ProfileAvatarandTabScreenState extends mvc
           ),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
               backgroundColor: Colors.grey[300],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13)),
@@ -555,109 +556,107 @@ class ProfileAvatarandTabScreenState extends mvc
       );
     } else {
       //Check Permissions
-      await Permission.photos.request();
+      // await Permission.photos.request();
+      // var permissionStatus = await Permission.photos.status;
 
-      var permissionStatus = await Permission.photos.status;
-
-      if (permissionStatus.isGranted) {
-      } else {
-        print('Permission not granted. Try Again with permission access');
-      }
+      //if (permissionStatus.isGranted) {
+      pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+      //} else {
+      //  print('Permission not granted. Try Again with permission access');
+      //}
     }
     return pickedFile!;
   }
 
   uploadFile(XFile? pickedFile, type) async {
     final _firebaseStorage = FirebaseStorage.instance;
-    if (kIsWeb) {
-      try {
+    var uploadTask;
+    Reference _reference;
+    try {
+      if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        Reference _reference = await _firebaseStorage
+        _reference = await _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        final uploadTask = _reference.putData(
+        uploadTask = _reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
-        uploadTask.whenComplete(() async {
-          var downloadUrl = await _reference.getDownloadURL();
-          if (type == 'profile_cover') {
-            FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(UserManager.userInfo['uid'])
-                .update({'profile_cover': downloadUrl}).then((e) async {
-              con.profile_cover = downloadUrl;
-              await Helper.saveJSONPreference(Helper.userField,
-                  {...userInfo, 'profile_cover': downloadUrl});
-              setState(() {});
-            });
-          } else {
-            userCon.userAvatar = downloadUrl;
-            await userCon.changeAvatar();
-            avatar = downloadUrl;
-            setState(() {});
-          }
-        });
-        uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-          switch (taskSnapshot.state) {
-            case TaskState.running:
-              if (type == 'avatar') {
-                avatarProgress = 100.0 *
-                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                setState(() {});
-                print("Upload is $avatarProgress% complete.");
-              } else {
-                coverProgress = 100.0 *
-                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                setState(() {});
-                print("Upload is $coverProgress% complete.");
-              }
-
-              break;
-            case TaskState.paused:
-              print("Upload is paused.");
-              break;
-            case TaskState.canceled:
-              print("Upload was canceled");
-              break;
-            case TaskState.error:
-              // Handle unsuccessful uploads
-              break;
-            case TaskState.success:
-              print("Upload is completed");
-              coverProgress = 0;
-              setState(() {});
-              // Handle successful uploads on complete
-              // ...
-              //  var downloadUrl = await _reference.getDownloadURL();
-              break;
-          }
-        });
-      } catch (e) {
-        // print("Exception $e");
+      } else {
+        var file = File(pickedFile!.path);
+        //write a code for android or ios
+        _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        uploadTask = _reference.putFile(file);
       }
-    } else {
-      var file = File(pickedFile!.path);
-      //write a code for android or ios
-      Reference _reference = await _firebaseStorage
-          .ref()
-          .child('images/${PPath.basename(pickedFile.path)}');
-      _reference.putFile(file).whenComplete(() async {
-        print('value');
+
+      uploadTask.whenComplete(() async {
         var downloadUrl = await _reference.getDownloadURL();
-        await _reference.getDownloadURL().then((value) {
-          // userCon.userAvatar = value;
-          // userCon.setState(() {});
-          // print(value);
-        });
+        if (type == 'profile_cover') {
+          FirebaseFirestore.instance
+              .collection(Helper.userField)
+              .doc(UserManager.userInfo['uid'])
+              .update({'profile_cover': downloadUrl}).then((e) async {
+            con.profile_cover = downloadUrl;
+            await Helper.saveJSONPreference(
+                Helper.userField, {...userInfo, 'profile_cover': downloadUrl});
+            setState(() {});
+          });
+        } else {
+          userCon.userAvatar = downloadUrl;
+          await userCon.changeAvatar();
+          avatar = downloadUrl;
+          setState(() {});
+        }
       });
+      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            if (type == 'avatar') {
+              avatarProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $avatarProgress% complete.");
+            } else {
+              coverProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $coverProgress% complete.");
+            }
+
+            break;
+          case TaskState.paused:
+            print("Upload is paused.");
+            break;
+          case TaskState.canceled:
+            print("Upload was canceled");
+            break;
+          case TaskState.error:
+            // Handle unsuccessful uploads
+            break;
+          case TaskState.success:
+            print("Upload is completed");
+            coverProgress = 0;
+            setState(() {});
+            // Handle successful uploads on complete
+            // ...
+            //  var downloadUrl = await _reference.getDownloadURL();
+            break;
+        }
+      });
+    } catch (e) {
+      // print("Exception $e");
     }
   }
 
   uploadImage(type) async {
     XFile? pickedFile = await chooseImage();
+    print('pickFile');
     uploadFile(pickedFile, type);
   }
 }
