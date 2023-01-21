@@ -52,12 +52,9 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                   width: 300,
                   duration: const Duration(milliseconds: 500),
                   margin: EdgeInsets.only(
-                      top: !con.hidden
-                          ? 85
-                          : SizeConfig(context).screenHeight - 40,
+                      top: SizeConfig(context).screenHeight - 40,
                       left: SizeConfig(context).screenWidth - 300),
-                  height:
-                      !con.hidden ? SizeConfig(context).screenHeight - 85 : 40,
+                  height: 40,
                   curve: Curves.fastOutSlowIn,
                   decoration: BoxDecoration(
                     color: Colors.red,
@@ -93,22 +90,16 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                                 if (con.isMessageTap == '') {
                                   con.isMessageTap = 'all-list';
                                 }
-                                con.hidden = !con.hidden;
                                 setState(() {});
                               },
                               child: Container(
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.only(left: 5),
                                 width: 50,
-                                child: con.hidden
-                                    ? Icon(
+                                child: Icon(
                                         Icons.arrow_drop_down,
                                         color: Colors.white,
                                       )
-                                    : Icon(
-                                        Icons.arrow_drop_up,
-                                        color: Colors.white,
-                                      ),
                               ),
                             )),
                         MouseRegion(
@@ -143,7 +134,6 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
-                              if (con.hidden) con.hidden = false;
                               con.isMessageTap = 'new';
                               con.docId = '';
                               setState(() {});
@@ -197,12 +187,7 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                         : con.isMessageTap == 'all-list'
                             ? ChatUserListScreen(onBack: (value) {
                                 print(value);
-                                if (value == 'hidden') {
-                                  con.hidden = con.hidden ? false : true;
-                                } else {
-                                  con.isMessageTap = value;
-                                  if (con.hidden == true) con.hidden = false;
-                                }
+                                con.isMessageTap = value;
                                 setState(() {});
                               })
                             : con.isMessageTap == 'new'
@@ -217,14 +202,14 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                                     },
                                   )
                                 : ChatMessageListScreen(
-                                    showWriteMessage: !con.hidden,
+                                    showWriteMessage: true,
                                     onBack: (value) {
                                       con.isShowEmoticon = value;
                                       setState(() {});
                                     },
                                   )
                   ]))),
-              !con.hidden && con.isShowEmoticon
+              con.isShowEmoticon
                   ? Container(
                       margin: EdgeInsets.only(
                           left: SizeConfig(context).screenWidth - 295,
@@ -250,7 +235,6 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                 size: 16,
               ),
               onPressed: () {
-                con.hidden = false;
                 con.isMessageTap = 'all-list';
                 setState(() {});
               }),

@@ -1,10 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
@@ -137,7 +135,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       for (var i = 0; i < allNotifi.length; i++) {
         var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
         print('tsNT is $tsNT');
-        print(userInfo!['checkNotifyTime']);
+        print('check notify Time is ${userInfo!['checkNotifyTime']}');
+        if (userInfo['checkNotifyTime'] == null) {
+          userInfo['checkNotifyTime'] = 0;
+          setState(() {});
+        }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
         if (tsNT > userInfo['checkNotifyTime']) {
@@ -151,10 +153,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       addData = {
                         // ...allNotifi[i],
                         'uid': allNotifi[i].id,
-                        'avatar': userV.data()!['avatar'],
-                        'userName': userV.data()!['userName'],
-                        'text': Helper
-                            .notificationText[allNotifi[i]['postType']]['text'],
+                        // 'avatar': userV.data()!['avatar'],
+                        // 'userName': userV.data()!['userName'],
+                        //'text': Helper
+                        //    .notificationText[allNotifi[i]['postType']]['text'],
                       },
                       changeData.add(addData),
                     });

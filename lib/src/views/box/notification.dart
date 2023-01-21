@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -49,57 +50,60 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
         var viewFlag = true;
-        
+
         for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
           if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
             viewFlag = false;
           }
         }
         postCon.allNotification = [];
-        var notifyTime = 
-          DateTime.parse(allNotifi[i]['timeStamp'].toDate().toString());
+        var notifyTime =
+            DateTime.parse(allNotifi[i]['timeStamp'].toDate().toString());
+        print('notify time is ${typeOf()}');
         var formattedNotifyTime =
-          DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+            DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+        print('formatted notify time is ${typeOf()}');
         print('notifications formatted notify time:$formattedNotifyTime');
         if (viewFlag) {
           var addData;
-          if(adminUid != UserManager.userInfo['uid'])
-          {await FirebaseFirestore.instance
-              .collection(Helper.userField)
-              .doc(allNotifi[i]['postAdminId'])
-              .get()
-              .then((userV) => {
-                    addData = {
-                      ...allNotifi[i].data(),
-                      'uid': allNotifi[i].id,
-                      'avatar': userV.data()!['avatar'],
-                      'userName': userV.data()!['userName'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                      'date': Helper.formatDate(formattedNotifyTime),
-                    },
-                    changeData.add(addData),
-                  });
+          if (adminUid != UserManager.userInfo['uid']) {
+            await FirebaseFirestore.instance
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        ...allNotifi[i].data(),
+                        'uid': allNotifi[i].id,
+                        'avatar': userV.data()!['avatar'],
+                        'userName': userV.data()!['userName'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date': Helper.formatDate(formattedNotifyTime),
+                      },
+                      changeData.add(addData),
+                    });
           }
-          if(postType == 'requestFriend' 
-            && adminUid == UserManager.userInfo['uid']){
+          if (postType == 'requestFriend' &&
+              adminUid == UserManager.userInfo['uid']) {
             print('here is requestFriend');
             await FirebaseFirestore.instance
-              .collection(Helper.userField)
-              .doc(allNotifi[i]['postAdminId'])
-              .get()
-              .then((userV) => {
-                    addData = {
-                      // ...allNotifi[i],
-                      'uid': allNotifi[i].id,
-                      'avatar': '',
-                      'userName': Helper.notificationName[allNotifi[i]['postType']]['name'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                      'date': Helper.formatDate(formattedNotifyTime),
-                    },
-                    changeData.add(addData),
-                  });
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        // ...allNotifi[i],
+                        'uid': allNotifi[i].id,
+                        'avatar': '',
+                        'userName': Helper
+                            .notificationName[allNotifi[i]['postType']]['name'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date': Helper.formatDate(formattedNotifyTime),
+                      },
+                      changeData.add(addData),
+                    });
           }
         }
       }
@@ -172,7 +176,8 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                   itemBuilder: (context, index) => Material(
                     child: ListTile(
                       onTap: () {
-                        postCon.checkNotification(postCon.allNotification[index]['uid'],
+                        postCon.checkNotification(
+                            postCon.allNotification[index]['uid'],
                             UserManager.userInfo['uid']);
                       },
                       hoverColor: const Color.fromARGB(255, 243, 243, 243),
@@ -182,13 +187,15 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                               backgroundImage: NetworkImage(
                               postCon.allNotification[index]['avatar'],
                             ))
-                          : postCon.allNotification[index]['userName'] == 'System Message'  
-                            ? CircleAvatar(
-                                child: SvgPicture.network(Helper.systemAvatar),
-                              )
-                            : CircleAvatar(
-                                child: SvgPicture.network(Helper.systemAvatar),
-                              ),
+                          : postCon.allNotification[index]['userName'] ==
+                                  'System Message'
+                              ? CircleAvatar(
+                                  child:
+                                      SvgPicture.network(Helper.systemAvatar),
+                                )
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
