@@ -499,88 +499,84 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       setState(() {});
     }
     final _firebaseStorage = FirebaseStorage.instance;
-    if (kIsWeb) {
-      try {
+    var uploadTask;
+    Reference _reference;
+    try {
+      if (kIsWeb) {
+        //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
-        Reference _reference = await _firebaseStorage
+        //print(bytes);
+        _reference = await _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        final uploadTask = _reference.putData(
+        uploadTask = _reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
-        uploadTask.whenComplete(() async {
-          var downloadUrl = await _reference.getDownloadURL();
-          if (type == 'photo') {
-            for (var i = 0; i < postPhoto.length; i++) {
-              if (postPhoto[i]['id'] == photoLength) {
-                postPhoto[i]['url'] = downloadUrl;
-                setState(() {});
-              }
-            }
-          } else {
-            for (var i = 0; i < postFile.length; i++) {
-              if (postFile[i]['id'] == fileLength) {
-                postFile[i]['url'] = downloadUrl;
-                setState(() {});
-              }
-            }
-          }
-          print(postFile);
-        });
-        uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-          switch (taskSnapshot.state) {
-            case TaskState.running:
-              if (type == 'photo') {
-                uploadPhotoProgress = 100.0 *
-                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                setState(() {});
-                print("Upload is $uploadPhotoProgress% complete.");
-              } else {
-                uploadVideoProgress = 100.0 *
-                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-                setState(() {});
-                print("Upload is $uploadVideoProgress% complete.");
-              }
-
-              break;
-            case TaskState.paused:
-              print("Upload is paused.");
-              break;
-            case TaskState.canceled:
-              print("Upload was canceled");
-              break;
-            case TaskState.error:
-              // Handle unsuccessful uploads
-              break;
-            case TaskState.success:
-              print("Upload is completed");
-              uploadVideoProgress = 0;
-              setState(() {});
-              // Handle successful uploads on complete
-              // ...
-              //  var downloadUrl = await _reference.getDownloadURL();
-              break;
-          }
-        });
-      } catch (e) {
-        // print("Exception $e");
+      } else {
+        var file = File(pickedFile!.path);
+        //write a code for android or ios
+        _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        uploadTask = _reference.putFile(file);
       }
-    } else {
-      var file = File(pickedFile!.path);
-      //write a code for android or ios
-      Reference _reference = await _firebaseStorage
-          .ref()
-          .child('images/${PPath.basename(pickedFile.path)}');
-      _reference.putFile(file).whenComplete(() async {
-        print('value');
+      uploadTask.whenComplete(() async {
         var downloadUrl = await _reference.getDownloadURL();
-        await _reference.getDownloadURL().then((value) {
-          // userCon.userAvatar = value;
-          // userCon.setState(() {});
-          // print(value);
-        });
+        if (type == 'photo') {
+          for (var i = 0; i < postPhoto.length; i++) {
+            if (postPhoto[i]['id'] == photoLength) {
+              postPhoto[i]['url'] = downloadUrl;
+              setState(() {});
+            }
+          }
+        } else {
+          for (var i = 0; i < postFile.length; i++) {
+            if (postFile[i]['id'] == fileLength) {
+              postFile[i]['url'] = downloadUrl;
+              setState(() {});
+            }
+          }
+        }
+        print(postFile);
       });
+      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            if (type == 'photo') {
+              uploadPhotoProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $uploadPhotoProgress% complete.");
+            } else {
+              uploadVideoProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $uploadVideoProgress% complete.");
+            }
+
+            break;
+          case TaskState.paused:
+            print("Upload is paused.");
+            break;
+          case TaskState.canceled:
+            print("Upload was canceled");
+            break;
+          case TaskState.error:
+            // Handle unsuccessful uploads
+            break;
+          case TaskState.success:
+            print("Upload is completed");
+            uploadVideoProgress = 0;
+            setState(() {});
+            // Handle successful uploads on complete
+            // ...
+            //  var downloadUrl = await _reference.getDownloadURL();
+            break;
+        }
+      });
+    } catch (e) {
+      // print("Exception $e");
     }
   }
 

@@ -216,9 +216,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-        ? buildLargeSize()
-        : buildSmallSize();
+    return Scaffold(
+      body: SafeArea(
+        child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+            ? buildLargeSize()
+            : buildSmallSize(),
+      ),
+    );
   }
 
   Widget buildSmallSize() {
