@@ -281,7 +281,8 @@ class UserController extends ControllerMVC {
         };
         print(user.password);
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
-        UserManager.getUserInfo();
+        await UserManager.getUserInfo();
+        setState(() {});
         RouteNames.userName = user.userName;
         loginRelysia(context);
       }
@@ -427,6 +428,7 @@ class UserController extends ControllerMVC {
                                                   response['address'],
                                               await registerUserInfo(),
                                               await UserManager.getUserInfo(),
+                                              setState(() {}),
                                               RouteNames.userName =
                                                   signUpUserInfo['userName'],
                                               isSendRegisterInfo = false,
@@ -479,7 +481,8 @@ class UserController extends ControllerMVC {
               info = UserManager.userInfo.toString(),
               await Helper.saveJSONPreference(Helper.userField,
                   {...userInfo, 'avatar': value.data()!['avatar']}),
-              await Helper.getJSONPreference(Helper.userField)
+              await Helper.getJSONPreference(Helper.userField),
+              setState(() {})
             });
   }
 
@@ -580,7 +583,8 @@ class UserController extends ControllerMVC {
         j = {...j, key.toString(): value.toString()};
       });
       await Helper.saveJSONPreference(Helper.userField, {...j, 'uid': uuid});
-      UserManager.getUserInfo();
+      await UserManager.getUserInfo();
+      setState(() {});
       isSettingAction = false;
       setState(() {});
     } on FirebaseAuthException catch (e) {
@@ -640,7 +644,8 @@ class UserController extends ControllerMVC {
         j = {...j, key.toString(): value.toString()};
       });
       await Helper.saveJSONPreference(Helper.userField, {...j, 'uid': uuid});
-      UserManager.getUserInfo();
+      await UserManager.getUserInfo();
+      setState(() {});
       isSettingAction = false;
       setState(() {});
     } on FirebaseAuthException catch (e) {
@@ -678,6 +683,7 @@ class UserController extends ControllerMVC {
       });
       await Helper.saveJSONPreference(Helper.userField, {...j});
       await UserManager.getUserInfo();
+      setState(() {});
       isProfileChange = false;
       setState(() {});
     }
