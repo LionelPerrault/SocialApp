@@ -140,7 +140,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                 ),
               ),
               profileCompletion(),
-              const MindPost()
+              MindPost()
             ])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -170,7 +170,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                       child: profileCompletion(),
                     ),
                   ]),
-                  const MindPost()
+                  MindPost()
                 ]),
     );
   }
