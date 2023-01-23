@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +44,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.interestsField);
   static var notifiCollection =
       FirebaseFirestore.instance.collection(Helper.notificationField);
+  static var postCollection =
+      FirebaseFirestore.instance.collection(Helper.postField);
   static var systemAvatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsystem_avatar.svg?alt=media&token=1b903903-95d8-4826-808d-ddbde4ac55c3';
   static var avatar =
@@ -65,6 +66,7 @@ class Helper {
   static var groupsField = 'groups';
   static var productsField = 'products';
   static var notificationField = 'notifications';
+  static var postField = 'posts';
   static var interestsField = 'interests';
   static var friendField = 'friends';
   static var pages = 'staticContent';

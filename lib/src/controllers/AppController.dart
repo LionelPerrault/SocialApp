@@ -33,7 +33,6 @@ class AppController extends ControllerMVC {
 
   Future<void> getUserInfo() async {
     await UserManager.getUserInfo();
-    setState(() {});
     if (UserManager.userInfo['userName'] != null) {
       var userInfo = UserManager.userInfo;
       await FirebaseAuth.instance.signInWithEmailAndPassword(

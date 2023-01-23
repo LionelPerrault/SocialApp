@@ -5,21 +5,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class MindSlice extends StatelessWidget {
-  MindSlice(
-      {super.key,
-      required this.onTap,
-      required this.label,
-      required this.image,
-      required this.mindFunc});
+  MindSlice({
+    super.key,
+    required this.onTap,
+    required this.label,
+    required this.image,
+    required this.mindFunc,
+    this.disabled = false,
+  });
   Function onTap;
   String label;
   String image;
   var mindFunc;
+  bool disabled;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 230, 230, 230),
+        backgroundColor:
+            disabled ? Colors.grey : const Color.fromARGB(255, 230, 230, 230),
         elevation: 3,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(21.0)),

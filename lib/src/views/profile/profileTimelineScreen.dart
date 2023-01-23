@@ -139,7 +139,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   progressColor: Colors.blueAccent,
                 ),
               ),
-              const MindPost()
+              MindPost()
             ])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
