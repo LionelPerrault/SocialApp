@@ -38,6 +38,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   double uploadPhotoProgress = 0;
   double uploadVideoProgress = 0;
   String nowPost = '';
+  bool postLoading = false;
   late PostController con;
   List<Map> mindPostCase = [
     {
@@ -174,6 +175,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   post() async {
+    if (nowPost == '') {
+      return;
+    }
+    postLoading = true;
+    setState(() {});
     String postCase = '';
     var postPayload;
     switch (nowPost) {
@@ -183,9 +189,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         break;
       default:
     }
-    print(postPayload);
-    print(nowPost);
-    await con.post(postCase, postPayload, dropdownValue);
+    await con.post(postCase, postPayload, dropdownValue).then((value) {
+      print(value);
+      postLoading = false;
+      nowPost = '';
+      postPhoto = [];
+      setState(() {});
+    });
   }
 
   @override
@@ -439,15 +449,22 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       maximumSize: const Size(85, 45),
                     ),
                     onPressed: () {
-                      if (!state) notActionShow = true;
-                      print('post');
-                      post();
+                      postLoading ? () {} : post();
                     },
-                    child: const Text('Post',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w900)),
+                    child: postLoading
+                        ? Container(
+                            width: 40,
+                            height: 40,
+                            alignment: Alignment.center,
+                            child: const CircularProgressIndicator(
+                              backgroundColor: Colors.transparent,
+                            ),
+                          )
+                        : const Text('Post',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w900)),
                   )
                 ],
               )
@@ -486,9 +503,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     padding: EdgeInsets.only(left: 20),
                     tooltip: 'Delete',
                     onPressed: () {
-                      setState(() {
-                        postPhoto.removeWhere((item) => item['id'] == id);
-                      });
+                      postPhoto.removeWhere((item) => item['id'] == id);
+                      if (postPhoto.isEmpty) {
+                        nowPost = '';
+                      }
+                      setState(() {});
                     },
                   ),
                 )
