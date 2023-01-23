@@ -99,6 +99,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    // ignore: prefer_if_null_operators
     userCon.userAvatar = UserManager.userInfo['avatar'] == null
         ? ''
         : UserManager.userInfo['avatar'];
@@ -1986,85 +1987,81 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
       );
     } else {
       //Check Permissions
-      await Permission.photos.request();
+      // await Permission.photos.request();
+      // var permissionStatus = await Permission.photos.status;
 
-      var permissionStatus = await Permission.photos.status;
-
-      if (permissionStatus.isGranted) {
-      } else {
-        print('Permission not granted. Try Again with permission access');
-      }
+      //if (permissionStatus.isGranted) {
+      pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+      //} else {
+      //  print('Permission not granted. Try Again with permission access');
+      //}
     }
     return pickedFile!;
   }
 
   uploadFile(XFile? pickedFile) async {
     final _firebaseStorage = FirebaseStorage.instance;
-    if (kIsWeb) {
-      try {
+    var uploadTask;
+    Reference _reference;
+    try {
+      if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        Reference _reference = await _firebaseStorage
+        _reference = await _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        final uploadTask = _reference.putData(
+        uploadTask = _reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
-        uploadTask.whenComplete(() async {
-          var downloadUrl = await _reference.getDownloadURL();
-          userCon.userAvatar = downloadUrl;
-          userCon.setState(() {});
-          userCon.changeAvatar();
-          //await _reference.getDownloadURL().then((value) {
-          //  uploadedPhotoUrl = value;
-          //});
-        });
-        uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-          switch (taskSnapshot.state) {
-            case TaskState.running:
-              progress = 100.0 *
-                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-              setState(() {});
-              print("Upload is $progress% complete.");
-
-              break;
-            case TaskState.paused:
-              print("Upload is paused.");
-              break;
-            case TaskState.canceled:
-              print("Upload was canceled");
-              break;
-            case TaskState.error:
-              // Handle unsuccessful uploads
-              break;
-            case TaskState.success:
-              print("Upload is completed");
-              // Handle successful uploads on complete
-              // ...
-              //  var downloadUrl = await _reference.getDownloadURL();
-              break;
-          }
-        });
-      } catch (e) {
-        // print("Exception $e");
+      } else {
+        var file = File(pickedFile!.path);
+        //write a code for android or ios
+        _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        uploadTask = _reference.putFile(file);
       }
-    } else {
-      var file = File(pickedFile!.path);
-      //write a code for android or ios
-      Reference _reference = await _firebaseStorage
-          .ref()
-          .child('images/${PPath.basename(pickedFile.path)}');
-      _reference.putFile(file).whenComplete(() async {
-        print('value');
+      uploadTask.whenComplete(() async {
         var downloadUrl = await _reference.getDownloadURL();
-        await _reference.getDownloadURL().then((value) {
-          // userCon.userAvatar = value;
-          // userCon.setState(() {});
-          // print(value);
-        });
+        userCon.userAvatar = downloadUrl;
+        userCon.setState(() {});
+        userCon.changeAvatar();
+        //await _reference.getDownloadURL().then((value) {
+        //  uploadedPhotoUrl = value;
+        //});
       });
+      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            progress = 100.0 *
+                (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+            setState(() {});
+            print("Upload is $progress% complete.");
+
+            break;
+          case TaskState.paused:
+            print("Upload is paused.");
+            break;
+          case TaskState.canceled:
+            print("Upload was canceled");
+            break;
+          case TaskState.error:
+            // Handle unsuccessful uploads
+            break;
+          case TaskState.success:
+            print("Upload is completed");
+            // Handle successful uploads on complete
+            // ...
+            //  var downloadUrl = await _reference.getDownloadURL();
+            break;
+        }
+      });
+    } catch (e) {
+      // print("Exception $e");
     }
   }
 

@@ -49,7 +49,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
     }
 
     return Scaffold(
-        body: SingleChildScrollView(
+        body: SafeArea(
+            child: SingleChildScrollView(
       child: Container(
           width: double.infinity,
           decoration: const BoxDecoration(
@@ -263,7 +264,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                         ? footbarM()
                         : footbar())
           ])),
-    ));
+    )));
   }
 
   Widget input({label, icon, onchange, obscureText = false, validator}) {

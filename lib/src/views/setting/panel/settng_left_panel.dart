@@ -31,7 +31,7 @@ class SettingsLeftPanel extends StatelessWidget {
                 title: Row(
                   children: const [
                     Padding(padding: EdgeInsets.only(left: 43)),
-                    const Icon(
+                    Icon(
                       Icons.person,
                       color: Color.fromARGB(255, 43, 83, 164),
                     ),
