@@ -73,6 +73,7 @@ dependencies:
   syncfusion_flutter_datagrid: ^20.4.42
   flutter_html: ^3.0.0-alpha.6
   firebase_core: ^2.4.1
+  percent_indicator: ^4.2.2
 
 dev_dependencies:
   flutter_test:

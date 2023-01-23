@@ -26,7 +26,8 @@ class PrivacyScreenState extends mvc.StateMVC<PrivacyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+        body: SafeArea(
+      child: SingleChildScrollView(
         child: Stack(alignment: Alignment.topCenter, children: [
           IconButton(
             icon: const Icon(Icons.close, color: Colors.black, size: 13.0),
@@ -83,6 +84,6 @@ class PrivacyScreenState extends mvc.StateMVC<PrivacyScreen> {
           )
         ]),
       ),
-    );
+    ));
   }
 }

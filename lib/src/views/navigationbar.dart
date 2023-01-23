@@ -58,6 +58,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   late PostController postCon;
   var noti = ShnatterNotificationState();
   var badgeCount = [];
+  String userAvatar = '';
   //
   @override
   void initState() {
@@ -65,6 +66,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     postCon = controller as PostController;
     searhCon = widget.searchController;
     searchFocusNode = FocusNode();
+    userAvatar = UserManager.userInfo['avatar'];
     searchFocusNode.addListener(() {
       widget.onSearchBarFocus();
     });
@@ -208,6 +210,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     Helper.makeOffline();
 
     UserManager.userInfo = {};
+    setState(() {});
 
     await Helper.removeAllPreference();
     // ignore: use_build_context_synchronously
@@ -216,9 +219,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-        ? buildLargeSize()
-        : buildSmallSize();
+    return Scaffold(
+      body: SafeArea(
+        child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+            ? buildLargeSize()
+            : buildSmallSize(),
+      ),
+    );
   }
 
   Widget buildSmallSize() {
@@ -442,46 +449,23 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       child: PopupMenuButton(
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<Menu>>[
-                          PopupMenuItem<Menu>(
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, UserManager.userInfo['userName']);
-                              },
-                              value: Menu.itemProfile,
-                              child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushReplacementNamed(context,
-                                        '/${UserManager.userInfo['userName']}');
-                                  },
-                                  child: const Text('Profile'))),
+                          const PopupMenuItem<Menu>(
+                              value: Menu.itemProfile, child: Text('Profile')),
                           PopupMenuItem<Menu>(
                             value: Menu.itemSettings,
                             child: GestureDetector(
-                              onTap: () {
-                                onSettingClicked();
-                              },
                               child: const Text('Settings'),
                             ),
                           ),
                           PopupMenuItem<Menu>(
                             value: Menu.itemPrivacy,
-                            child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, RouteNames.adp);
-                                  print(1123);
-                                },
-                                child: const Text('Privacy')),
+                            child:
+                                GestureDetector(child: const Text('Privacy')),
                           ),
                           const PopupMenuDivider(),
                           PopupMenuItem<Menu>(
                             value: Menu.itemAdminPanel,
                             child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, RouteNames.adp);
-                                  print(1123);
-                                },
                                 child: const Text('AdminPanel')),
                           ),
                           const PopupMenuDivider(),
@@ -500,13 +484,40 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ),
                           const PopupMenuDivider(),
                         ],
-                        onSelected: (Menu item) {},
+                        onSelected: (Menu item) {
+                          switch (item) {
+                            case Menu.itemProfile:
+                              {
+                                Navigator.pushReplacementNamed(context,
+                                    '/${UserManager.userInfo['userName']}');
+                                break;
+                              }
+                            case Menu.itemSettings:
+                              {
+                                onSettingClicked();
+                                break;
+                              }
+                            case Menu.itemPrivacy:
+                              {
+                                Navigator.pushReplacementNamed(
+                                    context, RouteNames.settings);
+                                break;
+                              }
+                            case Menu.itemAdminPanel:
+                              {
+                                Navigator.pushReplacementNamed(
+                                    context, RouteNames.adp);
+                                break;
+                              }
+                            default:
+                          }
+                        },
                         child: Row(
                           children: [
-                            UserManager.userInfo['avatar'] != ''
+                            userAvatar != ''
                                 ? CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                    UserManager.userInfo['avatar'],
+                                    userAvatar,
                                   ))
                                 : CircleAvatar(
                                     child: SvgPicture.network(Helper.avatar),
@@ -721,40 +732,21 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<Menu>>[
                           const PopupMenuItem<Menu>(
-                              value: Menu.itemProfile,
-                              // child: InkWell(
-                              //     // onTap: () {
-                              //     //   Navigator.pushReplacementNamed(context,
-                              //     //       '/${UserManager.userInfo['userName']}');
-                              //     // },
-                              child: Text('Profile')),
+                              value: Menu.itemProfile, child: Text('Profile')),
                           PopupMenuItem<Menu>(
                             value: Menu.itemSettings,
-                            child: GestureDetector(
-                                // onTap: () {
-                                //   onSettingClicked();
-                                // },
-                                child: const Text('Settings')),
+                            child:
+                                GestureDetector(child: const Text('Settings')),
                           ),
                           PopupMenuItem<Menu>(
                             value: Menu.itemPrivacy,
-                            child: GestureDetector(
-                                // onTap: () {
-                                //   Navigator.pushReplacementNamed(
-                                //     context,
-                                //     RouteNames.settings,
-                                //   );
-                                // },
-                                child: const Text('Privacy')),
+                            child:
+                                GestureDetector(child: const Text('Privacy')),
                           ),
                           const PopupMenuDivider(),
                           PopupMenuItem<Menu>(
                             value: Menu.itemAdminPanel,
                             child: GestureDetector(
-                                // onTap: () {
-                                //   Navigator.pushReplacementNamed(
-                                //       context, RouteNames.adp);
-                                // },
                                 child: const Text('AdminPanel')),
                           ),
                           const PopupMenuDivider(),
@@ -808,10 +800,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         },
                         child: Row(
                           children: [
-                            UserManager.userInfo['avatar'] != ''
+                            userAvatar != ''
                                 ? CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                    UserManager.userInfo['avatar'],
+                                    userAvatar,
                                   ))
                                 : CircleAvatar(
                                     child: SvgPicture.network(Helper.avatar),

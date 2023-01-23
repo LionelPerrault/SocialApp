@@ -27,6 +27,7 @@ class ProfileController extends ControllerMVC {
       : progress = 0,
         super(state);
   static ProfileController? _this;
+  // ignore: non_constant_identifier_names
   String profile_cover = '';
   String viewProfileUserName = '';
   String viewProfileFullName = '';
