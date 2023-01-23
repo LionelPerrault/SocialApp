@@ -62,7 +62,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     mainInfoList = [
       {
         'title': 'Add your profile picture',
-        'add': userData['avatar'] == null ? false : true
+        'add': userData['avatar'] == '' ? false : true
       },
       {
         'title': 'Add your profile cover',
