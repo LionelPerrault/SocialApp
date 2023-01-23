@@ -44,7 +44,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   List<Map> mainInfoList = [];
   var userData = {};
   String userName = '';
-  var percent = 0.1;
+  var percent = 20;
   @override
   void initState() {
     super.initState();
@@ -62,7 +62,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     mainInfoList = [
       {
         'title': 'Add your profile picture',
-        'add': userData['profileImage'] == null ? false : true
+        'add': userData['avatar'] == null ? false : true
       },
       {
         'title': 'Add your profile cover',
@@ -98,12 +98,13 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       },
     ];
     setState(() {});
-
+    print('this is avatar :${mainInfoList[0]['add']}');
     for (int i = 0; i < mainInfoList.length; i++) {
       if (mainInfoList[i]['add'] == true) {
-        percent = percent + 0.1;
+        percent = percent + 10;
       } else {}
     }
+    print('percent is $percent');
     _gotoHome();
   }
 
@@ -123,7 +124,6 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
       child: SizeConfig(context).screenWidth < 800
           ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              profileCompletion(),
               const Padding(padding: EdgeInsets.only(top: 30)),
               Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -131,27 +131,45 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   width: MediaQuery.of(context).size.width - 100,
                   animation: true,
                   lineHeight: 20.0,
-                  animationDuration: 2000,
-                  percent: percent,
-                  center: Text("Profile Completion  ${percent * 100}%"),
+                  animationDuration: 1000,
+                  percent: percent / 100,
+                  center: Text("Profile Completion  $percent %"),
                   // ignore: deprecated_member_use
                   linearStrokeCap: LinearStrokeCap.roundAll,
                   progressColor: Colors.blueAccent,
                 ),
               ),
+              profileCompletion(),
               MindPost()
             ])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  Container(
-                    height: (SizeConfig(context).screenHeight -
-                            SizeConfig.navbarHeight) /
-                        2,
-                    padding: EdgeInsets.only(bottom: 90),
-                    child: profileCompletion(),
-                  ),
+                  Column(children: [
+                    const Padding(padding: EdgeInsets.only(top: 30)),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: LinearPercentIndicator(
+                        width: MediaQuery.of(context).size.width / 5,
+                        animation: true,
+                        lineHeight: 20.0,
+                        animationDuration: 1000,
+                        percent: percent / 100,
+                        center: Text("Profile Completion  $percent%"),
+                        // ignore: deprecated_member_use
+                        linearStrokeCap: LinearStrokeCap.roundAll,
+                        progressColor: Colors.blueAccent,
+                      ),
+                    ),
+                    Container(
+                      height: (SizeConfig(context).screenHeight -
+                              SizeConfig.navbarHeight) /
+                          2,
+                      padding: const EdgeInsets.only(bottom: 90),
+                      child: profileCompletion(),
+                    ),
+                  ]),
                   MindPost()
                 ]),
     );
@@ -159,12 +177,12 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
 
   Widget profileCompletion() {
     return Container(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 15,
           right: 15,
           top: 15,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(5))),
         child: Column(

@@ -5,16 +5,18 @@ import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shnatter/src/views/setting/settings_main.dart';
+import 'package:shnatter/src/views/setting/panel/settng_left_panel.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -28,7 +30,7 @@ class ProfileAvatarandTabScreen extends StatefulWidget {
 
 class ProfileAvatarandTabScreenState extends mvc
     .StateMVC<ProfileAvatarandTabScreen> with SingleTickerProviderStateMixin {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   double width = 0;
   double itemWidth = 0;
   var tap = 'Timeline';
@@ -47,6 +49,7 @@ class ProfileAvatarandTabScreenState extends mvc
   ];
   bool setPaywallProgress = false;
   String paywallPrice = '';
+  var settingMainScreen = SettingMainScreenState();
 
   @override
   void initState() {
@@ -92,6 +95,7 @@ class ProfileAvatarandTabScreenState extends mvc
         }
       });
       Helper.showToast('Successfully saved');
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop(true);
       setPaywallProgress = false;
       setState(() {});
@@ -240,6 +244,8 @@ class ProfileAvatarandTabScreenState extends mvc
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               '${con.userData['firstName']} ${con.userData['lastName']}',
@@ -283,41 +289,98 @@ class ProfileAvatarandTabScreenState extends mvc
                       ],
                     ),
                   ),
-            PopupMenuButton(
-              onSelected: (value) {
-                // your logic
-              },
-              icon: const Icon(
-                Icons.settings,
-                size: 16,
-                color: Colors.white,
+            // PopupMenuButton(
+            //   onSelected: (value) {
+            //     // your logic
+            //   },
+            //   icon: const Icon(
+            //     Icons.settings,
+            //     size: 16,
+            //     color: Colors.white,
+            //   ),
+            //   itemBuilder: (BuildContext bc) {
+            //     return const [
+            //       PopupMenuItem(
+            //         value: 'block',
+            //         child: Text(
+            //           "Manage Blocking",
+            //           style: TextStyle(fontSize: 14),
+            //         ),
+            //       ),
+            //       PopupMenuItem(
+            //         value: 'privacy',
+            //         child: Text(
+            //           "Privacy Settings",
+            //           style: TextStyle(fontSize: 14),
+            //         ),
+            //       ),
+            //       PopupMenuItem(
+            //         value: 'turn_off',
+            //         child: Text(
+            //           "Turn Off Chat",
+            //           style: TextStyle(fontSize: 14),
+            //         ),
+            //       )
+            //     ];
+            //   },
+            // )
+            con.userData['userName'] == UserManager.userInfo['userName']
+                ? const SizedBox()
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      elevation: 3,
+                      shape: const CircleBorder(
+                          side: BorderSide(width: 1, color: Colors.white)),
+                      minimumSize: const Size(60, 50),
+                    ),
+                    onPressed: () => {
+                      if(UserManager.userInfo['uid'] != con.viewProfileUid){
+                        Navigator.pushNamed(
+                          context            ,
+                          RouteNames.messages,
+                          arguments: con.viewProfileUid.toString(),
+                        )
+                      }             
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.chat,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey,
+                elevation: 3,
+                shape: const CircleBorder(
+                    side: BorderSide(width: 1, color: Colors.white)),
+                minimumSize: const Size(60, 50),
               ),
-              itemBuilder: (BuildContext bc) {
-                return const [
-                  PopupMenuItem(
-                    value: 'block',
-                    child: Text(
-                      "Manage Blocking",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'privacy',
-                    child: Text(
-                      "Privacy Settings",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'turn_off',
-                    child: Text(
-                      "Turn Off Chat",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  )
-                ];
+              onPressed: () => {
+                // edit('basic'),
+                Navigator.pushReplacementNamed(context, RouteNames.settings),
+                settingMainScreen.basicPageFlag = true,
+                print(settingMainScreen.basicPageFlag),
+                setState(() {}),
+                print('click to runing settingRouter function'),
               },
-            )
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Icon(
+                    Icons.edit,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
         SingleChildScrollView(
