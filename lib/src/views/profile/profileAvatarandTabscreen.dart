@@ -324,6 +324,36 @@ class ProfileAvatarandTabScreenState extends mvc
             //     ];
             //   },
             // )
+            con.userData['userName'] == UserManager.userInfo['userName']
+                ? const SizedBox()
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      elevation: 3,
+                      shape: const CircleBorder(
+                          side: BorderSide(width: 1, color: Colors.white)),
+                      minimumSize: const Size(60, 50),
+                    ),
+                    onPressed: () => {
+                      if(UserManager.userInfo['uid'] != con.viewProfileUid){
+                        Navigator.pushNamed(
+                          context            ,
+                          RouteNames.messages,
+                          arguments: con.viewProfileUid.toString(),
+                        )
+                      }             
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.chat,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey,
