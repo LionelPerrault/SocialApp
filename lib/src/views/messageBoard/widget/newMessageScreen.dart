@@ -85,9 +85,11 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
           searchUser = list;
           setState(() {});
         }),
+        
         decoration: InputDecoration(
-          hintText: 'To :',
-          hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+          prefixIcon: Icon(Icons.search_rounded),
+          hintText: 'Search',
+          hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
           // Enabled Border
           enabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.grey, width: 0.1),
@@ -97,7 +99,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
             borderSide: BorderSide(color: Colors.grey, width: 0.1),
           ),
           // Error Border
-          contentPadding: EdgeInsets.only(left: 15, right: 15),
+          contentPadding: EdgeInsets.all(14),
           // Focused Error Border
           focusedErrorBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.red, width: 0.1),
