@@ -351,14 +351,16 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
       );
     } else {
       //Check Permissions
-      await Permission.photos.request();
+      // await Permission.photos.request();
+      // var permissionStatus = await Permission.photos.status;
 
-      var permissionStatus = await Permission.photos.status;
-
-      if (permissionStatus.isGranted) {
-      } else {
-        print('Permission not granted. Try Again with permission access');
-      }
+      //if (permissionStatus.isGranted) {
+      pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+      //} else {
+      //  print('Permission not granted. Try Again with permission access');
+      //}
     }
     return pickedFile!;
   }
