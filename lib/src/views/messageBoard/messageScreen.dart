@@ -143,7 +143,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                       height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
                       child: SingleChildScrollView(
                         child: Column(children: [
-                          con.isMessageTap == 'all-list' 
+                          con.isMessageTap == 'all-list'
                           ? 
                           NewMessageScreen(onBack: (value) {
                             if(value == true || value == false){

@@ -135,6 +135,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
                   con.chattingUser = e['userName'];
                   con.newRFirstName = e['firstName'];
                   con.newRLastName = e['lastName'];
+                  con.chatUserFullName = e['firstName'] + ' ' + e['lastName'];
                   con.setState(() {});
                   setState(
                     () {},

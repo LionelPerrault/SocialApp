@@ -223,7 +223,6 @@ class ChatController extends ControllerMVC {
     for (var chatUsers in listUsers) {
       for (var user in chatUsers.data()['users']) {
         if (user == snapshot['userName']) {
-          // targetUserName = chatUsers;
           targetUserName = 'old';
           avatar = chatUsers[user]['avatar'];
           isMessageTap = 'message-list';
@@ -239,6 +238,8 @@ class ChatController extends ControllerMVC {
       chattingUser = snapshot['userName'];
       newRFirstName = snapshot['firstName'];
       newRLastName = snapshot['lastName'];
+      chatUserFullName = snapshot['firstName'] + ' ' + snapshot['lastName'];
+
     }
     setState(() {});
     return false;
