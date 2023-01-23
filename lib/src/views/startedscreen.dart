@@ -99,6 +99,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    // ignore: prefer_if_null_operators
     userCon.userAvatar = UserManager.userInfo['avatar'] == null
         ? ''
         : UserManager.userInfo['avatar'];
