@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/navigationbar.dart';
@@ -26,8 +28,11 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
+  var shnattertokenPageFlag = false;
+  var basicPageFlag = false;
+  String basic = 'basic';
   String settingPage = 'account_page';
-  //
+
   @override
   void initState() {
     add(widget.con);
@@ -38,6 +43,7 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    setState(() {});
   }
 
   late HomeController con;
@@ -119,6 +125,14 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                 SizeConfig.smallScreenSize
                             ? const SizedBox()
                             : SettingsLeftPanel(onClick: (value) {
+                                // if (basicPageFlag = true) {
+                                //   settingPage = basic;
+                                //   setState(() {});
+                                // } else {
+                                //   settingPage = value;
+                                //   setState(() {});
+                                // }
+                                // print('setting page is: $settingPage');
                                 settingPage = value;
                                 setState(() {});
                               }),
@@ -131,6 +145,7 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                             Expanded(
                                 child:
                                     SettingRouter.settingRouter(settingPage)),
+
                             // ChatScreen(),
                           ],
                         )),

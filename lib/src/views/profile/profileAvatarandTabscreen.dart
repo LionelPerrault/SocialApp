@@ -12,11 +12,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shnatter/src/views/setting/settings_main.dart';
+import 'package:shnatter/src/views/setting/panel/settng_left_panel.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shnatter/src/routes/setting_router.dart';
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -49,6 +49,7 @@ class ProfileAvatarandTabScreenState extends mvc
   ];
   bool setPaywallProgress = false;
   String paywallPrice = '';
+  var settingMainScreen = SettingMainScreenState();
 
   @override
   void initState() {
@@ -334,6 +335,9 @@ class ProfileAvatarandTabScreenState extends mvc
               onPressed: () => {
                 // edit('basic'),
                 Navigator.pushReplacementNamed(context, RouteNames.settings),
+                settingMainScreen.basicPageFlag = true,
+                print(settingMainScreen.basicPageFlag),
+                setState(() {}),
                 print('click to runing settingRouter function'),
               },
               child: Row(
