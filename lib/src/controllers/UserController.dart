@@ -107,7 +107,7 @@ class UserController extends ControllerMVC {
     context = cont;
     signUpUserInfo = info;
     email = signUpUserInfo['email'].toLowerCase().trim();
-    print('email is :$email.end');
+    print('email is :$email');
     password = signUpUserInfo['password'];
     var check = email.contains('@'); //return true if contains
     if (!check) {
@@ -143,7 +143,20 @@ class UserController extends ControllerMVC {
       return;
     }
     print("------5--------");
+    RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
+          if (res['data'] == null)
+            {
+              failRegister = 'No access the net',
+              isSendRegisterInfo = false,
+              setState(() {}),
+            }
+        });
+    if (isSendRegisterInfo = false) {
+      return;
+    }
     createRelysiaAccount(cont);
+    setState(() {});
+    return;
   }
 
   String createActivationCode() {
@@ -230,7 +243,7 @@ class UserController extends ControllerMVC {
         isEmailExist = 'That email is not exist in database now';
         setState(() {});
       } else if (e.code == 'network-request-failed') {
-        isEmailExist = 'Not access the net';
+        isEmailExist = 'No access the net';
         setState(() {});
       }
       setState(() {});
@@ -310,7 +323,7 @@ class UserController extends ControllerMVC {
         isSendLoginedInfo = false;
         setState(() {});
       } else if (e.code == 'network-request-failed') {
-        failLogin = 'Not access the net';
+        failLogin = 'No access the net';
         isSendLoginedInfo = false;
         setState(() {});
       } else if (e.code == 'too-many-requests') {
