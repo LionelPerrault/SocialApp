@@ -396,7 +396,16 @@ class UserController extends ControllerMVC {
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
-    return uuid;
+    return 'uuid';
+  }
+
+  Future<String> reSendEmailVeryfication() async {
+    ActionCodeSettings acs = ActionCodeSettings(
+        url:
+            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${UserManager.userInfo['uid']}",
+        handleCodeInApp: true);
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
+    return 'ok';
   }
 
   void createRelysiaAccount(context) async {
