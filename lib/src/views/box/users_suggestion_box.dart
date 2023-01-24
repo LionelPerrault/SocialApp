@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -24,13 +25,6 @@ class ShnatterUserSuggest extends StatefulWidget {
 class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
   //
   bool isSound = true;
-  List<Map> sampleData = [
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature}
-  ];
   var con = PeopleController();
   var isFirst = false;
   @override
@@ -114,10 +108,25 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                 radius: 17,
                                 backgroundImage: NetworkImage(
                                     con.userList[index]['avatar'])),
-                        title: Text(
-                          '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 11),
+                        title: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 11),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text:
+                                      '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      print('visit profile');
+                                      Navigator.pushReplacementNamed(context,
+                                          con.userList[index]['userName']);
+                                    })
+                            ],
+                          ),
                         ),
                         trailing: ElevatedButton(
                             onPressed: () async {
