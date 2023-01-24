@@ -138,17 +138,27 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                               : LeftPanel(),
                           //    : SizedBox(width: 0),
                           Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(child: MainPanel()),
-                              SizeConfig(context).screenWidth >
-                                      SizeConfig.mediumScreenSize + 300
-                                  ? RightPanel()
-                                  : SizedBox(width: 0),
-                            ],
-                          )),
+                            child: SizeConfig(context).screenWidth >
+                                    SizeConfig.mediumScreenSize + 300
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(child: MainPanel()),
+                                      SizeConfig(context).screenWidth >
+                                              SizeConfig.mediumScreenSize + 300
+                                          ? RightPanel()
+                                          : SizedBox(width: 0),
+                                    ],
+                                  )
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [MainPanel(), RightPanel()],
+                                  ),
+                          ),
                           //MainPanel(),
                         ])
                   ]),

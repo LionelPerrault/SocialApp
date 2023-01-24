@@ -118,12 +118,13 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                       '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 11),
+                                      fontSize: 11,
+                                      color: Colors.black),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       print('visit profile');
                                       Navigator.pushReplacementNamed(context,
-                                          con.userList[index]['userName']);
+                                          '/${con.userList[index]['userName']}');
                                     })
                             ],
                           ),
@@ -151,12 +152,12 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                     con.isFriendRequest[index] != null &&
                                             con.isFriendRequest[index]
                                         ? const Size(60, 35)
-                                        : const Size(75, 35),
+                                        : const Size(80, 35),
                                 maximumSize:
                                     con.isFriendRequest[index] != null &&
                                             con.isFriendRequest[index]
                                         ? const Size(60, 35)
-                                        : const Size(75, 35)),
+                                        : const Size(80, 35)),
                             child: con.isFriendRequest[index] != null &&
                                     con.isFriendRequest[index]
                                 ? const SizedBox(

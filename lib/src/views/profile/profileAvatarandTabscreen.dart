@@ -259,71 +259,68 @@ class ProfileAvatarandTabScreenState extends mvc
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
             con.userData['userName'] == UserManager.userInfo['userName']
                 ? const SizedBox()
-                : ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 45, 205, 137),
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2.0)),
-                        minimumSize: const Size(90, 40),
-                        maximumSize: const Size(90, 40)),
-                    onPressed: () {
-                      modalView();
+                : PopupMenuButton(
+                    onSelected: (value) {
+                      switch (value) {
+                        case 'paywall':
+                          modalView();
+                          break;
+                        default:
+                      }
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.person_add,
-                          size: 20,
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: const BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(22),
                         ),
-                        Text(
-                          'Paywall',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.settings,
+                            size: 20,
+                          ),
+                        ],
+                      ),
                     ),
+                    itemBuilder: (BuildContext bc) {
+                      return const [
+                        // PopupMenuItem(
+                        //   value: 'block',
+                        //   child: Text(
+                        //     "Manage Blocking",
+                        //     style: TextStyle(fontSize: 14),
+                        //   ),
+                        // ),
+                        // PopupMenuItem(
+                        //   value: 'privacy',
+                        //   child: Text(
+                        //     "Privacy Settings",
+                        //     style: TextStyle(fontSize: 14),
+                        //   ),
+                        // ),
+                        // PopupMenuItem(
+                        //   value: 'turn_off',
+                        //   child: Text(
+                        //     "Turn Off Chat",
+                        //     style: TextStyle(fontSize: 14),
+                        //   ),
+                        // ),
+                        PopupMenuItem(
+                          value: 'paywall',
+                          child: Text(
+                            "Paywall",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        )
+                      ];
+                    },
                   ),
-            // PopupMenuButton(
-            //   onSelected: (value) {
-            //     // your logic
-            //   },
-            //   icon: const Icon(
-            //     Icons.settings,
-            //     size: 16,
-            //     color: Colors.white,
-            //   ),
-            //   itemBuilder: (BuildContext bc) {
-            //     return const [
-            //       PopupMenuItem(
-            //         value: 'block',
-            //         child: Text(
-            //           "Manage Blocking",
-            //           style: TextStyle(fontSize: 14),
-            //         ),
-            //       ),
-            //       PopupMenuItem(
-            //         value: 'privacy',
-            //         child: Text(
-            //           "Privacy Settings",
-            //           style: TextStyle(fontSize: 14),
-            //         ),
-            //       ),
-            //       PopupMenuItem(
-            //         value: 'turn_off',
-            //         child: Text(
-            //           "Turn Off Chat",
-            //           style: TextStyle(fontSize: 14),
-            //         ),
-            //       )
-            //     ];
-            //   },
-            // )
             con.userData['userName'] == UserManager.userInfo['userName']
                 ? const SizedBox()
                 : ElevatedButton(
@@ -462,7 +459,6 @@ class ProfileAvatarandTabScreenState extends mvc
               children: [
                 Container(
                   margin: const EdgeInsets.only(top: 30),
-                  height: 230,
                   child: Column(
                     children: [
                       Text(
@@ -481,7 +477,7 @@ class ProfileAvatarandTabScreenState extends mvc
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 0),
+                        margin: const EdgeInsets.only(top: 50),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -523,6 +519,7 @@ class ProfileAvatarandTabScreenState extends mvc
                 ),
                 Container(
                   alignment: Alignment.bottomCenter,
+                  margin: const EdgeInsets.only(top: 30),
                   child: Row(
                     children: [
                       const Padding(padding: EdgeInsets.only(left: 10)),

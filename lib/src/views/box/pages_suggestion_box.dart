@@ -181,11 +181,11 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                                   minimumSize:
                                       isLiked[index] != null && isLiked[index]
                                           ? const Size(60, 35)
-                                          : const Size(75, 35),
+                                          : const Size(80, 35),
                                   maximumSize:
                                       isLiked[index] != null && isLiked[index]
                                           ? const Size(60, 35)
-                                          : const Size(75, 35)),
+                                          : const Size(80, 35)),
                               child: isLiked[index] != null && isLiked[index]
                                   ? const SizedBox(
                                       width: 10,
