@@ -355,33 +355,36 @@ class ProfileAvatarandTabScreenState extends mvc
                       ],
                     ),
                   ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey,
-                elevation: 3,
-                shape: const CircleBorder(
-                    side: BorderSide(width: 1, color: Colors.white)),
-                minimumSize: const Size(60, 50),
-              ),
-              onPressed: () async => {
-                // edit('basic'),
-                Navigator.pushReplacementNamed(context, RouteNames.settings),
-                settingMainScreen.basicPageFlag = true,
-                setState(() {}),
-                print(settingMainScreen.basicPageFlag),
-                print(settingMainScreen.settingPage)
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.edit,
-                    size: 20,
-                  ),
-                ],
-              ),
-            ),
+            con.userData['userName'] == UserManager.userInfo['userName']
+                ? ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      elevation: 3,
+                      shape: const CircleBorder(
+                          side: BorderSide(width: 1, color: Colors.white)),
+                      minimumSize: const Size(60, 50),
+                    ),
+                    onPressed: () async => {
+                      // edit('basic'),
+                      Navigator.pushReplacementNamed(
+                          context, RouteNames.settings),
+                      settingMainScreen.basicPageFlag = true,
+                      setState(() {}),
+                      print(settingMainScreen.basicPageFlag),
+                      print(settingMainScreen.settingPage)
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.edit,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox(),
           ],
         ),
         SingleChildScrollView(
