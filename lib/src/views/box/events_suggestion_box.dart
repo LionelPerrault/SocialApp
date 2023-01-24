@@ -114,13 +114,13 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                                         : con.unInterestedEvents[index]['data']
                                             ['eventPicture']))),
                         title: Padding(
-                            padding: EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              con.unInterestedEvents[index]['data']
-                                  ['eventName'],
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 11),
-                            )),
+                          padding: EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            con.unInterestedEvents[index]['data']['eventName'],
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 11),
+                          ),
+                        ),
                         subtitle: Padding(
                             padding: EdgeInsets.only(bottom: 5),
                             child: Text(
@@ -149,11 +149,11 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                                 minimumSize:
                                     isJoining[index] != null && isJoining[index]
                                         ? const Size(60, 35)
-                                        : const Size(102, 35),
+                                        : const Size(100, 35),
                                 maximumSize:
                                     isJoining[index] != null && isJoining[index]
                                         ? const Size(60, 35)
-                                        : const Size(102, 35)),
+                                        : const Size(100, 35)),
                             child: isJoining[index] != null && isJoining[index]
                                 ? const SizedBox(
                                     width: 10,

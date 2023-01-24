@@ -290,27 +290,27 @@ class ProfileAvatarandTabScreenState extends mvc
                     ),
                     itemBuilder: (BuildContext bc) {
                       return const [
-                        PopupMenuItem(
-                          value: 'block',
-                          child: Text(
-                            "Manage Blocking",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          value: 'privacy',
-                          child: Text(
-                            "Privacy Settings",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          value: 'turn_off',
-                          child: Text(
-                            "Turn Off Chat",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                        ),
+                        // PopupMenuItem(
+                        //   value: 'block',
+                        //   child: Text(
+                        //     "Manage Blocking",
+                        //     style: TextStyle(fontSize: 14),
+                        //   ),
+                        // ),
+                        // PopupMenuItem(
+                        //   value: 'privacy',
+                        //   child: Text(
+                        //     "Privacy Settings",
+                        //     style: TextStyle(fontSize: 14),
+                        //   ),
+                        // ),
+                        // PopupMenuItem(
+                        //   value: 'turn_off',
+                        //   child: Text(
+                        //     "Turn Off Chat",
+                        //     style: TextStyle(fontSize: 14),
+                        //   ),
+                        // ),
                         PopupMenuItem(
                           value: 'paywall',
                           child: Text(
@@ -459,7 +459,6 @@ class ProfileAvatarandTabScreenState extends mvc
               children: [
                 Container(
                   margin: const EdgeInsets.only(top: 30),
-                  height: 230,
                   child: Column(
                     children: [
                       Text(
@@ -478,7 +477,7 @@ class ProfileAvatarandTabScreenState extends mvc
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 0),
+                        margin: const EdgeInsets.only(top: 50),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -520,6 +519,7 @@ class ProfileAvatarandTabScreenState extends mvc
                 ),
                 Container(
                   alignment: Alignment.bottomCenter,
+                  margin: const EdgeInsets.only(top: 30),
                   child: Row(
                     children: [
                       const Padding(padding: EdgeInsets.only(left: 10)),

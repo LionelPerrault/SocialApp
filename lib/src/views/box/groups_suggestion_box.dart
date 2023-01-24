@@ -177,11 +177,11 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                                 minimumSize:
                                     isJoining[index] != null && isJoining[index]
                                         ? const Size(60, 35)
-                                        : const Size(75, 35),
+                                        : const Size(80, 35),
                                 maximumSize:
                                     isJoining[index] != null && isJoining[index]
                                         ? const Size(60, 35)
-                                        : const Size(75, 35)),
+                                        : const Size(80, 35)),
                             child: isJoining[index] != null && isJoining[index]
                                 ? const SizedBox(
                                     width: 10,
