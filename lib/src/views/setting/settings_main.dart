@@ -30,20 +30,22 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
   late AnimationController _drawerSlideController;
   var shnattertokenPageFlag = false;
   var basicPageFlag = false;
-  String basic = 'basic';
   String settingPage = 'account_page';
 
   @override
   void initState() {
     add(widget.con);
     con = controller as HomeController;
-    super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    setState(() {});
+    if (basicPageFlag = true) {
+      settingPage = 'basic';
+      setState(() {});
+    }
+    super.initState();
   }
 
   late HomeController con;
@@ -128,13 +130,16 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                 // if (basicPageFlag = true) {
                                 //   settingPage = basic;
                                 //   setState(() {});
+                                //   print('basicPageFlag in if $settingPage');
                                 // } else {
                                 //   settingPage = value;
                                 //   setState(() {});
+                                //   print('basicPageFlag in else $settingPage');
                                 // }
-                                // print('setting page is: $settingPage');
+                                print('1setting page is: $settingPage');
                                 settingPage = value;
                                 setState(() {});
+                                basicPageFlag = false;
                               }),
                         //    : SizedBox(width: 0),
                         Expanded(
@@ -145,7 +150,6 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                             Expanded(
                                 child:
                                     SettingRouter.settingRouter(settingPage)),
-
                             // ChatScreen(),
                           ],
                         )),
@@ -178,8 +182,21 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                         child: SingleChildScrollView(
                                           child: SettingsLeftPanel(
                                             onClick: (value) {
+                                              print(
+                                                  '2settingpage is $settingPage');
                                               settingPage = value;
                                               setState(() {});
+                                              // if (basicPageFlag = true) {
+                                              //   settingPage = basic;
+                                              //   setState(() {});
+                                              //   print(
+                                              //       'basicPageFlag in if $settingPage');
+                                              // } else {
+                                              //   settingPage = value;
+                                              //   setState(() {});
+                                              //   print(
+                                              //       'basicPageFlag in else $settingPage');
+                                              //}
                                             },
                                           ),
                                         ),
@@ -244,5 +261,10 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                 : const SizedBox(),
           ],
         ));
+    // ignore: dead_code
+    // settingPage = 'account_page';
+    // ignore: dead_code
+    basicPageFlag = false;
+    setState(() {});
   }
 }
