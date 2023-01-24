@@ -221,13 +221,16 @@ class UserController extends ControllerMVC {
       isSendResetPassword = true;
       setState(() {});
       Helper.showToast('Email is sent');
-    } catch (e) {
-      print(e);
-      if (!email.contains('@')) {
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'invalid-email') {
         isEmailExist = 'Not email type';
         setState(() {});
-      } else {
+      } else if (e.code == 'user-not-found') {
         isEmailExist = 'That email is not exist in database now';
+        setState(() {});
+      } else if (e.code == 'network-request-failed') {
+        isEmailExist = 'Not access the net';
         setState(() {});
       }
       setState(() {});
@@ -252,6 +255,12 @@ class UserController extends ControllerMVC {
           email = getInfo.email;
         } else {
           failLogin = 'The username you entered does not belong to any account';
+          // RelysiaManager.authUser(relysiaEmail, relysiaPassword)
+          //     .then((res) async => {
+          //           if (res['data'] == null)
+          //             {failLogin = 'Not access the net', setState(() {})}
+          //         });
+          setState(() {});
         }
       }
       setState(() {});
@@ -288,16 +297,25 @@ class UserController extends ControllerMVC {
         setState(() {});
         RouteNames.userName = user.userName;
         loginRelysia(context);
+        setState(() {});
+        return;
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
       if (e.code == 'invalid-email' || e.code == 'user-not-found') {
         failLogin = 'The email you entered does not belong to any account';
-        setState(
-          () {},
-        );
+        setState(() {});
       } else if (e.code == 'wrong-password') {
         failLogin = 'wrong-password';
+        isSendLoginedInfo = false;
+        setState(() {});
+      } else if (e.code == 'network-request-failed') {
+        failLogin = 'Not access the net';
+        isSendLoginedInfo = false;
+        setState(() {});
+      } else if (e.code == 'too-many-requests') {
+        isSendLoginedInfo = false;
+        failLogin = 'Retry after 3 minutes';
         setState(() {});
       }
       isSendLoginedInfo = false;
@@ -381,7 +399,16 @@ class UserController extends ControllerMVC {
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
-    return uuid;
+    return 'uuid';
+  }
+
+  Future<String> reSendEmailVeryfication() async {
+    ActionCodeSettings acs = ActionCodeSettings(
+        url:
+            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${UserManager.userInfo['uid']}",
+        handleCodeInApp: true);
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
+    return 'ok';
   }
 
   void createRelysiaAccount(context) async {

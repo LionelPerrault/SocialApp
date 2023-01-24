@@ -279,7 +279,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               width: SizeConfig(context).screenWidth * 0.3,
               child: TextButton(
                   onPressed: () async {
-                    con.sendEmailVeryfication();
+                    con.reSendEmailVeryfication();
                     Helper.showToast('Email sent');
                   },
                   child: Text(
