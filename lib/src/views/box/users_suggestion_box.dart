@@ -123,7 +123,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                     ..onTap = () {
                                       print('visit profile');
                                       Navigator.pushReplacementNamed(context,
-                                          con.userList[index]['userName']);
+                                          '/${con.userList[index]['userName']}');
                                     })
                             ],
                           ),
