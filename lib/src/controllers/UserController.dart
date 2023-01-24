@@ -239,13 +239,16 @@ class UserController extends ControllerMVC {
       isSendResetPassword = true;
       setState(() {});
       Helper.showToast('Email is sent');
-    } catch (e) {
-      print(e);
-      if (!email.contains('@')) {
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'invalid-email') {
         isEmailExist = 'Not email type';
         setState(() {});
-      } else {
+      } else if (e.code == 'user-not-found') {
         isEmailExist = 'That email is not exist in database now';
+        setState(() {});
+      } else if (e.code == 'network-request-failed') {
+        isEmailExist = 'Not access the net';
         setState(() {});
       }
       setState(() {});
@@ -312,6 +315,8 @@ class UserController extends ControllerMVC {
         setState(() {});
         RouteNames.userName = user.userName;
         loginRelysia(context);
+        setState(() {});
+        return;
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -322,10 +327,13 @@ class UserController extends ControllerMVC {
         failLogin = 'wrong-password';
         isSendLoginedInfo = false;
         setState(() {});
-        print('this is send logined info :$isSendLoginedInfo');
       } else if (e.code == 'network-request-failed') {
         failLogin = 'Not access the net';
         isSendLoginedInfo = false;
+        setState(() {});
+      } else if (e.code == 'too-many-requests') {
+        isSendLoginedInfo = false;
+        failLogin = 'Retry after 3 minutes';
         setState(() {});
       }
       isSendLoginedInfo = false;
