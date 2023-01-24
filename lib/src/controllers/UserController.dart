@@ -85,6 +85,7 @@ class UserController extends ControllerMVC {
     isSendRegisterInfo = true;
     setState(() {});
     var fill = true;
+    bool passworkdValidation = false;
     var validation = [
       'userName',
       'firstName',
@@ -109,7 +110,7 @@ class UserController extends ControllerMVC {
     context = cont;
     signUpUserInfo = info;
     email = signUpUserInfo['email'].toLowerCase().trim();
-    print('email is :$email.end');
+    print('email is :$email');
     password = signUpUserInfo['password'];
     var check = email.contains('@'); //return true if contains
     if (!check) {
@@ -118,12 +119,22 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    if (password.length < Helper.passwordMinLength) {
-      failRegister = 'Password length should be 8 over';
+    
+    passworkdValidation = await passworkdValidate(password);
+
+    if(!passworkdValidation){
+      failRegister = 'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
       isSendRegisterInfo = false;
       setState(() {});
       return;
     }
+
+    // if (password.length < Helper.passwordMinLength) {
+    //   failRegister = 'Password length should be 8 over';
+    //   isSendRegisterInfo = false;
+    //   setState(() {});
+    //   return;
+    // }
     print("------4--------");
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
@@ -145,9 +156,29 @@ class UserController extends ControllerMVC {
       return;
     }
     print("------5--------");
+    RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
+          if (res['data'] == null)
+            {
+              failRegister = 'No access the net',
+              isSendRegisterInfo = false,
+              setState(() {}),
+            }
+        });
+    if (isSendRegisterInfo = false) {
+      return;
+    }
     createRelysiaAccount(cont);
+    setState(() {});
+    return;
   }
 
+  bool passworkdValidate(String value){
+    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
+  
   String createActivationCode() {
     String code = ""; // Timestamp.now.toString();
     for (int i = 0; i < 13; i++) {
@@ -223,13 +254,16 @@ class UserController extends ControllerMVC {
       isSendResetPassword = true;
       setState(() {});
       Helper.showToast('Email is sent');
-    } catch (e) {
-      print(e);
-      if (!email.contains('@')) {
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'invalid-email') {
         isEmailExist = 'Not email type';
         setState(() {});
-      } else {
+      } else if (e.code == 'user-not-found') {
         isEmailExist = 'That email is not exist in database now';
+        setState(() {});
+      } else if (e.code == 'network-request-failed') {
+        isEmailExist = 'No access the net';
         setState(() {});
       }
       setState(() {});
@@ -296,6 +330,8 @@ class UserController extends ControllerMVC {
         setState(() {});
         RouteNames.userName = user.userName;
         loginRelysia(context);
+        setState(() {});
+        return;
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -306,10 +342,13 @@ class UserController extends ControllerMVC {
         failLogin = 'wrong-password';
         isSendLoginedInfo = false;
         setState(() {});
-        print('this is send logined info :$isSendLoginedInfo');
       } else if (e.code == 'network-request-failed') {
-        failLogin = 'Not access the net';
+        failLogin = 'No access the net';
         isSendLoginedInfo = false;
+        setState(() {});
+      } else if (e.code == 'too-many-requests') {
+        isSendLoginedInfo = false;
+        failLogin = 'Retry after 3 minutes';
         setState(() {});
       }
       isSendLoginedInfo = false;

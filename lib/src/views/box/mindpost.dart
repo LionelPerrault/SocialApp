@@ -189,7 +189,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         break;
       default:
     }
-    await con.post(postCase, postPayload, dropdownValue).then((value) {
+    await con.savePost(postCase, postPayload, dropdownValue).then((value) {
       print(value);
       postLoading = false;
       nowPost = '';
