@@ -252,6 +252,12 @@ class UserController extends ControllerMVC {
           email = getInfo.email;
         } else {
           failLogin = 'The username you entered does not belong to any account';
+          // RelysiaManager.authUser(relysiaEmail, relysiaPassword)
+          //     .then((res) async => {
+          //           if (res['data'] == null)
+          //             {failLogin = 'Not access the net', setState(() {})}
+          //         });
+          setState(() {});
         }
       }
       setState(() {});
@@ -293,11 +299,15 @@ class UserController extends ControllerMVC {
       print(e.code);
       if (e.code == 'invalid-email' || e.code == 'user-not-found') {
         failLogin = 'The email you entered does not belong to any account';
-        setState(
-          () {},
-        );
+        setState(() {});
       } else if (e.code == 'wrong-password') {
         failLogin = 'wrong-password';
+        isSendLoginedInfo = false;
+        setState(() {});
+        print('this is send logined info :$isSendLoginedInfo');
+      } else if (e.code == 'network-request-failed') {
+        failLogin = 'Not access the net';
+        isSendLoginedInfo = false;
         setState(() {});
       }
       isSendLoginedInfo = false;
