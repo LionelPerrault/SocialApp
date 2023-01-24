@@ -83,6 +83,7 @@ class UserController extends ControllerMVC {
     isSendRegisterInfo = true;
     setState(() {});
     var fill = true;
+    bool passworkdValidation = false;
     var validation = [
       'userName',
       'firstName',
@@ -116,12 +117,22 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    if (password.length < Helper.passwordMinLength) {
-      failRegister = 'Password length should be 8 over';
+    
+    passworkdValidation = await passworkdValidate(password);
+
+    if(!passworkdValidation){
+      failRegister = 'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
       isSendRegisterInfo = false;
       setState(() {});
       return;
     }
+
+    // if (password.length < Helper.passwordMinLength) {
+    //   failRegister = 'Password length should be 8 over';
+    //   isSendRegisterInfo = false;
+    //   setState(() {});
+    //   return;
+    // }
     print("------4--------");
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
@@ -146,6 +157,13 @@ class UserController extends ControllerMVC {
     createRelysiaAccount(cont);
   }
 
+  bool passworkdValidate(String value){
+    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
+  
   String createActivationCode() {
     String code = ""; // Timestamp.now.toString();
     for (int i = 0; i < 13; i++) {
