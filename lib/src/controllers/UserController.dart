@@ -294,6 +294,8 @@ class UserController extends ControllerMVC {
         setState(() {});
         RouteNames.userName = user.userName;
         loginRelysia(context);
+        setState(() {});
+        return;
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -304,10 +306,13 @@ class UserController extends ControllerMVC {
         failLogin = 'wrong-password';
         isSendLoginedInfo = false;
         setState(() {});
-        print('this is send logined info :$isSendLoginedInfo');
       } else if (e.code == 'network-request-failed') {
         failLogin = 'Not access the net';
         isSendLoginedInfo = false;
+        setState(() {});
+      } else if (e.code == 'too-many-requests') {
+        isSendLoginedInfo = false;
+        failLogin = 'Retry after 3 minutes';
         setState(() {});
       }
       isSendLoginedInfo = false;
