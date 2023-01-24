@@ -221,13 +221,16 @@ class UserController extends ControllerMVC {
       isSendResetPassword = true;
       setState(() {});
       Helper.showToast('Email is sent');
-    } catch (e) {
-      print(e);
-      if (!email.contains('@')) {
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'invalid-email') {
         isEmailExist = 'Not email type';
         setState(() {});
-      } else {
+      } else if (e.code == 'user-not-found') {
         isEmailExist = 'That email is not exist in database now';
+        setState(() {});
+      } else if (e.code == 'network-request-failed') {
+        isEmailExist = 'Not access the net';
         setState(() {});
       }
       setState(() {});
