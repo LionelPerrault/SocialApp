@@ -1008,7 +1008,7 @@ class PostController extends ControllerMVC {
     await Helper.productsData.doc(productId).update({'productSellState': true});
   }
 
-  post(type, value, privacy) async {
+  savePost(type, value, privacy) async {
     Map<String, dynamic> postData = {};
     postData = {
       'postAdmin': UserManager.userInfo['uid'],
@@ -1018,6 +1018,39 @@ class PostController extends ControllerMVC {
       'postTime': FieldValue.serverTimestamp(),
     };
     Helper.postCollection.add(postData);
+    return true;
+  }
+
+  var posts = [];
+  getAllPost() async {
+    var allSanp = await Helper.postCollection.get();
+    var allPosts = allSanp.docs;
+    var postData;
+    var adminInfo;
+    var postsBox = [];
+    for (var i = 0; i < allPosts.length; i++) {
+      if (allPosts[i]['type'] == 'product') {
+        var valueSnap =
+            await Helper.productsData.doc(allPosts[i]['value']).get();
+        postData = valueSnap.data();
+      } else {
+        postData = allPosts[i]['value'];
+      }
+      var adminSnap =
+          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+      adminInfo = adminSnap.data();
+      var eachPost = {
+        'id': allPosts[i].id,
+        'data': postData,
+        'type': allPosts[i]['type'],
+        'admin': adminInfo,
+        'time': allPosts[i]['postTime'],
+        'adminUid': adminSnap.id,
+      };
+      postsBox.add(eachPost);
+    }
+    posts = postsBox;
+    setState(() {});
     return true;
   }
 
