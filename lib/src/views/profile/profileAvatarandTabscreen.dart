@@ -335,13 +335,14 @@ class ProfileAvatarandTabScreenState extends mvc
                       minimumSize: const Size(60, 50),
                     ),
                     onPressed: () => {
-                      if(UserManager.userInfo['uid'] != con.viewProfileUid){
-                        Navigator.pushNamed(
-                          context            ,
-                          RouteNames.messages,
-                          arguments: con.viewProfileUid.toString(),
-                        )
-                      }             
+                      if (UserManager.userInfo['uid'] != con.viewProfileUid)
+                        {
+                          Navigator.pushNamed(
+                            context,
+                            RouteNames.messages,
+                            arguments: con.viewProfileUid.toString(),
+                          )
+                        }
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -362,13 +363,13 @@ class ProfileAvatarandTabScreenState extends mvc
                     side: BorderSide(width: 1, color: Colors.white)),
                 minimumSize: const Size(60, 50),
               ),
-              onPressed: () => {
+              onPressed: () async => {
                 // edit('basic'),
                 Navigator.pushReplacementNamed(context, RouteNames.settings),
                 settingMainScreen.basicPageFlag = true,
-                print(settingMainScreen.basicPageFlag),
                 setState(() {}),
-                print('click to runing settingRouter function'),
+                print(settingMainScreen.basicPageFlag),
+                print(settingMainScreen.settingPage)
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
