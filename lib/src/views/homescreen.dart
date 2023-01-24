@@ -154,36 +154,39 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                   ]),
                 )),
             AnimatedBuilder(
-                animation: _drawerSlideController,
-                builder: (context, child) {
-                  return FractionalTranslation(
-                      translation: SizeConfig(context).screenWidth >
-                              SizeConfig.smallScreenSize
-                          ? const Offset(0, 0)
-                          : Offset(_drawerSlideController.value * 0.001, 0.0),
-                      child: SizeConfig(context).screenWidth >
-                                  SizeConfig.smallScreenSize ||
-                              _isDrawerClosed()
-                          ? const SizedBox()
-                          : Padding(
-                              padding: const EdgeInsets.only(
-                                  top: SizeConfig.navbarHeight),
-                              child: Container(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: Colors.white,
-                                        width: SizeConfig.leftBarWidth,
-                                        child: SingleChildScrollView(
-                                          child: LeftPanel(),
-                                        ),
-                                      )
-                                    ]),
-                              )));
-                }),
+              animation: _drawerSlideController,
+              builder: (context, child) {
+                return FractionalTranslation(
+                  translation: SizeConfig(context).screenWidth >
+                          SizeConfig.smallScreenSize
+                      ? const Offset(0, 0)
+                      : Offset(_drawerSlideController.value * 0.001, 0.0),
+                  child: SizeConfig(context).screenWidth >
+                              SizeConfig.smallScreenSize ||
+                          _isDrawerClosed()
+                      ? const SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                              top: SizeConfig.navbarHeight),
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  color: Colors.white,
+                                  width: SizeConfig.leftBarWidth,
+                                  child: SingleChildScrollView(
+                                    child: LeftPanel(),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                );
+              },
+            ),
             showSearch
                 ? GestureDetector(
                     onTap: () {
