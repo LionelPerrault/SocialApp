@@ -45,6 +45,8 @@ class UserController extends ControllerMVC {
   String isEmailExist = '';
   String userAvatar = '';
   String existPwd = '';
+  // ignore: unused_field
+  Timer? timer;
   var resData = {};
   Map<dynamic, dynamic> userInfo = {};
   // ignore: prefer_typing_uninitialized_variables
@@ -713,21 +715,57 @@ class UserController extends ControllerMVC {
     }
   }
 
-  deleteUserAccount() async {
+  deleteUserAccount(context) async {
     isProfileChange = true;
     setState(() {});
-    var userManager = UserManager.userInfo;
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: userManager['email'], password: userManager['password']);
-    await FirebaseAuth.instance.currentUser?.delete();
-    var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .where('userName', isEqualTo: userManager['userName'])
-        .get();
-    await FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .doc(snapshot.docs[0].id)
-        .delete();
+    try {
+      var userManager = UserManager.userInfo;
+      await RelysiaManager.deleteUser(token).then((value) async => {
+            if (value == 1)
+              {
+                Helper.showToast("Success"),
+              }
+            else if (value == 2)
+              {
+                await RelysiaManager.authUser(email, password)
+                    .then((res) async => {
+                          if (res["data"] != null)
+                            {
+                              if (res['statusCode'] == 200)
+                                {
+                                  token = res['data']['token'],
+                                  await RelysiaManager.deleteUser(token),
+                                }
+                              else
+                                {
+                                  Helper.showToast(res['data']['msg']),
+                                }
+                            }
+                          else
+                            {
+                              Helper.showToast(res['data']),
+                            }
+                        })
+              }
+          });
+      var snapshot = await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .where('userName', isEqualTo: userManager['userName'])
+          .get();
+      FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(snapshot.docs[0].id)
+          .delete()
+          .then((_) async {
+        // delete account on authentication after user data on database is deleted
+        await FirebaseAuth.instance.currentUser?.delete();
+      });
+    } catch (e) {
+      print(e);
+    }
+    timer?.cancel();
+    UserManager.isLogined = false;
+    await Navigator.pushReplacementNamed(context, RouteNames.login);
     isProfileChange = false;
     setState(() {});
   }

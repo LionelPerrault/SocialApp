@@ -215,6 +215,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     await Helper.removeAllPreference();
     // ignore: use_build_context_synchronously
     await Navigator.pushReplacementNamed(context, RouteNames.login);
+    setState(() {});
   }
 
   @override

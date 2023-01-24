@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:shnatter/src/managers/user_manager.dart';
 
+import '../helpers/helper.dart';
+
 class RelysiaManager {
   static final apiUrlAuth = 'https://api.relysia.com/v1/auth';
   static final serviceId = '9ab1b69e-92ae-4612-9a4f-c5a102a6c068';
@@ -168,6 +170,40 @@ class RelysiaManager {
       print(exception.toString());
     }
     return returnData;
+  }
+
+  static Future<int> deleteUser(String token) async {
+    var r = 0;
+    var respondData = {};
+    try {
+      await http.delete(Uri.parse('https://api.relysia.com/v1/user'), headers: {
+        'authToken': token,
+        'serviceID': serviceId,
+        'walletTitle': '00000000-0000-0000-0000-000000000000',
+        'paymailActivate': 'true',
+      }).then((res) => {
+            respondData = jsonDecode(res.body),
+            if (respondData['statusCode'] == 200)
+              {
+                r = 1,
+              }
+            else if (respondData['statusCode'] == 401 &&
+                respondData['data']['msg'] == "Invalid authToken provided")
+              {
+                r = 2,
+              }
+            else if (respondData['statusCode'] == 401 &&
+                respondData['data']['msg'] == "authToken not found")
+              {
+                r = 2,
+              }
+          });
+      // ignore: empty_catches
+    } catch (exception) {
+      Helper.showToast(
+          "An error has occurred. Please check your internet connectivity or try again later");
+    }
+    return r;
   }
 }
 

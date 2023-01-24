@@ -33,7 +33,6 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   bool isEmailVerify = true;
-  late Timer _timer;
   late AnimationController _drawerSlideController;
   var suggest = <String, bool>{
     'friends': true,
@@ -118,7 +117,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               drawClicked: clickMenu,
             ),
             Padding(
-                padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child:
                     //AnimatedPositioned(
                     //top: showMenu ? 0 : -150.0,
@@ -262,16 +261,17 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
       width: SizeConfig(context).screenWidth,
       height: 50,
       color: Colors.red,
-      padding: EdgeInsets.only(left: 30, top: 3),
+      padding: const EdgeInsets.only(left: 30, top: 3),
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+                alignment: Alignment.center,
                 width: SizeConfig(context).screenWidth * 0.7 - 30,
-                child: Text(
+                child: const Text(
                   'You have not completed the email verification',
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 )),
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Container(
@@ -282,7 +282,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                     con.reSendEmailVeryfication();
                     Helper.showToast('Email sent');
                   },
-                  child: Text(
+                  child: const Text(
                     '> Resend email',
                     style: TextStyle(color: Colors.white),
                   )),
@@ -291,16 +291,17 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
     );
   }
 
-  Future<void> triggerEmailVerify() async {
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+  triggerEmailVerify() async {
+    con.timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       await FirebaseAuth.instance.currentUser!.reload();
+      // ignore: await_only_futures
       var user = await FirebaseAuth.instance.currentUser!;
       if (user.emailVerified) {
         print('$isEmailVerify, already get email verification');
         setState(() {
           isEmailVerify = true;
         });
-        timer.cancel();
+        con.timer?.cancel();
       } else {
         print('$isEmailVerify, didn\' get email verification yet');
         setState(() {
