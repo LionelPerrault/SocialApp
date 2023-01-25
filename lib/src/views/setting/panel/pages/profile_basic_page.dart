@@ -196,72 +196,21 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                       const Padding(padding: EdgeInsets.only(right: 20))
                     ],
                   ),
-                  Row(
-                    children: [
-                      // Expanded(
-                      //   flex: 1,
-                      //   child: Container(
-                      //     width: 400,
-                      //     child: customDropDownButton(
-                      //       title: 'I am',
-                      //       width: 400,
-                      //       item: gender,
-                      //       value: userInfo['sex'] ?? gender[0]['value'],
-                      //       onChange: (value) {
-                      //         //get value when changed
-                      //         setting_profile['sex'] = value;
-                      //         userInfo['sex'] = value!;
-                      //         setState(() {});
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                      const Padding(padding: EdgeInsets.only(left: 25)),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 400,
-                              child: customDropDownButton(
-                                title: 'Relationship Status',
-                                width: 400,
-                                item: userRelationship,
-                                value: userInfo['relationship'] ??
-                                    userRelationship[0]['value'],
-                                onChange: (value) {
-                                  //get value when changed
-                                  setting_profile['relationship'] = value;
-                                  userInfo['relationship'] = value!;
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.only(right: 20))
-                    ],
-                  ),
                   // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
                   //   children: [
                   //     Expanded(
                   //       flex: 1,
                   //       child: Container(
                   //         width: 400,
                   //         child: customDropDownButton(
-                  //           title: 'Country',
+                  //           title: 'I am',
                   //           width: 400,
                   //           item: gender,
                   //           value: userInfo['sex'] ?? gender[0]['value'],
                   //           onChange: (value) {
                   //             //get value when changed
-                  //             setting_profile['country'] = value;
-                  //             userInfo['country'] = value!;
+                  //             setting_profile['sex'] = value;
+                  //             userInfo['sex'] = value!;
                   //             setState(() {});
                   //           },
                   //         ),
@@ -270,27 +219,78 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                   //     const Padding(padding: EdgeInsets.only(left: 25)),
                   //     Expanded(
                   //       flex: 1,
-                  //       child: SizedBox(
-                  //           width: 400,
-                  //           child: Column(
-                  //             children: [
-                  //               titleAndsubtitleInput(
-                  //                 'Website',
-                  //                 50,
-                  //                 1,
-                  //                 (value) async {
-                  //                   setting_profile['workWebsite'] = value;
-                  //                 },
-                  //                 userInfo['workWebsite'] ?? '',
-                  //               ),
-                  //               const Text(
-                  //                   'Website link must start with http:// or https://'),
-                  //             ],
-                  //           )),
+                  //       child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           Container(
+                  //             width: 400,
+                  //             child: customDropDownButton(
+                  //               title: 'Relationship Status',
+                  //               width: 400,
+                  //               item: userRelationship,
+                  //               value: userInfo['relationship'] ??
+                  //                   userRelationship[0]['value'],
+                  //               onChange: (value) {
+                  //                 //get value when changed
+                  //                 setting_profile['relationship'] = value;
+                  //                 userInfo['relationship'] = value!;
+                  //                 setState(() {});
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
                   //     ),
                   //     const Padding(padding: EdgeInsets.only(right: 20))
                   //   ],
                   // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Expanded(
+                      //   flex: 1,
+                      //   child: Container(
+                      //     width: 400,
+                      //     child: customDropDownButton(
+                      //       title: 'Country',
+                      //       width: 400,
+                      //       item: gender,
+                      //       value: userInfo['sex'] ?? gender[0]['value'],
+                      //       onChange: (value) {
+                      //         //get value when changed
+                      //         setting_profile['country'] = value;
+                      //         userInfo['country'] = value!;
+                      //         setState(() {});
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
+                      const Padding(padding: EdgeInsets.only(left: 25)),
+                      Expanded(
+                        flex: 1,
+                        child: SizedBox(
+                            width: 400,
+                            child: Column(
+                              children: [
+                                titleAndsubtitleInput(
+                                  'Website',
+                                  50,
+                                  1,
+                                  (value) async {
+                                    setting_profile['workWebsite'] = value;
+                                  },
+                                  userInfo['workWebsite'] ?? '',
+                                ),
+                                const Text(
+                                    'Website link must start with http:// or https://'),
+                              ],
+                            )),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 20))
+                    ],
+                  ),
                   Row(
                     children: [
                       Expanded(
