@@ -72,6 +72,7 @@ class Helper {
   static var pages = 'staticContent';
   static var terms = 'Terms';
   static var privacy = 'Privacy';
+  static var about = 'About';
   static var balance = 0;
   static var message = 'messages';
   static var newMessageSearch = 'userName';
@@ -241,6 +242,14 @@ class Helper {
     var str = await FirebaseFirestore.instance
         .collection(Helper.pages)
         .doc(Helper.terms)
+        .get();
+    return str['content'] as String;
+  }
+
+  static Future<String> getAbout() async {
+    var str = await FirebaseFirestore.instance
+        .collection(Helper.pages)
+        .doc(Helper.about)
         .get();
     return str['content'] as String;
   }

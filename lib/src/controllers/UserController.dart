@@ -119,11 +119,12 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    
+
     passworkdValidation = await passworkdValidate(password);
 
-    if(!passworkdValidation){
-      failRegister = 'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
+    if (!passworkdValidation) {
+      failRegister =
+          'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
       isSendRegisterInfo = false;
       setState(() {});
       return;
@@ -172,13 +173,13 @@ class UserController extends ControllerMVC {
     return;
   }
 
-  bool passworkdValidate(String value){
-    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+  bool passworkdValidate(String value) {
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(value);
   }
 
-  
   String createActivationCode() {
     String code = ""; // Timestamp.now.toString();
     for (int i = 0; i < 13; i++) {
@@ -457,7 +458,8 @@ class UserController extends ControllerMVC {
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
         print(responseData['statusCode']);
-        showModal(context, relysiaEmail, relysiaPassword);
+        Helper.showToast(responseData['data']['msg']);
+        // showModal(context, relysiaEmail, relysiaPassword);
         // createRelysiaAccount();
       }
     } else {
