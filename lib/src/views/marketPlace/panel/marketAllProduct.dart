@@ -32,22 +32,21 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
     super.initState();
     getProductNow();
     con.getProductLikes();
-    if (con.allProduct.isEmpty) {
+    if (con.allProduct == []) {
       roundFlag = false;
     }
     print('this is reload');
   }
 
   void getProductNow() {
+    roundFlag = true;
+    setState(() {});
     con.getProduct().then(
           (value) => {
-            if (con.allProduct.isEmpty)
-              {
-                roundFlag = false,
-              },
+            roundFlag = false,
             allProducts = con.allProduct,
+            print(allProducts),
             setState(() {}),
-            setState(() => {}),
           },
         );
   }
@@ -75,40 +74,28 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
-            child: roundFlag
-                ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsets.only(
-                          top: SizeConfig(context).screenHeight * 2 / 5),
-                      child: const CircularProgressIndicator(
-                        color: Colors.grey,
-                      ),
-                    )
-                  ])
-                : screenWidth < 430
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: allProducts
-                            .map((product) => MarketCell(data: product))
-                            .toList())
-                    : GridView.count(
-                        crossAxisCount: screenWidth > 800
-                            ? 4
-                            : screenWidth > 600
-                                ? 3
-                                : 2,
-                        childAspectRatio: 1 / 2,
-                        padding: const EdgeInsets.all(4.0),
-                        mainAxisSpacing: 10.0,
-                        shrinkWrap: true,
-                        crossAxisSpacing: 10.0,
-                        primary: false,
-                        children: allProducts
-                            .map((product) => MarketCell(data: product))
-                            .toList()),
+            child: screenWidth < 430
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: allProducts
+                        .map((product) => MarketCell(data: product))
+                        .toList())
+                : GridView.count(
+                    crossAxisCount: screenWidth > 800
+                        ? 4
+                        : screenWidth > 600
+                            ? 3
+                            : 2,
+                    childAspectRatio: 1 / 2,
+                    padding: const EdgeInsets.all(4.0),
+                    mainAxisSpacing: 10.0,
+                    shrinkWrap: true,
+                    crossAxisSpacing: 10.0,
+                    primary: false,
+                    children: allProducts
+                        .map((product) => MarketCell(data: product))
+                        .toList()),
           ),
         ],
       ),
