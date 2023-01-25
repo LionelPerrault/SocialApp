@@ -25,6 +25,7 @@ class SettingBasicScreen extends StatefulWidget {
 
 // ignore: must_be_immutable
 class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
+  // ignore: non_constant_identifier_names
   var setting_profile = {};
   var userInfo = UserManager.userInfo;
   List month = [
@@ -139,12 +140,12 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
         child: Column(
           children: [
             SettingHeader(
-              icon: Icon(
+              icon: const Icon(
                 Icons.person,
                 color: Color.fromARGB(255, 43, 83, 164),
               ),
               pagename: 'Basic',
-              button: {
+              button: const {
                 'buttoncolor': Color.fromARGB(255, 17, 205, 239),
                 'icon': Icon(Icons.person),
                 'text': 'View Profile',
@@ -197,24 +198,24 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                   ),
                   Row(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          width: 400,
-                          child: customDropDownButton(
-                            title: 'I am',
-                            width: 400,
-                            item: gender,
-                            value: userInfo['sex'] ?? gender[0]['value'],
-                            onChange: (value) {
-                              //get value when changed
-                              setting_profile['sex'] = value;
-                              userInfo['sex'] = value!;
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                      ),
+                      // Expanded(
+                      //   flex: 1,
+                      //   child: Container(
+                      //     width: 400,
+                      //     child: customDropDownButton(
+                      //       title: 'I am',
+                      //       width: 400,
+                      //       item: gender,
+                      //       value: userInfo['sex'] ?? gender[0]['value'],
+                      //       onChange: (value) {
+                      //         //get value when changed
+                      //         setting_profile['sex'] = value;
+                      //         userInfo['sex'] = value!;
+                      //         setState(() {});
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
                       const Padding(padding: EdgeInsets.only(left: 25)),
                       Expanded(
                         flex: 1,
@@ -244,52 +245,52 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                       const Padding(padding: EdgeInsets.only(right: 20))
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          width: 400,
-                          child: customDropDownButton(
-                            title: 'Country',
-                            width: 400,
-                            item: gender,
-                            value: userInfo['sex'] ?? gender[0]['value'],
-                            onChange: (value) {
-                              //get value when changed
-                              setting_profile['country'] = value;
-                              userInfo['country'] = value!;
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.only(left: 25)),
-                      Expanded(
-                        flex: 1,
-                        child: SizedBox(
-                            width: 400,
-                            child: Column(
-                              children: [
-                                titleAndsubtitleInput(
-                                  'Website',
-                                  50,
-                                  1,
-                                  (value) async {
-                                    setting_profile['workWebsite'] = value;
-                                  },
-                                  userInfo['workWebsite'] ?? '',
-                                ),
-                                const Text(
-                                    'Website link must start with http:// or https://'),
-                              ],
-                            )),
-                      ),
-                      const Padding(padding: EdgeInsets.only(right: 20))
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     Expanded(
+                  //       flex: 1,
+                  //       child: Container(
+                  //         width: 400,
+                  //         child: customDropDownButton(
+                  //           title: 'Country',
+                  //           width: 400,
+                  //           item: gender,
+                  //           value: userInfo['sex'] ?? gender[0]['value'],
+                  //           onChange: (value) {
+                  //             //get value when changed
+                  //             setting_profile['country'] = value;
+                  //             userInfo['country'] = value!;
+                  //             setState(() {});
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     const Padding(padding: EdgeInsets.only(left: 25)),
+                  //     Expanded(
+                  //       flex: 1,
+                  //       child: SizedBox(
+                  //           width: 400,
+                  //           child: Column(
+                  //             children: [
+                  //               titleAndsubtitleInput(
+                  //                 'Website',
+                  //                 50,
+                  //                 1,
+                  //                 (value) async {
+                  //                   setting_profile['workWebsite'] = value;
+                  //                 },
+                  //                 userInfo['workWebsite'] ?? '',
+                  //               ),
+                  //               const Text(
+                  //                   'Website link must start with http:// or https://'),
+                  //             ],
+                  //           )),
+                  //     ),
+                  //     const Padding(padding: EdgeInsets.only(right: 20))
+                  //   ],
+                  // ),
                   Row(
                     children: [
                       Expanded(

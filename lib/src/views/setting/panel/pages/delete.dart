@@ -94,7 +94,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                                   maximumSize: const Size(140, 50),
                                 ),
                                 onPressed: () {
-                                  con.deleteUserAccount();
+                                  con.deleteUserAccount(context);
                                 },
                                 child: con.isProfileChange
                                     ? Container(

@@ -25,7 +25,8 @@ class TermsScreenState extends mvc.StateMVC<TermsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+        body: SafeArea(
+      child: SingleChildScrollView(
         child: Stack(alignment: Alignment.topCenter, children: [
           IconButton(
             icon: const Icon(Icons.close, color: Colors.black, size: 13.0),
@@ -54,7 +55,7 @@ class TermsScreenState extends mvc.StateMVC<TermsScreen> {
               top: 165,
             ),
             padding: const EdgeInsets.all(25),
-            width: 900,
+            width: 1000,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(2),
@@ -82,6 +83,6 @@ class TermsScreenState extends mvc.StateMVC<TermsScreen> {
           )
         ]),
       ),
-    );
+    ));
   }
 }

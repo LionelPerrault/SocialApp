@@ -12,8 +12,6 @@ import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 
-import '../controllers/UserController.dart';
-import '../managers/user_manager.dart';
 import '../utils/size_config.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,7 +33,6 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   bool isEmailVerify = true;
-  late Timer _timer;
   late AnimationController _drawerSlideController;
   var suggest = <String, bool>{
     'friends': true,
@@ -120,7 +117,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               drawClicked: clickMenu,
             ),
             Padding(
-                padding: EdgeInsets.only(top: SizeConfig.navbarHeight),
+                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child:
                     //AnimatedPositioned(
                     //top: showMenu ? 0 : -150.0,
@@ -140,52 +137,65 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                               : LeftPanel(),
                           //    : SizedBox(width: 0),
                           Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(child: MainPanel()),
-                              SizeConfig(context).screenWidth >
-                                      SizeConfig.mediumScreenSize + 300
-                                  ? RightPanel()
-                                  : SizedBox(width: 0),
-                            ],
-                          )),
+                            child: SizeConfig(context).screenWidth >
+                                    SizeConfig.mediumScreenSize + 300
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(child: MainPanel()),
+                                      SizeConfig(context).screenWidth >
+                                              SizeConfig.mediumScreenSize + 300
+                                          ? RightPanel()
+                                          : SizedBox(width: 0),
+                                    ],
+                                  )
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [MainPanel(), RightPanel()],
+                                  ),
+                          ),
                           //MainPanel(),
                         ])
                   ]),
                 )),
             AnimatedBuilder(
-                animation: _drawerSlideController,
-                builder: (context, child) {
-                  return FractionalTranslation(
-                      translation: SizeConfig(context).screenWidth >
-                              SizeConfig.smallScreenSize
-                          ? const Offset(0, 0)
-                          : Offset(_drawerSlideController.value * 0.001, 0.0),
-                      child: SizeConfig(context).screenWidth >
-                                  SizeConfig.smallScreenSize ||
-                              _isDrawerClosed()
-                          ? const SizedBox()
-                          : Padding(
-                              padding: const EdgeInsets.only(
-                                  top: SizeConfig.navbarHeight),
-                              child: Container(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: Colors.white,
-                                        width: SizeConfig.leftBarWidth,
-                                        child: SingleChildScrollView(
-                                          child: LeftPanel(),
-                                        ),
-                                      )
-                                    ]),
-                              )));
-                }),
+              animation: _drawerSlideController,
+              builder: (context, child) {
+                return FractionalTranslation(
+                  translation: SizeConfig(context).screenWidth >
+                          SizeConfig.smallScreenSize
+                      ? const Offset(0, 0)
+                      : Offset(_drawerSlideController.value * 0.001, 0.0),
+                  child: SizeConfig(context).screenWidth >
+                              SizeConfig.smallScreenSize ||
+                          _isDrawerClosed()
+                      ? const SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                              top: SizeConfig.navbarHeight),
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  color: Colors.white,
+                                  width: SizeConfig.leftBarWidth,
+                                  child: SingleChildScrollView(
+                                    child: LeftPanel(),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                );
+              },
+            ),
             showSearch
                 ? GestureDetector(
                     onTap: () {
@@ -251,16 +261,17 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
       width: SizeConfig(context).screenWidth,
       height: 50,
       color: Colors.red,
-      padding: EdgeInsets.only(left: 30, top: 3),
+      padding: const EdgeInsets.only(left: 30, top: 3),
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+                alignment: Alignment.center,
                 width: SizeConfig(context).screenWidth * 0.7 - 30,
-                child: Text(
+                child: const Text(
                   'You have not completed the email verification',
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 )),
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Container(
@@ -268,10 +279,10 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               width: SizeConfig(context).screenWidth * 0.3,
               child: TextButton(
                   onPressed: () async {
-                    con.sendEmailVeryfication();
+                    con.reSendEmailVeryfication();
                     Helper.showToast('Email sent');
                   },
-                  child: Text(
+                  child: const Text(
                     '> Resend email',
                     style: TextStyle(color: Colors.white),
                   )),
@@ -280,16 +291,17 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
     );
   }
 
-  Future<void> triggerEmailVerify() async {
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+  triggerEmailVerify() async {
+    con.timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       await FirebaseAuth.instance.currentUser!.reload();
+      // ignore: await_only_futures
       var user = await FirebaseAuth.instance.currentUser!;
       if (user.emailVerified) {
         print('$isEmailVerify, already get email verification');
         setState(() {
           isEmailVerify = true;
         });
-        timer.cancel();
+        con.timer?.cancel();
       } else {
         print('$isEmailVerify, didn\' get email verification yet');
         setState(() {

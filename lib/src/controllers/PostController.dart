@@ -1,20 +1,12 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
-import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:uuid/uuid.dart';
 import '../helpers/helper.dart';
-import '../managers/relysia_manager.dart';
-import '../models/userModel.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../routes/route_names.dart';
-import 'package:time_elapsed/time_elapsed.dart';
 
 class PostController extends ControllerMVC {
   factory PostController([StateMVC? state]) =>
@@ -260,23 +252,23 @@ class PostController extends ControllerMVC {
       'eventCanPub': true,
       'eventApproval': true
     };
-    Map<String,dynamic> notificationData; 
+    Map<String, dynamic> notificationData;
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .add(eventData)
         .then((value) async => {
-            notificationData = {
-              'postType': 'events',
-              'postId': value.id,
-              'postAdminId': UserManager.userInfo['uid'],
-              'notifyTime': DateTime.now().toString(),
-              'tsNT': DateTime.now().millisecondsSinceEpoch,
-              'userList': [],
-              'timeStamp': FieldValue.serverTimestamp(),
-            },
-            saveNotifications(notificationData), 
-            Navigator.pushReplacementNamed(context, '/events/${value.id}'),
-        });
+              notificationData = {
+                'postType': 'events',
+                'postId': value.id,
+                'postAdminId': UserManager.userInfo['uid'],
+                'notifyTime': DateTime.now().toString(),
+                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'userList': [],
+                'timeStamp': FieldValue.serverTimestamp(),
+              },
+              saveNotifications(notificationData),
+              Navigator.pushReplacementNamed(context, '/events/${value.id}'),
+            });
     return 'Successfully created';
   }
 
@@ -547,24 +539,24 @@ class PostController extends ControllerMVC {
     if (value.isNotEmpty) {
       return 'Page Name should be unique';
     }
-    Map<String,dynamic> notificationData;
+    Map<String, dynamic> notificationData;
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .add(pageData)
         .then((value) => {
-          notificationData = {
-              'postType': 'pages',
-              'postId': value.id,
-              'postAdminId': UserManager.userInfo['uid'],
-              'notifyTime': DateTime.now().toString(),
-              'tsNT': DateTime.now().millisecondsSinceEpoch,
-              'userList': [],
-              'timeStamp': FieldValue.serverTimestamp(),
-            },
-          saveNotifications(notificationData), 
-          Navigator.pushReplacementNamed(
-              context, '${RouteNames.pages}/${pageData['pageUserName']}'),
-          });
+              notificationData = {
+                'postType': 'pages',
+                'postId': value.id,
+                'postAdminId': UserManager.userInfo['uid'],
+                'notifyTime': DateTime.now().toString(),
+                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'userList': [],
+                'timeStamp': FieldValue.serverTimestamp(),
+              },
+              saveNotifications(notificationData),
+              Navigator.pushReplacementNamed(
+                  context, '${RouteNames.pages}/${pageData['pageUserName']}'),
+            });
     return 'Page was created successfully';
   }
 
@@ -789,24 +781,24 @@ class PostController extends ControllerMVC {
     if (value.isNotEmpty) {
       return 'Group name already exist';
     }
-    Map<String,dynamic> notificationData;
+    Map<String, dynamic> notificationData;
     await FirebaseFirestore.instance
         .collection(Helper.groupsField)
         .add(groupData)
         .then((value) async => {
-          notificationData = {
-              'postType': 'groups',
-              'postId': value.id,
-              'postAdminId': UserManager.userInfo['uid'],
-              'notifyTime': DateTime.now().toString(),
-              'tsNT': DateTime.now().millisecondsSinceEpoch,
-              'userList': [],
-              'timeStamp': FieldValue.serverTimestamp(),
-            },
-            saveNotifications(notificationData),
-            Navigator.pushReplacementNamed(
-              context, '${RouteNames.groups}/${groupData['groupUserName']}') 
-        });
+              notificationData = {
+                'postType': 'groups',
+                'postId': value.id,
+                'postAdminId': UserManager.userInfo['uid'],
+                'notifyTime': DateTime.now().toString(),
+                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'userList': [],
+                'timeStamp': FieldValue.serverTimestamp(),
+              },
+              saveNotifications(notificationData),
+              Navigator.pushReplacementNamed(
+                  context, '${RouteNames.groups}/${groupData['groupUserName']}')
+            });
     return 'Successfully created';
   }
 
@@ -881,49 +873,49 @@ class PostController extends ControllerMVC {
 
   Future<String> createProduct(
       context, Map<String, dynamic> productData) async {
-      if (productData['productName'] == null ||
-          productData['productName'] == '') {
-        return 'Please add your product name';
-      } else if (productData['productPrice'] == null ||
-          productData['productPrice'] == '') {
-        return 'Please add your product price';
-      } else if (productData['productCategory'] == null ||
-          productData['productCategory'] == '') {
-        return 'Please add your product category';
-      }
-      productData = {
-        ...productData,
-        'productAdmin': {
-          'uid': UserManager.userInfo['uid'],
-        },
-        'productDate': DateTime.now().toString(),
-        'productPost': false,
-        'productMarkAsSold': false,
-        'productTimeline': true,
-        'productOnOffCommenting': true,
-      };
+    if (productData['productName'] == null ||
+        productData['productName'] == '') {
+      return 'Please add your product name';
+    } else if (productData['productPrice'] == null ||
+        productData['productPrice'] == '') {
+      return 'Please add your product price';
+    } else if (productData['productCategory'] == null ||
+        productData['productCategory'] == '') {
+      return 'Please add your product category';
+    }
+    productData = {
+      ...productData,
+      'productAdmin': {
+        'uid': UserManager.userInfo['uid'],
+      },
+      'productDate': DateTime.now().toString(),
+      'productPost': false,
+      'productMarkAsSold': false,
+      'productTimeline': true,
+      'productOnOffCommenting': true,
+    };
 
-      Map<String, dynamic> notificationData;
-      await FirebaseFirestore.instance
-          .collection(Helper.productsField)
-          .add(productData)
-          .then((value) async => {
-                notificationData = {
-                  'postType': 'products',
-                  'postId': value.id,
-                  'postAdminId': UserManager.userInfo['uid'],
-                  'notifyTime': DateTime.now().toString(),
-                  'tsNT': DateTime.now().millisecondsSinceEpoch,
-                  'userList': [],
-                  'timeStamp': FieldValue.serverTimestamp(),
-                },
-                saveNotifications(notificationData),
-                Navigator.pushReplacementNamed(
-                    context, '${RouteNames.products}/${value.id}')
-              });
-      // RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
-      //     '10', 'for create product');
-      return 'Successfully created';
+    Map<String, dynamic> notificationData;
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .add(productData)
+        .then((value) async => {
+              notificationData = {
+                'postType': 'products',
+                'postId': value.id,
+                'postAdminId': UserManager.userInfo['uid'],
+                'notifyTime': DateTime.now().toString(),
+                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'userList': [],
+                'timeStamp': FieldValue.serverTimestamp(),
+              },
+              saveNotifications(notificationData),
+              Navigator.pushReplacementNamed(
+                  context, '${RouteNames.products}/${value.id}')
+            });
+    // RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
+    //     '10', 'for create product');
+    return 'Successfully created';
   }
 
   List<Map> allProduct = [];
@@ -1014,6 +1006,52 @@ class PostController extends ControllerMVC {
 
   changeProductSellState(productId) async {
     await Helper.productsData.doc(productId).update({'productSellState': true});
+  }
+
+  savePost(type, value, privacy) async {
+    Map<String, dynamic> postData = {};
+    postData = {
+      'postAdmin': UserManager.userInfo['uid'],
+      'type': type,
+      'value': value,
+      'privacy': privacy,
+      'postTime': FieldValue.serverTimestamp(),
+    };
+    Helper.postCollection.add(postData);
+    return true;
+  }
+
+  var posts = [];
+  getAllPost() async {
+    var allSanp = await Helper.postCollection.get();
+    var allPosts = allSanp.docs;
+    var postData;
+    var adminInfo;
+    var postsBox = [];
+    for (var i = 0; i < allPosts.length; i++) {
+      if (allPosts[i]['type'] == 'product') {
+        var valueSnap =
+            await Helper.productsData.doc(allPosts[i]['value']).get();
+        postData = valueSnap.data();
+      } else {
+        postData = allPosts[i]['value'];
+      }
+      var adminSnap =
+          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+      adminInfo = adminSnap.data();
+      var eachPost = {
+        'id': allPosts[i].id,
+        'data': postData,
+        'type': allPosts[i]['type'],
+        'admin': adminInfo,
+        'time': allPosts[i]['postTime'],
+        'adminUid': adminSnap.id,
+      };
+      postsBox.add(eachPost);
+    }
+    posts = postsBox;
+    setState(() {});
+    return true;
   }
 
   var productLikes = {};

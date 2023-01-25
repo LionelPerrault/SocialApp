@@ -1,4 +1,12 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as PPath;
+import 'package:shnatter/src/controllers/PostController.dart';
 
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
@@ -7,7 +15,10 @@ import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class MindPost extends StatefulWidget {
-  const MindPost({Key? key}) : super(key: key);
+  MindPost({Key? key})
+      : con = PostController(),
+        super(key: key);
+  final PostController con;
   @override
   State createState() => MindPostState();
 }
@@ -20,12 +31,21 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   var show = false;
   var notActionShow = false;
   var state = false;
+  var postPhoto = [];
+  var postFile = [];
+  int photoLength = 0;
+  int fileLength = 0;
+  double uploadPhotoProgress = 0;
+  double uploadVideoProgress = 0;
+  String nowPost = '';
+  bool postLoading = false;
+  late PostController con;
   List<Map> mindPostCase = [
     {
       'title': 'Upload Photos',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcamera.svg?alt=media&token=0b7478a3-c746-47ed-a4fc-7505accf22a5',
-      'mindFunc': (context) {}
+      'mindFunc': () {}
     },
     {
       'title': 'Create Album',
@@ -118,6 +138,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   ];
   @override
   void initState() {
+    add(widget.con);
+    con = controller as PostController;
     super.initState();
     _focus.addListener(_onFocusChange);
   }
@@ -146,14 +168,45 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     });
   }
 
+  createPhotoReady() {
+    nowPost = 'Upload Photos';
+    setState(() {});
+    uploadReady('photo');
+  }
+
+  post() async {
+    if (nowPost == '') {
+      return;
+    }
+    postLoading = true;
+    setState(() {});
+    String postCase = '';
+    var postPayload;
+    switch (nowPost) {
+      case 'Upload Photos':
+        postCase = 'photo';
+        postPayload = postPhoto;
+        break;
+      default:
+    }
+    await con.savePost(postCase, postPayload, dropdownValue).then((value) {
+      print(value);
+      postLoading = false;
+      nowPost = '';
+      postPhoto = [];
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-            ? 530
-            : 350,
-        padding: const EdgeInsets.only(left: 30, right: 30),
-        child: Column(children: [
+      width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+          ? 530
+          : 350,
+      padding: const EdgeInsets.only(left: 30, right: 30),
+      child: Column(
+        children: [
           Container(
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 250, 250, 250),
@@ -209,231 +262,397 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             ),
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
-          SingleChildScrollView(
-            child: GestureDetector(
-              onTap: () {
-                if (!state) {
-                  notActionShow = true;
-                }
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
-                height: show ? 360 : 0,
-                child: ListView(
-                  children: [
-                    ListView(
-                        shrinkWrap: true,
-                        controller: _scrollController,
-                        children: [
-                          Column(
-                            children: [
-                              GridView.count(
-                                crossAxisCount:
-                                    SizeConfig(context).screenWidth >
-                                            SizeConfig.smallScreenSize
-                                        ? 2
-                                        : 1,
-                                childAspectRatio:
-                                    SizeConfig(context).screenWidth >
-                                            SizeConfig.smallScreenSize
-                                        ? 240 / 45
-                                        : 240 / 39,
-                                padding: const EdgeInsets.all(4.0),
-                                mainAxisSpacing: 4.0,
-                                shrinkWrap: true,
-                                crossAxisSpacing: 4.0,
-                                children: mindPostCase
-                                    .map(
-                                      (mind) => MindSlice(
-                                          onTap: () => {
-                                                if (!state)
-                                                  {notActionShow = true}
-                                              },
-                                          mindFunc: mind['mindFunc'],
-                                          label: mind['title'],
-                                          image: mind['image']),
-                                    )
-                                    .toList(),
-                              ),
-                              Row(
-                                children: [
-                                  const Flexible(
-                                      fit: FlexFit.tight, child: SizedBox()),
-                                  Expanded(
-                                    child: SizedBox(
-                                      width: 100,
-                                      height: 38,
-                                      child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            color: const Color.fromARGB(
-                                                255, 17, 205, 239),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                            border: Border.all(
-                                                color: const Color.fromARGB(
-                                                    255, 17, 205, 239),
-                                                width:
-                                                    0.1), //bordrder raiuds of dropdown button
-                                          ),
-                                          child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 7, left: 15),
-                                              child: DropdownButton(
-                                                onTap: () {
-                                                  if (!state) {
-                                                    notActionShow = true;
-                                                  }
-                                                },
-                                                hint: Row(
-                                                  children: const [
-                                                    Icon(
-                                                      Icons.language,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 5)),
-                                                    Text(
-                                                      'Public',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                items: [
-                                                  DropdownMenuItem(
-                                                    value: "Public",
-                                                    child: Row(children: const [
-                                                      Icon(
-                                                        Icons.language,
-                                                        color: Colors.black,
-                                                      ),
-                                                      Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5)),
-                                                      Text(
-                                                        "Public",
-                                                        style: TextStyle(
-                                                            fontSize: 13),
-                                                      )
-                                                    ]),
-                                                  ),
-                                                  DropdownMenuItem(
-                                                    value: "Friends",
-                                                    child: Row(children: const [
-                                                      Icon(
-                                                        Icons.groups,
-                                                        color: Colors.black,
-                                                      ),
-                                                      Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5)),
-                                                      Text(
-                                                        "Friends",
-                                                        style: TextStyle(
-                                                            fontSize: 13),
-                                                      )
-                                                    ]),
-                                                  ),
-                                                  DropdownMenuItem(
-                                                    value: "Friends of Friends",
-                                                    child: Row(children: const [
-                                                      Icon(
-                                                        Icons.groups,
-                                                        color: Colors.black,
-                                                      ),
-                                                      Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5)),
-                                                      Text(
-                                                        "Friends of Friends",
-                                                        style: TextStyle(
-                                                            fontSize: 13),
-                                                      )
-                                                    ]),
-                                                  ),
-                                                  DropdownMenuItem(
-                                                    value: "Only Me",
-                                                    child: Row(children: const [
-                                                      Icon(
-                                                        Icons.lock_outline,
-                                                        color: Colors.black,
-                                                      ),
-                                                      Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5)),
-                                                      Text(
-                                                        "Only Me",
-                                                        style: TextStyle(
-                                                            fontSize: 13),
-                                                      )
-                                                    ]),
-                                                  ),
-                                                ],
-                                                onChanged: (String? value) {
-                                                  //get value when changed
-                                                  dropdownValue = value!;
-                                                  setState(() {});
-                                                },
-                                                icon: const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 20),
-                                                    child: Icon(
-                                                        Icons.arrow_drop_down)),
-                                                iconEnabledColor:
-                                                    Colors.white, //Icon color
-                                                style: const TextStyle(
-                                                  color:
-                                                      Colors.black, //Font color
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                                dropdownColor: Colors.white,
-                                                underline:
-                                                    Container(), //remove underline
-                                                isExpanded: true,
-                                                isDense: true,
-                                              ))),
-                                    ),
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 10)),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 3,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4.0)),
-                                      minimumSize: const Size(85, 45),
-                                      maximumSize: const Size(85, 45),
-                                    ),
-                                    onPressed: () {
-                                      () => {if (!state) notActionShow = true};
-                                    },
-                                    child: const Text('Post',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w900)),
-                                  )
-                                ],
-                              )
-                            ],
-                          )
-                        ])
-                  ],
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SingleChildScrollView(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: postPhoto
+                        .map(((e) => postPhotoWidget(e['url'], e['id'])))
+                        .toList(),
+                  ),
                 ),
               ),
-            ),
+              GridView.count(
+                crossAxisCount:
+                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                        ? 2
+                        : 1,
+                childAspectRatio:
+                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                        ? 240 / 45
+                        : 240 / 39,
+                padding: const EdgeInsets.all(4.0),
+                mainAxisSpacing: 4.0,
+                shrinkWrap: true,
+                crossAxisSpacing: 4.0,
+                children: mindPostCase
+                    .map(
+                      (mind) => MindSlice(
+                        onTap: () => {
+                          if (!state) {notActionShow = true}
+                        },
+                        mindFunc: () {
+                          mind['title'] == 'Upload Photos'
+                              ? createPhotoReady()
+                              : () {};
+                        },
+                        label: mind['title'],
+                        image: mind['image'],
+                        disabled: nowPost == ''
+                            ? false
+                            : nowPost == mind['title']
+                                ? false
+                                : true,
+                      ),
+                    )
+                    .toList(),
+              ),
+              Row(
+                children: [
+                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  Expanded(
+                    child: SizedBox(
+                      width: 100,
+                      height: 38,
+                      child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 17, 205, 239),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 17, 205, 239),
+                                width:
+                                    0.1), //bordrder raiuds of dropdown button
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.only(top: 7, left: 15),
+                              child: DropdownButton(
+                                onTap: () {
+                                  if (!state) {
+                                    notActionShow = true;
+                                  }
+                                },
+                                hint: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.language,
+                                      color: Colors.white,
+                                    ),
+                                    Padding(padding: EdgeInsets.only(left: 5)),
+                                    Text(
+                                      'Public',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                items: [
+                                  DropdownMenuItem(
+                                    value: "Public",
+                                    child: Row(children: const [
+                                      Icon(
+                                        Icons.language,
+                                        color: Colors.black,
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 5)),
+                                      Text(
+                                        "Public",
+                                        style: TextStyle(fontSize: 13),
+                                      )
+                                    ]),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Friends",
+                                    child: Row(children: const [
+                                      Icon(
+                                        Icons.groups,
+                                        color: Colors.black,
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 5)),
+                                      Text(
+                                        "Friends",
+                                        style: TextStyle(fontSize: 13),
+                                      )
+                                    ]),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Friends of Friends",
+                                    child: Row(children: const [
+                                      Icon(
+                                        Icons.groups,
+                                        color: Colors.black,
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 5)),
+                                      Text(
+                                        "Friends of Friends",
+                                        style: TextStyle(fontSize: 13),
+                                      )
+                                    ]),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Only Me",
+                                    child: Row(children: const [
+                                      Icon(
+                                        Icons.lock_outline,
+                                        color: Colors.black,
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 5)),
+                                      Text(
+                                        "Only Me",
+                                        style: TextStyle(fontSize: 13),
+                                      )
+                                    ]),
+                                  ),
+                                ],
+                                onChanged: (String? value) {
+                                  //get value when changed
+                                  dropdownValue = value!;
+                                  setState(() {});
+                                },
+                                icon: const Padding(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Icon(Icons.arrow_drop_down)),
+                                iconEnabledColor: Colors.white, //Icon color
+                                style: const TextStyle(
+                                  color: Colors.black, //Font color
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                dropdownColor: Colors.white,
+                                underline: Container(), //remove underline
+                                isExpanded: true,
+                                isDense: true,
+                              ))),
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 10)),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0)),
+                      minimumSize: const Size(85, 45),
+                      maximumSize: const Size(85, 45),
+                    ),
+                    onPressed: () {
+                      postLoading ? () {} : post();
+                    },
+                    child: postLoading
+                        ? Container(
+                            width: 40,
+                            height: 40,
+                            alignment: Alignment.center,
+                            child: const CircularProgressIndicator(
+                              backgroundColor: Colors.transparent,
+                            ),
+                          )
+                        : const Text('Post',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w900)),
+                  )
+                ],
+              )
+            ],
           ),
-        ]));
+        ],
+      ),
+    );
+  }
+
+  Widget postPhotoWidget(photo, id) {
+    return Container(
+      width: 90,
+      height: 90,
+      margin: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(13),
+      ),
+      child: Stack(
+        children: [
+          // (uploadPhotoProgress != 0 && uploadPhotoProgress != 100)
+          photo != null
+              ? Container(
+                  width: 90,
+                  height: 90,
+                  alignment: Alignment.topRight,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(photo),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.close,
+                        color: Colors.black, size: 13.0),
+                    padding: EdgeInsets.only(left: 20),
+                    tooltip: 'Delete',
+                    onPressed: () {
+                      postPhoto.removeWhere((item) => item['id'] == id);
+                      if (postPhoto.isEmpty) {
+                        nowPost = '';
+                      }
+                      setState(() {});
+                    },
+                  ),
+                )
+              : const SizedBox(),
+          // : const SizedBox(),
+          (uploadPhotoProgress != 0 && uploadPhotoProgress != 100)
+              ? AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  margin: const EdgeInsets.only(top: 78, left: 10),
+                  width: 130,
+                  padding: EdgeInsets.only(
+                      right: 130 - (130 * uploadPhotoProgress / 100)),
+                  child: const LinearProgressIndicator(
+                    color: Colors.blue,
+                    value: 10,
+                    semanticsLabel: 'Linear progress indicator',
+                  ),
+                )
+              : const SizedBox(),
+        ],
+      ),
+    );
+  }
+
+  // Widget createPollWidget(){
+  //   return
+  // }
+
+  Future<XFile> chooseImage() async {
+    final _imagePicker = ImagePicker();
+    XFile? pickedFile;
+    if (kIsWeb) {
+      pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+    } else {
+      //Check Permissions
+      // await Permission.photos.request();
+      // var permissionStatus = await Permission.photos.status;
+
+      //if (permissionStatus.isGranted) {
+      pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+      //} else {
+      //  print('Permission not granted. Try Again with permission access');
+      //}
+    }
+    return pickedFile!;
+  }
+
+  uploadFile(XFile? pickedFile, type) async {
+    if (type == 'photo') {
+      postPhoto.add({'id': postPhoto.length, 'url': ''});
+      photoLength = postPhoto.length - 1;
+      setState(() {});
+    } else {
+      postFile.add({'id': postFile.length, 'url': ''});
+      fileLength = postFile.length - 1;
+      setState(() {});
+    }
+    final _firebaseStorage = FirebaseStorage.instance;
+    var uploadTask;
+    Reference _reference;
+    try {
+      if (kIsWeb) {
+        //print("read bytes");
+        Uint8List bytes = await pickedFile!.readAsBytes();
+        //print(bytes);
+        _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        uploadTask = _reference.putData(
+          bytes,
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
+      } else {
+        var file = File(pickedFile!.path);
+        //write a code for android or ios
+        _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        uploadTask = _reference.putFile(file);
+      }
+      uploadTask.whenComplete(() async {
+        var downloadUrl = await _reference.getDownloadURL();
+        if (type == 'photo') {
+          for (var i = 0; i < postPhoto.length; i++) {
+            if (postPhoto[i]['id'] == photoLength) {
+              postPhoto[i]['url'] = downloadUrl;
+              setState(() {});
+            }
+          }
+        } else {
+          for (var i = 0; i < postFile.length; i++) {
+            if (postFile[i]['id'] == fileLength) {
+              postFile[i]['url'] = downloadUrl;
+              setState(() {});
+            }
+          }
+        }
+        print(postFile);
+      });
+      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            if (type == 'photo') {
+              uploadPhotoProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $uploadPhotoProgress% complete.");
+            } else {
+              uploadVideoProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+              print("Upload is $uploadVideoProgress% complete.");
+            }
+
+            break;
+          case TaskState.paused:
+            print("Upload is paused.");
+            break;
+          case TaskState.canceled:
+            print("Upload was canceled");
+            break;
+          case TaskState.error:
+            // Handle unsuccessful uploads
+            break;
+          case TaskState.success:
+            print("Upload is completed");
+            uploadVideoProgress = 0;
+            setState(() {});
+            // Handle successful uploads on complete
+            // ...
+            //  var downloadUrl = await _reference.getDownloadURL();
+            break;
+        }
+      });
+    } catch (e) {
+      // print("Exception $e");
+    }
+  }
+
+  uploadReady(type) async {
+    XFile? pickedFile = await chooseImage();
+    uploadFile(pickedFile, type);
   }
 }

@@ -12,6 +12,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
 
+// ignore: must_be_immutable
 class ChatMessageListScreen extends StatefulWidget {
   Function onBack;
   ChatMessageListScreen(
@@ -58,7 +59,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
           curve: Curves.easeOut,
         );
       });
-      print(con.docId);
       if (con.docId != '') {
         FirebaseFirestore.instance
             .collection(Helper.message)
@@ -83,14 +83,8 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                     return Column(children: [
                       Container(
                           height: SizeConfig(context).screenHeight - 220,
-                          padding: EdgeInsets.only(bottom: 15),
                           child: ListView.builder(
                             itemCount: messageList.length,
-                            controller: _scrollController,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               var list = messageList[index].data();
                               var chatUserName = '';
@@ -231,20 +225,17 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                               );
                             },
                           )),
-                      widget.showWriteMessage
-                          ? WriteMessageScreen(
-                              type: con.isMessageTap == 'new' ? 'new' : 'old',
-                              goMessage: (value) {
-                                widget.onBack(value);
-                              },
-                            )
-                          : Container()
+                      WriteMessageScreen(
+                          type: con.isMessageTap == 'new' ? 'new' : 'old',
+                          goMessage: (value) {
+                            widget.onBack(value);
+                          },
+                        )
                     ]);
                   } else {
                     return SizedBox(
-                        height: SizeConfig(context).screenHeight - 220,
+                        height: SizeConfig(context).screenHeight - 205,
                         child: Center(child: CircularProgressIndicator()));
-                    ;
                   }
                 }));
   }

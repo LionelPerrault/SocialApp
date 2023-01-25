@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/navigationbar.dart';
@@ -26,18 +28,24 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
+  var shnattertokenPageFlag = false;
+  var basicPageFlag = false;
   String settingPage = 'account_page';
-  //
+
   @override
   void initState() {
     add(widget.con);
     con = controller as HomeController;
-    super.initState();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
+    if (basicPageFlag = true) {
+      settingPage = 'basic';
+      setState(() {});
+    }
+    super.initState();
   }
 
   late HomeController con;
@@ -119,8 +127,19 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                 SizeConfig.smallScreenSize
                             ? const SizedBox()
                             : SettingsLeftPanel(onClick: (value) {
+                                // if (basicPageFlag = true) {
+                                //   settingPage = basic;
+                                //   setState(() {});
+                                //   print('basicPageFlag in if $settingPage');
+                                // } else {
+                                //   settingPage = value;
+                                //   setState(() {});
+                                //   print('basicPageFlag in else $settingPage');
+                                // }
+                                print('1setting page is: $settingPage');
                                 settingPage = value;
                                 setState(() {});
+                                basicPageFlag = false;
                               }),
                         //    : SizedBox(width: 0),
                         Expanded(
@@ -163,8 +182,21 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                         child: SingleChildScrollView(
                                           child: SettingsLeftPanel(
                                             onClick: (value) {
+                                              print(
+                                                  '2settingpage is $settingPage');
                                               settingPage = value;
                                               setState(() {});
+                                              // if (basicPageFlag = true) {
+                                              //   settingPage = basic;
+                                              //   setState(() {});
+                                              //   print(
+                                              //       'basicPageFlag in if $settingPage');
+                                              // } else {
+                                              //   settingPage = value;
+                                              //   setState(() {});
+                                              //   print(
+                                              //       'basicPageFlag in else $settingPage');
+                                              //}
                                             },
                                           ),
                                         ),
@@ -229,5 +261,10 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                 : const SizedBox(),
           ],
         ));
+    // ignore: dead_code
+    // settingPage = 'account_page';
+    // ignore: dead_code
+    basicPageFlag = false;
+    setState(() {});
   }
 }

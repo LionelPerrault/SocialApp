@@ -1,5 +1,7 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatMessageListScreen.dart';
@@ -7,6 +9,8 @@ import 'package:shnatter/src/views/messageBoard/widget/chatScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatUserListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/newMessageScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
+import 'package:shnatter/src/views/products/widget/productcell.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 
 import '../../controllers/ChatController.dart';
@@ -17,7 +21,6 @@ class MessageScreen extends StatefulWidget {
       : con = ChatController(),
         super(key: key);
   ChatController? con;
-
   @override
   State createState() => MessageScreenState();
 }
@@ -29,6 +32,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
   bool isShowChatUserList = false;
+  bool isCheckConnect = true;
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
@@ -88,6 +92,13 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     return _drawerSlideController.value == 0.0;
   }
 
+  void connectFrom(uidOfTarget) async {
+    await con.connectFromMarketPlace(uidOfTarget);
+    isCheckConnect = false;
+    con.setState(() { });
+    setState(() { });
+  }
+
   @override
   void dispose() {
     searchFocusNode.dispose();
@@ -96,7 +107,15 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build (BuildContext context) {
+    if(isCheckConnect){
+      final uidOfTarget = ModalRoute.of(context)!.settings.arguments;
+      if(uidOfTarget != null){
+        connectFrom(uidOfTarget);
+        // print("$uidOfTarget................zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+      }
+    }
+    
     return MobileScreen();
   }
 
@@ -124,7 +143,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                       height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
                       child: SingleChildScrollView(
                         child: Column(children: [
-                          con.isMessageTap == 'all-list' 
+                          con.isMessageTap == 'all-list'
                           ? 
                           NewMessageScreen(onBack: (value) {
                             if(value == true || value == false){
@@ -141,12 +160,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                             ? isShowChatUserList 
                               ? const SizedBox() 
                               : ChatUserListScreen(onBack: (value) {
-                                if (value == 'hidden') {
-                                  con.hidden = con.hidden ? false : true;
-                                } else {
-                                  con.isMessageTap = value;
-                                  if (con.hidden == true) con.hidden = false;
-                                }
+                                con.isMessageTap = value;
                                 con.setState(() {});
                                 setState(() {});
                               })
@@ -167,7 +181,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                   ),
                                 )
                                 : ChatMessageListScreen(
-                                    showWriteMessage: !con.hidden,
+                                    showWriteMessage: true,
                                     onBack: (value) {
                                       con.isShowEmoticon = value;
                                       setState(() {});
@@ -238,28 +252,55 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
         ));
   }
 
+  // ignore: non_constant_identifier_names
   Widget ChatScreenHeader() {
-    return Container(
+    return SizedBox(
       width: SizeConfig(context).screenWidth,
-      height: 70,
+      height: 60,
       child: Column(
         children: [
           AppBar(
           toolbarHeight: 60,
-          backgroundColor: Color.fromRGBO(51, 103, 214, 1),
+          backgroundColor: const Color.fromRGBO(51, 103, 214, 1),
           automaticallyImplyLeading: false,
-          leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-                size: 26,
-              ),
-              onPressed: () {
-                con.hidden = false;
-                con.isMessageTap = 'all-list';
-                setState(() {});
+          leading: Row(
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                onPressed: () {
+                  isShowChatUserList = false;
+                  con.isMessageTap = 'all-list';
+                  con.setState(() {});
+                  setState(() {});
               }),
-          ),
+              SizedBox(
+                      width: 46,
+                      height: 46,
+                      child: con.avatar == ''
+                          ? CircleAvatar(
+                              radius: 23,
+                              backgroundColor: Colors.blue,
+                              child: SvgPicture.network(Helper.avatar))
+                          : CircleAvatar(
+                              radius: 23,
+                              backgroundColor: Colors.blue,
+                              backgroundImage:
+                                  NetworkImage(con.avatar),
+                          ),
+                    ),
+                    Padding(
+                    padding: const EdgeInsets.only(top: 5, left: 5),
+                    child: Text(
+                      con.chatUserFullName,
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+            ])
+          ) 
         ],
       )
     );

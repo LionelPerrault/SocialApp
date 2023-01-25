@@ -5,12 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/setting/settings_main.dart';
 
 import '../../widget/list_text.dart';
 
 // ignore: must_be_immutable
 class LeftPanel extends StatelessWidget {
   LeftPanel({super.key});
+  var settingMaingScreen = SettingMainScreenState();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +44,10 @@ class LeftPanel extends StatelessWidget {
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb'),
           ListText(
-              onTap: () => {},
+              onTap: () => {
+                    Navigator.pushReplacementNamed(
+                        context, RouteNames.settings),
+                  },
               label: 'Shnatter Token',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter_token.svg?alt=media&token=48ac103d-10fc-4847-943e-33ea5d6281bc'),

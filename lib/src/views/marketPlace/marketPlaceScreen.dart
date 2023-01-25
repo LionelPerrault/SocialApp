@@ -107,32 +107,32 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
               drawClicked: clickMenu,
             ),
             Padding(
-                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                child: SingleChildScrollView(
-                  child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(padding: EdgeInsets.only(left: 20)),
-                        SizeConfig(context).screenWidth <
-                                SizeConfig.mediumScreenSize
-                            ? const SizedBox()
-                            : MarketPlaceLeftPanel(
-                                changeCategory: (value) {
-                                  category = value;
-                                  setState(() {});
-                                },
-                                currentCategory: category,
-                              ),
-                        //    : SizedBox(width: 0),
-                        Expanded(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                child: Column(
+              padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
+              child: SingleChildScrollView(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(padding: EdgeInsets.only(left: 20)),
+                    SizeConfig(context).screenWidth <
+                            SizeConfig.mediumScreenSize
+                        ? const SizedBox()
+                        : MarketPlaceLeftPanel(
+                            changeCategory: (value) {
+                              category = value;
+                              setState(() {});
+                            },
+                            currentCategory: category,
+                          ),
+                    //    : SizedBox(width: 0),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
                               children: [
                                 Container(
                                   width: SizeConfig(context).screenWidth >
@@ -285,11 +285,55 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                                     padding: EdgeInsets.only(top: 20)),
                                 MarketAllProduct(productCategory: category)
                               ],
-                            )),
-                          ],
-                        )),
-                      ]),
-                )),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            AnimatedBuilder(
+              animation: _drawerSlideController,
+              builder: (context, child) {
+                return FractionalTranslation(
+                  translation: SizeConfig(context).screenWidth >
+                          SizeConfig.smallScreenSize
+                      ? const Offset(0, 0)
+                      : Offset(_drawerSlideController.value * 0.001, 0.0),
+                  child: SizeConfig(context).screenWidth >
+                              SizeConfig.smallScreenSize ||
+                          _isDrawerClosed()
+                      ? const SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                              top: SizeConfig.navbarHeight),
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  color: Colors.white,
+                                  width: SizeConfig.leftBarWidth,
+                                  child: SingleChildScrollView(
+                                    child: MarketPlaceLeftPanel(
+                                      changeCategory: (value) {
+                                        category = value;
+                                        setState(() {});
+                                      },
+                                      currentCategory: category,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                );
+              },
+            ),
             showSearch
                 ? GestureDetector(
                     onTap: () {

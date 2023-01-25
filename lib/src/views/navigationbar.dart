@@ -1,10 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
@@ -60,6 +58,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   late PostController postCon;
   var noti = ShnatterNotificationState();
   var badgeCount = [];
+  String userAvatar = '';
   //
   @override
   void initState() {
@@ -67,6 +66,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     postCon = controller as PostController;
     searhCon = widget.searchController;
     searchFocusNode = FocusNode();
+    userAvatar = UserManager.userInfo['avatar'];
     searchFocusNode.addListener(() {
       widget.onSearchBarFocus();
     });
@@ -137,46 +137,51 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       for (var i = 0; i < allNotifi.length; i++) {
         var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
         print('tsNT is $tsNT');
-        print(userInfo!['checkNotifyTime']);
+        print('check notify Time is ${userInfo!['checkNotifyTime']}');
+        if (userInfo['checkNotifyTime'] == null) {
+          userInfo['checkNotifyTime'] = 0;
+          setState(() {});
+        }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
         if (tsNT > userInfo['checkNotifyTime']) {
           var addData;
-          if(adminUid != UserManager.userInfo['uid']){
+          if (adminUid != UserManager.userInfo['uid']) {
             await FirebaseFirestore.instance
-              .collection(Helper.userField)
-              .doc(allNotifi[i]['postAdminId'])
-              .get()
-              .then((userV) => {
-                    addData = {
-                      // ...allNotifi[i],
-                      'uid': allNotifi[i].id,
-                      'avatar': userV.data()!['avatar'],
-                      'userName': userV.data()!['userName'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                    },
-                    changeData.add(addData),
-                  });
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        // ...allNotifi[i],
+                        'uid': allNotifi[i].id,
+                        // 'avatar': userV.data()!['avatar'],
+                        // 'userName': userV.data()!['userName'],
+                        //'text': Helper
+                        //    .notificationText[allNotifi[i]['postType']]['text'],
+                      },
+                      changeData.add(addData),
+                    });
           }
-          if(postType == 'requestFriend' 
-            && adminUid == UserManager.userInfo['uid']){
+          if (postType == 'requestFriend' &&
+              adminUid == UserManager.userInfo['uid']) {
             print('here is requestFriend');
             await FirebaseFirestore.instance
-              .collection(Helper.userField)
-              .doc(allNotifi[i]['postAdminId'])
-              .get()
-              .then((userV) => {
-                    addData = {
-                      // ...allNotifi[i],
-                      'uid': allNotifi[i].id,
-                      'avatar': Helper.systemAvatar,
-                      'userName': Helper.notificationName[allNotifi[i]['postType']]['name'],
-                      'text': Helper.notificationText[allNotifi[i]['postType']]
-                          ['text'],
-                    },
-                    changeData.add(addData),
-                  });
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        // ...allNotifi[i],
+                        'uid': allNotifi[i].id,
+                        'avatar': Helper.systemAvatar,
+                        'userName': Helper
+                            .notificationName[allNotifi[i]['postType']]['name'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                      },
+                      changeData.add(addData),
+                    });
           }
         }
       }
@@ -205,17 +210,23 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     Helper.makeOffline();
 
     UserManager.userInfo = {};
+    setState(() {});
 
     await Helper.removeAllPreference();
     // ignore: use_build_context_synchronously
     await Navigator.pushReplacementNamed(context, RouteNames.login);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-        ? buildLargeSize()
-        : buildSmallSize();
+    return Scaffold(
+      body: SafeArea(
+        child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+            ? buildLargeSize()
+            : buildSmallSize(),
+      ),
+    );
   }
 
   Widget buildSmallSize() {
@@ -439,46 +450,23 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       child: PopupMenuButton(
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<Menu>>[
-                          PopupMenuItem<Menu>(
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, UserManager.userInfo['userName']);
-                              },
-                              value: Menu.itemProfile,
-                              child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushReplacementNamed(context,
-                                        '/${UserManager.userInfo['userName']}');
-                                  },
-                                  child: const Text('Profile'))),
+                          const PopupMenuItem<Menu>(
+                              value: Menu.itemProfile, child: Text('Profile')),
                           PopupMenuItem<Menu>(
                             value: Menu.itemSettings,
                             child: GestureDetector(
-                              onTap: () {
-                                onSettingClicked();
-                              },
                               child: const Text('Settings'),
                             ),
                           ),
                           PopupMenuItem<Menu>(
                             value: Menu.itemPrivacy,
-                            child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, RouteNames.adp);
-                                  print(1123);
-                                },
-                                child: const Text('Privacy')),
+                            child:
+                                GestureDetector(child: const Text('Privacy')),
                           ),
                           const PopupMenuDivider(),
                           PopupMenuItem<Menu>(
                             value: Menu.itemAdminPanel,
                             child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, RouteNames.adp);
-                                  print(1123);
-                                },
                                 child: const Text('AdminPanel')),
                           ),
                           const PopupMenuDivider(),
@@ -497,13 +485,40 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ),
                           const PopupMenuDivider(),
                         ],
-                        onSelected: (Menu item) {},
+                        onSelected: (Menu item) {
+                          switch (item) {
+                            case Menu.itemProfile:
+                              {
+                                Navigator.pushReplacementNamed(context,
+                                    '/${UserManager.userInfo['userName']}');
+                                break;
+                              }
+                            case Menu.itemSettings:
+                              {
+                                onSettingClicked();
+                                break;
+                              }
+                            case Menu.itemPrivacy:
+                              {
+                                Navigator.pushReplacementNamed(
+                                    context, RouteNames.settings);
+                                break;
+                              }
+                            case Menu.itemAdminPanel:
+                              {
+                                Navigator.pushReplacementNamed(
+                                    context, RouteNames.adp);
+                                break;
+                              }
+                            default:
+                          }
+                        },
                         child: Row(
                           children: [
-                            UserManager.userInfo['avatar'] != ''
+                            userAvatar != ''
                                 ? CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                    UserManager.userInfo['avatar'],
+                                    userAvatar,
                                   ))
                                 : CircleAvatar(
                                     child: SvgPicture.network(Helper.avatar),
@@ -718,40 +733,21 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<Menu>>[
                           const PopupMenuItem<Menu>(
-                              value: Menu.itemProfile,
-                              // child: InkWell(
-                              //     // onTap: () {
-                              //     //   Navigator.pushReplacementNamed(context,
-                              //     //       '/${UserManager.userInfo['userName']}');
-                              //     // },
-                              child: Text('Profile')),
+                              value: Menu.itemProfile, child: Text('Profile')),
                           PopupMenuItem<Menu>(
                             value: Menu.itemSettings,
-                            child: GestureDetector(
-                                // onTap: () {
-                                //   onSettingClicked();
-                                // },
-                                child: const Text('Settings')),
+                            child:
+                                GestureDetector(child: const Text('Settings')),
                           ),
                           PopupMenuItem<Menu>(
                             value: Menu.itemPrivacy,
-                            child: GestureDetector(
-                                // onTap: () {
-                                //   Navigator.pushReplacementNamed(
-                                //     context,
-                                //     RouteNames.settings,
-                                //   );
-                                // },
-                                child: const Text('Privacy')),
+                            child:
+                                GestureDetector(child: const Text('Privacy')),
                           ),
                           const PopupMenuDivider(),
                           PopupMenuItem<Menu>(
                             value: Menu.itemAdminPanel,
                             child: GestureDetector(
-                                // onTap: () {
-                                //   Navigator.pushReplacementNamed(
-                                //       context, RouteNames.adp);
-                                // },
                                 child: const Text('AdminPanel')),
                           ),
                           const PopupMenuDivider(),
@@ -805,10 +801,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         },
                         child: Row(
                           children: [
-                            UserManager.userInfo['avatar'] != ''
+                            userAvatar != ''
                                 ? CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                    UserManager.userInfo['avatar'],
+                                    userAvatar,
                                   ))
                                 : CircleAvatar(
                                     child: SvgPicture.network(Helper.avatar),
