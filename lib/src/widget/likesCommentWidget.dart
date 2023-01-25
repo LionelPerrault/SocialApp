@@ -212,7 +212,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         },
                         child: InkWell(
                             onTap: () async {
-                              isComment = true;
+                              isComment = !isComment;
                               await con.getReply(widget.productId);
                               setState(() {});
                             },
