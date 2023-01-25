@@ -151,7 +151,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   width: 200,
                   child: customDropDownButton(
                     title: 'Category',
-                    width: 200,
+                    width: 200.0,
                     item: productCategory,
                     onChange: (value) {
                       productInfo['productCategory'] = value;
@@ -244,7 +244,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   width: 100,
                   child: customDropDownButton(
                     title: 'Status',
-                    width: 100,
+                    width: 100.0,
                     item: [
                       {'value': 'New', 'title': 'New'},
                       {'value': 'Used', 'title': 'Used'}
@@ -721,7 +721,7 @@ Widget customInput({title, onChange, controller}) {
   );
 }
 
-Widget titleAndsubtitleInput(title, height, line, onChange) {
+Widget titleAndsubtitleInput(title, double height, line, onChange) {
   return Container(
     margin: const EdgeInsets.only(top: 15),
     child: Column(
@@ -766,7 +766,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
 }
 
 Widget customDropDownButton(
-    {title, width, item = const [], onChange, context}) {
+    {title, double width = 0.0, item = const [], onChange, context}) {
   List items = item;
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     Text(

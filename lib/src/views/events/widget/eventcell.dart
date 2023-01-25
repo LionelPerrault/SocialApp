@@ -45,7 +45,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
     print(eventAdminInfo);
     if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
-        widget.eventData['data']['groupAdmin'][0]['uid'] ==
+        widget.eventData['data']['eventAdmin'][0]['uid'] ==
             UserManager.userInfo['uid']) {
       loading = true;
       setState(() {});

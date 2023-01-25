@@ -90,10 +90,11 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
             (value) => {
               print(value),
               print('this is end'),
+              isPayProgressive = false,
+              setState(() {}),
               if (value)
                 {
                   isProfileView = true,
-                  isPayProgressive = false,
                   setState(() {}),
                 }
             },

@@ -143,7 +143,7 @@ class YesNoWidgetState extends mvc.StateMVC<YesNoWidget> {
                               maximumSize: const Size(110, 40),
                             ),
                             onPressed: () {
-                              widget.yesFunc();
+                              widget.progress ? () {} : widget.yesFunc();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
