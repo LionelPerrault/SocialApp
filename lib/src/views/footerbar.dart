@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/terms.dart';
+
+import '../routes/route_names.dart';
+import 'about.dart';
 
 var language = [
   {
@@ -136,9 +140,46 @@ class footbarState extends State<footbar> {
             Container(
               margin: const EdgeInsets.only(right: 20),
               child: Row(children: [
-                text('About', Colors.grey, 11),
+                InkWell(
+                  onTap: () => {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => AboutScreen(),
+                      ),
+                    ),
+                  },
+                  child: GestureDetector(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'About',
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
                 const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Terms', Colors.grey, 11),
+                InkWell(
+                  onTap: () => {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => TermsScreen(),
+                      ),
+                    ),
+                    // Navigator.pushReplacementNamed(context, RouteNames.terms),
+                  },
+                  child: GestureDetector(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Terms',
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
                 const Padding(padding: EdgeInsets.only(left: 5)),
                 text('Contact Us', Colors.grey, 11),
                 const Padding(padding: EdgeInsets.only(left: 5)),
@@ -160,94 +201,136 @@ class footbarMState extends State<footbarM> {
   var dropdownValue = 'English';
   Widget build(BuildContext context) {
     return Container(
-        height: 75,
-        decoration: const BoxDecoration(
-          color: Color.fromRGBO(0, 0, 0, 1),
-        ),
-        child: Column(
-          children: [
-            const Padding(padding: EdgeInsets.only(top: 10)),
-            Row(
+      height: 75,
+      decoration: const BoxDecoration(
+        color: Color.fromRGBO(0, 0, 0, 1),
+      ),
+      child: Column(
+        children: [
+          const Padding(padding: EdgeInsets.only(top: 10)),
+          Row(
+            children: [
+              const Padding(padding: EdgeInsets.only(left: 10)),
+              text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
+                  13),
+              const Padding(padding: EdgeInsets.only(left: 15)),
+              Container(
+                width: 190,
+                padding: const EdgeInsets.only(left: 5),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                        color: Colors.black,
+                        width: 0.1), //bordrder raiuds of dropdown button
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 7, left: 10),
+                    child: DropdownButton(
+                      value: dropdownValue,
+                      items: language.map((items) {
+                        return DropdownMenuItem(
+                          value: items['langText'],
+                          child: Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                    child: Image.network(items['png']!),
+                                  ),
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 15)),
+                                  Text(
+                                    items['langText']!,
+                                    style: const TextStyle(
+                                        color: Color.fromARGB(255, 60, 60, 60)),
+                                  )
+                                ],
+                              )),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        //get value when changed
+                        dropdownValue = value!;
+                        setState(() {});
+                      },
+                      icon: const Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Icon(Icons.arrow_drop_down)),
+                      iconEnabledColor: Colors.white, //Icon color
+                      style: const TextStyle(
+                        color: Colors.black, //Font color
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      dropdownColor: Colors.white,
+                      underline: Container(), //remove underline
+                      isExpanded: true,
+                      isDense: true,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const Padding(padding: EdgeInsets.only(top: 5)),
+          Container(
+            margin: const EdgeInsets.only(right: 20),
+            child: Row(
               children: [
                 const Padding(padding: EdgeInsets.only(left: 10)),
-                text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
-                    13),
-                const Padding(padding: EdgeInsets.only(left: 15)),
-                Container(
-                  width: 190,
-                  padding: const EdgeInsets.only(left: 5),
-                  child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                            color: Colors.black,
-                            width: 0.1), //bordrder raiuds of dropdown button
+                InkWell(
+                  onTap: () => {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => AboutScreen(),
                       ),
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 7, left: 10),
-                          child: DropdownButton(
-                            value: dropdownValue,
-                            items: language.map((items) {
-                              return DropdownMenuItem(
-                                value: items['langText'],
-                                child: Container(
-                                    child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 20,
-                                      child: Image.network(items['png']!),
-                                    ),
-                                    const Padding(
-                                        padding: EdgeInsets.only(left: 15)),
-                                    Text(
-                                      items['langText']!,
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 60, 60, 60)),
-                                    )
-                                  ],
-                                )),
-                              );
-                            }).toList(),
-                            onChanged: (String? value) {
-                              //get value when changed
-                              dropdownValue = value!;
-                              setState(() {});
-                            },
-                            icon: const Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Icon(Icons.arrow_drop_down)),
-                            iconEnabledColor: Colors.white, //Icon color
-                            style: const TextStyle(
-                              color: Colors.black, //Font color
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            dropdownColor: Colors.white,
-                            underline: Container(), //remove underline
-                            isExpanded: true,
-                            isDense: true,
-                          ))),
+                    ),
+                  },
+                  child: GestureDetector(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'About',
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(top: 5)),
-            Container(
-              margin: const EdgeInsets.only(right: 20),
-              child: Row(children: [
-                const Padding(padding: EdgeInsets.only(left: 10)),
-                text('About', Colors.grey, 13),
                 const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Terms', Colors.grey, 13),
+                InkWell(
+                  onTap: () => {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => TermsScreen(),
+                      ),
+                    ),
+                  },
+                  child: GestureDetector(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Terms',
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
+                // text('Terms', Colors.grey, 13),
                 const Padding(padding: EdgeInsets.only(left: 5)),
                 text('Contact Us', Colors.grey, 13),
                 const Padding(padding: EdgeInsets.only(left: 5)),
                 text('Directory', Colors.grey, 13),
-              ]),
-            )
-          ],
-        ));
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 

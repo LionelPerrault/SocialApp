@@ -30,14 +30,6 @@ class RouteGenerator {
     final args = settings.arguments;
     var url = settings.name.toString();
     bool islogined = UserManager.isLogined;
-    switch (url) {
-      case RouteNames.terms:
-        return MaterialPageRoute(
-            builder: (context) => TermsScreen(), settings: settings);
-      case RouteNames.privacy:
-        return MaterialPageRoute(
-            builder: (context) => const PrivacyScreen(), settings: settings);
-    }
     if (islogined == true) {
       if (url == '/login' || url == '/register') {
         url = RouteNames.homePage;
