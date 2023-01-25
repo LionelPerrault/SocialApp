@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -90,7 +90,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                             'Members',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.group["groupJoined"].length}',
                               style: TextStyle(color: Colors.white),

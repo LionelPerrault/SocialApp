@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
@@ -336,9 +336,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ),
                           peopleCon.requestFriends.isEmpty
                               ? const SizedBox()
-                              : Badge(
+                              : badges.Badge(
                                   toAnimate: false,
-                                  shape: BadgeShape.square,
+                                  shape: badges.BadgeShape.square,
                                   badgeColor: Colors.deepPurple,
                                   borderRadius: BorderRadius.circular(8),
                                   badgeContent: Text(
@@ -368,9 +368,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ),
                           chatCon.notifyCount == 0
                               ? const SizedBox()
-                              : Badge(
+                              : badges.Badge(
                                   toAnimate: false,
-                                  shape: BadgeShape.square,
+                                  shape: badges.BadgeShape.square,
                                   badgeColor: Colors.deepPurple,
                                   borderRadius: BorderRadius.circular(8),
                                   badgeContent: Text(
@@ -400,9 +400,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ),
                           postCon.realNotifi.isEmpty
                               ? const SizedBox()
-                              : Badge(
+                              : badges.Badge(
                                   toAnimate: false,
-                                  shape: BadgeShape.square,
+                                  shape: badges.BadgeShape.square,
                                   badgeColor: Colors.deepPurple,
                                   borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(
@@ -645,9 +645,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               ? const SizedBox()
                               : Padding(
                                   padding: const EdgeInsets.only(left: 3),
-                                  child: Badge(
+                                  child: badges.Badge(
                                     toAnimate: false,
-                                    shape: BadgeShape.square,
+                                    shape: badges.BadgeShape.square,
                                     badgeColor: Colors.deepPurple,
                                     borderRadius: BorderRadius.circular(8),
                                     badgeContent: Text(
@@ -681,9 +681,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               ? const SizedBox()
                               : Padding(
                                   padding: const EdgeInsets.only(left: 3),
-                                  child: Badge(
+                                  child: badges.Badge(
                                     toAnimate: true,
-                                    shape: BadgeShape.square,
+                                    shape: badges.BadgeShape.square,
                                     badgeColor: Colors.deepPurple,
                                     borderRadius: BorderRadius.circular(8),
                                     badgeContent: Text(
@@ -713,9 +713,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           ),
                           postCon.realNotifi.isEmpty
                               ? const SizedBox()
-                              : Badge(
+                              : badges.Badge(
                                   toAnimate: false,
-                                  shape: BadgeShape.square,
+                                  shape: badges.BadgeShape.square,
                                   badgeColor: Colors.deepPurple,
                                   borderRadius: BorderRadius.circular(20),
                                   badgeContent: Text(

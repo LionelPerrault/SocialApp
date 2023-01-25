@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
@@ -49,7 +49,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    setState(() { });
+    setState(() {});
   }
 
   late ChatController con;
@@ -73,7 +73,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     }
   }
 
-  void onSearchBarDismiss () {
+  void onSearchBarDismiss() {
     if (showSearch)
       setState(() {
         showSearch = false;
@@ -95,8 +95,8 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   void connectFrom(uidOfTarget) async {
     await con.connectFromMarketPlace(uidOfTarget);
     isCheckConnect = false;
-    con.setState(() { });
-    setState(() { });
+    con.setState(() {});
+    setState(() {});
   }
 
   @override
@@ -107,15 +107,15 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   }
 
   @override
-  Widget build (BuildContext context) {
-    if(isCheckConnect){
+  Widget build(BuildContext context) {
+    if (isCheckConnect) {
       final uidOfTarget = ModalRoute.of(context)!.settings.arguments;
-      if(uidOfTarget != null){
+      if (uidOfTarget != null) {
         connectFrom(uidOfTarget);
         // print("$uidOfTarget................zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
       }
     }
-    
+
     return MobileScreen();
   }
 
@@ -140,46 +140,46 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                   children: [
                     Container(
                       width: SizeConfig(context).screenWidth,
-                      height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+                      height: SizeConfig(context).screenHeight -
+                          SizeConfig.navbarHeight,
                       child: SingleChildScrollView(
-                        child: Column(children: [
-                          con.isMessageTap == 'all-list'
-                          ? 
-                          NewMessageScreen(onBack: (value) {
-                            if(value == true || value == false){
-                              isShowChatUserList = value;
-                            }else{
-                              con.isMessageTap = value;
-                            }
-                            con.setState(() {});
-                            setState(() {});
-                          }) 
-                          : ChatScreenHeader(),
-                          
-                          con.isMessageTap == 'all-list'
-                            ? isShowChatUserList 
-                              ? const SizedBox() 
-                              : ChatUserListScreen(onBack: (value) {
-                                con.isMessageTap = value;
+                          child: Column(children: [
+                        con.isMessageTap == 'all-list'
+                            ? NewMessageScreen(onBack: (value) {
+                                if (value == true || value == false) {
+                                  isShowChatUserList = value;
+                                } else {
+                                  con.isMessageTap = value;
+                                }
                                 con.setState(() {});
                                 setState(() {});
                               })
+                            : ChatScreenHeader(),
+                        con.isMessageTap == 'all-list'
+                            ? isShowChatUserList
+                                ? const SizedBox()
+                                : ChatUserListScreen(onBack: (value) {
+                                    con.isMessageTap = value;
+                                    con.setState(() {});
+                                    setState(() {});
+                                  })
                             : con.isMessageTap == 'new'
-                                ? 
-                                Padding(
-                                  padding: EdgeInsets.only(top: SizeConfig(context).screenHeight - 220),
-                                  child: WriteMessageScreen(
-                                    type: 'new',
-                                    goMessage: (value) {
-                                      con.isMessageTap = value;
-                                      if(value == 'message-list'){
-                                        isShowChatUserList = false;
-                                      }
-                                      setState(() { });
-                                      con.setState(() { });
-                                    },
-                                  ),
-                                )
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        top: SizeConfig(context).screenHeight -
+                                            220),
+                                    child: WriteMessageScreen(
+                                      type: 'new',
+                                      goMessage: (value) {
+                                        con.isMessageTap = value;
+                                        if (value == 'message-list') {
+                                          isShowChatUserList = false;
+                                        }
+                                        setState(() {});
+                                        con.setState(() {});
+                                      },
+                                    ),
+                                  )
                                 : ChatMessageListScreen(
                                     showWriteMessage: true,
                                     onBack: (value) {
@@ -187,8 +187,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                       setState(() {});
                                     },
                                   )
-                        ])
-                      ),
+                      ])),
                     ),
                   ],
                 ),
@@ -255,54 +254,50 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   // ignore: non_constant_identifier_names
   Widget ChatScreenHeader() {
     return SizedBox(
-      width: SizeConfig(context).screenWidth,
-      height: 60,
-      child: Column(
-        children: [
-          AppBar(
-          toolbarHeight: 60,
-          backgroundColor: const Color.fromRGBO(51, 103, 214, 1),
-          automaticallyImplyLeading: false,
-          leading: Row(
-            children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                onPressed: () {
-                  isShowChatUserList = false;
-                  con.isMessageTap = 'all-list';
-                  con.setState(() {});
-                  setState(() {});
-              }),
-              SizedBox(
-                      width: 46,
-                      height: 46,
-                      child: con.avatar == ''
-                          ? CircleAvatar(
-                              radius: 23,
-                              backgroundColor: Colors.blue,
-                              child: SvgPicture.network(Helper.avatar))
-                          : CircleAvatar(
-                              radius: 23,
-                              backgroundColor: Colors.blue,
-                              backgroundImage:
-                                  NetworkImage(con.avatar),
+        width: SizeConfig(context).screenWidth,
+        height: 60,
+        child: Column(
+          children: [
+            AppBar(
+                toolbarHeight: 60,
+                backgroundColor: const Color.fromRGBO(51, 103, 214, 1),
+                automaticallyImplyLeading: false,
+                leading: Row(children: [
+                  IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        isShowChatUserList = false;
+                        con.isMessageTap = 'all-list';
+                        con.setState(() {});
+                        setState(() {});
+                      }),
+                  SizedBox(
+                    width: 46,
+                    height: 46,
+                    child: con.avatar == ''
+                        ? CircleAvatar(
+                            radius: 23,
+                            backgroundColor: Colors.blue,
+                            child: SvgPicture.network(Helper.avatar))
+                        : CircleAvatar(
+                            radius: 23,
+                            backgroundColor: Colors.blue,
+                            backgroundImage: NetworkImage(con.avatar),
                           ),
-                    ),
-                    Padding(
+                  ),
+                  Padding(
                     padding: const EdgeInsets.only(top: 5, left: 5),
                     child: Text(
                       con.chatUserFullName,
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
-            ])
-          ) 
-        ],
-      )
-    );
+                ]))
+          ],
+        ));
   }
 }

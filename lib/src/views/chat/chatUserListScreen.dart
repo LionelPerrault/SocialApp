@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -168,7 +168,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                 ),
                 trailing:
                     t[chatUserFullName] != 0 && t[chatUserFullName] != null
-                        ? Badge(
+                        ? badges.Badge(
                             badgeColor: Colors.red,
                             badgeContent: Text(
                               t[chatUserFullName].toString(),

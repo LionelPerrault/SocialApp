@@ -7,7 +7,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingShnatterTokenScreen extends StatefulWidget {
@@ -73,9 +73,9 @@ class EmployeeDataSource extends DataGridSource {
               DataGridCell<String>(columnName: 'joined', value: e.joined),
               DataGridCell<Widget>(
                   columnName: 'activated',
-                  value: Badge(
+                  value: badges.Badge(
                     toAnimate: false,
-                    shape: BadgeShape.square,
+                    shape: badges.BadgeShape.square,
                     badgeColor: Colors.red,
                     borderRadius: BorderRadius.circular(16),
                     badgeContent: Text('No'.toString(),
@@ -84,9 +84,9 @@ class EmployeeDataSource extends DataGridSource {
                   )),
               DataGridCell<Widget>(
                   columnName: 'balance',
-                  value: Badge(
+                  value: badges.Badge(
                     toAnimate: false,
-                    shape: BadgeShape.square,
+                    shape: badges.BadgeShape.square,
                     badgeColor: Colors.teal,
                     borderRadius: BorderRadius.circular(16),
                     badgeContent: Text(0.toString(),

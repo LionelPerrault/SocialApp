@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -100,9 +100,9 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 210, left: 10),
-                      child: Badge(
+                      child: badges.Badge(
                         toAnimate: false,
-                        shape: BadgeShape.square,
+                        shape: badges.BadgeShape.square,
                         badgeColor: const Color.fromRGBO(0, 0, 0, 0.65),
                         borderRadius: BorderRadius.circular(8),
                         badgeContent: Text(

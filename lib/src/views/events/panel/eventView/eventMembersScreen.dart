@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -96,7 +96,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                             'Going',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventGoing"].length}',
                               style: TextStyle(color: Colors.white),
@@ -128,7 +128,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                             'Interested',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventInterested"].length}',
                               style: TextStyle(color: Colors.white),
@@ -160,7 +160,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                             'Invited',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventInvited"].length}',
                               style: TextStyle(color: Colors.white),
@@ -192,7 +192,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                             'Invites',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventInvites"].length}',
                               style: TextStyle(color: Colors.white),

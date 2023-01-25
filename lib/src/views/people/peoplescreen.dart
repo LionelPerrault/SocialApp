@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -296,7 +296,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                             style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                           Padding(padding: EdgeInsets.only(left: 10)),
-                          Badge(
+                          badges.Badge(
                             badgeColor: Colors.blue,
                             badgeContent: Text(
                               con.requestFriends.length.toString(),
@@ -341,7 +341,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                             style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                           Padding(padding: EdgeInsets.only(left: 10)),
-                          Badge(
+                          badges.Badge(
                             badgeColor: Colors.blue,
                             badgeContent: Text(
                               con.sendFriends.length.toString(),
