@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/privacy.dart';
+import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/widget/primaryInput.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../helpers/helper.dart';
@@ -306,19 +308,25 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                     fontSize: 10),
                                                 children: <TextSpan>[
                                                   TextSpan(
-                                                      text: ' Terms',
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 10),
-                                                      recognizer:
-                                                          TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              Navigator
-                                                                  .pushReplacementNamed(
-                                                                      context,
-                                                                      RouteNames
-                                                                          .terms);
-                                                            }),
+                                                    text: ' Terms',
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {
+                                                            Navigator.push<
+                                                                void>(
+                                                              context,
+                                                              MaterialPageRoute<
+                                                                  void>(
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    TermsScreen(),
+                                                              ),
+                                                            );
+                                                          },
+                                                  ),
                                                   const TextSpan(
                                                     text: ' &',
                                                     style: TextStyle(
@@ -333,11 +341,16 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                       recognizer:
                                                           TapGestureRecognizer()
                                                             ..onTap = () {
-                                                              Navigator
-                                                                  .pushReplacementNamed(
-                                                                      context,
-                                                                      RouteNames
-                                                                          .privacy);
+                                                              Navigator.push<
+                                                                  void>(
+                                                                context,
+                                                                MaterialPageRoute<
+                                                                    void>(
+                                                                  builder: (BuildContext
+                                                                          context) =>
+                                                                      const PrivacyScreen(),
+                                                                ),
+                                                              );
                                                             })
                                                 ]),
                                           ),

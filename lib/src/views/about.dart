@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/widget/primaryInput.dart';
 
 import '../helpers/helper.dart';
-import '../routes/route_names.dart';
-import '../widget/mprimary_button.dart';
 
-class TermsScreen extends StatefulWidget {
-  TermsScreen({Key? key}) : super(key: key);
-  State createState() => TermsScreenState();
+class AboutScreen extends StatefulWidget {
+  AboutScreen({Key? key}) : super(key: key);
+  State createState() => AboutScreenState();
 }
 
-class TermsScreenState extends mvc.StateMVC<TermsScreen> {
+class AboutScreenState extends mvc.StateMVC<AboutScreen> {
   String termsContent = "";
 
   @override
   void initState() {
     super.initState();
-    Helper.getTerms().then((value) => {termsContent = value, setState(() {})});
+    Helper.getAbout().then((value) => {termsContent = value, setState(() {})});
   }
 
   String dropdownValue = 'Male';
@@ -62,7 +59,7 @@ class TermsScreenState extends mvc.StateMVC<TermsScreen> {
                           color: Colors.blue,
                           child: const Center(
                             child: Text(
-                              'Terms',
+                              'About',
                               style:
                                   TextStyle(fontSize: 25, color: Colors.white),
                             ),

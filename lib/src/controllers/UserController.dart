@@ -467,7 +467,8 @@ class UserController extends ControllerMVC {
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
         print(responseData['statusCode']);
-        showModal(context, relysiaEmail, relysiaPassword);
+        Helper.showToast(responseData['data']['msg']);
+        // showModal(context, relysiaEmail, relysiaPassword);
         // createRelysiaAccount();
       }
     } else {
