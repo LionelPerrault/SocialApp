@@ -575,7 +575,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                       DropdownMenuItem(
                                                           value: "us",
                                                           child: Text(
-                                                              "United Status")),
+                                                              "United State")),
                                                       DropdownMenuItem(
                                                         value: "sw",
                                                         child:

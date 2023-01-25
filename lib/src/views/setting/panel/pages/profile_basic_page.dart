@@ -29,6 +29,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
   var setting_profile = {};
   var userInfo = UserManager.userInfo;
   List month = [
+    {'value': 'none', 'title': 'Month'},
     {'value': '1', 'title': 'Jan'},
     {'value': '2', 'title': 'Feb'},
     {'value': '3', 'title': 'Mar'},
@@ -62,36 +63,54 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
   ];
   late List userRelationship = [
     {
-      'value': 'Select Relationship',
+      'value': 'none',
       'title': 'Select Relationship',
     },
     {
-      'value': 'Single',
+      'value': 'single',
       'title': 'Single',
     },
     {
-      'value': 'In a relationship',
+      'value': 'inarelationship',
       'title': 'In a relationship',
     },
+    // {
+    //   'value': 'Married',
+    //   'title': 'Married',
+    // },
     {
-      'value': 'Married',
-      'title': 'Married',
-    },
-    {
-      'value': 'It\'s a complicated',
+      'value': 'complicated',
       'title': 'It\'s a complicated',
     },
     {
-      'value': 'Seperated',
+      'value': 'separated',
       'title': 'Seperated',
     },
     {
-      'value': 'Divorced',
+      'value': 'divorced',
       'title': 'Divorced',
     },
     {
-      'value': 'Widowed',
+      'value': 'widowed',
       'title': 'Widowed',
+    },
+  ];
+  late List country = [
+    {
+      'title': 'Select Country',
+      'value': 'none',
+    },
+    {
+      'title': 'United State',
+      'value': 'us',
+    },
+    {
+      'title': 'Switzerland',
+      'value': 'sw',
+    },
+    {
+      'title': 'Canada',
+      'value': 'ca',
     },
   ];
   late Map day = {};
@@ -134,7 +153,9 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List bDay = day[userInfo['birthM'] ?? '1'];
+    List bDay = day[userInfo['birthM'] ?? 'none'];
+    print('this is ${userInfo['birthD']}');
+
     return Container(
         padding: const EdgeInsets.only(top: 20, left: 30),
         child: Column(
@@ -196,77 +217,77 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                       const Padding(padding: EdgeInsets.only(right: 20))
                     ],
                   ),
-                  // Row(
-                  //   children: [
-                  //     Expanded(
-                  //       flex: 1,
-                  //       child: Container(
-                  //         width: 400,
-                  //         child: customDropDownButton(
-                  //           title: 'I am',
-                  //           width: 400,
-                  //           item: gender,
-                  //           value: userInfo['sex'] ?? gender[0]['value'],
-                  //           onChange: (value) {
-                  //             //get value when changed
-                  //             setting_profile['sex'] = value;
-                  //             userInfo['sex'] = value!;
-                  //             setState(() {});
-                  //           },
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     const Padding(padding: EdgeInsets.only(left: 25)),
-                  //     Expanded(
-                  //       flex: 1,
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.start,
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           Container(
-                  //             width: 400,
-                  //             child: customDropDownButton(
-                  //               title: 'Relationship Status',
-                  //               width: 400,
-                  //               item: userRelationship,
-                  //               value: userInfo['relationship'] ??
-                  //                   userRelationship[0]['value'],
-                  //               onChange: (value) {
-                  //                 //get value when changed
-                  //                 setting_profile['relationship'] = value;
-                  //                 userInfo['relationship'] = value!;
-                  //                 setState(() {});
-                  //               },
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     const Padding(padding: EdgeInsets.only(right: 20))
-                  //   ],
-                  // ),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: 400,
+                          child: customDropDownButton(
+                            title: 'I am',
+                            width: 400,
+                            item: gender,
+                            value: userInfo['sex'] ?? gender[0]['value'],
+                            onChange: (value) {
+                              //get value when changed
+                              setting_profile['sex'] = value;
+                              userInfo['sex'] = value!;
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(left: 25)),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 400,
+                              child: customDropDownButton(
+                                title: 'Relationship Status',
+                                width: 400,
+                                item: userRelationship,
+                                value: userInfo['relationship'] ??
+                                    userRelationship[0]['value'],
+                                onChange: (value) {
+                                  //get value when changed
+                                  setting_profile['relationship'] = value;
+                                  userInfo['relationship'] = value!;
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 20))
+                    ],
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Expanded(
-                      //   flex: 1,
-                      //   child: Container(
-                      //     width: 400,
-                      //     child: customDropDownButton(
-                      //       title: 'Country',
-                      //       width: 400,
-                      //       item: gender,
-                      //       value: userInfo['sex'] ?? gender[0]['value'],
-                      //       onChange: (value) {
-                      //         //get value when changed
-                      //         setting_profile['country'] = value;
-                      //         userInfo['country'] = value!;
-                      //         setState(() {});
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: 400,
+                          child: customDropDownButton(
+                            title: 'Country',
+                            width: 400,
+                            item: country,
+                            value: userInfo['country'] ?? country[0]['value'],
+                            onChange: (value) {
+                              //get value when changed
+                              setting_profile['country'] = value;
+                              userInfo['country'] = value!;
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      ),
                       const Padding(padding: EdgeInsets.only(left: 25)),
                       Expanded(
                         flex: 1,
@@ -298,9 +319,10 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                         child: Container(
                           width: 400,
                           child: customDropDownButton(
+                            width: 400,
                             title: 'Birthday',
                             item: month,
-                            value: userInfo['birthM'],
+                            value: userInfo['birthM'] ?? month[0]['value'],
                             onChange: (value) {
                               //get value when changed
                               userInfo['birthM'] = value.toString();
@@ -317,8 +339,9 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           width: 400,
                           child: customDropDownButton(
                             title: '',
+                            width: 400,
                             item: bDay,
-                            value: userInfo['birthD'],
+                            value: userInfo['birthD'] ?? day[0]['value'],
                             onChange: (value) {
                               //get value when changed
                               userInfo['birthD'] = value.toString();
@@ -334,9 +357,10 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                         child: Container(
                           width: 400,
                           child: customDropDownButton(
+                            width: 400,
                             title: '',
                             item: year,
-                            value: userInfo['birthY'],
+                            value: userInfo['birthY'] ?? year[0]['value'],
                             onChange: (value) {
                               //get value when changed
                               userInfo['birthY'] = value.toString();
@@ -399,7 +423,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
         ));
   }
 
-  Widget titleAndsubtitleInput(title, height, line, onChange, text) {
+  Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
     TextEditingController inputController = TextEditingController();
     inputController.text = text;
     return Container(
@@ -432,11 +456,11 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           onChange(value);
                         },
                         decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(top: 0, left: 0),
+                          contentPadding: EdgeInsets.only(top: 10, left: 10),
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue, width: 1.0),
+                                BorderSide(color: Colors.blue, width: 1),
                           ),
                         ),
                       ),
@@ -452,7 +476,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
   }
 
   Widget customDropDownButton(
-      {title, width, item = const [], value, onChange}) {
+      {title, double width = 0, item = const [], value, onChange}) {
     List items = item;
     return Container(
       margin: const EdgeInsets.only(top: 15),
@@ -481,7 +505,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                 contentPadding: EdgeInsets.only(top: 10, left: 10),
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                  borderSide: BorderSide(color: Colors.blue, width: 1),
                 ),
               ),
               icon: const Padding(
