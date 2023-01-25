@@ -87,21 +87,28 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
                       ),
                     )
                   ])
-                : GridView.count(
-                    crossAxisCount: screenWidth > 800
-                        ? 3
-                        : screenWidth > 600
-                            ? 2
-                            : 1,
-                    childAspectRatio: 1 / 2,
-                    padding: const EdgeInsets.all(4.0),
-                    mainAxisSpacing: 10.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 10.0,
-                    primary: false,
-                    children: allProducts
-                        .map((product) => MarketCell(data: product))
-                        .toList()),
+                : screenWidth < 430
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: allProducts
+                            .map((product) => MarketCell(data: product))
+                            .toList())
+                    : GridView.count(
+                        crossAxisCount: screenWidth > 800
+                            ? 4
+                            : screenWidth > 600
+                                ? 3
+                                : 2,
+                        childAspectRatio: 1 / 2,
+                        padding: const EdgeInsets.all(4.0),
+                        mainAxisSpacing: 10.0,
+                        shrinkWrap: true,
+                        crossAxisSpacing: 10.0,
+                        primary: false,
+                        children: allProducts
+                            .map((product) => MarketCell(data: product))
+                            .toList()),
           ),
         ],
       ),

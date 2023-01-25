@@ -266,7 +266,9 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
+                                                  fontSize: 16,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
                                                   print('username');
@@ -282,6 +284,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                         : 350,
                                     child: Text(
                                       ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ),
@@ -309,7 +312,9 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                   product['productDate']),
                                               style: const TextStyle(
                                                   color: Colors.black,
-                                                  fontSize: 10),
+                                                  fontSize: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
                                                   Navigator.pushReplacementNamed(
@@ -332,35 +337,42 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       const Padding(padding: EdgeInsets.only(top: 15)),
                       Text(
                         product['productName'],
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on,
                             color: Colors.grey,
                             size: 20,
                           ),
                           Text(
                             product['productLocation'] ?? '',
-                            style: TextStyle(color: Colors.grey),
+                            style: const TextStyle(color: Colors.grey),
+                            overflow: TextOverflow.ellipsis,
                           )
                         ],
                       ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Container(
-                        child: Text(product['productAbout'] ?? ''),
+                        alignment: Alignment.center,
+                        child: Text(
+                          product['productAbout'] ?? '',
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Container(
                         height: 78,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 247, 247, 247),
+                          color: const Color.fromARGB(255, 247, 247, 247),
                           border: Border.all(
-                              color: Color.fromARGB(255, 229, 229, 229)),
-                          borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                              color: const Color.fromARGB(255, 229, 229, 229)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(7.0)),
                         ),
                         child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -372,7 +384,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                 child: Column(children: [
                                   const Padding(
                                       padding: EdgeInsets.only(top: 20)),
-                                  Text(
+                                  const Text(
                                     'Offer',
                                     style: TextStyle(
                                         fontSize: 16,
@@ -382,15 +394,16 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       padding: EdgeInsets.only(top: 5)),
                                   Text(
                                     'For ${product['productOffer']}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey, fontSize: 15),
+                                    overflow: TextOverflow.ellipsis,
                                   )
                                 ]),
                               )),
                               Container(
                                 width: 1,
                                 height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
+                                color: const Color.fromARGB(255, 229, 229, 229),
                               ),
                               Expanded(
                                   child: Container(
@@ -421,15 +434,16 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       padding: EdgeInsets.only(top: 5)),
                                   Text(
                                     '${product['productStatus']}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey, fontSize: 15),
+                                    overflow: TextOverflow.ellipsis,
                                   )
                                 ]),
                               )),
                               Container(
                                 width: 1,
                                 height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
+                                color: const Color.fromARGB(255, 229, 229, 229),
                               ),
                               Expanded(
                                   child: Container(
@@ -459,15 +473,16 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       padding: EdgeInsets.only(top: 5)),
                                   Text(
                                     '${product['productPrice']} (SHN)',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey, fontSize: 15),
+                                    overflow: TextOverflow.ellipsis,
                                   )
                                 ]),
                               )),
                               Container(
                                 width: 1,
                                 height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
+                                color: const Color.fromARGB(255, 229, 229, 229),
                               ),
                               Expanded(
                                   child: Container(
@@ -500,12 +515,12 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                     alignment: Alignment.center,
                                     width: 90,
                                     height: 25,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Color.fromARGB(255, 40, 167, 69),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(4.0)),
                                     ),
-                                    child: Text(
+                                    child: const Text(
                                       'In Stock',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15),
@@ -536,11 +551,15 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             BorderRadius.circular(3.0)),
                                   ),
                                   onPressed: () {
-                                    if(UserManager.userInfo['uid'] != widget.data["data"]["productAdmin"]["uid"]){
+                                    if (UserManager.userInfo['uid'] !=
+                                        widget.data["data"]["productAdmin"]
+                                            ["uid"]) {
                                       Navigator.pushNamed(
                                         context,
                                         RouteNames.messages,
-                                        arguments: widget.data["data"]["productAdmin"]["uid"].toString(),
+                                        arguments: widget.data["data"]
+                                                ["productAdmin"]["uid"]
+                                            .toString(),
                                       );
                                     }
                                     setState(() {
@@ -599,7 +618,6 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
       ],
     );
   }
-
 
   Widget SubFunction() {
     return ClipRRect(

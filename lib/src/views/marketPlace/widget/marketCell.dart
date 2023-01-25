@@ -57,8 +57,9 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
       child: Stack(
         children: [
           Container(
+            margin: const EdgeInsets.all(10.0),
             width: SizeConfig(context).screenWidth > 800
-                ? 208
+                ? 220
                 : SizeConfig(context).screenWidth * 0.9,
             height: 380,
             decoration: BoxDecoration(
@@ -107,6 +108,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                         borderRadius: BorderRadius.circular(8),
                         badgeContent: Text(
                           'SHN ${widget.data['data']["productPrice"]}',
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 13,
@@ -157,13 +159,17 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                 Container(
                   width: 170,
                   margin: const EdgeInsets.only(top: 10, left: 10),
-                  child: Text(widget.data['data']['productName']),
+                  child: Text(
+                    widget.data['data']['productName'],
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Container(
                   width: 170,
                   margin: const EdgeInsets.only(top: 20, left: 13),
                   child: Text(
                     'For ${widget.data['data']["productOffer"]}',
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
@@ -179,7 +185,10 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                       size: 20,
                       color: Color.fromRGBO(31, 156, 255, 1),
                     ),
-                    Text('Type: ${widget.data['data']["productStatus"]}')
+                    Text(
+                      'Type: ${widget.data['data']["productStatus"]}',
+                      overflow: TextOverflow.ellipsis,
+                    )
                   ]),
                 ),
                 Container(
@@ -191,7 +200,14 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                         Icons.location_on,
                         size: 20,
                       ),
-                      Text(widget.data['data']['productLocation'])
+                      Container(
+                        alignment: Alignment.center,
+                        width: 140,
+                        child: Text(
+                          widget.data['data']['productLocation'],
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
