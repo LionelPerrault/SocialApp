@@ -137,6 +137,9 @@ class RelysiaManager {
     var respondData = {};
     try {
       var senderBalance = await getBalance(token);
+      print('senderBalance$senderBalance');
+      print('senderBalance${senderBalance.runtimeType}');
+      print(int.parse(amount));
       if (senderBalance < int.parse(amount)) {
         returnData = 'Not enough token amount';
       } else {
