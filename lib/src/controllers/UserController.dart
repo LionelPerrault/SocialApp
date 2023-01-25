@@ -303,8 +303,17 @@ class UserController extends ControllerMVC {
       var uid = userCredential.user!.uid;
       failLogin = '';
       setState(() {});
+      print('where r u');
       QuerySnapshot<TokenLogin> querySnapshot =
           await Helper.authdata.where('email', isEqualTo: email).get();
+      // print(querySnapshot.size);
+      // if (querySnapshot.size == 0) {
+      //   failLogin = 'No found user database';
+      //   isSendLoginedInfo = false;
+      //   setState(() {});
+      //   return;
+      // }
+      // print('look here');
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
         relysiaEmail = user.email;
