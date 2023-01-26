@@ -41,7 +41,8 @@ class UserController extends ControllerMVC {
   bool isVerify = false;
   bool isSendResetPassword = false;
   bool isLogined = false;
-  bool isEnableTwoFactor = UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
+  bool isEnableTwoFactor = false;
+  // UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
 
   String failLogin = '';
   String failRegister = '';
@@ -125,12 +126,16 @@ class UserController extends ControllerMVC {
 
     passworkdValidation = await passworkdValidate(password);
 
-    if (!passworkdValidation) {
-      failRegister =
-          'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
-      isSendRegisterInfo = false;
-      setState(() {});
-      return;
+    try {
+      if (!passworkdValidation) {
+        failRegister =
+            'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
+        isSendRegisterInfo = false;
+        setState(() {});
+        return;
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
     }
 
     // if (password.length < Helper.passwordMinLength) {
@@ -172,12 +177,15 @@ class UserController extends ControllerMVC {
       return;
     }
     createRelysiaAccount(cont);
+    isSendRegisterInfo = true;
+    failRegister = '';
     setState(() {});
+    return;
   }
 
   bool passworkdValidate(String value) {
     String pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_\-+=@,\.;\{\}\[\]]).{8,}$';
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(value);
   }
@@ -201,7 +209,6 @@ class UserController extends ControllerMVC {
   Future<void> registerUserInfo() async {
     print('start register');
     var uuid = await sendEmailVeryfication();
-    print('in start register, uuid is $uuid');
     signUpUserInfo.removeWhere((key, value) => key == 'password');
     await FirebaseFirestore.instance
         .collection(Helper.userField)
@@ -213,9 +220,8 @@ class UserController extends ControllerMVC {
       'avatar': '',
       'isEmailVerify': false,
       'walletAddress': walletAddress,
-      ''
-      // 'relysiaEmail': relysiaEmail,
-      // 'relysiaPassword': relysiaPassword,
+      'relysiaEmail': relysiaEmail,
+      'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
     });
@@ -239,36 +245,32 @@ class UserController extends ControllerMVC {
     });
   }
 
-  bool twoFactorAuthenticationChecker(String verificationCode){
+  bool twoFactorAuthenticationChecker(String verificationCode) {
     var code = OTP.generateTOTPCodeString(
-          'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
-          length: 6,
-          interval: 30,
-          algorithm: Algorithm.SHA1,
-          isGoogle: true
-      );
-    if(code == verificationCode) {
+        'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
+        length: 6, interval: 30, algorithm: Algorithm.SHA1, isGoogle: true);
+    if (code == verificationCode) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  Future<bool> enableDisableTwoFactorAuthentication(String verificationCode, String type) async {
+  Future<bool> enableDisableTwoFactorAuthentication(
+      String verificationCode, String type) async {
     var codeCheck = await twoFactorAuthenticationChecker(verificationCode);
-    if(codeCheck){
+    if (codeCheck) {
       var twoFactorData = {
         'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '',
       };
       await FirebaseFirestore.instance
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
-          .update({
-            ...twoFactorData
-          });
+          .update({...twoFactorData});
       isEnableTwoFactor = (type == 'enable' ? true : false);
-      UserManager.userInfo['isEnableTwoFactor'] = (type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '');
-      setState((){ });
+      UserManager.userInfo['isEnableTwoFactor'] =
+          (type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '');
+      setState(() {});
     }
     return codeCheck;
   }
@@ -279,11 +281,8 @@ class UserController extends ControllerMVC {
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-    await RelysiaManager.getBalance(token).then((res) => {
-          balance = res,
-          Helper.balance = balance,
-          setState(() {})
-        });
+    await RelysiaManager.getBalance(token).then(
+        (res) => {balance = res, Helper.balance = balance, setState(() {})});
     return balance;
   }
 
@@ -311,14 +310,15 @@ class UserController extends ControllerMVC {
     }
   }
 
-  void loginWithEmail(context, em, pass, isRememberme) async {
+  Future<bool> loginWithEmail(context, em, pass, isRememberme) async {
     if (em == '' || pass == '') {
       failLogin = 'You must fill all field';
       setState(() {});
-      return;
+      return false;
     }
     email = em;
     password = pass;
+    var returnVal = false;
     try {
       isSendLoginedInfo = true;
       if (!email.contains('@')) {
@@ -338,18 +338,18 @@ class UserController extends ControllerMVC {
       var uid = userCredential.user!.uid;
       failLogin = '';
       setState(() {});
-      print('where r u');
       QuerySnapshot<TokenLogin> querySnapshot =
           await Helper.authdata.where('email', isEqualTo: email).get();
-      print(querySnapshot.size);
       if (querySnapshot.size == 0) {
         failLogin = 'The email you entered does not belong to any account';
         isSendLoginedInfo = false;
         setState(() {});
-        return;
+        return false;
       }
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
+        print(
+            '$user...................................43984085394809589308403584905');
         relysiaEmail = user.email;
         relysiaPassword = password;
         isStarted = user.isStarted;
@@ -369,14 +369,18 @@ class UserController extends ControllerMVC {
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
         isEnableTwoFactor = j['isEnableTwoFactor'] == '' ? false : true;
-        print(user.password);
-        await Helper.saveJSONPreference(Helper.userField, {...userInfo});
-        await UserManager.getUserInfo();
-        setState(() {});
-        RouteNames.userName = user.userName;
-        loginRelysia(context);
-        setState(() {});
-        return;
+        if (!isEnableTwoFactor) {
+          await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+          await UserManager.getUserInfo();
+          setState(() {});
+          RouteNames.userName = user.userName;
+          loginRelysia(context);
+          setState(() {});
+          return false;
+        } else {
+          returnVal = true;
+          return true;
+        }
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -398,7 +402,22 @@ class UserController extends ControllerMVC {
       }
       isSendLoginedInfo = false;
       setState(() {});
+      return false;
     }
+    return returnVal;
+  }
+
+  Future<bool> loginWithVerificationCode(String verificationCode) async {
+    var returnVal = await twoFactorAuthenticationChecker(verificationCode);
+    if (returnVal) {
+      await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+      await UserManager.getUserInfo();
+      setState(() {});
+      RouteNames.userName = userInfo['userName'];
+      loginRelysia(context);
+      setState(() {});
+    }
+    return returnVal;
   }
 
   void loginRelysia(context) {
@@ -1002,7 +1021,7 @@ class UserController extends ControllerMVC {
                                               await UserManager.getUserInfo(),
                                               RouteNames.userName =
                                                   signUpUserInfo['userName'],
-                                              isSendRegisterInfo = false,
+                                              isSendRegisterInfo = true,
                                               isLogined = true,
                                               Navigator.pushReplacementNamed(
                                                   context, RouteNames.started),
@@ -1027,13 +1046,13 @@ class UserController extends ControllerMVC {
                                     Helper.showToast(resData['msg']),
                                     setState(() {})
                                   },
-                                isSendRegisterInfo = false,
+                                isSendRegisterInfo = true,
                                 setState(() {}),
                               }
                           }
                         else
                           {
-                            isSendRegisterInfo = false,
+                            isSendRegisterInfo = true,
                             setState(() {}),
                           }
                       })
