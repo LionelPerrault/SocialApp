@@ -31,7 +31,6 @@ class PostController extends ControllerMVC {
   Future<bool> uploadPicture(String where, String what, String url) async {
     switch (where) {
       case 'group':
-        print(what);
         FirebaseFirestore.instance
             .collection(Helper.groupsField)
             .doc(viewGroupId)
@@ -888,7 +887,7 @@ class PostController extends ControllerMVC {
       'productAdmin': {
         'uid': UserManager.userInfo['uid'],
       },
-      'productDate': DateTime.now().toString(),
+      'productDate': FieldValue.serverTimestamp(),
       'productPost': false,
       'productMarkAsSold': false,
       'productTimeline': true,

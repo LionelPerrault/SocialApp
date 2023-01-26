@@ -120,7 +120,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                       duration: const Duration(milliseconds: 500),
                       child: readyShow
                           ? Container(
-                              alignment: Alignment.center,
+                              // alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
                                 color: Color.fromRGBO(0, 0, 0, 0.4),

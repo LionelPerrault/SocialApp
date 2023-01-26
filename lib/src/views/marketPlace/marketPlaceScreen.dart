@@ -29,8 +29,8 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
   bool showMenu = false;
   late AnimationController _drawerSlideController;
   String category = 'All';
-  //route variable
-  String pageSubRoute = '';
+  String arrayOption = 'Latest';
+  String searchValue = '';
 
   @override
   void initState() {
@@ -143,6 +143,15 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                                           : SizeConfig(context).screenWidth,
                                   child: Column(
                                     children: [
+                                      customInput(
+                                        place: 'I am looking for',
+                                        onChange: (value) {
+                                          searchValue = value;
+                                          setState(() {});
+                                        },
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 20)),
                                       Row(
                                         children: [
                                           Container(
@@ -163,104 +172,103 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                                               fit: FlexFit.tight,
                                               child: SizedBox()),
                                           Container(
-                                            width: SizeConfig(context)
-                                                        .screenWidth >
-                                                    SizeConfig.mediumScreenSize
-                                                ? 160
-                                                : 50,
+                                            width: 160,
+                                            alignment: Alignment.center,
                                             margin: const EdgeInsets.only(
                                                 right: 20),
-                                            child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  padding: EdgeInsets.all(3),
-                                                  backgroundColor: Colors.white,
-                                                  // elevation: 3,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              3.0)),
-                                                  minimumSize: Size(
-                                                      SizeConfig(context)
-                                                                  .screenWidth >
-                                                              SizeConfig
-                                                                  .mediumScreenSize
-                                                          ? 170
-                                                          : 50,
-                                                      50),
-                                                  maximumSize: Size(
-                                                      SizeConfig(context)
-                                                                  .screenWidth >
-                                                              SizeConfig
-                                                                  .mediumScreenSize
-                                                          ? 170
-                                                          : 50,
-                                                      50),
+                                            child: PopupMenuButton(
+                                              onSelected: (value) {
+                                                arrayOption = value;
+                                                setState(() {});
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 33, 37, 41),
+                                                  borderRadius:
+                                                      BorderRadius.circular(2),
                                                 ),
-                                                onPressed: () {
-                                                  (showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          AlertDialog(
-                                                              title: Row(
-                                                                children: const [
-                                                                  Icon(
-                                                                    Icons
-                                                                        .production_quantity_limits_sharp,
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            33,
-                                                                            150,
-                                                                            243),
-                                                                  ),
-                                                                  Text(
-                                                                    'Add New Product',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontStyle:
-                                                                            FontStyle.italic),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              content:
-                                                                  CreateProductModal(
-                                                                      context:
-                                                                          context))));
-                                                },
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
-                                                    const Icon(
-                                                      Icons.add_circle,
-                                                      color: Colors.black,
+                                                    Icon(
+                                                      arrayOption == 'Latest'
+                                                          ? Icons.menu
+                                                          : Icons.sort,
+                                                      color: Colors.white,
                                                     ),
                                                     const Padding(
                                                         padding:
                                                             EdgeInsets.only(
-                                                                left: 4)),
-                                                    SizeConfig(context)
-                                                                .screenWidth >
-                                                            SizeConfig
-                                                                .mediumScreenSize
-                                                        ? const Text(
-                                                            'Add New Product',
-                                                            style: TextStyle(
-                                                                fontSize: 11,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold))
-                                                        : SizedBox()
+                                                                left: 10)),
+                                                    Text(
+                                                      arrayOption,
+                                                      style: const TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    ),
                                                   ],
-                                                )),
+                                                ),
+                                              ),
+                                              itemBuilder: (BuildContext bc) {
+                                                return [
+                                                  PopupMenuItem(
+                                                    value: 'Latest',
+                                                    child: Row(children: const [
+                                                      Icon(Icons.menu),
+                                                      Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 10)),
+                                                      Text(
+                                                        "Latest",
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      )
+                                                    ]),
+                                                  ),
+                                                  PopupMenuItem(
+                                                    value: 'Price High',
+                                                    child: Row(
+                                                      children: const [
+                                                        Icon(Icons.sort),
+                                                        Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 10)),
+                                                        Text(
+                                                          "Price High",
+                                                          style: TextStyle(
+                                                              fontSize: 14),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  PopupMenuItem(
+                                                    value: 'Price Low',
+                                                    child: Row(
+                                                      children: const [
+                                                        Icon(Icons.sort),
+                                                        Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 10)),
+                                                        Text(
+                                                          "Price Low",
+                                                          style: TextStyle(
+                                                              fontSize: 14),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
+                                                ];
+                                              },
+                                            ),
                                           )
                                         ],
                                       ),
@@ -283,7 +291,11 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                                 ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                MarketAllProduct(productCategory: category)
+                                MarketAllProduct(
+                                  productCategory: category,
+                                  arrayOption: arrayOption,
+                                  searchValue: searchValue,
+                                )
                               ],
                             ),
                           ),
@@ -392,5 +404,30 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
             // ChatScreen(),
           ],
         ));
+  }
+
+  Widget customInput({place, onChange}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        Container(
+          height: 40,
+          child: TextField(
+            onChanged: onChange,
+            decoration: InputDecoration(
+              hintText: place,
+              hintStyle:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              contentPadding: const EdgeInsets.only(top: 10, left: 10),
+              border: const OutlineInputBorder(),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }
