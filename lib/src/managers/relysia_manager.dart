@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 
 import '../helpers/helper.dart';
 import '../helpers/relysiaHelper.dart';

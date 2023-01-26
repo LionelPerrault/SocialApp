@@ -77,22 +77,22 @@ class LeftPanel extends StatelessWidget {
               label: 'Events',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fevents.svg?alt=media&token=92e4dba9-b601-4289-94f9-99534605a248'),
-          ListText(
-              onTap: () => {},
-              label: 'Memories',
-              image:
-                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmemories.svg?alt=media&token=a3432e12-3fab-4944-9a4e-3c73adf4f568'),
+          // ListText(
+          //     onTap: () => {},
+          //     label: 'Memories',
+          //     image:
+          //         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmemories.svg?alt=media&token=a3432e12-3fab-4944-9a4e-3c73adf4f568'),
           Row(children: const [
             Padding(padding: EdgeInsets.only(left: 30.0)),
             Text('EXPLORE',
                 style: TextStyle(
                     color: Color.fromARGB(255, 150, 150, 150), fontSize: 10)),
           ]),
-          ListText(
-              onTap: () => {},
-              label: 'My Articles',
-              image:
-                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_articles.svg?alt=media&token=e98ee341-30f4-4e2d-8797-0e8396c4fada'),
+          // ListText(
+          //     onTap: () => {},
+          //     label: 'My Articles',
+          //     image:
+          //         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_articles.svg?alt=media&token=e98ee341-30f4-4e2d-8797-0e8396c4fada'),
           ListText(
               onTap: () => {
                     Navigator.pushReplacementNamed(context, RouteNames.products)
@@ -100,28 +100,28 @@ class LeftPanel extends StatelessWidget {
               label: 'My Products',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_products.svg?alt=media&token=91cdcfb3-cb0a-4061-a19f-b020c61299a0'),
-          ListText(
-              onTap: () => {},
-              label: 'Saved Posts',
-              image:
-                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsaved_posts.svg?alt=media&token=a6950b2b-26ee-4cb8-b1ff-78047383e0de'),
-          ListText(
-              onTap: () =>
-                  {Navigator.pushReplacementNamed(context, RouteNames.pages)},
-              label: 'Pages',
-              image:
-                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpages.svg?alt=media&token=eed0ae72-6faf-4fdc-8581-bf3a99a04fa7'),
+          // ListText(
+          //     onTap: () => {},
+          //     label: 'Saved Posts',
+          //     image:
+          //         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsaved_posts.svg?alt=media&token=a6950b2b-26ee-4cb8-b1ff-78047383e0de'),
+          // ListText(
+          //     onTap: () =>
+          //         {Navigator.pushReplacementNamed(context, RouteNames.pages)},
+          //     label: 'Pages',
+          //     image:
+          //         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpages.svg?alt=media&token=eed0ae72-6faf-4fdc-8581-bf3a99a04fa7'),
           ListText(
               onTap: () =>
                   {Navigator.pushReplacementNamed(context, RouteNames.groups)},
               label: 'Groups',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fgroups.svg?alt=media&token=56ef9dc4-2c1b-4dfd-b945-3439cb5dfe25'),
-          ListText(
-              onTap: () => {},
-              label: 'News',
-              image:
-                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fnews.svg?alt=media&token=c68ab470-dcd6-4c58-9ed6-5e5fc1540110'),
+          // ListText(
+          //     onTap: () => {},
+          //     label: 'News',
+          //     image:
+          //         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fnews.svg?alt=media&token=c68ab470-dcd6-4c58-9ed6-5e5fc1540110'),
           ListText(
               onTap: () =>
                   {Navigator.pushReplacementNamed(context, RouteNames.market)},

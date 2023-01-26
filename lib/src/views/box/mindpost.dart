@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as PPath;
@@ -39,6 +40,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   double uploadVideoProgress = 0;
   String nowPost = '';
   bool postLoading = false;
+  String activity = '';
+  String subActivityLabel = '';
+  String subActivity = '';
   late PostController con;
   List<Map> mindPostCase = [
     {
@@ -59,18 +63,18 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Femoji.svg?alt=media&token=d8ff786b-c7e0-4922-a260-0627bacab851',
       'mindFunc': (context) {}
     },
-    // {
-    //   'title': 'Check In',
-    //   'image':
-    //       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738',
-    //   'mindFunc': (context) {}
-    // },
     {
-      'title': 'Colored Posts',
+      'title': 'Check In',
       'image':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcolor.svg?alt=media&token=7d8b7631-2471-4acf-8f34-e0071e7a4600',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738',
       'mindFunc': (context) {}
     },
+    // {
+    //   'title': 'Colored Posts',
+    //   'image':
+    //       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcolor.svg?alt=media&token=7d8b7631-2471-4acf-8f34-e0071e7a4600',
+    //   'mindFunc': (context) {}
+    // },
     // {
     //   'title': 'Voice Notes',
     //   'image':
@@ -113,6 +117,108 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     //       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Ffolder.svg?alt=media&token=8a62d7d4-95dc-4f0b-8a62-3c9ef26aec81',
     //   'mindFunc': (context) {}
     // },
+  ];
+
+  List<Map> activityCase = [
+    {'label': 'Feeling', 'svg': '', 'subLabel': 'How are you feeling?'},
+    {
+      'label': 'Listening To',
+      'svg': '',
+      'subLabel': 'What are you listening to?',
+    },
+    {
+      'label': 'Watching',
+      'svg': '',
+      'subLabel': 'What are you watching?',
+    },
+    {
+      'label': 'Playing',
+      'svg': '',
+      'subLabel': 'What are you playing?',
+    },
+    {
+      'label': 'Eating',
+      'svg': '',
+      'subLabel': 'What are you eating?',
+    },
+    {
+      'label': 'Drinking',
+      'svg': '',
+      'subLabel': 'What are you drinking?',
+    },
+    {
+      'label': 'Traveling To',
+      'svg': '',
+      'subLabel': 'Where are you traveling to?',
+    },
+    {
+      'label': 'Reading',
+      'svg': '',
+      'subLabel': 'What are you reading?',
+    },
+    {
+      'label': 'Attending',
+      'svg': '',
+      'subLabel': 'What are you attending?',
+    },
+    {
+      'label': 'Celebrating',
+      'svg': '',
+      'subLabel': 'What are you celebrating?',
+    },
+    {
+      'label': 'Looking For',
+      'svg': '',
+      'subLabel': 'What are you looking for?',
+    },
+  ];
+
+  List<Map> feelingAction = [
+    {
+      'label': 'Happy',
+    },
+    {
+      'label': 'Loved',
+    },
+    {
+      'label': 'Satisfied',
+    },
+    {
+      'label': 'Strong',
+    },
+    {
+      'label': 'Sad',
+    },
+    {
+      'label': 'Crazy',
+    },
+    {
+      'label': 'Tired',
+    },
+    {
+      'label': 'Sleepy',
+    },
+    {
+      'label': 'Confused',
+    },
+    {
+      'label': 'Worried',
+    },
+    {
+      'label': 'Angry',
+    },
+    {
+      'label': 'Annoyed',
+    },
+    {
+      'label': 'Shocked',
+    },
+    {
+      'label': 'Down',
+    },
+    {
+      'label': 'Confounded',
+    },
   ];
   @override
   void initState() {
@@ -173,6 +279,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       case 'Upload Photos':
         postCase = 'photo';
         postPayload = postPhoto;
+        break;
+      case 'Feelings/Activity':
+        postCase = 'feeling';
+        postPayload = {
+          'action': activity,
+          'subAction': subActivity,
+        };
         break;
       default:
     }
@@ -266,6 +379,15 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         .toList(),
                   ),
                 ),
+              ),
+              nowPost == 'Feelings/Activity'
+                  ? feelingActivityWidget()
+                  : const SizedBox(),
+              const Padding(padding: EdgeInsets.only(top: 5)),
+              const Divider(
+                thickness: 0.1,
+                color: Colors.black45,
+                height: 1,
               ),
               GridView.count(
                 crossAxisCount:
@@ -521,9 +643,189 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     );
   }
 
-  // Widget createPollWidget(){
-  //   return
-  // }
+  Widget feelingActivityWidget() {
+    return Container(
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(right: 20),
+              child: PopupMenuButton(
+                onSelected: (value) {
+                  print(activity);
+                  activity = value['label'].toString();
+                  subActivity = '';
+                  subActivityLabel = value['subLabel'].toString();
+                  setState(() {});
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 238, 238, 238),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(padding: EdgeInsets.only(left: 30)),
+                      Text(
+                        activity == '' ? 'What are you doing?' : activity,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 111, 111, 111),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                itemBuilder: (BuildContext bc) {
+                  return activityCase
+                      .map(
+                        (e) => PopupMenuItem(
+                          value: {
+                            'label': e['label'],
+                            'subLabel': e['subLabel'],
+                          },
+                          child: Row(
+                            children: [
+                              const Padding(
+                                  padding: EdgeInsets.only(left: 12.0)),
+                              SvgPicture.network(
+                                'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda',
+                                width: 30,
+                              ),
+                              const Padding(
+                                  padding: EdgeInsets.only(left: 12.0)),
+                              Text(
+                                e['label'],
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 90, 90, 90),
+                                    fontFamily: 'var(--body-font-family)',
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 15),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList();
+                },
+              ),
+            ),
+          ),
+          activity == ''
+              ? const SizedBox()
+              : Expanded(
+                  flex: (subActivity != '' && activity == 'Feeling') ? 1 : 2,
+                  child: activity == 'Feeling'
+                      ? Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(right: 20),
+                          child: PopupMenuButton(
+                            onSelected: (value) {
+                              subActivity = value.toString();
+                              setState(() {});
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 92, 114, 228),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 30)),
+                                  Text(
+                                    subActivity == ''
+                                        ? 'How are you feeling?'
+                                        : subActivity,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            itemBuilder: (BuildContext bc) {
+                              return feelingAction
+                                  .map(
+                                    (e) => PopupMenuItem(
+                                      value: e['label'],
+                                      child: Row(
+                                        children: [
+                                          const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 12.0)),
+                                          SvgPicture.network(
+                                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda',
+                                            width: 30,
+                                          ),
+                                          const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 12.0)),
+                                          Text(
+                                            e['label'],
+                                            style: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 90, 90, 90),
+                                                fontFamily:
+                                                    'var(--body-font-family)',
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 15),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                  .toList();
+                            },
+                          ),
+                        )
+                      : Container(
+                          height: 40,
+                          child: TextField(
+                            onChanged: (value) {
+                              subActivity = value;
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                              hintText: subActivityLabel,
+                              hintStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                              contentPadding:
+                                  const EdgeInsets.only(top: 10, left: 10),
+                              border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                              ),
+                            ),
+                          ),
+                        ),
+                ),
+          (subActivity != '' && activity == 'Feeling')
+              ? const Expanded(flex: 1, child: SizedBox())
+              : const SizedBox()
+        ],
+      ),
+    );
+  }
 
   Future<XFile> chooseImage() async {
     final _imagePicker = ImagePicker();
