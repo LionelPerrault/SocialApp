@@ -434,7 +434,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                     keyboardType: TextInputType.number,
                     onChanged: onCodeInput,
                     maxLength: 6,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(
+                        color: Colors.white, backgroundColor: Colors.white),
                   ),
                 ),
                 Positioned(
