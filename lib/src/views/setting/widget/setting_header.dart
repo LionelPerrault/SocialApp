@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
@@ -45,7 +46,9 @@ class SettingHeader extends StatelessWidget {
                       maximumSize: const Size(120, 50),
                     ),
                     onPressed: () {
-                      (() => {});
+                      Navigator.pushReplacementNamed(
+                          context, '/${UserManager.userInfo['userName']}');
+                      print('object');
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

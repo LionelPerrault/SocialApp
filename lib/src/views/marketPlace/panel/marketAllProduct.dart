@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/marketPlace/widget/marketCell.dart';
@@ -11,11 +12,17 @@ import '../../../controllers/PostController.dart';
 
 // ignore: must_be_immutable
 class MarketAllProduct extends StatefulWidget {
-  MarketAllProduct({Key? key, required this.productCategory})
+  MarketAllProduct(
+      {Key? key,
+      required this.productCategory,
+      required this.arrayOption,
+      required this.searchValue})
       : con = PostController(),
         super(key: key);
   late PostController con;
   String productCategory;
+  String arrayOption;
+  String searchValue;
   State createState() => MarketAllProductState();
 }
 
@@ -63,8 +70,28 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
     } else {
       allProducts = con.allProduct;
     }
+    switch (widget.arrayOption) {
+      case 'Latest':
+        allProducts.sort((a, b) =>
+            Helper.changeTimeType(d: b['data']['productDate'], type: false)
+                .compareTo(Helper.changeTimeType(
+                    d: a['data']['productDate'], type: false)));
+        break;
+      case 'Price High':
+        allProducts.sort((a, b) => int.parse(a['data']['productPrice'])
+            .compareTo(int.parse(b['data']['productPrice'])));
+        break;
+      case 'Price Low':
+        allProducts.sort((a, b) => int.parse(b['data']['productPrice'])
+            .compareTo(int.parse(a['data']['productPrice'])));
+        break;
+      default:
+    }
+    allProducts = allProducts
+        .where((product) =>
+            product['data']['productName'].contains(widget.searchValue) == true)
+        .toList();
 
-    var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
     return Container(
       width: SizeConfig(context).screenWidth < 800
           ? SizeConfig(context).screenWidth
@@ -74,7 +101,7 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
-            child: screenWidth < 430
+            child: SizeConfig(context).screenWidth < 600
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,11 +109,8 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
                         .map((product) => MarketCell(data: product))
                         .toList())
                 : GridView.count(
-                    crossAxisCount: screenWidth > 800
-                        ? 4
-                        : screenWidth > 600
-                            ? 3
-                            : 2,
+                    crossAxisCount:
+                        SizeConfig(context).screenWidth > 1000 ? 3 : 2,
                     childAspectRatio: 1 / 2,
                     padding: const EdgeInsets.all(4.0),
                     mainAxisSpacing: 10.0,

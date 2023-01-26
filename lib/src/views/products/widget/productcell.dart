@@ -309,7 +309,9 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                         children: <TextSpan>[
                                           TextSpan(
                                               text: Helper.formatDate(
-                                                  product['productDate']),
+                                                  Helper.changeTimeType(
+                                                      d: product[
+                                                          'productDate'])),
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 10,
