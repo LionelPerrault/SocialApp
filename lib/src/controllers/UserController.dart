@@ -177,6 +177,8 @@ class UserController extends ControllerMVC {
       return;
     }
     createRelysiaAccount(cont);
+    isSendRegisterInfo = true;
+    failRegister = '';
     setState(() {});
     return;
   }
@@ -207,7 +209,6 @@ class UserController extends ControllerMVC {
   Future<void> registerUserInfo() async {
     print('start register');
     var uuid = await sendEmailVeryfication();
-    print('in start register, uuid is $uuid');
     signUpUserInfo.removeWhere((key, value) => key == 'password');
     await FirebaseFirestore.instance
         .collection(Helper.userField)
@@ -219,10 +220,9 @@ class UserController extends ControllerMVC {
       'avatar': '',
       'isEmailVerify': false,
       'walletAddress': walletAddress,
-      ''
-          // 'relysiaEmail': relysiaEmail,
-          // 'relysiaPassword': relysiaPassword,
-          'paywall': {},
+      'relysiaEmail': relysiaEmail,
+      'relysiaPassword': relysiaPassword,
+      'paywall': {},
       'isStarted': false,
     });
     await Helper.saveJSONPreference(Helper.userField, {
