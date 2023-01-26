@@ -48,7 +48,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   Widget build(BuildContext context) {
     return widget.postInfo['type'] == 'photo'
         ? picturePostCell()
-        : widget.postInfo['type'] == 'photo'
+        : widget.postInfo['type'] == 'feeling'
             ? feelingPostCell()
             : SizedBox();
   }
@@ -242,19 +242,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         ? SizeConfig(context).screenWidth - 240
                                         : 350,
                                     child: Text(
-                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
+                                      ' is ${widget.postInfo['data']['action']} ${widget.postInfo['data']['subAction']}',
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  // Container(
-                                  //   padding: EdgeInsets.only(right: 9.0),
-                                  //   child: CustomPopupMenu(
-                                  //       menuBuilder: () => SubFunction(),
-                                  //       pressType: PressType.singleClick,
-                                  //       verticalMargin: -10,
-                                  //       child:
-                                  //           const Icon(Icons.arrow_drop_down)),
-                                  // ),
                                 ],
                               ),
                               const Padding(padding: EdgeInsets.only(top: 3)),
@@ -291,19 +282,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                           )
                         ],
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 30)),
-                      Row(
-                        children: [
-                          for (var item in widget.postInfo['data'])
-                            Expanded(
-                              child: Container(
-                                height: 250,
-                                child: Image.network(item['url'],
-                                    fit: BoxFit.cover),
-                              ),
-                            )
-                        ],
-                      )
                     ],
                   ),
                 ),
