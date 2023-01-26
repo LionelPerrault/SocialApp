@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, sort_child_properties_last
 
 import 'dart:async';
 import 'dart:math';
@@ -6,7 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
@@ -53,6 +55,9 @@ class UserController extends ControllerMVC {
   var responseData;
   var context;
   var signUpUserInfo = {};
+  final RoundedLoadingButtonController btnController =
+      RoundedLoadingButtonController();
+
   @override
   Future<bool> initAsync() async {
     //
@@ -462,7 +467,6 @@ class UserController extends ControllerMVC {
         createEmail();
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
-        print(responseData['statusCode']);
         Helper.showToast(responseData['data']['msg']);
         showModal(context, relysiaEmail, relysiaPassword);
         // createRelysiaAccount();
@@ -854,154 +858,180 @@ class UserController extends ControllerMVC {
   }
 
   showModal(context_1, email, password) {
-    TextEditingController passwordController = TextEditingController();
-    // String token = "";
+    TextEditingController passwordController =
+        TextEditingController(); // String token = "";
     showDialog(
-        context: context_1,
-        builder: (BuildContext context) => AlertDialog(
-              title: Row(
-                children: [
-                  // Container(
-
-                  //   alignment: Alignment.center,
-                  SizedBox(
-                      width: 400,
-                      height: 133,
-                      child: Container(
-                        color: Colors.blue,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Account already exists in Relysia, please enter same credentials',
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        ),
-                      )),
-                ],
+      context: context_1,
+      builder: (BuildContext context) => AlertDialog(
+        title: Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                  width: SizeConfig(context).screenWidth < 600 ? 200 : 400,
+                  height: 60,
+                  child: Container(
+                    color: Colors.blue,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(left: 10),
+                    child: const Text(
+                      'Account already exists in Relysia, please enter same credentials',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )),
+            ),
+          ],
+        ),
+        content: Row(
+          children: [
+            Expanded(
+              child: Container(
+                width: SizeConfig(context).screenWidth < 600 ? 300 : 500,
+                alignment: Alignment.center,
+                height: 120,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      obscureText: true,
+                      controller: passwordController,
+                      onChanged: (value) {
+                        existPwd = value;
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Password",
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 13)),
+                    RoundedLoadingButton(
+                      successColor: Colors.blue,
+                      child: const Text('Continue',
+                          style: TextStyle(color: Colors.white)),
+                      controller: btnController,
+                      onPressed: () => loginRelysiaAgain(
+                        btnController,
+                        context_1,
+                        passwordController.text,
+                        existPwd,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              content: Row(children: [
-                Container(
-                  width: 400,
-                  alignment: Alignment.center,
-                  height: 130,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextField(
-                          obscureText: true,
-                          controller: passwordController,
-                          onChanged: (value) {
-                            existPwd = value;
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Password",
-                          ),
-                        ),
-                        const Padding(padding: EdgeInsets.only(top: 13)),
-                        MyPrimaryButton(
-                            onPressed: () async {
-                              if (existPwd != '') {
-                                await RelysiaManager.authUser(
-                                        email, passwordController.text)
-                                    .then((responseData) async => {
-                                          if (responseData['data'] != null)
-                                            {
-                                              if (responseData['statusCode'] ==
-                                                  200)
-                                                {
-                                                  token = responseData['data']
-                                                      ['token'],
-                                                  relysiaAuthUser(
-                                                      context_1,
-                                                      email,
-                                                      password,
-                                                      existPwd,
-                                                      token),
-                                                }
-                                              else
-                                                {
-                                                  Helper.showToast(
-                                                      "INVALID_PASSWORD"),
-                                                  existPwd = "",
-                                                  showModal(context_1, email,
-                                                      password)
-                                                }
-                                            }
-                                        });
-                              }
-                            },
-                            buttonName: "Continue",
-                            color: Colors.blue)
-                      ]),
-                )
-              ]),
-            ));
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void loginRelysiaAgain(RoundedLoadingButtonController controller, context_1,
+      pwdController, existPwd) async {
+    bool? result;
+    if (existPwd != '') {
+      await RelysiaManager.authUser(email, pwdController).then(
+        (responseData) async => {
+          if (responseData['data'] != null)
+            {
+              if (responseData['statusCode'] == 200)
+                {
+                  token = responseData['data']['token'],
+                  result = await relysiaAuthUser(
+                      context_1, email, password, existPwd, token),
+                  if (result == true)
+                    {
+                      await registerUserInfo(),
+                      await UserManager.getUserInfo(),
+                      RouteNames.userName = signUpUserInfo['userName'],
+                      isSendRegisterInfo = false,
+                      isLogined = true,
+                      controller.success(),
+                      Navigator.pushReplacementNamed(
+                          context, RouteNames.started),
+                      setState(() {}),
+                    }
+                  else
+                    {
+                      controller.error(),
+                    }
+                }
+              else
+                {
+                  Helper.showToast("INVALID_PASSWORD"),
+                  existPwd = "",
+                  showModal(context_1, email, password)
+                }
+            }
+        },
+      );
+    } else {
+      Helper.showToast('Enter Password');
+    }
   }
 
   relysiaAuthUser(context, email, password, existpwd, token) async {
     var resData = {};
-    await RelysiaManager.createWallet(token).then((value) async => {
-          if (value == 0)
-            {
-              Helper.showToast("Error occurs while create wallet"),
-              setState(() {}),
-            }
-          else
-            {
-              await RelysiaManager.authUser(email, password)
-                  .then((responseData) async => {
-                        if (responseData['data'] != null)
+    bool state = false;
+    await RelysiaManager.createWallet(token).then(
+      (value) async => {
+        if (value == 0)
+          {
+            Helper.showToast("Error occurs while create wallet"),
+            setState(() {}),
+          }
+        else
+          {
+            await RelysiaManager.authUser(email, existPwd).then(
+              (responseData) async => {
+                if (responseData['data'] != null)
+                  {
+                    if (responseData['statusCode'] == 200)
+                      {
+                        token = responseData['data']['token'],
+                        await RelysiaManager.getPaymail(token)
+                            .then((resData) async => {
+                                  if (resData['paymail'] != null)
+                                    {
+                                      paymail = resData['paymail'],
+                                      walletAddress = resData['address'],
+                                      state = true,
+                                    }
+                                })
+                      }
+                    else
+                      {
+                        resData = responseData['data'],
+                        if (resData['msg'] == 'INVALID_EMAIL')
                           {
-                            if (responseData['statusCode'] == 200)
-                              {
-                                token = responseData['data']['token'],
-                                await RelysiaManager.getPaymail(token)
-                                    .then((resData) async => {
-                                          if (resData['paymail'] != null)
-                                            {
-                                              paymail = resData['paymail'],
-                                              walletAddress =
-                                                  resData['address'],
-                                              await registerUserInfo(),
-                                              await UserManager.getUserInfo(),
-                                              RouteNames.userName =
-                                                  signUpUserInfo['userName'],
-                                              isSendRegisterInfo = false,
-                                              isLogined = true,
-                                              Navigator.pushReplacementNamed(
-                                                  context, RouteNames.started),
-                                              setState(() {}),
-                                            }
-                                        })
-                              }
-                            else
-                              {
-                                resData = responseData['data'],
-                                if (resData['msg'] == 'INVALID_EMAIL')
-                                  {
-                                    Helper.showToast(
-                                        'You didn\'t sign up in Relysia!'),
-                                  }
-                                else if (resData['msg'] == 'EMAIL_NOT_FOUND')
-                                  {
-                                    Helper.showToast('Email Not Found!'),
-                                  }
-                                else
-                                  {
-                                    Helper.showToast(resData['msg']),
-                                    setState(() {})
-                                  },
-                                isSendRegisterInfo = false,
-                                setState(() {}),
-                              }
+                            Helper.showToast('You didn\'t sign up in Relysia!'),
+                            state = false,
+                          }
+                        else if (resData['msg'] == 'EMAIL_NOT_FOUND')
+                          {
+                            Helper.showToast('Email Not Found!'),
+                            state = false,
                           }
                         else
-                          {
-                            isSendRegisterInfo = false,
-                            setState(() {}),
-                          }
-                      })
-            }
-        });
+                          {Helper.showToast(resData['msg']), setState(() {})},
+                        isSendRegisterInfo = false,
+                        setState(() {}),
+                      }
+                  }
+                else
+                  {
+                    isSendRegisterInfo = false,
+                    state = false,
+                    setState(() {}),
+                  }
+              },
+            ),
+          }
+      },
+    );
+    return state;
   }
 }
