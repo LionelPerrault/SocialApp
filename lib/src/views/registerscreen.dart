@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -36,6 +37,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
 
   var signUpUserInfo = {};
   String dropdownValue = 'Male';
+  var isObscure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,12 +154,27 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                           signUpUserInfo['email'] = value;
                                           setState(() {});
                                         }),
-                                    input(
+                                    passwordTextField(
+                                        obscureText: isObscure,
                                         label: 'Password',
-                                        obscureText: true,
                                         icon: const Icon(
                                           Icons.key,
                                           color: Colors.white,
+                                        ),
+                                        suffixIcon: Padding(
+                                          padding: EdgeInsets.only(bottom: 10),
+                                          child: IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  isObscure = !isObscure;
+                                                });
+                                              },
+                                              icon: Icon(
+                                                isObscure
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                                color: Colors.white,
+                                              )),
                                         ),
                                         onchange: (value) async {
                                           signUpUserInfo['password'] = value;
@@ -438,7 +455,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                     )))));
   }
 
-  Widget input({label, icon, onchange, obscureText = false, validator}) {
+  Widget input(
+      {label, icon, eyeIcon, onchange, obscureText = false, validator}) {
     return Container(
       height: 38,
       padding: const EdgeInsets.only(top: 10),
@@ -452,6 +470,59 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
         },
         icon: icon,
         label: label,
+      ),
+    );
+  }
+
+  Widget passwordTextField(
+      {label, icon, suffixIcon, onchange, obscureText = false, validator}) {
+    return Container(
+      height: 38,
+      padding: const EdgeInsets.only(top: 10),
+      child: TextField(
+        obscureText: obscureText,
+        onChanged: (val) async {
+          onchange(val);
+        },
+        style: const TextStyle(color: Colors.white, fontSize: 11),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: const Color.fromRGBO(35, 35, 35, 1),
+          focusColor: Colors.white,
+          //add prefix icon
+          contentPadding: const EdgeInsets.symmetric(vertical: 3),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.1),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.1),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 0.1),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          hintText: label,
+          hintStyle: const TextStyle(
+            color: Colors.grey,
+            fontSize: 11,
+            fontFamily: "verdana_regular",
+            fontWeight: FontWeight.w400,
+          ),
+          prefixIcon: icon,
+          suffixIcon: IconButton(
+            padding: EdgeInsets.only(bottom: 3),
+            icon: Icon(
+              isObscure ? Icons.visibility : Icons.visibility_off,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(() => {isObscure = !isObscure});
+            },
+          ),
+        ),
       ),
     );
   }

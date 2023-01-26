@@ -7,12 +7,13 @@ class PrimaryInput extends StatefulWidget {
   Function onChange;
   Function validator;
   String label;
+  bool isObscure = true;
   bool obscureText = false;
   var icon = const Icon(
     Icons.person_outline_rounded,
     color: Colors.white,
   );
-
+  var eyeIcon;
   PrimaryInput({
     Key? key,
     required this.onChange,
@@ -22,6 +23,7 @@ class PrimaryInput extends StatefulWidget {
     this.icon = const Icon(
       null,
     ),
+    this.eyeIcon,
   }) : super(key: key);
   @override
   State createState() => PrimaryInputState();
@@ -41,12 +43,12 @@ class PrimaryInputState extends State<PrimaryInput> {
       cursorColor: Colors.white,
       decoration: InputDecoration(
         filled: true,
-
         fillColor: const Color.fromRGBO(35, 35, 35, 1), //<-- SEE HERE
         focusColor: Colors.white,
         //add prefix icon
         contentPadding: const EdgeInsets.symmetric(vertical: 3), // <-- SEE HERE
         prefixIcon: widget.icon,
+        suffixIcon: widget.eyeIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
           borderSide: const BorderSide(color: Colors.grey, width: 0.1),
