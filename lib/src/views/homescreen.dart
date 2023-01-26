@@ -301,7 +301,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
         setState(() {
           isEmailVerify = true;
         });
-        con.timer?.cancel();
+        timer.cancel();
       } else {
         print('$isEmailVerify, didn\' get email verification yet');
         setState(() {
