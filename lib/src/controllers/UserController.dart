@@ -41,7 +41,8 @@ class UserController extends ControllerMVC {
   bool isVerify = false;
   bool isSendResetPassword = false;
   bool isLogined = false;
-  bool isEnableTwoFactor = UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
+  bool isEnableTwoFactor =
+      UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
 
   String failLogin = '';
   String failRegister = '';
@@ -214,9 +215,9 @@ class UserController extends ControllerMVC {
       'isEmailVerify': false,
       'walletAddress': walletAddress,
       ''
-      // 'relysiaEmail': relysiaEmail,
-      // 'relysiaPassword': relysiaPassword,
-      'paywall': {},
+          // 'relysiaEmail': relysiaEmail,
+          // 'relysiaPassword': relysiaPassword,
+          'paywall': {},
       'isStarted': false,
     });
     await Helper.saveJSONPreference(Helper.userField, {
@@ -239,36 +240,32 @@ class UserController extends ControllerMVC {
     });
   }
 
-  bool twoFactorAuthenticationChecker(String verificationCode){
+  bool twoFactorAuthenticationChecker(String verificationCode) {
     var code = OTP.generateTOTPCodeString(
-          'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
-          length: 6,
-          interval: 30,
-          algorithm: Algorithm.SHA1,
-          isGoogle: true
-      );
-    if(code == verificationCode) {
+        'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
+        length: 6, interval: 30, algorithm: Algorithm.SHA1, isGoogle: true);
+    if (code == verificationCode) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  Future<bool> enableDisableTwoFactorAuthentication(String verificationCode, String type) async {
+  Future<bool> enableDisableTwoFactorAuthentication(
+      String verificationCode, String type) async {
     var codeCheck = await twoFactorAuthenticationChecker(verificationCode);
-    if(codeCheck){
+    if (codeCheck) {
       var twoFactorData = {
         'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '',
       };
       await FirebaseFirestore.instance
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
-          .update({
-            ...twoFactorData
-          });
+          .update({...twoFactorData});
       isEnableTwoFactor = (type == 'enable' ? true : false);
-      UserManager.userInfo['isEnableTwoFactor'] = (type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '');
-      setState((){ });
+      UserManager.userInfo['isEnableTwoFactor'] =
+          (type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '');
+      setState(() {});
     }
     return codeCheck;
   }
@@ -279,11 +276,8 @@ class UserController extends ControllerMVC {
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-    await RelysiaManager.getBalance(token).then((res) => {
-          balance = res,
-          Helper.balance = balance,
-          setState(() {})
-        });
+    await RelysiaManager.getBalance(token).then(
+        (res) => {balance = res, Helper.balance = balance, setState(() {})});
     return balance;
   }
 
