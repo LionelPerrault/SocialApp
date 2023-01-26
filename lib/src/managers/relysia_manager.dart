@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shnatter/src/managers/user_manager.dart';
 
 import '../helpers/helper.dart';
+import '../helpers/relysiaHelper.dart';
 
 class RelysiaManager {
   static final apiUrlAuth = 'https://api.relysia.com/v1/auth';
@@ -15,6 +16,7 @@ class RelysiaManager {
   static final adminPassword = '1topnotch@';
   static final adminPaymail = '3982@relysia.com';
   static var resToken = {};
+  static var transHistory = [];
   static Future<Map> authUser(String email, String password) async {
     Map responseData = {};
     try {
@@ -173,6 +175,55 @@ class RelysiaManager {
       print(exception.toString());
     }
     return returnData;
+  }
+
+  static Future<Map> getTransactionHistory(String token, nextPageToken) async {
+    var response = {};
+    bool? result;
+    var next = '';
+    int count = 0;
+    next = nextPageToken;
+    try {
+      while (count < 10 && next != "null") {
+        await http.get(
+            Uri.parse('https://api.relysia.com/v2/history?nextPageToken=$next'),
+            headers: {
+              'authToken': token,
+              'serviceID': serviceId,
+              'version': '1.1.0'
+            }).then(
+          (res) async {
+            response = jsonDecode(res.body);
+            if (response['statusCode'] == 200) {
+              for (var elem in response['data']['histories']) {
+                for (var e in elem['to']) {
+                  if (e['tokenId'] == RelysiaHelper.tokenId) {
+                    transHistory.add({
+                      'txId': e['txId'] ?? '',
+                      'from': elem['from'] ?? '',
+                      'notes': elem['notes'] ?? '',
+                      'to': e['to'] ?? '',
+                      'balance_change': elem['totalAmount'] ?? '',
+                      'timestamp': elem['timestamp'] ?? ''
+                    });
+                    count++;
+                  }
+                }
+              }
+              next = response['data']['meta']['nextPageToken'].toString();
+              result = true;
+            } else if (response['statusCode'] == 401) {
+              next = 'null';
+              result = false;
+            }
+          },
+        );
+      }
+    } catch (exception) {
+      Helper.showToast(
+          "An error has occurred. Please check your internet connectivity or try again later");
+    }
+    return {'history': transHistory, 'success': result, 'nextPageToken': next};
   }
 
   static Future<int> deleteUser(String token) async {

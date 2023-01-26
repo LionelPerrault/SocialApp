@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:math';
+import 'package:animated_widgets/generated/i18n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:otp/otp.dart';
@@ -59,6 +60,8 @@ class UserController extends ControllerMVC {
   var responseData;
   var context;
   var signUpUserInfo = {};
+  var transactionData = [];
+  var nextPageTokenCount = '0';
   final RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
 
@@ -284,6 +287,34 @@ class UserController extends ControllerMVC {
     await RelysiaManager.getBalance(token).then(
         (res) => {balance = res, Helper.balance = balance, setState(() {})});
     return balance;
+  }
+
+  void getTransactionHistory(nextPageToken) async {
+    await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
+      (res) async => {
+        if (res['success'] == true)
+          {
+            transactionData = res['history'],
+            nextPageTokenCount = res['nextPageToken'],
+            setState(() {}),
+          }
+        else
+          {
+            await RelysiaManager.authUser(email, password).then(
+              (res) async => {
+                if (res['data'] != null)
+                  {
+                    if (res['statusCode'] == 200)
+                      {
+                        token = res['data']['token'],
+                        getTransactionHistory(nextPageToken),
+                      }
+                  }
+              },
+            )
+          }
+      },
+    );
   }
 
   void getWalletFromPref(context) async {}
@@ -825,34 +856,37 @@ class UserController extends ControllerMVC {
     setState(() {});
     try {
       var userManager = UserManager.userInfo;
-      await RelysiaManager.deleteUser(token).then((value) async => {
-            if (value == 1)
-              {
-                Helper.showToast("Success"),
-              }
-            else if (value == 2)
-              {
-                await RelysiaManager.authUser(email, password)
-                    .then((res) async => {
-                          if (res["data"] != null)
-                            {
-                              if (res['statusCode'] == 200)
-                                {
-                                  token = res['data']['token'],
-                                  await RelysiaManager.deleteUser(token),
-                                }
-                              else
-                                {
-                                  Helper.showToast(res['data']['msg']),
-                                }
-                            }
-                          else
-                            {
-                              Helper.showToast(res['data']),
-                            }
-                        })
-              }
-          });
+      await RelysiaManager.deleteUser(token).then(
+        (value) async => {
+          if (value == 1)
+            {
+              Helper.showToast("Success"),
+            }
+          else if (value == 2)
+            {
+              await RelysiaManager.authUser(email, password).then(
+                (res) async => {
+                  if (res["data"] != null)
+                    {
+                      if (res['statusCode'] == 200)
+                        {
+                          token = res['data']['token'],
+                          await RelysiaManager.deleteUser(token),
+                        }
+                      else
+                        {
+                          Helper.showToast(res['data']['msg']),
+                        }
+                    }
+                  else
+                    {
+                      Helper.showToast(res['data']),
+                    }
+                },
+              ),
+            }
+        },
+      );
       var snapshot = await FirebaseFirestore.instance
           .collection(Helper.userField)
           .where('userName', isEqualTo: userManager['userName'])
