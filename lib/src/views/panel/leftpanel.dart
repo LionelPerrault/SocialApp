@@ -51,12 +51,14 @@ class LeftPanel extends StatelessWidget {
               label: 'Shnatter Token',
               image:
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter_token.svg?alt=media&token=48ac103d-10fc-4847-943e-33ea5d6281bc'),
-          ListText(
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed(RouteNames.adp);
-            },
-            label: 'Admin Panel',
-          ),
+          UserManager.userInfo['admin'] == 'admin'
+              ? ListText(
+                  onTap: () {
+                    Navigator.of(context).pushReplacementNamed(RouteNames.adp);
+                  },
+                  label: 'Admin Panel',
+                )
+              : const SizedBox(),
           Row(children: const [
             Padding(padding: EdgeInsets.only(left: 30.0)),
             Text('FAVOURITES',
