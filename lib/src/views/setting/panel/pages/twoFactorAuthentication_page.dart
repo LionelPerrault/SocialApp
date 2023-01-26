@@ -6,6 +6,7 @@ import 'package:animated_widgets/widgets/shake_animated_widget.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -25,6 +26,7 @@ class TwoFactorAuthenticationScreenState extends mvc.StateMVC<TwoFactorAuthentic
   // ignore: non_constant_identifier_names
   var setting_security = {};
   late UserController con;
+  bool isEnableTwoFactor = false;
   final TextEditingController _controller = TextEditingController();
   final FocusNode _textNode = FocusNode();
   String verificationCode = '';
@@ -34,6 +36,8 @@ class TwoFactorAuthenticationScreenState extends mvc.StateMVC<TwoFactorAuthentic
     add(widget.con);
     con = controller as UserController;
     super.initState();
+    con.isEnableTwoFactor = UserManager.userInfo['isEnableTwoFactor'] == '' || UserManager.userInfo['isEnableTwoFactor'] == null ? false : true;
+    con.setState(() { });
   }
 
   void onCodeInput(String value) async {

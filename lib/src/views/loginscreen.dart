@@ -47,7 +47,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
       verificationCode = value;
     });
     if (verificationCode.length == 6) {
-      con.loginWithVerificationCode(verificationCode).then((value) => {
+      con.loginWithVerificationCode(verificationCode, context).then((value) => {
             if (!value) {Helper.failAlert('Verification Code is incorrect!')}
           });
     }
