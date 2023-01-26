@@ -128,7 +128,6 @@ class PeopleController extends ControllerMVC {
     if (arr.length < 5 * pagination && arr.length != allUserList.length) {
       int addIndex = 0;
       addIndex += 5 * pagination - arr.length + add as int;
-      print('addIndex$addIndex');
       await getList(index: index, isGetOnly5: isGetOnly5, add: addIndex);
     } else if (arr.length == 5 * pagination ||
         arr.length == allUserList.length) {
@@ -370,7 +369,6 @@ class PeopleController extends ControllerMVC {
       }
       sendFriends = arr1;
     }
-    print(sendFriends.length);
     setState(() {});
   }
 

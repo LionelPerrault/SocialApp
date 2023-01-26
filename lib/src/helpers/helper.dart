@@ -194,7 +194,6 @@ class Helper {
         FirebaseFirestore.instance.collection(onlineStatusField).snapshots();
     stream.listen((event) {
       event.docs.forEach((e) {
-        print(e.data());
       });
     });
   }

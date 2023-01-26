@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:otp/otp.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -40,6 +41,8 @@ class UserController extends ControllerMVC {
   bool isVerify = false;
   bool isSendResetPassword = false;
   bool isLogined = false;
+  bool isEnableTwoFactor = UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
+
   String failLogin = '';
   String failRegister = '';
   String isEmailExist = '';
@@ -204,9 +207,11 @@ class UserController extends ControllerMVC {
         .set({
       ...signUpUserInfo,
       'paymail': paymail,
+      'isEnableTwoFactor': '',
       'avatar': '',
       'isEmailVerify': false,
       'walletAddress': walletAddress,
+      ''
       // 'relysiaEmail': relysiaEmail,
       // 'relysiaPassword': relysiaPassword,
       'paywall': {},
@@ -221,6 +226,7 @@ class UserController extends ControllerMVC {
       'walletAddress': walletAddress,
       // 'relysiaEmail': relysiaEmail,
       // 'relysiaPassword': relysiaPassword,
+      'isEnableTwoFactor': '',
       'password': password,
       'isStarted': 'false',
       'isEmailVerify': false,
@@ -231,6 +237,40 @@ class UserController extends ControllerMVC {
     });
   }
 
+  bool twoFactorAuthenticationChecker(String verificationCode){
+    var code = OTP.generateTOTPCodeString(
+          'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
+          length: 6,
+          interval: 30,
+          algorithm: Algorithm.SHA1,
+          isGoogle: true
+      );
+    if(code == verificationCode) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  Future<bool> enableDisableTwoFactorAuthentication(String verificationCode, String type) async {
+    var codeCheck = await twoFactorAuthenticationChecker(verificationCode);
+    if(codeCheck){
+      var twoFactorData = {
+        'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '',
+      };
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .update({
+            ...twoFactorData
+          });
+      isEnableTwoFactor = (type == 'enable' ? true : false);
+      UserManager.userInfo['isEnableTwoFactor'] = (type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '');
+      setState((){ });
+    }
+    return codeCheck;
+  }
+
   Future<int> getBalance() async {
     if (token == '') {
       var relysiaAuth = await RelysiaManager.authUser(
@@ -238,7 +278,6 @@ class UserController extends ControllerMVC {
       token = relysiaAuth['data']['token'];
     }
     await RelysiaManager.getBalance(token).then((res) => {
-          print('balance is $res'),
           balance = res,
           Helper.balance = balance,
           setState(() {})
@@ -324,6 +363,7 @@ class UserController extends ControllerMVC {
           'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
+        isEnableTwoFactor = j['isEnableTwoFactor'] == '' ? false : true;
         print(user.password);
         await Helper.saveJSONPreference(Helper.userField, {...userInfo});
         await UserManager.getUserInfo();
@@ -447,16 +487,13 @@ class UserController extends ControllerMVC {
   void createRelysiaAccount(context) async {
     relysiaEmail = signUpUserInfo['email'];
     relysiaPassword = signUpUserInfo['password'];
-    print("asdfasdjfalskdfjsiejflskjfeisjdlfkjasldkfjesldkf");
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
-    print('responseData is :${responseData['data']}');
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
-        print(responseData['statusCode']);
         showModal(context, relysiaEmail, relysiaPassword);
         // createRelysiaAccount();
       }
@@ -833,7 +870,6 @@ class UserController extends ControllerMVC {
     }
     await RelysiaManager.payNow(token, payMail, amount, notes).then(
       (value) => {
-        print(value),
         Helper.showToast(value),
         if (value == 'Successfully paid')
           {
