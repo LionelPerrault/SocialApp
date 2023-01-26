@@ -41,7 +41,8 @@ class UserController extends ControllerMVC {
   bool isVerify = false;
   bool isSendResetPassword = false;
   bool isLogined = false;
-  bool isEnableTwoFactor = UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
+  bool isEnableTwoFactor = false;
+  // UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
 
   String failLogin = '';
   String failRegister = '';
@@ -311,14 +312,15 @@ class UserController extends ControllerMVC {
     }
   }
 
-  void loginWithEmail(context, em, pass, isRememberme) async {
+  Future<bool> loginWithEmail(context, em, pass, isRememberme) async {
     if (em == '' || pass == '') {
       failLogin = 'You must fill all field';
       setState(() {});
-      return;
+      return false;
     }
     email = em;
     password = pass;
+    var returnVal = false;
     try {
       isSendLoginedInfo = true;
       if (!email.contains('@')) {
@@ -346,10 +348,11 @@ class UserController extends ControllerMVC {
         failLogin = 'The email you entered does not belong to any account';
         isSendLoginedInfo = false;
         setState(() {});
-        return;
+        return false;
       }
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
+        print('$user...................................43984085394809589308403584905');
         relysiaEmail = user.email;
         relysiaPassword = password;
         isStarted = user.isStarted;
@@ -369,14 +372,18 @@ class UserController extends ControllerMVC {
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
         isEnableTwoFactor = j['isEnableTwoFactor'] == '' ? false : true;
-        print(user.password);
-        await Helper.saveJSONPreference(Helper.userField, {...userInfo});
-        await UserManager.getUserInfo();
-        setState(() {});
-        RouteNames.userName = user.userName;
-        loginRelysia(context);
-        setState(() {});
-        return;
+        if(!isEnableTwoFactor){
+          await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+          await UserManager.getUserInfo();
+          setState(() {});
+          RouteNames.userName = user.userName;
+          loginRelysia(context);
+          setState(() {});
+          return false;
+        }else{
+          returnVal = true;
+          return true;
+        }
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -398,9 +405,24 @@ class UserController extends ControllerMVC {
       }
       isSendLoginedInfo = false;
       setState(() {});
+      return false;
     }
+    return returnVal;
   }
 
+  Future<bool> loginWithVerificationCode(String verificationCode) async {
+    var returnVal = await twoFactorAuthenticationChecker(verificationCode);
+    if(returnVal) {
+      await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+      await UserManager.getUserInfo();
+      setState(() {});
+      RouteNames.userName = userInfo['userName'];
+      loginRelysia(context);
+      setState(() {});
+    }
+    return returnVal;
+  }
+  
   void loginRelysia(context) {
     print("try to login user in relysia....");
     RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
