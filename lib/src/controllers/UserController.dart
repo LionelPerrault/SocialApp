@@ -336,7 +336,6 @@ class UserController extends ControllerMVC {
         RouteNames.userName = user.userName;
         loginRelysia(context);
         setState(() {});
-        print('uid is ' + userInfo['uid']);
         return;
       }
     } on FirebaseAuthException catch (e) {
@@ -456,7 +455,6 @@ class UserController extends ControllerMVC {
     print("asdfasdjfalskdfjsiejflskjfeisjdlfkjasldkfjesldkf");
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
-    print('responseData is :${responseData['data']}');
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();
@@ -483,7 +481,7 @@ class UserController extends ControllerMVC {
             }
           else
             {
-              print('relysiaPassword$relysiaPassword'),
+              print('relysiaPassword:$relysiaPassword'),
               RelysiaManager.authUser(relysiaEmail, relysiaPassword)
                   .then((responseData) => {
                         if (responseData['data'] != null)
