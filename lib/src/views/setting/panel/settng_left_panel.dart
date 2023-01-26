@@ -130,11 +130,11 @@ class SettingsLeftPanel extends StatelessWidget {
                           //   label: 'Manage Sessions',
                           //   icon:
                           //       const Icon(null)),
-                          // ListText(
-                          //   onTap: () => {},
-                          //   label: 'Two-Factor Authentication',
-                          //   icon:
-                          //       const Icon(null)),
+                          ListText(
+                            onTap: () => {onClick('Two-Factor_Authentication')},
+                            label: 'Two-Factor Authentication',
+                            icon:
+                                const Icon(null)),
                         ],
                       )
                     ],

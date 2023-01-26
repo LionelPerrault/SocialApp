@@ -31,7 +31,6 @@ class PostController extends ControllerMVC {
   Future<bool> uploadPicture(String where, String what, String url) async {
     switch (where) {
       case 'group':
-        print(what);
         FirebaseFirestore.instance
             .collection(Helper.groupsField)
             .doc(viewGroupId)

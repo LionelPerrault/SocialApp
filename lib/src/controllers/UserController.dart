@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:otp/otp.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -42,6 +43,9 @@ class UserController extends ControllerMVC {
   bool isVerify = false;
   bool isSendResetPassword = false;
   bool isLogined = false;
+  bool isEnableTwoFactor = false;
+  // UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
+
   String failLogin = '';
   String failRegister = '';
   String isEmailExist = '';
@@ -211,12 +215,14 @@ class UserController extends ControllerMVC {
         .set({
       ...signUpUserInfo,
       'paymail': paymail,
+      'isEnableTwoFactor': '',
       'avatar': '',
       'isEmailVerify': false,
       'walletAddress': walletAddress,
-      // 'relysiaEmail': relysiaEmail,
-      // 'relysiaPassword': relysiaPassword,
-      'paywall': {},
+      ''
+          // 'relysiaEmail': relysiaEmail,
+          // 'relysiaPassword': relysiaPassword,
+          'paywall': {},
       'isStarted': false,
     });
     await Helper.saveJSONPreference(Helper.userField, {
@@ -228,6 +234,7 @@ class UserController extends ControllerMVC {
       'walletAddress': walletAddress,
       // 'relysiaEmail': relysiaEmail,
       // 'relysiaPassword': relysiaPassword,
+      'isEnableTwoFactor': '',
       'password': password,
       'isStarted': 'false',
       'isEmailVerify': false,
@@ -238,18 +245,44 @@ class UserController extends ControllerMVC {
     });
   }
 
+  bool twoFactorAuthenticationChecker(String verificationCode) {
+    var code = OTP.generateTOTPCodeString(
+        'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
+        length: 6, interval: 30, algorithm: Algorithm.SHA1, isGoogle: true);
+    if (code == verificationCode) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> enableDisableTwoFactorAuthentication(
+      String verificationCode, String type) async {
+    var codeCheck = await twoFactorAuthenticationChecker(verificationCode);
+    if (codeCheck) {
+      var twoFactorData = {
+        'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '',
+      };
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .update({...twoFactorData});
+      isEnableTwoFactor = (type == 'enable' ? true : false);
+      UserManager.userInfo['isEnableTwoFactor'] =
+          (type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '');
+      setState(() {});
+    }
+    return codeCheck;
+  }
+
   Future<int> getBalance() async {
     if (token == '') {
       var relysiaAuth = await RelysiaManager.authUser(
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-    await RelysiaManager.getBalance(token).then((res) => {
-          print('balance is $res'),
-          balance = res,
-          Helper.balance = balance,
-          setState(() {})
-        });
+    await RelysiaManager.getBalance(token).then(
+        (res) => {balance = res, Helper.balance = balance, setState(() {})});
     return balance;
   }
 
@@ -277,14 +310,15 @@ class UserController extends ControllerMVC {
     }
   }
 
-  void loginWithEmail(context, em, pass, isRememberme) async {
+  Future<bool> loginWithEmail(context, em, pass, isRememberme) async {
     if (em == '' || pass == '') {
       failLogin = 'You must fill all field';
       setState(() {});
-      return;
+      return false;
     }
     email = em;
     password = pass;
+    var returnVal = false;
     try {
       isSendLoginedInfo = true;
       if (!email.contains('@')) {
@@ -312,10 +346,12 @@ class UserController extends ControllerMVC {
         failLogin = 'The email you entered does not belong to any account';
         isSendLoginedInfo = false;
         setState(() {});
-        return;
+        return false;
       }
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
+        print(
+            '$user...................................43984085394809589308403584905');
         relysiaEmail = user.email;
         relysiaPassword = password;
         isStarted = user.isStarted;
@@ -334,15 +370,19 @@ class UserController extends ControllerMVC {
           'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
-        print(user.password);
-        await Helper.saveJSONPreference(Helper.userField, {...userInfo});
-        await UserManager.getUserInfo();
-        setState(() {});
-        RouteNames.userName = user.userName;
-        loginRelysia(context);
-        setState(() {});
-        print('uid is ' + userInfo['uid']);
-        return;
+        isEnableTwoFactor = j['isEnableTwoFactor'] == '' ? false : true;
+        if (!isEnableTwoFactor) {
+          await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+          await UserManager.getUserInfo();
+          setState(() {});
+          RouteNames.userName = user.userName;
+          loginRelysia(context);
+          setState(() {});
+          return false;
+        } else {
+          returnVal = true;
+          return true;
+        }
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -364,7 +404,22 @@ class UserController extends ControllerMVC {
       }
       isSendLoginedInfo = false;
       setState(() {});
+      return false;
     }
+    return returnVal;
+  }
+
+  Future<bool> loginWithVerificationCode(String verificationCode) async {
+    var returnVal = await twoFactorAuthenticationChecker(verificationCode);
+    if (returnVal) {
+      await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+      await UserManager.getUserInfo();
+      setState(() {});
+      RouteNames.userName = userInfo['userName'];
+      loginRelysia(context);
+      setState(() {});
+    }
+    return returnVal;
   }
 
   void loginRelysia(context) {
@@ -458,10 +513,8 @@ class UserController extends ControllerMVC {
   void createRelysiaAccount(context) async {
     relysiaEmail = signUpUserInfo['email'];
     relysiaPassword = signUpUserInfo['password'];
-    print("asdfasdjfalskdfjsiejflskjfeisjdlfkjasldkfjesldkf");
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
-    print('responseData is :${responseData['data']}');
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();
@@ -487,7 +540,7 @@ class UserController extends ControllerMVC {
             }
           else
             {
-              print('relysiaPassword$relysiaPassword'),
+              print('relysiaPassword:$relysiaPassword'),
               RelysiaManager.authUser(relysiaEmail, relysiaPassword)
                   .then((responseData) => {
                         if (responseData['data'] != null)
@@ -846,7 +899,6 @@ class UserController extends ControllerMVC {
     }
     await RelysiaManager.payNow(token, payMail, amount, notes).then(
       (value) => {
-        print(value),
         Helper.showToast(value),
         if (value == 'Successfully paid')
           {
