@@ -143,122 +143,260 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
               ),
             ],
           ),
-          Row(
-            children: [
-              Expanded(
-                flex: 200,
-                child: Container(
-                  width: 200,
-                  child: customDropDownButton(
-                    title: 'Category',
-                    width: 200,
-                    item: productCategory,
-                    onChange: (value) {
-                      productInfo['productCategory'] = value;
-                      setState(() {});
-                    },
-                    context: context,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 100,
-                child: Container(
-                  width: 100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(padding: EdgeInsets.only(top: 20)),
-                      Row(
-                        children: const [
-                          Text(
-                            'Offer',
-                            style: TextStyle(
-                                color: Color.fromRGBO(82, 95, 127, 1),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
+          SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+              ? Row(
+                  children: [
+                    Expanded(
+                      flex: 200,
+                      child: Container(
+                        width: 200,
+                        child: customDropDownButton(
+                          title: 'Category',
+                          width: 200.0,
+                          item: productCategory,
+                          onChange: (value) {
+                            productInfo['productCategory'] = value;
+                            setState(() {});
+                          },
+                          context: context,
+                        ),
                       ),
-                      Container(
-                          width: 100,
-                          child: Row(
-                            children: [
-                              Transform.scale(
-                                  scale: 0.7,
-                                  child: Checkbox(
-                                    fillColor: MaterialStateProperty.all<Color>(
-                                        Colors.black),
-                                    checkColor: Colors.blue,
-                                    activeColor:
-                                        const Color.fromRGBO(0, 123, 255, 1),
-                                    value: offer1,
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0))),
-                                    onChanged: (value) {
-                                      print(value);
-                                      offer1 = value!;
-                                      offer2 = !offer1;
-                                      productInfo['productOffer'] = 'Sell';
-                                      setState(() {});
-                                    },
-                                  )),
-                              Text('Sell')
-                            ],
-                          )),
-                      Container(
-                          width: 85,
-                          child: Row(
-                            children: [
-                              Transform.scale(
-                                  scale: 0.7,
-                                  child: Checkbox(
-                                    fillColor: MaterialStateProperty.all<Color>(
-                                        Colors.black),
-                                    checkColor: Colors.blue,
-                                    activeColor:
-                                        const Color.fromRGBO(0, 123, 255, 1),
-                                    value: offer2,
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0))),
-                                    onChanged: (value) {
-                                      offer2 = value!;
-                                      offer1 = !offer2;
-                                      productInfo['productOffer'] = 'Rent';
-                                      setState(() {});
-                                    },
-                                  )),
-                              Text('Rent')
-                            ],
-                          )),
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      flex: 100,
+                      child: Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(padding: EdgeInsets.only(top: 20)),
+                            Row(
+                              children: const [
+                                Text(
+                                  'Offer',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(82, 95, 127, 1),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            Container(
+                                width: 85,
+                                child: Row(
+                                  children: [
+                                    Transform.scale(
+                                        scale: 0.7,
+                                        child: Checkbox(
+                                          fillColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.black),
+                                          checkColor: Colors.blue,
+                                          activeColor: const Color.fromRGBO(
+                                              0, 123, 255, 1),
+                                          value: offer1,
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0))),
+                                          onChanged: (value) {
+                                            print(value);
+                                            offer1 = value!;
+                                            offer2 = !offer1;
+                                            productInfo['productOffer'] =
+                                                'Sell';
+                                            setState(() {});
+                                          },
+                                        )),
+                                    Text('Sell')
+                                  ],
+                                )),
+                            Container(
+                                width: 85,
+                                child: Row(
+                                  children: [
+                                    Transform.scale(
+                                        scale: 0.7,
+                                        child: Checkbox(
+                                          fillColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.black),
+                                          checkColor: Colors.blue,
+                                          activeColor: const Color.fromRGBO(
+                                              0, 123, 255, 1),
+                                          value: offer2,
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0))),
+                                          onChanged: (value) {
+                                            offer2 = value!;
+                                            offer1 = !offer2;
+                                            productInfo['productOffer'] =
+                                                'Rent';
+                                            setState(() {});
+                                          },
+                                        )),
+                                    Text('Rent')
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 100,
+                      child: Container(
+                        width: 100,
+                        child: customDropDownButton(
+                          title: 'Status',
+                          width: 100.0,
+                          item: [
+                            {'value': 'New', 'title': 'New'},
+                            {'value': 'Used', 'title': 'Used'}
+                          ],
+                          onChange: (value) {
+                            productInfo['productStatus'] = value;
+                            setState(() {});
+                          },
+                          context: context,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 400,
+                            child: customDropDownButton(
+                              title: 'Category',
+                              width: 400.0,
+                              item: productCategory,
+                              onChange: (value) {
+                                productInfo['productCategory'] = value;
+                                setState(() {});
+                              },
+                              context: context,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 400,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 20)),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                  child: Text(
+                                    'Offer',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(82, 95, 127, 1),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                Container(
+                                    width: 85,
+                                    child: Row(
+                                      children: [
+                                        Transform.scale(
+                                            scale: 0.7,
+                                            child: Checkbox(
+                                              fillColor: MaterialStateProperty
+                                                  .all<Color>(Colors.black),
+                                              checkColor: Colors.blue,
+                                              activeColor: const Color.fromRGBO(
+                                                  0, 123, 255, 1),
+                                              value: offer1,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5.0))),
+                                              onChanged: (value) {
+                                                print(value);
+                                                offer1 = value!;
+                                                offer2 = !offer1;
+                                                productInfo['productOffer'] =
+                                                    'Sell';
+                                                setState(() {});
+                                              },
+                                            )),
+                                        Text('Sell')
+                                      ],
+                                    )),
+                                Container(
+                                    width: 85,
+                                    child: Row(
+                                      children: [
+                                        Transform.scale(
+                                            scale: 0.7,
+                                            child: Checkbox(
+                                              fillColor: MaterialStateProperty
+                                                  .all<Color>(Colors.black),
+                                              checkColor: Colors.blue,
+                                              activeColor: const Color.fromRGBO(
+                                                  0, 123, 255, 1),
+                                              value: offer2,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5.0))),
+                                              onChanged: (value) {
+                                                offer2 = value!;
+                                                offer1 = !offer2;
+                                                productInfo['productOffer'] =
+                                                    'Rent';
+                                                setState(() {});
+                                              },
+                                            )),
+                                        Text('Rent')
+                                      ],
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 400,
+                            child: customDropDownButton(
+                              title: 'Status',
+                              width: 400.0,
+                              item: [
+                                {'value': 'New', 'title': 'New'},
+                                {'value': 'Used', 'title': 'Used'}
+                              ],
+                              onChange: (value) {
+                                productInfo['productStatus'] = value;
+                                setState(() {});
+                              },
+                              context: context,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              Expanded(
-                flex: 100,
-                child: Container(
-                  width: 100,
-                  child: customDropDownButton(
-                    title: 'Status',
-                    width: 100,
-                    item: [
-                      {'value': 'New', 'title': 'New'},
-                      {'value': 'Used', 'title': 'Used'}
-                    ],
-                    onChange: (value) {
-                      productInfo['productStatus'] = value;
-                      setState(() {});
-                    },
-                    context: context,
-                  ),
-                ),
-              ),
-            ],
-          ),
           Row(
             children: [
               Expanded(
@@ -721,7 +859,7 @@ Widget customInput({title, onChange, controller}) {
   );
 }
 
-Widget titleAndsubtitleInput(title, height, line, onChange) {
+Widget titleAndsubtitleInput(title, double height, line, onChange) {
   return Container(
     margin: const EdgeInsets.only(top: 15),
     child: Column(
@@ -766,7 +904,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
 }
 
 Widget customDropDownButton(
-    {title, width, item = const [], onChange, context}) {
+    {title, double width = 0.0, item = const [], onChange, context}) {
   List items = item;
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -54,19 +55,33 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                 ? DayTimeM(
                     time: time, username: UserManager.userInfo['fullName'])
                 : Container(),
-            loadingFlag
-                ? const SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: CircularProgressIndicator(
-                      color: Colors.grey,
-                    ),
-                  )
-                : Column(
-                    children: con.posts
-                        .map((product) => PostCell(postInfo: product))
-                        .toList(),
-                  ),
+            Container(
+              width: SizeConfig(context).screenWidth < 600
+                  ? SizeConfig(context).screenWidth
+                  : 600,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  loadingFlag
+                      ? const SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : Expanded(
+                          child: Column(
+                            children: con.posts
+                                .map((product) => PostCell(postInfo: product))
+                                .toList(),
+                          ),
+                        )
+                ],
+              ),
+            )
           ],
         ));
   }

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../models/setting.dart';
@@ -72,6 +74,7 @@ class Helper {
   static var pages = 'staticContent';
   static var terms = 'Terms';
   static var privacy = 'Privacy';
+  static var about = 'About';
   static var balance = 0;
   static var message = 'messages';
   static var newMessageSearch = 'userName';
@@ -244,6 +247,14 @@ class Helper {
     return str['content'] as String;
   }
 
+  static Future<String> getAbout() async {
+    var str = await FirebaseFirestore.instance
+        .collection(Helper.pages)
+        .doc(Helper.about)
+        .get();
+    return str['content'] as String;
+  }
+
   static String formatDate(String d) {
     var date = DateTime.parse(d);
     String trDate = '';
@@ -263,5 +274,16 @@ class Helper {
       trDate = '${(difference.inDays / 30 as String).split('.')[0]} days ago';
     }
     return trDate;
+  }
+
+  static dynamic changeTimeType({var d, bool type = true}) {
+    var notifyTime = DateTime.parse(d.toDate().toString());
+    var formattedNotifyTime =
+        DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+    if (type) {
+      return formattedNotifyTime;
+    } else {
+      return DateTime.parse(formattedNotifyTime).millisecondsSinceEpoch;
+    }
   }
 }

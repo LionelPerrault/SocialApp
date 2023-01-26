@@ -122,11 +122,12 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    
+
     passworkdValidation = await passworkdValidate(password);
 
-    if(!passworkdValidation){
-      failRegister = 'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
+    if (!passworkdValidation) {
+      failRegister =
+          'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
       isSendRegisterInfo = false;
       setState(() {});
       return;
@@ -172,16 +173,15 @@ class UserController extends ControllerMVC {
     }
     createRelysiaAccount(cont);
     setState(() {});
-    return;
   }
 
-  bool passworkdValidate(String value){
-    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+  bool passworkdValidate(String value) {
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(value);
   }
 
-  
   String createActivationCode() {
     String code = ""; // Timestamp.now.toString();
     for (int i = 0; i < 13; i++) {
@@ -199,7 +199,9 @@ class UserController extends ControllerMVC {
   }
 
   Future<void> registerUserInfo() async {
+    print('start register');
     var uuid = await sendEmailVeryfication();
+    print('in start register, uuid is $uuid');
     signUpUserInfo.removeWhere((key, value) => key == 'password');
     await FirebaseFirestore.instance
         .collection(Helper.userField)
@@ -327,11 +329,6 @@ class UserController extends ControllerMVC {
           email = getInfo.email;
         } else {
           failLogin = 'The username you entered does not belong to any account';
-          // RelysiaManager.authUser(relysiaEmail, relysiaPassword)
-          //     .then((res) async => {
-          //           if (res['data'] == null)
-          //             {failLogin = 'Not access the net', setState(() {})}
-          //         });
           setState(() {});
         }
       }
@@ -341,8 +338,16 @@ class UserController extends ControllerMVC {
       var uid = userCredential.user!.uid;
       failLogin = '';
       setState(() {});
+      print('where r u');
       QuerySnapshot<TokenLogin> querySnapshot =
           await Helper.authdata.where('email', isEqualTo: email).get();
+      print(querySnapshot.size);
+      if (querySnapshot.size == 0) {
+        failLogin = 'The email you entered does not belong to any account';
+        isSendLoginedInfo = false;
+        setState(() {});
+        return;
+      }
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
         relysiaEmail = user.email;
@@ -371,6 +376,7 @@ class UserController extends ControllerMVC {
         RouteNames.userName = user.userName;
         loginRelysia(context);
         setState(() {});
+        print('uid is ' + userInfo['uid']);
         return;
       }
     } on FirebaseAuthException catch (e) {
@@ -472,7 +478,7 @@ class UserController extends ControllerMVC {
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
-    return 'uuid';
+    return uuid;
   }
 
   Future<String> reSendEmailVeryfication() async {
@@ -494,6 +500,8 @@ class UserController extends ControllerMVC {
         createEmail();
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
+        print(responseData['statusCode']);
+        Helper.showToast(responseData['data']['msg']);
         showModal(context, relysiaEmail, relysiaPassword);
         // createRelysiaAccount();
       }
@@ -653,6 +661,7 @@ class UserController extends ControllerMVC {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       uuid = userCredential.user!.uid;
+      print('uuid: $uuid');
       var snapshot = await FirebaseFirestore.instance
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
@@ -696,6 +705,7 @@ class UserController extends ControllerMVC {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         uuid = userCredential.user!.uid;
+        print('this is save account uuid: $uuid');
       } else {}
       isSettingAction = false;
       setState(() {});

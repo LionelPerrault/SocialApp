@@ -114,7 +114,7 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.all(3),
-              backgroundColor: Colors.black,
+              backgroundColor: const Color.fromARGB(255, 33, 37, 41),
               // elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),

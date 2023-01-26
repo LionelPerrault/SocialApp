@@ -44,6 +44,7 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
     if (basicPageFlag = true) {
       settingPage = 'basic';
       setState(() {});
+      return;
     }
     super.initState();
   }
@@ -138,8 +139,9 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                 // }
                                 print('1setting page is: $settingPage');
                                 settingPage = value;
-                                setState(() {});
                                 basicPageFlag = false;
+                                setState(() {});
+                                return;
                               }),
                         //    : SizedBox(width: 0),
                         Expanded(

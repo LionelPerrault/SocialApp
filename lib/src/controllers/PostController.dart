@@ -887,7 +887,7 @@ class PostController extends ControllerMVC {
       'productAdmin': {
         'uid': UserManager.userInfo['uid'],
       },
-      'productDate': DateTime.now().toString(),
+      'productDate': FieldValue.serverTimestamp(),
       'productPost': false,
       'productMarkAsSold': false,
       'productTimeline': true,

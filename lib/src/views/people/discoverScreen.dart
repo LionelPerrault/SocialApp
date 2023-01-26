@@ -169,12 +169,32 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                           Container(
                                             padding: EdgeInsets.only(
                                                 left: 10, top: 5),
-                                            child: Text(
-                                              '${e.value['firstName']} ${e.value['lastName']}',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w900,
-                                                  fontSize: 11),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 11),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text:
+                                                          '${e.value['firstName']} ${e.value['lastName']}',
+                                                      style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 11),
+                                                      recognizer:
+                                                          TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              print(
+                                                                  'visit profile');
+                                                              Navigator
+                                                                  .pushReplacementNamed(
+                                                                      context,
+                                                                      '/${e.value['userName']}');
+                                                            })
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           Flexible(
