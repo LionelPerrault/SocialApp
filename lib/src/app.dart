@@ -59,7 +59,6 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      print(3333);
     } else {
       Helper.makeOffline();
     }

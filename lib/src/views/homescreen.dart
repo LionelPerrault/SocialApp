@@ -11,6 +11,7 @@ import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
+import 'package:otp/otp.dart';
 
 import '../utils/size_config.dart';
 
@@ -52,6 +53,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
       duration: const Duration(milliseconds: 150),
     );
     triggerEmailVerify();
+    test();
   }
 
   late UserController con;
@@ -60,6 +62,29 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
     setState(() {
       showSearch = true;
     });
+  }
+
+  void test() {
+    // var otpStream = Stream<dynamic>.periodic(
+    //   const Duration(seconds: 0),
+    //   (val) => OTP.generateTOTPCodeString(
+    //       'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
+    //       length: 6,
+    //       interval: 30,
+    //       algorithm: Algorithm.SHA1,
+    //       isGoogle: true
+    //   )
+    // ).asBroadcastStream();
+
+    final dd = OTP.generateTOTPCodeString(
+          'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
+          length: 6,
+          interval: 30,
+          algorithm: Algorithm.SHA1,
+          isGoogle: true
+      );
+
+    print('${dd}..................kkkkkkkkkkkkkkkkkkkklllllllllllllllllllllll');
   }
 
   void clickMenu() {

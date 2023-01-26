@@ -5,12 +5,10 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/widget/list_text.dart';
 import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -201,37 +199,31 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                       const Padding(
                         padding: EdgeInsets.only(left: 5),
                       ),
-                      e['add']
-                          ? Text(e['title'],
-                              style: const TextStyle(
-                                  decoration: TextDecoration.lineThrough))
-                          : ListText(
-                              label: e['title'],
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, RouteNames.settings);
-                              },
-                            )
+                      Text(
+                        e['title'],
+                        style: e['add']
+                            ? const TextStyle(
+                                decoration: TextDecoration.lineThrough)
+                            : const TextStyle(),
+                      )
                     ],
-                    // children: e['add']
-                    //     ? [
-                    //         const Icon(Icons.check, size: 15),
-                    //         const Padding(
-                    //           padding: EdgeInsets.only(left: 5),
-                    //         ),
-                    //         Text(e['title'],
-                    //             style: const TextStyle(
-                    //                 decoration: TextDecoration.lineThrough))
-                    //       ]
-                    //     : [
-                    //         const Icon(Icons.add, size: 15),
-                    //         const Padding(
-                    //           padding: EdgeInsets.only(left: 5),
-                    //         ),
-                    //         ListText(onTap: {
-                    //           Navigator.pushReplacementNamed(context, RouteNames.settings);
-                    //         }, label: e['title'])
-                    //       ]
+                    // children: [
+                    //   Icon(e['add'] ? Icons.check : Icons.add, size: 15),
+                    //   const Padding(
+                    //     padding: EdgeInsets.only(left: 5),
+                    //   ),
+                    //   e['add']
+                    //       ? Text(e['title'],
+                    //           style: const TextStyle(
+                    //               decoration: TextDecoration.lineThrough))
+                    //       : ListText(
+                    //           label: e['title'],
+                    //           onTap: () {
+                    //             Navigator.pushReplacementNamed(
+                    //                 context, RouteNames.settings);
+                    //           },
+                    //         )
+                    // ],
                   )))
               .toList(),
         ));

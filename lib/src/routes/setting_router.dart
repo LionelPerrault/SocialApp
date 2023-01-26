@@ -15,6 +15,7 @@ import 'package:shnatter/src/views/setting/panel/pages/security_sessions.dart';
 import 'package:shnatter/src/views/setting/panel/pages/shnatter_token.dart';
 import 'package:shnatter/src/views/setting/panel/pages/verification.dart';
 import 'package:shnatter/src/views/setting/panel/pages/account_page.dart';
+import 'package:shnatter/src/views/setting/panel/pages/twoFactorAuthentication_page.dart';
 
 class SettingRouter {
   SettingRouter(String settingPage);
@@ -54,6 +55,8 @@ class SettingRouter {
         return SettingInfoScreen();
       case 'delete':
         return SettingDeleteScreen();
+      case 'Two-Factor_Authentication':
+        return TwoFactorAuthenticationScreen();
     }
   }
 }
