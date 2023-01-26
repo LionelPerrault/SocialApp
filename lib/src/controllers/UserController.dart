@@ -368,7 +368,7 @@ class UserController extends ControllerMVC {
           'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
-        isEnableTwoFactor = j['isEnableTwoFactor'] == '' ? false : true;
+        isEnableTwoFactor = j['isEnableTwoFactor'] == '' || j['isEnableTwoFactor'] == null ? false : true;
         if (!isEnableTwoFactor) {
           await Helper.saveJSONPreference(Helper.userField, {...userInfo});
           await UserManager.getUserInfo();
