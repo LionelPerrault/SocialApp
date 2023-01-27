@@ -16,36 +16,72 @@ class MyPrimaryButton extends StatelessWidget {
   Color color;
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          shadowColor: Colors.greenAccent,
-          elevation: 3,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          minimumSize: miniumSize,
-        ),
-        onPressed: () {
-          onPressed();
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            isShowProgressive
-                ? const SizedBox(
-                    width: 10,
-                    height: 10.0,
-                    child: CircularProgressIndicator(
-                      color: Colors.grey,
-                    ),
-                  )
-                : Container(),
-            isShowProgressive
-                ? const Padding(padding: EdgeInsets.only(left: 10))
-                : Container(),
-            Text(buttonName,
-                style: const TextStyle(color: Colors.black, fontSize: 11)),
-          ],
-        ));
+    return isShowProgressive
+        ? InkWell(
+            onLongPress: null,
+            onDoubleTap: null,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color,
+                  shadowColor: Colors.greenAccent,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  minimumSize: miniumSize,
+                ),
+                onPressed: () {
+                  onPressed();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    isShowProgressive
+                        ? const SizedBox(
+                            width: 10,
+                            height: 10.0,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey,
+                            ),
+                          )
+                        : Container(),
+                    isShowProgressive
+                        ? const Padding(padding: EdgeInsets.only(left: 10))
+                        : Container(),
+                    Text(buttonName,
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 11)),
+                  ],
+                )))
+        : ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: color,
+              shadowColor: Colors.greenAccent,
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              minimumSize: miniumSize,
+            ),
+            onPressed: () {
+              onPressed();
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                isShowProgressive
+                    ? const SizedBox(
+                        width: 10,
+                        height: 10.0,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )
+                    : Container(),
+                isShowProgressive
+                    ? const Padding(padding: EdgeInsets.only(left: 10))
+                    : Container(),
+                Text(buttonName,
+                    style: const TextStyle(color: Colors.black, fontSize: 11)),
+              ],
+            ));
   }
 }
