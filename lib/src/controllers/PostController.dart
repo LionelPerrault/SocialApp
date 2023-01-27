@@ -1114,7 +1114,7 @@ class PostController extends ControllerMVC {
   var productLikes = {};
   saveProductLikes(productId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment.doc(productId).get();
+    var snapshot = await Helper.postLikeComment.doc(productId).get();
     var a = [];
     if (snapshot.data() == null) {
       a.add({'userName': userInfo['userName'], 'likes': likes});
@@ -1135,13 +1135,13 @@ class PostController extends ControllerMVC {
         a.add({'userName': arr[i]['userName'], 'likes': s});
       }
     }
-    await Helper.productLikeComment.doc(productId).set({'likes': a});
+    await Helper.postLikeComment.doc(productId).set({'likes': a});
   }
 
   var productLikesCount = {};
   getProductLikes() async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment.get();
+    var snapshot = await Helper.postLikeComment.get();
     for (int i = 0; i < snapshot.docs.length; i++) {
       productLikesCount[snapshot.docs[i].id] = [];
       for (int j = 0; j < snapshot.docs[i]['likes'].length; j++) {
@@ -1173,7 +1173,7 @@ class PostController extends ControllerMVC {
   }
 
   saveComment(productId, data, type) async {
-    var snapshot = await Helper.productLikeComment.get();
+    var snapshot = await Helper.postLikeComment.get();
     var userManager = UserManager.userInfo;
     var existId = false;
     for (int i = 0; i < snapshot.docs.length; i++) {
@@ -1183,9 +1183,9 @@ class PostController extends ControllerMVC {
       }
     }
     if (!existId) {
-      await Helper.productLikeComment.doc(productId).set({'likes': []});
+      await Helper.postLikeComment.doc(productId).set({'likes': []});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc()
@@ -1202,7 +1202,7 @@ class PostController extends ControllerMVC {
 
   saveLikesComment(productId, commentId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1221,7 +1221,7 @@ class PostController extends ControllerMVC {
       }
       a.add({'userName': arr[i]['userName'], 'likes': s});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1233,7 +1233,7 @@ class PostController extends ControllerMVC {
   var commentLikesCount = {};
   getComment(productId) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .orderBy('timeStamp', descending: true)
@@ -1279,7 +1279,7 @@ class PostController extends ControllerMVC {
 
   saveReply(productId, commentId, data, type) async {
     var userInfo = UserManager.userInfo;
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1298,12 +1298,12 @@ class PostController extends ControllerMVC {
   var replyLikesCount = {};
   getReply(productId) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .get();
     for (int i = 0; i < snapshot.docs.length; i++) {
-      var replies = await Helper.productLikeComment
+      var replies = await Helper.postLikeComment
           .doc(productId)
           .collection('comments')
           .doc(snapshot.docs[i].id)
@@ -1351,7 +1351,7 @@ class PostController extends ControllerMVC {
 
   saveLikesReply(productId, commentId, replyId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1372,7 +1372,7 @@ class PostController extends ControllerMVC {
       }
       a.add({'userName': arr[i]['userName'], 'likes': s});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
