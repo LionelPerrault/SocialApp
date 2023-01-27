@@ -28,6 +28,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   bool check2 = false;
   late UserController con;
   final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +39,15 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   var signUpUserInfo = {};
   String dropdownValue = 'Male';
   var isObscure = true;
+  var _isButtonDisabled = false;
+
   @override
+  void buttonDisableFlag() {
+    setState(() {
+      _isButtonDisabled = true;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
