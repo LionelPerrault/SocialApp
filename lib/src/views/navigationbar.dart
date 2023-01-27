@@ -14,6 +14,7 @@ import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
 import 'package:shnatter/src/views/box/notification.dart';
+import 'package:shnatter/src/views/setting/settings_main.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../utils/size_config.dart';
@@ -57,6 +58,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   var peopleCon = PeopleController();
   late PostController postCon;
   var noti = ShnatterNotificationState();
+  var settingMainScreen = SettingMainScreenState();
   var badgeCount = [];
   String userAvatar = '';
   //
@@ -198,7 +200,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   }
 
   void onSettingClicked() {
+    settingMainScreen.settingPage = 'account_page';
     Navigator.pushReplacementNamed(context, RouteNames.settings);
+    setState(() {});
+    print(settingMainScreen.settingPage);
+    print(settingMainScreen.basicPageFlag);
   }
 
   void onHomeClicked() {

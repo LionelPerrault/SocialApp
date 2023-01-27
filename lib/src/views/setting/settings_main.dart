@@ -10,11 +10,11 @@ import '../../utils/size_config.dart';
 import '../box/notification.dart';
 
 class SettingMainScreen extends StatefulWidget {
-  SettingMainScreen({Key? key})
+  SettingMainScreen({Key? key, this.pagePara = 'account_page'})
       : con = HomeController(),
         super(key: key);
   final HomeController con;
-
+  String pagePara;
   @override
   State createState() => SettingMainScreenState();
 }
@@ -28,9 +28,10 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var shnattertokenPageFlag = false;
-  var basicPageFlag = false;
   String settingPage = 'account_page';
+  var basicPageFlag = false;
+
+  // ignore: annotate_overrides
 
   @override
   void initState() {
@@ -41,12 +42,13 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    if (basicPageFlag = true) {
-      settingPage = 'basic';
-      setState(() {});
-      return;
-    }
+    basicPageFlag == false
+        ? settingPage = 'account_page'
+        : settingPage = 'basic';
+    setState(() {});
+
     super.initState();
+    return;
   }
 
   late HomeController con;
@@ -139,9 +141,7 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
                                 // }
                                 print('1setting page is: $settingPage');
                                 settingPage = value;
-                                basicPageFlag = false;
                                 setState(() {});
-                                return;
                               }),
                         //    : SizedBox(width: 0),
                         Expanded(
@@ -266,7 +266,5 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
     // ignore: dead_code
     // settingPage = 'account_page';
     // ignore: dead_code
-    basicPageFlag = false;
-    setState(() {});
   }
 }
