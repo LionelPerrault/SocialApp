@@ -46,6 +46,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     super.initState();
     product = widget.data['data'];
     productId = widget.data['id'];
+    con.formatDate(product['productDate']);
   }
 
   buyProduct() async {
@@ -230,15 +231,15 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             child: Container(
           margin: const EdgeInsets.only(top: 30, bottom: 30),
           width: 600,
-          padding: EdgeInsets.only(top: 20),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.only(top: 20),
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 20, right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -308,10 +309,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: Helper.formatDate(
-                                                  Helper.changeTimeType(
-                                                      d: product[
-                                                          'productDate'])),
+                                              text: '',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 10,
