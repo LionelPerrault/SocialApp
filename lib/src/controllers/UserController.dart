@@ -94,7 +94,6 @@ class UserController extends ControllerMVC {
   void validate(cont, info) async {
     print("------1-------- start validate");
     isSendRegisterInfo = true;
-    setState(() {});
     var fill = true;
     bool passworkdValidation = false;
     var validation = [
@@ -178,6 +177,7 @@ class UserController extends ControllerMVC {
       return;
     }
     createRelysiaAccount(cont);
+    setState(() {});
   }
 
   bool passworkdValidate(String value) {
@@ -204,6 +204,7 @@ class UserController extends ControllerMVC {
   }
 
   Future<void> registerUserInfo() async {
+    setState(() {});
     print('start register');
     var uuid = await sendEmailVeryfication();
     signUpUserInfo.removeWhere((key, value) => key == 'password');
@@ -547,6 +548,9 @@ class UserController extends ControllerMVC {
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();
+        isSendRegisterInfo = true;
+        failRegister = '';
+        setState(() {});
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
         print(responseData['statusCode']);
