@@ -2,11 +2,13 @@
 
 import 'dart:async';
 import 'dart:math';
+import 'package:animated_widgets/generated/i18n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:otp/otp.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import '../helpers/helper.dart';
@@ -42,7 +44,6 @@ class UserController extends ControllerMVC {
   bool isSendResetPassword = false;
   bool isLogined = false;
   bool isEnableTwoFactor = false;
-  // UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
 
   String failLogin = '';
   String failRegister = '';
@@ -57,6 +58,11 @@ class UserController extends ControllerMVC {
   var responseData;
   var context;
   var signUpUserInfo = {};
+  var transactionData = [];
+  var nextPageTokenCount = '0';
+  final RoundedLoadingButtonController btnController =
+      RoundedLoadingButtonController();
+
   @override
   Future<bool> initAsync() async {
     //
@@ -268,8 +274,8 @@ class UserController extends ControllerMVC {
           .doc(UserManager.userInfo['uid'])
           .update({...twoFactorData});
       isEnableTwoFactor = (type == 'enable' ? true : false);
-      UserManager.userInfo['isEnableTwoFactor'] =
-          (type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '');
+      // await Helper.saveJSONPreference(Helper.userField, {...{'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : ''}});
+      // await UserManager.getUserInfo();
       setState(() {});
     }
     return codeCheck;
@@ -284,6 +290,35 @@ class UserController extends ControllerMVC {
     await RelysiaManager.getBalance(token).then(
         (res) => {balance = res, Helper.balance = balance, setState(() {})});
     return balance;
+  }
+
+  void getTransactionHistory(nextPageToken) async {
+    print(email);
+    await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
+      (res) async => {
+        if (res['success'] == true)
+          {
+            transactionData = res['history'],
+            nextPageTokenCount = res['nextPageToken'],
+            setState(() {}),
+          }
+        else
+          {
+            await RelysiaManager.authUser(email, password).then(
+              (res) async => {
+                if (res['data'] != null)
+                  {
+                    if (res['statusCode'] == 200)
+                      {
+                        token = res['data']['token'],
+                        getTransactionHistory(nextPageToken),
+                      }
+                  }
+              },
+            )
+          }
+      },
+    );
   }
 
   void getWalletFromPref(context) async {}
@@ -368,7 +403,10 @@ class UserController extends ControllerMVC {
           'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
         };
-        isEnableTwoFactor = j['isEnableTwoFactor'] == '' ? false : true;
+        isEnableTwoFactor =
+            j['isEnableTwoFactor'] == '' || j['isEnableTwoFactor'] == null
+                ? false
+                : true;
         if (!isEnableTwoFactor) {
           await Helper.saveJSONPreference(Helper.userField, {...userInfo});
           await UserManager.getUserInfo();
@@ -378,6 +416,7 @@ class UserController extends ControllerMVC {
           setState(() {});
           return false;
         } else {
+          setState(() {});
           returnVal = true;
           return true;
         }
@@ -407,13 +446,13 @@ class UserController extends ControllerMVC {
     return returnVal;
   }
 
-  Future<bool> loginWithVerificationCode(String verificationCode) async {
+  Future<bool> loginWithVerificationCode(String verificationCode, context) async {
     var returnVal = await twoFactorAuthenticationChecker(verificationCode);
     if (returnVal) {
       await Helper.saveJSONPreference(Helper.userField, {...userInfo});
       await UserManager.getUserInfo();
       setState(() {});
-      RouteNames.userName = userInfo['userName'];
+      RouteNames.userName = UserManager.userInfo['userName'];
       loginRelysia(context);
       setState(() {});
     }
@@ -824,34 +863,37 @@ class UserController extends ControllerMVC {
     setState(() {});
     try {
       var userManager = UserManager.userInfo;
-      await RelysiaManager.deleteUser(token).then((value) async => {
-            if (value == 1)
-              {
-                Helper.showToast("Success"),
-              }
-            else if (value == 2)
-              {
-                await RelysiaManager.authUser(email, password)
-                    .then((res) async => {
-                          if (res["data"] != null)
-                            {
-                              if (res['statusCode'] == 200)
-                                {
-                                  token = res['data']['token'],
-                                  await RelysiaManager.deleteUser(token),
-                                }
-                              else
-                                {
-                                  Helper.showToast(res['data']['msg']),
-                                }
-                            }
-                          else
-                            {
-                              Helper.showToast(res['data']),
-                            }
-                        })
-              }
-          });
+      await RelysiaManager.deleteUser(token).then(
+        (value) async => {
+          if (value == 1)
+            {
+              Helper.showToast("Success"),
+            }
+          else if (value == 2)
+            {
+              await RelysiaManager.authUser(email, password).then(
+                (res) async => {
+                  if (res["data"] != null)
+                    {
+                      if (res['statusCode'] == 200)
+                        {
+                          token = res['data']['token'],
+                          await RelysiaManager.deleteUser(token),
+                        }
+                      else
+                        {
+                          Helper.showToast(res['data']['msg']),
+                        }
+                    }
+                  else
+                    {
+                      Helper.showToast(res['data']),
+                    }
+                },
+              ),
+            }
+        },
+      );
       var snapshot = await FirebaseFirestore.instance
           .collection(Helper.userField)
           .where('userName', isEqualTo: userManager['userName'])

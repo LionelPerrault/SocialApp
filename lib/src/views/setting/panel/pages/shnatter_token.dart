@@ -21,23 +21,23 @@ class SettingShnatterTokenScreen extends StatefulWidget {
 
 class Employee {
   /// Creates the employee class with required details.
-  Employee(this.id, this.name, this.username, this.joined, this.activated,
-      this.balance, this.actions);
+  Employee(this.id, this.paymail, this.receive, this.sendTime, this.balance,
+      this.actions);
 
   /// Id of an employee.
   final int id;
 
   /// name of an employee.
-  final String name;
+  final String paymail;
 
   /// username of an employee.
-  final String username;
+  final String receive;
 
   /// joined of an employee.
-  final String joined;
+  final String sendTime;
 
   /// activated of an employee.
-  final String activated;
+  // final String activated;
 
   /// balance of an employee.
   final String balance;
@@ -48,12 +48,12 @@ class Employee {
 
 class EmployeeDataSource extends DataGridSource {
   /// Creates the employee data source class with required details.
-  EmployeeDataSource({required List<Employee> employeeData}) {
+  EmployeeDataSource({required List employeeData}) {
     _employeeData = employeeData
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(columnName: 'id', value: e.id),
               DataGridCell<Widget>(
-                  columnName: 'name',
+                  columnName: 'Pay Mail',
                   value: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -64,13 +64,13 @@ class EmployeeDataSource extends DataGridSource {
                             'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83'),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 5),
-                        child: Text(e.name),
+                        margin: const EdgeInsets.only(left: 5),
+                        child: Text(e.paymail),
                       )
                     ],
                   )),
-              DataGridCell(columnName: 'username', value: e.username),
-              DataGridCell<String>(columnName: 'joined', value: e.joined),
+              DataGridCell(columnName: 'Receive', value: e.receive),
+              DataGridCell<String>(columnName: 'Send Time', value: e.sendTime),
               DataGridCell<Widget>(
                   columnName: 'activated',
                   value: badges.Badge(
@@ -83,35 +83,44 @@ class EmployeeDataSource extends DataGridSource {
                             const TextStyle(color: Colors.white, fontSize: 13)),
                   )),
               DataGridCell<Widget>(
-                  columnName: 'balance',
-                  value: badges.Badge(
-                    toAnimate: false,
-                    shape: badges.BadgeShape.square,
-                    badgeColor: Colors.teal,
-                    borderRadius: BorderRadius.circular(16),
-                    badgeContent: Text(0.toString(),
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 13)),
-                  )),
+                columnName: 'balance',
+                value: badges.Badge(
+                  toAnimate: false,
+                  shape: badges.BadgeShape.square,
+                  badgeColor: Colors.teal,
+                  borderRadius: BorderRadius.circular(16),
+                  badgeContent: UserManager.userInfo['paymail'] != e.paymail
+                      ? Text(
+                          "+${e.balance}",
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 13),
+                        )
+                      : Text(
+                          "-${e.balance}",
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 13),
+                        ),
+                ),
+              ),
               DataGridCell<Widget>(
                   columnName: 'actions',
                   value: Row(children: [
                     Container(
-                        margin: EdgeInsets.only(left: (5)),
+                        margin: const EdgeInsets.only(left: (5)),
                         width: 30,
                         child: IconButton(
                             onPressed: () {},
                             iconSize: 20,
-                            icon: Icon(Icons.replay_5_outlined))),
+                            icon: const Icon(Icons.replay_5_outlined))),
                     Container(
-                        margin: EdgeInsets.only(left: (5)),
+                        margin: const EdgeInsets.only(left: (5)),
                         width: 30,
                         child: IconButton(
                             onPressed: () {},
                             iconSize: 20,
-                            icon: Icon(Icons.edit))),
+                            icon: const Icon(Icons.edit))),
                     Container(
-                        margin: EdgeInsets.only(left: (5)),
+                        margin: const EdgeInsets.only(left: (5)),
                         width: 30,
                         child: IconButton(
                             onPressed: () {},
@@ -165,7 +174,7 @@ class SettingShnatterTokenScreenState
   var setting_security = {};
 
   late final PlutoGridStateManager stateManager;
-  List<Employee> employees = <Employee>[];
+  List employees = [];
   late EmployeeDataSource employeeDataSource;
   late UserController con;
   @override
@@ -173,6 +182,7 @@ class SettingShnatterTokenScreenState
     add(widget.con);
     super.initState();
     con = controller as UserController;
+    con.getTransactionHistory(con.nextPageTokenCount);
     employees = getEmployeeData();
     employeeDataSource = EmployeeDataSource(employeeData: employees);
     UserController().getBalance();
@@ -185,6 +195,7 @@ class SettingShnatterTokenScreenState
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -193,9 +204,9 @@ class SettingShnatterTokenScreenState
             icon: const Icon(Icons.attach_money,
                 color: Color.fromRGBO(76, 175, 80, 1)),
             pagename: 'Shnatter Token',
-            button: {'flag': false},
+            button: const {'flag': false},
           ),
-          Padding(padding: EdgeInsets.only(top: 20)),
+          const Padding(padding: EdgeInsets.only(top: 20)),
           Container(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             width: SizeConfig(context).screenWidth > 800
@@ -332,10 +343,10 @@ class SettingShnatterTokenScreenState
                 ),
                 // const Padding(padding: EdgeInsets.only(top: 15)),
                 Container(
-                  margin: EdgeInsets.all(20),
+                  margin: const EdgeInsets.all(20),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(3),
+                        padding: const EdgeInsets.all(3),
                         backgroundColor: const Color.fromARGB(255, 251, 99, 64),
                         elevation: 3,
                         shape: RoundedRectangleBorder(
@@ -349,7 +360,7 @@ class SettingShnatterTokenScreenState
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
+                        children: const [
                           Text(
                             'Buy Tokens',
                             style: TextStyle(
@@ -364,7 +375,7 @@ class SettingShnatterTokenScreenState
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Blockchain Address',
                       style: TextStyle(
                         fontSize: 12,
@@ -372,11 +383,11 @@ class SettingShnatterTokenScreenState
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 5),
+                      margin: const EdgeInsets.only(top: 5),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
-                          padding: EdgeInsets.all(3),
+                          padding: const EdgeInsets.all(3),
                           elevation: 3,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(3.0)),
@@ -444,14 +455,14 @@ class SettingShnatterTokenScreenState
               Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     // color: Colors.grey,
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: SvgPicture.network(url),
               ),
               Text(
                 text,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 11,
                     color: Colors.grey,
                     fontWeight: FontWeight.bold),
@@ -468,17 +479,17 @@ class SettingShnatterTokenScreenState
         height: 60.0,
         alignment: Alignment.center,
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color(0xFFFFFFFF),
+        decoration: const BoxDecoration(
+          color: Color(0xFFFFFFFF),
           border: BorderDirectional(
-            top: BorderSide(color: const Color.fromRGBO(0, 0, 0, 0.26)),
+            top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.26)),
           ),
         ),
         child: Container(
             width: 40,
             height: 40,
             alignment: Alignment.center,
-            child: CircularProgressIndicator(
+            child: const CircularProgressIndicator(
               backgroundColor: Colors.transparent,
             )));
   }
@@ -504,25 +515,79 @@ class SettingShnatterTokenScreenState
     );
   }
 
-  List<Employee> getEmployeeData() {
-    return [
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-    ];
+  List getEmployeeData() {
+    var transData = [];
+    for (var element in con.transactionData) {
+      transData.add(Employee(element['index'], element['from'], element['to'],
+          element['timestamp'], element['balance_change'], "token"));
+    }
+    return transData;
+    // return [
+    //   Employee(
+    //     10005,
+    //     'Martin',
+    //     'Developer',
+    //     '15000',
+    //     '1005',
+    //     'Martin',
+    //   ),
+    //   Employee(
+    //     10005,
+    //     'Martin',
+    //     'Developer',
+    //     '15000',
+    //     '1005',
+    //     'Martin',
+    //   ),
+    //   Employee(
+    //     10005,
+    //     'Martin',
+    //     'Developer',
+    //     '15000',
+    //     '1005',
+    //     'Martin',
+    //   ),
+    //   Employee(
+    //     10005,
+    //     'Martin',
+    //     'Developer',
+    //     '15000',
+    //     '1005',
+    //     'Martin',
+    //   ),
+    //   Employee(
+    //     10005,
+    //     'Martin',
+    //     'Developer',
+    //     '15000',
+    //     '1005',
+    //     'Martin',
+    //   ),
+    //   Employee(
+    //     10005,
+    //     'Martin',
+    //     'Developer',
+    //     '15000',
+    //     '1005',
+    //     'Martin',
+    //   ),
+    //   Employee(
+    //     10005,
+    //     'Martin',
+    //     'Developer',
+    //     '15000',
+    //     '1005',
+    //     'Martin',
+    //   ),
+    //   Employee(
+    //     10005,
+    //     'Martin',
+    //     'Developer',
+    //     '15000',
+    //     '1005',
+    //     'Martin',
+    //   ),
+    // ];
   }
 
   List<GridColumn> _getColumns() {
@@ -538,33 +603,33 @@ class SettingShnatterTokenScreenState
                 overflow: TextOverflow.ellipsis,
               ))),
       GridColumn(
-          columnName: 'Name',
+          columnName: 'Pay Mail',
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           label: Container(
               padding: const EdgeInsets.all(8),
               alignment: Alignment.centerRight,
               child: const Text(
-                'Name',
+                'Pay Mail',
                 overflow: TextOverflow.ellipsis,
               ))),
       GridColumn(
-          columnName: 'Username',
+          columnName: 'Receive',
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           label: Container(
               padding: const EdgeInsets.all(8),
               alignment: Alignment.centerRight,
               child: const Text(
-                'Username',
+                'Receive',
                 overflow: TextOverflow.ellipsis,
               ))),
       GridColumn(
-          columnName: 'Joined',
+          columnName: 'Send Time',
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           label: Container(
               padding: const EdgeInsets.all(8),
               alignment: Alignment.centerRight,
               child: const Text(
-                'Joined',
+                'Send Time',
                 overflow: TextOverflow.ellipsis,
               ))),
       GridColumn(
