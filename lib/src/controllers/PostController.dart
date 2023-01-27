@@ -348,6 +348,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.eventsField)
           .doc(eventId)
           .update({'eventInterested': interested});
+      Helper.showToast('Uninterested event');
       return true;
     } else {
       interested.add({
@@ -357,6 +358,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.eventsField)
           .doc(eventId)
           .update({'eventInterested': interested});
+      Helper.showToast('Interested event');
       return true;
     }
   }
@@ -627,6 +629,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.pagesField)
           .doc(pageId)
           .update({'pageLiked': liked});
+      Helper.showToast('Unliked page');
       return true;
     } else {
       liked.add({
@@ -636,6 +639,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.pagesField)
           .doc(pageId)
           .update({'pageLiked': liked});
+      Helper.showToast('Liked page');
       return true;
     }
   }
@@ -868,6 +872,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.groupsField)
           .doc(groupId)
           .update({'groupJoined': joined});
+      Helper.showToast('Leaved group');
       return true;
     } else {
       joined.add({
@@ -877,6 +882,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.groupsField)
           .doc(groupId)
           .update({'groupJoined': joined});
+      Helper.showToast('Joined group');
       return true;
     }
   }
