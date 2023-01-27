@@ -40,8 +40,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.groupsField);
   static var productsData =
       FirebaseFirestore.instance.collection(Helper.productsField);
-  static var productLikeComment =
-      FirebaseFirestore.instance.collection(Helper.productLikeCommentField);
+  static var postLikeComment =
+      FirebaseFirestore.instance.collection(Helper.postLikeCommentField);
   static var allInterests =
       FirebaseFirestore.instance.collection(Helper.interestsField);
   static var notifiCollection =
@@ -82,7 +82,7 @@ class Helper {
   static var apiKey = 'AIzaSyAtquiA4SXxBhs-lpAdk_xt3_dZtY4PId0';
   static var emoticons = 'emoticons';
   static var onlineStatusField = 'onlineStatus';
-  static var productLikeCommentField = 'productLikeComment';
+  static var postLikeCommentField = 'postLikeComment';
   static var passwordMinLength = 8;
 
   static var emptySVG =
