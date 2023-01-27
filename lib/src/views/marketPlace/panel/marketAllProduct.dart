@@ -72,10 +72,10 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
     }
     switch (widget.arrayOption) {
       case 'Latest':
-        allProducts.sort((a, b) =>
-            Helper.changeTimeType(d: b['data']['productDate'], type: false)
-                .compareTo(Helper.changeTimeType(
-                    d: a['data']['productDate'], type: false)));
+        allProducts.sort((a, b) => con
+            .changeTimeType(d: b['data']['productDate'], type: false)
+            .compareTo(
+                con.changeTimeType(d: a['data']['productDate'], type: false)));
         break;
       case 'Price High':
         allProducts.sort((a, b) => int.parse(a['data']['productPrice'])

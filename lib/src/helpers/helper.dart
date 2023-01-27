@@ -62,6 +62,7 @@ class Helper {
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_product.jpg?alt=media&token=0cd1281e-4dc7-4228-939f-f19b50c3afe1';
   static var adminPanel = 'adminPanel';
   static var adminConfig = 'config';
+  static var timeNow = 'timeNow';
   static var userField = 'user';
   static var eventsField = 'events';
   static var pagesField = 'pages';
@@ -196,8 +197,7 @@ class Helper {
     final Stream<QuerySnapshot> stream =
         FirebaseFirestore.instance.collection(onlineStatusField).snapshots();
     stream.listen((event) {
-      event.docs.forEach((e) {
-      });
+      event.docs.forEach((e) {});
     });
   }
 
@@ -253,37 +253,5 @@ class Helper {
         .doc(Helper.about)
         .get();
     return str['content'] as String;
-  }
-
-  static String formatDate(String d) {
-    var date = DateTime.parse(d);
-    String trDate = '';
-    DateTime date2 = DateTime.now();
-    var dd = int.parse(date2.timeZoneOffset.toString().split(':')[0]);
-    date2 = date2.add(Duration(hours: -dd));
-    final difference = date2.difference(date);
-    if (difference.inMinutes < 1) {
-      trDate = 'Just Now';
-    } else if (difference.inHours < 1) {
-      trDate = '${difference.inMinutes} minutes ago';
-    } else if (difference.inDays < 1) {
-      trDate = '${difference.inHours} hours ago';
-    } else if (difference.inDays < 31) {
-      trDate = '${difference.inDays} days ago';
-    } else if (difference.inDays >= 31) {
-      trDate = '${(difference.inDays / 30 as String).split('.')[0]} days ago';
-    }
-    return trDate;
-  }
-
-  static dynamic changeTimeType({var d, bool type = true}) {
-    var notifyTime = DateTime.parse(d.toDate().toString());
-    var formattedNotifyTime =
-        DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
-    if (type) {
-      return formattedNotifyTime;
-    } else {
-      return DateTime.parse(formattedNotifyTime).millisecondsSinceEpoch;
-    }
   }
 }

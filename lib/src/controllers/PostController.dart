@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -26,6 +27,57 @@ class PostController extends ControllerMVC {
     Helper.eventsData =
         FirebaseFirestore.instance.collection(Helper.eventsField);
     return true;
+  }
+
+  dynamic formatDate(dynamic d) async {
+    var nowTime = changeTimeType(d: d);
+    var trDate;
+    var serverTime = await getNowTime();
+    print('printcheck$serverTime');
+    var serverTimeStamp = changeTimeType(d: serverTime);
+    final difference = serverTimeStamp - nowTime;
+    if (difference / (1000 * 60) < 1) {
+      trDate = 'Just Now';
+    } else if (difference / (1000 * 60 * 60) < 1) {
+      trDate = '${int.parse(difference / (1000 * 60))} minutes ago';
+    } else if (difference / (1000 * 60 * 60 * 24) < 1) {
+      trDate = '${int.parse(difference / (1000 * 60 * 60))} hours ago';
+    } else if (difference / (1000 * 60 * 60 * 24 * 30) < 1) {
+      trDate = '${int.parse(difference / (1000 * 60 * 60 * 24))} days ago';
+    } else if (difference / (1000 * 60 * 60 * 24 * 30) >= 1) {
+      trDate =
+          '${int.parse(difference / (1000 * 60 * 60 * 24 * 30))} months ago';
+    }
+    print('trdatanow');
+    print('trdatanow$trDate');
+    return trDate;
+  }
+
+  dynamic changeTimeType({var d, bool type = false}) {
+    var notifyTime = DateTime.parse(d.toDate().toString());
+    var formattedNotifyTime =
+        DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+    if (type) {
+      return formattedNotifyTime;
+    } else {
+      return DateTime.parse(formattedNotifyTime).millisecondsSinceEpoch;
+    }
+  }
+
+  dynamic getNowTime() async {
+    print('server time');
+    await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.timeNow)
+        .set({
+      'time': FieldValue.serverTimestamp(),
+    });
+    var snapShot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.timeNow)
+        .get();
+    var nowTime = snapShot.data()!['time'];
+    return nowTime;
   }
 
   Future<bool> uploadPicture(String where, String what, String url) async {
@@ -296,6 +348,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.eventsField)
           .doc(eventId)
           .update({'eventInterested': interested});
+      Helper.showToast('Uninterested event');
       return true;
     } else {
       interested.add({
@@ -305,6 +358,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.eventsField)
           .doc(eventId)
           .update({'eventInterested': interested});
+      Helper.showToast('Interested event');
       return true;
     }
   }
@@ -575,6 +629,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.pagesField)
           .doc(pageId)
           .update({'pageLiked': liked});
+      Helper.showToast('Unliked page');
       return true;
     } else {
       liked.add({
@@ -584,6 +639,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.pagesField)
           .doc(pageId)
           .update({'pageLiked': liked});
+      Helper.showToast('Liked page');
       return true;
     }
   }
@@ -816,6 +872,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.groupsField)
           .doc(groupId)
           .update({'groupJoined': joined});
+      Helper.showToast('Leaved group');
       return true;
     } else {
       joined.add({
@@ -825,6 +882,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.groupsField)
           .doc(groupId)
           .update({'groupJoined': joined});
+      Helper.showToast('Joined group');
       return true;
     }
   }

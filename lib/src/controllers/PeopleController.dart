@@ -71,6 +71,7 @@ class PeopleController extends ControllerMVC {
         );
     return true;
   }
+
   saveNotifications(data) async {
     await FirebaseFirestore.instance
         .collection(Helper.notificationField)
@@ -188,31 +189,30 @@ class PeopleController extends ControllerMVC {
     }
     setState(() {});
     Map<String, dynamic> notificationData;
-    await FirebaseFirestore.instance.collection(Helper.friendField)
-      .add({
-          'requester': userInfo['userName'],
-          'receiver': receiver,
-          receiver: {'name': fullName, 'avatar': avatar},
-          userInfo['userName']: {
-            'name': userInfo['fullName'],
-            'avatar': userInfo['avatar']
-          },
-          'users': [userInfo['userName'], receiver],
-          'state': 0
-      })
-      .then((value) async => {
+    await FirebaseFirestore.instance.collection(Helper.friendField).add({
+      'requester': userInfo['userName'],
+      'receiver': receiver,
+      receiver: {'name': fullName, 'avatar': avatar},
+      userInfo['userName']: {
+        'name': userInfo['fullName'],
+        'avatar': userInfo['avatar']
+      },
+      'users': [userInfo['userName'], receiver],
+      'state': 0
+    }).then((value) async => {
           await getUserList(index: index),
           notificationData = {
             'postType': 'requestFriend',
             'postId': value.id,
-            'postAdminId':UserManager.userInfo['uid'],
+            'postAdminId': UserManager.userInfo['uid'],
             'notifyTime': DateTime.now().toString(),
             'tsNT': DateTime.now().millisecondsSinceEpoch,
             'userList': [],
             'timeStamp': FieldValue.serverTimestamp(),
           },
-          saveNotifications(notificationData),  
+          saveNotifications(notificationData),
         });
+    Helper.showToast('Sent request');
     return "Sent request";
   }
 
