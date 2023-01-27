@@ -43,7 +43,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
     {'value': '11', 'title': 'Nov'},
     {'value': '12', 'title': 'Dec'}
   ];
-  late List<dynamic> gender = [
+  late List gender = [
     {
       'title': 'Male',
       'value': 'male',
@@ -57,7 +57,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
       'value': 'other',
     },
   ];
-  late List<dynamic> userRelationship = [
+  late List userRelationship = [
     {
       'value': 'none',
       'title': 'Select Relationship',
@@ -91,7 +91,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
       'title': 'Widowed',
     },
   ];
-  late List<dynamic> country = [
+  late List country = [
     {
       'title': 'Select Country',
       'value': 'none',
@@ -110,7 +110,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
     },
   ];
   late Map day = {};
-  late List<dynamic> year = [];
+  late List year = [];
   TextEditingController aboutController = TextEditingController();
   TextEditingController religionController = TextEditingController();
   late UserController con;

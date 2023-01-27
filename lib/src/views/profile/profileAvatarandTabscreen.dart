@@ -367,7 +367,6 @@ class ProfileAvatarandTabScreenState extends mvc
                       Navigator.pushReplacementNamed(
                           context, RouteNames.settings),
                       print(settingMainScreen.settingPage),
-                      print(settingMainScreen.basicPageFlag)
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

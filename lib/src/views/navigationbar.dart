@@ -201,7 +201,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
 
   void onSettingClicked() {
     settingMainScreen.settingPage = 'account_page';
-    Navigator.pushReplacementNamed(context, RouteNames.settings);
+    Navigator.pushNamed(context, RouteNames.settings);
     setState(() {});
     print(settingMainScreen.settingPage);
     print(settingMainScreen.basicPageFlag);

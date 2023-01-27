@@ -45,12 +45,12 @@ class LeftPanel extends StatelessWidget {
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb'),
           ListText(
               onTap: () => {
-                    // settingMainScreen.shnattertokenPageFlag = true,
-                    // Navigator.pushReplacementNamed(
-                    //     context, RouteNames.settings),
-                    // print(
-                    //     'shnatterToken page route : ${settingMainScreen.shnattertokenPageFlag}'),
-                    // print(settingMainScreen.settingPage)
+                    settingMainScreen.shnatterTokenPageFlag = true,
+                    Navigator.pushReplacementNamed(
+                        context, RouteNames.settings),
+                    print(
+                        'shnatterToken page route : ${settingMainScreen.shnatterTokenPageFlag}'),
+                    print(settingMainScreen.settingPage)
                   },
               label: 'Shnatter Token',
               image:

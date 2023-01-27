@@ -316,7 +316,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                       .then((value) => setState(() {
                                             enableTwoFactor = value;
                                           })),
-                                print('login counter')
                                 // con.createPassword()
                               },
                             ),
