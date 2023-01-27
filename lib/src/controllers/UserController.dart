@@ -44,7 +44,6 @@ class UserController extends ControllerMVC {
   bool isSendResetPassword = false;
   bool isLogined = false;
   bool isEnableTwoFactor = false;
-  // UserManager.userInfo['isEnableTwoFactor'] == '' ? false : true;
 
   String failLogin = '';
   String failRegister = '';
@@ -275,8 +274,8 @@ class UserController extends ControllerMVC {
           .doc(UserManager.userInfo['uid'])
           .update({...twoFactorData});
       isEnableTwoFactor = (type == 'enable' ? true : false);
-      UserManager.userInfo['isEnableTwoFactor'] =
-          (type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '');
+      // await Helper.saveJSONPreference(Helper.userField, {...{'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : ''}});
+      // await UserManager.getUserInfo();
       setState(() {});
     }
     return codeCheck;
@@ -417,6 +416,7 @@ class UserController extends ControllerMVC {
           setState(() {});
           return false;
         } else {
+          setState(() {});
           returnVal = true;
           return true;
         }
@@ -446,13 +446,13 @@ class UserController extends ControllerMVC {
     return returnVal;
   }
 
-  Future<bool> loginWithVerificationCode(String verificationCode) async {
+  Future<bool> loginWithVerificationCode(String verificationCode, context) async {
     var returnVal = await twoFactorAuthenticationChecker(verificationCode);
     if (returnVal) {
       await Helper.saveJSONPreference(Helper.userField, {...userInfo});
       await UserManager.getUserInfo();
       setState(() {});
-      RouteNames.userName = userInfo['userName'];
+      RouteNames.userName = UserManager.userInfo['userName'];
       loginRelysia(context);
       setState(() {});
     }
