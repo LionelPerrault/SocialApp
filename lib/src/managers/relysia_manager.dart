@@ -184,6 +184,7 @@ class RelysiaManager {
     var next = '';
     int count = 0;
     next = nextPageToken;
+    print(token);
     try {
       while (count < 10 && next != "null") {
         await http.get(
@@ -213,6 +214,7 @@ class RelysiaManager {
               }
               next = response['data']['meta']['nextPageToken'].toString();
               result = true;
+              print(transHistory);
             } else if (response['statusCode'] == 401) {
               next = 'null';
               result = false;

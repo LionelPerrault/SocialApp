@@ -294,6 +294,7 @@ class UserController extends ControllerMVC {
   }
 
   void getTransactionHistory(nextPageToken) async {
+    print(email);
     await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
       (res) async => {
         if (res['success'] == true)
