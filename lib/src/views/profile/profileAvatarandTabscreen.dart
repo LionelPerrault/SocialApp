@@ -362,13 +362,12 @@ class ProfileAvatarandTabScreenState extends mvc
                       minimumSize: const Size(60, 50),
                     ),
                     onPressed: () async => {
-                      // edit('basic'),
-                      Navigator.pushReplacementNamed(
-                          context, RouteNames.settings),
                       settingMainScreen.basicPageFlag = true,
                       setState(() {}),
-                      print(settingMainScreen.basicPageFlag),
-                      print(settingMainScreen.settingPage)
+                      Navigator.pushReplacementNamed(
+                          context, RouteNames.settings),
+                      print(settingMainScreen.settingPage),
+                      print(settingMainScreen.basicPageFlag)
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
