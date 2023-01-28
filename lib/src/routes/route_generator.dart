@@ -5,7 +5,7 @@ import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/events/panel/eventView/eventscreen.dart';
 import 'package:shnatter/src/views/groups/groupsscreen.dart';
 import 'package:shnatter/src/views/groups/panel/groupView/groupscreen.dart';
-import 'package:shnatter/src/views/homescreen.dart';
+import 'package:shnatter/src/views/mainScreen.dart';
 import 'package:shnatter/src/views/marketPlace/marketPlaceScreen.dart';
 import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
 import 'package:shnatter/src/views/pages/pagesscreen.dart';
@@ -21,7 +21,7 @@ import 'package:shnatter/src/views/startedscreen.dart';
 
 import '../managers/user_manager.dart';
 import '../views/profile/profilescreen.dart';
-import '../views/setting/settings_main.dart';
+import '../views/setting/settingsMain.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -37,47 +37,13 @@ class RouteGenerator {
         url = RouteNames.login;
       }
     }
-    if (url == RouteNames.userName) {
-      return MaterialPageRoute(
-          builder: (context) => UserProfileScreen(), settings: settings);
-    }
-    if (url.split('/')[1] == RouteNames.eventsName &&
-        url.split('/').length > 2) {
-      return MaterialPageRoute(
-          builder: (context) =>
-              EventEachScreen(docId: settings.name.toString()),
-          settings: settings);
-    }
-    if (url.split('/')[1] == RouteNames.pagesName &&
-        url.split('/').length > 2) {
-      return MaterialPageRoute(
-          builder: (context) => PageEachScreen(docId: settings.name.toString()),
-          settings: settings);
-    }
-    if (url.split('/')[1] == RouteNames.groupsName &&
-        url.split('/').length > 2) {
-      return MaterialPageRoute(
-          builder: (context) =>
-              GroupEachScreen(docId: settings.name.toString()),
-          settings: settings);
-    }
-    if (url.split('/')[1] == RouteNames.productName &&
-        url.split('/').length > 2) {
-      return MaterialPageRoute(
-          builder: (context) =>
-              ProductEachScreen(docId: settings.name.toString()),
-          settings: settings);
-    }
     switch (url) {
-      case RouteNames.splashScreen:
-        return MaterialPageRoute(
-            builder: (context) => HomeScreen(), settings: settings);
       case '':
         return MaterialPageRoute(
-            builder: (context) => HomeScreen(), settings: settings);
+            builder: (context) => MainScreen(), settings: settings);
       case RouteNames.homePage:
         return MaterialPageRoute(
-            builder: (context) => HomeScreen(), settings: settings);
+            builder: (context) => MainScreen(), settings: settings);
       case RouteNames.reset:
         return MaterialPageRoute(
             builder: (context) => ResetScreen(), settings: settings);
@@ -91,52 +57,14 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => StartedScreen(), settings: settings);
 
-      //settings route generators
-      case RouteNames.settings:
-        return MaterialPageRoute(
-            builder: (context) => SettingMainScreen(), settings: settings);
-      //event route generators
-      case RouteNames.events:
-        return MaterialPageRoute(
-            builder: (context) => EventsScreen(), settings: settings);
-
-      //page route generators
-      case RouteNames.pages:
-        return MaterialPageRoute(
-            builder: (context) => PagesScreen(), settings: settings);
-
-      //groups route generators
-      case RouteNames.groups:
-        return MaterialPageRoute(
-            builder: (context) => GroupsScreen(), settings: settings);
-
-      //product route generators
-      case RouteNames.products:
-        return MaterialPageRoute(
-            builder: (context) => ProductsScreen(), settings: settings);
-
       //admin routes generators
       case RouteNames.adp:
         Helper.showToast("ok now to admin");
         return MaterialPageRoute(
             builder: (context) => AdminScreen(), settings: settings);
-      case RouteNames.people:
-        return MaterialPageRoute(
-            builder: (context) => PeopleScreen(), settings: settings);
-      case RouteNames.market:
-        return MaterialPageRoute(
-            builder: (context) => MarketPlaceScreen(), settings: settings);
-      case RouteNames.messages:
-        return MaterialPageRoute(
-            builder: (context) => MessageScreen(), settings: settings);
-      case '/':
-        return MaterialPageRoute(
-            builder: (context) => HomeScreen(), settings: settings);
       default:
         return MaterialPageRoute(
-            builder: (context) =>
-                UserProfileScreen(userName: url.split('/')[1]),
-            settings: settings);
+            builder: (context) => MainScreen(), settings: settings);
     }
   }
 }

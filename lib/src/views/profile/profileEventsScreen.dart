@@ -15,10 +15,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 
 class ProfileEventsScreen extends StatefulWidget {
-  ProfileEventsScreen({Key? key})
+  ProfileEventsScreen({Key? key, required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
+  Function routerChange;
+
   @override
   State createState() => ProfileEventsScreenState();
 }
@@ -143,6 +145,7 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
                         children: myEvents
                             .map(
                               (event) => EventCell(
+                                routerChange: widget.routerChange,
                                 eventData: event,
                                 buttonFun: () {
                                   PostController()

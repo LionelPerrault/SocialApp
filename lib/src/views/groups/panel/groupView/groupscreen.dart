@@ -17,11 +17,13 @@ import 'groupTimelineScreen.dart';
 import 'groupVideosScreen.dart';
 
 class GroupEachScreen extends StatefulWidget {
-  GroupEachScreen({Key? key, required this.docId})
+  GroupEachScreen({Key? key, required this.docId, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
   String docId = '';
+  Function routerChange;
+
   @override
   State createState() => GroupEachScreenState();
 }
@@ -130,11 +132,11 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizeConfig(context).screenWidth <
-                                SizeConfig.mediumScreenSize
-                            ? const SizedBox()
-                            : LeftPanel(),
-                        //    : SizedBox(width: 0),
+                        // SizeConfig(context).screenWidth <
+                        //         SizeConfig.mediumScreenSize
+                        //     ? const SizedBox()
+                        //     : LeftPanel(),
+                        // //    : SizedBox(width: 0),
                         Expanded(
                             child: Row(
                           mainAxisAlignment: con.group == null
@@ -235,13 +237,13 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        color: Colors.white,
-                                        width: SizeConfig.leftBarWidth,
-                                        child: SingleChildScrollView(
-                                          child: LeftPanel(),
-                                        ),
-                                      )
+                                      // Container(
+                                      //   color: Colors.white,
+                                      //   width: SizeConfig.leftBarWidth,
+                                      //   child: SingleChildScrollView(
+                                      //     child: LeftPanel(),
+                                      //   ),
+                                      // )
                                     ]),
                               )));
                 }),

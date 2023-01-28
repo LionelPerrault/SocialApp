@@ -1893,15 +1893,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: Colors.white,
-                                        width: SizeConfig.leftBarWidth,
-                                        child: SingleChildScrollView(
-                                          child: LeftPanel(),
-                                        ),
-                                      )
-                                    ]),
+                                    children: []),
                               )));
                 }),
             showSearch

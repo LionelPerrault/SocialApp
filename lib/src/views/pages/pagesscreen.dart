@@ -116,11 +116,11 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizeConfig(context).screenWidth <
-                                SizeConfig.mediumScreenSize
-                            ? const SizedBox()
-                            : LeftPanel(),
-                        //    : SizedBox(width: 0),
+                        // SizeConfig(context).screenWidth <
+                        //         SizeConfig.mediumScreenSize
+                        //     ? const SizedBox()
+                        //     : LeftPanel(),
+                        // //    : SizedBox(width: 0),
                         Expanded(
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,

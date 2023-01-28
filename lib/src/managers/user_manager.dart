@@ -21,7 +21,7 @@ class UserManager {
     } else {
       userInfo = await Helper.getJSONPreference(Helper.userField);
       isLogined = true;
-      RouteNames.userName = '/${userInfo['userName']}';
+      // RouteNames.userName = '/${userInfo['userName']}';
     }
   }
 }

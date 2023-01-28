@@ -12,8 +12,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shnatter/src/views/setting/settings_main.dart';
-import 'package:shnatter/src/views/setting/panel/settng_left_panel.dart';
+import 'package:shnatter/src/views/setting/settingsMain.dart';
+import 'package:shnatter/src/views/panel/leftPanel/settngLeftPanel.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
@@ -362,7 +362,6 @@ class ProfileAvatarandTabScreenState extends mvc
                       minimumSize: const Size(60, 50),
                     ),
                     onPressed: () async => {
-                      settingMainScreen.basicPageFlag = true,
                       setState(() {}),
                       Navigator.pushReplacementNamed(
                           context, RouteNames.settings),

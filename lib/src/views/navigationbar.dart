@@ -14,7 +14,7 @@ import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
 import 'package:shnatter/src/views/box/notification.dart';
-import 'package:shnatter/src/views/setting/settings_main.dart';
+import 'package:shnatter/src/views/setting/settingsMain.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../utils/size_config.dart';
@@ -204,7 +204,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     Navigator.pushNamed(context, RouteNames.settings);
     setState(() {});
     print(settingMainScreen.settingPage);
-    print(settingMainScreen.basicPageFlag);
   }
 
   void onHomeClicked() {

@@ -10,10 +10,12 @@ import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
 class InterestedEvents extends StatefulWidget {
-  InterestedEvents({Key? key})
+  InterestedEvents({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
+  Function routerChange;
+
   State createState() => InterestedEventsState();
 }
 
@@ -65,6 +67,7 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
               children: interestedEvents
                   .map(
                     (event) => EventCell(
+                      routerChange: widget.routerChange,
                       eventData: event,
                       buttonFun: () {
                         con.interestedEvent(event['id']).then((value) {
