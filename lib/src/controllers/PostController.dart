@@ -29,31 +29,28 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  dynamic formatDate(dynamic d) async {
+  Future<String> formatDate(dynamic d) async {
     var nowTime = changeTimeType(d: d);
-    var trDate;
+    String trDate = '';
     var serverTime = await getNowTime();
-    print('printcheck$serverTime');
     var serverTimeStamp = changeTimeType(d: serverTime);
     final difference = serverTimeStamp - nowTime;
     if (difference / (1000 * 60) < 1) {
       trDate = 'Just Now';
     } else if (difference / (1000 * 60 * 60) < 1) {
-      trDate = '${int.parse(difference / (1000 * 60))} minutes ago';
+      trDate = '${(difference / (1000 * 60)).round()} minutes ago';
     } else if (difference / (1000 * 60 * 60 * 24) < 1) {
-      trDate = '${int.parse(difference / (1000 * 60 * 60))} hours ago';
+      trDate = '${(difference / (1000 * 60 * 60)).round()} hours ago';
     } else if (difference / (1000 * 60 * 60 * 24 * 30) < 1) {
-      trDate = '${int.parse(difference / (1000 * 60 * 60 * 24))} days ago';
+      trDate = '${(difference / (1000 * 60 * 60 * 24)).round()} days ago';
     } else if (difference / (1000 * 60 * 60 * 24 * 30) >= 1) {
       trDate =
-          '${int.parse(difference / (1000 * 60 * 60 * 24 * 30))} months ago';
+          '${(difference / (1000 * 60 * 60 * 24 * 30)).round()} months ago';
     }
-    print('trdatanow');
-    print('trdatanow$trDate');
     return trDate;
   }
 
-  dynamic changeTimeType({var d, bool type = false}) {
+  changeTimeType({var d, bool type = false}) {
     var notifyTime = DateTime.parse(d.toDate().toString());
     var formattedNotifyTime =
         DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
@@ -64,12 +61,11 @@ class PostController extends ControllerMVC {
     }
   }
 
-  dynamic getNowTime() async {
-    print('server time');
+  getNowTime() async {
     await FirebaseFirestore.instance
         .collection(Helper.adminPanel)
         .doc(Helper.timeNow)
-        .set({
+        .update({
       'time': FieldValue.serverTimestamp(),
     });
     var snapShot = await FirebaseFirestore.instance

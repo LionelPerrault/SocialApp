@@ -37,6 +37,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   var productId = '';
   bool payLoading = false;
   bool loading = false;
+  var postTime = '';
 
   late List<Map> subFunctionList = [
     {
@@ -179,7 +180,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     super.initState();
     product = widget.data['data'];
     productId = widget.data['id'];
-    con.formatDate(product['productDate']);
+    con.formatDate(product['productDate']).then((value) {
+      postTime = value;
+      setState(() {});
+    });
     print('initstate');
   }
 
@@ -327,7 +331,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: '',
+                                              text: postTime,
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 10,
