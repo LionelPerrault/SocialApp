@@ -70,7 +70,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                           width: 50,
                           height: 50,
                           child: CircularProgressIndicator(
-                            color: Colors.yellow,
+                            color: Colors.grey,
                           ),
                         )
                       : Expanded(

@@ -12,6 +12,7 @@ import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
+import 'package:shnatter/src/views/whiteFooter.dart';
 
 import '../utils/size_config.dart';
 

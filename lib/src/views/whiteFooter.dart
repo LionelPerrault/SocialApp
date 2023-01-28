@@ -1,29 +1,36 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/terms.dart';
 
-import '../routes/route_names.dart';
 import 'about.dart';
 
+// ignore: camel_case_types
 class footbar extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
   footbar({Key? key}) : super(key: key);
   @override
   State createState() => footbarState();
 }
 
+// ignore: camel_case_types
 class footbarState extends State<footbar> {
+  @override
   Widget build(BuildContext context) {
     return Container(
+        width: SizeConfig(context).screenWidth < 600
+            ? SizeConfig(context).screenWidth
+            : 600,
         height: 70,
         decoration: const BoxDecoration(
-          color: Color.fromRGBO(0, 0, 0, 1),
+          color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         child: Row(
           children: [
             const Padding(padding: EdgeInsets.only(left: 10)),
-            text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1), 11),
+            text('@ 2023 Shnatter', Colors.black, 11),
             const Padding(padding: EdgeInsets.only(left: 20)),
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Container(
@@ -43,7 +50,7 @@ class footbarState extends State<footbar> {
                       alignment: Alignment.center,
                       child: const Text(
                         'About',
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                        style: TextStyle(fontSize: 13, color: Colors.black),
                       ),
                     ),
                   ),
@@ -64,36 +71,40 @@ class footbarState extends State<footbar> {
                       alignment: Alignment.center,
                       child: const Text(
                         'Terms',
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                        style: TextStyle(fontSize: 13, color: Colors.black),
                       ),
                     ),
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Contact Us', Colors.grey, 11),
+                text('Contact Us', Colors.black, 11),
                 const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Directory', Colors.grey, 11),
+                text('Directory', Colors.black, 11),
               ]),
-            )
+            ),
           ],
         ));
   }
 }
 
-class footbarM extends StatefulWidget {
-  footbarM({Key? key}) : super(key: key);
+// ignore: camel_case_types
+class rightFootbar extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
+  rightFootbar({Key? key}) : super(key: key);
   @override
-  State createState() => footbarMState();
+  State createState() => rightFootbarState();
 }
 
-class footbarMState extends State<footbarM> {
+// ignore: camel_case_types
+class rightFootbarState extends State<rightFootbar> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: Container(
         height: 75,
         decoration: const BoxDecoration(
-          color: Color.fromRGBO(0, 0, 0, 1),
+          color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         child: Column(
@@ -102,10 +113,13 @@ class footbarMState extends State<footbarM> {
             Row(
               children: [
                 const Padding(padding: EdgeInsets.only(left: 10)),
-                text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
-                    13),
+                text('@ 2023 Shnatter', Colors.black, 13),
                 const Padding(padding: EdgeInsets.only(left: 10)),
               ],
+            ),
+            const Padding(padding: EdgeInsets.only(top: 5)),
+            const Divider(
+              height: 1,
             ),
             const Padding(padding: EdgeInsets.only(top: 5)),
             Container(
@@ -130,7 +144,7 @@ class footbarMState extends State<footbarM> {
                             child: const Text(
                               'About',
                               style:
-                                  TextStyle(fontSize: 13, color: Colors.grey),
+                                  TextStyle(fontSize: 11, color: Colors.black),
                             ),
                           ),
                         ),
@@ -153,7 +167,7 @@ class footbarMState extends State<footbarM> {
                           alignment: Alignment.center,
                           child: const Text(
                             'Terms',
-                            style: TextStyle(fontSize: 13, color: Colors.grey),
+                            style: TextStyle(fontSize: 11, color: Colors.black),
                           ),
                         ),
                       ),
@@ -164,16 +178,15 @@ class footbarMState extends State<footbarM> {
                   const Padding(padding: EdgeInsets.only(left: 5)),
                   Expanded(
                     // ignore: sort_child_properties_last
-                    child: text('Contact Us', Colors.grey, 13),
+                    child: text('Contact Us', Colors.black, 11),
                     flex: 1,
                   ),
                   const Padding(padding: EdgeInsets.only(left: 5)),
                   Expanded(
                     // ignore: sort_child_properties_last
-                    child: text('Directory', Colors.grey, 13),
+                    child: text('Directory', Colors.black, 11),
                     flex: 1,
                   ),
-                  const Padding(padding: EdgeInsets.only(right: 10)),
                 ],
               ),
             )

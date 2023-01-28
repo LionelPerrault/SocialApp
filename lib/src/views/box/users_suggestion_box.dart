@@ -42,9 +42,12 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Container(
-          width: SizeConfig.rightPaneWidth,
+          width: SizeConfig(context).screenWidth < 600
+              ? SizeConfig(context).screenWidth
+              : 600,
+          // width: SizeConfig.rightPaneWidth,
           // color: Colors.white,
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.only(top: 20),
           child: Column(
             children: [
               Row(
