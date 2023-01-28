@@ -13,7 +13,6 @@ class footbar extends StatefulWidget {
 }
 
 class footbarState extends State<footbar> {
-  var dropdownValue = 'English';
   Widget build(BuildContext context) {
     return Container(
         height: 70,
@@ -88,78 +87,98 @@ class footbarM extends StatefulWidget {
 }
 
 class footbarMState extends State<footbarM> {
-  var dropdownValue = 'English';
   Widget build(BuildContext context) {
-    return Container(
-      height: 75,
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(0, 0, 0, 1),
-      ),
-      child: Column(
-        children: [
-          const Padding(padding: EdgeInsets.only(top: 10)),
-          Row(
-            children: [
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
-                  13),
-              const Padding(padding: EdgeInsets.only(left: 15)),
-            ],
-          ),
-          const Padding(padding: EdgeInsets.only(top: 5)),
-          Container(
-            margin: const EdgeInsets.only(right: 20),
-            child: Row(
+    return Padding(
+      padding: EdgeInsets.only(left: 10, right: 10),
+      child: Container(
+        height: 75,
+        decoration: const BoxDecoration(
+          color: Color.fromRGBO(0, 0, 0, 1),
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        ),
+        child: Column(
+          children: [
+            const Padding(padding: EdgeInsets.only(top: 15)),
+            Row(
               children: [
                 const Padding(padding: EdgeInsets.only(left: 10)),
-                InkWell(
-                  onTap: () => {
-                    Navigator.push<void>(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => AboutScreen(),
-                      ),
-                    ),
-                  },
-                  child: GestureDetector(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'About',
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                InkWell(
-                  onTap: () => {
-                    Navigator.push<void>(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => TermsScreen(),
-                      ),
-                    ),
-                  },
-                  child: GestureDetector(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Terms',
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                ),
-                // text('Terms', Colors.grey, 13),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Contact Us', Colors.grey, 13),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Directory', Colors.grey, 13),
+                text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
+                    13),
+                const Padding(padding: EdgeInsets.only(left: 10)),
               ],
             ),
-          )
-        ],
+            const Padding(padding: EdgeInsets.only(top: 5)),
+            Container(
+              // margin: const EdgeInsets.only(right: 20),
+              child: Row(
+                children: [
+                  const Padding(padding: EdgeInsets.only(left: 5)),
+                  Expanded(
+                      // ignore: sort_child_properties_last
+                      child: InkWell(
+                        onTap: () => {
+                          Navigator.push<void>(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) => AboutScreen(),
+                            ),
+                          ),
+                        },
+                        child: GestureDetector(
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'About',
+                              style:
+                                  TextStyle(fontSize: 13, color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                      ),
+                      flex: 1),
+                  const Padding(padding: EdgeInsets.only(left: 5)),
+                  Expanded(
+                    // ignore: sort_child_properties_last
+                    child: InkWell(
+                      onTap: () => {
+                        Navigator.push<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => TermsScreen(),
+                          ),
+                        ),
+                      },
+                      child: GestureDetector(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Terms',
+                            style: TextStyle(fontSize: 13, color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    ),
+                    flex: 1,
+                  ),
+                  // text('Terms', Colors.grey, 13),
+                  const Padding(padding: EdgeInsets.only(left: 5)),
+                  Expanded(
+                    // ignore: sort_child_properties_last
+                    child: text('Contact Us', Colors.grey, 13),
+                    flex: 1,
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 5)),
+                  Expanded(
+                    // ignore: sort_child_properties_last
+                    child: text('Directory', Colors.grey, 13),
+                    flex: 1,
+                  ),
+                  const Padding(padding: EdgeInsets.only(right: 10)),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
