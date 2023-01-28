@@ -11,6 +11,7 @@ import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
+import 'package:shnatter/src/views/whiteFooter.dart';
 
 import '../utils/size_config.dart';
 
@@ -145,17 +146,26 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
+                                        // ignore: sort_child_properties_last
                                         child: MainPanel(),
                                         flex: 7,
                                       ),
                                       SizeConfig(context).screenWidth >
                                               SizeConfig.mediumScreenSize
                                           ? Expanded(
+                                              // ignore: sort_child_properties_last
                                               child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 10),
-                                                  child: RightPanel()),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10),
+                                                  child: Column(
+                                                    children: [
+                                                      RightPanel(),
+                                                      rightFootbar()
+                                                    ],
+                                                  )),
                                               flex: 3)
+                                          // ignore: prefer_const_constructors
                                           : SizedBox(width: 0),
                                     ],
                                   )
@@ -166,9 +176,11 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                                     children: [
                                       MainPanel(),
                                       Padding(
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             left: 40, right: 40),
-                                        child: RightPanel(),
+                                        child: Column(
+                                          children: [RightPanel(), footbar()],
+                                        ),
                                       )
                                     ],
                                   ),

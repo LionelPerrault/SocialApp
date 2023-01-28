@@ -89,9 +89,9 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                     "Suggested Pages",
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 45.0),
-                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.only(top: 45.0),
+                  // ),
                   Row(
                     children: [
                       const Text(
