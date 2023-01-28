@@ -134,23 +134,21 @@ class AdminShnatterNavigationState
                       //Icon(Icons.home_outlined, size: 30, color: Colors.white),
                       ),
                   Container(
-                    padding: const EdgeInsets.all(9.0),
-                    child: PopupMenuButton(
-                      itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<Menu>>[
+                      padding: const EdgeInsets.all(9.0),
+                      child: PopupMenuButton(
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<Menu>>[
                           PopupMenuItem<Menu>(
                             onTap: () => {onLogOut()},
                             value: Menu.itemLogout,
-                            child: Row(
-                              children: const [
-                                Icon(Icons.logout),
-                                SizedBox(width: 8),
-                                Text('Log Out'),
-                              ]
-                            ),
+                            child: Row(children: const [
+                              Icon(Icons.logout),
+                              SizedBox(width: 8),
+                              Text('Log Out'),
+                            ]),
                           ),
                           const PopupMenuDivider(),
-                        ],                
+                        ],
                         child: Row(
                           children: [
                             CircleAvatar(
@@ -165,10 +163,10 @@ class AdminShnatterNavigationState
                             //    size: 15, color: Colors.white)
                           ],
                         ),
-                    )),
-              ])
-            ],
-          )),
+                      )),
+                ])
+              ],
+            )),
       ],
     );
   }
@@ -256,19 +254,17 @@ class AdminShnatterNavigationState
                       padding: const EdgeInsets.all(9.0),
                       child: PopupMenuButton(
                         itemBuilder: (BuildContext context) =>
-                          <PopupMenuEntry<Menu>>[
-                            PopupMenuItem<Menu>(
-                              onTap: () => {onLogOut()},
-                              value: Menu.itemLogout,
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.logout),
-                                  SizedBox(width: 8),
-                                  Text('Log Out'),
-                                ]
-                              ),
-                            ),
-                          ],
+                            <PopupMenuEntry<Menu>>[
+                          PopupMenuItem<Menu>(
+                            onTap: () => {onLogOut()},
+                            value: Menu.itemLogout,
+                            child: Row(children: const [
+                              Icon(Icons.logout),
+                              SizedBox(width: 8),
+                              Text('Log Out'),
+                            ]),
+                          ),
+                        ],
                         child: Row(
                           children: [
                             CircleAvatar(

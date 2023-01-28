@@ -47,7 +47,9 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: MainPanel(),
+                  child: MainPanel(
+                    routerChange: widget.routerChange,
+                  ),
                 ),
                 RightPanel(routerChange: widget.routerChange),
               ],
@@ -56,7 +58,9 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                MainPanel(),
+                MainPanel(
+                  routerChange: widget.routerChange,
+                ),
                 RightPanel(routerChange: widget.routerChange),
               ],
             ),

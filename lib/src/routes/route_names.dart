@@ -41,6 +41,9 @@ class RouteNames {
   //product routes
   static const products = "/products";
 
+  //posts routes
+  static const posts = '/posts';
+
   static const people = '/people';
   static const market = '/market';
   static const messages = '/messages';

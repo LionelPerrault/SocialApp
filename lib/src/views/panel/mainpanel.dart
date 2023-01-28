@@ -11,9 +11,11 @@ import 'package:shnatter/src/widget/postCell.dart';
 class MainPanel extends StatefulWidget {
   MainPanel({
     super.key,
+    required this.routerChange,
   }) : con = PostController();
 
   late PostController con;
+  Function routerChange;
   @override
   State createState() => MainPanelState();
 }
@@ -76,7 +78,10 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                       : Expanded(
                           child: Column(
                             children: con.posts
-                                .map((product) => PostCell(postInfo: product))
+                                .map((product) => PostCell(
+                                      postInfo: product,
+                                      routerChange: widget.routerChange,
+                                    ))
                                 .toList(),
                           ),
                         )
