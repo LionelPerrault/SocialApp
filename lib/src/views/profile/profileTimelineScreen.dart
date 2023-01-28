@@ -1,17 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/widget/list_text.dart';
-import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
@@ -207,25 +202,29 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(e['add'] ? Icons.check : Icons.add, size: 15),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5),
+                      Icon(
+                        e['add'] ? Icons.check : Icons.add,
+                        size: 15,
                       ),
-                      e['add']
-                          ? Text(e['title'],
-                              style: const TextStyle(
-                                  decoration: TextDecoration.lineThrough))
-                          : ListText(
-                              label: e['title'],
-                              onTap: () {
-                                e['route'] != null
-                                    ? widget.routerChange({
-                                        'router': RouteNames.settings,
-                                        'subRouter': e['route'],
-                                      })
-                                    : () {};
-                              },
-                            )
+                      const Padding(padding: EdgeInsets.only(left: 5)),
+                      RichText(
+                        text: e['add']
+                            ? TextSpan(
+                                text: e['title'],
+                                style: const TextStyle(
+                                    decoration: TextDecoration.lineThrough))
+                            : TextSpan(
+                                text: e['title'],
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    e['route'] != null
+                                        ? widget.routerChange({
+                                            'router': RouteNames.settings,
+                                            'subRouter': e['route'],
+                                          })
+                                        : () {};
+                                  }),
+                      )
                     ],
                   )))
               .toList(),
