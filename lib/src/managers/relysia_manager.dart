@@ -197,24 +197,30 @@ class RelysiaManager {
           (res) async {
             response = jsonDecode(res.body);
             if (response['statusCode'] == 200) {
-              for (var elem in response['data']['histories']) {
-                for (var e in elem['to']) {
-                  if (e['tokenId'] == RelysiaHelper.tokenId) {
-                    transHistory.add({
-                      'txId': e['txId'] ?? '',
-                      'from': elem['from'] ?? '',
-                      'notes': elem['notes'] ?? '',
-                      'to': e['to'] ?? '',
-                      'balance_change': elem['totalAmount'] ?? '',
-                      'timestamp': elem['timestamp'] ?? ''
-                    });
-                    count++;
+              if (response['data']['histories'] != []) {
+                for (var elem in response['data']['histories']) {
+                  for (var e in elem['to']) {
+                    print(e);
+                    if (e['tokenId'] == shnToken) {
+                      transHistory.add({
+                        'txId': e['txId'] ?? '',
+                        'from': elem['from'] ?? '',
+                        'notes': elem['notes'] ?? '',
+                        'to': e['to'] ?? '',
+                        'balance_change': elem['totalAmount'] ?? '',
+                        'timestamp': elem['timestamp'] ?? ''
+                      });
+                      count++;
+                    }
                   }
                 }
+                next = response['data']['meta']['nextPageToken'].toString();
+                result = true;
+              } else {
+                result = true;
+                count = 10;
               }
-              next = response['data']['meta']['nextPageToken'].toString();
-              result = true;
-              print(transHistory);
+              // print(transHistory);
             } else if (response['statusCode'] == 401) {
               next = 'null';
               result = false;
