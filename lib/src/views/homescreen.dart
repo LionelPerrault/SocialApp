@@ -138,16 +138,24 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                           //    : SizedBox(width: 0),
                           Expanded(
                             child: SizeConfig(context).screenWidth >
-                                    SizeConfig.mediumScreenSize + 300
+                                    SizeConfig.mediumScreenSize + 100
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(child: MainPanel()),
+                                      Expanded(
+                                        child: MainPanel(),
+                                        flex: 7,
+                                      ),
                                       SizeConfig(context).screenWidth >
-                                              SizeConfig.mediumScreenSize + 300
-                                          ? RightPanel()
+                                              SizeConfig.mediumScreenSize
+                                          ? Expanded(
+                                              child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: 10),
+                                                  child: RightPanel()),
+                                              flex: 3)
                                           : SizedBox(width: 0),
                                     ],
                                   )
@@ -155,7 +163,14 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: [MainPanel(), RightPanel()],
+                                    children: [
+                                      MainPanel(),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 40, right: 40),
+                                        child: RightPanel(),
+                                      )
+                                    ],
                                   ),
                           ),
                           //MainPanel(),
