@@ -13,10 +13,11 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class TwoFactorAuthenticationScreen extends StatefulWidget {
-  TwoFactorAuthenticationScreen({Key? key})
+  TwoFactorAuthenticationScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => TwoFactorAuthenticationScreenState();
 }
@@ -104,13 +105,13 @@ class TwoFactorAuthenticationScreenState
         Container(
           padding: const EdgeInsets.only(left: 20),
           child: SettingHeader(
-            icon: const Icon(
-              Icons.security,
-              color: Color.fromARGB(255, 244, 67, 54),
-            ),
-            pagename: 'Two-factor Authentication Setting',
-            button: const {'flag': false},
-          ),
+              icon: const Icon(
+                Icons.security,
+                color: Color.fromARGB(255, 244, 67, 54),
+              ),
+              pagename: 'Two-factor Authentication Setting',
+              button: const {'flag': false},
+              routerChange: widget.routerChange),
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         Column(
