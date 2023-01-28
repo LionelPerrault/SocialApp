@@ -16,8 +16,8 @@ import 'package:shnatter/src/utils/size_config.dart';
 import '../../controllers/UserController.dart';
 
 class ShnatterPageSuggest extends StatefulWidget {
-  ShnatterPageSuggest({Key? key}) : super(key: key);
-
+  ShnatterPageSuggest({Key? key, required this.routerChange}) : super(key: key);
+  Function routerChange;
   @override
   State createState() => ShnatterPageSuggestState();
 }

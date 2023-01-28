@@ -12,10 +12,11 @@ import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
 class AllProducts extends StatefulWidget {
-  AllProducts({Key? key})
+  AllProducts({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
+  Function routerChange;
   State createState() => AllProductsState();
 }
 
@@ -70,7 +71,10 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
                         .where((product) =>
                             product['data']['productAdmin']['userName'] ==
                             UserManager.userInfo['userName'])
-                        .map((product) => ProductCell(data: product))
+                        .map((product) => ProductCell(
+                              data: product,
+                              routerChange: widget.routerChange,
+                            ))
                         .toList(),
                   ),
           ),

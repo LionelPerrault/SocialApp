@@ -8,10 +8,11 @@ import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingSecurityPasswordScreen extends StatefulWidget {
-  SettingSecurityPasswordScreen({Key? key})
+  SettingSecurityPasswordScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => SettingSecurityPasswordScreenState();
 }
@@ -39,6 +40,7 @@ class SettingSecurityPasswordScreenState
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: Icon(
                 Icons.security_outlined,
                 color: Color.fromARGB(255, 139, 195, 74),

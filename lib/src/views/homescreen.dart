@@ -49,7 +49,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                 Expanded(
                   child: MainPanel(),
                 ),
-                RightPanel(),
+                RightPanel(routerChange: widget.routerChange),
               ],
             )
           : Column(
@@ -57,7 +57,7 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 MainPanel(),
-                RightPanel(),
+                RightPanel(routerChange: widget.routerChange),
               ],
             ),
     );

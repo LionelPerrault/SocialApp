@@ -57,7 +57,6 @@ class footbarState extends State<footbar> {
                         builder: (BuildContext context) => TermsScreen(),
                       ),
                     ),
-                    // Navigator.pushReplacementNamed(context, RouteNames.terms),
                   },
                   child: GestureDetector(
                     child: Container(

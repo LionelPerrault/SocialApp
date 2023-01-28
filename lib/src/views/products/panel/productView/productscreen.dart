@@ -91,10 +91,13 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
                                       ),
                                     )
                                   ])
-                            : ProductCell(data: {
-                                'data': con.product,
-                                'id': con.viewProductId
-                              }),
+                            : ProductCell(
+                                data: {
+                                  'data': con.product,
+                                  'id': con.viewProductId
+                                },
+                                routerChange: widget.routerChange,
+                              ),
                       )
                     ],
                   ),

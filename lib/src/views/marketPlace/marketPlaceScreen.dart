@@ -183,6 +183,7 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                   productCategory: category,
                   arrayOption: arrayOption,
                   searchValue: searchValue,
+                  routerChange: widget.routerChange,
                 )
               ],
             ),

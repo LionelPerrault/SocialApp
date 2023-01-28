@@ -281,9 +281,15 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                groupSubRoute == '' ? AllGroup() : const SizedBox(),
-                groupSubRoute == 'joined' ? JoinedGroups() : const SizedBox(),
-                groupSubRoute == 'manage' ? MyGroups() : const SizedBox(),
+                groupSubRoute == ''
+                    ? AllGroup(routerChange: widget.routerChange)
+                    : const SizedBox(),
+                groupSubRoute == 'joined'
+                    ? JoinedGroups(routerChange: widget.routerChange)
+                    : const SizedBox(),
+                groupSubRoute == 'manage'
+                    ? MyGroups(routerChange: widget.routerChange)
+                    : const SizedBox(),
               ],
             ),
           ),

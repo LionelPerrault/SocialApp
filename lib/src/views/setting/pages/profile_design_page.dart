@@ -21,7 +21,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 
 class SettingDesignScreen extends StatefulWidget {
-  SettingDesignScreen({Key? key}) : super(key: key);
+  SettingDesignScreen({Key? key, required this.routerChange}) : super(key: key);
+  Function routerChange;
   @override
   State createState() => SettingDesignScreenState();
 }
@@ -41,6 +42,7 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: Icon(
                 Icons.brush,
                 color: Color.fromARGB(255, 43, 83, 164),

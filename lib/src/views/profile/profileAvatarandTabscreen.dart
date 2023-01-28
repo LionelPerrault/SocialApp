@@ -20,10 +20,12 @@ import 'dart:io' show File;
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
   Function onClick;
-  ProfileAvatarandTabScreen({Key? key, required this.onClick})
+  ProfileAvatarandTabScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
+  Function routerChange;
   @override
   State createState() => ProfileAvatarandTabScreenState();
 }
@@ -334,11 +336,10 @@ class ProfileAvatarandTabScreenState extends mvc
                     onPressed: () => {
                       if (UserManager.userInfo['uid'] != con.viewProfileUid)
                         {
-                          Navigator.pushNamed(
-                            context,
-                            RouteNames.messages,
-                            arguments: con.viewProfileUid.toString(),
-                          )
+                          widget.routerChange({
+                            'router': RouteNames.messages,
+                            'subRouter': con.viewProfileUid.toString(),
+                          }),
                         }
                     },
                     child: Row(
@@ -363,8 +364,10 @@ class ProfileAvatarandTabScreenState extends mvc
                     ),
                     onPressed: () async => {
                       setState(() {}),
-                      Navigator.pushReplacementNamed(
-                          context, RouteNames.settings),
+                      widget.routerChange({
+                        'router': RouteNames.settings,
+                        'subRouter': RouteNames.settings_profile_basic
+                      }),
                       print(settingMainScreen.settingPage),
                     },
                     child: Row(

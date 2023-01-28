@@ -15,10 +15,11 @@ import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingSocialScreen extends StatefulWidget {
-  SettingSocialScreen({Key? key})
+  SettingSocialScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => SettingSocialScreenState();
 }
@@ -56,6 +57,7 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: Icon(
                 Icons.facebook,
                 color: Color.fromARGB(255, 43, 83, 164),

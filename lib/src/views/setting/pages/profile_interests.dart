@@ -15,9 +15,10 @@ import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingInterestsScreen extends StatefulWidget {
   late PostController Postcon;
-  SettingInterestsScreen({Key? key})
+  SettingInterestsScreen({Key? key, required this.routerChange})
       : Postcon = PostController(),
         super(key: key);
+  Function routerChange;
   @override
   State createState() => SettingInterestsScreenState();
 }
@@ -52,6 +53,7 @@ class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: Icon(
                 Icons.school,
                 color: Color.fromARGB(255, 43, 83, 164),

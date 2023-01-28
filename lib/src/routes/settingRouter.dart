@@ -19,42 +19,42 @@ import 'package:shnatter/src/views/setting/pages/twoFactorAuthentication_page.da
 
 class SettingRouter {
   SettingRouter(String settingPage);
-  static settingRouter(settingPage) {
+  static settingRouter(settingPage, routerChange) {
     switch (settingPage) {
       case '':
-        return SettingAccountScreen();
+        return SettingAccountScreen(routerChange: routerChange);
       case RouteNames.settings_profile_basic:
-        return SettingBasicScreen();
+        return SettingBasicScreen(routerChange: routerChange);
       case RouteNames.settings_profile_work:
-        return SettingWorkScreen();
+        return SettingWorkScreen(routerChange: routerChange);
       case RouteNames.settings_profile_location:
-        return SettingLocationScreen();
+        return SettingLocationScreen(routerChange: routerChange);
       case RouteNames.settings_profile_education:
-        return SettingEducationScreen();
+        return SettingEducationScreen(routerChange: routerChange);
       case RouteNames.settings_profile_social:
-        return SettingSocialScreen();
+        return SettingSocialScreen(routerChange: routerChange);
       case RouteNames.settings_profile_interests:
-        return SettingInterestsScreen();
+        return SettingInterestsScreen(routerChange: routerChange);
       case RouteNames.settings_profile_design:
-        return SettingDesignScreen();
+        return SettingDesignScreen(routerChange: routerChange);
       case RouteNames.settings_security_password:
-        return SettingSecurityPasswordScreen();
+        return SettingSecurityPasswordScreen(routerChange: routerChange);
       case RouteNames.settings_security_sessions:
-        return SettingSecuritySessScreen();
+        return SettingSecuritySessScreen(routerChange: routerChange);
       case RouteNames.settings_privacy:
-        return SettingPrivacyScreen();
+        return SettingPrivacyScreen(routerChange: routerChange);
       case RouteNames.settings_notifications:
-        return SettingNotificationScreen();
+        return SettingNotificationScreen(routerChange: routerChange);
       case RouteNames.settings_token:
-        return SettingShnatterTokenScreen();
+        return SettingShnatterTokenScreen(routerChange: routerChange);
       case RouteNames.settings_verification:
-        return SettingVerificationScreen();
+        return SettingVerificationScreen(routerChange: routerChange);
       case RouteNames.settings_information:
-        return SettingInfoScreen();
+        return SettingInfoScreen(routerChange: routerChange);
       case RouteNames.settings_delete:
-        return SettingDeleteScreen();
+        return SettingDeleteScreen(routerChange: routerChange);
       case RouteNames.settings_two_factor:
-        return TwoFactorAuthenticationScreen();
+        return TwoFactorAuthenticationScreen(routerChange: routerChange);
     }
   }
 }

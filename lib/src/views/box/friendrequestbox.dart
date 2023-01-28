@@ -15,11 +15,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../controllers/UserController.dart';
 
 class ShnatterFriendRequest extends StatefulWidget {
-  ShnatterFriendRequest({Key? key, required this.onClick})
+  ShnatterFriendRequest(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = PeopleController(),
         super(key: key);
   final PeopleController con;
   Function onClick;
+  Function routerChange;
+
   @override
   State createState() => ShnatterFriendRequestState();
 }
@@ -116,9 +119,11 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                                                   left: 10, top: 5),
                                               child: InkWell(
                                                   onTap: () {
-                                                    Navigator.pushReplacementNamed(
-                                                        context,
-                                                        '/${e.value['requester']}');
+                                                    widget.routerChange({
+                                                      'router':
+                                                          RouteNames.profile,
+                                                      'subRouter': e.value['requester']
+                                                    });
                                                   },
                                                   child: Text(
                                                     e.value[e

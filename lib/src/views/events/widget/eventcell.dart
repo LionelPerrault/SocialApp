@@ -140,8 +140,6 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                   'router': RouteNames.events,
                                   'subRouter': widget.eventData['id'],
                                 });
-                                // Navigator.pushReplacementNamed(context,
-                                //     '/events/${widget.eventData['id']}');
                               }),
                       ]),
                     ),

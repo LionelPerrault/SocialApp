@@ -10,10 +10,11 @@ import 'package:badges/badges.dart' as badges;
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingShnatterTokenScreen extends StatefulWidget {
-  SettingShnatterTokenScreen({Key? key})
+  SettingShnatterTokenScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => SettingShnatterTokenScreenState();
 }
@@ -176,6 +177,7 @@ class SettingShnatterTokenScreenState
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: const Icon(Icons.attach_money,
                   color: Color.fromRGBO(76, 175, 80, 1)),
               pagename: 'Shnatter Token',

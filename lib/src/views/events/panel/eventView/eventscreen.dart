@@ -158,10 +158,13 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                                         setState(() {});
                                       })
                                     : con.eventTab == 'Members'
-                                        ? EventMembersScreen(onClick: (value) {
-                                            con.eventTab = value;
-                                            setState(() {});
-                                          })
+                                        ? EventMembersScreen(
+                                            onClick: (value) {
+                                              con.eventTab = value;
+                                              setState(() {});
+                                            },
+                                            routerChange: widget.routerChange,
+                                          )
                                         : con.eventTab == 'Settings'
                                             ? EventSettingsScreen(
                                                 onClick: (value) {

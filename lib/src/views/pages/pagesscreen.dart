@@ -102,12 +102,12 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
         body: Stack(
           fit: StackFit.expand,
           children: [
-            ShnatterNavigation(
-              searchController: searchController,
-              onSearchBarFocus: onSearchBarFocus,
-              onSearchBarDismiss: onSearchBarDismiss,
-              drawClicked: clickMenu,
-            ),
+            // ShnatterNavigation(
+            //   searchController: searchController,
+            //   onSearchBarFocus: onSearchBarFocus,
+            //   onSearchBarDismiss: onSearchBarDismiss,
+            //   drawClicked: clickMenu,
+            // ),
             Padding(
                 padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child: SingleChildScrollView(
@@ -458,15 +458,15 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                 ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                pageSubRoute == ''
-                                    ? AllPages()
-                                    : const SizedBox(),
-                                pageSubRoute == 'liked'
-                                    ? LikedPages()
-                                    : const SizedBox(),
-                                pageSubRoute == 'manage'
-                                    ? MyPages()
-                                    : const SizedBox(),
+                                // pageSubRoute == ''
+                                //     ? AllPages(routerChange: widget.routerChange,)
+                                //     : const SizedBox(),
+                                // pageSubRoute == 'liked'
+                                //     ? LikedPages()
+                                //     : const SizedBox(),
+                                // pageSubRoute == 'manage'
+                                //     ? MyPages()
+                                //     : const SizedBox(),
                               ],
                             )),
                           ],

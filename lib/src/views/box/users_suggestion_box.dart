@@ -16,7 +16,8 @@ import 'package:shnatter/src/utils/size_config.dart';
 import '../../controllers/UserController.dart';
 
 class ShnatterUserSuggest extends StatefulWidget {
-  ShnatterUserSuggest({Key? key}) : super(key: key);
+  ShnatterUserSuggest({Key? key, required this.routerChange}) : super(key: key);
+  Function routerChange;
 
   @override
   State createState() => ShnatterUserSuggestState();
@@ -126,8 +127,11 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       print('visit profile');
-                                      Navigator.pushReplacementNamed(context,
-                                          '/${con.userList[index]['userName']}');
+                                      widget.routerChange({
+                                        'router': RouteNames.profile,
+                                        'subRouter': con.userList[index]
+                                            ['userName']
+                                      });
                                     })
                             ],
                           ),

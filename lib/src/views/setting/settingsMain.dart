@@ -37,6 +37,7 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: SettingRouter.settingRouter(settingPage));
+    return Expanded(
+        child: SettingRouter.settingRouter(settingPage, widget.routerChange));
   }
 }

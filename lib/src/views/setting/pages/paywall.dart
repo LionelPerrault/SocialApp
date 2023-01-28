@@ -9,10 +9,11 @@ import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 
 class SettingPaywallForUser extends StatefulWidget {
-  SettingPaywallForUser({Key? key})
+  SettingPaywallForUser({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => SettingPaywallForUserState();
 }
@@ -36,6 +37,7 @@ class SettingPaywallForUserState extends mvc.StateMVC<SettingPaywallForUser> {
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: const Icon(
                 Icons.money_sharp,
                 color: Color.fromARGB(255, 43, 83, 164),

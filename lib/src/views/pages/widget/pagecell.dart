@@ -9,6 +9,7 @@ import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
@@ -17,10 +18,12 @@ class PageCell extends StatefulWidget {
     super.key,
     required this.pageInfo,
     required this.refreshFunc,
+    required this.routerChange,
   }) : con = PostController();
   Map pageInfo;
   late PostController con;
   var refreshFunc;
+  Function routerChange;
   @override
   State createState() => PageCellState();
 }
@@ -131,8 +134,11 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushReplacementNamed(context,
-                                    '/pages/${widget.pageInfo['data']['pageUserName']}');
+                                widget.routerChange({
+                                  'router': RouteNames.pages,
+                                  'subRouter': widget.pageInfo['data']
+                                      ['pageUserName'],
+                                });
                               }),
                       ]),
                     ),

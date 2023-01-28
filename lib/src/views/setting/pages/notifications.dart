@@ -16,10 +16,11 @@ import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingNotificationScreen extends StatefulWidget {
-  SettingNotificationScreen({Key? key})
+  SettingNotificationScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => SettingNotificationScreenState();
 }
@@ -64,6 +65,7 @@ class SettingNotificationScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: const Icon(
                 Icons.notifications,
                 color: Color.fromARGB(255, 103, 58, 183),

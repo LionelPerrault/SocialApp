@@ -163,7 +163,9 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                AllProducts()
+                AllProducts(
+                  routerChange: widget.routerChange,
+                )
               ],
             ),
           ),

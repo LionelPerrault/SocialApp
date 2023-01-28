@@ -7,7 +7,9 @@ import '../box/events_suggestion_box.dart';
 
 // ignore: must_be_immutable
 class RightPanel extends StatelessWidget {
-  RightPanel({super.key});
+  RightPanel({super.key, required this.routerChange});
+  Function routerChange;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,19 +18,19 @@ class RightPanel extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.only(top: 0.0),
         ),
-        ShnatterUserSuggest(),
+        ShnatterUserSuggest(routerChange: routerChange),
         const Padding(
           padding: EdgeInsets.only(top: 10.0),
         ),
-        ShnatterPageSuggest(),
+        ShnatterPageSuggest(routerChange: routerChange),
         const Padding(
           padding: EdgeInsets.only(top: 10.0),
         ),
-        ShnatterGroupSuggest(),
+        ShnatterGroupSuggest(routerChange: routerChange),
         const Padding(
           padding: EdgeInsets.only(top: 10.0),
         ),
-        ShnatterEventSuggest(),
+        ShnatterEventSuggest(routerChange: routerChange),
         const Padding(padding: EdgeInsets.only(top: 10.0)),
       ]),
     );

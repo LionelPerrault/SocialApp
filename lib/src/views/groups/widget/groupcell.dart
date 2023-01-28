@@ -9,6 +9,7 @@ import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
@@ -17,9 +18,11 @@ class GroupCell extends StatefulWidget {
     super.key,
     required this.groupData,
     required this.refreshFunc,
+    required this.routerChange,
   }) : con = PostController();
   var groupData;
   Function refreshFunc;
+  Function routerChange;
 
   late PostController con;
   @override
@@ -132,8 +135,11 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushReplacementNamed(context,
-                                    '/groups/${widget.groupData['data']['groupUserName']}');
+                                widget.routerChange({
+                                  'router': RouteNames.profile,
+                                  'subRouter': widget.groupData['data']
+                                      ['groupUserName'],
+                                });
                               }),
                       ]),
                     ),

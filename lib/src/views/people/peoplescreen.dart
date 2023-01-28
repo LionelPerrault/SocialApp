@@ -61,7 +61,9 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
           children: [
             mainTabWidget(),
             con.tabName == 'Discover'
-                ? PeopleDiscoverScreen()
+                ? PeopleDiscoverScreen(
+                    routerChange: widget.routerChange,
+                  )
                 : con.tabName == 'Friend Requests'
                     ? FriendRequestsScreen()
                     : SendRequestsScreen()

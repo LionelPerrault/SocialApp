@@ -12,17 +12,19 @@ import '../../../controllers/PostController.dart';
 
 // ignore: must_be_immutable
 class MarketAllProduct extends StatefulWidget {
-  MarketAllProduct(
-      {Key? key,
-      required this.productCategory,
-      required this.arrayOption,
-      required this.searchValue})
-      : con = PostController(),
+  MarketAllProduct({
+    Key? key,
+    required this.productCategory,
+    required this.arrayOption,
+    required this.searchValue,
+    required this.routerChange,
+  })  : con = PostController(),
         super(key: key);
   late PostController con;
   String productCategory;
   String arrayOption;
   String searchValue;
+  Function routerChange;
   State createState() => MarketAllProductState();
 }
 
@@ -106,7 +108,10 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: allProducts
-                        .map((product) => MarketCell(data: product))
+                        .map((product) => MarketCell(
+                              data: product,
+                              routerChange: widget.routerChange,
+                            ))
                         .toList())
                 : GridView.count(
                     crossAxisCount:
@@ -118,7 +123,10 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
                     crossAxisSpacing: 10.0,
                     primary: false,
                     children: allProducts
-                        .map((product) => MarketCell(data: product))
+                        .map((product) => MarketCell(
+                              data: product,
+                              routerChange: widget.routerChange,
+                            ))
                         .toList()),
           ),
         ],

@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/daytimeM.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/mindslice.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingPrivacyScreen extends StatefulWidget {
-  SettingPrivacyScreen({Key? key})
+  SettingPrivacyScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => SettingPrivacyScreenState();
 }
@@ -62,6 +56,7 @@ class SettingPrivacyScreenState extends mvc.StateMVC<SettingPrivacyScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: Icon(Icons.privacy_tip_rounded,
                   color: Color.fromARGB(255, 255, 179, 7)),
               pagename: 'Privacy',

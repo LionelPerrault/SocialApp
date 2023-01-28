@@ -38,8 +38,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   late AnimationController _drawerSlideController;
 
   Map mainRouterValue = {
-    'router': RouteNames.products,
-    'subRouter': '9A77PVn1ZJ1UVgh0TPfr',
+    'router': RouteNames.homePage,
   };
   late UserController con;
 
@@ -119,6 +118,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
               onSearchBarFocus: onSearchBarFocus,
               onSearchBarDismiss: onSearchBarDismiss,
               drawClicked: clickMenu,
+              routerChange: routerChange,
             ),
             Padding(
               padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),

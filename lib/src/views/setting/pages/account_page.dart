@@ -7,10 +7,11 @@ import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 
 class SettingAccountScreen extends StatefulWidget {
-  SettingAccountScreen({Key? key})
+  SettingAccountScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => SettingAccountScreenState();
 }
@@ -43,6 +44,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: Icon(Icons.settings),
               pagename: 'Account Settings',
               button: {'flag': false},
