@@ -523,6 +523,7 @@ class UserController extends ControllerMVC {
   Future<bool> loginWithVerificationCode(
       String verificationCode, context) async {
     var returnVal = await twoFactorAuthenticationChecker(verificationCode);
+    print(returnVal);
     if (returnVal) {
       await Helper.saveJSONPreference(Helper.userField, {...userInfo});
       await UserManager.getUserInfo();
