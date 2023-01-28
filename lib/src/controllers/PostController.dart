@@ -269,18 +269,30 @@ class PostController extends ControllerMVC {
   }
 
   //create event function
-  Future<String> createEvent(context, Map<String, dynamic> eventData) async {
+  Future<Map> createEvent(context, Map<String, dynamic> eventData) async {
     if (eventData['eventName'] == null || eventData['eventName'] == '') {
-      return 'Please add your event name';
+      return {
+        'msg': 'Please add your event name',
+        'result': false,
+      };
     } else if (eventData['eventLocation'] == null ||
         eventData['eventLocation'] == '') {
-      return 'Please add your event location';
+      return {
+        'msg': 'Please add your event location',
+        'result': false,
+      };
     } else if (eventData['eventStartDate'] == null ||
         eventData['eventStartDate'] == '') {
-      return 'Please add your event start date';
+      return {
+        'msg': 'Please add your event start date',
+        'result': false,
+      };
     } else if (eventData['eventEndDate'] == null ||
         eventData['eventEndDate'] == '') {
-      return 'Please add your event end date';
+      return {
+        'msg': 'Please add your event end date',
+        'result': false,
+      };
     }
     eventData = {
       ...eventData,
@@ -300,6 +312,7 @@ class PostController extends ControllerMVC {
       'eventApproval': true
     };
     Map<String, dynamic> notificationData;
+    String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .add(eventData)
@@ -314,9 +327,13 @@ class PostController extends ControllerMVC {
                 'timeStamp': FieldValue.serverTimestamp(),
               },
               saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(context, '/events/${value.id}'),
+              id = value.id,
             });
-    return 'Successfully created';
+    return {
+      'msg': 'Successfully created',
+      'result': true,
+      'value': id,
+    };
   }
 
   //get all interests from firebase
@@ -556,15 +573,24 @@ class PostController extends ControllerMVC {
   }
 
   //create page function
-  Future<String> createPage(context, Map<String, dynamic> pageData) async {
+  Future<Map> createPage(context, Map<String, dynamic> pageData) async {
     if (pageData['pageName'] == null || pageData['pageName'] == '') {
-      return 'Please add your page name';
+      return {
+        'msg': 'Please add your page name',
+        'result': false,
+      };
     } else if (pageData['pageUserName'] == null ||
         pageData['pageUserName'] == '') {
-      return 'Please add your page user name';
+      return {
+        'msg': 'Please add your page user name',
+        'result': false,
+      };
     } else if (pageData['pageLocation'] == null ||
         pageData['pageLocation'] == '') {
-      return 'Please add your page location';
+      return {
+        'msg': 'Please add your page location',
+        'result': false,
+      };
     }
     pageData = {
       ...pageData,
@@ -586,9 +612,13 @@ class PostController extends ControllerMVC {
         .get();
     var value = reuturnValue.docs;
     if (value.isNotEmpty) {
-      return 'Page Name should be unique';
+      return {
+        'msg': 'Page Name should be unique',
+        'result': false,
+      };
     }
     Map<String, dynamic> notificationData;
+    String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .add(pageData)
@@ -603,10 +633,13 @@ class PostController extends ControllerMVC {
                 'timeStamp': FieldValue.serverTimestamp(),
               },
               saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(
-                  context, '${RouteNames.pages}/${pageData['pageUserName']}'),
+              id = value.id,
             });
-    return 'Page was created successfully';
+    return {
+      'msg': 'Page was created successfully',
+      'result': true,
+      'value': id,
+    };
   }
 
   ////////////////////functions that support for making comment to page/////////////////////////////
@@ -798,15 +831,24 @@ class PostController extends ControllerMVC {
   }
 
   //create group function
-  Future<String> createGroup(context, Map<String, dynamic> groupData) async {
+  Future<Map> createGroup(context, Map<String, dynamic> groupData) async {
     if (groupData['groupName'] == null || groupData['groupName'] == '') {
-      return 'Please add your group name';
+      return {
+        'msg': 'Please add your group name',
+        'result': false,
+      };
     } else if (groupData['groupUserName'] == null ||
         groupData['groupUserName'] == '') {
-      return 'Please add your group user name';
+      return {
+        'msg': 'Please add your group user name',
+        'result': false,
+      };
     } else if (groupData['groupLocation'] == null ||
         groupData['groupLocation'] == '') {
-      return 'Please add your group location';
+      return {
+        'msg': 'Please add your group location',
+        'result': false,
+      };
     }
     groupData = {
       ...groupData,
@@ -830,9 +872,13 @@ class PostController extends ControllerMVC {
         .get();
     var value = reuturnValue.docs;
     if (value.isNotEmpty) {
-      return 'Group name already exist';
+      return {
+        'msg': 'Group name already exist',
+        'result': false,
+      };
     }
     Map<String, dynamic> notificationData;
+    String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.groupsField)
         .add(groupData)
@@ -847,10 +893,13 @@ class PostController extends ControllerMVC {
                 'timeStamp': FieldValue.serverTimestamp(),
               },
               saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(
-                  context, '${RouteNames.groups}/${groupData['groupUserName']}')
+              id = value.id,
             });
-    return 'Successfully created';
+    return {
+      'msg': 'Successfully created',
+      'result': true,
+      'value': id,
+    };
   }
 
   ////////////////////functions that support for making comment to group/////////////////////////////
@@ -924,17 +973,25 @@ class PostController extends ControllerMVC {
 
   ///////////////////////////end groups functions //////////////////////////////////////////////////
 
-  Future<String> createProduct(
-      context, Map<String, dynamic> productData) async {
+  Future<Map> createProduct(context, Map<String, dynamic> productData) async {
     if (productData['productName'] == null ||
         productData['productName'] == '') {
-      return 'Please add your product name';
+      return {
+        'msg': 'Please add your product name',
+        'result': false,
+      };
     } else if (productData['productPrice'] == null ||
         productData['productPrice'] == '') {
-      return 'Please add your product price';
+      return {
+        'msg': 'Please add your product price',
+        'result': false,
+      };
     } else if (productData['productCategory'] == null ||
         productData['productCategory'] == '') {
-      return 'Please add your product category';
+      return {
+        'msg': 'Please add your product category',
+        'result': false,
+      };
     }
     productData = {
       ...productData,
@@ -949,6 +1006,7 @@ class PostController extends ControllerMVC {
     };
 
     Map<String, dynamic> notificationData;
+    String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
@@ -963,12 +1021,15 @@ class PostController extends ControllerMVC {
                 'timeStamp': FieldValue.serverTimestamp(),
               },
               saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(
-                  context, '${RouteNames.products}/${value.id}')
+              id = value.id,
             });
     // RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
     //     '10', 'for create product');
-    return 'Successfully created';
+    return {
+      'msg': 'Successfully created',
+      'result': true,
+      'value': id,
+    };
   }
 
   List<Map> allProduct = [];

@@ -119,7 +119,10 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                                     ],
                                                   ),
                                                   content: CreateProductModal(
-                                                      context: context))));
+                                                    context: context,
+                                                    routerChange:
+                                                        widget.routerChange,
+                                                  ))));
                                     },
                                     child: Row(
                                       mainAxisAlignment:

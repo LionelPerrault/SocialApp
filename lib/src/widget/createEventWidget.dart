@@ -6,14 +6,17 @@ import 'package:shnatter/src/helpers/helper.dart';
 
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/interests.dart';
 
 class CreateEventModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
-  CreateEventModal({Key? key, required this.context})
+  CreateEventModal(
+      {Key? key, required this.context, required this.routerChange})
       : Postcon = PostController(),
         super(key: key);
+  Function routerChange;
   @override
   State createState() => CreateEventModalState();
 }
@@ -328,7 +331,15 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                           setState(
                             () => {},
                           ),
-                          Helper.showToast(value),
+                          Navigator.of(context).pop(true),
+                          Helper.showToast(value['msg']),
+                          if (value['result'] == true)
+                            {
+                              widget.routerChange({
+                                'router': RouteNames.events,
+                                'subRouter': value['value'],
+                              })
+                            }
                         });
                   },
                   child: footerBtnState

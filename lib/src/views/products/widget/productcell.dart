@@ -107,7 +107,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                     ),
                   ],
                 ),
-                content: CreateProductModal(context: context)));
+                content: CreateProductModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
       },
     },
     {

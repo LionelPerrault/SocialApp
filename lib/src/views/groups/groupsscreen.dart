@@ -252,7 +252,10 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                                     ],
                                                   ),
                                                   content: CreateGroupModal(
-                                                      context: context))));
+                                                    context: context,
+                                                    routerChange:
+                                                        widget.routerChange,
+                                                  ))));
                                     },
                                     child: Row(
                                       mainAxisAlignment:

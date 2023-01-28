@@ -2,25 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/pages/panel/allpages.dart';
-import 'package:shnatter/src/views/pages/panel/likedpages.dart';
-import 'package:shnatter/src/views/pages/panel/mypages.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/widget/createPageWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/gestures.dart';
 
 class PagesScreen extends StatefulWidget {
-  PagesScreen({Key? key})
+  PagesScreen({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
-
+  Function routerChange;
   @override
   State createState() => PagesScreenState();
 }
@@ -414,9 +408,14 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                  content: CreatePageModal(
-                                                                      context:
-                                                                          context))));
+                                                                  content:
+                                                                      CreatePageModal(
+                                                                    context:
+                                                                        context,
+                                                                    routerChange:
+                                                                        widget
+                                                                            .routerChange,
+                                                                  ))));
                                                     },
                                                     child: Row(
                                                       mainAxisAlignment:

@@ -380,7 +380,10 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                     ],
                                                   ),
                                                   content: CreateEventModal(
-                                                      context: context))));
+                                                    context: context,
+                                                    routerChange:
+                                                        widget.routerChange,
+                                                  ))));
                                     },
                                     child: Row(
                                       mainAxisAlignment:

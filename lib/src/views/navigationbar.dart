@@ -295,7 +295,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => PostsNavBox(),
+                        menuBuilder: () => PostsNavBox(
+                              routerChange: widget.routerChange,
+                            ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
@@ -612,7 +614,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => PostsNavBox(),
+                        menuBuilder: () => PostsNavBox(
+                              routerChange: widget.routerChange,
+                            ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
