@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
@@ -185,6 +186,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
               onSearchBarFocus: onSearchBarFocus,
               onSearchBarDismiss: onSearchBarDismiss,
               drawClicked: clickMenu,
+              routerChange: () {},
             ),
             Padding(
               padding: const EdgeInsets.only(top: 80),
@@ -1801,7 +1803,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               minimumSize: const Size(110, 40),
                                               maximumSize: const Size(110, 40),
                                             ),
-                                            onPressed: () {
+                                            onPressed: () async {
                                               isShowProgressive = true;
                                               setState(() {});
                                               saveData['interests'] = [];
@@ -1815,12 +1817,14 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                       interestsCheck[i]['id']);
                                                 }
                                               }
-                                              userCon.saveProfile(saveData);
+                                              await userCon
+                                                  .saveProfile(saveData);
                                               Timer(
                                                   const Duration(
                                                       milliseconds: 1300), () {
                                                 Navigator.pushReplacementNamed(
-                                                    context, '/');
+                                                    context,
+                                                    RouteNames.homePage);
                                               });
                                             },
                                             child: Row(
@@ -1893,15 +1897,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: Colors.white,
-                                        width: SizeConfig.leftBarWidth,
-                                        child: SingleChildScrollView(
-                                          child: LeftPanel(),
-                                        ),
-                                      )
-                                    ]),
+                                    children: []),
                               )));
                 }),
             showSearch

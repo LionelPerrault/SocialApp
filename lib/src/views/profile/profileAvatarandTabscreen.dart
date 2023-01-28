@@ -12,18 +12,20 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shnatter/src/views/setting/settings_main.dart';
-import 'package:shnatter/src/views/setting/panel/settng_left_panel.dart';
+import 'package:shnatter/src/views/setting/settingsMain.dart';
+import 'package:shnatter/src/views/panel/leftPanel/settngLeftPanel.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
   Function onClick;
-  ProfileAvatarandTabScreen({Key? key, required this.onClick})
+  ProfileAvatarandTabScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
+  Function routerChange;
   @override
   State createState() => ProfileAvatarandTabScreenState();
 }
@@ -334,11 +336,10 @@ class ProfileAvatarandTabScreenState extends mvc
                     onPressed: () => {
                       if (UserManager.userInfo['uid'] != con.viewProfileUid)
                         {
-                          Navigator.pushNamed(
-                            context,
-                            RouteNames.messages,
-                            arguments: con.viewProfileUid.toString(),
-                          )
+                          widget.routerChange({
+                            'router': RouteNames.messages,
+                            'subRouter': con.viewProfileUid.toString(),
+                          }),
                         }
                     },
                     child: Row(
@@ -362,10 +363,11 @@ class ProfileAvatarandTabScreenState extends mvc
                       minimumSize: const Size(60, 50),
                     ),
                     onPressed: () async => {
-                      settingMainScreen.basicPageFlag = true,
                       setState(() {}),
-                      Navigator.pushReplacementNamed(
-                          context, RouteNames.settings),
+                      widget.routerChange({
+                        'router': RouteNames.settings,
+                        'subRouter': RouteNames.settings_profile_basic
+                      }),
                       print(settingMainScreen.settingPage),
                     },
                     child: Row(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
@@ -11,10 +12,11 @@ class MarketCell extends StatefulWidget {
   MarketCell({
     super.key,
     required this.data,
+    required this.routerChange,
   }) : con = PostController();
   // ignore: prefer_typing_uninitialized_variables
   var data;
-
+  Function routerChange;
   late PostController con;
   @override
   State createState() => MarketCellState();
@@ -140,8 +142,10 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                                   maximumSize: const Size(70, 34),
                                 ),
                                 onPressed: () {
-                                  Navigator.pushReplacementNamed(context,
-                                      '/products/${widget.data["id"]}');
+                                  widget.routerChange({
+                                    'router': RouteNames.products,
+                                    'subRouter': widget.data["id"],
+                                  });
                                 },
                                 child: Container(
                                   child: const Text('More',

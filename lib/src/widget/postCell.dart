@@ -23,9 +23,10 @@ class PostCell extends StatefulWidget {
   PostCell({
     super.key,
     required this.postInfo,
+    required this.routerChange,
   }) : con = PostController();
   var postInfo;
-
+  Function routerChange;
   late PostController con;
   @override
   State createState() => PostCellState();
@@ -99,9 +100,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                   fontSize: 16),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '/${widget.postInfo['admin']['userName']}');
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo['admin']
+                                                            ['userName'],
+                                                  });
                                                 })
                                         ]),
                                   ),
@@ -142,9 +147,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                   fontSize: 10),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '${RouteNames.products}/${widget.postInfo['id']}');
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
                                                 })
                                         ]),
                                   ),
@@ -231,9 +238,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                   fontSize: 16),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '/${widget.postInfo['admin']['userName']}');
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo['admin']
+                                                            ['userName'],
+                                                  });
                                                 })
                                         ]),
                                   ),
@@ -265,9 +276,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                   fontSize: 10),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '${RouteNames.products}/${widget.postInfo['id']}');
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
                                                 })
                                         ]),
                                   ),

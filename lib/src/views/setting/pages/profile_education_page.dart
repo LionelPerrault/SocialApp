@@ -1,35 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
-class SettingSecurityPasswordScreen extends StatefulWidget {
-  SettingSecurityPasswordScreen({Key? key})
+class SettingEducationScreen extends StatefulWidget {
+  SettingEducationScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
-  State createState() => SettingSecurityPasswordScreenState();
+  State createState() => SettingEducationScreenState();
 }
 
 // ignore: must_be_immutable
-class SettingSecurityPasswordScreenState
-    extends mvc.StateMVC<SettingSecurityPasswordScreen> {
+class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
+  var educationInfo = {};
   late UserController con;
   var userInfo = UserManager.userInfo;
-  late String currentPassword;
-  String newPassword = '';
-  String confirmPassword = '';
   @override
   void initState() {
-    super.initState();
     add(widget.con);
-    currentPassword = '';
     con = controller as UserController;
+    super.initState();
   }
 
   @override
@@ -39,12 +35,18 @@ class SettingSecurityPasswordScreenState
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: Icon(
-                Icons.security_outlined,
-                color: Color.fromARGB(255, 139, 195, 74),
+                Icons.school,
+                color: Color.fromARGB(255, 43, 83, 164),
               ),
-              pagename: 'Change Password',
-              button: {'flag': false},
+              pagename: 'Education',
+              button: {
+                'buttoncolor': Color.fromARGB(255, 17, 205, 239),
+                'icon': Icon(Icons.person),
+                'text': 'View Profile',
+                'flag': true
+              },
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
@@ -54,36 +56,6 @@ class SettingSecurityPasswordScreenState
                       : SizeConfig(context).screenWidth * 0.9 - 30,
               child: Column(
                 children: [
-                  Container(
-                    width: 680,
-                    height: 65,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 252, 124, 95),
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                    child: Row(
-                      children: [
-                        const Padding(padding: EdgeInsets.only(left: 30)),
-                        const Icon(
-                          Icons.warning_rounded,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 10)),
-                        SizedBox(
-                            width: SizeConfig(context).screenWidth >
-                                    SizeConfig.smallScreenSize
-                                ? SizeConfig(context).screenWidth * 0.3
-                                : SizeConfig(context).screenWidth * 0.5 - 20,
-                            child: const Text(
-                              'Changing password will log you out from all other sessions',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11),
-                            ))
-                      ],
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
                   Row(
                     children: [
                       Expanded(
@@ -92,7 +64,7 @@ class SettingSecurityPasswordScreenState
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Confirm Current Password',
+                              Text('School',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 82, 95, 127),
                                       fontSize: 11,
@@ -104,9 +76,10 @@ class SettingSecurityPasswordScreenState
                                       print(value);
                                     },
                                     onchange: (value) async {
-                                      currentPassword = value;
+                                      educationInfo['school'] = value;
+                                      setState(() {});
                                     },
-                                    obscureText: true),
+                                    text: userInfo['school'] ?? ''),
                               )
                             ],
                           )),
@@ -122,7 +95,7 @@ class SettingSecurityPasswordScreenState
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Your New Password',
+                              Text('Major',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 82, 95, 127),
                                       fontSize: 11,
@@ -134,9 +107,10 @@ class SettingSecurityPasswordScreenState
                                       print(value);
                                     },
                                     onchange: (value) async {
-                                      newPassword = value;
+                                      educationInfo['major'] = value;
+                                      setState(() {});
                                     },
-                                    obscureText: true),
+                                    text: userInfo['major'] ?? ''),
                               )
                             ],
                           )),
@@ -147,7 +121,7 @@ class SettingSecurityPasswordScreenState
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Confirm New Password',
+                              const Text('Class',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 82, 95, 127),
                                       fontSize: 11,
@@ -159,9 +133,10 @@ class SettingSecurityPasswordScreenState
                                       print(value);
                                     },
                                     onchange: (value) async {
-                                      confirmPassword = value;
+                                      educationInfo['class'] = value;
+                                      setState(() {});
                                     },
-                                    obscureText: true),
+                                    text: userInfo['class'] ?? ''),
                               )
                             ],
                           )),
@@ -172,16 +147,12 @@ class SettingSecurityPasswordScreenState
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            SettingFooter(
-                onClick: () {
-                  saveAccountSettings();
-                },
-                isChange: con.isSettingAction)
+            footer()
           ],
         ));
   }
 
-  Widget input({label, onchange, obscureText = false, validator}) {
+  Widget input({label, onchange, obscureText = false, validator, text}) {
     return Container(
       height: 28,
       child: StartedInput(
@@ -192,18 +163,72 @@ class SettingSecurityPasswordScreenState
         onChange: (val) async {
           onchange(val);
         },
+        text: text,
       ),
     );
   }
 
-  void saveAccountSettings() {
-    print(userInfo['password']);
-    if (currentPassword == userInfo['password']) {
-      print(newPassword);
-      print(confirmPassword);
-      if (newPassword == confirmPassword) {
-        con.changePassword(userInfo['email'], newPassword);
-      }
-    }
+  Widget footer() {
+    return Padding(
+      padding: EdgeInsets.only(right: 20, top: 20),
+      child: Container(
+          height: 65,
+          decoration: const BoxDecoration(
+            border: Border(
+                top: BorderSide(
+              color: Color.fromARGB(255, 220, 226, 237),
+              width: 1,
+            )),
+            color: Color.fromARGB(255, 240, 243, 246),
+            // borderRadius: BorderRadius.all(Radius.circular(3)),
+          ),
+          padding: const EdgeInsets.only(top: 5, left: 15),
+          child: Row(
+            children: [
+              const Flexible(fit: FlexFit.tight, child: SizedBox()),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(3),
+                    backgroundColor: Colors.white,
+                    // elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0)),
+                    minimumSize: con.isProfileChange
+                        ? const Size(90, 50)
+                        : const Size(120, 50),
+                    maximumSize: con.isProfileChange
+                        ? const Size(90, 50)
+                        : const Size(120, 50),
+                  ),
+                  onPressed: () {
+                    con.profileChange(educationInfo);
+                  },
+                  child: con.isProfileChange
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            SizedBox(
+                              width: 10,
+                              height: 10,
+                              child: CircularProgressIndicator(
+                                  color: Colors.black),
+                            ),
+                            Padding(padding: EdgeInsets.only(left: 7)),
+                            Text('Loading',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold))
+                          ],
+                        )
+                      : const Text('Save Changes',
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold))),
+              const Padding(padding: EdgeInsets.only(right: 30))
+            ],
+          )),
+    );
   }
 }

@@ -14,7 +14,7 @@ import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
 import 'package:shnatter/src/views/box/notification.dart';
-import 'package:shnatter/src/views/setting/settings_main.dart';
+import 'package:shnatter/src/views/setting/settingsMain.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../utils/size_config.dart';
@@ -37,6 +37,7 @@ class ShnatterNavigation extends StatefulWidget {
     required this.onSearchBarFocus,
     required this.onSearchBarDismiss,
     required this.drawClicked,
+    required this.routerChange,
   })  : postCon = PostController(),
         super(key: key);
   PostController postCon;
@@ -44,6 +45,7 @@ class ShnatterNavigation extends StatefulWidget {
   final VoidCallback onSearchBarFocus;
   final VoidCallback onSearchBarDismiss;
   final VoidCallback drawClicked;
+  Function routerChange;
   @override
   State createState() => ShnatterNavigationState();
 }
@@ -199,18 +201,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     await Navigator.pushReplacementNamed(context, RouteNames.adp);
   }
 
-  void onSettingClicked() {
-    settingMainScreen.settingPage = 'account_page';
-    Navigator.pushNamed(context, RouteNames.settings);
-    setState(() {});
-    print(settingMainScreen.settingPage);
-    print(settingMainScreen.basicPageFlag);
-  }
-
-  void onHomeClicked() {
-    Navigator.pushReplacementNamed(context, RouteNames.homePage);
-  }
-
   Future<void> onLogOut() async {
     UserManager.isLogined = false;
     Helper.makeOffline();
@@ -227,11 +217,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-            ? buildLargeSize()
-            : buildSmallSize(),
-      ),
+      body: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+          ? buildLargeSize()
+          : buildSmallSize(),
     );
   }
 
@@ -277,7 +265,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       padding: const EdgeInsets.only(right: 20),
                       child: ElevatedButton(
                         onPressed: () {
-                          onHomeClicked();
+                          widget.routerChange({
+                            'router': RouteNames.homePage,
+                          });
                         },
                         style: ButtonStyle(
                           minimumSize:
@@ -305,7 +295,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => PostsNavBox(),
+                        menuBuilder: () => PostsNavBox(
+                              routerChange: widget.routerChange,
+                            ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
@@ -326,6 +318,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               onClick: () {
                                 setState(() {});
                               },
+                              routerChange: widget.routerChange,
                             ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
@@ -495,19 +488,26 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           switch (item) {
                             case Menu.itemProfile:
                               {
-                                Navigator.pushReplacementNamed(context,
-                                    '/${UserManager.userInfo['userName']}');
+                                widget.routerChange({
+                                  'router': RouteNames.profile,
+                                  'subRouter': UserManager.userInfo['userName']
+                                });
                                 break;
                               }
                             case Menu.itemSettings:
                               {
-                                onSettingClicked();
+                                widget.routerChange({
+                                  'router': RouteNames.settings,
+                                  'subRouter': ''
+                                });
                                 break;
                               }
                             case Menu.itemPrivacy:
                               {
-                                Navigator.pushReplacementNamed(
-                                    context, RouteNames.settings);
+                                widget.routerChange({
+                                  'router': RouteNames.settings,
+                                  'subRouter': RouteNames.settings_privacy
+                                });
                                 break;
                               }
                             case Menu.itemAdminPanel:
@@ -582,7 +582,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            onHomeClicked();
+                            widget.routerChange({
+                              'router': RouteNames.homePage,
+                            });
                           },
                           style: ButtonStyle(
                             foregroundColor:
@@ -612,7 +614,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => PostsNavBox(),
+                        menuBuilder: () => PostsNavBox(
+                              routerChange: widget.routerChange,
+                            ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
@@ -633,6 +637,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               onClick: () {
                                 setState(() {});
                               },
+                              routerChange: widget.routerChange,
                             ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
@@ -778,22 +783,27 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           switch (item) {
                             case Menu.itemProfile:
                               {
-                                Navigator.pushReplacementNamed(context,
-                                    '/${UserManager.userInfo['userName']}');
+                                widget.routerChange({
+                                  'router': RouteNames.profile,
+                                  'subRouter': UserManager.userInfo['userName']
+                                });
                                 break;
                               }
 
                             case Menu.itemSettings:
                               {
-                                onSettingClicked();
+                                widget.routerChange({
+                                  'router': RouteNames.settings,
+                                  'subRouter': ''
+                                });
                                 break;
                               }
                             case Menu.itemPrivacy:
                               {
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  RouteNames.settings,
-                                );
+                                widget.routerChange({
+                                  'router': RouteNames.settings,
+                                  'subRouter': RouteNames.settings_privacy
+                                });
                                 break;
                               }
                             case Menu.itemAdminPanel:

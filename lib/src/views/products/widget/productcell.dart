@@ -23,9 +23,10 @@ class ProductCell extends StatefulWidget {
   ProductCell({
     super.key,
     required this.data,
+    required this.routerChange,
   }) : con = PostController();
   var data;
-
+  Function routerChange;
   late PostController con;
   @override
   State createState() => ProductCellState();
@@ -106,7 +107,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                     ),
                   ],
                 ),
-                content: CreateProductModal(context: context)));
+                content: CreateProductModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
       },
     },
     {
@@ -167,8 +171,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
       'icon': Icons.link,
       'text': 'Open Post in new Tab',
       'onTap': () {
-        Navigator.pushReplacementNamed(
-            context, '${RouteNames.products}/${productId}');
+        widget.routerChange({
+          'router': RouteNames.products,
+          'subRouter': productId,
+        });
       },
     },
   ];
@@ -283,9 +289,13 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
                                                   print('username');
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '/${product['productAdmin']['userName']}');
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        product['productAdmin']
+                                                            ['userName'],
+                                                  });
                                                 })
                                         ]),
                                   ),
@@ -339,9 +349,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                       TextOverflow.ellipsis),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '${RouteNames.products}/$productId');
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.products,
+                                                    'subRouter': productId,
+                                                  });
                                                 })
                                         ]),
                                   ),
@@ -576,13 +588,12 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                     if (UserManager.userInfo['uid'] !=
                                         widget.data["data"]["productAdmin"]
                                             ["uid"]) {
-                                      Navigator.pushNamed(
-                                        context,
-                                        RouteNames.messages,
-                                        arguments: widget.data["data"]
+                                      widget.routerChange({
+                                        'router': RouteNames.messages,
+                                        'subRouter': widget.data["data"]
                                                 ["productAdmin"]["uid"]
                                             .toString(),
-                                      );
+                                      });
                                     }
                                     setState(() {
                                       // stepflag = true;

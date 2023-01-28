@@ -19,11 +19,15 @@ import '../../controllers/ProfileController.dart';
 class ProfileTimelineScreen extends StatefulWidget {
   Function onClick;
   ProfileTimelineScreen(
-      {Key? key, required this.onClick, required this.userName})
+      {Key? key,
+      required this.onClick,
+      required this.userName,
+      required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
   String userName = '';
+  Function routerChange;
   @override
   State createState() => ProfileTimelineScreenState();
 }
@@ -72,23 +76,28 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       },
       {
         'title': 'Add your biography',
-        'add': userData['about'] == null ? false : true
+        'add': userData['about'] == null ? false : true,
+        'route': RouteNames.settings_profile_basic
       },
       {
         'title': 'Add your birthdate',
-        'add': userData['birthY'] == null ? false : true
+        'add': userData['birthY'] == null ? false : true,
+        'route': RouteNames.settings_profile_basic
       },
       {
         'title': 'Add your relationship',
-        'add': userData['school'] == null ? false : true
+        'add': userData['school'] == null ? false : true,
+        'route': RouteNames.settings_profile_basic
       },
       {
         'title': 'Add your work info',
-        'add': userData['workTitle'] == null ? false : true
+        'add': userData['workTitle'] == null ? false : true,
+        'route': RouteNames.settings_profile_work
       },
       {
         'title': 'Add your location info',
-        'add': userData['current'] == null ? false : true
+        'add': userData['current'] == null ? false : true,
+        'route': RouteNames.settings_profile_location
       },
       {
         'title': 'Add your education info',
@@ -96,7 +105,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                 userData['class'] == null &&
                 userData['major'] == null
             ? false
-            : true
+            : true,
+        'route': RouteNames.settings_profile_education
       },
     ];
     setState(() {});
@@ -201,31 +211,22 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                       const Padding(
                         padding: EdgeInsets.only(left: 5),
                       ),
-                      Text(
-                        e['title'],
-                        style: e['add']
-                            ? const TextStyle(
-                                decoration: TextDecoration.lineThrough)
-                            : const TextStyle(),
-                      )
+                      e['add']
+                          ? Text(e['title'],
+                              style: const TextStyle(
+                                  decoration: TextDecoration.lineThrough))
+                          : ListText(
+                              label: e['title'],
+                              onTap: () {
+                                e['route'] != null
+                                    ? widget.routerChange({
+                                        'router': RouteNames.settings,
+                                        'subRouter': e['route'],
+                                      })
+                                    : () {};
+                              },
+                            )
                     ],
-                    // children: [
-                    //   Icon(e['add'] ? Icons.check : Icons.add, size: 15),
-                    //   const Padding(
-                    //     padding: EdgeInsets.only(left: 5),
-                    //   ),
-                    //   e['add']
-                    //       ? Text(e['title'],
-                    //           style: const TextStyle(
-                    //               decoration: TextDecoration.lineThrough))
-                    //       : ListText(
-                    //           label: e['title'],
-                    //           onTap: () {
-                    //             Navigator.pushReplacementNamed(
-                    //                 context, RouteNames.settings);
-                    //           },
-                    //         )
-                    // ],
                   )))
               .toList(),
         ));

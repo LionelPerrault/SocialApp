@@ -1,25 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/HomeController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/colors.dart';
 
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 class CreateGroupModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
-  CreateGroupModal({Key? key, required this.context})
+  CreateGroupModal(
+      {Key? key, required this.context, required this.routerChange})
       : Postcon = PostController(),
         super(key: key);
+  Function routerChange;
   @override
   State createState() => CreateGroupModalState();
 }
@@ -351,7 +348,15 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   Postcon.createGroup(context, groupInfo).then((value) => {
                         footerBtnState = false,
                         setState(() {}),
-                        Helper.showToast(value),
+                        Navigator.of(context).pop(true),
+                        Helper.showToast(value['msg']),
+                        if (value['result'] == true)
+                          {
+                            widget.routerChange({
+                              'router': RouteNames.groups,
+                              'subRouter': value['value'],
+                            })
+                          }
                       });
                   print(groupInfo);
                 },

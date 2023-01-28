@@ -6,14 +6,17 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 class GroupMembersScreen extends StatefulWidget {
   Function onClick;
-  GroupMembersScreen({Key? key, required this.onClick})
+  GroupMembersScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
+  Function routerChange;
 
   @override
   State createState() => GroupMembersScreenState();
@@ -163,8 +166,10 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                   children: members
                       .map((user) => UserCell(
                           groupTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/${user["userName"]}');
+                            widget.routerChange({
+                              'router': RouteNames.profile,
+                              'subRouter': user["userName"],
+                            });
                           },
                           picture: user['avatar'] ?? '',
                           header: user['fullName']))
@@ -205,8 +210,10 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                   children: invites
                       .map((user) => UserCell(
                           groupTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/${user["userName"]}');
+                            widget.routerChange({
+                              'router': RouteNames.profile,
+                              'subRouter': user["userName"],
+                            });
                           },
                           picture: user['userAvatar'] ?? '',
                           header: user['fullName']))

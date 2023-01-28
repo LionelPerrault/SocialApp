@@ -6,10 +6,11 @@ import 'package:shnatter/src/widget/createEventWidget.dart';
 import 'package:shnatter/src/widget/createGroupWidget.dart';
 import 'package:shnatter/src/widget/createPageWidget.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
+import 'package:universal_html/js_util.dart';
 
 class PostsNavBox extends StatefulWidget {
-  PostsNavBox({Key? key}) : super(key: key);
-
+  PostsNavBox({Key? key, required this.routerChange}) : super(key: key);
+  Function routerChange;
   @override
   State createState() => PostsNavBoxState();
 }
@@ -17,7 +18,7 @@ class PostsNavBox extends StatefulWidget {
 class PostsNavBoxState extends State<PostsNavBox> {
   //
   bool isSound = false;
-  List<Map> eachList = [
+  late List<Map> eachList = [
     // {
     //   'icon': Icons.photo_camera_back_outlined,
     //   'color': Color.fromARGB(255, 103, 58, 183),
@@ -96,7 +97,10 @@ class PostsNavBoxState extends State<PostsNavBox> {
                     ),
                   ],
                 ),
-                content: CreateProductModal(context: context)));
+                content: CreateProductModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
       },
     },
     // {
@@ -146,7 +150,10 @@ class PostsNavBoxState extends State<PostsNavBox> {
                     ),
                   ],
                 ),
-                content: CreateGroupModal(context: context)));
+                content: CreateGroupModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
       },
     },
     {
@@ -171,7 +178,10 @@ class PostsNavBoxState extends State<PostsNavBox> {
                     ),
                   ],
                 ),
-                content: CreateEventModal(context: context)));
+                content: CreateEventModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
       },
     },
   ];

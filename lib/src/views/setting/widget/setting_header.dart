@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
 class SettingHeader extends StatelessWidget {
   SettingHeader(
-      {super.key, required this.icon, required this.pagename, this.button});
+      {super.key,
+      required this.icon,
+      required this.pagename,
+      this.button,
+      required this.routerChange});
   Icon icon;
   String pagename;
+  Function routerChange;
   var button;
   @override
   Widget build(BuildContext context) {
@@ -46,8 +52,10 @@ class SettingHeader extends StatelessWidget {
                       maximumSize: const Size(120, 50),
                     ),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, '/${UserManager.userInfo['userName']}');
+                      routerChange({
+                        'router': RouteNames.profile,
+                        'subRouter': UserManager.userInfo['userName'],
+                      });
                       print('object');
                     },
                     child: Row(

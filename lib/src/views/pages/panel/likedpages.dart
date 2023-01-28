@@ -10,10 +10,11 @@ import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
 class LikedPages extends StatefulWidget {
-  LikedPages({Key? key})
+  LikedPages({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
+  Function routerChange;
   State createState() => LikedPagesState();
 }
 
@@ -71,6 +72,7 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
                       refreshFunc: () {
                         getPageNow();
                       },
+                      routerChange: widget.routerChange,
                     ),
                   )
                   .toList(),

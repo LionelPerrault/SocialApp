@@ -12,7 +12,9 @@ import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingVerificationScreen extends StatefulWidget {
-  SettingVerificationScreen({Key? key}) : super(key: key);
+  SettingVerificationScreen({Key? key, required this.routerChange})
+      : super(key: key);
+  Function routerChange;
   @override
   State createState() => SettingVerificationScreenState();
 }
@@ -27,6 +29,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: const Icon(
                 Icons.check_circle,
                 color: Color.fromARGB(255, 33, 150, 243),

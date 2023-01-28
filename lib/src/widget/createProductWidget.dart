@@ -4,20 +4,20 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 import 'dart:io' show File;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as PPath;
 
 class CreateProductModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
-  CreateProductModal({Key? key, required this.context})
+  CreateProductModal(
+      {Key? key, required this.context, required this.routerChange})
       : Postcon = PostController(),
         super(key: key);
+  Function routerChange;
   @override
   State createState() => CreateProductModalState();
 }
@@ -565,7 +565,15 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                       (value) => {
                         footerBtnState = false,
                         setState(() {}),
-                        Helper.showToast(value),
+                        Navigator.of(context).pop(true),
+                        Helper.showToast(value['msg']),
+                        if (value['result'] == true)
+                          {
+                            widget.routerChange({
+                              'router': RouteNames.products,
+                              'subRouter': value['value'],
+                            })
+                          }
                       },
                     );
                   },

@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/interests.dart';
 
 class CreatePageModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
-  CreatePageModal({Key? key, required this.context})
+  CreatePageModal({Key? key, required this.context, required this.routerChange})
       : Postcon = PostController(),
         super(key: key);
+  Function routerChange;
   @override
   State createState() => CreatePageModalState();
 }
@@ -158,7 +160,15 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                   Postcon.createPage(context, pageInfo).then((value) => {
                         footerBtnState = false,
                         setState(() {}),
-                        Helper.showToast(value)
+                        Navigator.of(context).pop(true),
+                        Helper.showToast(value['msg']),
+                        if (value['result'] == true)
+                          {
+                            widget.routerChange({
+                              'router': RouteNames.pages,
+                              'subRouter': value['value'],
+                            })
+                          }
                       });
                   print(pageInfo);
                 },

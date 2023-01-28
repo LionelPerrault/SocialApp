@@ -2,25 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/pages/panel/allpages.dart';
-import 'package:shnatter/src/views/pages/panel/likedpages.dart';
-import 'package:shnatter/src/views/pages/panel/mypages.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/widget/createPageWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/gestures.dart';
 
 class PagesScreen extends StatefulWidget {
-  PagesScreen({Key? key})
+  PagesScreen({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
-
+  Function routerChange;
   @override
   State createState() => PagesScreenState();
 }
@@ -102,12 +96,12 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
         body: Stack(
           fit: StackFit.expand,
           children: [
-            ShnatterNavigation(
-              searchController: searchController,
-              onSearchBarFocus: onSearchBarFocus,
-              onSearchBarDismiss: onSearchBarDismiss,
-              drawClicked: clickMenu,
-            ),
+            // ShnatterNavigation(
+            //   searchController: searchController,
+            //   onSearchBarFocus: onSearchBarFocus,
+            //   onSearchBarDismiss: onSearchBarDismiss,
+            //   drawClicked: clickMenu,
+            // ),
             Padding(
                 padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child: SingleChildScrollView(
@@ -116,11 +110,11 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizeConfig(context).screenWidth <
-                                SizeConfig.mediumScreenSize
-                            ? const SizedBox()
-                            : LeftPanel(),
-                        //    : SizedBox(width: 0),
+                        // SizeConfig(context).screenWidth <
+                        //         SizeConfig.mediumScreenSize
+                        //     ? const SizedBox()
+                        //     : LeftPanel(),
+                        // //    : SizedBox(width: 0),
                         Expanded(
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -414,9 +408,14 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                  content: CreatePageModal(
-                                                                      context:
-                                                                          context))));
+                                                                  content:
+                                                                      CreatePageModal(
+                                                                    context:
+                                                                        context,
+                                                                    routerChange:
+                                                                        widget
+                                                                            .routerChange,
+                                                                  ))));
                                                     },
                                                     child: Row(
                                                       mainAxisAlignment:
@@ -458,15 +457,15 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                 ),
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                pageSubRoute == ''
-                                    ? AllPages()
-                                    : const SizedBox(),
-                                pageSubRoute == 'liked'
-                                    ? LikedPages()
-                                    : const SizedBox(),
-                                pageSubRoute == 'manage'
-                                    ? MyPages()
-                                    : const SizedBox(),
+                                // pageSubRoute == ''
+                                //     ? AllPages(routerChange: widget.routerChange,)
+                                //     : const SizedBox(),
+                                // pageSubRoute == 'liked'
+                                //     ? LikedPages()
+                                //     : const SizedBox(),
+                                // pageSubRoute == 'manage'
+                                //     ? MyPages()
+                                //     : const SizedBox(),
                               ],
                             )),
                           ],

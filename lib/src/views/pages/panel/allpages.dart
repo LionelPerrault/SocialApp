@@ -11,10 +11,11 @@ import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
 class AllPages extends StatefulWidget {
-  AllPages({Key? key})
+  AllPages({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
+  Function routerChange;
   State createState() => AllPagesState();
 }
 
@@ -71,6 +72,7 @@ class AllPagesState extends mvc.StateMVC<AllPages> {
                       refreshFunc: () {
                         getPageNow();
                       },
+                      routerChange: widget.routerChange,
                     ),
                   )
                   .toList(),

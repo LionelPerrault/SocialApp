@@ -16,10 +16,12 @@ import '../../controllers/ProfileController.dart';
 
 class ProfileLikesScreen extends StatefulWidget {
   Function onClick;
-  ProfileLikesScreen({Key? key, required this.onClick})
+  ProfileLikesScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
+  Function routerChange;
   @override
   State createState() => ProfileLikesScreenState();
 }
@@ -147,6 +149,7 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
                                 refreshFunc: () {
                                   getPageNow();
                                 },
+                                routerChange: widget.routerChange,
                               ),
                             )
                             .toList(),

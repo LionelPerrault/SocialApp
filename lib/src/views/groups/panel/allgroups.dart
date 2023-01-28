@@ -11,10 +11,12 @@ import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
 class AllGroup extends StatefulWidget {
-  AllGroup({Key? key})
+  AllGroup({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
+  Function routerChange;
+
   State createState() => AllGroupState();
 }
 
@@ -71,6 +73,7 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
                       refreshFunc: () {
                         getGroupNow();
                       },
+                      routerChange: widget.routerChange,
                     ),
                   )
                   .toList(),

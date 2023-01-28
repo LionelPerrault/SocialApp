@@ -9,6 +9,8 @@ import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/mainScreen.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
@@ -17,9 +19,11 @@ class EventCell extends StatefulWidget {
     super.key,
     required this.eventData,
     required this.buttonFun,
+    required this.routerChange,
   }) : con = PostController();
   Map eventData;
   Function buttonFun;
+  Function routerChange;
 
   late PostController con;
   @override
@@ -132,8 +136,10 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushReplacementNamed(context,
-                                    '/events/${widget.eventData['id']}');
+                                widget.routerChange({
+                                  'router': RouteNames.events,
+                                  'subRouter': widget.eventData['id'],
+                                });
                               }),
                       ]),
                     ),

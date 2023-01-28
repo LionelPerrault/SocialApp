@@ -5,6 +5,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
@@ -13,10 +14,13 @@ import '../../../../widget/admin_list_text.dart';
 
 class GroupSettingsScreen extends StatefulWidget {
   Function onClick;
-  GroupSettingsScreen({Key? key, required this.onClick})
+  GroupSettingsScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
+  Function routerChange;
+
   @override
   State createState() => GroupSettingsScreenState();
 }
@@ -766,8 +770,10 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                         setState(() {}),
                         if (value != 'doubleName${updateData['groupUserName']}')
                           {
-                            Navigator.pushReplacementNamed(
-                                context, '/groups/${value}')
+                            widget.routerChange({
+                              'router': RouteNames.groups,
+                              'subRouter': value,
+                            }),
                           }
                       },
                     );
