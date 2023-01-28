@@ -116,11 +116,11 @@ class rightFootbarState extends State<rightFootbar> {
                 const Padding(padding: EdgeInsets.only(left: 10)),
               ],
             ),
-            const Padding(padding: EdgeInsets.only(top: 5)),
+            const Padding(padding: EdgeInsets.only(top: 10)),
             const Divider(
               height: 1,
             ),
-            const Padding(padding: EdgeInsets.only(top: 5)),
+            const Padding(padding: EdgeInsets.only(top: 10)),
             Container(
               // margin: const EdgeInsets.only(right: 20),
               child: Row(
