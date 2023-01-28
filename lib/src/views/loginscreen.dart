@@ -26,12 +26,13 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends mvc.StateMVC<LoginScreen> {
   bool isRememberme = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final TextEditingController _controller = TextEditingController();
-  final FocusNode _textNode = FocusNode();
+  final List<TextEditingController> controllers =
+      List.generate(6, (_) => TextEditingController());
+  final List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   String password = '';
   String email = '';
   bool enableTwoFactor = false;
-  String verificationCode = ' ';
+  var verificationCode = '';
   var isObscure = true;
   @override
   void initState() {
@@ -42,63 +43,62 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
 
   late UserController con;
 
-  void onCodeInput(String value) async {
-    setState(() {
-      verificationCode = value;
-    });
-    if (verificationCode.length == 6) {
-      con.loginWithVerificationCode(verificationCode, context).then((value) => {
-            if (!value) {Helper.failAlert('Verification Code is incorrect!')}
-          });
-    }
-  }
+  // void onCodeInput() async {
+  //   if (verificationCode.length == 6) {
+  //     var verificaCode = verificationCode.toString();
+  //     print(verificaCode);
+  //     con.loginWithVerificationCode(verificaCode, context).then((value) => {
+  //           if (!value) {Helper.failAlert('Verification Code is incorrect!')}
+  //         });
+  //   }
+  // }
 
-  List<Widget> getField() {
-    final List<Widget> result = <Widget>[];
-    for (int i = 1; i <= 6; i++) {
-      result.add(
-        ShakeAnimatedWidget(
-          enabled: false,
-          duration: const Duration(
-            milliseconds: 100,
-          ),
-          shakeAngle: Rotation.deg(
-            z: 20,
-          ),
-          curve: Curves.linear,
-          child: Column(
-            children: <Widget>[
-              if (verificationCode.length >= i)
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                  ),
-                  child: Text(
-                    verificationCode[i - 1],
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                ),
-                child: Container(
-                  height: 5.0,
-                  width: 30.0,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    return result;
-  }
+  // List<Widget> getField() {
+  //   final List<Widget> result = <Widget>[];
+  //   for (int i = 1; i <= 6; i++) {
+  //     result.add(
+  //       ShakeAnimatedWidget(
+  //         enabled: false,
+  //         duration: const Duration(
+  //           milliseconds: 100,
+  //         ),
+  //         shakeAngle: Rotation.deg(
+  //           z: 2,
+  //         ),
+  //         curve: Curves.linear,
+  //         child: Column(
+  //           children: <Widget>[
+  //             if (verificationCode.length >= i)
+  //               Padding(
+  //                 padding: const EdgeInsets.symmetric(
+  //                   horizontal: 5.0,
+  //                 ),
+  //                 child: Text(
+  //                   verificationCode[i - 1],
+  //                   style: const TextStyle(
+  //                     color: Colors.white,
+  //                     fontSize: 20,
+  //                     fontWeight: FontWeight.w700,
+  //                   ),
+  //                 ),
+  //               ),
+  //             Padding(
+  //               padding: const EdgeInsets.symmetric(
+  //                 horizontal: 5.0,
+  //               ),
+  //               child: Container(
+  //                 height: 5.0,
+  //                 width: 20.0,
+  //                 color: Colors.white,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   }
+  //   return result;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +134,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                 width:
                     SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
                         ? SizeConfig.smallScreenSize * 0.94
-                        : 300,
+                        : 320,
                 height:
                     SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
                         ? 550
@@ -406,7 +406,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
             Text('Login',
                 style: TextStyle(
                   color: Color.fromARGB(255, 238, 238, 238),
-                  fontSize: 30,
+                  fontSize: 20,
                 )),
           ]),
         ),
@@ -423,29 +423,92 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
         const Padding(padding: EdgeInsets.only(top: 40)),
         Container(
             margin: const EdgeInsets.only(top: 20.0),
-            padding: const EdgeInsets.only(left: 30, right: 30),
+            padding: const EdgeInsets.only(left: 5, right: 5),
             child: Stack(
               children: <Widget>[
-                Opacity(
-                  opacity: 1.0,
-                  child: TextFormField(
-                    controller: _controller,
-                    focusNode: _textNode,
-                    keyboardType: TextInputType.number,
-                    onChanged: onCodeInput,
-                    maxLength: 6,
-                    style: const TextStyle(
-                        color: Colors.white, backgroundColor: Colors.white),
-                  ),
-                ),
-                Positioned(
-                  // bottom: 0,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: getField(),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    for (int i = 0; i < controllers.length; i++)
+                      Expanded(
+                        flex: 1,
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white),
+                          cursorColor: Colors.white,
+                          controller: controllers[i],
+                          focusNode: focusNodes[i],
+                          maxLength: 1,
+                          textAlign: TextAlign.center,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              focusColor: Colors.white,
+                              filled: true,
+                              fillColor: Color.fromRGBO(35, 35, 35, 0.7)),
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              setState(() {
+                                verificationCode = verificationCode + value;
+                                verificationCode.length;
+                                if (verificationCode.length == 6) {
+                                  print(verificationCode);
+                                  con
+                                      .loginWithVerificationCode(
+                                          verificationCode, context)
+                                      .then((value) => {
+                                            if (!value)
+                                              {
+                                                Helper.failAlert(
+                                                    'Verification Code is incorrect!'),
+                                                verificationCode = '',
+                                              }
+                                            else
+                                              {
+                                                verificationCode = '',
+                                              }
+                                          });
+                                }
+                                FocusScope.of(context)
+                                    .requestFocus(focusNodes[i + 1]);
+                              });
+                            } else if (value.isEmpty) {
+                              controllers[i].clear();
+                              focusNodes[i].unfocus();
+                              verificationCode = '';
+                              // FocusScope.of(context)
+                              //     .requestFocus(focusNodes[0]);
+                              FocusScope.of(context)
+                                  .requestFocus(focusNodes[i - 1]);
+                            }
+                          },
+                        ),
+                      ),
+                  ],
                 )
+
+                // Opacity(
+                //   opacity: 1.0,
+                //   child: TextFormField(
+                //     controller: _controller,
+                //     focusNode: _textNode,
+                //     keyboardType: TextInputType.number,
+                //     onChanged: onCodeInput,
+                //     maxLength: 6,
+                //     decoration: const InputDecoration(
+                //         border: OutlineInputBorder(),
+                //         filled: true,
+                //         fillColor: Colors.blue),
+                //     style: const TextStyle(
+                //         color: Colors.white, backgroundColor: Colors.white),
+                //   ),
+                // ),
+                // Positioned(
+                //   // bottom: 0,
+                //   child: Row(
+                //     crossAxisAlignment: CrossAxisAlignment.end,
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: getField(),
+                //   ),
+                // )
               ],
             )),
         Container(
