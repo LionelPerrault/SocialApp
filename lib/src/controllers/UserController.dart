@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:animated_widgets/generated/i18n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:otp/otp.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -91,9 +92,8 @@ class UserController extends ControllerMVC {
   }
 
   void validate(cont, info) async {
-    print("------1--------");
+    print("------1-------- start validate");
     isSendRegisterInfo = true;
-    setState(() {});
     var fill = true;
     bool passworkdValidation = false;
     var validation = [
@@ -109,18 +109,18 @@ class UserController extends ControllerMVC {
         break;
       }
     }
-    print("------2--------");
+    print("------2-------- validation check");
     if (!fill) {
       failRegister = 'You must fill all field';
       isSendRegisterInfo = false;
       setState(() {});
       return;
     }
-    print("------3--------");
+    print("------3-------- after return validation");
     context = cont;
     signUpUserInfo = info;
     email = signUpUserInfo['email'].toLowerCase().trim();
-    print('email is :$email');
+    print('registration email is : $email');
     password = signUpUserInfo['password'];
     var check = email.contains('@'); //return true if contains
     if (!check) {
@@ -144,13 +144,7 @@ class UserController extends ControllerMVC {
       print(e.code);
     }
 
-    // if (password.length < Helper.passwordMinLength) {
-    //   failRegister = 'Password length should be 8 over';
-    //   isSendRegisterInfo = false;
-    //   setState(() {});
-    //   return;
-    // }
-    print("------4--------");
+    print("------4-------- password strong check");
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
     QuerySnapshot<TokenLogin> querySnapshot1 = await Helper.authdata
@@ -170,7 +164,7 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    print("------5--------");
+    print("------5-------- email exist check");
     RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
           if (res['data'] == null)
             {
@@ -183,10 +177,7 @@ class UserController extends ControllerMVC {
       return;
     }
     createRelysiaAccount(cont);
-    isSendRegisterInfo = true;
-    failRegister = '';
     setState(() {});
-    return;
   }
 
   bool passworkdValidate(String value) {
@@ -213,6 +204,7 @@ class UserController extends ControllerMVC {
   }
 
   Future<void> registerUserInfo() async {
+    setState(() {});
     print('start register');
     var uuid = await sendEmailVeryfication();
     signUpUserInfo.removeWhere((key, value) => key == 'password');
@@ -630,7 +622,7 @@ class UserController extends ControllerMVC {
     return 'ok';
   }
 
-  void createRelysiaAccount(context) async {
+  createRelysiaAccount(context) async {
     relysiaEmail = signUpUserInfo['email'];
     relysiaPassword = signUpUserInfo['password'];
     responseData =
@@ -638,6 +630,9 @@ class UserController extends ControllerMVC {
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();
+        isSendRegisterInfo = true;
+        failRegister = '';
+        setState(() {});
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
         print(responseData['statusCode']);
@@ -655,13 +650,13 @@ class UserController extends ControllerMVC {
     RelysiaManager.createWallet(token).then((rr) => {
           if (rr == 0)
             {
-              Helper.showToast("error occurs while create wallet"),
+              Helper.showToast("Error occurs while create wallet"),
               isSendRegisterInfo = false,
               setState(() {}),
             }
           else
             {
-              print('relysiaPassword:$relysiaPassword'),
+              print('relysiaPassword: $relysiaPassword'),
               RelysiaManager.authUser(relysiaEmail, relysiaPassword)
                   .then((responseData) => {
                         if (responseData['data'] != null)

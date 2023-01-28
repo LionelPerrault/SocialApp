@@ -79,7 +79,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                         'userName': userV.data()!['userName'],
                         'text': Helper
                             .notificationText[allNotifi[i]['postType']]['text'],
-                        'date': Helper.formatDate(formattedNotifyTime),
+                        'date': 'Helper.formatDate(formattedNotifyTime)',
                       },
                       changeData.add(addData),
                     });
@@ -100,7 +100,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                             .notificationName[allNotifi[i]['postType']]['name'],
                         'text': Helper
                             .notificationText[allNotifi[i]['postType']]['text'],
-                        'date': Helper.formatDate(formattedNotifyTime),
+                        'date': 'Helper.formatDate(formattedNotifyTime)',
                       },
                       changeData.add(addData),
                     });

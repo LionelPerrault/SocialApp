@@ -39,6 +39,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
       loadingFlag = false;
       setState(() {});
     });
+    print('current time is ${nowTime.hour} , $time');
   }
 
   @override
@@ -69,7 +70,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                           width: 50,
                           height: 50,
                           child: CircularProgressIndicator(
-                            color: Colors.grey,
+                            color: Colors.yellow,
                           ),
                         )
                       : Expanded(

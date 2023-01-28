@@ -12,7 +12,7 @@ import '../../widget/list_text.dart';
 // ignore: must_be_immutable
 class LeftPanel extends StatelessWidget {
   LeftPanel({super.key});
-  var settingMaingScreen = SettingMainScreenState();
+  var settingMainScreen = SettingMainScreenState();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,8 +45,12 @@ class LeftPanel extends StatelessWidget {
                   'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb'),
           ListText(
               onTap: () => {
+                    settingMainScreen.shnatterTokenPageFlag = true,
                     Navigator.pushReplacementNamed(
                         context, RouteNames.settings),
+                    print(
+                        'shnatterToken page route : ${settingMainScreen.shnatterTokenPageFlag}'),
+                    print(settingMainScreen.settingPage)
                   },
               label: 'Shnatter Token',
               image:

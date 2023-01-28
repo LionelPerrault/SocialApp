@@ -37,8 +37,142 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   var productId = '';
   bool payLoading = false;
   bool loading = false;
+  var postTime = '';
 
-  List<Map> subFunctionList = [];
+  late List<Map> subFunctionList = [
+    {
+      'icon': product['productMarkAsSold']
+          ? Icons.shopping_cart
+          : Icons.shopping_cart,
+      'text':
+          product['productMarkAsSold'] ? 'Mark as Available' : 'Mark as Sold',
+      'onTap': () {
+        con
+            .productMarkAsSold(productId, !product['productMarkAsSold'])
+            .then((value) => {
+                  con.getProduct().then((value) => {
+                        product = con.allProduct
+                            .where((val) => val['id'] == widget.data['id'])
+                            .toList()[0]['data'],
+                        print(product),
+                        setState(() {}),
+                        Helper.setting.notifyListeners(),
+                      })
+                });
+      },
+    },
+    {
+      'icon': product['productMarkAsSold'] ? Icons.bookmark : Icons.bookmark,
+      'text': product['productMarkAsSold'] ? 'UnSave Post' : 'Save Post',
+      'onTap': () {
+        con
+            .productSavePost(productId, !product['productMarkAsSold'])
+            .then((value) => {
+                  con.getProduct().then((value) => {
+                        product = con.allProduct
+                            .where((val) => val['id'] == widget.data['id'])
+                            .toList()[0]['data'],
+                        print(product),
+                        setState(() {}),
+                        Helper.setting.notifyListeners(),
+                      })
+                });
+      },
+    },
+    {
+      'icon': Icons.pin_drop,
+      'text': 'Pin Post',
+      'onTap': () {},
+    },
+    {
+      'icon': Icons.edit,
+      'text': 'Edit Product',
+      'onTap': () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+                title: Row(
+                  children: const [
+                    Icon(
+                      Icons.production_quantity_limits_sharp,
+                      color: Color.fromARGB(255, 33, 150, 243),
+                    ),
+                    Text(
+                      'Add New Product',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ),
+                content: CreateProductModal(context: context)));
+      },
+    },
+    {
+      'icon': Icons.delete,
+      'text': 'Delete Post',
+      'onTap': () {
+        con.productDelete(productId).then((value) => {
+              con.getProduct().then((value) => {
+                    product = con.allProduct
+                        .where((val) => val['id'] == widget.data['id'])
+                        .toList()[0]['data'],
+                    print(product),
+                    setState(() {}),
+                    Helper.setting.notifyListeners(),
+                  })
+            });
+      },
+    },
+    {
+      'icon': Icons.remove_red_eye,
+      'text': product['productTimeline']
+          ? 'Hide from Timeline'
+          : 'Allow on Timeline',
+      'onTap': () {
+        con
+            .productHideFromTimeline(productId, !product['productTimeline'])
+            .then((value) => {
+                  con.getProduct().then((value) => {
+                        product = con.allProduct
+                            .where((val) => val['id'] == widget.data['id'])
+                            .toList()[0]['data'],
+                        print(product),
+                        setState(() {}),
+                        Helper.setting.notifyListeners(),
+                      })
+                });
+      },
+    },
+    {
+      'icon': Icons.comment,
+      'text': product['productOnOffCommenting']
+          ? 'Turn off Commenting'
+          : 'Trun on Commenting',
+      'onTap': () {
+        con
+            .productTurnOffCommenting(productId, !product['productTimeline'])
+            .then((value) => con.getProduct().then((value) => {
+                  product = con.allProduct
+                      .where((val) => val['id'] == widget.data['id'])
+                      .toList()[0]['data'],
+                  print(product),
+                  setState(() {}),
+                  Helper.setting.notifyListeners(),
+                }));
+      },
+    },
+    {
+      'icon': Icons.link,
+      'text': 'Open Post in new Tab',
+      'onTap': () {
+        Navigator.pushReplacementNamed(
+            context, '${RouteNames.products}/${productId}');
+      },
+    },
+  ];
+
   @override
   void initState() {
     add(widget.con);
@@ -46,6 +180,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     super.initState();
     product = widget.data['data'];
     productId = widget.data['id'];
+    con.formatDate(product['productDate']).then((value) {
+      postTime = value;
+      setState(() {});
+    });
+    print('initstate');
   }
 
   buyProduct() async {
@@ -88,157 +227,29 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     );
   }
 
+  popUpFunction(value) async {
+    var functionContainer =
+        subFunctionList.where((element) => element['text'] == value).toList();
+    functionContainer[0]['onTap']();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // print('${widget.data["data"]["productAdmin"]["uid"]}asddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
-    subFunctionList = [
-      {
-        'icon': product['productMarkAsSold']
-            ? Icons.shopping_cart
-            : Icons.shopping_cart,
-        'text':
-            product['productMarkAsSold'] ? 'Mark as Available' : 'Mark as Sold',
-        'onTap': () {
-          con
-              .productMarkAsSold(productId, !product['productMarkAsSold'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': product['productMarkAsSold'] ? Icons.bookmark : Icons.bookmark,
-        'text': product['productMarkAsSold'] ? 'UnSave Post' : 'Save Post',
-        'onTap': () {
-          con
-              .productSavePost(productId, !product['productMarkAsSold'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': Icons.pin_drop,
-        'text': 'Pin Post',
-        'onTap': () {},
-      },
-      {
-        'icon': Icons.edit,
-        'text': 'Edit Product',
-        'onTap': () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                  title: Row(
-                    children: const [
-                      Icon(
-                        Icons.production_quantity_limits_sharp,
-                        color: Color.fromARGB(255, 33, 150, 243),
-                      ),
-                      Text(
-                        'Add New Product',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontStyle: FontStyle.italic),
-                      ),
-                    ],
-                  ),
-                  content: CreateProductModal(context: context)));
-        },
-      },
-      {
-        'icon': Icons.delete,
-        'text': 'Delete Post',
-        'onTap': () {
-          con.productDelete(productId).then((value) => {
-                con.getProduct().then((value) => {
-                      product = con.allProduct
-                          .where((val) => val['id'] == widget.data['id'])
-                          .toList()[0]['data'],
-                      print(product),
-                      setState(() {}),
-                      Helper.setting.notifyListeners(),
-                    })
-              });
-        },
-      },
-      {
-        'icon': Icons.remove_red_eye,
-        'text': product['productTimeline']
-            ? 'Hide from Timeline'
-            : 'Allow on Timeline',
-        'onTap': () {
-          con
-              .productHideFromTimeline(productId, !product['productTimeline'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': Icons.comment,
-        'text': product['productOnOffCommenting']
-            ? 'Turn off Commenting'
-            : 'Trun on Commenting',
-        'onTap': () {
-          con
-              .productTurnOffCommenting(productId, !product['productTimeline'])
-              .then((value) => con.getProduct().then((value) => {
-                    product = con.allProduct
-                        .where((val) => val['id'] == widget.data['id'])
-                        .toList()[0]['data'],
-                    print(product),
-                    setState(() {}),
-                    Helper.setting.notifyListeners(),
-                  }));
-        },
-      },
-      {
-        'icon': Icons.link,
-        'text': 'Open Post in new Tab',
-        'onTap': () {
-          Navigator.pushReplacementNamed(
-              context, '${RouteNames.products}/${productId}');
-        },
-      },
-    ];
     return Row(
       children: [
         Expanded(
             child: Container(
           margin: const EdgeInsets.only(top: 30, bottom: 30),
           width: 600,
-          padding: EdgeInsets.only(top: 20),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.only(top: 20),
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 20, right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -289,14 +300,26 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                     ),
                                   ),
                                   Container(
-                                    padding: EdgeInsets.only(right: 9.0),
-                                    child: CustomPopupMenu(
-                                        menuBuilder: () => SubFunction(),
-                                        pressType: PressType.singleClick,
-                                        verticalMargin: -10,
-                                        child:
-                                            const Icon(Icons.arrow_drop_down)),
-                                  ),
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: Icon(
+                                          Icons.arrow_drop_down,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return subFunctionList
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['text'],
+                                                  child: listCell(
+                                                      e['icon'], e['text']),
+                                                ),
+                                              )
+                                              .toList();
+                                        },
+                                      )),
                                 ],
                               ),
                               const Padding(padding: EdgeInsets.only(top: 3)),
@@ -308,10 +331,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: Helper.formatDate(
-                                                  Helper.changeTimeType(
-                                                      d: product[
-                                                          'productDate'])),
+                                              text: postTime,
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 10,
@@ -639,7 +659,6 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       .map((list) => listCell(
                             list['icon'],
                             list['text'],
-                            list['onTap'],
                           ))
                       .toList(),
                 ),
@@ -649,11 +668,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     );
   }
 
-  Widget listCell(icon, text, onTap) {
+  Widget listCell(icon, text) {
     return ListTile(
-        onTap: () {
-          onTap();
-        },
         hoverColor: Colors.grey[100],
         tileColor: Colors.white,
         enabled: true,

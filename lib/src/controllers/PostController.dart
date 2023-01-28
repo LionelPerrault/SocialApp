@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -26,6 +27,53 @@ class PostController extends ControllerMVC {
     Helper.eventsData =
         FirebaseFirestore.instance.collection(Helper.eventsField);
     return true;
+  }
+
+  Future<String> formatDate(dynamic d) async {
+    var nowTime = changeTimeType(d: d);
+    String trDate = '';
+    var serverTime = await getNowTime();
+    var serverTimeStamp = changeTimeType(d: serverTime);
+    final difference = serverTimeStamp - nowTime;
+    if (difference / (1000 * 60) < 1) {
+      trDate = 'Just Now';
+    } else if (difference / (1000 * 60 * 60) < 1) {
+      trDate = '${(difference / (1000 * 60)).round()} minutes ago';
+    } else if (difference / (1000 * 60 * 60 * 24) < 1) {
+      trDate = '${(difference / (1000 * 60 * 60)).round()} hours ago';
+    } else if (difference / (1000 * 60 * 60 * 24 * 30) < 1) {
+      trDate = '${(difference / (1000 * 60 * 60 * 24)).round()} days ago';
+    } else if (difference / (1000 * 60 * 60 * 24 * 30) >= 1) {
+      trDate =
+          '${(difference / (1000 * 60 * 60 * 24 * 30)).round()} months ago';
+    }
+    return trDate;
+  }
+
+  changeTimeType({var d, bool type = false}) {
+    var notifyTime = DateTime.parse(d.toDate().toString());
+    var formattedNotifyTime =
+        DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+    if (type) {
+      return formattedNotifyTime;
+    } else {
+      return DateTime.parse(formattedNotifyTime).millisecondsSinceEpoch;
+    }
+  }
+
+  getNowTime() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.timeNow)
+        .update({
+      'time': FieldValue.serverTimestamp(),
+    });
+    var snapShot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.timeNow)
+        .get();
+    var nowTime = snapShot.data()!['time'];
+    return nowTime;
   }
 
   Future<bool> uploadPicture(String where, String what, String url) async {
@@ -296,6 +344,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.eventsField)
           .doc(eventId)
           .update({'eventInterested': interested});
+      Helper.showToast('Uninterested event');
       return true;
     } else {
       interested.add({
@@ -305,6 +354,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.eventsField)
           .doc(eventId)
           .update({'eventInterested': interested});
+      Helper.showToast('Interested event');
       return true;
     }
   }
@@ -575,6 +625,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.pagesField)
           .doc(pageId)
           .update({'pageLiked': liked});
+      Helper.showToast('Unliked page');
       return true;
     } else {
       liked.add({
@@ -584,6 +635,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.pagesField)
           .doc(pageId)
           .update({'pageLiked': liked});
+      Helper.showToast('Liked page');
       return true;
     }
   }
@@ -816,6 +868,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.groupsField)
           .doc(groupId)
           .update({'groupJoined': joined});
+      Helper.showToast('Leaved group');
       return true;
     } else {
       joined.add({
@@ -825,6 +878,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.groupsField)
           .doc(groupId)
           .update({'groupJoined': joined});
+      Helper.showToast('Joined group');
       return true;
     }
   }
@@ -1056,7 +1110,7 @@ class PostController extends ControllerMVC {
   var productLikes = {};
   saveProductLikes(productId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment.doc(productId).get();
+    var snapshot = await Helper.postLikeComment.doc(productId).get();
     var a = [];
     if (snapshot.data() == null) {
       a.add({'userName': userInfo['userName'], 'likes': likes});
@@ -1077,13 +1131,13 @@ class PostController extends ControllerMVC {
         a.add({'userName': arr[i]['userName'], 'likes': s});
       }
     }
-    await Helper.productLikeComment.doc(productId).set({'likes': a});
+    await Helper.postLikeComment.doc(productId).set({'likes': a});
   }
 
   var productLikesCount = {};
   getProductLikes() async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment.get();
+    var snapshot = await Helper.postLikeComment.get();
     for (int i = 0; i < snapshot.docs.length; i++) {
       productLikesCount[snapshot.docs[i].id] = [];
       for (int j = 0; j < snapshot.docs[i]['likes'].length; j++) {
@@ -1115,7 +1169,7 @@ class PostController extends ControllerMVC {
   }
 
   saveComment(productId, data, type) async {
-    var snapshot = await Helper.productLikeComment.get();
+    var snapshot = await Helper.postLikeComment.get();
     var userManager = UserManager.userInfo;
     var existId = false;
     for (int i = 0; i < snapshot.docs.length; i++) {
@@ -1125,9 +1179,9 @@ class PostController extends ControllerMVC {
       }
     }
     if (!existId) {
-      await Helper.productLikeComment.doc(productId).set({'likes': []});
+      await Helper.postLikeComment.doc(productId).set({'likes': []});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc()
@@ -1144,7 +1198,7 @@ class PostController extends ControllerMVC {
 
   saveLikesComment(productId, commentId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1163,7 +1217,7 @@ class PostController extends ControllerMVC {
       }
       a.add({'userName': arr[i]['userName'], 'likes': s});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1175,7 +1229,7 @@ class PostController extends ControllerMVC {
   var commentLikesCount = {};
   getComment(productId) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .orderBy('timeStamp', descending: true)
@@ -1221,7 +1275,7 @@ class PostController extends ControllerMVC {
 
   saveReply(productId, commentId, data, type) async {
     var userInfo = UserManager.userInfo;
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1240,12 +1294,12 @@ class PostController extends ControllerMVC {
   var replyLikesCount = {};
   getReply(productId) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .get();
     for (int i = 0; i < snapshot.docs.length; i++) {
-      var replies = await Helper.productLikeComment
+      var replies = await Helper.postLikeComment
           .doc(productId)
           .collection('comments')
           .doc(snapshot.docs[i].id)
@@ -1293,7 +1347,7 @@ class PostController extends ControllerMVC {
 
   saveLikesReply(productId, commentId, replyId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1314,7 +1368,7 @@ class PostController extends ControllerMVC {
       }
       a.add({'userName': arr[i]['userName'], 'likes': s});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)

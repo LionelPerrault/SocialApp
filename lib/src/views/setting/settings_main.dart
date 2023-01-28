@@ -28,9 +28,9 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
-  var shnattertokenPageFlag = false;
+  var shnatterTokenPageFlag = false;
   var basicPageFlag = false;
-  String settingPage = 'account_page';
+  var settingPage = 'account_page';
 
   @override
   void initState() {
@@ -44,7 +44,6 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
     if (basicPageFlag = true) {
       settingPage = 'basic';
       setState(() {});
-      return;
     }
     super.initState();
   }
