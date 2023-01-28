@@ -110,137 +110,139 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
       key: _scaffoldKey,
       drawerEnableOpenDragGesture: false,
       drawer: const Drawer(),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          ShnatterNavigation(
-            searchController: searchController,
-            onSearchBarFocus: onSearchBarFocus,
-            onSearchBarDismiss: onSearchBarDismiss,
-            drawClicked: clickMenu,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  isEmailVerify ? const SizedBox() : emailVerificationNoify(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizeConfig(context).screenWidth <
-                              SizeConfig.mediumScreenSize
-                          ? const SizedBox()
-                          : LeftPanel(
-                              routerFunction: routerChange,
-                              router: mainRouterValue,
-                            ),
-                      Container(
-                        child: MainRouter.mainRouter(
-                            mainRouterValue, routerChange),
-                      ),
-                    ],
-                  )
-                ],
+      body: SafeArea(
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ShnatterNavigation(
+              searchController: searchController,
+              onSearchBarFocus: onSearchBarFocus,
+              onSearchBarDismiss: onSearchBarDismiss,
+              drawClicked: clickMenu,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    isEmailVerify ? const SizedBox() : emailVerificationNoify(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizeConfig(context).screenWidth <
+                                SizeConfig.mediumScreenSize
+                            ? const SizedBox()
+                            : LeftPanel(
+                                routerFunction: routerChange,
+                                router: mainRouterValue,
+                              ),
+                        Container(
+                          child: MainRouter.mainRouter(
+                              mainRouterValue, routerChange),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          //when mobile toggle left panel
-          AnimatedBuilder(
-            animation: _drawerSlideController,
-            builder: (context, child) {
-              return FractionalTranslation(
-                translation: SizeConfig(context).screenWidth >
-                        SizeConfig.mediumScreenSize
-                    ? const Offset(0, 0)
-                    : Offset(_drawerSlideController.value * 0.001, 0.0),
-                child: SizeConfig(context).screenWidth >
-                            SizeConfig.mediumScreenSize ||
-                        _isDrawerClosed()
-                    ? const SizedBox()
-                    : Padding(
-                        padding:
-                            const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                        child: Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                color: Colors.white,
-                                width: SizeConfig.leftBarWidth,
-                                child: SingleChildScrollView(
-                                  child: LeftPanel(
-                                    routerFunction: routerChange,
-                                    router: mainRouterValue,
+            //when mobile toggle left panel
+            AnimatedBuilder(
+              animation: _drawerSlideController,
+              builder: (context, child) {
+                return FractionalTranslation(
+                  translation: SizeConfig(context).screenWidth >
+                          SizeConfig.mediumScreenSize
+                      ? const Offset(0, 0)
+                      : Offset(_drawerSlideController.value * 0.001, 0.0),
+                  child: SizeConfig(context).screenWidth >
+                              SizeConfig.mediumScreenSize ||
+                          _isDrawerClosed()
+                      ? const SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                              top: SizeConfig.navbarHeight),
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  color: Colors.white,
+                                  width: SizeConfig.leftBarWidth,
+                                  child: SingleChildScrollView(
+                                    child: LeftPanel(
+                                      routerFunction: routerChange,
+                                      router: mainRouterValue,
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-              );
-            },
-          ),
-          showSearch
-              ? GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      showSearch = false;
-                    });
-                  },
-                  child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      color: const Color.fromARGB(0, 214, 212, 212),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  padding: const EdgeInsets.only(right: 20.0),
-                                  child: const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                  )),
-                              Container(
-                                padding: const EdgeInsets.only(
-                                    top: 10, bottom: 10, right: 9),
-                                width: SizeConfig(context).screenWidth * 0.4,
-                                child: TextField(
-                                  focusNode: searchFocusNode,
-                                  controller: searchController,
-                                  cursorColor: Colors.white,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: const InputDecoration(
-                                    prefixIcon: Icon(Icons.search,
-                                        color:
-                                            Color.fromARGB(150, 170, 212, 255),
-                                        size: 20),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0)),
+                );
+              },
+            ),
+            showSearch
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showSearch = false;
+                      });
+                    },
+                    child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: const Color.fromARGB(0, 214, 212, 212),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    padding: const EdgeInsets.only(right: 20.0),
+                                    child: const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                    )),
+                                Container(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10, right: 9),
+                                  width: SizeConfig(context).screenWidth * 0.4,
+                                  child: TextField(
+                                    focusNode: searchFocusNode,
+                                    controller: searchController,
+                                    cursorColor: Colors.white,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
+                                      prefixIcon: Icon(Icons.search,
+                                          color: Color.fromARGB(
+                                              150, 170, 212, 255),
+                                          size: 20),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                      ),
+                                      filled: true,
+                                      fillColor: Color(0xff202020),
+                                      hintText: 'Search',
+                                      hintStyle: TextStyle(
+                                          fontSize: 15.0, color: Colors.white),
                                     ),
-                                    filled: true,
-                                    fillColor: Color(0xff202020),
-                                    hintText: 'Search',
-                                    hintStyle: TextStyle(
-                                        fontSize: 15.0, color: Colors.white),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                          ShnatterSearchBox()
-                        ],
-                      )),
-                )
-              : const SizedBox(),
-          ChatScreen(),
-        ],
+                                )
+                              ],
+                            ),
+                            ShnatterSearchBox()
+                          ],
+                        )),
+                  )
+                : const SizedBox(),
+            ChatScreen(),
+          ],
+        ),
       ),
     );
   }
