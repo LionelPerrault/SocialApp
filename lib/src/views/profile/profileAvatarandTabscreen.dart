@@ -135,9 +135,9 @@ class ProfileAvatarandTabScreenState extends mvc
             )),
         Container(
           width: SizeConfig(context).screenWidth,
-          padding: const EdgeInsets.only(left: 30, right: 30),
+          padding: const EdgeInsets.only(left: 30),
           margin: const EdgeInsets.only(top: 200),
-          child: SizeConfig(context).screenWidth < 800
+          child: SizeConfig(context).screenWidth < 1015
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -148,12 +148,12 @@ class ProfileAvatarandTabScreenState extends mvc
                     ])
               : Row(children: [
                   Container(
-                    padding: const EdgeInsets.only(left: 30),
+                    padding: const EdgeInsets.only(left: 20),
                     child: userAvatarWidget(),
                   ),
                   Container(
-                      width: SizeConfig(context).screenWidth - 260,
-                      padding: const EdgeInsets.only(left: 50, top: 40),
+                      width: SizeConfig(context).screenWidth * 0.6,
+                      padding: const EdgeInsets.only(left: 10, top: 40),
                       child: mainTabWidget())
                 ]),
         ),
@@ -254,11 +254,15 @@ class ProfileAvatarandTabScreenState extends mvc
               style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  color: SizeConfig(context).screenWidth < 800
+                  color: SizeConfig(context).screenWidth < 1015
                       ? const Color.fromRGBO(51, 51, 51, 1)
                       : Colors.white),
             ),
-            const Flexible(fit: FlexFit.tight, child: SizedBox()),
+            SizeConfig(context).screenWidth < 1015
+                ? const Flexible(
+                    fit: FlexFit.loose,
+                    child: Padding(padding: EdgeInsets.only(right: 10)))
+                : const Flexible(fit: FlexFit.tight, child: SizedBox()),
             con.userData['userName'] == UserManager.userInfo['userName']
                 ? const SizedBox()
                 : PopupMenuButton(
@@ -354,31 +358,34 @@ class ProfileAvatarandTabScreenState extends mvc
                     ),
                   ),
             con.userData['userName'] == UserManager.userInfo['userName']
-                ? ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      elevation: 3,
-                      shape: const CircleBorder(
-                          side: BorderSide(width: 1, color: Colors.white)),
-                      minimumSize: const Size(60, 50),
-                    ),
-                    onPressed: () async => {
-                      setState(() {}),
-                      widget.routerChange({
-                        'router': RouteNames.settings,
-                        'subRouter': RouteNames.settings_profile_basic
-                      }),
-                      print(settingMainScreen.settingPage),
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.edit,
-                          size: 20,
-                        ),
-                      ],
+                ? Container(
+                    margin: EdgeInsets.only(
+                        right: SizeConfig(context).screenWidth * 0.05),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        elevation: 3,
+                        shape: const CircleBorder(
+                            side: BorderSide(width: 1, color: Colors.white)),
+                        minimumSize: const Size(60, 50),
+                      ),
+                      onPressed: () async => {
+                        setState(() {}),
+                        widget.routerChange({
+                          'router': RouteNames.settings,
+                          'subRouter': RouteNames.settings_profile_basic
+                        }),
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.edit,
+                            size: 20,
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 : const SizedBox(),
