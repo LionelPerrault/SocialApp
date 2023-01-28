@@ -43,21 +43,21 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
     {'value': '11', 'title': 'Nov'},
     {'value': '12', 'title': 'Dec'}
   ];
-  late List<dynamic> gender = [
+  late List gender = [
     {
       'title': 'Male',
-      'value': 'male',
+      'value': 'Male',
     },
     {
       'title': 'Female',
-      'value': 'female',
+      'value': 'Female',
     },
     {
       'title': 'Other',
-      'value': 'other',
+      'value': 'Other',
     },
   ];
-  late List<dynamic> userRelationship = [
+  List userRelationship = [
     {
       'value': 'none',
       'title': 'Select Relationship',
@@ -91,7 +91,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
       'title': 'Widowed',
     },
   ];
-  late List<dynamic> country = [
+  List country = [
     {
       'title': 'Select Country',
       'value': 'none',
@@ -109,8 +109,10 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
       'value': 'ca',
     },
   ];
-  late Map day = {};
-  late List<dynamic> year = [];
+  Map day = {};
+  List<dynamic> year = [
+    {'value': 'none', 'title': 'Year'}
+  ];
   TextEditingController aboutController = TextEditingController();
   TextEditingController religionController = TextEditingController();
   late UserController con;
@@ -122,7 +124,9 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
     aboutController.text = userInfo['about'] ?? '';
     religionController.text = userInfo['current'] ?? '';
     for (int i = 1; i < 13; i++) {
-      var d = [];
+      var d = [
+        {'value': 'none', 'title': 'Day'}
+      ];
       for (int j = 1; j < 32; j++) {
         if (i == 2 && j == 29) {
           break;
@@ -150,8 +154,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> bDay = day[userInfo['birthM'] ?? 'none'];
-
+    List<dynamic> bDay = day[userInfo['birthM'] ?? '1'];
     return Container(
         padding: const EdgeInsets.only(top: 20, left: 30),
         child: Column(
@@ -337,7 +340,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                             title: '',
                             width: 400,
                             item: bDay,
-                            value: userInfo['birthD'] ?? day[0]['value'],
+                            value: userInfo['birthD'] ?? bDay[0]['value'],
                             onChange: (value) {
                               //get value when changed
                               userInfo['birthD'] = value.toString();
