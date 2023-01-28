@@ -58,8 +58,8 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                       flex: 3,
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
+                          Container(
+                            width: SizeConfig.rightPaneWidth,
                             child:
                                 RightPanel(routerChange: widget.routerChange),
                           ),
