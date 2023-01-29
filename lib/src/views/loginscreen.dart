@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_is_empty
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_widgets/widgets/rotation_animated.dart';
@@ -26,13 +28,13 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends mvc.StateMVC<LoginScreen> {
   bool isRememberme = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final List<TextEditingController> controllers =
+  List<TextEditingController> _controllers =
       List.generate(6, (_) => TextEditingController());
-  final List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+  List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
+  String _verificationCode = '';
   String password = '';
   String email = '';
   bool enableTwoFactor = false;
-  var verificationCode = '';
   var isObscure = true;
   @override
   void initState() {
@@ -429,14 +431,14 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    for (int i = 0; i < controllers.length; i++)
+                    for (int i = 0; i < _controllers.length; i++)
                       Expanded(
                         flex: 1,
                         child: TextFormField(
                           style: const TextStyle(color: Colors.white),
                           cursorColor: Colors.white,
-                          controller: controllers[i],
-                          focusNode: focusNodes[i],
+                          controller: _controllers[i],
+                          focusNode: _focusNodes[i],
                           maxLength: 1,
                           textAlign: TextAlign.center,
                           decoration: const InputDecoration(
@@ -445,39 +447,50 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                               filled: true,
                               fillColor: Color.fromRGBO(35, 35, 35, 0.7)),
                           onChanged: (value) {
+                            print(value);
                             if (value.isNotEmpty) {
                               setState(() {
-                                verificationCode = verificationCode + value;
-                                verificationCode.length;
-                                if (verificationCode.length == 6) {
-                                  print(verificationCode);
+                                _verificationCode += value;
+                                _verificationCode.length;
+                                print(_verificationCode);
+                                if (_verificationCode.length == 6) {
+                                  print(_verificationCode);
                                   con
                                       .loginWithVerificationCode(
-                                          verificationCode, context)
+                                          _verificationCode, context)
                                       .then((value) => {
                                             if (!value)
                                               {
                                                 Helper.failAlert(
                                                     'Verification Code is incorrect!'),
-                                                verificationCode = '',
+                                                _verificationCode = '',
                                               }
                                             else
                                               {
-                                                verificationCode = '',
+                                                _verificationCode = '',
                                               }
                                           });
                                 }
                                 FocusScope.of(context)
-                                    .requestFocus(focusNodes[i + 1]);
+                                    .requestFocus(_focusNodes[i + 1]);
                               });
                             } else if (value.isEmpty) {
-                              controllers[i].clear();
-                              focusNodes[i].unfocus();
-                              verificationCode = '';
-                              // FocusScope.of(context)
-                              //     .requestFocus(focusNodes[0]);
+                              _controllers[i].clear();
+                              _focusNodes[i].unfocus();
                               FocusScope.of(context)
-                                  .requestFocus(focusNodes[i - 1]);
+                                  .requestFocus(_focusNodes[i - 1]);
+                              setState(() {
+                                if (i != 0) {
+                                  _verificationCode =
+                                      _verificationCode.substring(
+                                          0, _verificationCode.length - 1);
+                                } else {
+                                  _verificationCode = '';
+                                  FocusScope.of(context)
+                                      .requestFocus(_focusNodes[0]);
+                                }
+                              });
+                              print(_verificationCode);
                             }
                           },
                         ),
