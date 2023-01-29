@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/widget/admin_list_text.dart';
+import 'package:shnatter/src/widget/list_text.dart';
 
 // ignore: must_be_immutable
 class SettingsLeftPanel extends StatelessWidget {
@@ -16,14 +16,13 @@ class SettingsLeftPanel extends StatelessWidget {
         children: [
           ListText(
               onTap: () => {
-                    print('sdasd'),
                     routerFunction({
                       'router': RouteNames.settings,
                       'subRouter': '',
                     })
                   },
               label: 'Account Settings',
-              icon: const Icon(
+              image: const Icon(
                 Icons.settings,
                 color: Color.fromARGB(255, 94, 114, 228),
               )),
@@ -66,7 +65,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Basic',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -76,7 +75,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Work',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -86,7 +85,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Location',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -96,7 +95,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Education',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -106,7 +105,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Social Links',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -116,7 +115,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Interests',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -126,7 +125,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Design',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                       ],
                     )
                   ],
@@ -173,7 +172,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Password',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                         // ListText(
                         //   onTap: () => {
                         //     routerFunction('security_session')
@@ -189,7 +188,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Two-Factor Authentication',
-                            icon: const Icon(null)),
+                            image: const Icon(null)),
                       ],
                     )
                   ],
@@ -205,7 +204,7 @@ class SettingsLeftPanel extends StatelessWidget {
                     })
                   },
               label: 'Privacy',
-              icon: const Icon(
+              image: const Icon(
                 Icons.privacy_tip_rounded,
                 color: Color.fromARGB(255, 255, 179, 7),
               )),
@@ -217,7 +216,7 @@ class SettingsLeftPanel extends StatelessWidget {
                     })
                   },
               label: 'Notification',
-              icon: const Icon(
+              image: const Icon(
                 Icons.notifications,
                 color: Color.fromARGB(255, 103, 58, 183),
               )),
@@ -229,12 +228,12 @@ class SettingsLeftPanel extends StatelessWidget {
                     })
                   },
               label: 'Shnatter Token',
-              icon: const Icon(Icons.attach_money,
+              image: const Icon(Icons.attach_money,
                   color: Color.fromARGB(255, 76, 175, 80))),
           // ListText(
           //     onTap: () => {routerFunction('paywall')},
           //     label: 'Paywall for User',
-          //     icon: const Icon(Icons.money_sharp,
+          //     image: const Icon(Icons.money_sharp,
           //         color: Color.fromARGB(255, 76, 175, 80))),
           ListText(
               onTap: () => {
@@ -244,14 +243,14 @@ class SettingsLeftPanel extends StatelessWidget {
                     })
                   },
               label: 'Verification',
-              icon: const Icon(
+              image: const Icon(
                 Icons.check_circle,
                 color: Color.fromARGB(255, 33, 150, 243),
               )),
           // ListText(
           //     onTap: () => {routerFunction('information')},
           //     label: 'Your Information',
-          //     icon: const Icon(
+          //     image: const Icon(
           //       Icons.file_present,
           //       color: Color.fromARGB(255, 40, 167, 69),
           //     )),
@@ -263,7 +262,7 @@ class SettingsLeftPanel extends StatelessWidget {
                     })
                   },
               label: 'Delete Account',
-              icon: const Icon(
+              image: const Icon(
                 Icons.delete,
                 color: Color.fromARGB(255, 244, 67, 54),
               )),

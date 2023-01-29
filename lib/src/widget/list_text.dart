@@ -4,10 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 // ignore: must_be_immutable
 class ListText extends StatelessWidget {
   ListText(
-      {super.key, required this.onTap, required this.label, this.image = ''});
+      {super.key,
+      required this.onTap,
+      required this.label,
+      required this.image});
   Function onTap;
   String label;
-  String image;
+  Widget image;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -20,10 +23,7 @@ class ListText extends StatelessWidget {
           Row(
             children: [
               const Padding(padding: EdgeInsets.only(left: 45.0)),
-              SvgPicture.network(
-                image,
-                width: 21,
-              ),
+              image,
               const Padding(padding: EdgeInsets.only(left: 20.0)),
               Text(
                 label,

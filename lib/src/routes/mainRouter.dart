@@ -15,6 +15,7 @@ import 'package:shnatter/src/views/setting/settingsMain.dart';
 class MainRouter {
   MainRouter(String mainRouterValue);
   static mainRouter(mainRouterValue, routerChange) {
+    print('mainrouter $mainRouterValue');
     switch (mainRouterValue['router']) {
       case RouteNames.profile:
         return UserProfileScreen(
@@ -25,8 +26,7 @@ class MainRouter {
         return MessageScreen(routerChange: routerChange);
       case RouteNames.settings:
         return SettingMainScreen(
-            settingRouter: mainRouterValue['subRouter'],
-            routerChange: routerChange);
+            settingRouter: mainRouterValue, routerChange: routerChange);
       case RouteNames.people:
         return PeopleScreen(routerChange: routerChange);
       case RouteNames.events:
