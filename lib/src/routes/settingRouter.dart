@@ -20,6 +20,7 @@ import 'package:shnatter/src/views/setting/pages/twoFactorAuthentication_page.da
 class SettingRouter {
   SettingRouter(String settingPage);
   static settingRouter(settingPage, routerChange) {
+    print('settingrouter $settingPage');
     switch (settingPage) {
       case '':
         return SettingAccountScreen(routerChange: routerChange);

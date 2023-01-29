@@ -15,7 +15,7 @@ class SettingMainScreen extends StatefulWidget {
       : con = HomeController(),
         super(key: key);
   final HomeController con;
-  String settingRouter;
+  Map settingRouter;
   Function routerChange;
 
   @override
@@ -24,13 +24,11 @@ class SettingMainScreen extends StatefulWidget {
 
 class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
     with SingleTickerProviderStateMixin {
-  String settingPage = '';
   late HomeController con;
 
   @override
   void initState() {
     add(widget.con);
-    settingPage = widget.settingRouter;
     con = controller as HomeController;
     super.initState();
   }
@@ -38,6 +36,7 @@ class SettingMainScreenState extends mvc.StateMVC<SettingMainScreen>
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: SettingRouter.settingRouter(settingPage, widget.routerChange));
+        child: SettingRouter.settingRouter(
+            widget.settingRouter['subRouter'], widget.routerChange));
   }
 }
