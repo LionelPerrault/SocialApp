@@ -158,7 +158,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: LinearPercentIndicator(
-                        width: MediaQuery.of(context).size.width / 5,
+                        width: MediaQuery.of(context).size.width / 6,
                         animation: true,
                         lineHeight: 20.0,
                         animationDuration: 1000,
