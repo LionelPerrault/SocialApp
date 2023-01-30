@@ -5,12 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as PPath;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/widget/createProductWidget.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -30,8 +30,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   final _focus = FocusNode();
   final ScrollController _scrollController = ScrollController();
   var show = false;
-  var notActionShow = false;
-  var state = false;
   var postPhoto = [];
   var postFile = [];
   int photoLength = 0;
@@ -43,13 +41,18 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   String activity = '';
   String subActivityLabel = '';
   String subActivity = '';
+  String checkLocation = '';
+  String pollQuestion = '';
+  List<String> pollOption = [];
   late PostController con;
-  List<Map> mindPostCase = [
+  late List<Map> mindPostCase = [
     {
       'title': 'Upload Photos',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcamera.svg?alt=media&token=0b7478a3-c746-47ed-a4fc-7505accf22a5',
-      'mindFunc': () {}
+      'mindFunc': () {
+        createPhotoReady();
+      }
     },
     // {
     //   'title': 'Create Album',
@@ -61,13 +64,17 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Feelings/Activity',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Femoji.svg?alt=media&token=d8ff786b-c7e0-4922-a260-0627bacab851',
-      'mindFunc': (context) {}
+      'mindFunc': () {
+        feelingReady();
+      }
     },
     {
       'title': 'Check In',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738',
-      'mindFunc': (context) {}
+      'mindFunc': () {
+        checkIn();
+      }
     },
     // {
     //   'title': 'Colored Posts',
@@ -97,7 +104,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Create Poll',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fpoll.svg?alt=media&token=9a0f6f31-3685-42ce-9a2b-f18a512d3829',
-      'mindFunc': (context) {}
+      'mindFunc': () {
+        createPoll();
+      }
     },
     // {
     //   'title': 'Upload Video',
@@ -225,31 +234,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     add(widget.con);
     con = controller as PostController;
     super.initState();
-    _focus.addListener(_onFocusChange);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _focus.removeListener(_onFocusChange);
-    _focus.dispose();
-  }
-
-  void _onFocusChange() {
-    var future = Future.delayed(const Duration(milliseconds: 100), () {
-      if (state) {
-        show = true;
-        state = false;
-        return;
-      }
-      if (!notActionShow) {
-        show = !show;
-      } else {
-        state = true;
-        notActionShow = false;
-      }
-      setState(() {});
-    });
   }
 
   createPhotoReady() {
@@ -267,30 +251,86 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     setState(() {});
   }
 
+  checkIn() {
+    if (nowPost == 'Check In') {
+      nowPost = '';
+    } else if (nowPost == '') {
+      nowPost = 'Check In';
+    }
+    setState(() {});
+  }
+
+  createPoll() {
+    if (nowPost == 'Create Poll') {
+      nowPost = '';
+    } else if (nowPost == '') {
+      nowPost = 'Create Poll';
+      pollOption = ['', ''];
+    }
+    setState(() {});
+  }
+
   post() async {
     if (nowPost == '') {
       return;
     }
-    postLoading = true;
     setState(() {});
     String postCase = '';
     var postPayload;
     switch (nowPost) {
       case 'Upload Photos':
+        if (postPhoto.isEmpty) {
+          Helper.showToast('Please upload photo');
+          return;
+        }
         postCase = 'photo';
         postPayload = postPhoto;
         break;
       case 'Feelings/Activity':
+        if (activity == '' || subActivity == '') {
+          Helper.showToast('Please fill all field');
+          return;
+        }
         postCase = 'feeling';
         postPayload = {
           'action': activity,
           'subAction': subActivity,
         };
         break;
+      case 'Check In':
+        if (checkLocation == '') {
+          Helper.showToast('Please fill all field');
+          return;
+        }
+        postCase = 'checkIn';
+        postPayload = checkLocation;
+        break;
+      case 'Create Poll':
+        List<String> optionValue = [];
+        for (int i = 0; i < pollOption.length - 1; i++) {
+          optionValue.add(pollOption[i]);
+          if (pollOption[i] == '') {
+            Helper.showToast('Please fill all field');
+            return;
+          }
+        }
+        if (pollQuestion == '') {
+          Helper.showToast('Please insert question');
+          return;
+        }
+        postCase = 'poll';
+        postPayload = {
+          'question': pollQuestion,
+          'option': optionValue,
+          'optionUp': {},
+        };
+        break;
       default:
+        return;
     }
+    postLoading = true;
     await con.savePost(postCase, postPayload, dropdownValue).then((value) {
-      print(value);
+      print('after');
       postLoading = false;
       nowPost = '';
       postPhoto = [];
@@ -326,14 +366,17 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 35,
                   height: 35,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green,
-                    backgroundImage: NetworkImage(
-                        "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_package.png?alt=media&token=f5cf4503-e36b-416a-8cce-079dfcaeae83"),
-                  ),
+                  child: UserManager.userInfo['avatar'] != ''
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(
+                          UserManager.userInfo['avatar'],
+                        ))
+                      : CircleAvatar(
+                          child: SvgPicture.network(Helper.avatar),
+                        ),
                 ),
                 Expanded(
                     child: Container(
@@ -366,28 +409,39 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SingleChildScrollView(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: postPhoto
-                        .map(((e) => postPhotoWidget(e['url'], e['id'])))
-                        .toList(),
+              AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                child: Column(children: [
+                  SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: postPhoto
+                            .map(((e) => postPhotoWidget(e['url'], e['id'])))
+                            .toList(),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              nowPost == 'Feelings/Activity'
-                  ? feelingActivityWidget()
-                  : const SizedBox(),
-              const Padding(padding: EdgeInsets.only(top: 5)),
-              const Divider(
-                thickness: 0.1,
-                color: Colors.black45,
-                height: 1,
+                  nowPost == 'Feelings/Activity'
+                      ? feelingActivityWidget()
+                      : nowPost == 'Check In'
+                          ? checkInWidget()
+                          : nowPost == 'Create Poll'
+                              ? createPollWidget()
+                              : const SizedBox(),
+                  const Padding(padding: EdgeInsets.only(top: 5)),
+                  nowPost == ''
+                      ? const SizedBox()
+                      : const Divider(
+                          thickness: 0.1,
+                          color: Colors.black45,
+                          height: 1,
+                        ),
+                ]),
               ),
               GridView.count(
                 crossAxisCount:
@@ -405,16 +459,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                 children: mindPostCase
                     .map(
                       (mind) => MindSlice(
-                        onTap: () => {
-                          if (!state) {notActionShow = true}
-                        },
-                        mindFunc: () {
-                          mind['title'] == 'Upload Photos'
-                              ? createPhotoReady()
-                              : mind['title'] == 'Feelings/Activity'
-                                  ? feelingReady()
-                                  : () {};
-                        },
+                        mindFunc: mind['mindFunc'],
                         label: mind['title'],
                         image: mind['image'],
                         disabled: nowPost == ''
@@ -445,11 +490,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                           child: Padding(
                               padding: const EdgeInsets.only(top: 7, left: 15),
                               child: DropdownButton(
-                                onTap: () {
-                                  if (!state) {
-                                    notActionShow = true;
-                                  }
-                                },
                                 hint: Row(
                                   children: const [
                                     Icon(
@@ -824,6 +864,113 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               : const SizedBox()
         ],
       ),
+    );
+  }
+
+  Widget checkInWidget() {
+    return postInput(
+      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738',
+      'Where are you?',
+      (value) {
+        checkLocation = value;
+        setState(() {});
+      },
+    );
+  }
+
+  Widget createPollWidget() {
+    return Column(
+      children: [
+        Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: UserManager.userInfo['avatar'] != ''
+                    ? CircleAvatar(
+                        backgroundImage: NetworkImage(
+                        UserManager.userInfo['avatar'],
+                      ))
+                    : CircleAvatar(
+                        child: SvgPicture.network(Helper.avatar),
+                      ),
+              ),
+              Expanded(
+                  child: Container(
+                padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
+                child: TextField(
+                  onChanged: (value) {
+                    pollQuestion = value;
+                    setState(() {});
+                  },
+                  style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
+                  decoration: const InputDecoration(
+                    hoverColor: Color.fromARGB(255, 250, 250, 250),
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 250, 250, 250),
+                    hintText: 'Ask something...',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(fontSize: 17.0, color: Colors.grey),
+                  ),
+                ),
+              )),
+              Container(
+                padding: const EdgeInsets.only(top: 40),
+                child: const Icon(Icons.emoji_emotions_outlined),
+              )
+            ],
+          ),
+        ),
+        for (int i = 0; i < pollOption.length; i++)
+          postInput(
+            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fplus.svg?alt=media&token=236c24bb-6caa-4ffa-9c08-de3748a6b6c4',
+            'Add an option...',
+            (value) {
+              pollOption[i] = value;
+              if (pollOption[pollOption.length - 1] != '') {
+                pollOption.add('');
+              }
+              setState(() {});
+            },
+          )
+      ],
+    );
+  }
+
+  Widget postInput(url, place, onChange) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        Container(
+          height: 40,
+          child: TextField(
+            onChanged: onChange,
+            decoration: InputDecoration(
+              prefixIcon: Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  width: 40,
+                  alignment: Alignment.centerLeft,
+                  child: SvgPicture.network(
+                    url,
+                    width: 30,
+                    height: 30,
+                  )),
+              hintText: place,
+              hintStyle:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              contentPadding: const EdgeInsets.only(top: 10, left: 10),
+              border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+            ),
+          ),
+        )
+      ],
     );
   }
 

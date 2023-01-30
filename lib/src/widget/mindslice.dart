@@ -7,13 +7,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 class MindSlice extends StatelessWidget {
   MindSlice({
     super.key,
-    required this.onTap,
     required this.label,
     required this.image,
     required this.mindFunc,
     this.disabled = false,
   });
-  Function onTap;
   String label;
   String image;
   var mindFunc;
