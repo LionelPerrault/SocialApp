@@ -190,7 +190,6 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
       postTime = value;
       setState(() {});
     });
-    print('initstate');
   }
 
   buyProduct() async {

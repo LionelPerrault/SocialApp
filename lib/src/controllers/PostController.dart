@@ -1461,7 +1461,7 @@ class PostController extends ControllerMVC {
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
         .update({'checkNotifyTime': check});
-    print('check notify time');
+    print('check notify');
   }
 
   getPostData(data) async {

@@ -572,7 +572,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                             widget.routerChange({
                               'router': RouteNames.products,
                               'subRouter': value['value'],
-                            })
+                            }),
+                            print('product page : ${RouteNames.products}')
                           }
                       },
                     );

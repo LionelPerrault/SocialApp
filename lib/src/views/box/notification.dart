@@ -33,10 +33,12 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
     add(widget.con);
     postCon = controller as PostController;
     userCheckTime = DateTime.now().millisecondsSinceEpoch;
+    postCon.realNotifi = [];
     postCon.checkNotify(userCheckTime);
     final Stream<QuerySnapshot> stream = Helper.notifiCollection.snapshots();
     stream.listen((event) async {
       print('notification Stream');
+      print(postCon.allNotification);
       var notiSnap = await Helper.notifiCollection.orderBy('tsNT').get();
       var allNotifi = notiSnap.docs;
       var userSnap = await FirebaseFirestore.instance
@@ -50,6 +52,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
         var viewFlag = true;
+        setState(() {});
 
         for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
           if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
@@ -59,12 +62,11 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         postCon.allNotification = [];
         var notifyTime =
             DateTime.parse(allNotifi[i]['timeStamp'].toDate().toString());
-        print('notify time is ${typeOf()}');
         var formattedNotifyTime =
             DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
-        print('formatted notify time is ${typeOf()}');
         print('notifications formatted notify time:$formattedNotifyTime');
         if (viewFlag) {
+          print('this is in view flag');
           var addData;
           if (adminUid != UserManager.userInfo['uid']) {
             await FirebaseFirestore.instance
@@ -86,14 +88,12 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
           }
           if (postType == 'requestFriend' &&
               adminUid == UserManager.userInfo['uid']) {
-            print('here is requestFriend');
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
                 .get()
                 .then((userV) => {
                       addData = {
-                        // ...allNotifi[i],
                         'uid': allNotifi[i].id,
                         'avatar': '',
                         'userName': Helper
@@ -105,10 +105,12 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                       changeData.add(addData),
                     });
           }
+          print('change data : $changeData');
         }
       }
       postCon.allNotification = changeData;
       setState(() {});
+      print('allNotification : ${postCon.allNotification}');
     });
     super.initState();
   }
