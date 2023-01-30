@@ -10,6 +10,7 @@ import 'package:otp/otp.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import '../helpers/helper.dart';
@@ -223,6 +224,10 @@ class UserController extends ControllerMVC {
       'paywall': {},
       'isStarted': false,
     });
+    var serverTime = await PostController().getNowTime();
+    var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
+    var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
+    var difference = localTimeStamp - serverTimeStamp;
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
       'paywall': {},
@@ -239,7 +244,8 @@ class UserController extends ControllerMVC {
       'isRememberme': 'false',
       'avatar': '',
       'uid': uuid,
-      'expirationPeriod': DateTime.now().toString()
+      'expirationPeriod': DateTime.now().toString(),
+      'timeDifference': difference,
     });
   }
 
@@ -461,6 +467,11 @@ class UserController extends ControllerMVC {
         b.forEach((key, value) {
           j = {...j, key.toString(): value};
         });
+        var serverTime = await PostController().getNowTime();
+        var serverTimeStamp =
+            await PostController().changeTimeType(d: serverTime);
+        var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
+        var difference = localTimeStamp - serverTimeStamp;
         userInfo = {
           ...j,
           'fullName': '${j['firstName']} ${j['lastName']}',
@@ -468,7 +479,8 @@ class UserController extends ControllerMVC {
           'isVerify': isVerify,
           'isRememberme': isRememberme.toString(),
           'uid': querySnapshot.docs[0].id,
-          'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
+          'expirationPeriod': isRememberme ? '' : DateTime.now().toString(),
+          'timeDifference': difference,
         };
         isEnableTwoFactor =
             j['isEnableTwoFactor'] == '' || j['isEnableTwoFactor'] == null
