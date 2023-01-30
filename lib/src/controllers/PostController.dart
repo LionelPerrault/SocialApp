@@ -30,11 +30,12 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> formatDate(dynamic d) async {
-    var nowTime = changeTimeType(d: d);
+    var time = changeTimeType(d: d);
     String trDate = '';
-    var serverTime = await getNowTime();
-    var serverTimeStamp = changeTimeType(d: serverTime);
-    final difference = serverTimeStamp - nowTime;
+    var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
+    print('UserManager${UserManager.userInfo['timeDifference']}');
+    final difference =
+        nowTimeStamp - time + UserManager.userInfo['timeDifference'];
     if (difference / (1000 * 60) < 1) {
       trDate = 'Just Now';
     } else if (difference / (1000 * 60 * 60) < 1) {

@@ -3,6 +3,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 class ShnatterSearchBox extends StatefulWidget {
@@ -118,9 +119,9 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                                     const Color.fromARGB(255, 243, 243, 243),
                                 tileColor: Colors.white,
                                 enabled: true,
-                                leading: const CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      "https://test.shnatter.com/content/themes/default/images/blank_event.jpg"),
+                                leading: CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(Helper.eventImage),
                                 ),
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

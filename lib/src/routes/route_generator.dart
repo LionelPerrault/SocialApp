@@ -20,16 +20,15 @@ import 'package:shnatter/src/views/admin/adminscreen.dart';
 import 'package:shnatter/src/views/startedscreen.dart';
 
 import '../managers/user_manager.dart';
-import '../views/profile/profilescreen.dart';
-import '../views/setting/settingsMain.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
     var url = settings.name.toString();
-    bool islogined = UserManager.isLogined;
-    if (islogined == true) {
-      if (url == '/login' || url == '/register') {
+    if (UserManager.isLogined == true) {
+      if (!UserManager.userInfo['isStarted']) {
+        url = RouteNames.started;
+      } else if (url == '/login' || url == '/register' || url != '/reset') {
         url = RouteNames.homePage;
       }
     } else {
@@ -59,9 +58,16 @@ class RouteGenerator {
 
       //admin routes generators
       case RouteNames.adp:
-        Helper.showToast("ok now to admin");
-        return MaterialPageRoute(
-            builder: (context) => AdminScreen(), settings: settings);
+        if (UserManager.userInfo['admin'] == 'admin') {
+          Helper.showToast("ok you are admin");
+          return MaterialPageRoute(
+              builder: (context) => AdminScreen(), settings: settings);
+        } else {
+          Helper.showToast('you don\'t have permission to access this page');
+          return MaterialPageRoute(
+              builder: (context) => MainScreen(), settings: settings);
+        }
+
       default:
         return MaterialPageRoute(
             builder: (context) => MainScreen(), settings: settings);

@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../models/setting.dart';
@@ -14,11 +12,8 @@ import 'package:http/http.dart' as http;
 import '../models/userModel.dart';
 
 class Helper {
-  static var snapShot = FirebaseFirestore.instance
-      .collection(Helper.adminPanel)
-      .doc(Helper.adminConfig)
-      .get();
-  static var system = snapShot;
+  static var systemSnap =
+      FirebaseFirestore.instance.collection(Helper.adminPanel);
   static ValueNotifier<Setting> setting = ValueNotifier(Setting());
   //BuildContext context;
   // for mapping data retrieved form json array
