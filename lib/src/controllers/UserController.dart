@@ -228,6 +228,8 @@ class UserController extends ControllerMVC {
     var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
     var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
     var difference = localTimeStamp - serverTimeStamp;
+    var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
+    var adminConfig = adminSnap.data();
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
       'paywall': {},
@@ -246,6 +248,7 @@ class UserController extends ControllerMVC {
       'uid': uuid,
       'expirationPeriod': DateTime.now().toString(),
       'timeDifference': difference,
+      'adminConfig': adminConfig,
     });
   }
 
@@ -472,6 +475,8 @@ class UserController extends ControllerMVC {
             await PostController().changeTimeType(d: serverTime);
         var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
         var difference = localTimeStamp - serverTimeStamp;
+        var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
+        var adminConfig = adminSnap.data();
         userInfo = {
           ...j,
           'fullName': '${j['firstName']} ${j['lastName']}',
@@ -481,6 +486,7 @@ class UserController extends ControllerMVC {
           'uid': querySnapshot.docs[0].id,
           'expirationPeriod': isRememberme ? '' : DateTime.now().toString(),
           'timeDifference': difference,
+          'adminConfig': adminConfig,
         };
         isEnableTwoFactor =
             j['isEnableTwoFactor'] == '' || j['isEnableTwoFactor'] == null

@@ -288,13 +288,11 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
       // ignore: await_only_futures
       var user = await FirebaseAuth.instance.currentUser!;
       if (user.emailVerified) {
-        print('$isEmailVerify, already get email verification');
         setState(() {
           isEmailVerify = true;
         });
         timer.cancel();
       } else {
-        print('$isEmailVerify, didn\' get email verification yet');
         setState(() {
           isEmailVerify = false;
         });
