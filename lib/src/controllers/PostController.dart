@@ -29,7 +29,7 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  Future<String> formatDate(dynamic d) async {
+  Future<String> formatDate(d) async {
     var time = changeTimeType(d: d);
     String trDate = '';
     var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
@@ -1456,11 +1456,11 @@ class PostController extends ControllerMVC {
         .update({'userList': allNotifi['userList']});
   }
 
-  Future checkNotify(int check) async {
+  Future checkNotify() async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
-        .update({'checkNotifyTime': check});
+        .update({'checkNotifyTime': FieldValue.serverTimestamp()});
     print('check notify');
     realNotifi = [];
     setState(() {});

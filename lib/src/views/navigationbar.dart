@@ -131,8 +131,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       },
     );
 
-    final Stream<QuerySnapshot> stream = Helper.notifiCollection.snapshots();
-    stream.listen((event) async {
+    final Stream<QuerySnapshot> streamBadge =
+        Helper.notifiCollection.snapshots();
+    streamBadge.listen((event) async {
       var allNotifi = event.docs;
       print('Stream Start');
       var userSnap = await FirebaseFirestore.instance
@@ -143,18 +144,20 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       var changeData = [];
       for (var i = 0; i < allNotifi.length; i++) {
         var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
+        var usercheckTime =
+            userInfo!['checkNotifyTime'].toDate().millisecondsSinceEpoch;
+
         // var tsNT = allNotifi[i]['tsNT'];
-        if (userInfo!['checkNotifyTime'] == null) {
+        if (userInfo['checkNotifyTime'] == null) {
           userInfo['checkNotifyTime'] = 0;
           setState(() {});
         }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
-        if (tsNT > userInfo['checkNotifyTime']) {
+        if (tsNT > usercheckTime) {
           var addData;
           if (adminUid != UserManager.userInfo['uid']) {
-            print('tsNT is $tsNT');
-            userInfo['checkNotifyTime'];
+            usercheckTime;
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
@@ -210,67 +213,59 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       var userInfo = userSnap.data();
       var changeData = [];
       for (var i = 0; i < allNotifi.length; i++) {
-        try {
-          var adminUid = allNotifi[i]['postAdminId'];
-          var postType = allNotifi[i]['postType'];
-          var viewFlag = true;
-          setState(() {});
+        var adminUid = allNotifi[i]['postAdminId'];
+        var postType = allNotifi[i]['postType'];
+        var viewFlag = true;
+        setState(() {});
 
-          for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
-            if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
-              viewFlag = false;
-            }
+        for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
+          if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
+            viewFlag = false;
           }
-          setState(() {});
-          postCon.allNotification = [];
-          if (viewFlag) {
-            var addData;
-            if (adminUid != UserManager.userInfo['uid']) {
-              await FirebaseFirestore.instance
-                  .collection(Helper.userField)
-                  .doc(allNotifi[i]['postAdminId'])
-                  .get()
-                  .then((userV) async => {
-                        addData = {
-                          ...allNotifi[i].data(),
-                          'uid': allNotifi[i].id,
-                          'avatar': userV.data()!['avatar'],
-                          'userName': userV.data()!['userName'],
-                          'text':
-                              Helper.notificationText[allNotifi[i]['postType']]
-                                  ['text'],
-                          'date': await postCon
-                              .formatDate(allNotifi[i]['timeStamp']),
-                        },
-                        changeData.add(addData),
-                      });
-            }
-            if (postType == 'requestFriend' &&
-                adminUid == UserManager.userInfo['uid']) {
-              await FirebaseFirestore.instance
-                  .collection(Helper.userField)
-                  .doc(allNotifi[i]['postAdminId'])
-                  .get()
-                  .then((userV) async => {
-                        addData = {
-                          'uid': allNotifi[i].id,
-                          'avatar': '',
-                          'userName':
-                              Helper.notificationName[allNotifi[i]['postType']]
-                                  ['name'],
-                          'text':
-                              Helper.notificationText[allNotifi[i]['postType']]
-                                  ['text'],
-                          'date': await postCon
-                              .formatDate(allNotifi[i]['timeStamp']),
-                        },
-                        changeData.add(addData),
-                      });
-            }
+        }
+        setState(() {});
+        postCon.allNotification = [];
+        if (viewFlag) {
+          var addData;
+          if (adminUid != UserManager.userInfo['uid']) {
+            await FirebaseFirestore.instance
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) async => {
+                      addData = {
+                        ...allNotifi[i].data(),
+                        'uid': allNotifi[i].id,
+                        'avatar': userV.data()!['avatar'],
+                        'userName': userV.data()!['userName'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date':
+                            await postCon.formatDate(allNotifi[i]['timeStamp']),
+                      },
+                      changeData.add(addData),
+                    });
           }
-        } catch (e) {
-          print('try catch');
-          print(e);
+          if (postType == 'requestFriend' &&
+              adminUid == UserManager.userInfo['uid']) {
+            await FirebaseFirestore.instance
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) async => {
+                      addData = {
+                        'uid': allNotifi[i].id,
+                        'avatar': '',
+                        'userName': Helper
+                            .notificationName[allNotifi[i]['postType']]['name'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date':
+                            await postCon.formatDate(allNotifi[i]['timeStamp']),
+                      },
+                      changeData.add(addData),
+                    });
+          }
         }
       }
       postCon.allNotification = changeData;
