@@ -301,12 +301,8 @@ class UserController extends ControllerMVC {
     }
     await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
       (res) async => {
-        print('qwe'),
-        print(res['success']),
-        print('object'),
         if (res['success'] == true)
           {
-            print(res['success']),
             if (allUser != [])
               {
                 trdata = res['history'],
@@ -391,7 +387,6 @@ class UserController extends ControllerMVC {
           {Helper.showToast('data does not exist')}
       },
     );
-    // print(trdata);
     return transactionData;
   }
 
@@ -457,8 +452,6 @@ class UserController extends ControllerMVC {
       }
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
-        print(
-            '$user...................................43984085394809589308403584905');
         relysiaEmail = user.email;
         relysiaPassword = password;
         isStarted = user.isStarted;
@@ -856,7 +849,6 @@ class UserController extends ControllerMVC {
     isSettingAction = true;
     setState(() {});
     if (password.length < Helper.passwordMinLength) {
-      print(0);
       isSettingAction = false;
       setState(() {});
       return;
