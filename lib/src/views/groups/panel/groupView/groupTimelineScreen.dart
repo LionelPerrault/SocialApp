@@ -1,8 +1,8 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
@@ -206,9 +206,10 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                   const Color.fromARGB(255, 243, 243, 243),
                               // tileColor: Colors.white,
                               enabled: true,
-                              leading: const CircleAvatar(
+                              leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                    "https://test.shnatter.com/content/themes/default/images/blank_profile_male.svg"),
+                                  Helper.avatar,
+                                ),
                               ),
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -61,7 +61,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
           Container(
             margin: const EdgeInsets.all(10.0),
             width: SizeConfig(context).screenWidth > 800
-                ? 220
+                ? 208
                 : SizeConfig(context).screenWidth * 0.9,
             height: 380,
             decoration: BoxDecoration(
@@ -133,7 +133,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                               height: 250,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.9),
+                                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.4),
                                   elevation: 3,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:

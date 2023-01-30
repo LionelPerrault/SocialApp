@@ -10,6 +10,7 @@ import 'package:otp/otp.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import '../helpers/helper.dart';
@@ -223,6 +224,12 @@ class UserController extends ControllerMVC {
       'paywall': {},
       'isStarted': false,
     });
+    var serverTime = await PostController().getNowTime();
+    var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
+    var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
+    var difference = localTimeStamp - serverTimeStamp;
+    var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
+    var adminConfig = adminSnap.data();
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
       'paywall': {},
@@ -239,7 +246,9 @@ class UserController extends ControllerMVC {
       'isRememberme': 'false',
       'avatar': '',
       'uid': uuid,
-      'expirationPeriod': DateTime.now().toString()
+      'expirationPeriod': DateTime.now().toString(),
+      'timeDifference': difference,
+      'adminConfig': adminConfig,
     });
   }
 
@@ -301,12 +310,8 @@ class UserController extends ControllerMVC {
     }
     await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
       (res) async => {
-        print('qwe'),
-        print(res['success']),
-        print('object'),
         if (res['success'] == true)
           {
-            print(res['success']),
             if (allUser != [])
               {
                 trdata = res['history'],
@@ -391,7 +396,6 @@ class UserController extends ControllerMVC {
           {Helper.showToast('data does not exist')}
       },
     );
-    // print(trdata);
     return transactionData;
   }
 
@@ -457,8 +461,6 @@ class UserController extends ControllerMVC {
       }
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
-        print(
-            '$user...................................43984085394809589308403584905');
         relysiaEmail = user.email;
         relysiaPassword = password;
         isStarted = user.isStarted;
@@ -468,6 +470,13 @@ class UserController extends ControllerMVC {
         b.forEach((key, value) {
           j = {...j, key.toString(): value};
         });
+        var serverTime = await PostController().getNowTime();
+        var serverTimeStamp =
+            await PostController().changeTimeType(d: serverTime);
+        var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
+        var difference = localTimeStamp - serverTimeStamp;
+        var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
+        var adminConfig = adminSnap.data();
         userInfo = {
           ...j,
           'fullName': '${j['firstName']} ${j['lastName']}',
@@ -475,7 +484,9 @@ class UserController extends ControllerMVC {
           'isVerify': isVerify,
           'isRememberme': isRememberme.toString(),
           'uid': querySnapshot.docs[0].id,
-          'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
+          'expirationPeriod': isRememberme ? '' : DateTime.now().toString(),
+          'timeDifference': difference,
+          'adminConfig': adminConfig,
         };
         isEnableTwoFactor =
             j['isEnableTwoFactor'] == '' || j['isEnableTwoFactor'] == null
@@ -856,7 +867,6 @@ class UserController extends ControllerMVC {
     isSettingAction = true;
     setState(() {});
     if (password.length < Helper.passwordMinLength) {
-      print(0);
       isSettingAction = false;
       setState(() {});
       return;

@@ -25,8 +25,7 @@ class MainRouter {
         return MessageScreen(routerChange: routerChange);
       case RouteNames.settings:
         return SettingMainScreen(
-            settingRouter: mainRouterValue['subRouter'],
-            routerChange: routerChange);
+            settingRouter: mainRouterValue, routerChange: routerChange);
       case RouteNames.people:
         return PeopleScreen(routerChange: routerChange);
       case RouteNames.events:

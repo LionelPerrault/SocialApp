@@ -411,13 +411,14 @@ class SettingShnatterTokenScreenState
   Widget transList() {
     print("$transactionData dafdfqewqwere3frswdfa");
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: SizeConfig(context).screenWidth > 800
-              ? SizeConfig(context).screenWidth * 0.7
+              ? SizeConfig(context).screenWidth * 0.67
               : SizeConfig(context).screenWidth < 450
-                  ? SizeConfig(context).screenWidth * 0.87
-                  : SizeConfig(context).screenWidth * 0.6,
+                  ? SizeConfig(context).screenWidth * 0.8
+                  : SizeConfig(context).screenWidth * 0.78,
           height: 200,
           margin: const EdgeInsets.only(top: 30, bottom: 15),
           child: Expanded(
