@@ -33,10 +33,10 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
     add(widget.con);
     postCon = controller as PostController;
     userCheckTime = DateTime.now().millisecondsSinceEpoch;
-    postCon.realNotifi = [];
     postCon.checkNotify(userCheckTime);
-    final Stream<QuerySnapshot> stream = Helper.notifiCollection.snapshots();
-    stream.listen((event) async {
+    final Stream<QuerySnapshot> streamContent =
+        Helper.notifiCollection.snapshots();
+    streamContent.listen((event) async {
       print('notification Stream');
       print(postCon.allNotification);
       var notiSnap = await Helper.notifiCollection.orderBy('tsNT').get();
@@ -59,6 +59,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
             viewFlag = false;
           }
         }
+        setState(() {});
         postCon.allNotification = [];
         var notifyTime =
             DateTime.parse(allNotifi[i]['timeStamp'].toDate().toString());
@@ -177,10 +178,11 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                   itemCount: postCon.allNotification.length,
                   itemBuilder: (context, index) => Material(
                     child: ListTile(
-                      onTap: () {
-                        postCon.checkNotification(
+                      onTap: () async {
+                        await postCon.checkNotification(
                             postCon.allNotification[index]['uid'],
                             UserManager.userInfo['uid']);
+                        setState(() {});
                       },
                       hoverColor: const Color.fromARGB(255, 243, 243, 243),
                       enabled: true,
