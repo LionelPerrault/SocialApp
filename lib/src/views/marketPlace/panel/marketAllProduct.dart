@@ -33,11 +33,27 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
   var userInfo = UserManager.userInfo;
   var roundFlag = true;
   var allProducts = [];
+  var products = [];
+  bool scrollFlag = false;
+  int count = 0;
+  final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     add(widget.con);
     con = controller as PostController;
     con.setState(() {});
+    _scrollController.addListener(() {
+      double offSet = _scrollController.offset;
+      double scrollMax = _scrollController.position.maxScrollExtent;
+      double currentScroll = _scrollController.position.pixels;
+      if (scrollMax - currentScroll <= 10) {
+        print("minusScroll:$currentScroll");
+        setState(() {
+          scrollFlag = true;
+        });
+      }
+    });
+
     super.initState();
     getProductNow();
     con.getProductLikes();
@@ -62,74 +78,138 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.productCategory != 'All') {
-      allProducts = con.allProduct
-          .where((element) =>
-              element['data']['productCategory'] == widget.productCategory)
+    if (scrollFlag == true) {
+      if (widget.productCategory != 'All') {
+        allProducts = con.allProduct
+            .where((element) =>
+                element['data']['productCategory'] == widget.productCategory)
+            .toList();
+        print(widget.productCategory);
+        print(allProducts);
+      } else {
+        allProducts = con.allProduct;
+      }
+      switch (widget.arrayOption) {
+        case 'Latest':
+          allProducts.sort((a, b) => con
+              .changeTimeType(d: b['data']['productDate'], type: false)
+              .compareTo(con.changeTimeType(
+                  d: a['data']['productDate'], type: false)));
+          break;
+        case 'Price High':
+          allProducts.sort((a, b) => int.parse(a['data']['productPrice'])
+              .compareTo(int.parse(b['data']['productPrice'])));
+          break;
+        case 'Price Low':
+          allProducts.sort((a, b) => int.parse(b['data']['productPrice'])
+              .compareTo(int.parse(a['data']['productPrice'])));
+          break;
+        default:
+      }
+      allProducts = allProducts
+          .where((product) =>
+              product['data']['productName'].contains(widget.searchValue) ==
+              true)
           .toList();
-      print(widget.productCategory);
-      print(allProducts);
+      // ignore: prefer_is_empty
+      if (allProducts.isNotEmpty) {
+        for (var i = count; i < count + 10; i++) {
+          products.add(allProducts[i]);
+          print(products.length);
+          if (products.length == 10) {
+            setState(() {
+              count = products.length;
+            });
+          }
+        }
+      }
     } else {
-      allProducts = con.allProduct;
+      if (widget.productCategory != 'All') {
+        allProducts = con.allProduct
+            .where((element) =>
+                element['data']['productCategory'] == widget.productCategory)
+            .toList();
+        print(widget.productCategory);
+        print(allProducts);
+      } else {
+        allProducts = con.allProduct;
+      }
+      switch (widget.arrayOption) {
+        case 'Latest':
+          allProducts.sort((a, b) => con
+              .changeTimeType(d: b['data']['productDate'], type: false)
+              .compareTo(con.changeTimeType(
+                  d: a['data']['productDate'], type: false)));
+          break;
+        case 'Price High':
+          allProducts.sort((a, b) => int.parse(a['data']['productPrice'])
+              .compareTo(int.parse(b['data']['productPrice'])));
+          break;
+        case 'Price Low':
+          allProducts.sort((a, b) => int.parse(b['data']['productPrice'])
+              .compareTo(int.parse(a['data']['productPrice'])));
+          break;
+        default:
+      }
+      allProducts = allProducts
+          .where((product) =>
+              product['data']['productName'].contains(widget.searchValue) ==
+              true)
+          .toList();
+      if (allProducts.isNotEmpty) {
+        for (var i = count; i < 10; i++) {
+          print(" start: $count");
+          products.add(allProducts[i]);
+          if (products.length == 10) {
+            setState(() {
+              count = products.length;
+            });
+          }
+          print("end: $count");
+          print(products.length);
+        }
+      }
     }
-    switch (widget.arrayOption) {
-      case 'Latest':
-        allProducts.sort((a, b) => con
-            .changeTimeType(d: b['data']['productDate'], type: false)
-            .compareTo(
-                con.changeTimeType(d: a['data']['productDate'], type: false)));
-        break;
-      case 'Price High':
-        allProducts.sort((a, b) => int.parse(a['data']['productPrice'])
-            .compareTo(int.parse(b['data']['productPrice'])));
-        break;
-      case 'Price Low':
-        allProducts.sort((a, b) => int.parse(b['data']['productPrice'])
-            .compareTo(int.parse(a['data']['productPrice'])));
-        break;
-      default:
-    }
-    allProducts = allProducts
-        .where((product) =>
-            product['data']['productName'].contains(widget.searchValue) == true)
-        .toList();
-
     return Container(
       width: SizeConfig(context).screenWidth < 800
           ? SizeConfig(context).screenWidth
           : (SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth) *
               0.8,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: SizeConfig(context).screenWidth < 600
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: allProducts
-                        .map((product) => MarketCell(
-                              data: product,
-                              routerChange: widget.routerChange,
-                            ))
-                        .toList())
-                : GridView.count(
-                    crossAxisCount:
-                        SizeConfig(context).screenWidth > 1000 ? 3 : 2,
-                    childAspectRatio: 1 / 2,
-                    padding: const EdgeInsets.all(4.0),
-                    mainAxisSpacing: 10.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 10.0,
-                    primary: false,
-                    children: allProducts
-                        .map((product) => MarketCell(
-                              data: product,
-                              routerChange: widget.routerChange,
-                            ))
-                        .toList()),
-          ),
-        ],
+      height: 350,
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Expanded(
+              child: SizeConfig(context).screenWidth < 600
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: products
+                          .map((product) => MarketCell(
+                                data: product,
+                                routerChange: widget.routerChange,
+                              ))
+                          .toList())
+                  : GridView.count(
+                      crossAxisCount:
+                          SizeConfig(context).screenWidth > 1000 ? 3 : 2,
+                      childAspectRatio: 2 / 3,
+                      padding: const EdgeInsets.all(4.0),
+                      mainAxisSpacing: 10.0,
+                      shrinkWrap: true,
+                      crossAxisSpacing: 10.0,
+                      primary: false,
+                      children: products
+                          .map((product) => MarketCell(
+                                data: product,
+                                routerChange: widget.routerChange,
+                              ))
+                          .toList()),
+            ),
+          ],
+        ),
       ),
     );
   }
