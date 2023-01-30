@@ -47,7 +47,6 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
       double scrollMax = _scrollController.position.maxScrollExtent;
       double currentScroll = _scrollController.position.pixels;
       if (scrollMax - currentScroll <= 10) {
-        print("minusScroll:$currentScroll");
         setState(() {
           scrollFlag = true;
         });
@@ -113,12 +112,20 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
           .toList();
       // ignore: prefer_is_empty
       if (allProducts.isNotEmpty) {
-        for (var i = count; i < count + 10; i++) {
-          products.add(allProducts[i]);
-          print(products.length);
-          if (products.length == 10) {
+        if (count <= allProducts.length) {
+          int totalCount = 0;
+          int productCount = 0;
+          productCount = allProducts.length - count;
+          if (productCount < 10) {
+            totalCount = count + allProducts.length - products.length;
+          } else {
+            totalCount = count + 10;
+          }
+          for (int i = count; i < totalCount; i++) {
+            products.add(allProducts[i]);
             setState(() {
               count = products.length;
+              scrollFlag = false;
             });
           }
         }
@@ -129,8 +136,6 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
             .where((element) =>
                 element['data']['productCategory'] == widget.productCategory)
             .toList();
-        print(widget.productCategory);
-        print(allProducts);
       } else {
         allProducts = con.allProduct;
       }
@@ -157,16 +162,18 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
               true)
           .toList();
       if (allProducts.isNotEmpty) {
-        for (var i = count; i < 10; i++) {
-          print(" start: $count");
-          products.add(allProducts[i]);
-          if (products.length == 10) {
-            setState(() {
-              count = products.length;
-            });
+        if (count <= allProducts.length) {
+          print(allProducts.length);
+          print(count);
+          for (var i = count; i < 10; i++) {
+            print(" start: $count");
+            products.add(allProducts[i]);
+            print("end: $count");
+            print(products.length);
           }
-          print("end: $count");
-          print(products.length);
+          setState(() {
+            count = 10;
+          });
         }
       }
     }
