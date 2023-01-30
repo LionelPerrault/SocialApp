@@ -1,8 +1,10 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
@@ -128,6 +130,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         );
       },
     );
+
     final Stream<QuerySnapshot> stream = Helper.notifiCollection.snapshots();
     stream.listen((event) async {
       var allNotifi = event.docs;
@@ -139,10 +142,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       var userInfo = userSnap.data();
       var changeData = [];
       for (var i = 0; i < allNotifi.length; i++) {
-        var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
-        print('tsNT is $tsNT');
-        print('check notify Time is ${userInfo!['checkNotifyTime']}');
-        if (userInfo['checkNotifyTime'] == null) {
+        // var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
+        var tsNT = allNotifi[i]['tsNT'];
+        if (userInfo!['checkNotifyTime'] == null) {
           userInfo['checkNotifyTime'] = 0;
           setState(() {});
         }
@@ -151,6 +153,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         if (tsNT > userInfo['checkNotifyTime']) {
           var addData;
           if (adminUid != UserManager.userInfo['uid']) {
+            print('tsNT is $tsNT');
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
@@ -169,7 +172,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
           }
           if (postType == 'requestFriend' &&
               adminUid == UserManager.userInfo['uid']) {
-            print('here is requestFriend');
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
@@ -192,12 +194,92 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       postCon.realNotifi = changeData;
       setState(() {});
     });
+
+    final Stream<QuerySnapshot> streamContent =
+        Helper.notifiCollection.snapshots();
+    streamContent.listen((event) async {
+      print('notification Stream');
+      print(postCon.allNotification);
+      var notiSnap = await Helper.notifiCollection.orderBy('tsNT').get();
+      var allNotifi = notiSnap.docs;
+      var userSnap = await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .get();
+      // ignore: unused_local_variable
+      var userInfo = userSnap.data();
+      var changeData = [];
+      for (var i = 0; i < allNotifi.length; i++) {
+        var adminUid = allNotifi[i]['postAdminId'];
+        var postType = allNotifi[i]['postType'];
+        var viewFlag = true;
+        setState(() {});
+
+        for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
+          if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
+            viewFlag = false;
+          }
+        }
+        setState(() {});
+        postCon.allNotification = [];
+        var notifyTime =
+            DateTime.parse(allNotifi[i]['timeStamp'].toDate().toString());
+        var formattedNotifyTime =
+            DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+        print('notifications formatted notify time:$formattedNotifyTime');
+        if (viewFlag) {
+          print('this is in view flag');
+          var addData;
+          if (adminUid != UserManager.userInfo['uid']) {
+            await FirebaseFirestore.instance
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        ...allNotifi[i].data(),
+                        'uid': allNotifi[i].id,
+                        'avatar': userV.data()!['avatar'],
+                        'userName': userV.data()!['userName'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date': 'Helper.formatDate(formattedNotifyTime)',
+                      },
+                      changeData.add(addData),
+                    });
+          }
+          if (postType == 'requestFriend' &&
+              adminUid == UserManager.userInfo['uid']) {
+            await FirebaseFirestore.instance
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) => {
+                      addData = {
+                        'uid': allNotifi[i].id,
+                        'avatar': '',
+                        'userName': Helper
+                            .notificationName[allNotifi[i]['postType']]['name'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date': 'Helper.formatDate(formattedNotifyTime)',
+                      },
+                      changeData.add(addData),
+                    });
+          }
+          print('change data : $changeData');
+        }
+      }
+      postCon.allNotification = changeData;
+      setState(() {});
+      print('allNotification : ${postCon.allNotification}');
+    });
+
     super.initState();
   }
 
   Future<void> onAdminClicked() async {
     Helper.showToast("go to admin");
-    print("go to login");
     await Navigator.pushReplacementNamed(context, RouteNames.adp);
   }
 
