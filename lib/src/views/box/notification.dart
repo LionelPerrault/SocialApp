@@ -53,7 +53,6 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         var postType = allNotifi[i]['postType'];
         var viewFlag = true;
         setState(() {});
-
         for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
           if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
             viewFlag = false;
@@ -61,20 +60,14 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         }
         setState(() {});
         postCon.allNotification = [];
-        var notifyTime =
-            DateTime.parse(allNotifi[i]['timeStamp'].toDate().toString());
-        var formattedNotifyTime =
-            DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
-        print('notifications formatted notify time:$formattedNotifyTime');
         if (viewFlag) {
-          print('this is in view flag');
           var addData;
           if (adminUid != UserManager.userInfo['uid']) {
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
                 .get()
-                .then((userV) => {
+                .then((userV) async => {
                       addData = {
                         ...allNotifi[i].data(),
                         'uid': allNotifi[i].id,
@@ -82,7 +75,8 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                         'userName': userV.data()!['userName'],
                         'text': Helper
                             .notificationText[allNotifi[i]['postType']]['text'],
-                        'date': 'Helper.formatDate(formattedNotifyTime)',
+                        'date':
+                            await postCon.formatDate(allNotifi[i]['timeStamp']),
                       },
                       changeData.add(addData),
                     });
@@ -93,7 +87,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
                 .get()
-                .then((userV) => {
+                .then((userV) async => {
                       addData = {
                         'uid': allNotifi[i].id,
                         'avatar': '',
@@ -101,17 +95,16 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                             .notificationName[allNotifi[i]['postType']]['name'],
                         'text': Helper
                             .notificationText[allNotifi[i]['postType']]['text'],
-                        'date': 'Helper.formatDate(formattedNotifyTime)',
+                        'date':
+                            await postCon.formatDate(allNotifi[i]['timeStamp']),
                       },
                       changeData.add(addData),
                     });
           }
-          print('change data : $changeData');
         }
       }
       postCon.allNotification = changeData;
       setState(() {});
-      print('allNotification : ${postCon.allNotification}');
     });
     super.initState();
   }

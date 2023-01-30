@@ -533,7 +533,6 @@ class PostController extends ControllerMVC {
       }
       print('Now you get all pages');
     });
-    print(realAllpage);
     return realAllpage;
   }
 
