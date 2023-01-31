@@ -80,6 +80,7 @@ dependencies:
   clipboard: ^0.1.3
   animated_widgets: ^1.1.0
   roundcheckbox: ^2.0.5
+  dotted_border: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:

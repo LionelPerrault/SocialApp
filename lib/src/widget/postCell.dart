@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -76,7 +77,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   var postTime = '';
   String checkedOption = '';
   List<Map> upUserInfo = [];
-
+  var headerCon = TextEditingController();
+  bool editShow = false;
+  String editHeader = '';
   @override
   void initState() {
     print('widget.postInfo${widget.postInfo}');
@@ -86,6 +89,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       postTime = value;
       setState(() {});
     });
+    headerCon.text = widget.postInfo['header'];
     privacy = privacyMenuItem
         .where((element) => element['label'] == widget.postInfo['privacy'])
         .toList()[0];
@@ -97,8 +101,16 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       }
       getUpUserInfo();
     }
-    if (widget.postInfo['adminUid'] != UserManager.userInfo['uid'])
+    if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
       privacyMenuItem = [];
+      popupMenuItem = [
+        {
+          'icon': Icons.link,
+          'label': 'Open post in new tab',
+          'value': 'open',
+        },
+      ];
+    }
 
     super.initState();
   }
@@ -145,25 +157,45 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     );
   }
 
+  hideFromTimeline() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const SizedBox(),
+        content: AlertYesNoWidget(
+            yesFunc: () async {
+              upDatePostInfo({'timeline': !widget.postInfo['timeline']});
+              widget.postInfo['timeline'] = !widget.postInfo['timeline'];
+              setState(() {});
+              Navigator.of(context).pop(true);
+            },
+            noFunc: () {
+              Navigator.of(context).pop(true);
+            },
+            header: 'Hide from Timeline',
+            text:
+                'Are you sure you want to hide this post from your profile timeline? It may still appear in other places like newsfeed and search results',
+            progress: false),
+      ),
+    );
+  }
+
   popUpFunction(value) async {
     switch (value) {
       case 'edit':
-        () {};
+        editShow = true;
+        setState(() {});
         break;
       case 'delete':
         deletePostInfo();
         break;
       case 'timeline':
-        bool timeline = widget.postInfo['timeline'] == null
-            ? false
-            : !widget.postInfo['timeline'];
-        upDatePostInfo({'timeline': timeline});
+        hideFromTimeline();
         break;
       case 'comment':
-        bool comment = widget.postInfo['comment'] == null
-            ? false
-            : !widget.postInfo['comment'];
-        upDatePostInfo({'comment': comment});
+        upDatePostInfo({'comment': !widget.postInfo['comment']});
+        widget.postInfo['comment'] = !widget.postInfo['comment'];
+        setState(() {});
         break;
       case 'open':
         // widget.routerChange({
@@ -176,6 +208,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
   @override
   Widget build(BuildContext context) {
+    return widget.postInfo['timeline'] == false
+        ? DottedBorder(
+            borderType: BorderType.RRect,
+            radius: Radius.circular(20),
+            dashPattern: [10, 10],
+            color: Colors.grey,
+            strokeWidth: 2,
+            child: total(),
+          )
+        : total();
+  }
+
+  Widget total() {
     switch (widget.postInfo['type']) {
       case 'photo':
         return picturePostCell();
@@ -286,7 +331,18 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                             EdgeInsets.only(
                                                                 left: 12.0)),
                                                     Text(
-                                                      e['label'],
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
                                                       style: const TextStyle(
                                                           color: Color.fromARGB(
                                                               255, 90, 90, 90),
@@ -380,6 +436,16 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                           )
                         ],
                       ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Row(
                         children: [
@@ -392,12 +458,14 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                               ),
                             )
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
-                LikesCommentScreen(productId: widget.postInfo['id'])
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
               ],
             ),
           ),
@@ -502,7 +570,18 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                             EdgeInsets.only(
                                                                 left: 12.0)),
                                                     Text(
-                                                      e['label'],
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
                                                       style: const TextStyle(
                                                           color: Color.fromARGB(
                                                               255, 90, 90, 90),
@@ -596,11 +675,23 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                           )
                         ],
                       ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
                     ],
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 10)),
-                LikesCommentScreen(productId: widget.postInfo['id'])
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
               ],
             ),
           ),
@@ -699,7 +790,18 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                             EdgeInsets.only(
                                                                 left: 12.0)),
                                                     Text(
-                                                      e['label'],
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
                                                       style: const TextStyle(
                                                           color: Color.fromARGB(
                                                               255, 90, 90, 90),
@@ -801,11 +903,23 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                           )
                         ],
                       ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
                     ],
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 10)),
-                LikesCommentScreen(productId: widget.postInfo['id'])
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
               ],
             ),
           ),
@@ -910,7 +1024,18 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                             EdgeInsets.only(
                                                                 left: 12.0)),
                                                     Text(
-                                                      e['label'],
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
                                                       style: const TextStyle(
                                                           color: Color.fromARGB(
                                                               255, 90, 90, 90),
@@ -1005,13 +1130,15 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                         ],
                       ),
                       const Padding(padding: EdgeInsets.only(top: 20)),
-                      Text(
-                        widget.postInfo['header'],
-                        style: const TextStyle(
-                          fontSize: 20,
-                        ),
-                        overflow: TextOverflow.clip,
-                      ),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       for (var option in widget.postInfo['data']['option'])
                         optionWidget(option,
@@ -1020,7 +1147,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
-                LikesCommentScreen(productId: widget.postInfo['id'])
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
               ],
             ),
           ),
@@ -1153,6 +1282,85 @@ class PostCellState extends mvc.StateMVC<PostCell> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget editPost() {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            height: 40,
+            child: TextField(
+              onChanged: (value) {
+                editHeader = value;
+                setState(() {});
+              },
+              controller: headerCon,
+              decoration: const InputDecoration(
+                hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                contentPadding: EdgeInsets.only(top: 10, left: 10),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5)),
+                  minimumSize: const Size(85, 45),
+                  maximumSize: const Size(85, 45),
+                ),
+                onPressed: () {
+                  editShow = false;
+                  setState(() {});
+                },
+                child: const Text('Cancel',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w900)),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5)),
+                  minimumSize: const Size(75, 45),
+                  maximumSize: const Size(75, 45),
+                ),
+                onPressed: () {
+                  editShow = false;
+                  widget.postInfo['header'] = editHeader;
+                  setState(() {});
+                  upDatePostInfo({'header': widget.postInfo['header']});
+                },
+                child: const Text('Post',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 94, 114, 228),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w900)),
+              ),
+              const SizedBox(width: 20)
+            ],
+          )
         ],
       ),
     );

@@ -1131,6 +1131,8 @@ class PostController extends ControllerMVC {
       'privacy': privacy,
       'postTime': FieldValue.serverTimestamp(),
       'header': header,
+      'timeline': true,
+      'comment': true,
     };
     Helper.postCollection.add(postData);
     return true;
@@ -1164,6 +1166,8 @@ class PostController extends ControllerMVC {
         'adminUid': adminSnap.id,
         'privacy': allPosts[i]['privacy'],
         'header': allPosts[i]['header'],
+        'timeline': allPosts[i]['timeline'],
+        'comment': allPosts[i]['comment']
       };
       postsBox.add(eachPost);
     }
