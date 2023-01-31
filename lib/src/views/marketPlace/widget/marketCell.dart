@@ -104,10 +104,11 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                     Container(
                       margin: const EdgeInsets.only(top: 210, left: 10),
                       child: badges.Badge(
-                        toAnimate: false,
-                        shape: badges.BadgeShape.square,
-                        badgeColor: const Color.fromRGBO(0, 0, 0, 0.65),
-                        borderRadius: BorderRadius.circular(8),
+                        badgeStyle: badges.BadgeStyle(
+                          shape: badges.BadgeShape.square,
+                          badgeColor: const Color.fromRGBO(0, 0, 0, 0.65),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         badgeContent: Text(
                           'SHN ${widget.data['data']["productPrice"]}',
                           overflow: TextOverflow.ellipsis,

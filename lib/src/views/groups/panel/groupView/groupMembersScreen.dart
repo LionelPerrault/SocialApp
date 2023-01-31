@@ -98,7 +98,9 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                               '${con.group["groupJoined"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: const badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),
