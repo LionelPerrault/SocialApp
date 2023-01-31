@@ -149,7 +149,7 @@ class AlertYesNoWidgetState extends mvc.StateMVC<AlertYesNoWidget> {
                                 size: 14.0,
                               ),
                               const Padding(padding: EdgeInsets.only(left: 10)),
-                              const Text('Pay',
+                              const Text('OK',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
