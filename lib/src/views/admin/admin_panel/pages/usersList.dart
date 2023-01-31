@@ -658,10 +658,11 @@ class EmployeeDataSource extends DataGridSource {
               DataGridCell<Widget>(
                   columnName: 'activated',
                   value: badges.Badge(
-                    toAnimate: false,
-                    shape: badges.BadgeShape.square,
-                    badgeColor: Colors.red,
-                    borderRadius: BorderRadius.circular(16),
+                    badgeStyle: badges.BadgeStyle(
+                      shape: badges.BadgeShape.square,
+                      badgeColor: Colors.red,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     badgeContent: Text('No'.toString(),
                         style:
                             const TextStyle(color: Colors.white, fontSize: 13)),
@@ -669,10 +670,11 @@ class EmployeeDataSource extends DataGridSource {
               DataGridCell<Widget>(
                   columnName: 'balance',
                   value: badges.Badge(
-                    toAnimate: false,
-                    shape: badges.BadgeShape.square,
-                    badgeColor: Colors.teal,
-                    borderRadius: BorderRadius.circular(16),
+                    badgeStyle: badges.BadgeStyle(
+                      shape: badges.BadgeShape.square,
+                      badgeColor: Colors.teal,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     badgeContent: Text(0.toString(),
                         style:
                             const TextStyle(color: Colors.white, fontSize: 13)),

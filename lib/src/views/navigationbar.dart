@@ -408,39 +408,33 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       verticalMargin: -10,
                       child: Row(
                         children: [
-                          peopleCon.requestFriends.isEmpty
-                              ? SvgPicture.network(
-                                  placeholderBuilder: (context) => const Icon(
-                                      Icons.logo_dev,
-                                      size: 30,
-                                      color: Colors.white),
-                                  SVGPath.group,
-                                  color: Colors.white,
-                                  width: 20,
-                                  height: 20,
-                                )
-                              : badges.Badge(
-                                  toAnimate: false,
-                                  badgeColor: Colors.deepPurple,
-                                  position:
-                                      badges.BadgePosition.topEnd(top: -10),
-                                  borderRadius: BorderRadius.circular(8),
-                                  badgeContent: Text(
-                                      peopleCon.requestFriends.length
-                                          .toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                  child: SvgPicture.network(
-                                    placeholderBuilder: (context) => const Icon(
-                                        Icons.logo_dev,
-                                        size: 30,
-                                        color: Colors.white),
-                                    SVGPath.group,
-                                    color: Colors.white,
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: badges.Badge(
+                              showBadge: peopleCon.requestFriends.isEmpty
+                                  ? false
+                                  : true,
+                              position: badges.BadgePosition.topEnd(top: -10),
+                              badgeStyle: badges.BadgeStyle(
+                                badgeColor: Colors.deepPurple,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              badgeContent: Text(
+                                  peopleCon.requestFriends.length.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13)),
+                              child: SvgPicture.network(
+                                placeholderBuilder: (context) => const Icon(
+                                    Icons.logo_dev,
+                                    size: 30,
+                                    color: Colors.white),
+                                SVGPath.group,
+                                color: Colors.white,
+                                width: 24,
+                                height: 24,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -448,43 +442,35 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterMessage(),
-                        pressType: PressType.singleClick,
-                        verticalMargin: -10,
-                        child: Row(children: [
-                          chatCon.notifyCount == 0
-                              ? SvgPicture.network(
-                                  placeholderBuilder: (context) => const Icon(
-                                      Icons.logo_dev,
-                                      size: 30,
-                                      color: Colors.white),
-                                  SVGPath.message,
-                                  color: Colors.white,
-                                  width: 20,
-                                  height: 20,
-                                )
-                              : badges.Badge(
-                                  toAnimate: false,
-                                  position:
-                                      badges.BadgePosition.topEnd(top: -10),
-                                  badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(8),
-                                  badgeContent: Text(
-                                      chatCon.notifyCount.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                  child: SvgPicture.network(
-                                    placeholderBuilder: (context) => const Icon(
-                                        Icons.logo_dev,
-                                        size: 30,
-                                        color: Colors.white),
-                                    SVGPath.message,
-                                    color: Colors.white,
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                ),
-                        ])),
+                      menuBuilder: () => ShnatterMessage(),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: Row(
+                        children: [
+                          badges.Badge(
+                            showBadge: chatCon.notifyCount == 0 ? false : true,
+                            position: badges.BadgePosition.topEnd(top: -10),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.deepPurple,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            badgeContent: Text(chatCon.notifyCount.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 13)),
+                            child: SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.message,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(9.0),
@@ -494,38 +480,29 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       verticalMargin: -10,
                       child: Row(
                         children: [
-                          postCon.realNotifi.isEmpty
-                              ? SvgPicture.network(
-                                  placeholderBuilder: (context) => const Icon(
-                                      Icons.logo_dev,
-                                      size: 30,
-                                      color: Colors.white),
-                                  SVGPath.notification,
-                                  color: Colors.white,
-                                  width: 20,
-                                  height: 20,
-                                )
-                              : badges.Badge(
-                                  toAnimate: false,
-                                  position:
-                                      badges.BadgePosition.topEnd(top: -10),
-                                  badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(20),
-                                  badgeContent: Text(
-                                      postCon.realNotifi.length.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                  child: SvgPicture.network(
-                                    placeholderBuilder: (context) => const Icon(
-                                        Icons.logo_dev,
-                                        size: 30,
-                                        color: Colors.white),
-                                    SVGPath.notification,
-                                    color: Colors.white,
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                ),
+                          badges.Badge(
+                            showBadge:
+                                postCon.realNotifi.isEmpty ? false : true,
+                            position: badges.BadgePosition.topEnd(top: -10),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.deepPurple,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            badgeContent: Text(
+                                postCon.realNotifi.length.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 13)),
+                            child: SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.notification,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -750,100 +727,84 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterFriendRequest(
-                              onClick: () {
-                                setState(() {});
-                              },
-                              routerChange: widget.routerChange,
+                      menuBuilder: () => ShnatterFriendRequest(
+                        onClick: () {
+                          setState(() {});
+                        },
+                        routerChange: widget.routerChange,
+                      ),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: badges.Badge(
+                              showBadge: peopleCon.requestFriends.isEmpty
+                                  ? false
+                                  : true,
+                              position: badges.BadgePosition.topEnd(top: -13),
+                              badgeStyle: badges.BadgeStyle(
+                                badgeColor: Colors.deepPurple,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              badgeContent: Text(
+                                  peopleCon.requestFriends.length.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13)),
+                              child: SvgPicture.network(
+                                placeholderBuilder: (context) => const Icon(
+                                    Icons.logo_dev,
+                                    size: 30,
+                                    color: Colors.white),
+                                SVGPath.group,
+                                color: Colors.white,
+                                width: 24.5,
+                                height: 24.5,
+                              ),
                             ),
-                        pressType: PressType.singleClick,
-                        verticalMargin: -10,
-                        child: Row(children: [
-                          peopleCon.requestFriends.isEmpty
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: SvgPicture.network(
-                                    placeholderBuilder: (context) => const Icon(
-                                        Icons.logo_dev,
-                                        size: 30,
-                                        color: Colors.white),
-                                    SVGPath.group,
-                                    color: Colors.white,
-                                    width: 24.5,
-                                    height: 24.5,
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: badges.Badge(
-                                    toAnimate: false,
-                                    // shape: badges.BadgeShape.square,
-                                    position:
-                                        badges.BadgePosition.topEnd(top: -14),
-                                    badgeColor: Colors.deepPurple,
-                                    borderRadius: BorderRadius.circular(8),
-                                    badgeContent: Text(
-                                        peopleCon.requestFriends.length
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 13)),
-                                    child: SvgPicture.network(
-                                      placeholderBuilder: (context) =>
-                                          const Icon(Icons.logo_dev,
-                                              size: 30, color: Colors.white),
-                                      SVGPath.group,
-                                      color: Colors.white,
-                                      width: 24.5,
-                                      height: 24.5,
-                                    ),
-                                  ),
-                                )
-                        ])),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterMessage(),
-                        pressType: PressType.singleClick,
-                        verticalMargin: -10,
-                        child: Row(children: [
-                          chatCon.notifyCount == 0
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: SvgPicture.network(
-                                    placeholderBuilder: (context) => const Icon(
-                                        Icons.logo_dev,
-                                        size: 30,
-                                        color: Colors.white),
-                                    SVGPath.message,
-                                    color: Colors.white,
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: badges.Badge(
-                                    toAnimate: true,
-                                    position:
-                                        badges.BadgePosition.topEnd(top: -14),
-                                    badgeColor: Colors.deepPurple,
-                                    borderRadius: BorderRadius.circular(8),
-                                    badgeContent: Text(
-                                        chatCon.notifyCount.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 13)),
-                                    child: SvgPicture.network(
-                                      placeholderBuilder: (context) =>
-                                          const Icon(Icons.logo_dev,
-                                              size: 30, color: Colors.white),
-                                      SVGPath.message,
-                                      color: Colors.white,
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                  )),
-                        ])),
+                      menuBuilder: () => ShnatterMessage(),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: badges.Badge(
+                              // toAnimate: true,
+                              showBadge:
+                                  chatCon.notifyCount == 0 ? false : true,
+                              position: badges.BadgePosition.topEnd(top: -13),
+                              badgeStyle: badges.BadgeStyle(
+                                badgeColor: Colors.deepPurple,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              badgeContent: Text(chatCon.notifyCount.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13)),
+                              child: SvgPicture.network(
+                                placeholderBuilder: (context) => const Icon(
+                                    Icons.logo_dev,
+                                    size: 30,
+                                    color: Colors.white),
+                                SVGPath.message,
+                                color: Colors.white,
+                                width: 20,
+                                height: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(9.0),
@@ -853,38 +814,29 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       verticalMargin: -10,
                       child: Row(
                         children: [
-                          postCon.realNotifi.isEmpty
-                              ? SvgPicture.network(
-                                  placeholderBuilder: (context) => const Icon(
-                                      Icons.logo_dev,
-                                      size: 30,
-                                      color: Colors.white),
-                                  SVGPath.notification,
-                                  color: Colors.white,
-                                  width: 20,
-                                  height: 20,
-                                )
-                              : badges.Badge(
-                                  toAnimate: false,
-                                  badgeColor: Colors.deepPurple,
-                                  position:
-                                      badges.BadgePosition.topEnd(top: -10),
-                                  borderRadius: BorderRadius.circular(20),
-                                  badgeContent: Text(
-                                      postCon.realNotifi.length.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                  child: SvgPicture.network(
-                                    placeholderBuilder: (context) => const Icon(
-                                        Icons.logo_dev,
-                                        size: 30,
-                                        color: Colors.white),
-                                    SVGPath.notification,
-                                    color: Colors.white,
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                ),
+                          badges.Badge(
+                            showBadge:
+                                postCon.realNotifi.isEmpty ? false : true,
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.deepPurple,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            position: badges.BadgePosition.topEnd(top: -11),
+                            badgeContent: Text(
+                                postCon.realNotifi.length.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 13)),
+                            child: SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Color.fromARGB(255, 201, 61, 61)),
+                              SVGPath.notification,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
+                          ),
                         ],
                       ),
                     ),

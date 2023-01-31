@@ -169,7 +169,9 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                 trailing:
                     t[chatUserFullName] != 0 && t[chatUserFullName] != null
                         ? badges.Badge(
-                            badgeColor: Colors.red,
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.red,
+                            ),
                             badgeContent: Text(
                               t[chatUserFullName].toString(),
                               style: TextStyle(color: Colors.white),

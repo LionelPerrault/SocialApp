@@ -104,7 +104,9 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                               '${con.event["eventGoing"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),
@@ -136,7 +138,9 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                               '${con.event["eventInterested"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),
@@ -168,7 +172,9 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                               '${con.event["eventInvited"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),
@@ -200,7 +206,9 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                               '${con.event["eventInvites"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),

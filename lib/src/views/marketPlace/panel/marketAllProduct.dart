@@ -117,7 +117,7 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
           int productCount = 0;
           productCount = allProducts.length - count;
           if (productCount < 10) {
-            totalCount = count + allProducts.length - products.length;
+            totalCount = count + productCount;
           } else {
             totalCount = count + 10;
           }
@@ -163,17 +163,18 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
           .toList();
       if (allProducts.isNotEmpty) {
         if (count <= allProducts.length) {
-          print(allProducts.length);
-          print(count);
-          for (var i = count; i < 10; i++) {
-            print(" start: $count");
-            products.add(allProducts[i]);
-            print("end: $count");
-            print(products.length);
+          int totalCount = 0;
+          if (allProducts.length < 10) {
+            totalCount = allProducts.length - count;
+          } else {
+            totalCount = 10;
           }
-          setState(() {
-            count = 10;
-          });
+          for (int i = count; i < totalCount; i++) {
+            products.add(allProducts[i]);
+            setState(() {
+              count = products.length;
+            });
+          }
         }
       }
     }
