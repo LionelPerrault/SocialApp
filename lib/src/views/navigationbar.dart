@@ -142,22 +142,29 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
           .get();
       var userInfo = userSnap.data();
       var changeData = [];
+      var tsNT;
       for (var i = 0; i < allNotifi.length; i++) {
-        var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
-        var usercheckTime =
-            userInfo!['checkNotifyTime'].toDate().millisecondsSinceEpoch;
+        if (allNotifi[i]['timeStamp'] != null) {
+          // ignore: unused_local_variable
+          // tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
+          // print('timestamp notification time: ${allNotifi[i]['timeStamp']}');
+          tsNT = allNotifi[i]['timeStamp'];
+        }
+        // var usercheckTime =
+        //     userInfo!['checkNotifyTime'].toDate().millisecondsSinceEpoch;
 
         // var tsNT = allNotifi[i]['tsNT'];
-        if (userInfo['checkNotifyTime'] == null) {
+        if (userInfo!['checkNotifyTime'] == null) {
           userInfo['checkNotifyTime'] = 0;
           setState(() {});
         }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
-        if (tsNT > usercheckTime) {
+        if (tsNT > userInfo['checkNotifyTime']) {
+          // print('user check time: $usercheckTime');
           var addData;
           if (adminUid != UserManager.userInfo['uid']) {
-            usercheckTime;
+            userInfo['checkNotifyTime'];
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])

@@ -1456,11 +1456,11 @@ class PostController extends ControllerMVC {
         .update({'userList': allNotifi['userList']});
   }
 
-  Future checkNotify() async {
+  Future checkNotify(int check) async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
-        .update({'checkNotifyTime': FieldValue.serverTimestamp()});
+        .update({'checkNotifyTime': check});
     print('check notify');
     realNotifi = [];
     setState(() {});

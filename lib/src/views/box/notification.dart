@@ -30,13 +30,15 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   void initState() {
     add(widget.con);
     postCon = controller as PostController;
-    postCon.checkNotify();
+    var userCheckTime = DateTime.now().millisecondsSinceEpoch;
+    // postCon.checkNotify();
+    postCon.checkNotify(userCheckTime);
     final Stream<QuerySnapshot> streamContent =
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
       print('notification Stream');
       print(postCon.allNotification);
-      var notiSnap = await Helper.notifiCollection.orderBy('timeStamp').get();
+      var notiSnap = await Helper.notifiCollection.orderBy('tsNT').get();
       var allNotifi = notiSnap.docs;
       var userSnap = await FirebaseFirestore.instance
           .collection(Helper.userField)
