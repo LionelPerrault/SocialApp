@@ -25,6 +25,22 @@ class PostCell extends StatefulWidget {
 }
 
 class PostCellState extends mvc.StateMVC<PostCell> {
+  List<Map> privacyMenuItem = [
+    {
+      'icon': Icons.language,
+      'label': 'Public',
+    },
+    {
+      'icon': Icons.groups,
+      'label': 'Friends',
+    },
+    {
+      'icon': Icons.lock,
+      'label': 'Only Me',
+    },
+  ];
+  Map privacy = {};
+
   late PostController con;
   bool payLoading = false;
   bool loading = false;
@@ -41,6 +57,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       postTime = value;
       setState(() {});
     });
+    privacy = privacyMenuItem
+        .where((element) => element['label'] == widget.postInfo['privacy'])
+        .toList()[0];
     if (widget.postInfo['type'] == 'poll') {
       if (widget.postInfo['data']['optionUp'][UserManager.userInfo['uid']] !=
           null) {
@@ -49,6 +68,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       }
       getUpUserInfo();
     }
+    if (widget.postInfo['adminUid'] != UserManager.userInfo['uid'])
+      privacyMenuItem = [];
+
     super.initState();
   }
 
@@ -68,6 +90,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       upUserInfo.add({...userInfo!, 'value': value});
     });
     setState(() {});
+  }
+
+  upDatePostInfo(value) async {
+    con.updatePostInfo(widget.postInfo['id'], value);
   }
 
   @override
@@ -192,10 +218,50 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         ]),
                                   ),
                                   const Text(' - '),
-                                  const Icon(
-                                    Icons.language,
-                                    size: 12,
-                                  )
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
                                 ],
                               ),
                             ],
@@ -325,10 +391,50 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         ]),
                                   ),
                                   const Text(' - '),
-                                  const Icon(
-                                    Icons.language,
-                                    size: 12,
-                                  )
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
                                 ],
                               ),
                             ],
@@ -444,10 +550,50 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         color: Colors.black, fontSize: 10),
                                   ),
                                   const Text(' - '),
-                                  const Icon(
-                                    Icons.language,
-                                    size: 12,
-                                  )
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
                                 ],
                               ),
                             ],
@@ -573,10 +719,50 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         ]),
                                   ),
                                   const Text(' - '),
-                                  const Icon(
-                                    Icons.language,
-                                    size: 12,
-                                  )
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
                                 ],
                               ),
                             ],

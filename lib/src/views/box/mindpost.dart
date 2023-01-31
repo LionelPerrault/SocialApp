@@ -31,11 +31,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   final ScrollController _scrollController = ScrollController();
   var show = false;
   var postPhoto = [];
-  var postFile = [];
+  String postAudio = '';
   int photoLength = 0;
-  int fileLength = 0;
+  int audioLength = 0;
   double uploadPhotoProgress = 0;
-  double uploadVideoProgress = 0;
+  double uploadAudioProgress = 0;
   String nowPost = '';
   bool postLoading = false;
   String activity = '';
@@ -51,7 +51,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcamera.svg?alt=media&token=0b7478a3-c746-47ed-a4fc-7505accf22a5',
       'mindFunc': () {
-        createPhotoReady();
+        uploadPhotoReady();
       }
     },
     // {
@@ -118,7 +118,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Upload Audio',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fmusic_file.svg?alt=media&token=b2d62e94-0c58-487e-b3dc-da02bdfd7ac9',
-      'mindFunc': (context) {}
+      'mindFunc': () {
+        uploadAudioReady();
+      }
     },
     // {
     //   'title': 'Upload File',
@@ -236,10 +238,16 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     super.initState();
   }
 
-  createPhotoReady() {
+  uploadPhotoReady() {
     nowPost = 'Upload Photos';
     setState(() {});
     uploadReady('photo');
+  }
+
+  uploadAudioReady() {
+    nowPost = 'Upload Audio';
+    setState(() {});
+    uploadReady('audio');
   }
 
   feelingReady() {
@@ -426,6 +434,75 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       ),
                     ),
                   ),
+                  SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          postAudio == ''
+                              ? const SizedBox()
+                              : (uploadPhotoProgress != 0 &&
+                                      uploadPhotoProgress != 100)
+                                  ? Container(
+                                      width: 90,
+                                      height: 90,
+                                      margin: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(13),
+                                      ),
+                                      child: Stack(
+                                        children: [
+                                          AnimatedContainer(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            margin: const EdgeInsets.only(
+                                                top: 78, left: 10),
+                                            width: 130,
+                                            padding: EdgeInsets.only(
+                                                right: 130 -
+                                                    (130 *
+                                                        uploadPhotoProgress /
+                                                        100)),
+                                            child:
+                                                const LinearProgressIndicator(
+                                              color: Colors.blue,
+                                              value: 10,
+                                              semanticsLabel:
+                                                  'Linear progress indicator',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      child: Row(children: [
+                                        SvgPicture.network(
+                                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd'),
+                                        Text('data'),
+                                        const Flexible(
+                                            fit: FlexFit.tight,
+                                            child: SizedBox()),
+                                        IconButton(
+                                          icon: const Icon(Icons.close,
+                                              color: Colors.black, size: 13.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 20),
+                                          tooltip: 'Delete',
+                                          onPressed: () {
+                                            postAudio = '';
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ]),
+                                    )
+                        ],
+                      ),
+                    ),
+                  ),
                   nowPost == 'Feelings/Activity'
                       ? feelingActivityWidget()
                       : nowPost == 'Check In'
@@ -533,21 +610,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                           padding: EdgeInsets.only(left: 5)),
                                       Text(
                                         "Friends",
-                                        style: TextStyle(fontSize: 13),
-                                      )
-                                    ]),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Friends of Friends",
-                                    child: Row(children: const [
-                                      Icon(
-                                        Icons.groups,
-                                        color: Colors.black,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        "Friends of Friends",
                                         style: TextStyle(fontSize: 13),
                                       )
                                     ]),
@@ -997,14 +1059,33 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     return pickedFile!;
   }
 
+  Future<XFile> chooseAudio() async {
+    final _audioPicker = ImagePicker();
+    XFile? pickedFile;
+    if (kIsWeb) {
+      pickedFile = await _audioPicker.pickVideo(
+        source: ImageSource.gallery,
+      );
+    } else {
+      //Check Permissions
+      // await Permission.photos.request();
+      // var permissionStatus = await Permission.photos.status;
+
+      //if (permissionStatus.isGranted) {
+      pickedFile = await _audioPicker.pickVideo(
+        source: ImageSource.gallery,
+      );
+      //} else {
+      //  print('Permission not granted. Try Again with permission access');
+      //}
+    }
+    return pickedFile!;
+  }
+
   uploadFile(XFile? pickedFile, type) async {
     if (type == 'photo') {
       postPhoto.add({'id': postPhoto.length, 'url': ''});
       photoLength = postPhoto.length - 1;
-      setState(() {});
-    } else {
-      postFile.add({'id': postFile.length, 'url': ''});
-      fileLength = postFile.length - 1;
       setState(() {});
     }
     final _firebaseStorage = FirebaseStorage.instance;
@@ -1040,14 +1121,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             }
           }
         } else {
-          for (var i = 0; i < postFile.length; i++) {
-            if (postFile[i]['id'] == fileLength) {
-              postFile[i]['url'] = downloadUrl;
-              setState(() {});
-            }
-          }
+          postAudio = downloadUrl;
+          setState(() {});
         }
-        print(postFile);
+        print(postAudio);
       });
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
         switch (taskSnapshot.state) {
@@ -1058,10 +1135,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               setState(() {});
               print("Upload is $uploadPhotoProgress% complete.");
             } else {
-              uploadVideoProgress = 100.0 *
+              uploadAudioProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $uploadVideoProgress% complete.");
+              print("Upload is $uploadAudioProgress% complete.");
             }
 
             break;
@@ -1076,7 +1153,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             break;
           case TaskState.success:
             print("Upload is completed");
-            uploadVideoProgress = 0;
+            uploadAudioProgress = 0;
             setState(() {});
             // Handle successful uploads on complete
             // ...
@@ -1090,7 +1167,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   uploadReady(type) async {
-    XFile? pickedFile = await chooseImage();
+    XFile? pickedFile;
+    if (type == 'photo') {
+      pickedFile = await chooseImage();
+    } else {
+      pickedFile = await chooseAudio();
+    }
     uploadFile(pickedFile, type);
   }
 }

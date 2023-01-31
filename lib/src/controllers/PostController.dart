@@ -1160,12 +1160,17 @@ class PostController extends ControllerMVC {
         'admin': adminInfo,
         'time': allPosts[i]['postTime'],
         'adminUid': adminSnap.id,
+        'privacy': allPosts[i]['privacy']
       };
       postsBox.add(eachPost);
     }
     posts = postsBox;
     setState(() {});
     return true;
+  }
+
+  updatePostInfo(uid, value) async {
+    await Helper.postCollection.doc(uid).update(value);
   }
 
   var productLikes = {};

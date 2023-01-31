@@ -10,7 +10,7 @@ class MindSlice extends StatelessWidget {
     required this.label,
     required this.image,
     required this.mindFunc,
-    this.disabled = false,
+    required this.disabled,
   });
   String label;
   String image;
@@ -30,7 +30,7 @@ class MindSlice extends StatelessWidget {
       ),
       onPressed: () {
         print('now click');
-        mindFunc();
+        if (!disabled) mindFunc();
       },
       child: Column(
         children: [
