@@ -22,7 +22,8 @@ class MainRouter {
       case RouteNames.homePage:
         return HomeScreen(routerChange: routerChange);
       case RouteNames.messages:
-        return MessageScreen(routerChange: routerChange);
+        return MessageScreen(
+            routerChange: routerChange, chatUser: mainRouterValue['subRouter']);
       case RouteNames.settings:
         return SettingMainScreen(
             settingRouter: mainRouterValue, routerChange: routerChange);

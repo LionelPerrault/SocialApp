@@ -39,6 +39,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   bool payLoading = false;
   bool loading = false;
   var postTime = '';
+  var messsageScreen = MessageScreenState();
 
   late List<Map> subFunctionList = [
     {
@@ -569,8 +570,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       product['productAdmin']['userName']
                                   ? 0
                                   : 30)),
-                      UserManager.userInfo['userName'] ==
-                              product['productAdmin']['userName']
+                      UserManager.userInfo['uid'] ==
+                              product['productAdmin']['uid']
                           ? Container()
                           : Container(
                               height: 50,
@@ -583,20 +584,14 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                         borderRadius:
                                             BorderRadius.circular(3.0)),
                                   ),
-                                  onPressed: () {
-                                    if (UserManager.userInfo['uid'] !=
-                                        widget.data["data"]["productAdmin"]
-                                            ["uid"]) {
-                                      widget.routerChange({
-                                        'router': RouteNames.messages,
-                                        'subRouter': widget.data["data"]
-                                                ["productAdmin"]["uid"]
-                                            .toString(),
-                                      });
-                                    }
-                                    setState(() {
-                                      // stepflag = true;
+                                  onPressed: () async {
+                                    widget.routerChange({
+                                      'router': RouteNames.messages,
+                                      'subRouter': widget.data["data"]
+                                              ["productAdmin"]["uid"]
+                                          .toString()
                                     });
+                                    setState(() {});
                                   },
                                   child: Row(
                                     crossAxisAlignment:

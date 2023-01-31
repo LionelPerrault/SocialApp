@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatMessageListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatUserListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/newMessageScreen.dart';
@@ -12,11 +13,12 @@ import '../../controllers/ChatController.dart';
 import '../../utils/size_config.dart';
 
 class MessageScreen extends StatefulWidget {
-  MessageScreen({Key? key, required this.routerChange})
+  MessageScreen({Key? key, required this.routerChange, this.chatUser = ''})
       : con = ChatController(),
         super(key: key);
   ChatController? con;
   Function routerChange;
+  String chatUser;
 
   @override
   State createState() => MessageScreenState();
@@ -32,8 +34,17 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   void initState() {
     add(widget.con);
     con = controller as ChatController;
+    ProfileController().getUserInfo(widget.chatUser).then((value) => {
+          if (value != null)
+            {
+              con.chatUserFullName =
+                  '${value['firstName']}' + " " + '${value['lastName']}',
+              con.isMessageTap = 'new',
+              setState(() {}),
+            }
+        });
+
     super.initState();
-    setState(() {});
   }
 
   void connectFrom(uidOfTarget) async {
@@ -105,7 +116,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                           con.isShowEmoticon = value;
                           setState(() {});
                         },
-                      )
+                      ),
           ],
         ),
       ),
@@ -116,7 +127,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   Widget ChatScreenHeader() {
     return SizedBox(
         width: SizeConfig(context).screenWidth,
-        height: 60,
+        // height: SizeConfig.navbarHeight,
         child: Column(
           children: [
             AppBar(

@@ -34,6 +34,7 @@ class MainLeftPanel extends StatelessWidget {
             onTap: () => {
               routerFunction({
                 'router': RouteNames.messages,
+                'subRouter': '',
               })
             },
             label: 'Messages',
