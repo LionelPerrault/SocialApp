@@ -285,6 +285,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     setState(() {});
     String postCase = '';
     var postPayload;
+    String header = '';
     switch (nowPost) {
       case 'Upload Photos':
         if (postPhoto.isEmpty) {
@@ -328,16 +329,18 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         }
         postCase = 'poll';
         postPayload = {
-          'question': pollQuestion,
           'option': optionValue,
           'optionUp': {},
         };
+        header = pollQuestion;
         break;
       default:
         return;
     }
     postLoading = true;
-    await con.savePost(postCase, postPayload, dropdownValue).then((value) {
+    await con
+        .savePost(postCase, postPayload, dropdownValue, header: header)
+        .then((value) {
       print('after');
       postLoading = false;
       nowPost = '';

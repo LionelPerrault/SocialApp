@@ -1122,7 +1122,7 @@ class PostController extends ControllerMVC {
     await Helper.productsData.doc(productId).update({'productSellState': true});
   }
 
-  savePost(type, value, privacy) async {
+  savePost(type, value, privacy, {header = ''}) async {
     Map<String, dynamic> postData = {};
     postData = {
       'postAdmin': UserManager.userInfo['uid'],
@@ -1130,6 +1130,7 @@ class PostController extends ControllerMVC {
       'value': value,
       'privacy': privacy,
       'postTime': FieldValue.serverTimestamp(),
+      'header': header,
     };
     Helper.postCollection.add(postData);
     return true;
@@ -1137,7 +1138,8 @@ class PostController extends ControllerMVC {
 
   var posts = [];
   getAllPost() async {
-    var allSanp = await Helper.postCollection.get();
+    var allSanp =
+        await Helper.postCollection.orderBy('postTime', descending: true).get();
     var allPosts = allSanp.docs;
     var postData;
     var adminInfo;
@@ -1160,7 +1162,8 @@ class PostController extends ControllerMVC {
         'admin': adminInfo,
         'time': allPosts[i]['postTime'],
         'adminUid': adminSnap.id,
-        'privacy': allPosts[i]['privacy']
+        'privacy': allPosts[i]['privacy'],
+        'header': allPosts[i]['header'],
       };
       postsBox.add(eachPost);
     }
@@ -1171,6 +1174,10 @@ class PostController extends ControllerMVC {
 
   updatePostInfo(uid, value) async {
     await Helper.postCollection.doc(uid).update(value);
+  }
+
+  deletePost(uid) async {
+    await Helper.postCollection.doc(uid).delete();
   }
 
   var productLikes = {};

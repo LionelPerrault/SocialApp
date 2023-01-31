@@ -8,6 +8,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
@@ -41,9 +42,37 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   ];
   Map privacy = {};
 
+  List<Map> popupMenuItem = [
+    {
+      'icon': Icons.edit,
+      'label': 'Edit Post',
+      'value': 'edit',
+    },
+    {
+      'icon': Icons.delete,
+      'label': 'Delete Post',
+      'value': 'delete',
+    },
+    {
+      'icon': Icons.remove_red_eye_sharp,
+      'label': 'Hide from Timeline',
+      'labelE': 'Allow on Timeline',
+      'value': 'timeline',
+    },
+    {
+      'icon': Icons.chat_bubble,
+      'label': 'Turn off Commenting',
+      'labelE': 'Turn on Commenting',
+      'value': 'comment',
+    },
+    {
+      'icon': Icons.link,
+      'label': 'Open post in new tab',
+      'value': 'open',
+    },
+  ];
+
   late PostController con;
-  bool payLoading = false;
-  bool loading = false;
   var postTime = '';
   String checkedOption = '';
   List<Map> upUserInfo = [];
@@ -94,6 +123,49 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
   upDatePostInfo(value) async {
     con.updatePostInfo(widget.postInfo['id'], value);
+  }
+
+  deletePostInfo() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const SizedBox(),
+        content: AlertYesNoWidget(
+            yesFunc: () async {
+              con.deletePost(widget.postInfo['id']);
+              Navigator.of(context).pop(true);
+            },
+            noFunc: () {
+              Navigator.of(context).pop(true);
+            },
+            header: 'Delete Post',
+            text: 'Are you sure you want to delete this post?',
+            progress: false),
+      ),
+    );
+  }
+
+  popUpFunction(value) async {
+    switch (value) {
+      case 'edit':
+        () {};
+        break;
+      case 'delete':
+        () {
+          deletePostInfo();
+        };
+        break;
+      case 'timeline':
+        () {};
+        break;
+      case 'comment':
+        () {};
+        break;
+      case 'open':
+        () {};
+        break;
+      default:
+    }
   }
 
   @override
@@ -181,15 +253,49 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  // Container(
-                                  //   padding: EdgeInsets.only(right: 9.0),
-                                  //   child: CustomPopupMenu(
-                                  //       menuBuilder: () => SubFunction(),
-                                  //       pressType: PressType.singleClick,
-                                  //       verticalMargin: -10,
-                                  //       child:
-                                  //           const Icon(Icons.arrow_drop_down)),
-                                  // ),
+                                  Container(
+                                    padding: EdgeInsets.only(right: 9.0),
+                                    child: PopupMenuButton(
+                                      onSelected: (value) {
+                                        popUpFunction(value);
+                                      },
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 18,
+                                      ),
+                                      itemBuilder: (BuildContext bc) {
+                                        return popupMenuItem
+                                            .map(
+                                              (e) => PopupMenuItem(
+                                                value: e['value'],
+                                                child: Row(
+                                                  children: [
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5.0)),
+                                                    Icon(e['icon']),
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 12.0)),
+                                                    Text(
+                                                      e['label'],
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 90, 90, 90),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                            .toList();
+                                      },
+                                    ),
+                                  ),
                                 ],
                               ),
                               const Padding(padding: EdgeInsets.only(top: 3)),
