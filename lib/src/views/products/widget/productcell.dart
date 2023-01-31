@@ -638,7 +638,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       ),
                     ]),
               ),
-              LikesCommentScreen(productId: productId)
+              LikesCommentScreen(
+                productId: productId,
+                commentFlag: true,
+              )
             ],
           ),
         ))

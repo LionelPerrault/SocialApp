@@ -18,9 +18,12 @@ import 'package:path/path.dart' as PPath;
 class LikesCommentScreen extends StatefulWidget {
   late PostController Postcon;
   String productId;
-  LikesCommentScreen({Key? key, required this.productId})
+  LikesCommentScreen(
+      {Key? key, required this.productId, required this.commentFlag})
       : Postcon = PostController(),
         super(key: key);
+
+  bool commentFlag;
   @override
   State createState() => LikesCommentScreenState();
 }
@@ -147,30 +150,32 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   height: 45,
                   padding: const EdgeInsets.only(
                       left: 10, right: 10, top: 5, bottom: 5),
-                  child: Row(children: [
-                    MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        onEnter: (value) {
-                          whoHover = 'like';
-                          setState(() {});
-                        },
-                        onExit: (event) {
-                          whoHover = '';
-                          setState(() {});
-                        },
-                        child: AnimatedContainer(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: whoHover == 'like'
-                                  ? const Color.fromRGBO(240, 240, 245, 1)
-                                  : Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(3))),
-                          duration: const Duration(milliseconds: 300),
-                          width: SizeConfig(context).screenWidth > 600
-                              ? (600 - 60) / 3
-                              : (SizeConfig(context).screenWidth - 60) / 3,
-                          child: Row(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          onEnter: (value) {
+                            whoHover = 'like';
+                            setState(() {});
+                          },
+                          onExit: (event) {
+                            whoHover = '';
+                            setState(() {});
+                          },
+                          child: AnimatedContainer(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: whoHover == 'like'
+                                    ? const Color.fromRGBO(240, 240, 245, 1)
+                                    : Colors.white,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(3))),
+                            duration: const Duration(milliseconds: 300),
+                            width: SizeConfig(context).screenWidth > 600
+                                ? (600 - 60) / 3
+                                : (SizeConfig(context).screenWidth - 60) / 3,
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -190,83 +195,100 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                 Text(
                                   con.productLikes[widget.productId] ?? 'Like',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color:
-                                          con.productLikes[widget.productId] ==
-                                                  null
-                                              ? Colors.black
-                                              : likesColor[con.productLikes[
-                                                  widget.productId]]),
-                                )
-                              ]),
-                        )),
-                    MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        onEnter: (value) {
-                          whoHover = 'comment';
-                          setState(() {});
-                        },
-                        onExit: (event) {
-                          whoHover = '';
-                          setState(() {});
-                        },
-                        child: InkWell(
-                            onTap: () async {
-                              isComment = !isComment;
-                              await con.getReply(widget.productId);
-                              setState(() {});
-                            },
-                            child: AnimatedContainer(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: whoHover == 'comment'
-                                      ? const Color.fromRGBO(240, 240, 245, 1)
-                                      : Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(3))),
-                              duration: const Duration(milliseconds: 300),
-                              width: SizeConfig(context).screenWidth > 600
-                                  ? (600 - 60) / 3
-                                  : (SizeConfig(context).screenWidth - 60) / 3,
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const [
-                                    Icon(
-                                      FontAwesomeIcons.message,
-                                      size: 15,
-                                    ),
-                                    Padding(padding: EdgeInsets.only(left: 5)),
-                                    Text(
-                                      'Comment',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700),
-                                    )
-                                  ]),
-                            ))),
-                    MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        onEnter: (value) {
-                          whoHover = 'share';
-                          setState(() {});
-                        },
-                        onExit: (event) {
-                          whoHover = '';
-                          setState(() {});
-                        },
-                        child: AnimatedContainer(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: whoHover == 'share'
-                                  ? const Color.fromRGBO(240, 240, 245, 1)
-                                  : Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(3))),
-                          duration: const Duration(milliseconds: 300),
-                          width: SizeConfig(context).screenWidth > 600
-                              ? (600 - 60) / 3
-                              : (SizeConfig(context).screenWidth - 60) / 3,
-                          child: Row(
+                                    fontWeight: FontWeight.w700,
+                                    color: con.productLikes[widget.productId] ==
+                                            null
+                                        ? Colors.black
+                                        : likesColor[
+                                            con.productLikes[widget.productId]],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      widget.commentFlag
+                          ? Expanded(
+                              child: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                onEnter: (value) {
+                                  whoHover = 'comment';
+                                  setState(() {});
+                                },
+                                onExit: (event) {
+                                  whoHover = '';
+                                  setState(() {});
+                                },
+                                child: InkWell(
+                                  onTap: () async {
+                                    isComment = !isComment;
+                                    await con.getReply(widget.productId);
+                                    setState(() {});
+                                  },
+                                  child: AnimatedContainer(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: whoHover == 'comment'
+                                            ? const Color.fromRGBO(
+                                                240, 240, 245, 1)
+                                            : Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(3))),
+                                    duration: const Duration(milliseconds: 300),
+                                    width: SizeConfig(context).screenWidth > 600
+                                        ? (600 - 60) / 3
+                                        : (SizeConfig(context).screenWidth -
+                                                60) /
+                                            3,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            FontAwesomeIcons.message,
+                                            size: 15,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            'Comment',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700),
+                                          )
+                                        ]),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      Expanded(
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          onEnter: (value) {
+                            whoHover = 'share';
+                            setState(() {});
+                          },
+                          onExit: (event) {
+                            whoHover = '';
+                            setState(() {});
+                          },
+                          child: AnimatedContainer(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: whoHover == 'share'
+                                    ? const Color.fromRGBO(240, 240, 245, 1)
+                                    : Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(3))),
+                            duration: const Duration(milliseconds: 300),
+                            width: SizeConfig(context).screenWidth > 600
+                                ? (600 - 60) / 3
+                                : (SizeConfig(context).screenWidth - 60) / 3,
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: const [
@@ -279,9 +301,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                   'Share',
                                   style: TextStyle(fontWeight: FontWeight.w700),
                                 )
-                              ]),
-                        ))
-                  ]),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 whoHover == 'like'
                     ? Container(

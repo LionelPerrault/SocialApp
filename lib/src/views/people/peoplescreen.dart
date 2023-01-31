@@ -139,7 +139,9 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                           ),
                           Padding(padding: EdgeInsets.only(left: 10)),
                           badges.Badge(
-                            badgeColor: Colors.blue,
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.blue,
+                            ),
                             badgeContent: Text(
                               con.requestFriends.length.toString(),
                               style: TextStyle(color: Colors.white),
@@ -184,7 +186,9 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                           ),
                           Padding(padding: EdgeInsets.only(left: 10)),
                           badges.Badge(
-                            badgeColor: Colors.blue,
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.blue,
+                            ),
                             badgeContent: Text(
                               con.sendFriends.length.toString(),
                               style: TextStyle(color: Colors.white),
