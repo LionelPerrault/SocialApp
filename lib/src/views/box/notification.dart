@@ -30,9 +30,8 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   void initState() {
     add(widget.con);
     postCon = controller as PostController;
-    var userCheckTime = DateTime.now().millisecondsSinceEpoch;
-    // postCon.checkNotify();
-    postCon.checkNotify(userCheckTime);
+    // var userCheckTime = DateTime.now().millisecondsSinceEpoch;
+    postCon.checkNotify();
     final Stream<QuerySnapshot> streamContent =
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
