@@ -208,7 +208,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
       print('notification Stream');
-      var notiSnap = await Helper.notifiCollection.orderBy('tsNT').get();
+      var notiSnap = await Helper.notifiCollection.orderBy('timeStamp').get();
       var allNotifi = notiSnap.docs;
       var userSnap = await FirebaseFirestore.instance
           .collection(Helper.userField)
@@ -275,6 +275,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       }
       postCon.allNotification = changeData;
       setState(() {});
+      print('notification content ------${postCon.allNotification}');
     });
 
     super.initState();
