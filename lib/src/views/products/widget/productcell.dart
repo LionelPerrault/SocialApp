@@ -209,7 +209,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       product['productPrice'], 'Pay for buy product')
                   .then(
                     (value) async => {
-                      if (value)
+                      if (value = true)
                         {
                           payLoading = false,
                           setState(() {}),
@@ -218,6 +218,12 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                           setState(() {}),
                           await con.changeProductSellState(productId),
                           loading = false,
+                          setState(() {}),
+                        }
+                      else
+                        {
+                          payLoading = false,
+                          Navigator.of(context).pop(true),
                           setState(() {}),
                         }
                     },
