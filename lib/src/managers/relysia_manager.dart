@@ -3,6 +3,10 @@ import 'dart:io';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
+
+import '../helpers/helper.dart';
+import '../helpers/relysiaHelper.dart';
 
 class RelysiaManager {
   static final apiUrlAuth = 'https://api.relysia.com/v1/auth';
@@ -13,6 +17,7 @@ class RelysiaManager {
   static final adminPassword = '1topnotch@';
   static final adminPaymail = '3982@relysia.com';
   static var resToken = {};
+  static var transHistory = [];
   static Future<Map> authUser(String email, String password) async {
     Map responseData = {};
     try {
@@ -135,6 +140,9 @@ class RelysiaManager {
     var respondData = {};
     try {
       var senderBalance = await getBalance(token);
+      print('senderBalance$senderBalance');
+      print('senderBalance${senderBalance.runtimeType}');
+      print(int.parse(amount));
       if (senderBalance < int.parse(amount)) {
         returnData = 'Not enough token amount';
       } else {
@@ -168,6 +176,97 @@ class RelysiaManager {
       print(exception.toString());
     }
     return returnData;
+  }
+
+  static Future<Map> getTransactionHistory(String token, nextPageToken) async {
+    var response = {};
+    bool? result;
+    var next = '';
+    int count = 0;
+    next = nextPageToken;
+    print(token);
+    try {
+      while (count < 10 && next != "null") {
+        await http.get(
+            Uri.parse('https://api.relysia.com/v2/history?nextPageToken=$next'),
+            headers: {
+              'authToken': token,
+              'serviceID': serviceId,
+              'version': '1.1.0'
+            }).then(
+          (res) async {
+            response = jsonDecode(res.body);
+            if (response['statusCode'] == 200) {
+              if (response['data']['histories'] != []) {
+                for (var elem in response['data']['histories']) {
+                  for (var e in elem['to']) {
+                    print(e);
+                    if (e['tokenId'] == shnToken) {
+                      transHistory.add({
+                        'txId': e['txId'] ?? '',
+                        'from': elem['from'] ?? '',
+                        'notes': elem['notes'] ?? '',
+                        'to': e['to'] ?? '',
+                        'balance_change': elem['totalAmount'] ?? '',
+                        'timestamp': elem['timestamp'] ?? ''
+                      });
+                      count++;
+                    }
+                  }
+                }
+                next = response['data']['meta']['nextPageToken'].toString();
+                result = true;
+              } else {
+                result = true;
+                count = 10;
+              }
+              // print(transHistory);
+            } else if (response['statusCode'] == 401) {
+              next = 'null';
+              result = false;
+            }
+          },
+        );
+      }
+    } catch (exception) {
+      Helper.showToast(
+          "An error has occurred. Please check your internet connectivity or try again later");
+    }
+    return {'history': transHistory, 'success': result, 'nextPageToken': next};
+  }
+
+  static Future<int> deleteUser(String token) async {
+    var r = 0;
+    var respondData = {};
+    try {
+      await http.delete(Uri.parse('https://api.relysia.com/v1/user'), headers: {
+        'authToken': token,
+        'serviceID': serviceId,
+        'walletTitle': '00000000-0000-0000-0000-000000000000',
+        'paymailActivate': 'true',
+      }).then((res) => {
+            respondData = jsonDecode(res.body),
+            if (respondData['statusCode'] == 200)
+              {
+                r = 1,
+              }
+            else if (respondData['statusCode'] == 401 &&
+                respondData['data']['msg'] == "Invalid authToken provided")
+              {
+                r = 2,
+              }
+            else if (respondData['statusCode'] == 401 &&
+                respondData['data']['msg'] == "authToken not found")
+              {
+                r = 2,
+              }
+          });
+      // ignore: empty_catches
+    } catch (exception) {
+      Helper.showToast(
+          "An error has occurred. Please check your internet connectivity or try again later");
+    }
+    return r;
   }
 }
 

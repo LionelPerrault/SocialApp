@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import '../../controllers/HomeController.dart';
+import 'package:shnatter/src/widget/list_text.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
@@ -17,11 +14,15 @@ import '../../controllers/ProfileController.dart';
 class ProfileTimelineScreen extends StatefulWidget {
   Function onClick;
   ProfileTimelineScreen(
-      {Key? key, required this.onClick, required this.userName})
+      {Key? key,
+      required this.onClick,
+      required this.userName,
+      required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
   String userName = '';
+  Function routerChange;
   @override
   State createState() => ProfileTimelineScreenState();
 }
@@ -70,23 +71,28 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       },
       {
         'title': 'Add your biography',
-        'add': userData['about'] == null ? false : true
+        'add': userData['about'] == null ? false : true,
+        'route': RouteNames.settings_profile_basic
       },
       {
         'title': 'Add your birthdate',
-        'add': userData['birthY'] == null ? false : true
+        'add': userData['birthY'] == null ? false : true,
+        'route': RouteNames.settings_profile_basic
       },
       {
         'title': 'Add your relationship',
-        'add': userData['school'] == null ? false : true
+        'add': userData['school'] == null ? false : true,
+        'route': RouteNames.settings_profile_basic
       },
       {
         'title': 'Add your work info',
-        'add': userData['workTitle'] == null ? false : true
+        'add': userData['workTitle'] == null ? false : true,
+        'route': RouteNames.settings_profile_work
       },
       {
         'title': 'Add your location info',
-        'add': userData['current'] == null ? false : true
+        'add': userData['current'] == null ? false : true,
+        'route': RouteNames.settings_profile_location
       },
       {
         'title': 'Add your education info',
@@ -94,7 +100,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                 userData['class'] == null &&
                 userData['major'] == null
             ? false
-            : true
+            : true,
+        'route': RouteNames.settings_profile_education
       },
     ];
     setState(() {});
@@ -151,7 +158,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: LinearPercentIndicator(
-                        width: MediaQuery.of(context).size.width / 5,
+                        width: MediaQuery.of(context).size.width / 6,
                         animation: true,
                         lineHeight: 20.0,
                         animationDuration: 1000,
@@ -195,16 +202,28 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(e['add'] ? Icons.check : Icons.add, size: 15),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5),
+                      Icon(
+                        e['add'] ? Icons.check : Icons.add,
+                        size: 15,
                       ),
-                      Text(
-                        e['title'],
-                        style: e['add']
-                            ? const TextStyle(
-                                decoration: TextDecoration.lineThrough)
-                            : const TextStyle(),
+                      const Padding(padding: EdgeInsets.only(left: 5)),
+                      RichText(
+                        text: e['add']
+                            ? TextSpan(
+                                text: e['title'],
+                                style: const TextStyle(
+                                    decoration: TextDecoration.lineThrough))
+                            : TextSpan(
+                                text: e['title'],
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    e['route'] != null
+                                        ? widget.routerChange({
+                                            'router': RouteNames.settings,
+                                            'subRouter': e['route'],
+                                          })
+                                        : () {};
+                                  }),
                       )
                     ],
                   )))

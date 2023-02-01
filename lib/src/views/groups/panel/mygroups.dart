@@ -10,10 +10,12 @@ import '../../../controllers/PostController.dart';
 import '../../../models/chatModel.dart';
 
 class MyGroups extends StatefulWidget {
-  MyGroups({Key? key})
+  MyGroups({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
+  Function routerChange;
+
   State createState() => MyGroupsState();
 }
 
@@ -73,6 +75,7 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
                       refreshFunc: () {
                         getGroupNow();
                       },
+                      routerChange: widget.routerChange,
                     ),
                   )
                   .toList(),

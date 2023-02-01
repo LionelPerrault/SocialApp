@@ -2,10 +2,15 @@
 
 import 'dart:async';
 import 'dart:math';
+import 'package:animated_widgets/generated/i18n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:otp/otp.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import '../helpers/helper.dart';
@@ -13,6 +18,7 @@ import '../managers/relysia_manager.dart';
 import '../models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../routes/route_names.dart';
+import '../utils/size_config.dart';
 
 enum EmailType { emailVerify, googleVerify }
 
@@ -40,17 +46,25 @@ class UserController extends ControllerMVC {
   bool isVerify = false;
   bool isSendResetPassword = false;
   bool isLogined = false;
+  bool isEnableTwoFactor = false;
+
   String failLogin = '';
   String failRegister = '';
   String isEmailExist = '';
   String userAvatar = '';
   String existPwd = '';
+  // ignore: unused_field
+  Timer? timer;
   var resData = {};
   Map<dynamic, dynamic> userInfo = {};
   // ignore: prefer_typing_uninitialized_variables
   var responseData;
   var context;
   var signUpUserInfo = {};
+  var nextPageTokenCount = '0';
+  final RoundedLoadingButtonController btnController =
+      RoundedLoadingButtonController();
+
   @override
   Future<bool> initAsync() async {
     //
@@ -79,10 +93,10 @@ class UserController extends ControllerMVC {
   }
 
   void validate(cont, info) async {
-    print("------1--------");
+    print("------1-------- start validate");
     isSendRegisterInfo = true;
-    setState(() {});
     var fill = true;
+    bool passworkdValidation = false;
     var validation = [
       'userName',
       'firstName',
@@ -96,18 +110,18 @@ class UserController extends ControllerMVC {
         break;
       }
     }
-    print("------2--------");
+    print("------2-------- validation check");
     if (!fill) {
       failRegister = 'You must fill all field';
       isSendRegisterInfo = false;
       setState(() {});
       return;
     }
-    print("------3--------");
+    print("------3-------- after return validation");
     context = cont;
     signUpUserInfo = info;
     email = signUpUserInfo['email'].toLowerCase().trim();
-    print('email is :$email.end');
+    print('registration email is : $email');
     password = signUpUserInfo['password'];
     var check = email.contains('@'); //return true if contains
     if (!check) {
@@ -116,13 +130,22 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    if (password.length < Helper.passwordMinLength) {
-      failRegister = 'Password length should be 8 over';
-      isSendRegisterInfo = false;
-      setState(() {});
-      return;
+
+    passworkdValidation = await passworkdValidate(password);
+
+    try {
+      if (!passworkdValidation) {
+        failRegister =
+            'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
+        isSendRegisterInfo = false;
+        setState(() {});
+        return;
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
     }
-    print("------4--------");
+
+    print("------4-------- password strong check");
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
     QuerySnapshot<TokenLogin> querySnapshot1 = await Helper.authdata
@@ -142,8 +165,27 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    print("------5--------");
+    print("------5-------- email exist check");
+    RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
+          if (res['data'] == null)
+            {
+              failRegister = 'No access the net',
+              isSendRegisterInfo = false,
+              setState(() {}),
+            }
+        });
+    if (isSendRegisterInfo = false) {
+      return;
+    }
     createRelysiaAccount(cont);
+    setState(() {});
+  }
+
+  bool passworkdValidate(String value) {
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_\-+=@,\.;\{\}\[\]]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
   }
 
   String createActivationCode() {
@@ -163,6 +205,8 @@ class UserController extends ControllerMVC {
   }
 
   Future<void> registerUserInfo() async {
+    setState(() {});
+    print('start register');
     var uuid = await sendEmailVeryfication();
     signUpUserInfo.removeWhere((key, value) => key == 'password');
     await FirebaseFirestore.instance
@@ -171,14 +215,21 @@ class UserController extends ControllerMVC {
         .set({
       ...signUpUserInfo,
       'paymail': paymail,
+      'isEnableTwoFactor': '',
       'avatar': '',
       'isEmailVerify': false,
       'walletAddress': walletAddress,
-      // 'relysiaEmail': relysiaEmail,
-      // 'relysiaPassword': relysiaPassword,
+      'relysiaEmail': relysiaEmail,
+      'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
     });
+    var serverTime = await PostController().getNowTime();
+    var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
+    var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
+    var difference = localTimeStamp - serverTimeStamp;
+    var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
+    var adminConfig = adminSnap.data();
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
       'paywall': {},
@@ -188,14 +239,47 @@ class UserController extends ControllerMVC {
       'walletAddress': walletAddress,
       // 'relysiaEmail': relysiaEmail,
       // 'relysiaPassword': relysiaPassword,
+      'isEnableTwoFactor': '',
       'password': password,
       'isStarted': 'false',
       'isEmailVerify': false,
       'isRememberme': 'false',
       'avatar': '',
       'uid': uuid,
-      'expirationPeriod': DateTime.now().toString()
+      'expirationPeriod': DateTime.now().toString(),
+      'timeDifference': difference,
+      'adminConfig': adminConfig,
     });
+  }
+
+  bool twoFactorAuthenticationChecker(String verificationCode) {
+    var code = OTP.generateTOTPCodeString(
+        'JBSWY3DPEHPK3PXP', DateTime.now().millisecondsSinceEpoch,
+        length: 6, interval: 30, algorithm: Algorithm.SHA1, isGoogle: true);
+    if (code == verificationCode) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> enableDisableTwoFactorAuthentication(
+      String verificationCode, String type) async {
+    var codeCheck = await twoFactorAuthenticationChecker(verificationCode);
+    if (codeCheck) {
+      var twoFactorData = {
+        'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '',
+      };
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .update({...twoFactorData});
+      isEnableTwoFactor = (type == 'enable' ? true : false);
+      // await Helper.saveJSONPreference(Helper.userField, {...{'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : ''}});
+      // await UserManager.getUserInfo();
+      setState(() {});
+    }
+    return codeCheck;
   }
 
   Future<int> getBalance() async {
@@ -204,13 +288,115 @@ class UserController extends ControllerMVC {
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-    await RelysiaManager.getBalance(token).then((res) => {
-          print('balance is $res'),
-          balance = res,
-          Helper.balance = balance,
-          setState(() {})
-        });
+    await RelysiaManager.getBalance(token).then(
+        (res) => {balance = res, Helper.balance = balance, setState(() {})});
     return balance;
+  }
+
+  Future<List> getTransactionHistory(nextPageToken) async {
+    print(email);
+    var trdata = [];
+    var transactionData = [];
+    var user = await Helper.userCollection.get();
+    var allUser = user.docs;
+    String sender = '';
+    String recipient = '';
+    int sendFlag = 0;
+    int reciFlag = 0;
+    if (token == '') {
+      var relysiaAuth = await RelysiaManager.authUser(
+          UserManager.userInfo['email'], UserManager.userInfo['password']);
+      token = relysiaAuth['data']['token'];
+    }
+    await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
+      (res) async => {
+        if (res['success'] == true)
+          {
+            if (allUser != [])
+              {
+                trdata = res['history'],
+                if (trdata != [])
+                  {
+                    for (int i = 0; i < trdata.length; i++)
+                      {
+                        for (int j = 0; j < allUser.length; j++)
+                          {
+                            if (trdata[i]['from'] == allUser[j]['paymail'])
+                              {
+                                sender = allUser[j]['userName'],
+                                sendFlag = 1,
+                              },
+                            if (trdata[i]['to'] == allUser[j]['paymail'])
+                              {
+                                recipient = allUser[j]['userName'],
+                                reciFlag = 1,
+                              },
+                            if (sendFlag == 1 && reciFlag == 1)
+                              {
+                                transactionData.add({
+                                  'from': trdata[i]['from'],
+                                  'to': trdata[i]['to'],
+                                  'sender': sender,
+                                  'recipient': recipient,
+                                  'sendtime': trdata[i]['timestamp'],
+                                  'notes': trdata[i]['notes'],
+                                  'balance': trdata[i]['balance_change'],
+                                }),
+                                sendFlag = 0,
+                                reciFlag = 0,
+                              }
+                          },
+                      },
+                  },
+                nextPageTokenCount = res['nextPageToken'],
+                setState(() {}),
+              }
+          }
+        else if (res['success'] == false)
+          {
+            await RelysiaManager.authUser(email, password).then(
+              (res) async => {
+                if (res['data'] != null)
+                  {
+                    if (res['statusCode'] == 200)
+                      {
+                        token = res['data']['token'],
+                        getTransactionHistory(nextPageToken),
+                      }
+                    else if (res['statusCode'] == 400 &&
+                        res['data']['msg'] == 'INVALID_EMAIL')
+                      {
+                        await RelysiaManager.authUser(email, password).then(
+                          (resData) => {
+                            if (resData['data'] != null)
+                              {
+                                if (resData['statusCode'] == 200)
+                                  {
+                                    token = resData['data']['token'],
+                                  }
+                                else
+                                  {Helper.showToast(resData['data']['msg'])}
+                              }
+                            else
+                              {
+                                Helper.showToast(resData['data']['msg']),
+                              }
+                          },
+                        )
+                      }
+                  }
+                else
+                  {
+                    Helper.showToast(res['data']['msg']),
+                  }
+              },
+            )
+          }
+        else if (res['success'] == null)
+          {Helper.showToast('data does not exist')}
+      },
+    );
+    return transactionData;
   }
 
   void getWalletFromPref(context) async {}
@@ -221,27 +407,31 @@ class UserController extends ControllerMVC {
       isSendResetPassword = true;
       setState(() {});
       Helper.showToast('Email is sent');
-    } catch (e) {
-      print(e);
-      if (!email.contains('@')) {
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'invalid-email') {
         isEmailExist = 'Not email type';
         setState(() {});
-      } else {
+      } else if (e.code == 'user-not-found') {
         isEmailExist = 'That email is not exist in database now';
+        setState(() {});
+      } else if (e.code == 'network-request-failed') {
+        isEmailExist = 'No access the net';
         setState(() {});
       }
       setState(() {});
     }
   }
 
-  void loginWithEmail(context, em, pass, isRememberme) async {
+  Future<bool> loginWithEmail(context, em, pass, isRememberme) async {
     if (em == '' || pass == '') {
       failLogin = 'You must fill all field';
       setState(() {});
-      return;
+      return false;
     }
     email = em;
     password = pass;
+    var returnVal = false;
     try {
       isSendLoginedInfo = true;
       if (!email.contains('@')) {
@@ -252,11 +442,6 @@ class UserController extends ControllerMVC {
           email = getInfo.email;
         } else {
           failLogin = 'The username you entered does not belong to any account';
-          // RelysiaManager.authUser(relysiaEmail, relysiaPassword)
-          //     .then((res) async => {
-          //           if (res['data'] == null)
-          //             {failLogin = 'Not access the net', setState(() {})}
-          //         });
           setState(() {});
         }
       }
@@ -268,6 +453,12 @@ class UserController extends ControllerMVC {
       setState(() {});
       QuerySnapshot<TokenLogin> querySnapshot =
           await Helper.authdata.where('email', isEqualTo: email).get();
+      if (querySnapshot.size == 0) {
+        failLogin = 'The email you entered does not belong to any account';
+        isSendLoginedInfo = false;
+        setState(() {});
+        return false;
+      }
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
         relysiaEmail = user.email;
@@ -279,6 +470,13 @@ class UserController extends ControllerMVC {
         b.forEach((key, value) {
           j = {...j, key.toString(): value};
         });
+        var serverTime = await PostController().getNowTime();
+        var serverTimeStamp =
+            await PostController().changeTimeType(d: serverTime);
+        var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
+        var difference = localTimeStamp - serverTimeStamp;
+        var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
+        var adminConfig = adminSnap.data();
         userInfo = {
           ...j,
           'fullName': '${j['firstName']} ${j['lastName']}',
@@ -286,14 +484,27 @@ class UserController extends ControllerMVC {
           'isVerify': isVerify,
           'isRememberme': isRememberme.toString(),
           'uid': querySnapshot.docs[0].id,
-          'expirationPeriod': isRememberme ? '' : DateTime.now().toString()
+          'expirationPeriod': isRememberme ? '' : DateTime.now().toString(),
+          'timeDifference': difference,
+          'adminConfig': adminConfig,
         };
-        print(user.password);
-        await Helper.saveJSONPreference(Helper.userField, {...userInfo});
-        await UserManager.getUserInfo();
-        setState(() {});
-        RouteNames.userName = user.userName;
-        loginRelysia(context);
+        isEnableTwoFactor =
+            j['isEnableTwoFactor'] == '' || j['isEnableTwoFactor'] == null
+                ? false
+                : true;
+        if (!isEnableTwoFactor) {
+          await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+          await UserManager.getUserInfo();
+          setState(() {});
+          RouteNames.userName = user.userName;
+          loginRelysia(context);
+          setState(() {});
+          return false;
+        } else {
+          setState(() {});
+          returnVal = true;
+          return true;
+        }
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -304,15 +515,35 @@ class UserController extends ControllerMVC {
         failLogin = 'wrong-password';
         isSendLoginedInfo = false;
         setState(() {});
-        print('this is send logined info :$isSendLoginedInfo');
       } else if (e.code == 'network-request-failed') {
-        failLogin = 'Not access the net';
+        failLogin = 'No access the net';
         isSendLoginedInfo = false;
+        setState(() {});
+      } else if (e.code == 'too-many-requests') {
+        isSendLoginedInfo = false;
+        failLogin = 'Retry after 3 minutes';
         setState(() {});
       }
       isSendLoginedInfo = false;
       setState(() {});
+      return false;
     }
+    return returnVal;
+  }
+
+  Future<bool> loginWithVerificationCode(
+      String verificationCode, context) async {
+    var returnVal = await twoFactorAuthenticationChecker(verificationCode);
+    print(returnVal);
+    if (returnVal) {
+      await Helper.saveJSONPreference(Helper.userField, {...userInfo});
+      await UserManager.getUserInfo();
+      setState(() {});
+      RouteNames.userName = UserManager.userInfo['userName'];
+      loginRelysia(context);
+      setState(() {});
+    }
+    return returnVal;
   }
 
   void loginRelysia(context) {
@@ -391,7 +622,7 @@ class UserController extends ControllerMVC {
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
-    return 'uuid';
+    return uuid;
   }
 
   Future<String> reSendEmailVeryfication() async {
@@ -403,19 +634,21 @@ class UserController extends ControllerMVC {
     return 'ok';
   }
 
-  void createRelysiaAccount(context) async {
+  createRelysiaAccount(context) async {
     relysiaEmail = signUpUserInfo['email'];
     relysiaPassword = signUpUserInfo['password'];
-    print("asdfasdjfalskdfjsiejflskjfeisjdlfkjasldkfjesldkf");
     responseData =
         await RelysiaManager.createUser(relysiaEmail, relysiaPassword);
-    print('responseData is :${responseData['data']}');
     if (responseData['data'] != null) {
       if (responseData['statusCode'] == 200) {
         createEmail();
+        isSendRegisterInfo = true;
+        failRegister = '';
+        setState(() {});
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
         print(responseData['statusCode']);
+        Helper.showToast(responseData['data']['msg']);
         showModal(context, relysiaEmail, relysiaPassword);
         // createRelysiaAccount();
       }
@@ -429,13 +662,13 @@ class UserController extends ControllerMVC {
     RelysiaManager.createWallet(token).then((rr) => {
           if (rr == 0)
             {
-              Helper.showToast("error occurs while create wallet"),
+              Helper.showToast("Error occurs while create wallet"),
               isSendRegisterInfo = false,
               setState(() {}),
             }
           else
             {
-              print('relysiaPassword$relysiaPassword'),
+              print('relysiaPassword: $relysiaPassword'),
               RelysiaManager.authUser(relysiaEmail, relysiaPassword)
                   .then((responseData) => {
                         if (responseData['data'] != null)
@@ -575,6 +808,7 @@ class UserController extends ControllerMVC {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       uuid = userCredential.user!.uid;
+      print('uuid: $uuid');
       var snapshot = await FirebaseFirestore.instance
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
@@ -618,6 +852,7 @@ class UserController extends ControllerMVC {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         uuid = userCredential.user!.uid;
+        print('this is save account uuid: $uuid');
       } else {}
       isSettingAction = false;
       setState(() {});
@@ -632,7 +867,6 @@ class UserController extends ControllerMVC {
     isSettingAction = true;
     setState(() {});
     if (password.length < Helper.passwordMinLength) {
-      print(0);
       isSettingAction = false;
       setState(() {});
       return;
@@ -713,21 +947,60 @@ class UserController extends ControllerMVC {
     }
   }
 
-  deleteUserAccount() async {
+  deleteUserAccount(context) async {
     isProfileChange = true;
     setState(() {});
-    var userManager = UserManager.userInfo;
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: userManager['email'], password: userManager['password']);
-    await FirebaseAuth.instance.currentUser?.delete();
-    var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .where('userName', isEqualTo: userManager['userName'])
-        .get();
-    await FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .doc(snapshot.docs[0].id)
-        .delete();
+    try {
+      var userManager = UserManager.userInfo;
+      await RelysiaManager.deleteUser(token).then(
+        (value) async => {
+          if (value == 1)
+            {
+              Helper.showToast("Success"),
+            }
+          else if (value == 2)
+            {
+              await RelysiaManager.authUser(email, password).then(
+                (res) async => {
+                  if (res["data"] != null)
+                    {
+                      if (res['statusCode'] == 200)
+                        {
+                          token = res['data']['token'],
+                          await RelysiaManager.deleteUser(token),
+                        }
+                      else
+                        {
+                          Helper.showToast(res['data']['msg']),
+                        }
+                    }
+                  else
+                    {
+                      Helper.showToast(res['data']),
+                    }
+                },
+              ),
+            }
+        },
+      );
+      var snapshot = await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .where('userName', isEqualTo: userManager['userName'])
+          .get();
+      FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(snapshot.docs[0].id)
+          .delete()
+          .then((_) async {
+        // delete account on authentication after user data on database is deleted
+        await FirebaseAuth.instance.currentUser?.delete();
+      });
+    } catch (e) {
+      print(e);
+    }
+    timer?.cancel();
+    UserManager.isLogined = false;
+    await Navigator.pushReplacementNamed(context, RouteNames.login);
     isProfileChange = false;
     setState(() {});
   }
@@ -756,7 +1029,6 @@ class UserController extends ControllerMVC {
     }
     await RelysiaManager.payNow(token, payMail, amount, notes).then(
       (value) => {
-        print(value),
         Helper.showToast(value),
         if (value == 'Successfully paid')
           {
@@ -768,154 +1040,181 @@ class UserController extends ControllerMVC {
   }
 
   showModal(context_1, email, password) {
-    TextEditingController passwordController = TextEditingController();
-    // String token = "";
+    TextEditingController passwordController =
+        TextEditingController(); // String token = "";
     showDialog(
-        context: context_1,
-        builder: (BuildContext context) => AlertDialog(
-              title: Row(
-                children: [
-                  // Container(
-
-                  //   alignment: Alignment.center,
-                  SizedBox(
-                      width: 400,
-                      height: 133,
-                      child: Container(
-                        color: Colors.blue,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Account already exists in Relysia, please enter same credentials',
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        ),
-                      )),
-                ],
+      context: context_1,
+      builder: (BuildContext context) => AlertDialog(
+        title: Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                  width: SizeConfig(context).screenWidth < 600 ? 200 : 400,
+                  height: 60,
+                  child: Container(
+                    color: Colors.blue,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(left: 10),
+                    child: const Text(
+                      'Account already exists in Relysia, please enter same credentials',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )),
+            ),
+          ],
+        ),
+        content: Row(
+          children: [
+            Expanded(
+              child: Container(
+                width: SizeConfig(context).screenWidth < 600 ? 300 : 500,
+                alignment: Alignment.center,
+                height: 120,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      obscureText: true,
+                      controller: passwordController,
+                      onChanged: (value) {
+                        existPwd = value;
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Password",
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 13)),
+                    RoundedLoadingButton(
+                      successColor: Colors.blue,
+                      // ignore: sort_child_properties_last
+                      child: const Text('Continue',
+                          style: TextStyle(color: Colors.white)),
+                      controller: btnController,
+                      onPressed: () => loginRelysiaAgain(
+                        btnController,
+                        context_1,
+                        passwordController.text,
+                        existPwd,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              content: Row(children: [
-                Container(
-                  width: 400,
-                  alignment: Alignment.center,
-                  height: 130,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextField(
-                          obscureText: true,
-                          controller: passwordController,
-                          onChanged: (value) {
-                            existPwd = value;
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Password",
-                          ),
-                        ),
-                        const Padding(padding: EdgeInsets.only(top: 13)),
-                        MyPrimaryButton(
-                            onPressed: () async {
-                              if (existPwd != '') {
-                                await RelysiaManager.authUser(
-                                        email, passwordController.text)
-                                    .then((responseData) async => {
-                                          if (responseData['data'] != null)
-                                            {
-                                              if (responseData['statusCode'] ==
-                                                  200)
-                                                {
-                                                  token = responseData['data']
-                                                      ['token'],
-                                                  relysiaAuthUser(
-                                                      context_1,
-                                                      email,
-                                                      password,
-                                                      existPwd,
-                                                      token),
-                                                }
-                                              else
-                                                {
-                                                  Helper.showToast(
-                                                      "INVALID_PASSWORD"),
-                                                  existPwd = "",
-                                                  showModal(context_1, email,
-                                                      password)
-                                                }
-                                            }
-                                        });
-                              }
-                            },
-                            buttonName: "Continue",
-                            color: Colors.blue)
-                      ]),
-                )
-              ]),
-            ));
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void loginRelysiaAgain(RoundedLoadingButtonController controller, context_1,
+      pwdController, existPwd) async {
+    bool? result;
+    if (existPwd != '') {
+      await RelysiaManager.authUser(email, pwdController).then(
+        (responseData) async => {
+          if (responseData['data'] != null)
+            {
+              if (responseData['statusCode'] == 200)
+                {
+                  token = responseData['data']['token'],
+                  result = await relysiaAuthUser(
+                      context_1, email, password, existPwd, token),
+                  if (result == true)
+                    {
+                      await registerUserInfo(),
+                      await UserManager.getUserInfo(),
+                      RouteNames.userName = signUpUserInfo['userName'],
+                      isSendRegisterInfo = false,
+                      isLogined = true,
+                      controller.success(),
+                      Navigator.pushReplacementNamed(
+                          context, RouteNames.started),
+                      setState(() {}),
+                    }
+                  else
+                    {
+                      controller.error(),
+                    }
+                }
+              else
+                {
+                  Helper.showToast("INVALID_PASSWORD"),
+                  existPwd = "",
+                  showModal(context_1, email, password)
+                }
+            }
+        },
+      );
+    } else {
+      Helper.showToast('Enter Password');
+    }
   }
 
   relysiaAuthUser(context, email, password, existpwd, token) async {
     var resData = {};
-    await RelysiaManager.createWallet(token).then((value) async => {
-          if (value == 0)
-            {
-              Helper.showToast("Error occurs while create wallet"),
-              setState(() {}),
-            }
-          else
-            {
-              await RelysiaManager.authUser(email, password)
-                  .then((responseData) async => {
-                        if (responseData['data'] != null)
+    bool state = false;
+    await RelysiaManager.createWallet(token).then(
+      (value) async => {
+        if (value == 0)
+          {
+            Helper.showToast("Error occurs while create wallet"),
+            setState(() {}),
+          }
+        else
+          {
+            await RelysiaManager.authUser(email, existPwd).then(
+              (responseData) async => {
+                if (responseData['data'] != null)
+                  {
+                    if (responseData['statusCode'] == 200)
+                      {
+                        token = responseData['data']['token'],
+                        await RelysiaManager.getPaymail(token)
+                            .then((resData) async => {
+                                  if (resData['paymail'] != null)
+                                    {
+                                      paymail = resData['paymail'],
+                                      walletAddress = resData['address'],
+                                      state = true,
+                                    }
+                                })
+                      }
+                    else
+                      {
+                        resData = responseData['data'],
+                        if (resData['msg'] == 'INVALID_EMAIL')
                           {
-                            if (responseData['statusCode'] == 200)
-                              {
-                                token = responseData['data']['token'],
-                                await RelysiaManager.getPaymail(token)
-                                    .then((resData) async => {
-                                          if (resData['paymail'] != null)
-                                            {
-                                              paymail = resData['paymail'],
-                                              walletAddress =
-                                                  resData['address'],
-                                              await registerUserInfo(),
-                                              await UserManager.getUserInfo(),
-                                              RouteNames.userName =
-                                                  signUpUserInfo['userName'],
-                                              isSendRegisterInfo = false,
-                                              isLogined = true,
-                                              Navigator.pushReplacementNamed(
-                                                  context, RouteNames.started),
-                                              setState(() {}),
-                                            }
-                                        })
-                              }
-                            else
-                              {
-                                resData = responseData['data'],
-                                if (resData['msg'] == 'INVALID_EMAIL')
-                                  {
-                                    Helper.showToast(
-                                        'You didn\'t sign up in Relysia!'),
-                                  }
-                                else if (resData['msg'] == 'EMAIL_NOT_FOUND')
-                                  {
-                                    Helper.showToast('Email Not Found!'),
-                                  }
-                                else
-                                  {
-                                    Helper.showToast(resData['msg']),
-                                    setState(() {})
-                                  },
-                                isSendRegisterInfo = false,
-                                setState(() {}),
-                              }
+                            Helper.showToast('You didn\'t sign up in Relysia!'),
+                            state = false,
+                          }
+                        else if (resData['msg'] == 'EMAIL_NOT_FOUND')
+                          {
+                            Helper.showToast('Email Not Found!'),
+                            state = false,
                           }
                         else
-                          {
-                            isSendRegisterInfo = false,
-                            setState(() {}),
-                          }
-                      })
-            }
-        });
+                          {Helper.showToast(resData['msg']), setState(() {})},
+                        isSendRegisterInfo = false,
+                        setState(() {}),
+                      }
+                  }
+                else
+                  {
+                    isSendRegisterInfo = false,
+                    state = false,
+                    setState(() {}),
+                  }
+              },
+            ),
+          }
+      },
+    );
+    return state;
   }
 }

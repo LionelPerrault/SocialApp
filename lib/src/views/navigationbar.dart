@@ -1,8 +1,10 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
@@ -14,6 +16,7 @@ import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
 import 'package:shnatter/src/views/box/notification.dart';
+import 'package:shnatter/src/views/setting/settingsMain.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../utils/size_config.dart';
@@ -36,6 +39,7 @@ class ShnatterNavigation extends StatefulWidget {
     required this.onSearchBarFocus,
     required this.onSearchBarDismiss,
     required this.drawClicked,
+    required this.routerChange,
   })  : postCon = PostController(),
         super(key: key);
   PostController postCon;
@@ -43,6 +47,7 @@ class ShnatterNavigation extends StatefulWidget {
   final VoidCallback onSearchBarFocus;
   final VoidCallback onSearchBarDismiss;
   final VoidCallback drawClicked;
+  Function routerChange;
   @override
   State createState() => ShnatterNavigationState();
 }
@@ -57,6 +62,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   var peopleCon = PeopleController();
   late PostController postCon;
   var noti = ShnatterNotificationState();
+  var settingMainScreen = SettingMainScreenState();
   var badgeCount = [];
   String userAvatar = '';
   //
@@ -124,8 +130,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         );
       },
     );
-    final Stream<QuerySnapshot> stream = Helper.notifiCollection.snapshots();
-    stream.listen((event) async {
+
+    final Stream<QuerySnapshot> streamBadge =
+        Helper.notifiCollection.snapshots();
+    streamBadge.listen((event) async {
       var allNotifi = event.docs;
       print('Stream Start');
       var userSnap = await FirebaseFirestore.instance
@@ -134,19 +142,27 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
           .get();
       var userInfo = userSnap.data();
       var changeData = [];
+      var tsNT;
       for (var i = 0; i < allNotifi.length; i++) {
-        var tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
-        print('tsNT is $tsNT');
-        print('check notify Time is ${userInfo!['checkNotifyTime']}');
+        // ignore: unused_local_variable
+        tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
+        print('timestamp notification time: $tsNT');
+        var usercheckTime =
+            userInfo!['checkNotifyTime'].toDate().millisecondsSinceEpoch;
+
+        // var tsNT = allNotifi[i]['tsNT'];
         if (userInfo['checkNotifyTime'] == null) {
           userInfo['checkNotifyTime'] = 0;
           setState(() {});
         }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
-        if (tsNT > userInfo['checkNotifyTime']) {
+        if (tsNT > usercheckTime) {
+          print('user check time: $usercheckTime');
           var addData;
           if (adminUid != UserManager.userInfo['uid']) {
+            // userInfo['checkNotifyTime'];
+            usercheckTime;
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
@@ -165,7 +181,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
           }
           if (postType == 'requestFriend' &&
               adminUid == UserManager.userInfo['uid']) {
-            print('here is requestFriend');
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
@@ -188,6 +203,81 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       postCon.realNotifi = changeData;
       setState(() {});
     });
+
+    final Stream<QuerySnapshot> streamContent =
+        Helper.notifiCollection.snapshots();
+    streamContent.listen((event) async {
+      print('notification Stream');
+      var notiSnap = await Helper.notifiCollection.orderBy('timeStamp').get();
+      var allNotifi = notiSnap.docs;
+      var userSnap = await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .get();
+      // ignore: unused_local_variable
+      var userInfo = userSnap.data();
+      var changeData = [];
+      for (var i = 0; i < allNotifi.length; i++) {
+        var adminUid = allNotifi[i]['postAdminId'];
+        var postType = allNotifi[i]['postType'];
+        var viewFlag = true;
+        setState(() {});
+
+        for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
+          if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
+            viewFlag = false;
+          }
+        }
+        setState(() {});
+        postCon.allNotification = [];
+        if (viewFlag) {
+          var addData;
+          if (adminUid != UserManager.userInfo['uid']) {
+            await FirebaseFirestore.instance
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) async => {
+                      addData = {
+                        ...allNotifi[i].data(),
+                        'uid': allNotifi[i].id,
+                        'avatar': userV.data()!['avatar'],
+                        'userName': userV.data()!['userName'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date':
+                            await postCon.formatDate(allNotifi[i]['timeStamp']),
+                      },
+                      changeData.add(addData),
+                    });
+          }
+          if (postType == 'requestFriend' &&
+              adminUid == UserManager.userInfo['uid']) {
+            await FirebaseFirestore.instance
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get()
+                .then((userV) async => {
+                      addData = {
+                        'uid': allNotifi[i].id,
+                        'avatar': '',
+                        'userName': Helper
+                            .notificationName[allNotifi[i]['postType']]['name'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date':
+                            await postCon.formatDate(allNotifi[i]['timeStamp']),
+                      },
+                      changeData.add(addData),
+                    });
+          }
+        }
+      }
+      postCon.allNotification = changeData;
+      setState(() {});
+      print('notification content ------${postCon.allNotification}');
+    });
+
     super.initState();
   }
 
@@ -195,14 +285,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     //Helper.showToast("go to admin");
     //print("go to login");
     await Navigator.pushReplacementNamed(context, RouteNames.adp);
-  }
-
-  void onSettingClicked() {
-    Navigator.pushReplacementNamed(context, RouteNames.settings);
-  }
-
-  void onHomeClicked() {
-    Navigator.pushReplacementNamed(context, RouteNames.homePage);
   }
 
   Future<void> onLogOut() async {
@@ -215,16 +297,15 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     await Helper.removeAllPreference();
     // ignore: use_build_context_synchronously
     await Navigator.pushReplacementNamed(context, RouteNames.login);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-            ? buildLargeSize()
-            : buildSmallSize(),
-      ),
+      body: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+          ? buildLargeSize()
+          : buildSmallSize(),
     );
   }
 
@@ -270,7 +351,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       padding: const EdgeInsets.only(right: 20),
                       child: ElevatedButton(
                         onPressed: () {
-                          onHomeClicked();
+                          widget.routerChange({
+                            'router': RouteNames.homePage,
+                          });
                         },
                         style: ButtonStyle(
                           minimumSize:
@@ -298,7 +381,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => PostsNavBox(),
+                        menuBuilder: () => PostsNavBox(
+                              routerChange: widget.routerChange,
+                            ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
@@ -315,69 +400,79 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterFriendRequest(
-                              onClick: () {
-                                setState(() {});
-                              },
+                      menuBuilder: () => ShnatterFriendRequest(
+                        onClick: () {
+                          setState(() {});
+                        },
+                        routerChange: widget.routerChange,
+                      ),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: badges.Badge(
+                              showBadge: peopleCon.requestFriends.isEmpty
+                                  ? false
+                                  : true,
+                              position: badges.BadgePosition.topEnd(top: -10),
+                              badgeStyle: badges.BadgeStyle(
+                                badgeColor: Colors.deepPurple,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              badgeContent: Text(
+                                  peopleCon.requestFriends.length.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13)),
+                              child: SvgPicture.network(
+                                placeholderBuilder: (context) => const Icon(
+                                    Icons.logo_dev,
+                                    size: 30,
+                                    color: Colors.white),
+                                SVGPath.group,
+                                color: Colors.white,
+                                width: 24,
+                                height: 24,
+                              ),
                             ),
-                        pressType: PressType.singleClick,
-                        verticalMargin: -10,
-                        child: Row(children: [
-                          SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.group,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
                           ),
-                          peopleCon.requestFriends.isEmpty
-                              ? const SizedBox()
-                              : Badge(
-                                  toAnimate: false,
-                                  shape: BadgeShape.square,
-                                  badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(8),
-                                  badgeContent: Text(
-                                      peopleCon.requestFriends.length
-                                          .toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                ),
-                        ])),
+                        ],
+                      ),
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterMessage(),
-                        pressType: PressType.singleClick,
-                        verticalMargin: -10,
-                        child: Row(children: [
-                          SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.message,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
+                      menuBuilder: () => ShnatterMessage(),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: Row(
+                        children: [
+                          badges.Badge(
+                            showBadge: chatCon.notifyCount == 0 ? false : true,
+                            position: badges.BadgePosition.topEnd(top: -10),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.deepPurple,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            badgeContent: Text(chatCon.notifyCount.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 13)),
+                            child: SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.message,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
                           ),
-                          chatCon.notifyCount == 0
-                              ? const SizedBox()
-                              : Badge(
-                                  toAnimate: false,
-                                  shape: BadgeShape.square,
-                                  badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(8),
-                                  badgeContent: Text(
-                                      chatCon.notifyCount.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                ),
-                        ])),
+                        ],
+                      ),
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(9.0),
@@ -387,28 +482,29 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       verticalMargin: -10,
                       child: Row(
                         children: [
-                          SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.notification,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
+                          badges.Badge(
+                            showBadge:
+                                postCon.realNotifi.isEmpty ? false : true,
+                            position: badges.BadgePosition.topEnd(top: -10),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.deepPurple,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            badgeContent: Text(
+                                postCon.realNotifi.length.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 13)),
+                            child: SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Colors.white),
+                              SVGPath.notification,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
                           ),
-                          postCon.realNotifi.isEmpty
-                              ? const SizedBox()
-                              : Badge(
-                                  toAnimate: false,
-                                  shape: BadgeShape.square,
-                                  badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(20),
-                                  badgeContent: Text(
-                                      postCon.realNotifi.length.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                ),
                         ],
                       ),
                     ),
@@ -488,19 +584,26 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           switch (item) {
                             case Menu.itemProfile:
                               {
-                                Navigator.pushReplacementNamed(context,
-                                    '/${UserManager.userInfo['userName']}');
+                                widget.routerChange({
+                                  'router': RouteNames.profile,
+                                  'subRouter': UserManager.userInfo['userName']
+                                });
                                 break;
                               }
                             case Menu.itemSettings:
                               {
-                                onSettingClicked();
+                                widget.routerChange({
+                                  'router': RouteNames.settings,
+                                  'subRouter': ''
+                                });
                                 break;
                               }
                             case Menu.itemPrivacy:
                               {
-                                Navigator.pushReplacementNamed(
-                                    context, RouteNames.settings);
+                                widget.routerChange({
+                                  'router': RouteNames.settings,
+                                  'subRouter': RouteNames.settings_privacy
+                                });
                                 break;
                               }
                             case Menu.itemAdminPanel:
@@ -575,7 +678,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            onHomeClicked();
+                            widget.routerChange({
+                              'router': RouteNames.homePage,
+                            });
                           },
                           style: ButtonStyle(
                             foregroundColor:
@@ -605,7 +710,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => PostsNavBox(),
+                        menuBuilder: () => PostsNavBox(
+                              routerChange: widget.routerChange,
+                            ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
@@ -622,75 +729,84 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterFriendRequest(
-                              onClick: () {
-                                setState(() {});
-                              },
+                      menuBuilder: () => ShnatterFriendRequest(
+                        onClick: () {
+                          setState(() {});
+                        },
+                        routerChange: widget.routerChange,
+                      ),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: badges.Badge(
+                              showBadge: peopleCon.requestFriends.isEmpty
+                                  ? false
+                                  : true,
+                              position: badges.BadgePosition.topEnd(top: -13),
+                              badgeStyle: badges.BadgeStyle(
+                                badgeColor: Colors.deepPurple,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              badgeContent: Text(
+                                  peopleCon.requestFriends.length.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13)),
+                              child: SvgPicture.network(
+                                placeholderBuilder: (context) => const Icon(
+                                    Icons.logo_dev,
+                                    size: 30,
+                                    color: Colors.white),
+                                SVGPath.group,
+                                color: Colors.white,
+                                width: 24.5,
+                                height: 24.5,
+                              ),
                             ),
-                        pressType: PressType.singleClick,
-                        verticalMargin: -10,
-                        child: Row(children: [
-                          SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.group,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
-                          ),
-                          peopleCon.requestFriends.isEmpty
-                              ? const SizedBox()
-                              : Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Badge(
-                                    toAnimate: false,
-                                    shape: BadgeShape.square,
-                                    badgeColor: Colors.deepPurple,
-                                    borderRadius: BorderRadius.circular(8),
-                                    badgeContent: Text(
-                                        peopleCon.requestFriends.length
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 13)),
-                                  ),
-                                )
-                        ])),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                        menuBuilder: () => ShnatterMessage(),
-                        pressType: PressType.singleClick,
-                        verticalMargin: -10,
-                        child: Row(children: [
-                          SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.message,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
+                      menuBuilder: () => ShnatterMessage(),
+                      pressType: PressType.singleClick,
+                      verticalMargin: -10,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: badges.Badge(
+                              // toAnimate: true,
+                              showBadge:
+                                  chatCon.notifyCount == 0 ? false : true,
+                              position: badges.BadgePosition.topEnd(top: -13),
+                              badgeStyle: badges.BadgeStyle(
+                                badgeColor: Colors.deepPurple,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              badgeContent: Text(chatCon.notifyCount.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13)),
+                              child: SvgPicture.network(
+                                placeholderBuilder: (context) => const Icon(
+                                    Icons.logo_dev,
+                                    size: 30,
+                                    color: Colors.white),
+                                SVGPath.message,
+                                color: Colors.white,
+                                width: 20,
+                                height: 20,
+                              ),
+                            ),
                           ),
-                          const Padding(padding: EdgeInsets.only(left: 3)),
-                          chatCon.notifyCount == 0
-                              ? const SizedBox()
-                              : Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Badge(
-                                    toAnimate: true,
-                                    shape: BadgeShape.square,
-                                    badgeColor: Colors.deepPurple,
-                                    borderRadius: BorderRadius.circular(8),
-                                    badgeContent: Text(
-                                        chatCon.notifyCount.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 13)),
-                                  )),
-                        ])),
+                        ],
+                      ),
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(9.0),
@@ -700,28 +816,29 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       verticalMargin: -10,
                       child: Row(
                         children: [
-                          SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
-                            SVGPath.notification,
-                            color: Colors.white,
-                            width: 20,
-                            height: 20,
+                          badges.Badge(
+                            showBadge:
+                                postCon.realNotifi.isEmpty ? false : true,
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Colors.deepPurple,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            position: badges.BadgePosition.topEnd(top: -11),
+                            badgeContent: Text(
+                                postCon.realNotifi.length.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 13)),
+                            child: SvgPicture.network(
+                              placeholderBuilder: (context) => const Icon(
+                                  Icons.logo_dev,
+                                  size: 30,
+                                  color: Color.fromARGB(255, 201, 61, 61)),
+                              SVGPath.notification,
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
+                            ),
                           ),
-                          postCon.realNotifi.isEmpty
-                              ? const SizedBox()
-                              : Badge(
-                                  toAnimate: false,
-                                  shape: BadgeShape.square,
-                                  badgeColor: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(20),
-                                  badgeContent: Text(
-                                      postCon.realNotifi.length.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13)),
-                                ),
                         ],
                       ),
                     ),
@@ -771,22 +888,27 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           switch (item) {
                             case Menu.itemProfile:
                               {
-                                Navigator.pushReplacementNamed(context,
-                                    '/${UserManager.userInfo['userName']}');
+                                widget.routerChange({
+                                  'router': RouteNames.profile,
+                                  'subRouter': UserManager.userInfo['userName']
+                                });
                                 break;
                               }
 
                             case Menu.itemSettings:
                               {
-                                onSettingClicked();
+                                widget.routerChange({
+                                  'router': RouteNames.settings,
+                                  'subRouter': ''
+                                });
                                 break;
                               }
                             case Menu.itemPrivacy:
                               {
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  RouteNames.settings,
-                                );
+                                widget.routerChange({
+                                  'router': RouteNames.settings,
+                                  'subRouter': RouteNames.settings_privacy
+                                });
                                 break;
                               }
                             case Menu.itemAdminPanel:

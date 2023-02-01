@@ -10,10 +10,14 @@ import 'package:shnatter/src/widget/createProductWidget.dart';
 
 class MarketPlaceLeftPanel extends StatefulWidget {
   MarketPlaceLeftPanel(
-      {Key? key, required this.changeCategory, required this.currentCategory})
+      {Key? key,
+      required this.changeCategory,
+      required this.currentCategory,
+      required this.routerChange})
       : super(key: key);
   Function changeCategory;
   String currentCategory;
+  Function routerChange;
   State createState() => MarketPlaceLeftPanelState();
 }
 
@@ -114,7 +118,7 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.all(3),
-              backgroundColor: Colors.black,
+              backgroundColor: const Color.fromARGB(255, 33, 37, 41),
               // elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
@@ -140,7 +144,10 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
                           ),
                         ],
                       ),
-                      content: CreateProductModal(context: context))));
+                      content: CreateProductModal(
+                        context: context,
+                        routerChange: widget.routerChange,
+                      ))));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

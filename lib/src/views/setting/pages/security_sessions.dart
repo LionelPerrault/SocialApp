@@ -12,7 +12,9 @@ import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingSecuritySessScreen extends StatefulWidget {
-  SettingSecuritySessScreen({Key? key}) : super(key: key);
+  SettingSecuritySessScreen({Key? key, required this.routerChange})
+      : super(key: key);
+  Function routerChange;
   @override
   State createState() => SettingSecuritySessScreenState();
 }
@@ -27,6 +29,7 @@ class SettingSecuritySessScreenState extends State<SettingSecuritySessScreen> {
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: Icon(
                 Icons.security_outlined,
                 color: Color.fromARGB(255, 139, 195, 74),

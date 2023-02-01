@@ -12,10 +12,12 @@ import '../../controllers/ProfileController.dart';
 // ignore: must_be_immutable
 class ProfileGroupsScreen extends StatefulWidget {
   Function onClick;
-  ProfileGroupsScreen({Key? key, required this.onClick})
+  ProfileGroupsScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
+  Function routerChange;
   @override
   State createState() => ProfileGroupsScreenState();
 }
@@ -146,6 +148,7 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
                                 refreshFunc: () {
                                   getGroupNow();
                                 },
+                                routerChange: widget.routerChange,
                               ),
                             )
                             .toList(),

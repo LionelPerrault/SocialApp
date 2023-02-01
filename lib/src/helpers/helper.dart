@@ -12,11 +12,8 @@ import 'package:http/http.dart' as http;
 import '../models/userModel.dart';
 
 class Helper {
-  static var snapShot = FirebaseFirestore.instance
-      .collection(Helper.adminPanel)
-      .doc(Helper.adminConfig)
-      .get();
-  static var system = snapShot;
+  static var systemSnap =
+      FirebaseFirestore.instance.collection(Helper.adminPanel);
   static ValueNotifier<Setting> setting = ValueNotifier(Setting());
   //BuildContext context;
   // for mapping data retrieved form json array
@@ -38,8 +35,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.groupsField);
   static var productsData =
       FirebaseFirestore.instance.collection(Helper.productsField);
-  static var productLikeComment =
-      FirebaseFirestore.instance.collection(Helper.productLikeCommentField);
+  static var postLikeComment =
+      FirebaseFirestore.instance.collection(Helper.postLikeCommentField);
   static var allInterests =
       FirebaseFirestore.instance.collection(Helper.interestsField);
   static var notifiCollection =
@@ -60,6 +57,7 @@ class Helper {
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fblank_product.jpg?alt=media&token=0cd1281e-4dc7-4228-939f-f19b50c3afe1';
   static var adminPanel = 'adminPanel';
   static var adminConfig = 'config';
+  static var timeNow = 'timeNow';
   static var userField = 'user';
   static var eventsField = 'events';
   static var pagesField = 'pages';
@@ -72,13 +70,14 @@ class Helper {
   static var pages = 'staticContent';
   static var terms = 'Terms';
   static var privacy = 'Privacy';
+  static var about = 'About';
   static var balance = 0;
   static var message = 'messages';
   static var newMessageSearch = 'userName';
   static var apiKey = 'AIzaSyAtquiA4SXxBhs-lpAdk_xt3_dZtY4PId0';
   static var emoticons = 'emoticons';
   static var onlineStatusField = 'onlineStatus';
-  static var productLikeCommentField = 'productLikeComment';
+  static var postLikeCommentField = 'postLikeComment';
   static var passwordMinLength = 8;
 
   static var emptySVG =
@@ -193,9 +192,7 @@ class Helper {
     final Stream<QuerySnapshot> stream =
         FirebaseFirestore.instance.collection(onlineStatusField).snapshots();
     stream.listen((event) {
-      event.docs.forEach((e) {
-        print(e.data());
-      });
+      event.docs.forEach((e) {});
     });
   }
 
@@ -245,24 +242,11 @@ class Helper {
     return str['content'] as String;
   }
 
-  static String formatDate(String d) {
-    var date = DateTime.parse(d);
-    String trDate = '';
-    DateTime date2 = DateTime.now();
-    var dd = int.parse(date2.timeZoneOffset.toString().split(':')[0]);
-    date2 = date2.add(Duration(hours: -dd));
-    final difference = date2.difference(date);
-    if (difference.inMinutes < 1) {
-      trDate = 'Just Now';
-    } else if (difference.inHours < 1) {
-      trDate = '${difference.inMinutes} minutes ago';
-    } else if (difference.inDays < 1) {
-      trDate = '${difference.inHours} hours ago';
-    } else if (difference.inDays < 31) {
-      trDate = '${difference.inDays} days ago';
-    } else if (difference.inDays >= 31) {
-      trDate = '${(difference.inDays / 30 as String).split('.')[0]} days ago';
-    }
-    return trDate;
+  static Future<String> getAbout() async {
+    var str = await FirebaseFirestore.instance
+        .collection(Helper.pages)
+        .doc(Helper.about)
+        .get();
+    return str['content'] as String;
   }
 }

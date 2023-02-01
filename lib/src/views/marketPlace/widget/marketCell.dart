@@ -1,9 +1,10 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
@@ -11,10 +12,11 @@ class MarketCell extends StatefulWidget {
   MarketCell({
     super.key,
     required this.data,
+    required this.routerChange,
   }) : con = PostController();
   // ignore: prefer_typing_uninitialized_variables
   var data;
-
+  Function routerChange;
   late PostController con;
   @override
   State createState() => MarketCellState();
@@ -57,6 +59,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
       child: Stack(
         children: [
           Container(
+            margin: const EdgeInsets.all(10.0),
             width: SizeConfig(context).screenWidth > 800
                 ? 208
                 : SizeConfig(context).screenWidth * 0.9,
@@ -100,13 +103,15 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 210, left: 10),
-                      child: Badge(
-                        toAnimate: false,
-                        shape: BadgeShape.square,
-                        badgeColor: const Color.fromRGBO(0, 0, 0, 0.65),
-                        borderRadius: BorderRadius.circular(8),
+                      child: badges.Badge(
+                        badgeStyle: badges.BadgeStyle(
+                          shape: badges.BadgeShape.square,
+                          badgeColor: const Color.fromRGBO(0, 0, 0, 0.65),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         badgeContent: Text(
                           'SHN ${widget.data['data']["productPrice"]}',
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 13,
@@ -118,7 +123,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                       duration: const Duration(milliseconds: 500),
                       child: readyShow
                           ? Container(
-                              alignment: Alignment.center,
+                              // alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
                                 color: Color.fromRGBO(0, 0, 0, 0.4),
@@ -129,7 +134,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                               height: 250,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.9),
+                                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.4),
                                   elevation: 3,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
@@ -138,8 +143,10 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                                   maximumSize: const Size(70, 34),
                                 ),
                                 onPressed: () {
-                                  Navigator.pushReplacementNamed(context,
-                                      '/products/${widget.data["id"]}');
+                                  widget.routerChange({
+                                    'router': RouteNames.products,
+                                    'subRouter': widget.data["id"],
+                                  });
                                 },
                                 child: Container(
                                   child: const Text('More',
@@ -157,13 +164,17 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                 Container(
                   width: 170,
                   margin: const EdgeInsets.only(top: 10, left: 10),
-                  child: Text(widget.data['data']['productName']),
+                  child: Text(
+                    widget.data['data']['productName'],
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Container(
                   width: 170,
                   margin: const EdgeInsets.only(top: 20, left: 13),
                   child: Text(
                     'For ${widget.data['data']["productOffer"]}',
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
@@ -179,7 +190,10 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                       size: 20,
                       color: Color.fromRGBO(31, 156, 255, 1),
                     ),
-                    Text('Type: ${widget.data['data']["productStatus"]}')
+                    Text(
+                      'Type: ${widget.data['data']["productStatus"]}',
+                      overflow: TextOverflow.ellipsis,
+                    )
                   ]),
                 ),
                 Container(
@@ -191,7 +205,14 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                         Icons.location_on,
                         size: 20,
                       ),
-                      Text(widget.data['data']['productLocation'])
+                      Container(
+                        alignment: Alignment.center,
+                        width: 140,
+                        child: Text(
+                          widget.data['data']['productLocation'],
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),

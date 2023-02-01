@@ -1,253 +1,269 @@
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
-import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
-import 'package:shnatter/src/widget/createProductWidget.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
-import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
+import 'package:roundcheckbox/roundcheckbox.dart';
 
-// ignore: must_be_immutable
 class PostCell extends StatefulWidget {
   PostCell({
     super.key,
-    required this.data,
+    required this.postInfo,
+    required this.routerChange,
   }) : con = PostController();
-  var data;
-
+  var postInfo;
+  Function routerChange;
   late PostController con;
   @override
   State createState() => PostCellState();
 }
 
 class PostCellState extends mvc.StateMVC<PostCell> {
-  late PostController con;
-  var product;
-  var productId = '';
-  bool payLoading = false;
-  bool loading = false;
+  List<Map> privacyMenuItem = [
+    {
+      'icon': Icons.language,
+      'label': 'Public',
+    },
+    {
+      'icon': Icons.groups,
+      'label': 'Friends',
+    },
+    {
+      'icon': Icons.lock,
+      'label': 'Only Me',
+    },
+  ];
+  Map privacy = {};
 
-  List<Map> subFunctionList = [];
+  List<Map> popupMenuItem = [
+    {
+      'icon': Icons.edit,
+      'label': 'Edit Post',
+      'value': 'edit',
+    },
+    {
+      'icon': Icons.delete,
+      'label': 'Delete Post',
+      'value': 'delete',
+    },
+    {
+      'icon': Icons.remove_red_eye_sharp,
+      'label': 'Hide from Timeline',
+      'labelE': 'Allow on Timeline',
+      'value': 'timeline',
+    },
+    {
+      'icon': Icons.chat_bubble,
+      'label': 'Turn off Commenting',
+      'labelE': 'Turn on Commenting',
+      'value': 'comment',
+    },
+    {
+      'icon': Icons.link,
+      'label': 'Open post in new tab',
+      'value': 'open',
+    },
+  ];
+
+  late PostController con;
+  var postTime = '';
+  String checkedOption = '';
+  List<Map> upUserInfo = [];
+  var headerCon = TextEditingController();
+  bool editShow = false;
+  String editHeader = '';
   @override
   void initState() {
+    print('widget.postInfo${widget.postInfo}');
     add(widget.con);
     con = controller as PostController;
+    con.formatDate(widget.postInfo['time']).then((value) {
+      postTime = value;
+      setState(() {});
+    });
+    headerCon.text = widget.postInfo['header'];
+    privacy = privacyMenuItem
+        .where((element) => element['label'] == widget.postInfo['privacy'])
+        .toList()[0];
+    if (widget.postInfo['type'] == 'poll') {
+      if (widget.postInfo['data']['optionUp'][UserManager.userInfo['uid']] !=
+          null) {
+        checkedOption =
+            widget.postInfo['data']['optionUp'][UserManager.userInfo['uid']];
+      }
+      getUpUserInfo();
+    }
+    if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
+      privacyMenuItem = [];
+      popupMenuItem = [
+        {
+          'icon': Icons.link,
+          'label': 'Open post in new tab',
+          'value': 'open',
+        },
+      ];
+    }
+
     super.initState();
-    product = widget.data['data'];
-    productId = widget.data['id'];
   }
 
-  buyProduct() async {
-    var eventAdminInfo =
-        await ProfileController().getUserInfo(product['productAdmin']['uid']);
+  void checkOption(value) async {
+    widget.postInfo['data']['optionUp'][UserManager.userInfo['uid']] = value;
+    await Helper.postCollection
+        .doc(widget.postInfo['id'])
+        .update({'value': widget.postInfo['data']});
+    checkedOption = value;
+    setState(() {});
+    getUpUserInfo();
+  }
+
+  getUpUserInfo() async {
+    widget.postInfo['data']['optionUp'].forEach((key, value) async {
+      var userInfo = await ProfileController().getUserInfo(key);
+      upUserInfo.add({...userInfo!, 'value': value});
+    });
+    setState(() {});
+  }
+
+  upDatePostInfo(value) async {
+    con.updatePostInfo(widget.postInfo['id'], value);
+  }
+
+  deletePostInfo() async {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: const SizedBox(),
         content: AlertYesNoWidget(
             yesFunc: () async {
-              payLoading = true;
-              setState(() {});
-              await UserController()
-                  .payShnToken(eventAdminInfo!['paymail'].toString(),
-                      product['productPrice'], 'Pay for buy product')
-                  .then(
-                    (value) async => {
-                      if (value)
-                        {
-                          payLoading = false,
-                          setState(() {}),
-                          Navigator.of(context).pop(true),
-                          loading = true,
-                          setState(() {}),
-                          await con.changeProductSellState(productId),
-                          loading = false,
-                          setState(() {}),
-                        }
-                    },
-                  );
+              con.deletePost(widget.postInfo['id']);
+              Navigator.of(context).pop(true);
             },
             noFunc: () {
               Navigator.of(context).pop(true);
             },
-            header: 'Pay Token',
-            text: 'Are you sure about pay token',
-            progress: payLoading),
+            header: 'Delete Post',
+            text: 'Are you sure you want to delete this post?',
+            progress: false),
       ),
     );
   }
 
+  hideFromTimeline() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const SizedBox(),
+        content: AlertYesNoWidget(
+            yesFunc: () async {
+              upDatePostInfo({'timeline': !widget.postInfo['timeline']});
+              widget.postInfo['timeline'] = !widget.postInfo['timeline'];
+              setState(() {});
+              Navigator.of(context).pop(true);
+            },
+            noFunc: () {
+              Navigator.of(context).pop(true);
+            },
+            header: 'Hide from Timeline',
+            text:
+                'Are you sure you want to hide this post from your profile timeline? It may still appear in other places like newsfeed and search results',
+            progress: false),
+      ),
+    );
+  }
+
+  popUpFunction(value) async {
+    switch (value) {
+      case 'edit':
+        editShow = true;
+        setState(() {});
+        break;
+      case 'delete':
+        deletePostInfo();
+        break;
+      case 'timeline':
+        hideFromTimeline();
+        break;
+      case 'comment':
+        upDatePostInfo({'comment': !widget.postInfo['comment']});
+        widget.postInfo['comment'] = !widget.postInfo['comment'];
+        setState(() {});
+        break;
+      case 'open':
+        // widget.routerChange({
+
+        // })
+        break;
+      default:
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // print('${widget.data["data"]["productAdmin"]["uid"]}asddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
-    subFunctionList = [
-      {
-        'icon': product['productMarkAsSold']
-            ? Icons.shopping_cart
-            : Icons.shopping_cart,
-        'text':
-            product['productMarkAsSold'] ? 'Mark as Available' : 'Mark as Sold',
-        'onTap': () {
-          con
-              .productMarkAsSold(productId, !product['productMarkAsSold'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': product['productMarkAsSold'] ? Icons.bookmark : Icons.bookmark,
-        'text': product['productMarkAsSold'] ? 'UnSave Post' : 'Save Post',
-        'onTap': () {
-          con
-              .productSavePost(productId, !product['productMarkAsSold'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': Icons.pin_drop,
-        'text': 'Pin Post',
-        'onTap': () {},
-      },
-      {
-        'icon': Icons.edit,
-        'text': 'Edit Product',
-        'onTap': () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                  title: Row(
-                    children: const [
-                      Icon(
-                        Icons.production_quantity_limits_sharp,
-                        color: Color.fromARGB(255, 33, 150, 243),
-                      ),
-                      Text(
-                        'Add New Product',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontStyle: FontStyle.italic),
-                      ),
-                    ],
-                  ),
-                  content: CreateProductModal(context: context)));
-        },
-      },
-      {
-        'icon': Icons.delete,
-        'text': 'Delete Post',
-        'onTap': () {
-          con.productDelete(productId).then((value) => {
-                con.getProduct().then((value) => {
-                      product = con.allProduct
-                          .where((val) => val['id'] == widget.data['id'])
-                          .toList()[0]['data'],
-                      print(product),
-                      setState(() {}),
-                      Helper.setting.notifyListeners(),
-                    })
-              });
-        },
-      },
-      {
-        'icon': Icons.remove_red_eye,
-        'text': product['productTimeline']
-            ? 'Hide from Timeline'
-            : 'Allow on Timeline',
-        'onTap': () {
-          con
-              .productHideFromTimeline(productId, !product['productTimeline'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': Icons.comment,
-        'text': product['productOnOffCommenting']
-            ? 'Turn off Commenting'
-            : 'Trun on Commenting',
-        'onTap': () {
-          con
-              .productTurnOffCommenting(productId, !product['productTimeline'])
-              .then((value) => con.getProduct().then((value) => {
-                    product = con.allProduct
-                        .where((val) => val['id'] == widget.data['id'])
-                        .toList()[0]['data'],
-                    print(product),
-                    setState(() {}),
-                    Helper.setting.notifyListeners(),
-                  }));
-        },
-      },
-      {
-        'icon': Icons.link,
-        'text': 'Open Post in new Tab',
-        'onTap': () {
-          Navigator.pushReplacementNamed(
-              context, '${RouteNames.products}/${productId}');
-        },
-      },
-    ];
+    return widget.postInfo['timeline'] == false
+        ? DottedBorder(
+            borderType: BorderType.RRect,
+            radius: Radius.circular(20),
+            dashPattern: [10, 10],
+            color: Colors.grey,
+            strokeWidth: 2,
+            child: total(),
+          )
+        : total();
+  }
+
+  Widget total() {
+    switch (widget.postInfo['type']) {
+      case 'photo':
+        return picturePostCell();
+      case 'feeling':
+        return feelingPostCell();
+      case 'checkIn':
+        return checkInPostCell();
+      case 'poll':
+        return pollPostCell();
+      default:
+        return const SizedBox();
+    }
+  }
+
+  Widget picturePostCell() {
     return Row(
       children: [
         Expanded(
-            child: Container(
-          margin: const EdgeInsets.only(top: 30, bottom: 30),
-          width: 600,
-          padding: EdgeInsets.only(top: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          ),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Column(
+          child: Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            width: 600,
+            padding: const EdgeInsets.only(top: 20),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 22,
-                            child: SvgPicture.network(Helper.avatar),
-                          ),
+                          widget.postInfo['admin']['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  widget.postInfo['admin']['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -261,18 +277,21 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: product['productAdmin']
-                                                  ['fullName'],
+                                              text:
+                                                  '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  print('username');
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '/${product['productAdmin']['userName']}');
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo['admin']
+                                                            ['userName'],
+                                                  });
                                                 })
                                         ]),
                                   ),
@@ -281,18 +300,63 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         ? SizeConfig(context).screenWidth - 240
                                         : 350,
                                     child: Text(
-                                      ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
-                                      style: TextStyle(fontSize: 14),
+                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(right: 9.0),
-                                    child: CustomPopupMenu(
-                                        menuBuilder: () => SubFunction(),
-                                        pressType: PressType.singleClick,
-                                        verticalMargin: -10,
-                                        child:
-                                            const Icon(Icons.arrow_drop_down)),
+                                    child: PopupMenuButton(
+                                      onSelected: (value) {
+                                        popUpFunction(value);
+                                      },
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 18,
+                                      ),
+                                      itemBuilder: (BuildContext bc) {
+                                        return popupMenuItem
+                                            .map(
+                                              (e) => PopupMenuItem(
+                                                value: e['value'],
+                                                child: Row(
+                                                  children: [
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5.0)),
+                                                    Icon(e['icon']),
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 12.0)),
+                                                    Text(
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 90, 90, 90),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                            .toList();
+                                      },
+                                    ),
                                   ),
                                 ],
                               ),
@@ -305,359 +369,1000 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: Helper.formatDate(
-                                                  product['productDate']),
+                                              // text: Helper.formatDate(
+                                              //     widget.postInfo['time']),
+                                              text: postTime,
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 10),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '${RouteNames.products}/$productId');
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
                                                 })
                                         ]),
                                   ),
                                   const Text(' - '),
-                                  const Icon(
-                                    Icons.language,
-                                    size: 12,
-                                  )
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
                                 ],
                               ),
                             ],
                           )
                         ],
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 15)),
-                      Text(
-                        product['productName'],
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Row(
                         children: [
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
-                          Text(
-                            product['productLocation'] ?? '',
-                            style: TextStyle(color: Colors.grey),
-                          )
+                          for (var item in widget.postInfo['data'])
+                            Expanded(
+                              child: Container(
+                                height: 250,
+                                child: Image.network(item['url'],
+                                    fit: BoxFit.cover),
+                              ),
+                            )
                         ],
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 30)),
-                      Container(
-                        child: Text(product['productAbout'] ?? ''),
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 30)),
-                      Container(
-                        height: 78,
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 247, 247, 247),
-                          border: Border.all(
-                              color: Color.fromARGB(255, 229, 229, 229)),
-                          borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                        ),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                  child: Container(
-                                alignment: Alignment.center,
-                                child: Column(children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 20)),
-                                  Text(
-                                    'Offer',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 5)),
-                                  Text(
-                                    'For ${product['productOffer']}',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                  )
-                                ]),
-                              )),
-                              Container(
-                                width: 1,
-                                height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                alignment: Alignment.center,
-                                child: Column(children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 20)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.sell,
-                                        color:
-                                            Color.fromARGB(255, 31, 156, 255),
-                                        size: 17,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        'Condition',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 5)),
-                                  Text(
-                                    '${product['productStatus']}',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                  )
-                                ]),
-                              )),
-                              Container(
-                                width: 1,
-                                height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                alignment: Alignment.center,
-                                child: Column(children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 20)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.money,
-                                        color: Color.fromARGB(255, 43, 180, 40),
-                                        size: 17,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        'Price',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 5)),
-                                  Text(
-                                    '${product['productPrice']} (SHN)',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                  )
-                                ]),
-                              )),
-                              Container(
-                                width: 1,
-                                height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                alignment: Alignment.center,
-                                child: Column(children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 20)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.gif_box,
-                                        color:
-                                            Color.fromARGB(255, 160, 56, 178),
-                                        size: 17,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        'Status',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 5)),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: 90,
-                                    height: 25,
-                                    decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 40, 167, 69),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(4.0)),
-                                    ),
-                                    child: Text(
-                                      'In Stock',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 15),
-                                    ),
-                                  )
-                                ]),
-                              )),
-                            ]),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              top: UserManager.userInfo['userName'] ==
-                                      product['productAdmin']['userName']
-                                  ? 0
-                                  : 30)),
-                      UserManager.userInfo['userName'] ==
-                              product['productAdmin']['userName']
-                          ? Container()
-                          : Container(
-                              height: 50,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 17, 205, 239),
-                                    elevation: 3,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(3.0)),
-                                  ),
-                                  onPressed: () {
-                                    if (UserManager.userInfo['uid'] !=
-                                        widget.data["data"]["productAdmin"]
-                                            ["uid"]) {
-                                      Navigator.pushNamed(
-                                        context,
-                                        RouteNames.messages,
-                                        arguments: widget.data["data"]
-                                                ["productAdmin"]["uid"]
-                                            .toString(),
-                                      );
-                                    }
-                                    setState(() {
-                                      // stepflag = true;
-                                    });
-                                  },
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(Icons.wechat_outlined),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 10)),
-                                      Text(
-                                        'Contact',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  )),
-                            ),
-                      const Padding(padding: EdgeInsets.only(top: 10)),
-                      Container(
-                        height: 50,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 240, 96, 63),
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(3.0)),
-                            ),
-                            onPressed: () {
-                              buyProduct();
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.wechat_outlined),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                                Text(
-                                  'Buy',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            )),
-                      ),
-                    ]),
-              ),
-              LikesCommentScreen(productId: productId)
-            ],
+                    ],
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
+              ],
+            ),
           ),
-        ))
+        )
       ],
     );
   }
 
-  Widget SubFunction() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(3),
-      child: Container(
-          width: 250,
-          color: Colors.white,
-          // padding: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 400,
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  children: subFunctionList
-                      .map((list) => listCell(
-                            list['icon'],
-                            list['text'],
-                            list['onTap'],
-                          ))
-                      .toList(),
+  Widget feelingPostCell() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            width: 600,
+            padding: const EdgeInsets.only(top: 20),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          widget.postInfo['admin']['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  widget.postInfo['admin']['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text:
+                                                  '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo['admin']
+                                                            ['userName'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  Container(
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 240
+                                        : 350,
+                                    child: Text(
+                                      ' is ${widget.postInfo['data']['action']} ${widget.postInfo['data']['subAction']}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(right: 9.0),
+                                    child: PopupMenuButton(
+                                      onSelected: (value) {
+                                        popUpFunction(value);
+                                      },
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 18,
+                                      ),
+                                      itemBuilder: (BuildContext bc) {
+                                        return popupMenuItem
+                                            .map(
+                                              (e) => PopupMenuItem(
+                                                value: e['value'],
+                                                child: Row(
+                                                  children: [
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5.0)),
+                                                    Icon(e['icon']),
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 12.0)),
+                                                    Text(
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 90, 90, 90),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                            .toList();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3)),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              // text: Helper.formatDate(
+                                              //     widget.postInfo['time']),
+                                              text: postTime,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  const Text(' - '),
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
+                    ],
+                  ),
                 ),
-              )
-            ],
-          )),
+                const Padding(padding: EdgeInsets.only(top: 10)),
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 
-  Widget listCell(icon, text, onTap) {
-    return ListTile(
-        onTap: () {
-          onTap();
-        },
-        hoverColor: Colors.grey[100],
-        tileColor: Colors.white,
-        enabled: true,
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              icon,
-              color: Colors.grey,
-              size: 20,
+  Widget checkInPostCell() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            width: 600,
+            padding: const EdgeInsets.only(top: 20),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
-            const Padding(padding: EdgeInsets.only(left: 10)),
-            Column(
+            child: Column(
               children: [
-                const Padding(padding: EdgeInsets.only(top: 3)),
-                Text(text,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.normal, fontSize: 12)),
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          widget.postInfo['admin']['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  widget.postInfo['admin']['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      style: const TextStyle(
+                                          color: Colors.grey, fontSize: 10),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text:
+                                              '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              widget.routerChange(
+                                                {
+                                                  'router': RouteNames.profile,
+                                                  'subRouter':
+                                                      widget.postInfo['admin']
+                                                          ['userName'],
+                                                },
+                                              );
+                                            },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(right: 9.0),
+                                    child: PopupMenuButton(
+                                      onSelected: (value) {
+                                        popUpFunction(value);
+                                      },
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 18,
+                                      ),
+                                      itemBuilder: (BuildContext bc) {
+                                        return popupMenuItem
+                                            .map(
+                                              (e) => PopupMenuItem(
+                                                value: e['value'],
+                                                child: Row(
+                                                  children: [
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5.0)),
+                                                    Icon(e['icon']),
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 12.0)),
+                                                    Text(
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 90, 90, 90),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                            .toList();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3)),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: postTime,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  const Text(' - '),
+                                  const Icon(
+                                    Icons.location_on,
+                                    size: 12,
+                                  ),
+                                  Text(
+                                    widget.postInfo['data'],
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 10),
+                                  ),
+                                  const Text(' - '),
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
+                    ],
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
               ],
             ),
-          ],
-        ));
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget pollPostCell() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            width: 600,
+            padding: const EdgeInsets.only(top: 20),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          widget.postInfo['admin']['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  widget.postInfo['admin']['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text:
+                                                  '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo['admin']
+                                                            ['userName'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  Container(
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 240
+                                        : 350,
+                                    child: const Text(
+                                      ' added a poll',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(right: 9.0),
+                                    child: PopupMenuButton(
+                                      onSelected: (value) {
+                                        popUpFunction(value);
+                                      },
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 18,
+                                      ),
+                                      itemBuilder: (BuildContext bc) {
+                                        return popupMenuItem
+                                            .map(
+                                              (e) => PopupMenuItem(
+                                                value: e['value'],
+                                                child: Row(
+                                                  children: [
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5.0)),
+                                                    Icon(e['icon']),
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 12.0)),
+                                                    Text(
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 90, 90, 90),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                            .toList();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3)),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              // text: Helper.formatDate(
+                                              //     widget.postInfo['time']),
+                                              text: postTime,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  const Text(' - '),
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
+                      const Padding(padding: EdgeInsets.only(top: 10)),
+                      for (var option in widget.postInfo['data']['option'])
+                        optionWidget(option,
+                            widget.postInfo['data']['optionUp'], upUserInfo)
+                    ],
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget optionWidget(label, upData, upUsers) {
+    int upNum = 0;
+    List<Map> eachUpUsers = [];
+    upData.forEach((key, value) {
+      if (value == label) {
+        upNum++;
+      }
+    });
+    eachUpUsers = upUsers.where((info) => info['value'] == label).toList();
+    return Container(
+      margin: const EdgeInsets.all(5),
+      child: Row(
+        children: [
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                checkOption(label);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 235, 235, 235),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                child: Row(
+                  children: [
+                    RoundCheckBox(
+                      onTap: (selected) {
+                        checkOption(label);
+                      },
+                      checkedWidget: const Icon(
+                        Icons.mood,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      uncheckedWidget: const Icon(
+                        Icons.mood_bad,
+                        size: 24,
+                      ),
+                      animationDuration: const Duration(
+                        milliseconds: 300,
+                      ),
+                      isChecked: (checkedOption == label),
+                      size: 30,
+                    ),
+                    const SizedBox(width: 015),
+                    Text(
+                      label,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 17),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Column(
+                    children: const [
+                      Text(
+                        'People Who Voted For This Option',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      Divider(thickness: 1, color: Colors.grey),
+                    ],
+                  ),
+                  content: SingleChildScrollView(
+                    child: Container(
+                      height: eachUpUsers.isEmpty
+                          ? 80
+                          : eachUpUsers.length * 80 > 400
+                              ? 400
+                              : eachUpUsers.length * 80,
+                      child: Column(
+                        children: [
+                          eachUpUsers.isEmpty
+                              ? const Text('No people voted for this')
+                              : const SizedBox(),
+                          for (var user in eachUpUsers)
+                            Container(
+                              height: 80,
+                              child: Row(
+                                children: [
+                                  user['avatar'] != ''
+                                      ? CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                          widget.postInfo['admin']['avatar'],
+                                        ))
+                                      : CircleAvatar(
+                                          child:
+                                              SvgPicture.network(Helper.avatar),
+                                        ),
+                                  const SizedBox(width: 20),
+                                  Text(
+                                      '${user['firstName']} ${user['lastName']}')
+                                ],
+                              ),
+                            )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(left: 10),
+              width: 46,
+              height: 46,
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 235, 235, 235),
+                  borderRadius: BorderRadius.all(Radius.circular(23))),
+              child: Text(
+                upNum.toString(),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget editPost() {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            height: 40,
+            child: TextField(
+              onChanged: (value) {
+                editHeader = value;
+                setState(() {});
+              },
+              controller: headerCon,
+              decoration: const InputDecoration(
+                hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                contentPadding: EdgeInsets.only(top: 10, left: 10),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5)),
+                  minimumSize: const Size(85, 45),
+                  maximumSize: const Size(85, 45),
+                ),
+                onPressed: () {
+                  editShow = false;
+                  setState(() {});
+                },
+                child: const Text('Cancel',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w900)),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5)),
+                  minimumSize: const Size(75, 45),
+                  maximumSize: const Size(75, 45),
+                ),
+                onPressed: () {
+                  editShow = false;
+                  widget.postInfo['header'] = editHeader;
+                  setState(() {});
+                  upDatePostInfo({'header': widget.postInfo['header']});
+                },
+                child: const Text('Post',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 94, 114, 228),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w900)),
+              ),
+              const SizedBox(width: 20)
+            ],
+          )
+        ],
+      ),
+    );
   }
 }

@@ -6,10 +6,11 @@ import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingDeleteScreen extends StatefulWidget {
-  SettingDeleteScreen({Key? key})
+  SettingDeleteScreen({Key? key, required this.routerChange})
       : con = UserController(),
         super(key: key);
   late UserController con;
+  Function routerChange;
   @override
   State createState() => SettingDeleteScreenState();
 }
@@ -33,6 +34,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: const Icon(
                 Icons.delete,
                 color: Color.fromARGB(255, 244, 67, 54),
@@ -94,7 +96,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                                   maximumSize: const Size(140, 50),
                                 ),
                                 onPressed: () {
-                                  con.deleteUserAccount();
+                                  con.deleteUserAccount(context);
                                 },
                                 child: con.isProfileChange
                                     ? Container(

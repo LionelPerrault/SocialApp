@@ -23,9 +23,10 @@ class ProductCell extends StatefulWidget {
   ProductCell({
     super.key,
     required this.data,
+    required this.routerChange,
   }) : con = PostController();
   var data;
-
+  Function routerChange;
   late PostController con;
   @override
   State createState() => ProductCellState();
@@ -37,8 +38,148 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   var productId = '';
   bool payLoading = false;
   bool loading = false;
+  var postTime = '';
+  var messsageScreen = MessageScreenState();
 
-  List<Map> subFunctionList = [];
+  late List<Map> subFunctionList = [
+    {
+      'icon': product['productMarkAsSold']
+          ? Icons.shopping_cart
+          : Icons.shopping_cart,
+      'text':
+          product['productMarkAsSold'] ? 'Mark as Available' : 'Mark as Sold',
+      'onTap': () {
+        con
+            .productMarkAsSold(productId, !product['productMarkAsSold'])
+            .then((value) => {
+                  con.getProduct().then((value) => {
+                        product = con.allProduct
+                            .where((val) => val['id'] == widget.data['id'])
+                            .toList()[0]['data'],
+                        print(product),
+                        setState(() {}),
+                        Helper.setting.notifyListeners(),
+                      })
+                });
+      },
+    },
+    {
+      'icon': product['productMarkAsSold'] ? Icons.bookmark : Icons.bookmark,
+      'text': product['productMarkAsSold'] ? 'UnSave Post' : 'Save Post',
+      'onTap': () {
+        con
+            .productSavePost(productId, !product['productMarkAsSold'])
+            .then((value) => {
+                  con.getProduct().then((value) => {
+                        product = con.allProduct
+                            .where((val) => val['id'] == widget.data['id'])
+                            .toList()[0]['data'],
+                        print(product),
+                        setState(() {}),
+                        Helper.setting.notifyListeners(),
+                      })
+                });
+      },
+    },
+    {
+      'icon': Icons.pin_drop,
+      'text': 'Pin Post',
+      'onTap': () {},
+    },
+    {
+      'icon': Icons.edit,
+      'text': 'Edit Product',
+      'onTap': () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+                title: Row(
+                  children: const [
+                    Icon(
+                      Icons.production_quantity_limits_sharp,
+                      color: Color.fromARGB(255, 33, 150, 243),
+                    ),
+                    Text(
+                      'Add New Product',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ),
+                content: CreateProductModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
+      },
+    },
+    {
+      'icon': Icons.delete,
+      'text': 'Delete Post',
+      'onTap': () {
+        con.productDelete(productId).then((value) => {
+              con.getProduct().then((value) => {
+                    product = con.allProduct
+                        .where((val) => val['id'] == widget.data['id'])
+                        .toList()[0]['data'],
+                    print(product),
+                    setState(() {}),
+                    Helper.setting.notifyListeners(),
+                  })
+            });
+      },
+    },
+    {
+      'icon': Icons.remove_red_eye,
+      'text': product['productTimeline']
+          ? 'Hide from Timeline'
+          : 'Allow on Timeline',
+      'onTap': () {
+        con
+            .productHideFromTimeline(productId, !product['productTimeline'])
+            .then((value) => {
+                  con.getProduct().then((value) => {
+                        product = con.allProduct
+                            .where((val) => val['id'] == widget.data['id'])
+                            .toList()[0]['data'],
+                        print(product),
+                        setState(() {}),
+                        Helper.setting.notifyListeners(),
+                      })
+                });
+      },
+    },
+    {
+      'icon': Icons.comment,
+      'text': product['productOnOffCommenting']
+          ? 'Turn off Commenting'
+          : 'Trun on Commenting',
+      'onTap': () {
+        con
+            .productTurnOffCommenting(productId, !product['productTimeline'])
+            .then((value) => con.getProduct().then((value) => {
+                  product = con.allProduct
+                      .where((val) => val['id'] == widget.data['id'])
+                      .toList()[0]['data'],
+                  print(product),
+                  setState(() {}),
+                  Helper.setting.notifyListeners(),
+                }));
+      },
+    },
+    {
+      'icon': Icons.link,
+      'text': 'Open Post in new Tab',
+      'onTap': () {
+        widget.routerChange({
+          'router': RouteNames.products,
+          'subRouter': productId,
+        });
+      },
+    },
+  ];
+
   @override
   void initState() {
     add(widget.con);
@@ -46,6 +187,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     super.initState();
     product = widget.data['data'];
     productId = widget.data['id'];
+    con.formatDate(product['productDate']).then((value) {
+      postTime = value;
+      setState(() {});
+    });
   }
 
   buyProduct() async {
@@ -88,157 +233,29 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     );
   }
 
+  popUpFunction(value) async {
+    var functionContainer =
+        subFunctionList.where((element) => element['text'] == value).toList();
+    functionContainer[0]['onTap']();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // print('${widget.data["data"]["productAdmin"]["uid"]}asddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
-    subFunctionList = [
-      {
-        'icon': product['productMarkAsSold']
-            ? Icons.shopping_cart
-            : Icons.shopping_cart,
-        'text':
-            product['productMarkAsSold'] ? 'Mark as Available' : 'Mark as Sold',
-        'onTap': () {
-          con
-              .productMarkAsSold(productId, !product['productMarkAsSold'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': product['productMarkAsSold'] ? Icons.bookmark : Icons.bookmark,
-        'text': product['productMarkAsSold'] ? 'UnSave Post' : 'Save Post',
-        'onTap': () {
-          con
-              .productSavePost(productId, !product['productMarkAsSold'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': Icons.pin_drop,
-        'text': 'Pin Post',
-        'onTap': () {},
-      },
-      {
-        'icon': Icons.edit,
-        'text': 'Edit Product',
-        'onTap': () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                  title: Row(
-                    children: const [
-                      Icon(
-                        Icons.production_quantity_limits_sharp,
-                        color: Color.fromARGB(255, 33, 150, 243),
-                      ),
-                      Text(
-                        'Add New Product',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontStyle: FontStyle.italic),
-                      ),
-                    ],
-                  ),
-                  content: CreateProductModal(context: context)));
-        },
-      },
-      {
-        'icon': Icons.delete,
-        'text': 'Delete Post',
-        'onTap': () {
-          con.productDelete(productId).then((value) => {
-                con.getProduct().then((value) => {
-                      product = con.allProduct
-                          .where((val) => val['id'] == widget.data['id'])
-                          .toList()[0]['data'],
-                      print(product),
-                      setState(() {}),
-                      Helper.setting.notifyListeners(),
-                    })
-              });
-        },
-      },
-      {
-        'icon': Icons.remove_red_eye,
-        'text': product['productTimeline']
-            ? 'Hide from Timeline'
-            : 'Allow on Timeline',
-        'onTap': () {
-          con
-              .productHideFromTimeline(productId, !product['productTimeline'])
-              .then((value) => {
-                    con.getProduct().then((value) => {
-                          product = con.allProduct
-                              .where((val) => val['id'] == widget.data['id'])
-                              .toList()[0]['data'],
-                          print(product),
-                          setState(() {}),
-                          Helper.setting.notifyListeners(),
-                        })
-                  });
-        },
-      },
-      {
-        'icon': Icons.comment,
-        'text': product['productOnOffCommenting']
-            ? 'Turn off Commenting'
-            : 'Trun on Commenting',
-        'onTap': () {
-          con
-              .productTurnOffCommenting(productId, !product['productTimeline'])
-              .then((value) => con.getProduct().then((value) => {
-                    product = con.allProduct
-                        .where((val) => val['id'] == widget.data['id'])
-                        .toList()[0]['data'],
-                    print(product),
-                    setState(() {}),
-                    Helper.setting.notifyListeners(),
-                  }));
-        },
-      },
-      {
-        'icon': Icons.link,
-        'text': 'Open Post in new Tab',
-        'onTap': () {
-          Navigator.pushReplacementNamed(
-              context, '${RouteNames.products}/${productId}');
-        },
-      },
-    ];
     return Row(
       children: [
         Expanded(
             child: Container(
           margin: const EdgeInsets.only(top: 30, bottom: 30),
           width: 600,
-          padding: EdgeInsets.only(top: 20),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.only(top: 20),
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 20, right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -266,13 +283,19 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
+                                                  fontSize: 16,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
                                                   print('username');
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '/${product['productAdmin']['userName']}');
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        product['productAdmin']
+                                                            ['userName'],
+                                                  });
                                                 })
                                         ]),
                                   ),
@@ -282,18 +305,31 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                         : 350,
                                     child: Text(
                                       ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ),
                                   Container(
-                                    padding: EdgeInsets.only(right: 9.0),
-                                    child: CustomPopupMenu(
-                                        menuBuilder: () => SubFunction(),
-                                        pressType: PressType.singleClick,
-                                        verticalMargin: -10,
-                                        child:
-                                            const Icon(Icons.arrow_drop_down)),
-                                  ),
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: Icon(
+                                          Icons.arrow_drop_down,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return subFunctionList
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['text'],
+                                                  child: listCell(
+                                                      e['icon'], e['text']),
+                                                ),
+                                              )
+                                              .toList();
+                                        },
+                                      )),
                                 ],
                               ),
                               const Padding(padding: EdgeInsets.only(top: 3)),
@@ -305,16 +341,19 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: Helper.formatDate(
-                                                  product['productDate']),
+                                              text: postTime,
                                               style: const TextStyle(
                                                   color: Colors.black,
-                                                  fontSize: 10),
+                                                  fontSize: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  Navigator.pushReplacementNamed(
-                                                      context,
-                                                      '${RouteNames.products}/$productId');
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.products,
+                                                    'subRouter': productId,
+                                                  });
                                                 })
                                         ]),
                                   ),
@@ -332,35 +371,42 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       const Padding(padding: EdgeInsets.only(top: 15)),
                       Text(
                         product['productName'],
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on,
                             color: Colors.grey,
                             size: 20,
                           ),
                           Text(
                             product['productLocation'] ?? '',
-                            style: TextStyle(color: Colors.grey),
+                            style: const TextStyle(color: Colors.grey),
+                            overflow: TextOverflow.ellipsis,
                           )
                         ],
                       ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Container(
-                        child: Text(product['productAbout'] ?? ''),
+                        alignment: Alignment.center,
+                        child: Text(
+                          product['productAbout'] ?? '',
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Container(
                         height: 78,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 247, 247, 247),
+                          color: const Color.fromARGB(255, 247, 247, 247),
                           border: Border.all(
-                              color: Color.fromARGB(255, 229, 229, 229)),
-                          borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                              color: const Color.fromARGB(255, 229, 229, 229)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(7.0)),
                         ),
                         child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -372,7 +418,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                 child: Column(children: [
                                   const Padding(
                                       padding: EdgeInsets.only(top: 20)),
-                                  Text(
+                                  const Text(
                                     'Offer',
                                     style: TextStyle(
                                         fontSize: 16,
@@ -382,15 +428,16 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       padding: EdgeInsets.only(top: 5)),
                                   Text(
                                     'For ${product['productOffer']}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey, fontSize: 15),
+                                    overflow: TextOverflow.ellipsis,
                                   )
                                 ]),
                               )),
                               Container(
                                 width: 1,
                                 height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
+                                color: const Color.fromARGB(255, 229, 229, 229),
                               ),
                               Expanded(
                                   child: Container(
@@ -421,15 +468,16 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       padding: EdgeInsets.only(top: 5)),
                                   Text(
                                     '${product['productStatus']}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey, fontSize: 15),
+                                    overflow: TextOverflow.ellipsis,
                                   )
                                 ]),
                               )),
                               Container(
                                 width: 1,
                                 height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
+                                color: const Color.fromARGB(255, 229, 229, 229),
                               ),
                               Expanded(
                                   child: Container(
@@ -459,15 +507,16 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       padding: EdgeInsets.only(top: 5)),
                                   Text(
                                     '${product['productPrice']} (SHN)',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey, fontSize: 15),
+                                    overflow: TextOverflow.ellipsis,
                                   )
                                 ]),
                               )),
                               Container(
                                 width: 1,
                                 height: 60,
-                                color: Color.fromARGB(255, 229, 229, 229),
+                                color: const Color.fromARGB(255, 229, 229, 229),
                               ),
                               Expanded(
                                   child: Container(
@@ -500,12 +549,12 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                     alignment: Alignment.center,
                                     width: 90,
                                     height: 25,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Color.fromARGB(255, 40, 167, 69),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(4.0)),
                                     ),
-                                    child: Text(
+                                    child: const Text(
                                       'In Stock',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15),
@@ -521,8 +570,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       product['productAdmin']['userName']
                                   ? 0
                                   : 30)),
-                      UserManager.userInfo['userName'] ==
-                              product['productAdmin']['userName']
+                      UserManager.userInfo['uid'] ==
+                              product['productAdmin']['uid']
                           ? Container()
                           : Container(
                               height: 50,
@@ -535,17 +584,14 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                         borderRadius:
                                             BorderRadius.circular(3.0)),
                                   ),
-                                  onPressed: () {
-                                    if(UserManager.userInfo['uid'] != widget.data["data"]["productAdmin"]["uid"]){
-                                      Navigator.pushNamed(
-                                        context,
-                                        RouteNames.messages,
-                                        arguments: widget.data["data"]["productAdmin"]["uid"].toString(),
-                                      );
-                                    }
-                                    setState(() {
-                                      // stepflag = true;
+                                  onPressed: () async {
+                                    widget.routerChange({
+                                      'router': RouteNames.messages,
+                                      'subRouter': widget.data["data"]
+                                              ["productAdmin"]["uid"]
+                                          .toString()
                                     });
+                                    setState(() {});
                                   },
                                   child: Row(
                                     crossAxisAlignment:
@@ -592,14 +638,16 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       ),
                     ]),
               ),
-              LikesCommentScreen(productId: productId)
+              LikesCommentScreen(
+                productId: productId,
+                commentFlag: true,
+              )
             ],
           ),
         ))
       ],
     );
   }
-
 
   Widget SubFunction() {
     return ClipRRect(
@@ -619,7 +667,6 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       .map((list) => listCell(
                             list['icon'],
                             list['text'],
-                            list['onTap'],
                           ))
                       .toList(),
                 ),
@@ -629,11 +676,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     );
   }
 
-  Widget listCell(icon, text, onTap) {
+  Widget listCell(icon, text) {
     return ListTile(
-        onTap: () {
-          onTap();
-        },
         hoverColor: Colors.grey[100],
         tileColor: Colors.white,
         enabled: true,

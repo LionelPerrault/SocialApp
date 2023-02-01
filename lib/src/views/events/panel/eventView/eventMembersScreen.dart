@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,14 +6,17 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 class EventMembersScreen extends StatefulWidget {
   Function onClick;
-  EventMembersScreen({Key? key, required this.onClick})
+  EventMembersScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
+  Function routerChange;
 
   @override
   State createState() => EventMembersScreenState();
@@ -96,12 +99,14 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                             'Going',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventGoing"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),
@@ -128,12 +133,14 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                             'Interested',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventInterested"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),
@@ -160,12 +167,14 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                             'Invited',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventInvited"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),
@@ -192,12 +201,14 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                             'Invites',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
-                          Badge(
+                          badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventInvites"].length}',
                               style: TextStyle(color: Colors.white),
                             ),
-                            badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            badgeStyle: badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
                           )
                         ],
                       )),
@@ -240,8 +251,10 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   children: going
                       .map((user) => UserCell(
                           eventTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/${user["userName"]}');
+                            widget.routerChange({
+                              'router': RouteNames.profile,
+                              'subRouter': user["userName"],
+                            });
                           },
                           picture: user['userAvatar'] ?? '',
                           header: user['fullName']))
@@ -282,8 +295,10 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   children: interested
                       .map((user) => UserCell(
                           eventTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/${user["userName"]}');
+                            widget.routerChange({
+                              'router': RouteNames.profile,
+                              'subRouter': user["userName"],
+                            });
                           },
                           picture: user['userAvatar'] ?? '',
                           header: user['fullName']))
@@ -324,8 +339,10 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   children: invited
                       .map((user) => UserCell(
                           eventTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/${user["userName"]}');
+                            widget.routerChange({
+                              'router': RouteNames.profile,
+                              'subRouter': user["userName"],
+                            });
                           },
                           picture: user['userAvatar'] ?? '',
                           header: user['fullName']))
@@ -366,8 +383,10 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   children: invites
                       .map((user) => UserCell(
                           eventTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/${user["userName"]}');
+                            widget.routerChange({
+                              'router': RouteNames.profile,
+                              'subRouter': user["userName"],
+                            });
                           },
                           picture: user['userAvatar'] ?? '',
                           header: user['fullName']))

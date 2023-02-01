@@ -1,25 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import '../../controllers/HomeController.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import '../../utils/size_config.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 
 class ProfileFriendScreen extends StatefulWidget {
   Function onClick;
-  ProfileFriendScreen({Key? key, required this.onClick})
+  ProfileFriendScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = PeopleController(),
         super(key: key);
   final PeopleController con;
+  Function routerChange;
   @override
   State createState() => ProfileFriendScreenState();
 }
@@ -326,7 +321,10 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/$friendUserName');
+                    widget.routerChange({
+                      'router': RouteNames.profile,
+                      'subRouter': friendUserName
+                    });
                   },
                   child: Text(friendFullName),
                 ),

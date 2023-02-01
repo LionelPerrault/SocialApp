@@ -71,6 +71,7 @@ class PeopleController extends ControllerMVC {
         );
     return true;
   }
+
   saveNotifications(data) async {
     await FirebaseFirestore.instance
         .collection(Helper.notificationField)
@@ -128,7 +129,6 @@ class PeopleController extends ControllerMVC {
     if (arr.length < 5 * pagination && arr.length != allUserList.length) {
       int addIndex = 0;
       addIndex += 5 * pagination - arr.length + add as int;
-      print('addIndex$addIndex');
       await getList(index: index, isGetOnly5: isGetOnly5, add: addIndex);
     } else if (arr.length == 5 * pagination ||
         arr.length == allUserList.length) {
@@ -189,31 +189,30 @@ class PeopleController extends ControllerMVC {
     }
     setState(() {});
     Map<String, dynamic> notificationData;
-    await FirebaseFirestore.instance.collection(Helper.friendField)
-      .add({
-          'requester': userInfo['userName'],
-          'receiver': receiver,
-          receiver: {'name': fullName, 'avatar': avatar},
-          userInfo['userName']: {
-            'name': userInfo['fullName'],
-            'avatar': userInfo['avatar']
-          },
-          'users': [userInfo['userName'], receiver],
-          'state': 0
-      })
-      .then((value) async => {
+    await FirebaseFirestore.instance.collection(Helper.friendField).add({
+      'requester': userInfo['userName'],
+      'receiver': receiver,
+      receiver: {'name': fullName, 'avatar': avatar},
+      userInfo['userName']: {
+        'name': userInfo['fullName'],
+        'avatar': userInfo['avatar']
+      },
+      'users': [userInfo['userName'], receiver],
+      'state': 0
+    }).then((value) async => {
           await getUserList(index: index),
           notificationData = {
             'postType': 'requestFriend',
             'postId': value.id,
-            'postAdminId':UserManager.userInfo['uid'],
+            'postAdminId': UserManager.userInfo['uid'],
             'notifyTime': DateTime.now().toString(),
             'tsNT': DateTime.now().millisecondsSinceEpoch,
             'userList': [],
             'timeStamp': FieldValue.serverTimestamp(),
           },
-          saveNotifications(notificationData),  
+          saveNotifications(notificationData),
         });
+    Helper.showToast('Sent request');
     return "Sent request";
   }
 
@@ -370,7 +369,6 @@ class PeopleController extends ControllerMVC {
       }
       sendFriends = arr1;
     }
-    print(sendFriends.length);
     setState(() {});
   }
 

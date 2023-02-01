@@ -16,8 +16,8 @@ import 'package:shnatter/src/utils/size_config.dart';
 import '../../controllers/UserController.dart';
 
 class ShnatterPageSuggest extends StatefulWidget {
-  ShnatterPageSuggest({Key? key}) : super(key: key);
-
+  ShnatterPageSuggest({Key? key, required this.routerChange}) : super(key: key);
+  Function routerChange;
   @override
   State createState() => ShnatterPageSuggestState();
 }
@@ -74,9 +74,12 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Container(
-          width: SizeConfig.rightPaneWidth,
-          // color: Color.fromARGB(255, 255, 255, 255),
-          padding: EdgeInsets.all(10),
+          width: SizeConfig(context).screenWidth < 600
+              ? SizeConfig(context).screenWidth
+              : 600,
+          // width: SizeConfig.rightPaneWidth,
+          // color: Colors.white,
+          padding: const EdgeInsets.only(top: 10),
           child: Column(
             children: [
               Row(
@@ -86,9 +89,9 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                     "Suggested Pages",
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 45.0),
-                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.only(top: 45.0),
+                  // ),
                   Row(
                     children: [
                       const Text(

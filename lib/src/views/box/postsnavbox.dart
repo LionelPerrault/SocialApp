@@ -1,26 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/HomeController.dart';
-import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/colors.dart';
 
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/widget/createEventWidget.dart';
 import 'package:shnatter/src/widget/createGroupWidget.dart';
 import 'package:shnatter/src/widget/createPageWidget.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
-
-import '../../controllers/UserController.dart';
+import 'package:universal_html/js_util.dart';
 
 class PostsNavBox extends StatefulWidget {
-  PostsNavBox({Key? key}) : super(key: key);
-
+  PostsNavBox({Key? key, required this.routerChange}) : super(key: key);
+  Function routerChange;
   @override
   State createState() => PostsNavBoxState();
 }
@@ -28,56 +18,62 @@ class PostsNavBox extends StatefulWidget {
 class PostsNavBoxState extends State<PostsNavBox> {
   //
   bool isSound = false;
-  List<Map> eachList = [
+  late List<Map> eachList = [
+    // {
+    //   'icon': Icons.photo_camera_back_outlined,
+    //   'color': Color.fromARGB(255, 103, 58, 183),
+    //   'text': 'Create Story',
+    //   'onTap': (context) {
+    //     Navigator.of(context).pop(true);
+    //     showDialog(
+    //         context: context,
+    //         builder: (BuildContext context) => AlertDialog(
+    //             title: Row(
+    //               children: const [
+    //                 Icon(
+    //                   Icons.event,
+    //                   color: Color.fromARGB(255, 247, 159, 88),
+    //                 ),
+    //                 Text(
+    //                   'Create New Event',
+    //                   style:
+    //                       TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+    //                 ),
+    //               ],
+    //             ),
+    //             content: CreateEventModal(context: context)));
+    //   },
+    // },
+    // {
+    //   'icon': Icons.low_priority_outlined,
+    //   'color': Color.fromARGB(255, 242, 94, 78),
+    //   'text': 'Create News',
+    //   'onTap': (context) {
+    //     Navigator.of(context).pop(true);
+    //     showDialog(
+    //         context: context,
+    //         builder: (BuildContext context) => AlertDialog(
+    //             title: Row(
+    //               children: const [
+    //                 Icon(
+    //                   Icons.event,
+    //                   color: Color.fromARGB(255, 247, 159, 88),
+    //                 ),
+    //                 Text(
+    //                   'Create New Event',
+    //                   style:
+    //                       TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+    //                 ),
+    //               ],
+    //             ),
+    //             content: CreateEventModal(context: context)));
+    //   },
+    // },
     {
-      'icon': Icons.photo_camera_back_outlined,
-      'color': Color.fromARGB(255, 103, 58, 183),
-      'text': 'Create Story',
-      'onTap': (context) {
-        Navigator.of(context).pop(true);
-        showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-                title: Row(
-                  children: const [
-                    Icon(
-                      Icons.event,
-                      color: Color.fromARGB(255, 247, 159, 88),
-                    ),
-                    Text(
-                      'Create New Event',
-                      style:
-                          TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                ),
-                content: CreateEventModal(context: context)));
-      },
-    },
-    {
-      'icon': Icons.low_priority_outlined,
-      'color': Color.fromARGB(255, 242, 94, 78),
-      'text': 'Create News',
-      'onTap': (context) {
-        Navigator.of(context).pop(true);
-        showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-                title: Row(
-                  children: const [
-                    Icon(
-                      Icons.event,
-                      color: Color.fromARGB(255, 247, 159, 88),
-                    ),
-                    Text(
-                      'Create New Event',
-                      style:
-                          TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                ),
-                content: CreateEventModal(context: context)));
-      },
+      'icon': Icons.person_add_sharp,
+      'color': Color.fromARGB(255, 43, 83, 164),
+      'text': 'Add Friend',
+      'onTap': (context) {},
     },
     {
       'icon': Icons.production_quantity_limits_sharp,
@@ -101,34 +97,37 @@ class PostsNavBoxState extends State<PostsNavBox> {
                     ),
                   ],
                 ),
-                content: CreateProductModal(context: context)));
+                content: CreateProductModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
       },
     },
-    {
-      'icon': Icons.flag,
-      'color': Color.fromARGB(255, 33, 150, 243),
-      'text': 'Create Page',
-      'onTap': (context) {
-        Navigator.of(context).pop(true);
-        showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-                title: Row(
-                  children: const [
-                    Icon(
-                      Icons.flag,
-                      color: Color.fromARGB(255, 33, 150, 243),
-                    ),
-                    Text(
-                      'Create New Event',
-                      style:
-                          TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                ),
-                content: CreatePageModal(context: context)));
-      },
-    },
+    // {
+    //   'icon': Icons.flag,
+    //   'color': Color.fromARGB(255, 33, 150, 243),
+    //   'text': 'Create Page',
+    //   'onTap': (context) {
+    //     Navigator.of(context).pop(true);
+    //     showDialog(
+    //         context: context,
+    //         builder: (BuildContext context) => AlertDialog(
+    //             title: Row(
+    //               children: const [
+    //                 Icon(
+    //                   Icons.flag,
+    //                   color: Color.fromARGB(255, 33, 150, 243),
+    //                 ),
+    //                 Text(
+    //                   'Create New Event',
+    //                   style:
+    //                       TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+    //                 ),
+    //               ],
+    //             ),
+    //             content: CreatePageModal(context: context)));
+    //   },
+    // },
     {
       'icon': Icons.groups,
       'color': Color.fromARGB(255, 43, 83, 164),
@@ -151,7 +150,10 @@ class PostsNavBoxState extends State<PostsNavBox> {
                     ),
                   ],
                 ),
-                content: CreateGroupModal(context: context)));
+                content: CreateGroupModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
       },
     },
     {
@@ -176,7 +178,10 @@ class PostsNavBoxState extends State<PostsNavBox> {
                     ),
                   ],
                 ),
-                content: CreateEventModal(context: context)));
+                content: CreateEventModal(
+                  context: context,
+                  routerChange: widget.routerChange,
+                )));
       },
     },
   ];
@@ -201,7 +206,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
           child: Column(
             children: [
               SizedBox(
-                height: 300,
+                height: 200,
                 //size: Size(100,100),
                 child: ListView(
                   shrinkWrap: true,

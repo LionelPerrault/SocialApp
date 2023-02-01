@@ -1,14 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
@@ -17,9 +18,11 @@ class EventCell extends StatefulWidget {
     super.key,
     required this.eventData,
     required this.buttonFun,
+    required this.routerChange,
   }) : con = PostController();
   Map eventData;
   Function buttonFun;
+  Function routerChange;
 
   late PostController con;
   @override
@@ -45,7 +48,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
     print(eventAdminInfo);
     if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
-        widget.eventData['data']['groupAdmin'][0]['uid'] ==
+        widget.eventData['data']['eventAdmin'][0]['uid'] ==
             UserManager.userInfo['uid']) {
       loading = true;
       setState(() {});
@@ -132,8 +135,10 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushReplacementNamed(context,
-                                    '/events/${widget.eventData['id']}');
+                                widget.routerChange({
+                                  'router': RouteNames.events,
+                                  'subRouter': widget.eventData['id'],
+                                });
                               }),
                       ]),
                     ),

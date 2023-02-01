@@ -81,15 +81,10 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                   if (snapshot.hasData && snapshot.data != null) {
                     var messageList = snapshot.data!.docs;
                     return Column(children: [
-                      SizedBox(
+                      Container(
                           height: SizeConfig(context).screenHeight - 220,
                           child: ListView.builder(
                             itemCount: messageList.length,
-                            controller: _scrollController,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               var list = messageList[index].data();
                               var chatUserName = '';
@@ -230,12 +225,12 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                               );
                             },
                           )),
-                          WriteMessageScreen(
-                              type: con.isMessageTap == 'new' ? 'new' : 'old',
-                              goMessage: (value) {
-                                widget.onBack(value);
-                              },
-                            )
+                      WriteMessageScreen(
+                          type: con.isMessageTap == 'new' ? 'new' : 'old',
+                          goMessage: (value) {
+                            widget.onBack(value);
+                          },
+                        )
                     ]);
                   } else {
                     return SizedBox(

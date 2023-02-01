@@ -10,42 +10,27 @@ import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/products/widget/productcell.dart';
 
 class ProductEachScreen extends StatefulWidget {
-  ProductEachScreen({Key? key, required this.docId})
+  ProductEachScreen({Key? key, required this.docId, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
   String docId;
+  Function routerChange;
+
   @override
   State createState() => ProductEachScreenState();
 }
 
 class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
     with SingleTickerProviderStateMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final TextEditingController searchController = TextEditingController();
-  bool showSearch = false;
-  late FocusNode searchFocusNode;
-  late FileController filecon;
-  bool showMenu = false;
-  late AnimationController _drawerSlideController;
-  double progress = 0;
   bool loading = false;
-  //
+  late PostController con;
   var userInfo = UserManager.userInfo;
   @override
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    filecon = FileController();
-    // con.profile_cover = UserManager.userInfo['profile_cover'] ?? '';
-    setState(() {});
     super.initState();
-    searchFocusNode = FocusNode();
-    _drawerSlideController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 150),
-    );
     getSelectedProduct(widget.docId);
   }
 
@@ -57,189 +42,68 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
         });
   }
 
-  late PostController con;
-  void onSearchBarFocus() {
-    searchFocusNode.requestFocus();
-    setState(() {
-      showSearch = true;
-    });
-  }
-
-  void clickMenu() {
-    if (_isDrawerOpen() || _isDrawerOpening()) {
-      _drawerSlideController.reverse();
-    } else {
-      _drawerSlideController.forward();
-    }
-  }
-
-  void onSearchBarDismiss() {
-    if (showSearch)
-      setState(() {
-        showSearch = false;
-      });
-  }
-
-  bool _isDrawerOpen() {
-    return _drawerSlideController.value == 1.0;
-  }
-
-  bool _isDrawerOpening() {
-    return _drawerSlideController.status == AnimationStatus.forward;
-  }
-
-  bool _isDrawerClosed() {
-    return _drawerSlideController.value == 0.0;
-  }
-
-  @override
-  void dispose() {
-    searchFocusNode.dispose();
-    _drawerSlideController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _scaffoldKey,
-        drawerEnableOpenDragGesture: false,
-        drawer: Drawer(),
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            ShnatterNavigation(
-              searchController: searchController,
-              onSearchBarFocus: onSearchBarFocus,
-              onSearchBarDismiss: onSearchBarDismiss,
-              drawClicked: clickMenu,
-            ),
-            Padding(
-                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                child: SingleChildScrollView(
-                  child: con.product == null
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                margin: EdgeInsets.only(
-                                    top: SizeConfig(context).screenHeight *
-                                        2 /
-                                        5),
-                                child: const CircularProgressIndicator(
-                                  color: Colors.grey,
-                                ),
-                              )
-                            ])
-                      : Container(
-                          width: SizeConfig(context).screenWidth < 600
-                              ? SizeConfig(context).screenWidth
-                              : 600,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  children: [
+    return con.product == null
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Container(
+              width: 50,
+              height: 50,
+              margin: EdgeInsets.only(
+                  top: SizeConfig(context).screenHeight * 2 / 5),
+              child: const CircularProgressIndicator(
+                color: Colors.grey,
+              ),
+            )
+          ])
+        : Container(
+            width: SizeConfig(context).screenWidth < 600
+                ? SizeConfig(context).screenWidth
+                : 600,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: SizeConfig(context).screenWidth >
+                                SizeConfig.mediumScreenSize
+                            ? 700
+                            : SizeConfig(context).screenWidth > 600
+                                ? 600
+                                : SizeConfig(context).screenWidth,
+                        padding: EdgeInsets.only(top: 100),
+                        child: !loading
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
                                     Container(
-                                      width: SizeConfig(context).screenWidth >
-                                              SizeConfig.mediumScreenSize
-                                          ? 700
-                                          : SizeConfig(context).screenWidth >
-                                                  600
-                                              ? 600
-                                              : SizeConfig(context).screenWidth,
-                                      padding: EdgeInsets.only(top: 100),
-                                      child: !loading
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                  Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    margin: EdgeInsets.only(
-                                                        top: SizeConfig(context)
-                                                                .screenHeight *
-                                                            2 /
-                                                            5),
-                                                    child:
-                                                        const CircularProgressIndicator(
-                                                      color: Colors.grey,
-                                                    ),
-                                                  )
-                                                ])
-                                          : ProductCell(data: {
-                                              'data': con.product,
-                                              'id': con.viewProductId
-                                            }),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                )),
-            showSearch
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showSearch = false;
-                      });
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        color: const Color.fromARGB(0, 214, 212, 212),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.only(right: 20.0),
-                                    child: const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                    )),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10, right: 9),
-                                  width: SizeConfig(context).screenWidth * 0.4,
-                                  child: TextField(
-                                    focusNode: searchFocusNode,
-                                    controller: searchController,
-                                    cursorColor: Colors.white,
-                                    style: const TextStyle(color: Colors.white),
-                                    decoration: const InputDecoration(
-                                      prefixIcon: Icon(Icons.search,
-                                          color: Color.fromARGB(
-                                              150, 170, 212, 255),
-                                          size: 20),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0)),
+                                      width: 50,
+                                      height: 50,
+                                      margin: EdgeInsets.only(
+                                          top:
+                                              SizeConfig(context).screenHeight *
+                                                  2 /
+                                                  5),
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.grey,
                                       ),
-                                      filled: true,
-                                      fillColor: Color(0xff202020),
-                                      hintText: 'Search',
-                                      hintStyle: TextStyle(
-                                          fontSize: 15.0, color: Colors.white),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            ShnatterSearchBox()
-                          ],
-                        )),
-                  )
-                : const SizedBox(),
-            ChatScreen(),
-          ],
-        ));
+                                    )
+                                  ])
+                            : ProductCell(
+                                data: {
+                                  'data': con.product,
+                                  'id': con.viewProductId
+                                },
+                                routerChange: widget.routerChange,
+                              ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 }

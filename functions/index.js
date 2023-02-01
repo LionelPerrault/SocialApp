@@ -34,7 +34,7 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
     const serviceId = '9ab1b69e-92ae-4612-9a4f-c5a102a6c068';
     const shnToken1 = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-BNAF';
     const shnToken = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-SHNATST';
-    const adminEmail = 'leo.champlin2022@gmail.com';
+    const adminEmail = 'artem@gmail.com';
     const adminPassword = 'entertainment';
     const adminPaymail = '4326@shnatter.com';
     const uuid = req.query.uid;

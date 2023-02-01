@@ -1,5 +1,9 @@
+// ignore_for_file: prefer_is_empty
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:animated_widgets/widgets/rotation_animated.dart';
+import 'package:animated_widgets/widgets/shake_animated_widget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/footerbar.dart';
@@ -24,8 +28,14 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends mvc.StateMVC<LoginScreen> {
   bool isRememberme = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  List<TextEditingController> _controllers =
+      List.generate(6, (_) => TextEditingController());
+  List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
+  String _verificationCode = '';
   String password = '';
   String email = '';
+  bool enableTwoFactor = false;
+  var isObscure = true;
   @override
   void initState() {
     add(widget.con);
@@ -34,6 +44,64 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
   }
 
   late UserController con;
+
+  // void onCodeInput() async {
+  //   if (verificationCode.length == 6) {
+  //     var verificaCode = verificationCode.toString();
+  //     print(verificaCode);
+  //     con.loginWithVerificationCode(verificaCode, context).then((value) => {
+  //           if (!value) {Helper.failAlert('Verification Code is incorrect!')}
+  //         });
+  //   }
+  // }
+
+  // List<Widget> getField() {
+  //   final List<Widget> result = <Widget>[];
+  //   for (int i = 1; i <= 6; i++) {
+  //     result.add(
+  //       ShakeAnimatedWidget(
+  //         enabled: false,
+  //         duration: const Duration(
+  //           milliseconds: 100,
+  //         ),
+  //         shakeAngle: Rotation.deg(
+  //           z: 2,
+  //         ),
+  //         curve: Curves.linear,
+  //         child: Column(
+  //           children: <Widget>[
+  //             if (verificationCode.length >= i)
+  //               Padding(
+  //                 padding: const EdgeInsets.symmetric(
+  //                   horizontal: 5.0,
+  //                 ),
+  //                 child: Text(
+  //                   verificationCode[i - 1],
+  //                   style: const TextStyle(
+  //                     color: Colors.white,
+  //                     fontSize: 20,
+  //                     fontWeight: FontWeight.w700,
+  //                   ),
+  //                 ),
+  //               ),
+  //             Padding(
+  //               padding: const EdgeInsets.symmetric(
+  //                 horizontal: 5.0,
+  //               ),
+  //               child: Container(
+  //                 height: 5.0,
+  //                 width: 20.0,
+  //                 color: Colors.white,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   }
+  //   return result;
+  // }
+
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
@@ -68,7 +136,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                 width:
                     SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
                         ? SizeConfig.smallScreenSize * 0.94
-                        : 300,
+                        : 320,
                 height:
                     SizeConfig(context).screenWidth < SizeConfig.smallScreenSize
                         ? 550
@@ -91,158 +159,198 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                       color: Colors.black,
                     ),
                     borderRadius: const BorderRadius.all(Radius.circular(5))),
-                child: ListView(
-                  children: <Widget>[
-                    Container(
-                      width: 455,
-                      height: 90,
-                      margin: const EdgeInsets.only(top: 50.0),
-                      color: const Color.fromARGB(255, 11, 35, 45),
-                      child: Row(children: const <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 45.0),
-                        ),
-                        Text('Login',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 238, 238, 238),
-                              fontSize: 30,
-                            )),
-                      ]),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 30.0),
-                      child: Row(children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 30.0),
-                        ),
-                        SvgPicture.network(
-                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719')
-                      ]),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                      padding: const EdgeInsets.only(left: 30, right: 30),
-                      child: Column(children: <Widget>[
-                        input(
-                            label: 'Email or UserName',
-                            icon: const Icon(
-                              Icons.person_outline_outlined,
-                              color: Colors.white,
-                            ),
-                            onchange: (value) async {
-                              email = value;
-                              setState(() {});
-                            }),
-                        input(
-                            label: 'Password',
-                            obscureText: true,
-                            icon: const Icon(
-                              Icons.key,
-                              color: Colors.white,
-                            ),
-                            onchange: (value) async {
-                              password = value;
-                              setState(() {});
-                            }),
-                      ]),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 25, right: 30),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Transform.scale(
-                                scale: 0.7,
-                                child: Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Colors.blue,
+                child: enableTwoFactor
+                    ? twoFactorAuthentication()
+                    : ListView(
+                        children: <Widget>[
+                          Container(
+                            width: 455,
+                            height: 90,
+                            margin: const EdgeInsets.only(top: 50.0),
+                            color: const Color.fromARGB(255, 11, 35, 45),
+                            child: Row(children: const <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(left: 45.0),
+                              ),
+                              Text('Login',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 238, 238, 238),
+                                    fontSize: 30,
+                                  )),
+                            ]),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 30.0),
+                            child: Row(children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 30.0),
+                              ),
+                              SvgPicture.network(
+                                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719')
+                            ]),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 20.0),
+                            padding: const EdgeInsets.only(left: 30, right: 30),
+                            child: Column(children: <Widget>[
+                              input(
+                                  label: 'Email or UserName',
+                                  icon: const Icon(
+                                    Icons.person_outline_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  onchange: (value) async {
+                                    email = value;
+                                    setState(() {});
+                                  }),
+                              // input(
+                              //     label: 'Password',
+                              //     obscureText: true,
+                              //     icon: const Icon(
+                              //       Icons.key,
+                              //       color: Colors.white,
+                              //     ),
+                              //     onchange: (value) async {
+                              //       password = value;
+                              //       setState(() {});
+                              //     }),
+                              passwordTextField(
+                                  obscureText: isObscure,
+                                  label: 'Password',
+                                  icon: const Icon(
+                                    Icons.key,
+                                    color: Colors.white,
+                                  ),
+                                  suffixIcon: Padding(
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    child: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isObscure = !isObscure;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          isObscure
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                  onchange: (value) async {
+                                    password = value;
+                                    setState(() {});
+                                  }),
+                            ]),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(left: 25, right: 30),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Transform.scale(
+                                      scale: 0.7,
+                                      child: Checkbox(
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.blue,
 
-                                  fillColor: MaterialStateProperty.resolveWith(
-                                      getColor),
-                                  value: isRememberme,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              5.0))), //rounded checkbox
-                                  onChanged: (value) {
-                                    setState(() {
-                                      isRememberme =
-                                          isRememberme ? false : true;
-                                    });
-                                  },
-                                )),
-                            const Padding(padding: EdgeInsets.only(top: 10)),
-                            const Text('Remember me',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 150, 150, 150),
-                                    fontSize: 11)),
-                            const Flexible(
-                                fit: FlexFit.tight, child: SizedBox()),
-                            RichText(
+                                        fillColor:
+                                            MaterialStateProperty.resolveWith(
+                                                getColor),
+                                        value: isRememberme,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    5.0))), //rounded checkbox
+                                        onChanged: (value) {
+                                          setState(() {
+                                            isRememberme =
+                                                isRememberme ? false : true;
+                                          });
+                                        },
+                                      )),
+                                  const Padding(
+                                      padding: EdgeInsets.only(top: 10)),
+                                  const Text('Remember me',
+                                      style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150),
+                                          fontSize: 11)),
+                                  const Flexible(
+                                      fit: FlexFit.tight, child: SizedBox()),
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: 'Forgotten password?',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                          context,
+                                                          RouteNames.reset);
+                                                  con.isSendResetPassword =
+                                                      false;
+                                                  con.setState(() {});
+                                                })
+                                        ]),
+                                  ),
+                                ]),
+                          ),
+                          Container(
+                            width: 260,
+                            margin: const EdgeInsets.only(top: 10.0),
+                            padding:
+                                const EdgeInsets.only(left: 30.0, right: 30),
+                            child: MyPrimaryButton(
+                              color: Colors.white,
+                              isShowProgressive: con.isSendLoginedInfo,
+                              buttonName: "login",
+                              onPressed: () => {
+                                if (!con.isSendLoginedInfo)
+                                  con
+                                      .loginWithEmail(context, email, password,
+                                          isRememberme)
+                                      .then((value) => setState(() {
+                                            enableTwoFactor = value;
+                                          })),
+                                // con.createPassword()
+                              },
+                            ),
+                          ),
+                          con.failLogin != ''
+                              ? Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 30, right: 30, top: 10),
+                                  child: Helper.failAlert(con.failLogin))
+                              : Container(),
+                          Container(
+                            margin: const EdgeInsets.only(top: 10.0),
+                            alignment: Alignment.center,
+                            child: RichText(
                               text: TextSpan(
+                                  text: 'Not Regsitered?',
                                   style: const TextStyle(
                                       color: Colors.grey, fontSize: 10),
                                   children: <TextSpan>[
                                     TextSpan(
-                                        text: 'Forgotten password?',
+                                        text: ' Create an account',
                                         style: const TextStyle(
                                             color: Colors.white, fontSize: 10),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             Navigator.pushReplacementNamed(
-                                                context, RouteNames.reset);
-                                            con.isSendResetPassword = false;
-                                            con.setState(() {});
+                                                context, RouteNames.register);
                                           })
                                   ]),
                             ),
-                          ]),
-                    ),
-                    Container(
-                      width: 260,
-                      margin: const EdgeInsets.only(top: 10.0),
-                      padding: const EdgeInsets.only(left: 30.0, right: 30),
-                      child: MyPrimaryButton(
-                        color: Colors.white,
-                        isShowProgressive: con.isSendLoginedInfo,
-                        buttonName: "login",
-                        onPressed: () => {
-                          if (!con.isSendLoginedInfo)
-                            con.loginWithEmail(
-                                context, email, password, isRememberme)
-                          // con.createPassword()
-                        },
+                          ),
+                        ],
                       ),
-                    ),
-                    con.failLogin != ''
-                        ? Container(
-                            margin: const EdgeInsets.only(
-                                left: 30, right: 30, top: 10),
-                            child: Helper.failAlert(con.failLogin))
-                        : Container(),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10.0),
-                      alignment: Alignment.center,
-                      child: RichText(
-                        text: TextSpan(
-                            text: 'Not Regsitered?',
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 10),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: ' Create an account',
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 10),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.pushReplacementNamed(
-                                          context, RouteNames.register);
-                                    })
-                            ]),
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ),
             Padding(
@@ -281,6 +389,234 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
         },
         icon: icon,
         label: label,
+      ),
+    );
+  }
+
+  Widget twoFactorAuthentication() {
+    return ListView(
+      children: <Widget>[
+        Container(
+          width: 455,
+          height: 90,
+          margin: const EdgeInsets.only(top: 50.0),
+          color: const Color.fromARGB(255, 11, 35, 45),
+          child: Row(children: const <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 45.0),
+            ),
+            Text('Login',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 238, 238, 238),
+                  fontSize: 20,
+                )),
+          ]),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 30.0),
+          child: Row(children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 30.0),
+            ),
+            SvgPicture.network(
+                'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719')
+          ]),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 40)),
+        Container(
+            margin: const EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(left: 5, right: 5),
+            child: Stack(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    for (int i = 0; i < _controllers.length; i++)
+                      Expanded(
+                        flex: 1,
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white),
+                          cursorColor: Colors.white,
+                          controller: _controllers[i],
+                          focusNode: _focusNodes[i],
+                          maxLength: 1,
+                          textAlign: TextAlign.center,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              focusColor: Colors.white,
+                              filled: true,
+                              fillColor: Color.fromRGBO(35, 35, 35, 0.7)),
+                          onChanged: (value) {
+                            print(value);
+                            if (value.isNotEmpty) {
+                              setState(() {
+                                _verificationCode += value;
+                                _verificationCode.length;
+                                print(_verificationCode);
+                                if (_verificationCode.length == 6) {
+                                  print(_verificationCode);
+                                  con
+                                      .loginWithVerificationCode(
+                                          _verificationCode, context)
+                                      .then((value) => {
+                                            if (!value)
+                                              {
+                                                Helper.failAlert(
+                                                    'Verification Code is incorrect!'),
+                                                _verificationCode = '',
+                                              }
+                                            else
+                                              {
+                                                _verificationCode = '',
+                                              }
+                                          });
+                                }
+                                FocusScope.of(context)
+                                    .requestFocus(_focusNodes[i + 1]);
+                              });
+                            } else if (value.isEmpty) {
+                              _controllers[i].clear();
+                              _focusNodes[i].unfocus();
+                              FocusScope.of(context)
+                                  .requestFocus(_focusNodes[i - 1]);
+                              setState(() {
+                                if (i != 0) {
+                                  _verificationCode =
+                                      _verificationCode.substring(
+                                          0, _verificationCode.length - 1);
+                                } else {
+                                  _verificationCode = '';
+                                  FocusScope.of(context)
+                                      .requestFocus(_focusNodes[0]);
+                                }
+                              });
+                              print(_verificationCode);
+                            }
+                          },
+                        ),
+                      ),
+                  ],
+                )
+
+                // Opacity(
+                //   opacity: 1.0,
+                //   child: TextFormField(
+                //     controller: _controller,
+                //     focusNode: _textNode,
+                //     keyboardType: TextInputType.number,
+                //     onChanged: onCodeInput,
+                //     maxLength: 6,
+                //     decoration: const InputDecoration(
+                //         border: OutlineInputBorder(),
+                //         filled: true,
+                //         fillColor: Colors.blue),
+                //     style: const TextStyle(
+                //         color: Colors.white, backgroundColor: Colors.white),
+                //   ),
+                // ),
+                // Positioned(
+                //   // bottom: 0,
+                //   child: Row(
+                //     crossAxisAlignment: CrossAxisAlignment.end,
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: getField(),
+                //   ),
+                // )
+              ],
+            )),
+        Container(
+          padding: const EdgeInsets.only(left: 25, right: 30),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Transform.scale(
+                    scale: 0.7,
+                    child: Checkbox(
+                      checkColor: Colors.white,
+                      activeColor: Colors.blue,
+
+                      // fillColor: MaterialStateProperty.resolveWith(
+                      //     getColor),
+                      value: isRememberme,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(5.0))), //rounded checkbox
+                      onChanged: (value) {
+                        setState(() {
+                          isRememberme = isRememberme ? false : true;
+                        });
+                      },
+                    )),
+              ]),
+        ),
+        Container(
+          width: 260,
+          margin: const EdgeInsets.only(top: 10.0),
+          padding: const EdgeInsets.only(left: 30.0, right: 30),
+          child: MyPrimaryButton(
+            color: Colors.white,
+            buttonName: "Back",
+            onPressed: () => {
+              // if (!con.isSendLoginedInfo)
+              //   con.loginWithEmail(
+              //       context, email, password, isRememberme)
+              // con.createPassword()
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget passwordTextField(
+      {label, icon, suffixIcon, onchange, obscureText = false, validator}) {
+    return Container(
+      height: 38,
+      padding: const EdgeInsets.only(top: 10),
+      child: TextField(
+        obscureText: obscureText,
+        onChanged: (val) async {
+          onchange(val);
+        },
+        style: const TextStyle(color: Colors.white, fontSize: 11),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: const Color.fromRGBO(35, 35, 35, 1),
+          focusColor: Colors.white,
+          //add prefix icon
+          contentPadding: const EdgeInsets.symmetric(vertical: 3),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.1),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.1),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 0.1),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          hintText: label,
+          hintStyle: const TextStyle(
+            color: Colors.grey,
+            fontSize: 11,
+            fontFamily: "verdana_regular",
+            fontWeight: FontWeight.w400,
+          ),
+          prefixIcon: icon,
+          suffixIcon: IconButton(
+            padding: EdgeInsets.only(bottom: 3),
+            icon: Icon(
+              isObscure ? Icons.visibility : Icons.visibility_off,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(() => {isObscure = !isObscure});
+            },
+          ),
+        ),
       ),
     );
   }

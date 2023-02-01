@@ -1,29 +1,19 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/chat/chatUserListScreen.dart';
-import 'package:shnatter/src/views/chat/emoticonScreen.dart';
-import 'package:shnatter/src/views/chat/newMessageScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/people/searchScreen.dart';
 
-import '../../controllers/ChatController.dart';
-
 class PeopleDiscoverScreen extends StatefulWidget {
-  PeopleDiscoverScreen({Key? key})
+  PeopleDiscoverScreen({Key? key, required this.routerChange})
       : con = PeopleController(),
         super(key: key);
   final PeopleController con;
+  Function routerChange;
   @override
   State createState() => PeopleDiscoverScreenState();
 }
@@ -34,7 +24,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
   //route variable
   Map isFriendRequest = {};
   String tabName = 'Discover';
-  Color color = Color.fromRGBO(230, 236, 245, 1);
+  Color color = const Color.fromRGBO(230, 236, 245, 1);
   List gender = [
     {'value': 'Any', 'title': 'Any'},
     {'value': 'Male', 'title': 'male'},
@@ -169,12 +159,37 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                           Container(
                                             padding: EdgeInsets.only(
                                                 left: 10, top: 5),
-                                            child: Text(
-                                              '${e.value['firstName']} ${e.value['lastName']}',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w900,
-                                                  fontSize: 11),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 11),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text:
+                                                          '${e.value['firstName']} ${e.value['lastName']}',
+                                                      style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 11),
+                                                      recognizer:
+                                                          TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              print(
+                                                                  'visit profile');
+                                                              widget
+                                                                  .routerChange({
+                                                                'router':
+                                                                    RouteNames
+                                                                        .profile,
+                                                                'subRouter': e
+                                                                        .value[
+                                                                    'userName']
+                                                              });
+                                                            })
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           Flexible(

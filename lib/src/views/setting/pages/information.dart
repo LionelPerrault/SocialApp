@@ -12,7 +12,8 @@ import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingInfoScreen extends StatefulWidget {
-  SettingInfoScreen({Key? key}) : super(key: key);
+  SettingInfoScreen({Key? key, required this.routerChange}) : super(key: key);
+  Function routerChange;
   @override
   State createState() => SettingInfoScreenState();
 }
@@ -27,6 +28,7 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
         child: Column(
           children: [
             SettingHeader(
+              routerChange: widget.routerChange,
               icon: const Icon(
                 Icons.file_present,
                 color: Color.fromARGB(255, 40, 167, 69),

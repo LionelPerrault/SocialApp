@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -28,10 +29,57 @@ class PostController extends ControllerMVC {
     return true;
   }
 
+  Future<String> formatDate(d) async {
+    var time = changeTimeType(d: d);
+    String trDate = '';
+    var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
+    print('UserManager${UserManager.userInfo['timeDifference']}');
+    final difference =
+        nowTimeStamp - time + UserManager.userInfo['timeDifference'];
+    if (difference / (1000 * 60) < 1) {
+      trDate = 'Just Now';
+    } else if (difference / (1000 * 60 * 60) < 1) {
+      trDate = '${(difference / (1000 * 60)).round()} minutes ago';
+    } else if (difference / (1000 * 60 * 60 * 24) < 1) {
+      trDate = '${(difference / (1000 * 60 * 60)).round()} hours ago';
+    } else if (difference / (1000 * 60 * 60 * 24 * 30) < 1) {
+      trDate = '${(difference / (1000 * 60 * 60 * 24)).round()} days ago';
+    } else if (difference / (1000 * 60 * 60 * 24 * 30) >= 1) {
+      trDate =
+          '${(difference / (1000 * 60 * 60 * 24 * 30)).round()} months ago';
+    }
+    return trDate;
+  }
+
+  changeTimeType({var d, bool type = false}) {
+    var notifyTime = DateTime.parse(d.toDate().toString());
+    var formattedNotifyTime =
+        DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+    if (type) {
+      return formattedNotifyTime;
+    } else {
+      return DateTime.parse(formattedNotifyTime).millisecondsSinceEpoch;
+    }
+  }
+
+  getNowTime() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.timeNow)
+        .update({
+      'time': FieldValue.serverTimestamp(),
+    });
+    var snapShot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.timeNow)
+        .get();
+    var nowTime = snapShot.data()!['time'];
+    return nowTime;
+  }
+
   Future<bool> uploadPicture(String where, String what, String url) async {
     switch (where) {
       case 'group':
-        print(what);
         FirebaseFirestore.instance
             .collection(Helper.groupsField)
             .doc(viewGroupId)
@@ -222,18 +270,30 @@ class PostController extends ControllerMVC {
   }
 
   //create event function
-  Future<String> createEvent(context, Map<String, dynamic> eventData) async {
+  Future<Map> createEvent(context, Map<String, dynamic> eventData) async {
     if (eventData['eventName'] == null || eventData['eventName'] == '') {
-      return 'Please add your event name';
+      return {
+        'msg': 'Please add your event name',
+        'result': false,
+      };
     } else if (eventData['eventLocation'] == null ||
         eventData['eventLocation'] == '') {
-      return 'Please add your event location';
+      return {
+        'msg': 'Please add your event location',
+        'result': false,
+      };
     } else if (eventData['eventStartDate'] == null ||
         eventData['eventStartDate'] == '') {
-      return 'Please add your event start date';
+      return {
+        'msg': 'Please add your event start date',
+        'result': false,
+      };
     } else if (eventData['eventEndDate'] == null ||
         eventData['eventEndDate'] == '') {
-      return 'Please add your event end date';
+      return {
+        'msg': 'Please add your event end date',
+        'result': false,
+      };
     }
     eventData = {
       ...eventData,
@@ -253,6 +313,7 @@ class PostController extends ControllerMVC {
       'eventApproval': true
     };
     Map<String, dynamic> notificationData;
+    String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.eventsField)
         .add(eventData)
@@ -267,9 +328,13 @@ class PostController extends ControllerMVC {
                 'timeStamp': FieldValue.serverTimestamp(),
               },
               saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(context, '/events/${value.id}'),
+              id = value.id,
             });
-    return 'Successfully created';
+    return {
+      'msg': 'Successfully created',
+      'result': true,
+      'value': id,
+    };
   }
 
   //get all interests from firebase
@@ -297,6 +362,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.eventsField)
           .doc(eventId)
           .update({'eventInterested': interested});
+      Helper.showToast('Uninterested event');
       return true;
     } else {
       interested.add({
@@ -306,6 +372,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.eventsField)
           .doc(eventId)
           .update({'eventInterested': interested});
+      Helper.showToast('Interested event');
       return true;
     }
   }
@@ -466,7 +533,6 @@ class PostController extends ControllerMVC {
       }
       print('Now you get all pages');
     });
-    print(realAllpage);
     return realAllpage;
   }
 
@@ -507,15 +573,24 @@ class PostController extends ControllerMVC {
   }
 
   //create page function
-  Future<String> createPage(context, Map<String, dynamic> pageData) async {
+  Future<Map> createPage(context, Map<String, dynamic> pageData) async {
     if (pageData['pageName'] == null || pageData['pageName'] == '') {
-      return 'Please add your page name';
+      return {
+        'msg': 'Please add your page name',
+        'result': false,
+      };
     } else if (pageData['pageUserName'] == null ||
         pageData['pageUserName'] == '') {
-      return 'Please add your page user name';
+      return {
+        'msg': 'Please add your page user name',
+        'result': false,
+      };
     } else if (pageData['pageLocation'] == null ||
         pageData['pageLocation'] == '') {
-      return 'Please add your page location';
+      return {
+        'msg': 'Please add your page location',
+        'result': false,
+      };
     }
     pageData = {
       ...pageData,
@@ -537,9 +612,13 @@ class PostController extends ControllerMVC {
         .get();
     var value = reuturnValue.docs;
     if (value.isNotEmpty) {
-      return 'Page Name should be unique';
+      return {
+        'msg': 'Page Name should be unique',
+        'result': false,
+      };
     }
     Map<String, dynamic> notificationData;
+    String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .add(pageData)
@@ -554,10 +633,13 @@ class PostController extends ControllerMVC {
                 'timeStamp': FieldValue.serverTimestamp(),
               },
               saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(
-                  context, '${RouteNames.pages}/${pageData['pageUserName']}'),
+              id = value.id,
             });
-    return 'Page was created successfully';
+    return {
+      'msg': 'Page was created successfully',
+      'result': true,
+      'value': id,
+    };
   }
 
   ////////////////////functions that support for making comment to page/////////////////////////////
@@ -576,6 +658,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.pagesField)
           .doc(pageId)
           .update({'pageLiked': liked});
+      Helper.showToast('Unliked page');
       return true;
     } else {
       liked.add({
@@ -585,6 +668,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.pagesField)
           .doc(pageId)
           .update({'pageLiked': liked});
+      Helper.showToast('Liked page');
       return true;
     }
   }
@@ -747,15 +831,24 @@ class PostController extends ControllerMVC {
   }
 
   //create group function
-  Future<String> createGroup(context, Map<String, dynamic> groupData) async {
+  Future<Map> createGroup(context, Map<String, dynamic> groupData) async {
     if (groupData['groupName'] == null || groupData['groupName'] == '') {
-      return 'Please add your group name';
+      return {
+        'msg': 'Please add your group name',
+        'result': false,
+      };
     } else if (groupData['groupUserName'] == null ||
         groupData['groupUserName'] == '') {
-      return 'Please add your group user name';
+      return {
+        'msg': 'Please add your group user name',
+        'result': false,
+      };
     } else if (groupData['groupLocation'] == null ||
         groupData['groupLocation'] == '') {
-      return 'Please add your group location';
+      return {
+        'msg': 'Please add your group location',
+        'result': false,
+      };
     }
     groupData = {
       ...groupData,
@@ -779,9 +872,13 @@ class PostController extends ControllerMVC {
         .get();
     var value = reuturnValue.docs;
     if (value.isNotEmpty) {
-      return 'Group name already exist';
+      return {
+        'msg': 'Group name already exist',
+        'result': false,
+      };
     }
     Map<String, dynamic> notificationData;
+    String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.groupsField)
         .add(groupData)
@@ -796,10 +893,13 @@ class PostController extends ControllerMVC {
                 'timeStamp': FieldValue.serverTimestamp(),
               },
               saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(
-                  context, '${RouteNames.groups}/${groupData['groupUserName']}')
+              id = value.id,
             });
-    return 'Successfully created';
+    return {
+      'msg': 'Successfully created',
+      'result': true,
+      'value': id,
+    };
   }
 
   ////////////////////functions that support for making comment to group/////////////////////////////
@@ -817,6 +917,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.groupsField)
           .doc(groupId)
           .update({'groupJoined': joined});
+      Helper.showToast('Leaved group');
       return true;
     } else {
       joined.add({
@@ -826,6 +927,7 @@ class PostController extends ControllerMVC {
           .collection(Helper.groupsField)
           .doc(groupId)
           .update({'groupJoined': joined});
+      Helper.showToast('Joined group');
       return true;
     }
   }
@@ -871,24 +973,32 @@ class PostController extends ControllerMVC {
 
   ///////////////////////////end groups functions //////////////////////////////////////////////////
 
-  Future<String> createProduct(
-      context, Map<String, dynamic> productData) async {
+  Future<Map> createProduct(context, Map<String, dynamic> productData) async {
     if (productData['productName'] == null ||
         productData['productName'] == '') {
-      return 'Please add your product name';
+      return {
+        'msg': 'Please add your product name',
+        'result': false,
+      };
     } else if (productData['productPrice'] == null ||
         productData['productPrice'] == '') {
-      return 'Please add your product price';
+      return {
+        'msg': 'Please add your product price',
+        'result': false,
+      };
     } else if (productData['productCategory'] == null ||
         productData['productCategory'] == '') {
-      return 'Please add your product category';
+      return {
+        'msg': 'Please add your product category',
+        'result': false,
+      };
     }
     productData = {
       ...productData,
       'productAdmin': {
         'uid': UserManager.userInfo['uid'],
       },
-      'productDate': DateTime.now().toString(),
+      'productDate': FieldValue.serverTimestamp(),
       'productPost': false,
       'productMarkAsSold': false,
       'productTimeline': true,
@@ -896,6 +1006,7 @@ class PostController extends ControllerMVC {
     };
 
     Map<String, dynamic> notificationData;
+    String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
@@ -910,12 +1021,15 @@ class PostController extends ControllerMVC {
                 'timeStamp': FieldValue.serverTimestamp(),
               },
               saveNotifications(notificationData),
-              Navigator.pushReplacementNamed(
-                  context, '${RouteNames.products}/${value.id}')
+              id = value.id,
             });
     // RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
     //     '10', 'for create product');
-    return 'Successfully created';
+    return {
+      'msg': 'Successfully created',
+      'result': true,
+      'value': id,
+    };
   }
 
   List<Map> allProduct = [];
@@ -1008,7 +1122,7 @@ class PostController extends ControllerMVC {
     await Helper.productsData.doc(productId).update({'productSellState': true});
   }
 
-  post(type, value, privacy) async {
+  savePost(type, value, privacy, {header = ''}) async {
     Map<String, dynamic> postData = {};
     postData = {
       'postAdmin': UserManager.userInfo['uid'],
@@ -1016,15 +1130,64 @@ class PostController extends ControllerMVC {
       'value': value,
       'privacy': privacy,
       'postTime': FieldValue.serverTimestamp(),
+      'header': header,
+      'timeline': true,
+      'comment': true,
     };
     Helper.postCollection.add(postData);
     return true;
   }
 
+  var posts = [];
+  getAllPost() async {
+    var allSanp =
+        await Helper.postCollection.orderBy('postTime', descending: true).get();
+    var allPosts = allSanp.docs;
+    var postData;
+    var adminInfo;
+    var postsBox = [];
+    for (var i = 0; i < allPosts.length; i++) {
+      if (allPosts[i]['type'] == 'product') {
+        var valueSnap =
+            await Helper.productsData.doc(allPosts[i]['value']).get();
+        postData = valueSnap.data();
+      } else {
+        postData = allPosts[i]['value'];
+      }
+      var adminSnap =
+          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+      adminInfo = adminSnap.data();
+      var eachPost = {
+        'id': allPosts[i].id,
+        'data': postData,
+        'type': allPosts[i]['type'],
+        'admin': adminInfo,
+        'time': allPosts[i]['postTime'],
+        'adminUid': adminSnap.id,
+        'privacy': allPosts[i]['privacy'],
+        'header': allPosts[i]['header'],
+        'timeline': allPosts[i]['timeline'],
+        'comment': allPosts[i]['comment']
+      };
+      postsBox.add(eachPost);
+    }
+    posts = postsBox;
+    setState(() {});
+    return true;
+  }
+
+  updatePostInfo(uid, value) async {
+    await Helper.postCollection.doc(uid).update(value);
+  }
+
+  deletePost(uid) async {
+    await Helper.postCollection.doc(uid).delete();
+  }
+
   var productLikes = {};
   saveProductLikes(productId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment.doc(productId).get();
+    var snapshot = await Helper.postLikeComment.doc(productId).get();
     var a = [];
     if (snapshot.data() == null) {
       a.add({'userName': userInfo['userName'], 'likes': likes});
@@ -1045,13 +1208,13 @@ class PostController extends ControllerMVC {
         a.add({'userName': arr[i]['userName'], 'likes': s});
       }
     }
-    await Helper.productLikeComment.doc(productId).set({'likes': a});
+    await Helper.postLikeComment.doc(productId).set({'likes': a});
   }
 
   var productLikesCount = {};
   getProductLikes() async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment.get();
+    var snapshot = await Helper.postLikeComment.get();
     for (int i = 0; i < snapshot.docs.length; i++) {
       productLikesCount[snapshot.docs[i].id] = [];
       for (int j = 0; j < snapshot.docs[i]['likes'].length; j++) {
@@ -1083,7 +1246,7 @@ class PostController extends ControllerMVC {
   }
 
   saveComment(productId, data, type) async {
-    var snapshot = await Helper.productLikeComment.get();
+    var snapshot = await Helper.postLikeComment.get();
     var userManager = UserManager.userInfo;
     var existId = false;
     for (int i = 0; i < snapshot.docs.length; i++) {
@@ -1093,9 +1256,9 @@ class PostController extends ControllerMVC {
       }
     }
     if (!existId) {
-      await Helper.productLikeComment.doc(productId).set({'likes': []});
+      await Helper.postLikeComment.doc(productId).set({'likes': []});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc()
@@ -1112,7 +1275,7 @@ class PostController extends ControllerMVC {
 
   saveLikesComment(productId, commentId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1131,7 +1294,7 @@ class PostController extends ControllerMVC {
       }
       a.add({'userName': arr[i]['userName'], 'likes': s});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1143,7 +1306,7 @@ class PostController extends ControllerMVC {
   var commentLikesCount = {};
   getComment(productId) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .orderBy('timeStamp', descending: true)
@@ -1189,7 +1352,7 @@ class PostController extends ControllerMVC {
 
   saveReply(productId, commentId, data, type) async {
     var userInfo = UserManager.userInfo;
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1208,12 +1371,12 @@ class PostController extends ControllerMVC {
   var replyLikesCount = {};
   getReply(productId) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .get();
     for (int i = 0; i < snapshot.docs.length; i++) {
-      var replies = await Helper.productLikeComment
+      var replies = await Helper.postLikeComment
           .doc(productId)
           .collection('comments')
           .doc(snapshot.docs[i].id)
@@ -1261,7 +1424,7 @@ class PostController extends ControllerMVC {
 
   saveLikesReply(productId, commentId, replyId, likes) async {
     var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.productLikeComment
+    var snapshot = await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1282,7 +1445,7 @@ class PostController extends ControllerMVC {
       }
       a.add({'userName': arr[i]['userName'], 'likes': s});
     }
-    await Helper.productLikeComment
+    await Helper.postLikeComment
         .doc(productId)
         .collection('comments')
         .doc(commentId)
@@ -1309,12 +1472,14 @@ class PostController extends ControllerMVC {
         .update({'userList': allNotifi['userList']});
   }
 
-  Future checkNotify(int check) async {
+  Future checkNotify() async {
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
-        .update({'checkNotifyTime': check});
-    print('check notify time');
+        .update({'checkNotifyTime': FieldValue.serverTimestamp()});
+    print('check notify');
+    realNotifi = [];
+    setState(() {});
   }
 
   getPostData(data) async {

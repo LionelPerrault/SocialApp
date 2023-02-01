@@ -110,12 +110,12 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
         body: Stack(
           fit: StackFit.expand,
           children: [
-            ShnatterNavigation(
-              searchController: searchController,
-              onSearchBarFocus: onSearchBarFocus,
-              onSearchBarDismiss: onSearchBarDismiss,
-              drawClicked: clickMenu,
-            ),
+            // ShnatterNavigation(
+            //   searchController: searchController,
+            //   onSearchBarFocus: onSearchBarFocus,
+            //   onSearchBarDismiss: onSearchBarDismiss,
+            //   drawClicked: clickMenu,
+            // ),
             Padding(
                 padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
                 child: SingleChildScrollView(
