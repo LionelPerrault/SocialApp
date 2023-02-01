@@ -126,6 +126,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   getUpUserInfo() async {
+    upUserInfo = [];
     widget.postInfo['data']['optionUp'].forEach((key, value) async {
       var userInfo = await ProfileController().getUserInfo(key);
       upUserInfo.add({...userInfo!, 'value': value});
@@ -198,9 +199,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         setState(() {});
         break;
       case 'open':
-        // widget.routerChange({
-
-        // })
+        widget.routerChange({
+          'router': RouteNames.posts,
+          'subRouter': widget.postInfo['id'],
+        });
         break;
       default:
     }
