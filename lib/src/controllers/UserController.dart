@@ -461,10 +461,14 @@ class UserController extends ControllerMVC {
       }
       if (querySnapshot.size > 0) {
         TokenLogin user = querySnapshot.docs[0].data();
+        user.documentId = querySnapshot.docs[0].id;
+
         relysiaEmail = user.email;
         relysiaPassword = password;
         isStarted = user.isStarted;
         isVerify = userCredential.user!.emailVerified;
+        addFCMTokenToUser(user.documentId, user.paymail);
+
         var b = user.userInfo;
         var j = {};
         b.forEach((key, value) {
@@ -529,6 +533,21 @@ class UserController extends ControllerMVC {
       return false;
     }
     return returnVal;
+  }
+
+  Future<void> addFCMTokenToUser(userDocuId, userPaymail) async {
+    var fcmtoken = await Helper.getStringPreference('fcmtoken');
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("FCMToken")
+        .where('token', isEqualTo: fcmtoken)
+        .get();
+    if (!snapshot.docs.isEmpty) {
+      var docuId = snapshot.docs.first.id;
+      await FirebaseFirestore.instance
+          .collection("FCMToken")
+          .doc(docuId)
+          .update({'userDocId': userDocuId, 'paymail': userPaymail});
+    }
   }
 
   Future<bool> loginWithVerificationCode(
