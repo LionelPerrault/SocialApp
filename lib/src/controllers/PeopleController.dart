@@ -200,7 +200,7 @@ class PeopleController extends ControllerMVC {
       'users': [userInfo['userName'], receiver],
       'state': 0
     }).then((value) async => {
-          await getUserList(index: index),
+          // await getUserList(index: index),
           notificationData = {
             'postType': 'requestFriend',
             'postId': value.id,

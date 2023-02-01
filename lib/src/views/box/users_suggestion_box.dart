@@ -137,57 +137,71 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                           ),
                         ),
                         trailing: ElevatedButton(
-                            onPressed: () async {
-                              con.isFriendRequest[index] = true;
-                              setState(() {});
-                              await con.requestFriend(
-                                  con.userList[index]['userName'],
-                                  '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
-                                  con.userList[index]['avatar'],
-                                  index);
-                              con.isFriendRequest[index] = false;
+                          onPressed: () async {
+                            // print(con.isFriendRequest);
+                            con.isFriendRequest[index] = true;
+                            setState(() {});
+                            await con.requestFriend(
+                                con.userList[index]['userName'],
+                                '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
+                                con.userList[index]['avatar'],
+                                index);
+                            con.isFriendRequest[index] = false;
 
-                              setState(() {});
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 33, 37, 41),
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2.0)),
-                                minimumSize:
-                                    con.isFriendRequest[index] != null &&
-                                            con.isFriendRequest[index]
-                                        ? const Size(60, 35)
-                                        : const Size(80, 35),
-                                maximumSize:
-                                    con.isFriendRequest[index] != null &&
-                                            con.isFriendRequest[index]
-                                        ? const Size(60, 35)
-                                        : const Size(80, 35)),
-                            child: con.isFriendRequest[index] != null &&
-                                    con.isFriendRequest[index]
-                                ? const SizedBox(
-                                    width: 10,
-                                    height: 10,
-                                    child: CircularProgressIndicator(
+                            setState(() {});
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 33, 37, 41),
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(2.0)),
+                              minimumSize: con.isFriendRequest[index] != null &&
+                                      con.isFriendRequest[index]
+                                  ? const Size(60, 35)
+                                  : const Size(80, 35),
+                              maximumSize: con.isFriendRequest[index] != null &&
+                                      con.isFriendRequest[index]
+                                  ? const Size(60, 35)
+                                  : const Size(80, 35)),
+                          child: con.isFriendRequest[index] == null
+                              ? Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.person_add_alt_rounded,
                                       color: Colors.white,
+                                      size: 18.0,
                                     ),
-                                  )
-                                : Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.person_add_alt_rounded,
+                                    Text(' Add',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w900)),
+                                  ],
+                                )
+                              : con.isFriendRequest[index]
+                                  ? const SizedBox(
+                                      width: 10,
+                                      height: 10,
+                                      child: CircularProgressIndicator(
                                         color: Colors.white,
-                                        size: 18.0,
                                       ),
-                                      Text(' Add',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w900)),
-                                    ],
-                                  )),
+                                    )
+                                  : Row(
+                                      children: const [
+                                        Icon(
+                                          Icons.timelapse,
+                                          color: Colors.white,
+                                          size: 18.0,
+                                        ),
+                                        Text(' Sent',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w900)),
+                                      ],
+                                    ),
+                        ),
                       )),
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
