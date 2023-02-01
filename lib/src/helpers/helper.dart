@@ -150,6 +150,13 @@ class Helper {
               ));
   }
 
+  static Future<String> getStringPreference(String field) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? rValue = "";
+    rValue = prefs.getString(field);
+    return rValue != null ? rValue : "";
+  }
+
   static saveJSONPreference(String field, Map<String, dynamic> data) async {
     final prefs = await SharedPreferences.getInstance();
     String saveData = jsonEncode(data);

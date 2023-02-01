@@ -33,7 +33,6 @@ class PostController extends ControllerMVC {
     var time = changeTimeType(d: d);
     String trDate = '';
     var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
-    print('UserManager${UserManager.userInfo['timeDifference']}');
     final difference =
         nowTimeStamp - time + UserManager.userInfo['timeDifference'];
     if (difference / (1000 * 60) < 1) {
@@ -52,13 +51,13 @@ class PostController extends ControllerMVC {
   }
 
   changeTimeType({var d, bool type = false}) {
-    var notifyTime = DateTime.parse(d.toDate().toString());
-    var formattedNotifyTime =
-        DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(notifyTime).toString();
+    var time = DateTime.parse(d.toDate().toString());
+    var formattedTime =
+        DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(time).toString();
     if (type) {
-      return formattedNotifyTime;
+      return formattedTime;
     } else {
-      return DateTime.parse(formattedNotifyTime).millisecondsSinceEpoch;
+      return DateTime.parse(formattedTime).millisecondsSinceEpoch;
     }
   }
 
@@ -1182,6 +1181,30 @@ class PostController extends ControllerMVC {
 
   deletePost(uid) async {
     await Helper.postCollection.doc(uid).delete();
+  }
+
+  String postId = '';
+  Map post = {};
+  getSelectedPost(uid) async {
+    var postSnap = await Helper.postCollection.doc(uid).get();
+    var postData = postSnap.data();
+    var adminSnap =
+        await Helper.userCollection.doc(postData!['postAdmin']).get();
+    var adminInfo = adminSnap.data();
+    var eachPost = {
+      'id': postSnap.id,
+      'data': postData['value'],
+      'type': postData['type'],
+      'admin': adminInfo,
+      'time': postData['postTime'],
+      'adminUid': adminSnap.id,
+      'privacy': postData['privacy'],
+      'header': postData['header'],
+      'timeline': postData['timeline'],
+      'comment': postData['comment']
+    };
+    post = eachPost;
+    setState(() {});
   }
 
   var productLikes = {};

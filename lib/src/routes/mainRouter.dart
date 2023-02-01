@@ -7,6 +7,7 @@ import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/marketPlace/marketPlaceScreen.dart';
 import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
 import 'package:shnatter/src/views/people/peoplescreen.dart';
+import 'package:shnatter/src/views/postView/postscreen.dart';
 import 'package:shnatter/src/views/products/panel/productView/productscreen.dart';
 import 'package:shnatter/src/views/products/productsScreen.dart';
 import 'package:shnatter/src/views/profile/profilescreen.dart';
@@ -44,6 +45,14 @@ class MainRouter {
               docId: mainRouterValue['subRouter'], routerChange: routerChange);
         } else {
           return ProductsScreen(routerChange: routerChange);
+        }
+      case RouteNames.posts:
+        if (mainRouterValue['subRouter'] != null &&
+            mainRouterValue['subRouter'] != '') {
+          return PostEachScreen(
+              docId: mainRouterValue['subRouter'], routerChange: routerChange);
+        } else {
+          return HomeScreen(routerChange: routerChange);
         }
       case RouteNames.groups:
         if (mainRouterValue['subRouter'] != null &&

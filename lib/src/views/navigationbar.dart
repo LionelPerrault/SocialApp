@@ -283,7 +283,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   }
 
   Future<void> onAdminClicked() async {
-    Helper.showToast("go to admin");
+    //Helper.showToast("go to admin");
+    //print("go to login");
     await Navigator.pushReplacementNamed(context, RouteNames.adp);
   }
 
