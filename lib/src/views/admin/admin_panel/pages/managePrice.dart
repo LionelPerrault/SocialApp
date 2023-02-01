@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/controllers/AdminController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
@@ -21,6 +21,23 @@ class AdminManagePrice extends StatefulWidget {
 class AdminManagePriceState extends mvc.StateMVC<AdminManagePrice> {
   String tab = '';
   final TextEditingController priceController = TextEditingController();
+  Map<String, dynamic> adminConfig = {};
+
+  @override
+  void initState() {
+    getAdminConfig();
+    super.initState();
+  }
+
+  getAdminConfig() async {
+    var adminSnap = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.adminConfig)
+        .get();
+    adminConfig = adminSnap.data()!;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,26 +72,32 @@ class AdminManagePriceState extends mvc.StateMVC<AdminManagePrice> {
               customInput(
                 title: 'Price for creating a page',
                 onChange: (value) {},
+                value: adminConfig['priceCreatingPage'] ?? '',
               ),
               customInput(
                 title: 'Price for creating a product',
                 onChange: (value) {},
+                value: adminConfig['priceCreatingProduct'] ?? '',
               ),
               customInput(
                 title: 'Price for creating an event',
                 onChange: (value) {},
+                value: adminConfig['priceCreatingEvent'] ?? '',
               ),
               customInput(
                 title: 'Price for creating a group',
                 onChange: (value) {},
+                value: adminConfig['priceCreatingGroup'] ?? '',
               ),
               customInput(
                 title: 'Price for sending friend request',
                 onChange: (value) {},
+                value: adminConfig['priceSendingFriendRquest'] ?? '',
               ),
               customInput(
                 title: 'Price for accepting friend request',
                 onChange: (value) {},
+                value: adminConfig['priceReceiveFriendRquest'] ?? '',
               ),
             ]),
           ),
@@ -85,7 +108,9 @@ class AdminManagePriceState extends mvc.StateMVC<AdminManagePrice> {
     );
   }
 
-  Widget customInput({title, onChange, controller}) {
+  Widget customInput({title, onChange, value}) {
+    var controller = TextEditingController();
+    controller.text = value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

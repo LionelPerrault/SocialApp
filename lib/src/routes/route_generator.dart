@@ -17,7 +17,7 @@ class RouteGenerator {
     if (UserManager.isLogined == true) {
       if (!UserManager.userInfo['isStarted']) {
         url = RouteNames.started;
-      } else if (url == '/login' || url == '/register' || url != '/reset') {
+      } else if (url == '/login' || url == '/register' || url == '/reset') {
         url = RouteNames.homePage;
       }
     } else {
