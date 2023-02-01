@@ -223,8 +223,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       else
                         {
                           payLoading = false,
+                          setState(() {}),
                           Navigator.of(context).pop(true),
                           setState(() {}),
+                          loading = true,
+                          setState(() {})
                         }
                     },
                   );
