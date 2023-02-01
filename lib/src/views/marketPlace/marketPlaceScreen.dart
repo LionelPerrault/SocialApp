@@ -54,12 +54,15 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                           : SizeConfig(context).screenWidth,
                   child: Column(
                     children: [
-                      customInput(
-                        place: 'I am looking for',
-                        onChange: (value) {
-                          searchValue = value;
-                          setState(() {});
-                        },
+                      Padding(
+                        padding: EdgeInsets.only(top: 3),
+                        child: customInput(
+                          place: 'I am looking for',
+                          onChange: (value) {
+                            searchValue = value;
+                            setState(() {});
+                          },
+                        ),
                       ),
                       const Padding(padding: EdgeInsets.only(top: 20)),
                       Row(
