@@ -754,9 +754,12 @@ class UserController extends ControllerMVC {
         .get()
         .then((value) async => {
               userInfo = await Helper.getJSONPreference(Helper.userField),
+              userInfo['isStarted'] = true,
               info = UserManager.userInfo.toString(),
+              UserManager.getUserInfo(),
               await Helper.saveJSONPreference(Helper.userField,
                   {...userInfo, 'avatar': value.data()!['avatar']}),
+              print(userInfo),
               await Helper.getJSONPreference(Helper.userField),
               setState(() {})
             });

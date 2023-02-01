@@ -5,7 +5,6 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:path/path.dart' as PPath;
 
@@ -17,7 +16,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 
 class StartedScreen extends StatefulWidget {
@@ -1817,8 +1815,10 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                       interestsCheck[i]['id']);
                                                 }
                                               }
-                                              await userCon
-                                                  .saveProfile(saveData);
+                                              await userCon.saveProfile({
+                                                ...saveData,
+                                                'isStarted': true
+                                              });
                                               Timer(
                                                   const Duration(
                                                       milliseconds: 1300), () {
