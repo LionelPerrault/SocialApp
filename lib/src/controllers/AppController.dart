@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -21,9 +23,52 @@ class AppController extends ControllerMVC {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    FirebaseMessaging _firebaseMessaging =
+        FirebaseMessaging.instance; // Change here
+    if (kIsWeb) {
+      String vapidKey = "";
+      vapidKey =
+          'BNCmcYYphn1Tc5HxLaRhmMvTq4KDnBm8Qcw-yzXezrry6UlEEYbSEB5KmR_HKrsraMzReIYxJlS-DOwrKnTMg54';
+      FirebaseMessaging.instance.getToken(vapidKey: vapidKey).then((token) {
+        //save to firebase
+        saveToken(token, "web");
+      }).onError((error, stackTrace) => null);
+    } else {
+      await _firebaseMessaging.requestPermission();
+      _firebaseMessaging.getToken().then((token) {
+        //save to firebase
+        saveToken(token, "mobile");
+      }).onError((error, stackTrace) => null);
+    }
+    //final fcmToken = await FirebaseMessaging.instance
+    //    .getToken(vapidKey: "JQK8sPGz8ACuFBQdET1323FwvXlLWEC7E6dlaIzzdWU");
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+      // delete old one and add new
+      if (kIsWeb)
+        saveToken(fcmToken, "web");
+      else
+        saveToken(fcmToken, "moible");
+    }).onError((err) {
+      // Error getting token.
+    });
     getUserInfo();
 
     return true;
+  }
+
+  void saveToken(token, device) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("fcmtoken", token);
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("FCMToken")
+        .where('token', isEqualTo: token)
+        .get();
+    if (snapshot.docs.isEmpty)
+      FirebaseFirestore.instance.collection("FCMToken").add({
+        'token': token,
+        'device': device,
+        'createdAt': FieldValue.serverTimestamp()
+      });
   }
 
   @override
