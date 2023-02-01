@@ -28,7 +28,7 @@ class AppController extends ControllerMVC {
     if (kIsWeb) {
       String vapidKey = "";
       vapidKey =
-          'BNCmcYYphn1Tc5HxLaRhmMvTq4KDnBm8Qcw-yzXezrry6UlEEYbSEB5KmR_HKrsraMzReIYxJlS-DOwrKnTMg54';
+          'BMW9GhZJ-RnM9leBak5sKH7EWc_WVgHyGgK2BCt0rm7Gv3SqTZ570eUhSi-og1kQ0XOEOuSd9R8Uleglxr_b4ds';
       FirebaseMessaging.instance.getToken(vapidKey: vapidKey).then((token) {
         //save to firebase
         saveToken(token, "web");
