@@ -36,7 +36,9 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
       print('notification Stream');
-      var notiSnap = await Helper.notifiCollection.orderBy('timeStamp').get();
+      var notiSnap = await Helper.notifiCollection
+          .orderBy('timeStamp', descending: true)
+          .get();
       var allNotifi = notiSnap.docs;
       var userSnap = await FirebaseFirestore.instance
           .collection(Helper.userField)

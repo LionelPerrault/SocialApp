@@ -142,6 +142,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
           .get();
       print('userSnap----------: ${userSnap.data()}');
       var userInfo = userSnap.data();
+
       var changeData = [];
       var tsNT;
       for (var i = 0; i < allNotifi.length; i++) {
@@ -149,6 +150,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
         print('timestamp notification time: $tsNT');
         var usercheckTime = userInfo!['checkNotifyTime'];
+        setState(() {});
         print('userCheckTime------ ${userInfo['checkNotifyTime']}');
 
         // var tsNT = allNotifi[i]['tsNT'];
@@ -209,7 +211,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
       print('notification Stream');
-      var notiSnap = await Helper.notifiCollection.orderBy('timeStamp').get();
+      var notiSnap = await Helper.notifiCollection
+          .orderBy('timeStamp', descending: true)
+          .get();
       var allNotifi = notiSnap.docs;
       var userSnap = await FirebaseFirestore.instance
           .collection(Helper.userField)
@@ -275,6 +279,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         }
       }
       postCon.allNotification = changeData;
+
       setState(() {});
       print('notification content ------${postCon.allNotification}');
     });
