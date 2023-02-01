@@ -16,7 +16,6 @@ class AppController extends ControllerMVC {
   AppController._();
   static AppController? _this;
   var isLogined = false;
-  get SharedPreferences => null;
 
   @override
   Future<bool> initAsync() async {
@@ -57,18 +56,20 @@ class AppController extends ControllerMVC {
   }
 
   void saveToken(token, device) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString("fcmtoken", token);
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection("FCMToken")
-        .where('token', isEqualTo: token)
-        .get();
-    if (snapshot.docs.isEmpty)
-      FirebaseFirestore.instance.collection("FCMToken").add({
-        'token': token,
-        'device': device,
-        'createdAt': FieldValue.serverTimestamp()
-      });
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("fcmtoken", token);
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection("FCMToken")
+          .where('token', isEqualTo: token)
+          .get();
+      if (snapshot.docs.isEmpty)
+        FirebaseFirestore.instance.collection("FCMToken").add({
+          'token': token,
+          'device': device,
+          'createdAt': FieldValue.serverTimestamp()
+        });
+    } catch (e) {}
   }
 
   @override
