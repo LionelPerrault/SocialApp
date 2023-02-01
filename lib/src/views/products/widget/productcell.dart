@@ -422,155 +422,169 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
+                                  flex: 1,
                                   child: Container(
-                                alignment: Alignment.center,
-                                child: Column(children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 20)),
-                                  const Text(
-                                    'Offer',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 5)),
-                                  Text(
-                                    'For ${product['productOffer']}',
-                                    style: const TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ]),
-                              )),
-                              Container(
-                                width: 1,
-                                height: 60,
-                                color: const Color.fromARGB(255, 229, 229, 229),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                alignment: Alignment.center,
-                                child: Column(children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 20)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.sell,
-                                        color:
-                                            Color.fromARGB(255, 31, 156, 255),
-                                        size: 17,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        'Condition',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 5)),
-                                  Text(
-                                    '${product['productStatus']}',
-                                    style: const TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ]),
-                              )),
-                              Container(
-                                width: 1,
-                                height: 60,
-                                color: const Color.fromARGB(255, 229, 229, 229),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                alignment: Alignment.center,
-                                child: Column(children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 20)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.money,
-                                        color: Color.fromARGB(255, 43, 180, 40),
-                                        size: 17,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        'Price',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 5)),
-                                  Text(
-                                    '${product['productPrice']} (SHN)',
-                                    style: const TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ]),
-                              )),
-                              Container(
-                                width: 1,
-                                height: 60,
-                                color: const Color.fromARGB(255, 229, 229, 229),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                alignment: Alignment.center,
-                                child: Column(children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 20)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.gif_box,
-                                        color:
-                                            Color.fromARGB(255, 160, 56, 178),
-                                        size: 17,
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        'Status',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 5)),
-                                  Container(
                                     alignment: Alignment.center,
-                                    width: 90,
-                                    height: 25,
-                                    decoration: const BoxDecoration(
-                                      color: Color.fromARGB(255, 40, 167, 69),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(4.0)),
-                                    ),
-                                    child: const Text(
-                                      'In Stock',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 15),
-                                    ),
-                                  )
-                                ]),
-                              )),
+                                    child: Column(children: [
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 20)),
+                                      const Text(
+                                        'Offer',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 5)),
+                                      Text(
+                                        'For ${product['productOffer']}',
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 15),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ]),
+                                  )),
+                              Container(
+                                width: 1,
+                                height: 60,
+                                color: const Color.fromARGB(255, 229, 229, 229),
+                              ),
+                              Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Column(children: [
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 20)),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            Icons.sell,
+                                            color: Color.fromARGB(
+                                                255, 31, 156, 255),
+                                            size: 17,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            'Condition',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 5)),
+                                      Text(
+                                        '${product['productStatus']}',
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 15),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ]),
+                                  )),
+                              Container(
+                                width: 1,
+                                height: 60,
+                                color: const Color.fromARGB(255, 229, 229, 229),
+                              ),
+                              Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Column(children: [
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 20)),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            Icons.money,
+                                            color: Color.fromARGB(
+                                                255, 43, 180, 40),
+                                            size: 17,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            'Price',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 5)),
+                                      Text(
+                                        '${product['productPrice']} (SHN)',
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 15),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ]),
+                                  )),
+                              Container(
+                                width: 1,
+                                height: 60,
+                                color: const Color.fromARGB(255, 229, 229, 229),
+                              ),
+                              Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Column(children: [
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 20)),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            Icons.gif_box,
+                                            color: Color.fromARGB(
+                                                255, 160, 56, 178),
+                                            size: 17,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            'Status',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 5)),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: 90,
+                                        height: 25,
+                                        decoration: const BoxDecoration(
+                                          color:
+                                              Color.fromARGB(255, 40, 167, 69),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.0)),
+                                        ),
+                                        child: const Text(
+                                          'In Stock',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15),
+                                        ),
+                                      )
+                                    ]),
+                                  )),
                             ]),
                       ),
                       Padding(
