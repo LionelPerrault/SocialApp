@@ -1050,6 +1050,10 @@ class UserController extends ControllerMVC {
           {
             payResult = true,
           }
+        else
+          {
+            payResult = false,
+          }
       },
     );
     return payResult;

@@ -1496,13 +1496,19 @@ class PostController extends ControllerMVC {
   }
 
   Future checkNotify() async {
-    await FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .doc(UserManager.userInfo['uid'])
-        .update({'checkNotifyTime': FieldValue.serverTimestamp()});
-    print('check notify');
-    realNotifi = [];
-    setState(() {});
+    try {
+      var serverTime = await getNowTime();
+      var serverTimeStamp = await changeTimeType(d: serverTime);
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .update({'checkNotifyTime': serverTimeStamp});
+      print('check notify');
+      realNotifi = [];
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
   }
 
   getPostData(data) async {
