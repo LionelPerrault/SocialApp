@@ -69,8 +69,8 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
                 : Column(
                     children: con.allProduct
                         .where((product) =>
-                            product['data']['productAdmin']['userName'] ==
-                            UserManager.userInfo['userName'])
+                            product['data']['productAdmin']['uid'] ==
+                            UserManager.userInfo['uid'])
                         .map((product) => ProductCell(
                               data: product,
                               routerChange: widget.routerChange,
