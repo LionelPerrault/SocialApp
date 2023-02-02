@@ -140,7 +140,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
           .get();
-      print('userSnap----------: ${userSnap.data()}');
+      // print('userSnap----------: ${userSnap.data()}');
       var userInfo = userSnap.data();
 
       var changeData = [];
@@ -148,10 +148,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       for (var i = 0; i < allNotifi.length; i++) {
         // ignore: unused_local_variable
         tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
-        print('timestamp notification time: $tsNT');
+        // print('timestamp notification time: $tsNT');
         var usercheckTime = userInfo!['checkNotifyTime'];
         setState(() {});
-        print('userCheckTime------ ${userInfo['checkNotifyTime']}');
+        // print('userCheckTime------ ${userInfo['checkNotifyTime']}');
 
         // var tsNT = allNotifi[i]['tsNT'];
         if (usercheckTime == null) {
@@ -281,7 +281,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       postCon.allNotification = changeData;
 
       setState(() {});
-      print('notification content ------${postCon.allNotification}');
+      // print('notification content ------${postCon.allNotification}');
     });
 
     super.initState();

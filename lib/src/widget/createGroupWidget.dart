@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/interests.dart';
 
 class CreateGroupModal extends StatefulWidget {
@@ -52,11 +55,95 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
     },
   ];
   bool footerBtnState = false;
+  bool payLoading = false;
   @override
   void initState() {
     add(widget.Postcon);
     Postcon = controller as PostController;
     super.initState();
+  }
+
+  getTokenBudget() async {
+    var adminSnap = await Helper.systemSnap.doc('config').get();
+    var price = adminSnap.data()!['priceCreatingGroup'];
+    var userSnap =
+        await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
+    var paymail = userSnap.data()!['paymail'];
+    setState(() {});
+    print('price:$price');
+    if (price == '0') {
+      await Postcon.createGroup(context, groupInfo).then((value) => {
+            footerBtnState = false,
+            setState(
+              () => {},
+            ),
+            Navigator.of(context).pop(true),
+            Helper.showToast(value['msg']),
+            if (value['result'] == true)
+              {
+                widget.routerChange({
+                  'router': RouteNames.groups,
+                  'subRouter': value['value'],
+                })
+              }
+          });
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                print('adminPrice---$paymail,$price');
+                await UserController()
+                    .payShnToken(paymail, price, 'Pay for creating group')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(dialogContext).pop(true),
+                            // loading = true,
+                            setState(() {}),
+                            await Postcon.createEvent(context, groupInfo)
+                                .then((value) {
+                              footerBtnState = false;
+                              setState(() => {});
+                              Navigator.of(context).pop(true);
+                              // loading = true;
+                              setState(() {});
+                              print('to create group page');
+                              Helper.showToast(value['msg']);
+                              if (value['result'] == true) {
+                                widget.routerChange({
+                                  'router': RouteNames.groups,
+                                  'subRouter': value['value'],
+                                });
+                              }
+                            }),
+                            setState(() {}),
+                            // loading = false,
+                            // setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+                footerBtnState = false;
+                setState(() {});
+              },
+              header: 'Costs for creating page',
+              text:
+                  'By paying the fee of $price tokens, the group will be published.',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -345,20 +432,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                 onPressed: () {
                   footerBtnState = true;
                   setState(() {});
-                  Postcon.createGroup(context, groupInfo).then((value) => {
-                        footerBtnState = false,
-                        setState(() {}),
-                        Navigator.of(context).pop(true),
-                        Helper.showToast(value['msg']),
-                        if (value['result'] == true)
-                          {
-                            widget.routerChange({
-                              'router': RouteNames.groups,
-                              'subRouter': value['value'],
-                            })
-                          }
-                      });
-                  print(groupInfo);
+                  getTokenBudget();
                 },
                 child: footerBtnState
                     ? const SizedBox(

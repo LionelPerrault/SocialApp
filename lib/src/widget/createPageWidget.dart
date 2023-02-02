@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/interests.dart';
 
 class CreatePageModal extends StatefulWidget {
@@ -26,11 +29,94 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
   var privacy = 'public';
   var interest = 'none';
   bool footerBtnState = false;
+  bool payLoading = false;
   @override
   void initState() {
     add(widget.Postcon);
     Postcon = controller as PostController;
     super.initState();
+  }
+
+  getTokenBudget() async {
+    var adminSnap = await Helper.systemSnap.doc('config').get();
+    var price = adminSnap.data()!['priceCreatingPage'];
+    var userSnap =
+        await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
+    var paymail = userSnap.data()!['paymail'];
+    setState(() {});
+    print('price:$price');
+    if (price == '0') {
+      await Postcon.createPage(context, pageInfo).then((value) => {
+            footerBtnState = false,
+            setState(
+              () => {},
+            ),
+            Navigator.of(context).pop(true),
+            Helper.showToast(value['msg']),
+            if (value['result'] == true)
+              {
+                widget.routerChange({
+                  'router': RouteNames.pages,
+                  'subRouter': value['value'],
+                })
+              }
+          });
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                print('adminPrice---$paymail,$price');
+                await UserController()
+                    .payShnToken(paymail, price, 'Pay for creating page')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(dialogContext).pop(true),
+                            // loading = true,
+                            setState(() {}),
+                            await Postcon.createPage(context, pageInfo)
+                                .then((value) {
+                              footerBtnState = false;
+                              setState(() => {});
+                              Navigator.of(context).pop(true);
+                              // loading = true;
+                              setState(() {});
+                              Helper.showToast(value['msg']);
+                              if (value['result'] == true) {
+                                widget.routerChange({
+                                  'router': RouteNames.pages,
+                                  'subRouter': value['value'],
+                                });
+                              }
+                            }),
+                            setState(() {}),
+                            // loading = false,
+                            // setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+                footerBtnState = false;
+                setState(() {});
+              },
+              header: 'Costs for creating page',
+              text:
+                  'By paying the fee of $price tokens, the page will be published.',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -157,20 +243,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                 onPressed: () {
                   footerBtnState = true;
                   setState(() {});
-                  Postcon.createPage(context, pageInfo).then((value) => {
-                        footerBtnState = false,
-                        setState(() {}),
-                        Navigator.of(context).pop(true),
-                        Helper.showToast(value['msg']),
-                        if (value['result'] == true)
-                          {
-                            widget.routerChange({
-                              'router': RouteNames.pages,
-                              'subRouter': value['value'],
-                            })
-                          }
-                      });
-                  print(pageInfo);
+                  getTokenBudget();
                 },
                 child: footerBtnState
                     ? const SizedBox(

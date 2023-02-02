@@ -173,6 +173,7 @@ class RelysiaManager {
             );
       }
     } catch (exception) {
+      print('fofofofo');
       print(exception.toString());
     }
     return returnData;

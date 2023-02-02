@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'dart:io' show File;
@@ -9,6 +12,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as PPath;
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 class CreateProductModal extends StatefulWidget {
   BuildContext context;
@@ -92,11 +96,93 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     },
   ];
   bool footerBtnState = false;
+  bool payLoading = false;
+  // bool loading = false;
   @override
   void initState() {
     add(widget.Postcon);
     Postcon = controller as PostController;
     super.initState();
+  }
+
+  getTokenBudget() async {
+    var adminSnap = await Helper.systemSnap.doc('config').get();
+    var price = adminSnap.data()!['priceCreatingProduct'];
+    var userSnap =
+        await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
+    var paymail = userSnap.data()!['paymail'];
+    setState(() {});
+    print('price:$price');
+    if (price == '0') {
+      await Postcon.createProduct(context, productInfo).then(
+        (value) => {
+          footerBtnState = false,
+          setState(() => {}),
+          Navigator.of(context).pop(true),
+          Helper.showToast(value['msg']),
+          if (value['result'] == true)
+            {
+              widget.routerChange({
+                'router': RouteNames.products,
+                'subRouter': value['value'],
+              }),
+            }
+        },
+      );
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(paymail, price, 'Pay for creating product')
+                    .then((value) async => {
+                          if (value)
+                            {
+                              payLoading = false,
+                              setState(() {}),
+                              Navigator.of(dialogContext).pop(true),
+                              // loading = true,
+                              setState(() {}),
+                              await Postcon.createProduct(context, productInfo)
+                                  .then((value) {
+                                footerBtnState = false;
+                                setState(() => {});
+                                Navigator.of(context).pop(true);
+                                // loading = true;
+                                setState(() {});
+                                print('to create product page');
+                                Helper.showToast(value['msg']);
+                                if (value['result'] == true) {
+                                  widget.routerChange({
+                                    'router': RouteNames.products,
+                                    'subRouter': value['value'],
+                                  });
+                                }
+                              }),
+                              setState(() {}),
+                              // loading = false,
+                              setState(() {}),
+                            }
+                        });
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+                footerBtnState = false;
+                setState(() {});
+              },
+              header: 'Costs for creating page',
+              text:
+                  'By paying the fee of $price tokens, the product will be published.',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -561,22 +647,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   onPressed: () {
                     footerBtnState = true;
                     setState(() {});
-                    Postcon.createProduct(context, productInfo).then(
-                      (value) => {
-                        footerBtnState = false,
-                        setState(() {}),
-                        Navigator.of(context).pop(true),
-                        Helper.showToast(value['msg']),
-                        if (value['result'] == true)
-                          {
-                            widget.routerChange({
-                              'router': RouteNames.products,
-                              'subRouter': value['value'],
-                            }),
-                            print('product page : ${RouteNames.products}')
-                          }
-                      },
-                    );
+                    getTokenBudget();
                   },
                   child: footerBtnState
                       ? const SizedBox(
@@ -832,128 +903,128 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     XFile? pickedFile = await chooseImage();
     uploadFile(pickedFile, type);
   }
-}
 
-Widget customInput({title, onChange, controller}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        title,
-        style: const TextStyle(
-            color: Color.fromRGBO(82, 95, 127, 1),
-            fontSize: 13,
-            fontWeight: FontWeight.w600),
-      ),
-      const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
-        height: 40,
-        child: TextField(
-          controller: controller,
-          onChanged: (value) {
-            onChange(value);
-          },
-          keyboardType:
-              title == 'Price' ? TextInputType.number : TextInputType.text,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.only(top: 10, left: 10),
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue, width: 1.0),
-            ),
-          ),
-        ),
-      )
-    ],
-  );
-}
-
-Widget titleAndsubtitleInput(title, double height, line, onChange) {
-  return Container(
-    margin: const EdgeInsets.only(top: 15),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+  Widget customInput({title, onChange, controller}) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
           style: const TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
               fontSize: 13,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 85, 95, 127)),
+              fontWeight: FontWeight.w600),
         ),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                width: 400,
-                height: height,
-                child: TextField(
-                  maxLines: line,
-                  minLines: line,
-                  onChanged: (value) {
-                    onChange(value);
-                  },
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(top: 10, left: 10),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        Container(
+          height: 40,
+          child: TextField(
+            controller: controller,
+            onChanged: (value) {
+              onChange(value);
+            },
+            keyboardType:
+                title == 'Price' ? TextInputType.number : TextInputType.text,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget titleAndsubtitleInput(title, double height, line, onChange) {
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  width: 400,
+                  height: height,
+                  child: TextField(
+                    maxLines: line,
+                    minLines: line,
+                    onChanged: (value) {
+                      onChange(value);
+                    },
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 10, left: 10),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
-Widget customDropDownButton(
-    {title, double width = 0.0, item = const [], onChange, context}) {
-  List items = item;
-  return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    Text(
-      title,
-      style: TextStyle(
-          color: Color.fromRGBO(82, 95, 127, 1),
-          fontSize: 13,
-          fontWeight: FontWeight.w600),
-    ),
-    Padding(padding: EdgeInsets.only(top: 2)),
-    Container(
-        height: 40,
-        width: width,
-        child: DropdownButtonFormField(
-          value: items[0]['value'],
-          items: items
-              .map((e) =>
-                  DropdownMenuItem(value: e['value'], child: Text(e['title'])))
-              .toList(),
-          onChanged: onChange,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 10, left: 10),
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.blue, width: 1.0),
-            ),
+            ],
           ),
-          icon: const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Icon(Icons.arrow_drop_down)),
-          iconEnabledColor: Colors.grey, //Icon color
+        ],
+      ),
+    );
+  }
 
-          style: const TextStyle(
-            color: Colors.grey, //Font color
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
-          dropdownColor: Colors.white,
-          isExpanded: true,
-          isDense: true,
-        ))
-  ]);
+  Widget customDropDownButton(
+      {title, double width = 0.0, item = const [], onChange, context}) {
+    List items = item;
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(
+        title,
+        style: TextStyle(
+            color: Color.fromRGBO(82, 95, 127, 1),
+            fontSize: 13,
+            fontWeight: FontWeight.w600),
+      ),
+      Padding(padding: EdgeInsets.only(top: 2)),
+      Container(
+          height: 40,
+          width: width,
+          child: DropdownButtonFormField(
+            value: items[0]['value'],
+            items: items
+                .map((e) => DropdownMenuItem(
+                    value: e['value'], child: Text(e['title'])))
+                .toList(),
+            onChanged: onChange,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+            icon: const Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Icon(Icons.arrow_drop_down)),
+            iconEnabledColor: Colors.grey, //Icon color
+
+            style: const TextStyle(
+              color: Colors.grey, //Font color
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+            dropdownColor: Colors.white,
+            isExpanded: true,
+            isDense: true,
+          ))
+    ]);
+  }
 }
