@@ -163,7 +163,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         if (tsNT > usercheckTime) {
           print('user check time: $usercheckTime');
           var addData;
-          if (adminUid != UserManager.userInfo['uid']) {
+          if (adminUid != UserManager.userInfo['uid'] &&
+              postType != 'requestFriend') {
             // userInfo['checkNotifyTime'];
             usercheckTime;
             await FirebaseFirestore.instance
@@ -237,7 +238,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         postCon.allNotification = [];
         if (viewFlag) {
           var addData;
-          if (adminUid != UserManager.userInfo['uid']) {
+          if (adminUid != UserManager.userInfo['uid'] &&
+              postType != 'requestFriend') {
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])

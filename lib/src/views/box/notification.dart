@@ -61,7 +61,8 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         postCon.allNotification = [];
         if (viewFlag) {
           var addData;
-          if (adminUid != UserManager.userInfo['uid']) {
+          if (adminUid != UserManager.userInfo['uid'] &&
+              postType != 'requestFriend') {
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
