@@ -11,8 +11,6 @@ import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
-import 'package:shnatter/src/views/panel/mainpanel.dart';
-import 'package:shnatter/src/views/panel/rightpanel.dart';
 
 import '../utils/size_config.dart';
 
@@ -170,7 +168,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                               children: [
                                 Container(
                                   color: Colors.white,
-                                  width: SizeConfig.leftBarWidth,
+                                  width: SizeConfig.leftToggleBar,
                                   child: SingleChildScrollView(
                                     child: LeftPanel(
                                       routerFunction: routerChange,

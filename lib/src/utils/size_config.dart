@@ -10,6 +10,7 @@ class SizeConfig {
   static const smallScreenSize = 600;
   static const minimumScreenSize = 400;
   static const leftBarWidth = 200.0;
+  static const leftToggleBar = 250.0;
   static const leftBarAdminWidth = 250.0;
   static const navbarHeight = 68.0;
   static const rightPaneWidth = 260.0;

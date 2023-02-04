@@ -334,6 +334,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         };
         header = pollQuestion;
         break;
+      case 'Upload Audio':
+        postCase = 'audio';
+        postPayload = postAudio;
+        break;
       default:
         return;
     }
@@ -345,6 +349,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       postLoading = false;
       nowPost = '';
       postPhoto = [];
+      postAudio = '';
       setState(() {});
     });
   }
@@ -446,61 +451,71 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          postAudio == ''
-                              ? const SizedBox()
-                              : (uploadPhotoProgress != 0 &&
-                                      uploadPhotoProgress != 100)
-                                  ? Container(
-                                      width: 90,
-                                      height: 90,
-                                      margin: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(13),
+                          (uploadAudioProgress != 0 &&
+                                  uploadAudioProgress != 100)
+                              ? Container(
+                                  width: 90,
+                                  height: 90,
+                                  margin: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(13),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      AnimatedContainer(
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                        margin: const EdgeInsets.only(
+                                            top: 78, left: 10),
+                                        width: 130,
+                                        padding: EdgeInsets.only(
+                                            right: 130 -
+                                                (130 *
+                                                    uploadAudioProgress /
+                                                    100)),
+                                        child: const LinearProgressIndicator(
+                                          color: Colors.blue,
+                                          value: 10,
+                                          semanticsLabel:
+                                              'Linear progress indicator',
+                                        ),
                                       ),
-                                      child: Stack(
+                                    ],
+                                  ),
+                                )
+                              : postAudio == ''
+                                  ? const SizedBox()
+                                  : Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        // crossAxisAlignment:
+                                        //     CrossAxisAlignment.start,
                                         children: [
-                                          AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            margin: const EdgeInsets.only(
-                                                top: 78, left: 10),
-                                            width: 130,
-                                            padding: EdgeInsets.only(
-                                                right: 130 -
-                                                    (130 *
-                                                        uploadPhotoProgress /
-                                                        100)),
-                                            child:
-                                                const LinearProgressIndicator(
-                                              color: Colors.blue,
-                                              value: 10,
-                                              semanticsLabel:
-                                                  'Linear progress indicator',
-                                            ),
+                                          SvgPicture.network(
+                                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
+                                            width: 20,
+                                          ),
+                                          const Text(
+                                            'Audio uploaded successfully',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.close,
+                                                color: Colors.black,
+                                                size: 13.0),
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            tooltip: 'Delete',
+                                            onPressed: () {
+                                              postAudio = '';
+                                              nowPost = '';
+                                              setState(() {});
+                                            },
                                           ),
                                         ],
                                       ),
-                                    )
-                                  : Container(
-                                      child: Row(children: [
-                                        SvgPicture.network(
-                                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd'),
-                                        Text('data'),
-                                        const Flexible(
-                                            fit: FlexFit.tight,
-                                            child: SizedBox()),
-                                        IconButton(
-                                          icon: const Icon(Icons.close,
-                                              color: Colors.black, size: 13.0),
-                                          padding:
-                                              const EdgeInsets.only(left: 20),
-                                          tooltip: 'Delete',
-                                          onPressed: () {
-                                            postAudio = '';
-                                            setState(() {});
-                                          },
-                                        ),
-                                      ]),
                                     )
                         ],
                       ),
@@ -701,7 +716,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       ),
       child: Stack(
         children: [
-          // (uploadPhotoProgress != 0 && uploadPhotoProgress != 100)
           photo != null
               ? Container(
                   width: 90,
@@ -1157,6 +1171,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           case TaskState.success:
             print("Upload is completed");
             uploadAudioProgress = 0;
+            uploadPhotoProgress = 0;
             setState(() {});
             // Handle successful uploads on complete
             // ...

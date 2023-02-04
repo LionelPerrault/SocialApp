@@ -65,7 +65,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Basic',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -75,7 +75,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Work',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -85,7 +85,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Location',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -95,7 +95,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Education',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -105,7 +105,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Social Links',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -115,7 +115,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Interests',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -125,7 +125,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Design',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                       ],
                     )
                   ],
@@ -172,14 +172,14 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Password',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                         // ListText(
                         //   onTap: () => {
                         //     routerFunction('security_session')
                         //   },
                         //   label: 'Manage Sessions',
                         //   icon:
-                        //       const Icon(null)),
+                        //       const SizedBox()),
                         ListText(
                             onTap: () => {
                                   routerFunction({
@@ -188,7 +188,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                   })
                                 },
                             label: 'Two-Factor Authentication',
-                            image: const Icon(null)),
+                            image: const SizedBox()),
                       ],
                     )
                   ],

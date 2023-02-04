@@ -10,6 +10,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
+import 'package:shnatter/src/widget/audioPlayer.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
@@ -232,6 +233,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         return checkInPostCell();
       case 'poll':
         return pollPostCell();
+      case 'audio':
+        return audioPostCell();
       default:
         return const SizedBox();
     }
@@ -461,6 +464,237 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                             )
                         ],
                       ),
+                    ],
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                LikesCommentScreen(
+                    productId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'])
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget audioPostCell() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            width: 600,
+            padding: const EdgeInsets.only(top: 20),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          widget.postInfo['admin']['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  widget.postInfo['admin']['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text:
+                                                  '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo['admin']
+                                                            ['userName'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  Container(
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 240
+                                        : 350,
+                                    child: Text(
+                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(right: 9.0),
+                                    child: PopupMenuButton(
+                                      onSelected: (value) {
+                                        popUpFunction(value);
+                                      },
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 18,
+                                      ),
+                                      itemBuilder: (BuildContext bc) {
+                                        return popupMenuItem
+                                            .map(
+                                              (e) => PopupMenuItem(
+                                                value: e['value'],
+                                                child: Row(
+                                                  children: [
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5.0)),
+                                                    Icon(e['icon']),
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 12.0)),
+                                                    Text(
+                                                      e['value'] == 'timeline'
+                                                          ? widget.postInfo[
+                                                                  'timeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? widget.postInfo[
+                                                                      'comment']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 90, 90, 90),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                            .toList();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3)),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              // text: Helper.formatDate(
+                                              //     widget.postInfo['time']),
+                                              text: postTime,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  const Text(' - '),
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      Container(
+                        child: AudioPlayerWidget(
+                            audioURL: widget.postInfo['data']),
+                      )
                     ],
                   ),
                 ),
