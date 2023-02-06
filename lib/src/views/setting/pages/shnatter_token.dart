@@ -152,7 +152,7 @@ class SettingShnatterTokenScreenState
     _scrollController = ScrollController();
     con.getTransactionHistory(con.nextPageTokenCount).then(
           (resData) => {
-            print(resData),
+            // print(resData),
             if (resData != [])
               {
                 transactionData = resData,
@@ -409,7 +409,6 @@ class SettingShnatterTokenScreenState
   }
 
   Widget transList() {
-    print("$transactionData dafdfqewqwere3frswdfa");
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -448,7 +447,6 @@ class SettingShnatterTokenScreenState
                   var userName = data['from'] != UserManager.userInfo['paymail']
                       ? data['sender']
                       : data['recipient'];
-                  print(userName);
                   return Column(
                     children: [
                       Row(

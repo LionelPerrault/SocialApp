@@ -32,6 +32,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
+  bool showSideBar = false;
   bool isEmailVerify = true;
   late AnimationController _drawerSlideController;
 
@@ -64,8 +65,14 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   void clickMenu() {
     if (_isDrawerOpen() || _isDrawerOpening()) {
       _drawerSlideController.reverse();
+      setState(() {
+        showSideBar = false;
+      });
     } else {
       _drawerSlideController.forward();
+      setState(() {
+        showSideBar = true;
+      });
     }
   }
 
@@ -98,6 +105,9 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
 
   routerChange(value) {
     mainRouterValue = value;
+    showSideBar = false;
+    _drawerSlideController.reverse();
+
     setState(() {});
   }
 
@@ -118,50 +128,68 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
               drawClicked: clickMenu,
               routerChange: routerChange,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    isEmailVerify ? const SizedBox() : emailVerificationNoify(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizeConfig(context).screenWidth <
-                                SizeConfig.mediumScreenSize
-                            ? const SizedBox()
-                            : LeftPanel(
-                                routerFunction: routerChange,
-                                router: mainRouterValue,
-                              ),
-                        Container(
-                          child: MainRouter.mainRouter(
-                              mainRouterValue, routerChange),
-                        ),
-                      ],
-                    )
-                  ],
+            GestureDetector(
+              onTap: () {
+                _drawerSlideController.reverse();
+                setState(() {
+                  showSideBar = false;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      isEmailVerify
+                          ? const SizedBox()
+                          : emailVerificationNoify(),
+                      Stack(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizeConfig(context).screenWidth <
+                                      SizeConfig.mediumScreenSize
+                                  ? const SizedBox()
+                                  : LeftPanel(
+                                      routerFunction: routerChange,
+                                      router: mainRouterValue,
+                                    ),
+                              MainRouter.mainRouter(
+                                  mainRouterValue, routerChange),
+                            ],
+                          ),
+                          if (showSideBar)
+                            Container(
+                              width: SizeConfig(context).screenWidth,
+                              height: SizeConfig(context).screenHeight -
+                                  SizeConfig.navbarHeight,
+                              color: const Color.fromARGB(49, 63, 63, 63),
+                            ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
+              //when mobile toggle left panel
             ),
-            //when mobile toggle left panel
             AnimatedBuilder(
               animation: _drawerSlideController,
               builder: (context, child) {
                 return FractionalTranslation(
-                  translation: SizeConfig(context).screenWidth >
-                          SizeConfig.mediumScreenSize
-                      ? const Offset(0, 0)
-                      : Offset(_drawerSlideController.value * 0.001, 0.0),
-                  child: SizeConfig(context).screenWidth >
-                              SizeConfig.mediumScreenSize ||
-                          _isDrawerClosed()
-                      ? const SizedBox()
-                      : Padding(
-                          padding: const EdgeInsets.only(
-                              top: SizeConfig.navbarHeight),
-                          child: Container(
+                    translation: SizeConfig(context).screenWidth >
+                            SizeConfig.mediumScreenSize
+                        ? const Offset(0, 0)
+                        : Offset(_drawerSlideController.value * 0.001, 0.0),
+                    child: SizeConfig(context).screenWidth >
+                                SizeConfig.mediumScreenSize ||
+                            _isDrawerClosed()
+                        ? const SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.only(
+                                top: SizeConfig.navbarHeight),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,9 +206,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                 )
                               ],
                             ),
-                          ),
-                        ),
-                );
+                          ));
               },
             ),
             showSearch
