@@ -1078,9 +1078,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   Future<XFile> chooseAudio() async {
-    final _audioPicker = ImagePicker();
+    //final _audioPicker = ImagePicker();
     XFile? pickedFile;
-    pickedFile = await FilePicker.platform.pickFiles() as XFile;
+    pickedFile =
+        await FilePicker.platform.pickFiles(type: FileType.audio) as XFile;
 
     return pickedFile;
   }
