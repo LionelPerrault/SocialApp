@@ -1217,6 +1217,44 @@ class PostController extends ControllerMVC {
     return true;
   }
 
+  addNewPosts(newCount) async {
+    var allSanp =
+        await Helper.postCollection.orderBy('postTime', descending: true).get();
+    var allPosts = allSanp.docs;
+    var postData;
+    var adminInfo;
+    for (var i = 0; i < newCount; i++) {
+      if (allPosts[i]['type'] == 'product') {
+        var valueSnap =
+            await Helper.productsData.doc(allPosts[i]['value']).get();
+        postData = valueSnap.data();
+      } else {
+        postData = allPosts[i]['value'];
+      }
+      var adminSnap =
+          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+      adminInfo = adminSnap.data();
+      var eachPost = {
+        'id': allPosts[i].id,
+        'data': postData,
+        'type': allPosts[i]['type'],
+        'admin': adminInfo,
+        'time': allPosts[i]['postTime'],
+        'adminUid': adminSnap.id,
+        'privacy': allPosts[i]['privacy'],
+        'header': allPosts[i]['header'],
+        'timeline': allPosts[i]['timeline'],
+        'comment': allPosts[i]['comment']
+      };
+      if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
+          eachPost['privacy'] == 'Public') {
+        posts = [eachPost, ...posts];
+      }
+    }
+    setState(() {});
+    return true;
+  }
+
   updatePostInfo(uid, value) async {
     await Helper.postCollection.doc(uid).update(value);
   }

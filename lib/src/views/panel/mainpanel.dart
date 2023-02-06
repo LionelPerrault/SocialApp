@@ -73,44 +73,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
 
   @override
   Widget build(BuildContext context) {
-    if (postsFlag == true) {
-      if (con.posts.isNotEmpty) {
-        if (postsCount <= con.posts.length) {
-          int totalPostsCount = 0;
-          int remainderPostsCount = 0;
-          remainderPostsCount = con.posts.length - postsCount;
-          if (remainderPostsCount < 10) {
-            totalPostsCount = postsCount + remainderPostsCount;
-          } else {
-            totalPostsCount = postsCount + 10;
-          }
-          for (int i = postsCount; i < totalPostsCount; i++) {
-            showTenCountPosts.add(con.posts[i]);
-            setState(() {
-              postsCount = showTenCountPosts.length;
-              postsFlag = false;
-            });
-          }
-        }
-      }
-    } else {
-      if (con.posts.isNotEmpty) {
-        if (postsCount <= con.posts.length) {
-          int totalPostsCount = 0;
-          if (con.posts.length < 10) {
-            totalPostsCount = con.posts.length - postsCount;
-          } else {
-            totalPostsCount = 10;
-          }
-          for (int i = postsCount; i < totalPostsCount; i++) {
-            showTenCountPosts.add(con.posts[i]);
-            setState(() {
-              postsCount = showTenCountPosts.length;
-            });
-          }
-        }
-      }
-    }
     return Container(
       padding: const EdgeInsets.only(top: 20, left: 0),
       child: Column(
@@ -134,11 +96,9 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     maximumSize: const Size(240, 42),
                   ),
                   onPressed: () {
-                    loadingFlag = true;
-                    newPostNum = 0;
                     setState(() {});
-                    con.getAllPost().then((value) {
-                      loadingFlag = false;
+                    con.addNewPosts(newPostNum).then((value) {
+                      newPostNum = 0;
                       setState(() {});
                     });
                   },
@@ -163,40 +123,31 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     ],
                   ),
                 ),
-          Container(
-              padding: const EdgeInsets.all(6),
-              width: SizeConfig(context).screenWidth < 600
-                  ? SizeConfig(context).screenWidth
-                  : 650,
-              height: 760,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    loadingFlag
-                        ? const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : Expanded(
-                            child: Column(
-                              children: showTenCountPosts
-                                  .map((product) => PostCell(
-                                        postInfo: product,
-                                        routerChange: widget.routerChange,
-                                      ))
-                                  .toList(),
-                            ),
-                          )
-                  ],
-                ),
-              )),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              loadingFlag
+                  ? const SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        color: Colors.grey,
+                      ),
+                    )
+                  : Expanded(
+                      child: Column(
+                        children: con.posts
+                            .map((product) => PostCell(
+                                  postInfo: product,
+                                  routerChange: widget.routerChange,
+                                ))
+                            .toList(),
+                      ),
+                    )
+            ],
+          ),
         ],
       ),
     );
