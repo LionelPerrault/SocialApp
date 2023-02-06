@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -1079,24 +1080,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   Future<XFile> chooseAudio() async {
     final _audioPicker = ImagePicker();
     XFile? pickedFile;
-    if (kIsWeb) {
-      pickedFile = await _audioPicker.pickVideo(
-        source: ImageSource.gallery,
-      );
-    } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
+    pickedFile = await FilePicker.platform.pickFiles() as XFile;
 
-      //if (permissionStatus.isGranted) {
-      pickedFile = await _audioPicker.pickVideo(
-        source: ImageSource.gallery,
-      );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
-    }
-    return pickedFile!;
+    return pickedFile;
   }
 
   uploadFile(XFile? pickedFile, type) async {

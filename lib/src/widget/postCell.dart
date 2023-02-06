@@ -544,7 +544,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         ? SizeConfig(context).screenWidth - 240
                                         : 350,
                                     child: Text(
-                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
+                                      ' added an audio',
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
