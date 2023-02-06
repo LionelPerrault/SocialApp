@@ -30,23 +30,25 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> formatDate(d) async {
-    var time = changeTimeType(d: d);
     String trDate = '';
-    var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
-    final difference =
-        nowTimeStamp - time + UserManager.userInfo['timeDifference'];
-    if (difference / (1000 * 60) < 1) {
-      trDate = 'Just Now';
-    } else if (difference / (1000 * 60 * 60) < 1) {
-      trDate = '${(difference / (1000 * 60)).round()} minutes ago';
-    } else if (difference / (1000 * 60 * 60 * 24) < 1) {
-      trDate = '${(difference / (1000 * 60 * 60)).round()} hours ago';
-    } else if (difference / (1000 * 60 * 60 * 24 * 30) < 1) {
-      trDate = '${(difference / (1000 * 60 * 60 * 24)).round()} days ago';
-    } else if (difference / (1000 * 60 * 60 * 24 * 30) >= 1) {
-      trDate =
-          '${(difference / (1000 * 60 * 60 * 24 * 30)).round()} months ago';
-    }
+    try {
+      var time = changeTimeType(d: d);
+      var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
+      final difference =
+          nowTimeStamp - time + UserManager.userInfo['timeDifference'];
+      if (difference / (1000 * 60) < 1) {
+        trDate = 'Just Now';
+      } else if (difference / (1000 * 60 * 60) < 1) {
+        trDate = '${(difference / (1000 * 60)).round()} minutes ago';
+      } else if (difference / (1000 * 60 * 60 * 24) < 1) {
+        trDate = '${(difference / (1000 * 60 * 60)).round()} hours ago';
+      } else if (difference / (1000 * 60 * 60 * 24 * 30) < 1) {
+        trDate = '${(difference / (1000 * 60 * 60 * 24)).round()} days ago';
+      } else if (difference / (1000 * 60 * 60 * 24 * 30) >= 1) {
+        trDate =
+            '${(difference / (1000 * 60 * 60 * 24 * 30)).round()} months ago';
+      }
+    } catch (e) {}
     return trDate;
   }
 
