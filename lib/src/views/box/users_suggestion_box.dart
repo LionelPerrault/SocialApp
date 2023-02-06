@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +10,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-
-import '../../controllers/UserController.dart';
 
 class ShnatterUserSuggest extends StatefulWidget {
   ShnatterUserSuggest({Key? key, required this.routerChange}) : super(key: key);
@@ -103,7 +100,8 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                       itemCount: con.userList.length,
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
-                        contentPadding: EdgeInsets.only(left: 10, right: 10),
+                        contentPadding:
+                            const EdgeInsets.only(left: 10, right: 10),
                         leading: con.userList[index]['avatar'] == ''
                             ? CircleAvatar(
                                 radius: 17,
@@ -126,7 +124,6 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                       color: Colors.black),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      print('visit profile');
                                       widget.routerChange({
                                         'router': RouteNames.profile,
                                         'subRouter': con.userList[index]

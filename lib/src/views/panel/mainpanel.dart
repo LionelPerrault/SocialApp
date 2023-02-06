@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
@@ -29,6 +31,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   bool loadingFlag = true;
   bool postsFlag = false;
   int postsCount = 0;
+  int newPostNum = 0;
   var showTenCountPosts = [];
   final ScrollController _scrollController = ScrollController();
   @override
@@ -50,11 +53,22 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     } else if (nowTime.hour > 20) {
       time = 2;
     }
+    final Stream<QuerySnapshot> postStream =
+        Helper.postCollection.orderBy('postTime').snapshots();
     con.getAllPost().then((value) {
       loadingFlag = false;
       setState(() {});
+      postStream.listen((event) {
+        print('difference');
+        newPostNum = event.docs
+                .where((post) =>
+                    (post['postAdmin'] == UserManager.userInfo['uid'] ||
+                        post['privacy'] == 'Public'))
+                .length -
+            con.posts.length;
+        setState(() {});
+      });
     });
-    print('current time is ${nowTime.hour} , $time');
   }
 
   @override
@@ -108,6 +122,47 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
           showDayTimeM
               ? DayTimeM(time: time, username: UserManager.userInfo['fullName'])
               : Container(),
+          newPostNum == 0
+              ? const SizedBox()
+              : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21.0)),
+                    minimumSize: const Size(240, 42),
+                    maximumSize: const Size(240, 42),
+                  ),
+                  onPressed: () {
+                    loadingFlag = true;
+                    newPostNum = 0;
+                    setState(() {});
+                    con.getAllPost().then((value) {
+                      loadingFlag = false;
+                      setState(() {});
+                    });
+                  },
+                  child: Column(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(top: 11.0)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 90, 90, 90),
+                                fontFamily: 'var(--body-font-family)',
+                                fontWeight: FontWeight.w900,
+                                fontSize: 15),
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 8.0)),
+                    ],
+                  ),
+                ),
           Container(
               padding: const EdgeInsets.all(6),
               width: SizeConfig(context).screenWidth < 600
