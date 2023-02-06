@@ -586,29 +586,30 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                           child: Padding(
                               padding: const EdgeInsets.only(top: 7, left: 15),
                               child: DropdownButton(
-                                hint: Container(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        dropdownValue == 'Public'
-                                            ? Icons.language
-                                            : dropdownValue == 'Friends'
-                                                ? Icons.groups
-                                                : Icons.lock_outline,
-                                        color: Colors.white,
-                                      ),
-                                      const Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        dropdownValue,
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                value: dropdownValue,
+                                // hint: Container(
+                                //   child: Row(
+                                //     children: [
+                                //       Icon(
+                                //         dropdownValue == 'Public'
+                                //             ? Icons.language
+                                //             : dropdownValue == 'Friends'
+                                //                 ? Icons.groups
+                                //                 : Icons.lock_outline,
+                                //         color: Colors.white,
+                                //       ),
+                                //       const Padding(
+                                //           padding: EdgeInsets.only(left: 5)),
+                                //       Text(
+                                //         dropdownValue,
+                                //         style: const TextStyle(
+                                //           fontSize: 13,
+                                //           color: Colors.white,
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                                 items: [
                                   DropdownMenuItem(
                                     value: "Public",
