@@ -254,7 +254,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   feelingReady() {
     if (nowPost == 'Feelings/Activity') {
       nowPost = '';
-    } else if (nowPost == '') {
+    } else {
       nowPost = 'Feelings/Activity';
     }
     setState(() {});
@@ -263,7 +263,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   checkIn() {
     if (nowPost == 'Check In') {
       nowPost = '';
-    } else if (nowPost == '') {
+    } else {
       nowPost = 'Check In';
     }
     setState(() {});
@@ -272,7 +272,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   createPoll() {
     if (nowPost == 'Create Poll') {
       nowPost = '';
-    } else if (nowPost == '') {
+    } else {
       nowPost = 'Create Poll';
       pollOption = ['', ''];
     }
@@ -586,21 +586,28 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                           child: Padding(
                               padding: const EdgeInsets.only(top: 7, left: 15),
                               child: DropdownButton(
-                                hint: Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.language,
-                                      color: Colors.white,
-                                    ),
-                                    Padding(padding: EdgeInsets.only(left: 5)),
-                                    Text(
-                                      'Public',
-                                      style: TextStyle(
-                                        fontSize: 13,
+                                hint: Container(
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        dropdownValue == 'Public'
+                                            ? Icons.language
+                                            : dropdownValue == 'Friends'
+                                                ? Icons.groups
+                                                : Icons.lock_outline,
                                         color: Colors.white,
                                       ),
-                                    ),
-                                  ],
+                                      const Padding(
+                                          padding: EdgeInsets.only(left: 5)),
+                                      Text(
+                                        dropdownValue,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 items: [
                                   DropdownMenuItem(
