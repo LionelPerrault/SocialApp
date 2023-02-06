@@ -31,12 +31,14 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
     add(widget.con);
     postCon = controller as PostController;
     // var userCheckTime = DateTime.now().millisecondsSinceEpoch;
-    postCon.checkNotify();
+    checkNotify();
     final Stream<QuerySnapshot> streamContent =
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
       print('notification Stream');
-      var notiSnap = await Helper.notifiCollection.orderBy('timeStamp').get();
+      var notiSnap = await Helper.notifiCollection
+          .orderBy('timeStamp', descending: true)
+          .get();
       var allNotifi = notiSnap.docs;
       var userSnap = await FirebaseFirestore.instance
           .collection(Helper.userField)
@@ -59,7 +61,8 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         postCon.allNotification = [];
         if (viewFlag) {
           var addData;
-          if (adminUid != UserManager.userInfo['uid']) {
+          if (adminUid != UserManager.userInfo['uid'] &&
+              postType != 'requestFriend') {
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
@@ -101,11 +104,15 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
         }
       }
       postCon.allNotification = changeData;
-      print('123notification content ------${postCon.allNotification}');
+      // print('123notification content ------${postCon.allNotification}');
 
       setState(() {});
     });
     super.initState();
+  }
+
+  void checkNotify() async {
+    return await postCon.checkNotify();
   }
 
   @override

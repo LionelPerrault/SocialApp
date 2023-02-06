@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   emoji_picker_flutter
   flutter_window_close
+  libwinmedia
   permission_handler_windows
 )
 

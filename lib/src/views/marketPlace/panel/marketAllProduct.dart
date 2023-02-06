@@ -183,7 +183,7 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
           ? SizeConfig(context).screenWidth
           : (SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth) *
               0.8,
-      height: 350,
+      height: SizeConfig(context).screenHeight * 0.7,
       child: SingleChildScrollView(
         controller: _scrollController,
         child: Row(

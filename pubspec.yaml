@@ -82,6 +82,9 @@ dependencies:
   animated_widgets: ^1.1.0
   roundcheckbox: ^2.0.5
   dotted_border: ^2.0.0+3
+  just_audio: ^0.9.31
+  just_audio_libwinmedia: ^0.0.4+1
+  file_picker: ^4.6.1
 
 dev_dependencies:
   flutter_test:

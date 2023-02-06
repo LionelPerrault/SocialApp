@@ -59,8 +59,10 @@ class AdminListMoviesState extends mvc.StateMVC<AdminListMovies> {
     PlutoColumnGroup(title: 'Id', fields: ['id'], expandedColumn: true),
     PlutoColumnGroup(title: 'Title', fields: ['title'], expandedColumn: true),
     PlutoColumnGroup(title: 'Source', fields: ['source'], expandedColumn: true),
-    PlutoColumnGroup(title: 'Release', fields: ['release'], expandedColumn: true),
-    PlutoColumnGroup(title: 'Actions', fields: ['actions'], expandedColumn: true),
+    PlutoColumnGroup(
+        title: 'Release', fields: ['release'], expandedColumn: true),
+    PlutoColumnGroup(
+        title: 'Actions', fields: ['actions'], expandedColumn: true),
   ];
 
   /// [PlutoGridStateManager] has many methods and properties to dynamically manipulate the grid.
@@ -71,7 +73,7 @@ class AdminListMoviesState extends mvc.StateMVC<AdminListMovies> {
     super.initState();
   }
 
-String? selectedValue;
+  String? selectedValue;
 
   bool check1 = false;
   Color fontColor = Color.fromARGB(255, 10, 10, 10);
@@ -80,9 +82,7 @@ String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
-      
       child: Column(
         children: [
           Container(
@@ -90,8 +90,7 @@ String? selectedValue;
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.75
                 : SizeConfig(context).screenWidth,
-            child:
-                addroute == 'main' ? generalWidget() : addNewMovieWidget(),
+            child: addroute == 'main' ? generalWidget() : addNewMovieWidget(),
           ),
         ],
       ),
@@ -99,7 +98,6 @@ String? selectedValue;
   }
 
   @override
-
   Widget generalWidget() {
     return Container(
       child: Column(
@@ -125,7 +123,6 @@ String? selectedValue;
               'size': Size(180, 50),
             },
           ),
-          
           Container(
             width: SizeConfig(context).screenWidth > 800
                 ? SizeConfig(context).screenWidth * 0.85
@@ -153,7 +150,7 @@ String? selectedValue;
     );
   }
 
-    Widget addNewMovieWidget() {
+  Widget addNewMovieWidget() {
     return Container(
       child: Column(
         children: [
@@ -173,27 +170,26 @@ String? selectedValue;
             },
           ),
           titleAndsubtitleInput('Movie Source', 40, 1,
-            'From YouTube, Vimeo or site.com/movie.mp4'  ),
+              'From YouTube, Vimeo or site.com/movie.mp4'),
           titleAndUpload('Or Upload Movie'),
-          titleAndsubtitleInput('Movie Title', 40, 1,
-            '' ),
-          titleAndsubtitleInput('Description', 80, 4,
-            '' ),
+          titleAndsubtitleInput('Movie Title', 40, 1, ''),
+          titleAndsubtitleInput('Description', 80, 4, ''),
           titleAndsubtitleInput('IMDB', 40, 1,
-            'IMDB Link, Example: https://www.imdb.com/title/tt0111161' ),
+              'IMDB Link, Example: https://www.imdb.com/title/tt0111161'),
           titleAndsubtitleInput('Movie Star', 80, 4,
-            'Separated by a comma (,) Example: Tom Hanks, Julia Roberts, Jim Carrey' ),
-          titleAndsubtitleInput('Release Year', 40, 1,
-            'Movie release year, Example: 1995' ),
-          titleAndsubtitleInput('Duration', 40, 1,
-            'Movie duration in minutes, Example: 120' ),                                                        
+              'Separated by a comma (,) Example: Tom Hanks, Julia Roberts, Jim Carrey'),
+          titleAndsubtitleInput(
+              'Release Year', 40, 1, 'Movie release year, Example: 1995'),
+          titleAndsubtitleInput(
+              'Duration', 40, 1, 'Movie duration in minutes, Example: 120'),
           titleAndUpload('Poster'),
           footer(),
         ],
       ),
     );
   }
-    Widget titleAndsubtitleInput(title, height, line, subtitle) {
+
+  Widget titleAndsubtitleInput(title, height, line, subtitle) {
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
       child: Row(
@@ -252,37 +248,39 @@ String? selectedValue;
 
   Widget footer() {
     return Container(
-        height: 80,
-        decoration: const BoxDecoration(
-            color: Color.fromRGBO(240, 240, 240, 1),
-            border: Border(top: BorderSide(width: 0.5, color: Colors.grey))),
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 15),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2.0)),
-            minimumSize: const Size(150, 50),
-            maximumSize: const Size(150, 50),
-          ),
-          onPressed: () {
-            () => {};
-          },
-          child: const Text('Save Changes',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 33, 37, 41),
-                  fontSize: 11.0,
-                  fontWeight: FontWeight.bold)),
-        ));
+      height: 80,
+      decoration: const BoxDecoration(
+          color: Color.fromRGBO(240, 240, 240, 1),
+          border: Border(top: BorderSide(width: 0.5, color: Colors.grey))),
+      alignment: Alignment.centerRight,
+      padding: const EdgeInsets.only(right: 15),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          elevation: 3,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),
+          minimumSize: const Size(150, 50),
+          maximumSize: const Size(150, 50),
+        ),
+        onPressed: () {
+          () => {};
+        },
+        child: const Text(
+          'Save Changes',
+          style: TextStyle(
+              color: Color.fromARGB(255, 33, 37, 41),
+              fontSize: 11.0,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
 
-    Widget titleAndUpload(title) {
+  Widget titleAndUpload(title) {
     return Container(
       margin: const EdgeInsets.only(left: 20, top: 20),
-      child: 
-      Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -327,5 +325,3 @@ String? selectedValue;
     );
   }
 }
-
-

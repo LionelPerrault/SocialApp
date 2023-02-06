@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 

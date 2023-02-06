@@ -65,14 +65,11 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
           int totalPostsCount = 0;
           int remainderPostsCount = 0;
           print(con.posts.length);
-          print("Count:$postsCount");
           remainderPostsCount = con.posts.length - postsCount;
           if (remainderPostsCount < 10) {
             totalPostsCount = postsCount + remainderPostsCount;
-            print("Remainder:$remainderPostsCount");
           } else {
             totalPostsCount = postsCount + 10;
-            print("tenPostCount:$totalPostsCount");
           }
           for (int i = postsCount; i < totalPostsCount; i++) {
             showTenCountPosts.add(con.posts[i]);
@@ -80,7 +77,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
               postsCount = showTenCountPosts.length;
               postsFlag = false;
             });
-            print("End:$postsCount");
           }
         }
       }
@@ -89,7 +85,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
         if (postsCount <= con.posts.length) {
           int totalPostsCount = 0;
           print(con.posts.length);
-          print("Count:$postsCount");
           if (con.posts.length < 10) {
             totalPostsCount = con.posts.length - postsCount;
           } else {

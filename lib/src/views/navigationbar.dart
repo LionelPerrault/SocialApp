@@ -140,16 +140,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
           .get();
-      print('userSnap----------: ${userSnap.data()}');
+      // print('userSnap----------: ${userSnap.data()}');
       var userInfo = userSnap.data();
+
       var changeData = [];
       var tsNT;
       for (var i = 0; i < allNotifi.length; i++) {
         // ignore: unused_local_variable
         tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
-        print('timestamp notification time: $tsNT');
+        // print('timestamp notification time: $tsNT');
         var usercheckTime = userInfo!['checkNotifyTime'];
-        print('userCheckTime------ ${userInfo['checkNotifyTime']}');
+        setState(() {});
+        // print('userCheckTime------ ${userInfo['checkNotifyTime']}');
 
         // var tsNT = allNotifi[i]['tsNT'];
         if (usercheckTime == null) {
@@ -161,7 +163,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         if (tsNT > usercheckTime) {
           print('user check time: $usercheckTime');
           var addData;
-          if (adminUid != UserManager.userInfo['uid']) {
+          if (adminUid != UserManager.userInfo['uid'] &&
+              postType != 'requestFriend') {
             // userInfo['checkNotifyTime'];
             usercheckTime;
             await FirebaseFirestore.instance
@@ -209,7 +212,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
       print('notification Stream');
-      var notiSnap = await Helper.notifiCollection.orderBy('timeStamp').get();
+      var notiSnap = await Helper.notifiCollection
+          .orderBy('timeStamp', descending: true)
+          .get();
       var allNotifi = notiSnap.docs;
       var userSnap = await FirebaseFirestore.instance
           .collection(Helper.userField)
@@ -233,7 +238,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         postCon.allNotification = [];
         if (viewFlag) {
           var addData;
-          if (adminUid != UserManager.userInfo['uid']) {
+          if (adminUid != UserManager.userInfo['uid'] &&
+              postType != 'requestFriend') {
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
@@ -275,8 +281,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         }
       }
       postCon.allNotification = changeData;
+
       setState(() {});
-      print('notification content ------${postCon.allNotification}');
+      // print('notification content ------${postCon.allNotification}');
     });
 
     super.initState();

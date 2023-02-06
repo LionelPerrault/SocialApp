@@ -51,15 +51,16 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
           color: Color.fromARGB(255, 255, 255, 255),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // ignore: prefer_const_literals_to_create_immutables
                     children: [
-                      Text(
+                      const Text(
                         "Friend Requests",
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
@@ -122,7 +123,8 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                                                     widget.routerChange({
                                                       'router':
                                                           RouteNames.profile,
-                                                      'subRouter': e.value['requester']
+                                                      'subRouter':
+                                                          e.value['requester']
                                                     });
                                                   },
                                                   child: Text(
