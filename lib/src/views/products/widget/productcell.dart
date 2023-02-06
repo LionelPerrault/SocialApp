@@ -1,4 +1,5 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
@@ -41,142 +42,33 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   var postTime = '';
   var messsageScreen = MessageScreenState();
 
-  late List<Map> subFunctionList = [
-    {
-      'icon': product['productMarkAsSold']
-          ? Icons.shopping_cart
-          : Icons.shopping_cart,
-      'text':
-          product['productMarkAsSold'] ? 'Mark as Available' : 'Mark as Sold',
-      'onTap': () {
-        con
-            .productMarkAsSold(productId, !product['productMarkAsSold'])
-            .then((value) => {
-                  con.getProduct().then((value) => {
-                        product = con.allProduct
-                            .where((val) => val['id'] == widget.data['id'])
-                            .toList()[0]['data'],
-                        print(product),
-                        setState(() {}),
-                        Helper.setting.notifyListeners(),
-                      })
-                });
-      },
-    },
-    {
-      'icon': product['productMarkAsSold'] ? Icons.bookmark : Icons.bookmark,
-      'text': product['productMarkAsSold'] ? 'UnSave Post' : 'Save Post',
-      'onTap': () {
-        con
-            .productSavePost(productId, !product['productMarkAsSold'])
-            .then((value) => {
-                  con.getProduct().then((value) => {
-                        product = con.allProduct
-                            .where((val) => val['id'] == widget.data['id'])
-                            .toList()[0]['data'],
-                        print(product),
-                        setState(() {}),
-                        Helper.setting.notifyListeners(),
-                      })
-                });
-      },
-    },
-    {
-      'icon': Icons.pin_drop,
-      'text': 'Pin Post',
-      'onTap': () {},
-    },
+  List<Map> popupMenuItem = [
     {
       'icon': Icons.edit,
-      'text': 'Edit Product',
-      'onTap': () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-                title: Row(
-                  children: const [
-                    Icon(
-                      Icons.production_quantity_limits_sharp,
-                      color: Color.fromARGB(255, 33, 150, 243),
-                    ),
-                    Text(
-                      'Add New Product',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                ),
-                content: CreateProductModal(
-                  context: context,
-                  routerChange: widget.routerChange,
-                )));
-      },
+      'label': 'Edit Product',
+      'value': 'edit',
     },
     {
       'icon': Icons.delete,
-      'text': 'Delete Post',
-      'onTap': () {
-        con.productDelete(productId).then((value) => {
-              con.getProduct().then((value) => {
-                    product = con.allProduct
-                        .where((val) => val['id'] == widget.data['id'])
-                        .toList()[0]['data'],
-                    print(product),
-                    setState(() {}),
-                    Helper.setting.notifyListeners(),
-                  })
-            });
-      },
+      'label': 'Delete Product',
+      'value': 'delete',
     },
     {
-      'icon': Icons.remove_red_eye,
-      'text': product['productTimeline']
-          ? 'Hide from Timeline'
-          : 'Allow on Timeline',
-      'onTap': () {
-        con
-            .productHideFromTimeline(productId, !product['productTimeline'])
-            .then((value) => {
-                  con.getProduct().then((value) => {
-                        product = con.allProduct
-                            .where((val) => val['id'] == widget.data['id'])
-                            .toList()[0]['data'],
-                        print(product),
-                        setState(() {}),
-                        Helper.setting.notifyListeners(),
-                      })
-                });
-      },
+      'icon': Icons.remove_red_eye_sharp,
+      'label': 'Hide from Timeline',
+      'labelE': 'Allow on Timeline',
+      'value': 'timeline',
     },
     {
-      'icon': Icons.comment,
-      'text': product['productOnOffCommenting']
-          ? 'Turn off Commenting'
-          : 'Trun on Commenting',
-      'onTap': () {
-        con
-            .productTurnOffCommenting(productId, !product['productTimeline'])
-            .then((value) => con.getProduct().then((value) => {
-                  product = con.allProduct
-                      .where((val) => val['id'] == widget.data['id'])
-                      .toList()[0]['data'],
-                  print(product),
-                  setState(() {}),
-                  Helper.setting.notifyListeners(),
-                }));
-      },
+      'icon': Icons.chat_bubble,
+      'label': 'Turn off Commenting',
+      'labelE': 'Turn on Commenting',
+      'value': 'comment',
     },
     {
       'icon': Icons.link,
-      'text': 'Open Post in new Tab',
-      'onTap': () {
-        widget.routerChange({
-          'router': RouteNames.products,
-          'subRouter': productId,
-        });
-      },
+      'label': 'Open post in new tab',
+      'value': 'open',
     },
   ];
 
@@ -243,13 +135,120 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   }
 
   popUpFunction(value) async {
-    var functionContainer =
-        subFunctionList.where((element) => element['text'] == value).toList();
-    functionContainer[0]['onTap']();
+    switch (value) {
+      case 'edit':
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Row(
+              children: const [
+                Icon(
+                  Icons.production_quantity_limits_sharp,
+                  color: Color.fromARGB(255, 33, 150, 243),
+                ),
+                Text(
+                  'Add New Product',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic),
+                ),
+              ],
+            ),
+            content: CreateProductModal(
+              context: context,
+              routerChange: widget.routerChange,
+              editData: widget.data,
+            ),
+          ),
+        );
+        setState(() {});
+        break;
+      case 'delete':
+        deleteProductInfo();
+        break;
+      case 'timeline':
+        hideFromTimeline();
+        break;
+      case 'comment':
+        upDateProductInfo(
+            {'productOnOffCommenting': !product['productOnOffCommenting']});
+        product['productOnOffCommenting'] = !product['productOnOffCommenting'];
+        setState(() {});
+        break;
+      case 'open':
+        widget.routerChange({
+          'router': RouteNames.products,
+          'subRouter': productId,
+        });
+        break;
+      default:
+    }
+  }
+
+  upDateProductInfo(value) async {
+    con.updateProductInfo(productId, value);
+  }
+
+  deleteProductInfo() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const SizedBox(),
+        content: AlertYesNoWidget(
+            yesFunc: () async {
+              con.deleteProduct(productId);
+              Navigator.of(context).pop(true);
+            },
+            noFunc: () {
+              Navigator.of(context).pop(true);
+            },
+            header: 'Delete Product',
+            text: 'Are you sure you want to delete this product?',
+            progress: false),
+      ),
+    );
+  }
+
+  hideFromTimeline() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const SizedBox(),
+        content: AlertYesNoWidget(
+            yesFunc: () async {
+              upDateProductInfo(
+                  {'productTimeline': !product['productTimeline']});
+              product['productTimeline'] = !product['productTimeline'];
+              setState(() {});
+              Navigator.of(context).pop(true);
+            },
+            noFunc: () {
+              Navigator.of(context).pop(true);
+            },
+            header: 'Hide from Timeline',
+            text:
+                'Are you sure you want to hide this post from your profile timeline? It may still appear in other places like newsfeed and search results',
+            progress: false),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    return product['productTimeline'] == false
+        ? DottedBorder(
+            borderType: BorderType.RRect,
+            radius: Radius.circular(20),
+            dashPattern: [10, 10],
+            color: Colors.grey,
+            strokeWidth: 2,
+            child: productWidget(),
+          )
+        : productWidget();
+  }
+
+  Widget productWidget() {
     return Row(
       children: [
         Expanded(
@@ -319,26 +318,59 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                     ),
                                   ),
                                   Container(
-                                      padding: EdgeInsets.only(right: 9.0),
-                                      child: PopupMenuButton(
-                                        onSelected: (value) {
-                                          popUpFunction(value);
-                                        },
-                                        child: Icon(
-                                          Icons.arrow_drop_down,
-                                        ),
-                                        itemBuilder: (BuildContext bc) {
-                                          return subFunctionList
-                                              .map(
-                                                (e) => PopupMenuItem(
-                                                  value: e['text'],
-                                                  child: listCell(
-                                                      e['icon'], e['text']),
+                                    padding: EdgeInsets.only(right: 9.0),
+                                    child: PopupMenuButton(
+                                      onSelected: (value) {
+                                        popUpFunction(value);
+                                      },
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 18,
+                                      ),
+                                      itemBuilder: (BuildContext bc) {
+                                        return popupMenuItem
+                                            .map(
+                                              (e) => PopupMenuItem(
+                                                value: e['value'],
+                                                child: Row(
+                                                  children: [
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5.0)),
+                                                    Icon(e['icon']),
+                                                    const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 12.0)),
+                                                    Text(
+                                                      e['value'] == 'timeline'
+                                                          ? product[
+                                                                  'productTimeline']
+                                                              ? e['label']
+                                                              : e['labelE']
+                                                          : e['value'] ==
+                                                                  'comment'
+                                                              ? product[
+                                                                      'productOnOffCommenting']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['label'],
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255, 90, 90, 90),
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
                                                 ),
-                                              )
-                                              .toList();
-                                        },
-                                      )),
+                                              ),
+                                            )
+                                            .toList();
+                                      },
+                                    ),
+                                  ),
                                 ],
                               ),
                               const Padding(padding: EdgeInsets.only(top: 3)),
@@ -663,65 +695,12 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
               ),
               LikesCommentScreen(
                 productId: productId,
-                commentFlag: true,
+                commentFlag: product['productOnOffCommenting'],
               )
             ],
           ),
         ))
       ],
     );
-  }
-
-  Widget SubFunction() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(3),
-      child: Container(
-          width: 250,
-          color: Colors.white,
-          // padding: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 400,
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  children: subFunctionList
-                      .map((list) => listCell(
-                            list['icon'],
-                            list['text'],
-                          ))
-                      .toList(),
-                ),
-              )
-            ],
-          )),
-    );
-  }
-
-  Widget listCell(icon, text) {
-    return ListTile(
-        hoverColor: Colors.grey[100],
-        tileColor: Colors.white,
-        enabled: true,
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              icon,
-              color: Colors.grey,
-              size: 20,
-            ),
-            const Padding(padding: EdgeInsets.only(left: 10)),
-            Column(
-              children: [
-                const Padding(padding: EdgeInsets.only(top: 3)),
-                Text(text,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.normal, fontSize: 12)),
-              ],
-            ),
-          ],
-        ));
   }
 }

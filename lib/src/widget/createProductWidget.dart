@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -17,11 +16,15 @@ import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 class CreateProductModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
-  CreateProductModal(
-      {Key? key, required this.context, required this.routerChange})
-      : Postcon = PostController(),
+  CreateProductModal({
+    Key? key,
+    required this.context,
+    required this.routerChange,
+    this.editData,
+  })  : Postcon = PostController(),
         super(key: key);
   Function routerChange;
+  var editData;
   @override
   State createState() => CreateProductModalState();
 }
@@ -36,7 +39,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     'productPhoto': [],
     'productFile': []
   };
-  var category = 'Choose Category';
   double uploadPhotoProgress = 0;
   List<dynamic> productPhoto = [];
   List<dynamic> productFile = [];
@@ -102,11 +104,19 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   void initState() {
     add(widget.Postcon);
     Postcon = controller as PostController;
+    if (widget.editData == null) {
+      widget.editData = {
+        'id': '',
+        'data': {},
+      };
+    } else {
+      productInfo = widget.editData['data'];
+    }
     super.initState();
   }
 
   getTokenBudget() async {
-    var adminSnap = await Helper.systemSnap.doc('config').get();
+    var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
     var price = adminSnap.data()!['priceCreatingProduct'];
     var userSnap =
         await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
@@ -208,8 +218,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     title: 'Product Name',
                     onChange: (value) async {
                       productInfo['productName'] = value;
-                      setState(() {});
                     },
+                    value: widget.editData['data']['productName'] ?? '',
                   ),
                 ),
               ),
@@ -222,8 +232,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     title: 'Price',
                     onChange: (value) async {
                       productInfo['productPrice'] = value;
-                      setState(() {});
                     },
+                    value: widget.editData['data']['productPrice'] ?? '',
                   ),
                 ),
               ),
@@ -244,6 +254,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                             productInfo['productCategory'] = value;
                             setState(() {});
                           },
+                          value: widget.editData['data']['productCategory'] ??
+                              'Choose Category',
                           context: context,
                         ),
                       ),
@@ -344,6 +356,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                             productInfo['productStatus'] = value;
                             setState(() {});
                           },
+                          value:
+                              widget.editData['data']['productStatus'] ?? 'New',
                           context: context,
                         ),
                       ),
@@ -365,6 +379,9 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                 productInfo['productCategory'] = value;
                                 setState(() {});
                               },
+                              value: widget.editData['data']
+                                      ['productCategory'] ??
+                                  'Choose Category',
                               context: context,
                             ),
                           ),
@@ -475,6 +492,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                 productInfo['productStatus'] = value;
                                 setState(() {});
                               },
+                              value: widget.editData['data']['productStatus'] ??
+                                  'New',
                               context: context,
                             ),
                           ),
@@ -492,8 +511,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     title: 'Location',
                     onChange: (value) async {
                       productInfo['productLocation'] = value;
-                      setState(() {});
                     },
+                    value: widget.editData['data']['productLocation'] ?? '',
                   ),
                 ),
               ),
@@ -504,15 +523,10 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
               Expanded(
                 child: Container(
                   width: 400,
-                  child: titleAndsubtitleInput(
-                    'About',
-                    70,
-                    5,
-                    (value) async {
-                      productInfo['productAbout'] = value;
-                      setState(() {});
-                    },
-                  ),
+                  child: titleAndsubtitleInput('About', 70, 5, (value) async {
+                    productInfo['productAbout'] = value;
+                    setState(() {});
+                  }, widget.editData['data']['productAbout'] ?? ''),
                 ),
               ),
             ],
@@ -647,7 +661,14 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   onPressed: () {
                     footerBtnState = true;
                     setState(() {});
-                    getTokenBudget();
+                    if (widget.editData['id'] == '') {
+                      getTokenBudget();
+                    } else {
+                      Postcon.editProduct(
+                              context, widget.editData['id'], productInfo)
+                          .then((value) => {Helper.showToast(value['msg'])});
+                      Navigator.of(context).pop(true);
+                    }
                   },
                   child: footerBtnState
                       ? const SizedBox(
@@ -904,7 +925,9 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     uploadFile(pickedFile, type);
   }
 
-  Widget customInput({title, onChange, controller}) {
+  Widget customInput({title, onChange, value}) {
+    TextEditingController controller = TextEditingController();
+    controller.text = value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -938,7 +961,9 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     );
   }
 
-  Widget titleAndsubtitleInput(title, double height, line, onChange) {
+  Widget titleAndsubtitleInput(title, double height, line, onChange, value) {
+    TextEditingController controller = TextEditingController();
+    controller.text = value;
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Column(
@@ -960,6 +985,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   width: 400,
                   height: height,
                   child: TextField(
+                    controller: controller,
                     maxLines: line,
                     minLines: line,
                     onChanged: (value) {
@@ -983,7 +1009,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   }
 
   Widget customDropDownButton(
-      {title, double width = 0.0, item = const [], onChange, context}) {
+      {title, double width = 0.0, item = const [], onChange, context, value}) {
     List items = item;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
@@ -998,7 +1024,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
           height: 40,
           width: width,
           child: DropdownButtonFormField(
-            value: items[0]['value'],
+            value: value,
             items: items
                 .map((e) => DropdownMenuItem(
                     value: e['value'], child: Text(e['title'])))

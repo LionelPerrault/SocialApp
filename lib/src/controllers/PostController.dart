@@ -1031,6 +1031,40 @@ class PostController extends ControllerMVC {
     };
   }
 
+  Future<Map> editProduct(
+      context, uid, Map<String, dynamic> productData) async {
+    if (productData['productName'] == null ||
+        productData['productName'] == '') {
+      return {
+        'msg': 'Please add your product name',
+        'result': false,
+      };
+    } else if (productData['productPrice'] == null ||
+        productData['productPrice'] == '') {
+      return {
+        'msg': 'Please add your product price',
+        'result': false,
+      };
+    } else if (productData['productCategory'] == null ||
+        productData['productCategory'] == '') {
+      return {
+        'msg': 'Please add your product category',
+        'result': false,
+      };
+    }
+
+    Map<String, dynamic> notificationData;
+    await FirebaseFirestore.instance
+        .collection(Helper.productsField)
+        .doc(uid)
+        .update(productData);
+    return {
+      'msg': 'Successfully edited',
+      'result': true,
+      'value': uid,
+    };
+  }
+
   List<Map> allProduct = [];
 
   //get all product function
@@ -1179,8 +1213,16 @@ class PostController extends ControllerMVC {
     await Helper.postCollection.doc(uid).update(value);
   }
 
+  updateProductInfo(uid, value) async {
+    await Helper.productsData.doc(uid).update(value);
+  }
+
   deletePost(uid) async {
     await Helper.postCollection.doc(uid).delete();
+  }
+
+  deleteProduct(uid) async {
+    await Helper.productsData.doc(uid).delete();
   }
 
   String postId = '';
