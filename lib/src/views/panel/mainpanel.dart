@@ -64,7 +64,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
         if (postsCount <= con.posts.length) {
           int totalPostsCount = 0;
           int remainderPostsCount = 0;
-          print(con.posts.length);
           remainderPostsCount = con.posts.length - postsCount;
           if (remainderPostsCount < 10) {
             totalPostsCount = postsCount + remainderPostsCount;
@@ -84,7 +83,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
       if (con.posts.isNotEmpty) {
         if (postsCount <= con.posts.length) {
           int totalPostsCount = 0;
-          print(con.posts.length);
           if (con.posts.length < 10) {
             totalPostsCount = con.posts.length - postsCount;
           } else {
@@ -97,8 +95,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
             });
           }
         }
-        print(con.posts.length);
-        print(postsCount);
       }
     }
     return Container(

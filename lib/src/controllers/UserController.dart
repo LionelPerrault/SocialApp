@@ -2,17 +2,14 @@
 
 import 'dart:async';
 import 'dart:math';
-import 'package:animated_widgets/generated/i18n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:otp/otp.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/widget/mprimary_button.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
 import '../models/userModel.dart';
@@ -421,8 +418,11 @@ class UserController extends ControllerMVC {
   }
 
   Future<bool> loginWithEmail(context, em, pass, isRememberme) async {
+    isSendLoginedInfo = true;
+    setState(() {});
     if (em == '' || pass == '') {
       failLogin = 'You must fill all field';
+      isSendLoginedInfo = false;
       setState(() {});
       return false;
     }
@@ -430,7 +430,6 @@ class UserController extends ControllerMVC {
     password = pass;
     var returnVal = false;
     try {
-      isSendLoginedInfo = true;
       if (!email.contains('@')) {
         QuerySnapshot<TokenLogin> checkUsername =
             await Helper.authdata.where('userName', isEqualTo: email).get();

@@ -2,8 +2,6 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_widgets/widgets/rotation_animated.dart';
-import 'package:animated_widgets/widgets/shake_animated_widget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/footerbar.dart';
@@ -13,7 +11,6 @@ import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../widget/mprimary_button.dart';
 import '../widget/primaryInput.dart';
-import '../widget/white_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -309,7 +306,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                             child: MyPrimaryButton(
                               color: Colors.white,
                               isShowProgressive: con.isSendLoginedInfo,
-                              buttonName: "login",
+                              buttonName: "Login",
                               onPressed: () => {
                                 if (!con.isSendLoginedInfo)
                                   con
