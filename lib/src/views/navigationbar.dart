@@ -581,12 +581,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 SizedBox(width: 8),
                                 Text('Log Out'),
                               ])),
-                          const PopupMenuDivider(),
-                          const PopupMenuItem<Menu>(
-                            value: Menu.itemKeyboardShortcut,
-                            child: Text('Keyboard Shortcuts'),
-                          ),
-                          const PopupMenuDivider(),
                         ],
                         onSelected: (Menu item) {
                           switch (item) {
@@ -885,12 +879,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 SizedBox(width: 8),
                                 Text('Log Out'),
                               ])),
-                          const PopupMenuDivider(),
-                          const PopupMenuItem<Menu>(
-                            value: Menu.itemKeyboardShortcut,
-                            child: Text('Keyboard Shortcuts'),
-                          ),
-                          const PopupMenuDivider(),
                         ],
                         onSelected: (Menu item) {
                           switch (item) {
