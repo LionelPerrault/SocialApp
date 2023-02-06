@@ -1070,7 +1070,10 @@ class PostController extends ControllerMVC {
   //get all product function
   Future<void> getProduct() async {
     allProduct = [];
-    await Helper.productsData.get().then((value) async {
+    await Helper.productsData
+        .orderBy('productDate', descending: true)
+        .get()
+        .then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
@@ -1202,7 +1205,10 @@ class PostController extends ControllerMVC {
         'timeline': allPosts[i]['timeline'],
         'comment': allPosts[i]['comment']
       };
-      postsBox.add(eachPost);
+      if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
+          eachPost['privacy'] == 'Public') {
+        postsBox.add(eachPost);
+      }
     }
     posts = postsBox;
     setState(() {});

@@ -4,15 +4,9 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-
-import '../../controllers/UserController.dart';
 
 class ShnatterGroupSuggest extends StatefulWidget {
   ShnatterGroupSuggest({Key? key, required this.routerChange})
@@ -86,7 +80,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "Suggested Groups",
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                   ),
@@ -94,7 +88,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                     padding: EdgeInsets.only(top: 45.0),
                   ),
                   Row(children: [
-                    Text(
+                    const Text(
                       'See All',
                       style: TextStyle(fontSize: 11),
                     ),
@@ -138,7 +132,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                         contentPadding:
                             const EdgeInsets.only(left: 10, right: 10),
                         leading: Padding(
-                            padding: EdgeInsets.only(top: 5),
+                            padding: const EdgeInsets.only(top: 5),
                             child: CircleAvatar(
                                 radius: 17,
                                 backgroundImage: NetworkImage(
@@ -149,17 +143,17 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                                         : con.unJoindGroups[index]['data']
                                             ['groupPicture']))),
                         title: Padding(
-                            padding: EdgeInsets.only(bottom: 5),
+                            padding: const EdgeInsets.only(bottom: 5),
                             child: Text(
                               con.unJoindGroups[index]['data']['groupName'],
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 11),
                             )),
                         subtitle: Padding(
-                            padding: EdgeInsets.only(bottom: 5),
+                            padding: const EdgeInsets.only(bottom: 5),
                             child: Text(
                               '${con.unJoindGroups[index]['data']['groupJoined'].length} Members',
-                              style: TextStyle(fontSize: 10),
+                              style: const TextStyle(fontSize: 10),
                             )),
                         trailing: ElevatedButton(
                             onPressed: () async {
