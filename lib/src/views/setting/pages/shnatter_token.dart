@@ -152,7 +152,6 @@ class SettingShnatterTokenScreenState
     _scrollController = ScrollController();
     con.getTransactionHistory(con.nextPageTokenCount).then(
           (resData) => {
-            print('get data data data data data'),
             // print(resData),
             if (resData != [])
               {
