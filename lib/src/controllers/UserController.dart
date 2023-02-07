@@ -288,7 +288,6 @@ class UserController extends ControllerMVC {
   }
 
   Future<List> getTransactionHistory(nextPageToken) async {
-    print(email);
     var trdata = [];
     var transactionData = [];
     var user = await Helper.userCollection.get();
@@ -302,6 +301,7 @@ class UserController extends ControllerMVC {
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
+
     await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
       (res) async => {
         if (res['success'] == true)
@@ -313,33 +313,31 @@ class UserController extends ControllerMVC {
                   {
                     for (int i = 0; i < trdata.length; i++)
                       {
+                        sender = trdata[i]['from'],
+                        recipient = "Unknown",
                         for (int j = 0; j < allUser.length; j++)
                           {
-                            if (trdata[i]['from'] == allUser[j]['paymail'])
+                            if (trdata[i]['from'] ==
+                                allUser[j].data()['paymail'])
                               {
-                                sender = allUser[j]['userName'],
-                                sendFlag = 1,
+                                sender = allUser[j].data()['userName'],
                               },
-                            if (trdata[i]['to'] == allUser[j]['paymail'])
-                              {
-                                recipient = allUser[j]['userName'],
-                                reciFlag = 1,
-                              },
-                            if (sendFlag == 1 && reciFlag == 1)
-                              {
-                                transactionData.add({
-                                  'from': trdata[i]['from'],
-                                  'to': trdata[i]['to'],
-                                  'sender': sender,
-                                  'recipient': recipient,
-                                  'sendtime': trdata[i]['timestamp'],
-                                  'notes': trdata[i]['notes'],
-                                  'balance': trdata[i]['balance_change'],
-                                }),
-                                sendFlag = 0,
-                                reciFlag = 0,
-                              }
+                            if (trdata[i]['to'] ==
+                                allUser[j].data()['walletAddress'])
+                              recipient = allUser[j].data()['userName'],
                           },
+                        transactionData.add({
+                          'from': trdata[i]['from'],
+                          'to': trdata[i]['to'],
+                          'txId': trdata[i]['txId'],
+                          'sender': sender,
+                          'recipient': recipient,
+                          'sendtime': trdata[i]['timestamp'],
+                          'notes': trdata[i]['notes'],
+                          'balance': trdata[i]['balance_change'],
+                        }),
+                        sendFlag = 0,
+                        reciFlag = 0,
                       },
                   },
                 nextPageTokenCount = res['nextPageToken'],

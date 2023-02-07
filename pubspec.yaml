@@ -47,6 +47,7 @@ dependencies:
   shared_preferences: ^2.0.15
   mvc_pattern: ^8.12.0
   provider: ^4.3.3
+  url_launcher: ^6.1.6
   firebase_database: ^10.0.5
   cloud_firestore: ^4.0.2
   mobile_scanner: ^2.0.0

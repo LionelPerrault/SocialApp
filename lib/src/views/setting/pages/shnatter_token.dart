@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingShnatterTokenScreen extends StatefulWidget {
   SettingShnatterTokenScreen({Key? key, required this.routerChange})
@@ -152,7 +153,6 @@ class SettingShnatterTokenScreenState
     _scrollController = ScrollController();
     con.getTransactionHistory(con.nextPageTokenCount).then(
           (resData) => {
-            // print(resData),
             if (resData != [])
               {
                 transactionData = resData,
@@ -408,6 +408,30 @@ class SettingShnatterTokenScreenState
     );
   }
 
+  Widget formatDate(String d) {
+    var date = DateTime.parse(d);
+    var trDate = '';
+    DateTime date2 = DateTime.now();
+    var dd = int.parse(date2.timeZoneOffset.toString().split(':')[0]);
+    date2 = date2.add(Duration(hours: -dd));
+    final difference = date2.difference(date);
+    if (difference.inMinutes < 1) {
+      trDate = 'Just Now';
+    } else if (difference.inHours < 1) {
+      trDate = '${difference.inMinutes}minutes ago';
+    } else if (difference.inDays < 1) {
+      trDate = '${difference.inHours}hours ago';
+    } else if (difference.inDays < 31) {
+      trDate = '${difference.inDays}days ago';
+    } else if (difference.inDays >= 31) {
+      trDate = '${(difference.inDays / 30 as String).split('.')[0]}days ago';
+    }
+    return Text(
+      trDate,
+      style: const TextStyle(color: Colors.grey, fontSize: 11),
+    );
+  }
+
   Widget transList() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -422,7 +446,6 @@ class SettingShnatterTokenScreenState
           margin: const EdgeInsets.only(top: 30, bottom: 15),
           child: Expanded(
             child: Container(
-              margin: const EdgeInsets.only(top: 15),
               alignment: Alignment.center,
               decoration: const BoxDecoration(
                 color: Color(0xFFffffff),
@@ -440,106 +463,134 @@ class SettingShnatterTokenScreenState
                 ],
               ),
               child: ListView.builder(
-                padding: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 10),
                 itemCount: transactionData.length,
                 itemBuilder: (BuildContext context, int index) {
                   var data = transactionData[index];
-                  var userName = data['from'] != UserManager.userInfo['paymail']
-                      ? data['sender']
-                      : data['recipient'];
-                  return Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                                margin: const EdgeInsets.only(bottom: 3),
-                                padding: const EdgeInsets.all(12),
-                                width: double.infinity,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFffffff),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      blurRadius: 0.0, // soften the shadow
-                                      offset: Offset(
-                                        0.0, // Move to right 5  horizontally
-                                        1.0, // Move to bottom 5 Vertically
+
+                  return Container(
+                      padding: const EdgeInsets.all(5),
+                      alignment: Alignment.center,
+                      child: Column(children: [
+                        Container(
+                            child: Theme(
+                          data: Theme.of(context)
+                              .copyWith(dividerColor: Colors.transparent),
+                          child: ExpansionTile(
+                            tilePadding: const EdgeInsets.only(
+                                top: 10, bottom: 10, right: 10),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        (data['from'] !=
+                                                UserManager.userInfo['paymail']
+                                            ? data['sender']
+                                            : data['recipient']),
+                                        style: const TextStyle(
+                                            color: Colors.black),
                                       ),
-                                    )
+                                    ),
+                                    Text(
+                                      data['from'] !=
+                                              UserManager.userInfo['paymail']
+                                          ? 'received'
+                                          : 'sent',
+                                      style: const TextStyle(
+                                          color: Colors.grey, fontSize: 12),
+                                    ),
+                                    formatDate(data['sendtime']),
                                   ],
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        width: 150,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          data['sender'].toString(),
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        width: 150,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          data['recipient'].toString(),
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        width: 200,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          data['sendtime'].toString(),
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        width: 300,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          data['notes'].toString(),
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        width: 90,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          data['balance'].toString(),
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          )
-                        ],
-                      )
-                    ],
-                  );
+                                // Container(
+                                //   margin: const EdgeInsets.only(left: 25),
+                                //   width: 160,
+                                //   child: Text(
+                                //     t['notes'].toString().length > 65
+                                //         ? '${t['notes'].toString().substring(0, 65)}...'
+                                //         : t['notes'],
+                                //     style: const TextStyle(
+                                //         fontSize: 13, color: Colors.black),
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                            trailing: Wrap(spacing: 6, children: <Widget>[
+                              Container(
+                                margin: const EdgeInsets.only(top: 2),
+                                child: Text(
+                                  data['from'] !=
+                                          UserManager.userInfo['paymail']
+                                      ? '+${data['balance'].toString()}'
+                                      : '-${data['balance'].toString()}',
+                                  style: TextStyle(
+                                      color: data['from'] !=
+                                              UserManager.userInfo['paymail']
+                                          ? Colors.green
+                                          : Colors.red),
+                                ),
+                              ),
+                              // GestureDetector(
+                              //   onTap: () async {
+                              //     var url = Uri.parse(
+                              //         'https://whatsonchain.com/tx/${t['txId']}');
+                              //     if (await canLaunchUrl(url)) {
+                              //       await launchUrl(url);
+                              //     } else {
+                              //       throw 'Could not launch $url';
+                              //     }
+                              //   },
+                              //   child: CircleAvatar(
+                              //     radius: 10,
+                              //     backgroundColor: !con.themeLight
+                              //         ? const Color.fromRGBO(68, 68, 68, 1)
+                              //         : Colors.white,
+                              //     child: CircleAvatar(
+                              //       radius: 9,
+                              //       backgroundImage: Helper.tokenIcon != ''
+                              //           ? NetworkImage(Helper.tokenIcon)
+                              //           : null,
+                              //     ),
+                              //   ),
+                              // ),
+                              GestureDetector(
+                                onTap: () async {
+                                  var url = Uri.parse(
+                                      'https://whatsonchain.com/tx/${data['txId']}');
+                                  if (await canLaunchUrl(url)) {
+                                    await launchUrl(url);
+                                  } else {
+                                    throw 'Could not launch $url';
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.arrow_forward,
+                                  color: Color.fromRGBO(200, 200, 200, 1),
+                                ),
+                              )
+                            ]),
+                            // children: [
+                            //   isShowExpandingNotes
+                            //       ? Padding(
+                            //           padding: EdgeInsets.all(10),
+                            //           child: Text(
+                            //             t['notes'],
+                            //             style: TextStyle(fontSize: 13),
+                            //           ))
+                            //       : Container()
+                            // ],
+                          ),
+                        )),
+                        Container(
+                          height: 1,
+                          color: const Color.fromARGB(255, 243, 243, 243),
+                        )
+                      ]));
                 },
               ),
               // Row(

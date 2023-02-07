@@ -34,15 +34,17 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   void initState() {
     add(widget.con);
     con = controller as ChatController;
-    ProfileController().getUserInfo(widget.chatUser).then((value) => {
-          if (value != null)
-            {
-              con.chatUserFullName =
-                  '${value['firstName']}' + " " + '${value['lastName']}',
-              con.isMessageTap = 'new',
-              setState(() {}),
-            }
-        });
+    if (widget.chatUser != "") {
+      ProfileController().getUserInfo(widget.chatUser).then((value) => {
+            if (value != null)
+              {
+                con.chatUserFullName =
+                    '${value['firstName']}' + " " + '${value['lastName']}',
+                con.isMessageTap = 'new',
+                setState(() {}),
+              }
+          });
+    }
 
     super.initState();
   }
