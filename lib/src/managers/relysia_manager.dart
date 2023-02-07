@@ -185,7 +185,6 @@ class RelysiaManager {
     var next = '';
     int count = 0;
     next = nextPageToken;
-    print(token);
     try {
       while (count < 10 && next != "null") {
         await http.get(
@@ -230,8 +229,8 @@ class RelysiaManager {
         );
       }
     } catch (exception) {
-      Helper.showToast(
-          "An error has occurred. Please check your internet connectivity or try again later");
+      // Helper.showToast(
+      //     "An error has occurred. Please check your internet connectivity or try again later");
     }
     return {'history': transHistory, 'success': result, 'nextPageToken': next};
   }
