@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ChatController.dart';
+import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -17,9 +17,9 @@ class ChatMessageListScreen extends StatefulWidget {
   Function onBack;
   ChatMessageListScreen(
       {Key? key, required this.onBack, required this.showWriteMessage})
-      : con = ChatController(),
+      : con = MessageController(),
         super(key: key);
-  late ChatController con;
+  late MessageController con;
   bool showWriteMessage;
   @override
   State createState() => ChatMessageListScreenState();
@@ -34,7 +34,7 @@ class ChatMessage {
 class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
   bool check1 = false;
   bool check2 = false;
-  late ChatController con;
+  late MessageController con;
   late ScrollController _scrollController;
   var isMessageTap = 'all-list';
   var r = 0;
@@ -42,7 +42,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
   @override
   void initState() {
     add(widget.con);
-    con = controller as ChatController;
+    con = controller as MessageController;
     super.initState();
     _scrollController = ScrollController();
     stream = FirebaseFirestore.instance
@@ -226,11 +226,11 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                             },
                           )),
                       WriteMessageScreen(
-                          type: con.isMessageTap == 'new' ? 'new' : 'old',
-                          goMessage: (value) {
-                            widget.onBack(value);
-                          },
-                        )
+                        type: con.isMessageTap == 'new' ? 'new' : 'old',
+                        goMessage: (value) {
+                          widget.onBack(value);
+                        },
+                      )
                     ]);
                   } else {
                     return SizedBox(

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ChatController.dart';
+import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 
 // ignore: must_be_immutable
@@ -11,9 +11,9 @@ class WriteMessageScreen extends StatefulWidget {
   String type;
   Function goMessage;
   WriteMessageScreen({Key? key, required this.type, required this.goMessage})
-      : con = ChatController(),
+      : con = MessageController(),
         super(key: key);
-  final ChatController con;
+  final MessageController con;
   @override
   State createState() => WriteMessageScreenState();
 }
@@ -24,7 +24,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   bool isShift = false;
   bool isEnter = false;
   String data = '';
-  late ChatController con;
+  late MessageController con;
   var userInfo = UserManager.userInfo;
   var emojiList = <Widget>[];
   late FocusNode _focusNode;
@@ -33,7 +33,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   @override
   void initState() {
     add(widget.con);
-    con = controller as ChatController;
+    con = controller as MessageController;
     _focusNode = FocusNode(
       onKey: (FocusNode node, RawKeyEvent evt) {
         if (!evt.isShiftPressed && evt.logicalKey.keyLabel == 'Enter') {
