@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -37,7 +39,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     'productOffer': 'Sell',
     'productAbout': '',
     'productPhoto': [],
-    'productFile': []
+    'productFile': [],
   };
   double uploadPhotoProgress = 0;
   List<dynamic> productPhoto = [];
@@ -231,9 +233,13 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   child: customInput(
                     title: 'Price',
                     onChange: (value) async {
-                      productInfo['productPrice'] = value;
+                      productInfo['productPrice'] =
+                          (int.tryParse(value) ?? 0).toString();
+                      print(productInfo['productPrice']);
+                      setState(() {});
                     },
-                    value: widget.editData['data']['productPrice'] ?? '',
+                    value: widget.editData['data']['productPrice'] ??
+                        productInfo['productPrice'],
                   ),
                 ),
               ),
@@ -926,8 +932,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   }
 
   Widget customInput({title, onChange, value}) {
-    TextEditingController controller = TextEditingController();
-    controller.text = value;
+    print(value);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -941,8 +946,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
         const Padding(padding: EdgeInsets.only(top: 2)),
         Container(
           height: 40,
-          child: TextField(
-            controller: controller,
+          child: TextFormField(
+            initialValue: value,
             onChanged: (value) {
               onChange(value);
             },
