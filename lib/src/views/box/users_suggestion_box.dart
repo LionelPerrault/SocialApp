@@ -92,7 +92,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
               ),
               AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
-                  height: isSound ? 260 : 0,
+                  height: isSound ? con.userList.length * 60 : 0,
                   curve: Curves.fastOutSlowIn,
                   child: SizedBox(
                     //size: Size(100,100),

@@ -67,12 +67,12 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
   Widget createApp() {
     return ValueListenableBuilder(
         valueListenable: Helper.setting,
-        builder: (context, Setting _setting, _) {
+        builder: (context, Setting setting, _) {
           return MaterialApp(
               title: 'Shnatter',
               debugShowCheckedModeBanner: false,
               //home: HomeScreen(key: UniqueKey()),
-              locale: _setting.language,
+              locale: setting.language,
               localizationsDelegates: const [
                 AppLocalizations.delegate, // Add this line
                 GlobalMaterialLocalizations.delegate,
@@ -92,7 +92,7 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
               initialRoute: RouteNames.login,
               onGenerateRoute: RouteGenerator.generateRoute,
               // ignore: dead_code
-              theme: _setting.isBright
+              theme: setting.isBright
                   ? ThemeData(
                       brightness: Brightness.dark,
                       primarySwatch: kprimarySwatch,
