@@ -30,7 +30,7 @@ class MindSlice extends StatelessWidget {
       ),
       onPressed: () {
         print('now click');
-        if (!disabled) mindFunc();
+        mindFunc();
       },
       child: Column(
         children: [

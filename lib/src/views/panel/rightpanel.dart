@@ -22,10 +22,10 @@ class RightPanel extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.only(top: 10.0),
         ),
-        ShnatterPageSuggest(routerChange: routerChange),
-        const Padding(
-          padding: EdgeInsets.only(top: 10.0),
-        ),
+        // ShnatterPageSuggest(routerChange: routerChange),
+        // const Padding(
+        //   padding: EdgeInsets.only(top: 10.0),
+        // ),
         ShnatterGroupSuggest(routerChange: routerChange),
         const Padding(
           padding: EdgeInsets.only(top: 10.0),

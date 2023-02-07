@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +38,7 @@ class ProductCell extends StatefulWidget {
 class ProductCellState extends mvc.StateMVC<ProductCell> {
   late PostController con;
   var product;
+  Map productAdmin = {};
   var productId = '';
   bool payLoading = false;
   bool loading = false;
@@ -78,6 +81,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     con = controller as PostController;
     super.initState();
     product = widget.data['data'];
+    productAdmin = widget.data['adminInfo'];
     productId = widget.data['id'];
     con.formatDate(product['productDate']).then((value) {
       postTime = value;
@@ -286,8 +290,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: product['productAdmin']
-                                                  ['fullName'],
+                                              text:
+                                                  '${productAdmin['firstName']} ${productAdmin['lastName']}',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,

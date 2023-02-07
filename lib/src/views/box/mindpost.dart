@@ -254,7 +254,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   feelingReady() {
     if (nowPost == 'Feelings/Activity') {
       nowPost = '';
-    } else if (nowPost == '') {
+    } else {
       nowPost = 'Feelings/Activity';
     }
     setState(() {});
@@ -263,7 +263,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   checkIn() {
     if (nowPost == 'Check In') {
       nowPost = '';
-    } else if (nowPost == '') {
+    } else {
       nowPost = 'Check In';
     }
     setState(() {});
@@ -272,7 +272,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   createPoll() {
     if (nowPost == 'Create Poll') {
       nowPost = '';
-    } else if (nowPost == '') {
+    } else {
       nowPost = 'Create Poll';
       pollOption = ['', ''];
     }
@@ -428,116 +428,125 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             children: [
               AnimatedContainer(
                 duration: Duration(milliseconds: 500),
-                child: Column(children: [
-                  SingleChildScrollView(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: postPhoto
-                            .map(((e) => postPhotoWidget(e['url'], e['id'])))
-                            .toList(),
-                      ),
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          (uploadAudioProgress != 0 &&
-                                  uploadAudioProgress != 100)
-                              ? Container(
-                                  width: 90,
-                                  height: 90,
-                                  margin: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(13),
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      AnimatedContainer(
-                                        duration:
-                                            const Duration(milliseconds: 500),
-                                        margin: const EdgeInsets.only(
-                                            top: 78, left: 10),
-                                        width: 130,
-                                        padding: EdgeInsets.only(
-                                            right: 130 -
-                                                (130 *
-                                                    uploadAudioProgress /
-                                                    100)),
-                                        child: const LinearProgressIndicator(
-                                          color: Colors.blue,
-                                          value: 10,
-                                          semanticsLabel:
-                                              'Linear progress indicator',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : postAudio == ''
-                                  ? const SizedBox()
-                                  : Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        // crossAxisAlignment:
-                                        //     CrossAxisAlignment.start,
-                                        children: [
-                                          SvgPicture.network(
-                                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
-                                            width: 20,
-                                          ),
-                                          const Text(
-                                            'Audio uploaded successfully',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(Icons.close,
-                                                color: Colors.black,
-                                                size: 13.0),
-                                            padding:
-                                                const EdgeInsets.only(left: 20),
-                                            tooltip: 'Delete',
-                                            onPressed: () {
-                                              postAudio = '';
-                                              nowPost = '';
-                                              setState(() {});
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                        ],
-                      ),
-                    ),
-                  ),
-                  nowPost == 'Feelings/Activity'
-                      ? feelingActivityWidget()
-                      : nowPost == 'Check In'
-                          ? checkInWidget()
-                          : nowPost == 'Create Poll'
-                              ? createPollWidget()
-                              : const SizedBox(),
-                  const Padding(padding: EdgeInsets.only(top: 5)),
-                  nowPost == ''
-                      ? const SizedBox()
-                      : const Divider(
-                          thickness: 0.1,
-                          color: Colors.black45,
-                          height: 1,
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: postPhoto
+                              .map(((e) => postPhotoWidget(e['url'], e['id'])))
+                              .toList(),
                         ),
-                ]),
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: nowPost != 'Upload Audio'
+                          ? const SizedBox()
+                          : Container(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  (uploadAudioProgress != 0 &&
+                                          uploadAudioProgress != 100)
+                                      ? Container(
+                                          width: 90,
+                                          height: 90,
+                                          margin: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(13),
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              AnimatedContainer(
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                margin: const EdgeInsets.only(
+                                                    top: 78, left: 10),
+                                                width: 130,
+                                                padding: EdgeInsets.only(
+                                                    right: 130 -
+                                                        (130 *
+                                                            uploadAudioProgress /
+                                                            100)),
+                                                child:
+                                                    const LinearProgressIndicator(
+                                                  color: Colors.blue,
+                                                  value: 10,
+                                                  semanticsLabel:
+                                                      'Linear progress indicator',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : postAudio == ''
+                                          ? const SizedBox()
+                                          : Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                // crossAxisAlignment:
+                                                //     CrossAxisAlignment.start,
+                                                children: [
+                                                  SvgPicture.network(
+                                                    'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
+                                                    width: 20,
+                                                  ),
+                                                  const Text(
+                                                    'Audio uploaded successfully',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.black,
+                                                        size: 13.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20),
+                                                    tooltip: 'Delete',
+                                                    onPressed: () {
+                                                      postAudio = '';
+                                                      nowPost = '';
+                                                      setState(() {});
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                ],
+                              ),
+                            ),
+                    ),
+                    nowPost == 'Feelings/Activity'
+                        ? feelingActivityWidget()
+                        : nowPost == 'Check In'
+                            ? checkInWidget()
+                            : nowPost == 'Create Poll'
+                                ? createPollWidget()
+                                : const SizedBox(),
+                    const Padding(padding: EdgeInsets.only(top: 5)),
+                    nowPost == ''
+                        ? const SizedBox()
+                        : const Divider(
+                            thickness: 0.1,
+                            color: Colors.black45,
+                            height: 1,
+                          ),
+                  ],
+                ),
               ),
               GridView.count(
                 crossAxisCount:
@@ -586,22 +595,30 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                           child: Padding(
                               padding: const EdgeInsets.only(top: 7, left: 15),
                               child: DropdownButton(
-                                hint: Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.language,
-                                      color: Colors.white,
-                                    ),
-                                    Padding(padding: EdgeInsets.only(left: 5)),
-                                    Text(
-                                      'Public',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                value: dropdownValue,
+                                // hint: Container(
+                                //   child: Row(
+                                //     children: [
+                                //       Icon(
+                                //         dropdownValue == 'Public'
+                                //             ? Icons.language
+                                //             : dropdownValue == 'Friends'
+                                //                 ? Icons.groups
+                                //                 : Icons.lock_outline,
+                                //         color: Colors.white,
+                                //       ),
+                                //       const Padding(
+                                //           padding: EdgeInsets.only(left: 5)),
+                                //       Text(
+                                //         dropdownValue,
+                                //         style: const TextStyle(
+                                //           fontSize: 13,
+                                //           color: Colors.white,
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                                 items: [
                                   DropdownMenuItem(
                                     value: "Public",
@@ -1078,10 +1095,25 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   Future<XFile> chooseAudio() async {
-    final _audioPicker = ImagePicker();
-    XFile? pickedFile;
-    pickedFile = await FilePicker.platform.pickFiles() as XFile;
-
+    //final _audioPicker = ImagePicker();
+    XFile pickedFile;
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.audio);
+    if (result != null) {
+      if (kIsWeb) {
+        Uint8List? uploadfile = result.files.single.bytes;
+        if (uploadfile != null) {
+          pickedFile = XFile.fromData(uploadfile);
+        } else {
+          pickedFile = XFile('');
+        }
+      } else {
+        pickedFile = result as XFile;
+      }
+    } else {
+      print("cancel upload -0-----------------");
+      pickedFile = XFile('');
+    }
     return pickedFile;
   }
 
@@ -1177,6 +1209,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     } else {
       pickedFile = await chooseAudio();
     }
+    if (type != 'photo' && pickedFile.path == '') return;
     uploadFile(pickedFile, type);
   }
 }

@@ -56,76 +56,91 @@ class SettingsLeftPanel extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter':
-                                        RouteNames.settings_profile_basic,
-                                  })
-                                },
-                            label: 'Basic',
-                            image: const SizedBox()),
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter':
-                                        RouteNames.settings_profile_work,
-                                  })
-                                },
-                            label: 'Work',
-                            image: const SizedBox()),
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter':
-                                        RouteNames.settings_profile_location,
-                                  })
-                                },
-                            label: 'Location',
-                            image: const SizedBox()),
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter':
-                                        RouteNames.settings_profile_education,
-                                  })
-                                },
-                            label: 'Education',
-                            image: const SizedBox()),
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter':
-                                        RouteNames.settings_profile_social,
-                                  })
-                                },
-                            label: 'Social Links',
-                            image: const SizedBox()),
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter':
-                                        RouteNames.settings_profile_interests,
-                                  })
-                                },
-                            label: 'Interests',
-                            image: const SizedBox()),
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter':
-                                        RouteNames.settings_profile_design,
-                                  })
-                                },
-                            label: 'Design',
-                            image: const SizedBox()),
+                        Container(
+                          width: 220,
+                          child: ListText(
+                              onTap: () => {
+                                    routerFunction({
+                                      'router': RouteNames.settings,
+                                      'subRouter':
+                                          RouteNames.settings_profile_basic,
+                                    })
+                                  },
+                              label: 'Basic',
+                              image: const SizedBox()),
+                        ),
+                        Container(
+                            width: 220,
+                            child: ListText(
+                                onTap: () => {
+                                      routerFunction({
+                                        'router': RouteNames.settings,
+                                        'subRouter':
+                                            RouteNames.settings_profile_work,
+                                      })
+                                    },
+                                label: 'Work',
+                                image: const SizedBox())),
+                        Container(
+                            width: 220,
+                            child: ListText(
+                                onTap: () => {
+                                      routerFunction({
+                                        'router': RouteNames.settings,
+                                        'subRouter': RouteNames
+                                            .settings_profile_location,
+                                      })
+                                    },
+                                label: 'Location',
+                                image: const SizedBox())),
+                        Container(
+                            width: 220,
+                            child: ListText(
+                                onTap: () => {
+                                      routerFunction({
+                                        'router': RouteNames.settings,
+                                        'subRouter': RouteNames
+                                            .settings_profile_education,
+                                      })
+                                    },
+                                label: 'Education',
+                                image: const SizedBox())),
+                        Container(
+                            width: 220,
+                            child: ListText(
+                                onTap: () => {
+                                      routerFunction({
+                                        'router': RouteNames.settings,
+                                        'subRouter':
+                                            RouteNames.settings_profile_social,
+                                      })
+                                    },
+                                label: 'Social Links',
+                                image: const SizedBox())),
+                        Container(
+                            width: 220,
+                            child: ListText(
+                                onTap: () => {
+                                      routerFunction({
+                                        'router': RouteNames.settings,
+                                        'subRouter': RouteNames
+                                            .settings_profile_interests,
+                                      })
+                                    },
+                                label: 'Interests',
+                                image: const SizedBox())),
+                        Container(
+                            width: 220,
+                            child: ListText(
+                                onTap: () => {
+                                      routerFunction({
+                                        'router': RouteNames.settings,
+                                        'subRouter':
+                                            RouteNames.settings_profile_design,
+                                      })
+                                    },
+                                label: 'Design',
+                                image: const SizedBox())),
                       ],
                     )
                   ],
@@ -163,16 +178,18 @@ class SettingsLeftPanel extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter':
-                                        RouteNames.settings_security_password,
-                                  })
-                                },
-                            label: 'Password',
-                            image: const SizedBox()),
+                        Container(
+                            width: 220,
+                            child: ListText(
+                                onTap: () => {
+                                      routerFunction({
+                                        'router': RouteNames.settings,
+                                        'subRouter': RouteNames
+                                            .settings_security_password,
+                                      })
+                                    },
+                                label: 'Password',
+                                image: const SizedBox())),
                         // ListText(
                         //   onTap: () => {
                         //     routerFunction('security_session')
@@ -180,15 +197,18 @@ class SettingsLeftPanel extends StatelessWidget {
                         //   label: 'Manage Sessions',
                         //   icon:
                         //       const SizedBox()),
-                        ListText(
-                            onTap: () => {
-                                  routerFunction({
-                                    'router': RouteNames.settings,
-                                    'subRouter': RouteNames.settings_two_factor,
-                                  })
-                                },
-                            label: 'Two-Factor Authentication',
-                            image: const SizedBox()),
+                        Container(
+                            width: 220,
+                            child: ListText(
+                                onTap: () => {
+                                      routerFunction({
+                                        'router': RouteNames.settings,
+                                        'subRouter':
+                                            RouteNames.settings_two_factor,
+                                      })
+                                    },
+                                label: 'Two-Factor Auth',
+                                image: const SizedBox())),
                       ],
                     )
                   ],

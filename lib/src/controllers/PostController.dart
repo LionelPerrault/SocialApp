@@ -30,23 +30,25 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> formatDate(d) async {
-    var time = changeTimeType(d: d);
     String trDate = '';
-    var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
-    final difference =
-        nowTimeStamp - time + UserManager.userInfo['timeDifference'];
-    if (difference / (1000 * 60) < 1) {
-      trDate = 'Just Now';
-    } else if (difference / (1000 * 60 * 60) < 1) {
-      trDate = '${(difference / (1000 * 60)).round()} minutes ago';
-    } else if (difference / (1000 * 60 * 60 * 24) < 1) {
-      trDate = '${(difference / (1000 * 60 * 60)).round()} hours ago';
-    } else if (difference / (1000 * 60 * 60 * 24 * 30) < 1) {
-      trDate = '${(difference / (1000 * 60 * 60 * 24)).round()} days ago';
-    } else if (difference / (1000 * 60 * 60 * 24 * 30) >= 1) {
-      trDate =
-          '${(difference / (1000 * 60 * 60 * 24 * 30)).round()} months ago';
-    }
+    try {
+      var time = changeTimeType(d: d);
+      var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
+      final difference =
+          nowTimeStamp - time + UserManager.userInfo['timeDifference'];
+      if (difference / (1000 * 60) < 1) {
+        trDate = 'Just Now';
+      } else if (difference / (1000 * 60 * 60) < 1) {
+        trDate = '${(difference / (1000 * 60)).round()} minutes ago';
+      } else if (difference / (1000 * 60 * 60 * 24) < 1) {
+        trDate = '${(difference / (1000 * 60 * 60)).round()} hours ago';
+      } else if (difference / (1000 * 60 * 60 * 24 * 30) < 1) {
+        trDate = '${(difference / (1000 * 60 * 60 * 24)).round()} days ago';
+      } else if (difference / (1000 * 60 * 60 * 24 * 30) >= 1) {
+        trDate =
+            '${(difference / (1000 * 60 * 60 * 24 * 30)).round()} months ago';
+      }
+    } catch (e) {}
     return trDate;
   }
 
@@ -1070,12 +1072,17 @@ class PostController extends ControllerMVC {
   //get all product function
   Future<void> getProduct() async {
     allProduct = [];
-    await Helper.productsData.get().then((value) async {
+    await Helper.productsData
+        .orderBy('productDate', descending: true)
+        .get()
+        .then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        allProduct.add({'data': data.data(), 'id': id});
+        var adminInfo =
+            await ProfileController().getUserInfo(data['productAdmin']['uid']);
+        allProduct.add({'data': data.data(), 'id': id, 'adminInfo': adminInfo});
         setState(() {});
       }
       print('Now you get all products');
@@ -1202,9 +1209,50 @@ class PostController extends ControllerMVC {
         'timeline': allPosts[i]['timeline'],
         'comment': allPosts[i]['comment']
       };
-      postsBox.add(eachPost);
+      if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
+          eachPost['privacy'] == 'Public') {
+        postsBox.add(eachPost);
+      }
     }
     posts = postsBox;
+    setState(() {});
+    return true;
+  }
+
+  addNewPosts(newCount) async {
+    var allSanp =
+        await Helper.postCollection.orderBy('postTime', descending: true).get();
+    var allPosts = allSanp.docs;
+    var postData;
+    var adminInfo;
+    for (var i = 0; i < newCount; i++) {
+      if (allPosts[i]['type'] == 'product') {
+        var valueSnap =
+            await Helper.productsData.doc(allPosts[i]['value']).get();
+        postData = valueSnap.data();
+      } else {
+        postData = allPosts[i]['value'];
+      }
+      var adminSnap =
+          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+      adminInfo = adminSnap.data();
+      var eachPost = {
+        'id': allPosts[i].id,
+        'data': postData,
+        'type': allPosts[i]['type'],
+        'admin': adminInfo,
+        'time': allPosts[i]['postTime'],
+        'adminUid': adminSnap.id,
+        'privacy': allPosts[i]['privacy'],
+        'header': allPosts[i]['header'],
+        'timeline': allPosts[i]['timeline'],
+        'comment': allPosts[i]['comment']
+      };
+      if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
+          eachPost['privacy'] == 'Public') {
+        posts = [eachPost, ...posts];
+      }
+    }
     setState(() {});
     return true;
   }

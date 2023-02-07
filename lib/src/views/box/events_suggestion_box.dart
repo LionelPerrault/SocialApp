@@ -1,19 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-
-import '../../controllers/UserController.dart';
 
 class ShnatterEventSuggest extends StatefulWidget {
   ShnatterEventSuggest({Key? key, required this.routerChange})
@@ -56,7 +51,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "Suggested Events",
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                   ),
@@ -64,7 +59,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                     padding: EdgeInsets.only(top: 45.0),
                   ),
                   Row(children: [
-                    Text(
+                    const Text(
                       'See All',
                       style: TextStyle(fontSize: 11),
                     ),
@@ -97,7 +92,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
               ),
               AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
-                  height: isSound ? 260 : 0,
+                  height: isSound ? con.unInterestedEvents.length * 60 : 0,
                   curve: Curves.fastOutSlowIn,
                   child: SizedBox(
                     //size: Size(100,100),
@@ -108,7 +103,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                         contentPadding:
                             const EdgeInsets.only(left: 5, right: 5),
                         leading: Padding(
-                            padding: EdgeInsets.only(top: 5),
+                            padding: const EdgeInsets.only(top: 5),
                             child: CircleAvatar(
                                 radius: 17,
                                 backgroundImage: NetworkImage(
@@ -119,7 +114,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                                         : con.unInterestedEvents[index]['data']
                                             ['eventPicture']))),
                         title: Padding(
-                          padding: EdgeInsets.only(bottom: 5),
+                          padding: const EdgeInsets.only(bottom: 5),
                           child: Text(
                             con.unInterestedEvents[index]['data']['eventName'],
                             style: const TextStyle(
@@ -127,7 +122,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                           ),
                         ),
                         subtitle: Padding(
-                            padding: EdgeInsets.only(bottom: 5),
+                            padding: const EdgeInsets.only(bottom: 5),
                             child: Text(
                               '${con.unInterestedEvents[index]['data']['eventInterested'].length} Interested',
                               style: const TextStyle(fontSize: 10),
@@ -154,11 +149,11 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                                 minimumSize:
                                     isJoining[index] != null && isJoining[index]
                                         ? const Size(60, 35)
-                                        : const Size(100, 35),
+                                        : const Size(105, 35),
                                 maximumSize:
                                     isJoining[index] != null && isJoining[index]
                                         ? const Size(60, 35)
-                                        : const Size(100, 35)),
+                                        : const Size(105, 35)),
                             child: isJoining[index] != null && isJoining[index]
                                 ? const SizedBox(
                                     width: 10,
