@@ -23,7 +23,7 @@ class ProductEachScreen extends StatefulWidget {
 
 class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
     with SingleTickerProviderStateMixin {
-  bool loading = false;
+  bool loading = true;
   late PostController con;
   var userInfo = UserManager.userInfo;
   @override
@@ -36,7 +36,7 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
 
   void getSelectedProduct(String docId) {
     con.getSelectedProduct(docId).then((value) => {
-          loading = true,
+          loading = false,
           setState(() {}),
           print('You get selected product info!'),
         });
@@ -74,7 +74,7 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
                                 ? 600
                                 : SizeConfig(context).screenWidth,
                         padding: EdgeInsets.only(top: 100),
-                        child: !loading
+                        child: loading
                             ? Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -94,7 +94,8 @@ class ProductEachScreenState extends mvc.StateMVC<ProductEachScreen>
                             : ProductCell(
                                 data: {
                                   'data': con.product,
-                                  'id': con.viewProductId
+                                  'id': con.viewProductId,
+                                  'adminInfo': con.productAdmin,
                                 },
                                 routerChange: widget.routerChange,
                               ),

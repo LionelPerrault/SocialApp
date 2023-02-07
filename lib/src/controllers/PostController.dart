@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, prefer_typing_uninitialized_variables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -993,6 +993,12 @@ class PostController extends ControllerMVC {
         'msg': 'Please add your product category',
         'result': false,
       };
+    } else if (productData['productLocation'] == null ||
+        productData['productLocation'] == '') {
+      return {
+        'msg': 'Please add your product location',
+        'result': false,
+      };
     }
     productData = {
       ...productData,
@@ -1089,10 +1095,9 @@ class PostController extends ControllerMVC {
     });
   }
 
-  // ignore: prefer_typing_uninitialized_variables
   var viewProductId;
-  // ignore: prefer_typing_uninitialized_variables
   var product;
+  var productAdmin;
   //get one page function that using uid of firebase database
   Future<bool> getSelectedProduct(String name) async {
     name = name.split('/')[name.split('/').length - 1];
@@ -1100,8 +1105,11 @@ class PostController extends ControllerMVC {
     var reuturnValue = await Helper.productsData.doc(viewProductId).get();
     var value = reuturnValue.data();
     product = value;
+    var adminInfo =
+        await ProfileController().getUserInfo(product['productAdmin']['uid']);
+    productAdmin = adminInfo;
     setState(() {});
-    print('This page was posted by ${product['productAdmin']}');
+    print('This product was posted by ${product['productAdmin']}');
     return true;
   }
 

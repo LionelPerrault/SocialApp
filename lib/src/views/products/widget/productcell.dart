@@ -304,9 +304,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                   widget.routerChange({
                                                     'router':
                                                         RouteNames.profile,
-                                                    'subRouter':
-                                                        product['productAdmin']
-                                                            ['userName'],
+                                                    'subRouter': productAdmin[
+                                                        'userName'],
                                                   });
                                                 })
                                         ]),
@@ -626,7 +625,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       Padding(
                           padding: EdgeInsets.only(
                               top: UserManager.userInfo['userName'] ==
-                                      product['productAdmin']['userName']
+                                      productAdmin['userName']
                                   ? 0
                                   : 30)),
                       UserManager.userInfo['uid'] ==
