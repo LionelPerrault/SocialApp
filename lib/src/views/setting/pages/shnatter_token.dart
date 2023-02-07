@@ -603,7 +603,11 @@ class SettingShnatterTokenScreenState
                                             var url = Uri.parse(
                                                 'https://whatsonchain.com/tx/${data['txId']}');
                                             if (await canLaunchUrl(url)) {
-                                              await launchUrl(url);
+                                              await launchUrl(
+                                                url,
+                                                mode: LaunchMode
+                                                    .externalApplication,
+                                              );
                                             } else {
                                               throw 'Could not launch $url';
                                             }
