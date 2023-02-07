@@ -384,8 +384,6 @@ class UserController extends ControllerMVC {
               },
             )
           }
-        else if (res['success'] == null)
-          {Helper.showToast('data does not exist')}
       },
     );
     return transactionData;
