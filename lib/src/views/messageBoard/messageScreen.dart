@@ -9,14 +9,14 @@ import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 
-import '../../controllers/ChatController.dart';
+import '../../controllers/MessageController.dart';
 import '../../utils/size_config.dart';
 
 class MessageScreen extends StatefulWidget {
   MessageScreen({Key? key, required this.routerChange, this.chatUser = ''})
-      : con = ChatController(),
+      : con = MessageController(),
         super(key: key);
-  ChatController? con;
+  MessageController? con;
   Function routerChange;
   String chatUser;
 
@@ -28,12 +28,12 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     with SingleTickerProviderStateMixin {
   bool isShowChatUserList = false;
   bool isCheckConnect = true;
-  late ChatController con;
+  late MessageController con;
 
   @override
   void initState() {
     add(widget.con);
-    con = controller as ChatController;
+    con = controller as MessageController;
     ProfileController().getUserInfo(widget.chatUser).then((value) => {
           if (value != null)
             {

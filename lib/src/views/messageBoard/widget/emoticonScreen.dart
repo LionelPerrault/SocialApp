@@ -6,15 +6,15 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ChatController.dart';
+import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 
 class EmoticonScreen extends StatefulWidget {
   Function onBack;
   EmoticonScreen({Key? key, required this.onBack})
-      : con = ChatController(),
+      : con = MessageController(),
         super(key: key);
-  late ChatController con;
+  late MessageController con;
   @override
   State createState() => EmoticonScreenState();
 }
@@ -28,7 +28,7 @@ class ChatMessage {
 class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
   bool check1 = false;
   bool check2 = false;
-  late ChatController con;
+  late MessageController con;
   late ScrollController _scrollController;
   var isMessageTap = 'all-list';
   var r = 0;
@@ -38,7 +38,7 @@ class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
   @override
   void initState() {
     add(widget.con);
-    con = controller as ChatController;
+    con = controller as MessageController;
     super.initState();
     _scrollController = ScrollController();
     if (con.emojiList.isEmpty) {

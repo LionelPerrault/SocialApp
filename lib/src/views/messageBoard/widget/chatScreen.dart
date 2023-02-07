@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ChatController.dart';
+import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'chatMessageListScreen.dart';
 import 'chatUserListScreen.dart';
@@ -11,9 +11,9 @@ import 'newMessageScreen.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({Key? key})
-      : con = ChatController(),
+      : con = MessageController(),
         super(key: key);
-  final ChatController con;
+  final MessageController con;
   @override
   State createState() => ChatScreenState();
 }
@@ -27,12 +27,12 @@ class ChatMessage {
 class ChatScreenState extends mvc.StateMVC<ChatScreen> {
   bool check1 = false;
   bool check2 = false;
-  late ChatController con;
+  late MessageController con;
 
   @override
   void initState() {
     add(widget.con);
-    con = controller as ChatController;
+    con = controller as MessageController;
 
     super.initState();
   }
@@ -93,14 +93,13 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                                 setState(() {});
                               },
                               child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.only(left: 5),
-                                width: 50,
-                                child: Icon(
-                                        Icons.arrow_drop_down,
-                                        color: Colors.white,
-                                      )
-                              ),
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.only(left: 5),
+                                  width: 50,
+                                  child: Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.white,
+                                  )),
                             )),
                         MouseRegion(
                             cursor: SystemMouseCursors.click,
@@ -211,13 +210,12 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                   ]))),
               con.isShowEmoticon
                   ? Container(
-                      margin: EdgeInsets.only(
-                          left: SizeConfig(context).screenWidth - 295,
-                          top: SizeConfig(context).screenHeight - 265),
+                      alignment: Alignment.center,
                       child: EmoticonScreen(onBack: (value) {
                         con.isShowEmoticon = value;
                         setState(() {});
-                      }))
+                      }),
+                    )
                   : Container()
             ]));
   }

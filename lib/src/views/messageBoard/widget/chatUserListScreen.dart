@@ -5,16 +5,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/ChatController.dart';
+import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 
 class ChatUserListScreen extends StatefulWidget {
   Function onBack;
   ChatUserListScreen({Key? key, required this.onBack})
-      : con = ChatController(),
+      : con = MessageController(),
         super(key: key);
-  late ChatController con;
+  late MessageController con;
   @override
   State createState() => ChatUserListScreenState();
 }
@@ -22,7 +22,7 @@ class ChatUserListScreen extends StatefulWidget {
 class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
   bool check1 = false;
   bool check2 = false;
-  late ChatController con;
+  late MessageController con;
   late ScrollController scrollController;
   var isMessageTap = 'all-list';
   var hidden = false;
@@ -31,7 +31,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
   @override
   void initState() {
     add(widget.con);
-    con = controller as ChatController;
+    con = controller as MessageController;
     super.initState();
     scrollController = ScrollController();
     if (!mounted) {
