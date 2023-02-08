@@ -7,19 +7,18 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
-class GoingEvents extends StatefulWidget {
-  GoingEvents({Key? key, required this.routerChange})
+class EventSearch extends StatefulWidget {
+  EventSearch({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
   Function routerChange;
 
-  State createState() => GoingEventsState();
+  State createState() => EventSearchState();
 }
 
-class GoingEventsState extends mvc.StateMVC<GoingEvents> {
+class EventSearchState extends mvc.StateMVC<EventSearch> {
   bool check1 = false;
   bool check2 = false;
   late PostController con;

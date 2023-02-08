@@ -7,24 +7,24 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
-class MyEvents extends StatefulWidget {
-  MyEvents({Key? key, required this.routerChange})
+class GroupSearch extends StatefulWidget {
+  GroupSearch({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
   Function routerChange;
 
-  State createState() => MyEventsState();
+  State createState() => GroupSearchState();
 }
 
-class MyEventsState extends mvc.StateMVC<MyEvents> {
+class GroupSearchState extends mvc.StateMVC<GroupSearch> {
   bool check1 = false;
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
-  var myEvents = [];
+  var invitedEvents = [];
+  var returnValue = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -33,16 +33,13 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
     con.setState(() {});
     super.initState();
     getEventNow();
-    print('now initstate');
   }
 
   void getEventNow() {
-    con.getEvent('manage', UserManager.userInfo['uid']).then((value) => {
-          myEvents = [...value],
-          myEvents.where((event) =>
-              event['data']['eventAdmin'] == UserManager.userInfo['id']),
-          print(myEvents),
-          setState(() {})
+    con.getEvent('invited', UserManager.userInfo['uid']).then((value) => {
+          returnValue = value,
+          invitedEvents = value,
+          print(invitedEvents),
         });
   }
 
@@ -67,13 +64,15 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
               mainAxisSpacing: 4.0,
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
-              children: myEvents
+              children: invitedEvents
                   .map(
                     (event) => EventCell(
                       routerChange: widget.routerChange,
                       eventData: event,
                       buttonFun: () {
-                        getEventNow();
+                        con.interestedEvent(event['id']).then((value) {
+                          getEventNow();
+                        });
                       },
                     ),
                   )

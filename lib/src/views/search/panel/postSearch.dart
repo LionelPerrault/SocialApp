@@ -3,29 +3,27 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
-class AllEvents extends StatefulWidget {
-  AllEvents({Key? key, required this.routerChange})
+class PostSearch extends StatefulWidget {
+  PostSearch({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
   Function routerChange;
 
-  State createState() => AllEventsState();
+  State createState() => PostSearchState();
 }
 
-class AllEventsState extends mvc.StateMVC<AllEvents> {
+class PostSearchState extends mvc.StateMVC<PostSearch> {
   bool check1 = false;
   bool check2 = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
-  var realAllEvents = [];
+  var myEvents = [];
   int arrayLength = 0;
   @override
   void initState() {
@@ -34,13 +32,16 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
     con.setState(() {});
     super.initState();
     getEventNow();
+    print('now initstate');
   }
 
   void getEventNow() {
-    con.getEvent('all', UserManager.userInfo['uid']).then((value) => {
-          realAllEvents = value,
-          print(realAllEvents),
-          setState(() {}),
+    con.getEvent('manage', UserManager.userInfo['uid']).then((value) => {
+          myEvents = [...value],
+          myEvents.where((event) =>
+              event['data']['eventAdmin'] == UserManager.userInfo['id']),
+          print(myEvents),
+          setState(() {})
         });
   }
 
@@ -65,15 +66,13 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
               mainAxisSpacing: 4.0,
               shrinkWrap: true,
               crossAxisSpacing: 4.0,
-              children: realAllEvents
+              children: myEvents
                   .map(
                     (event) => EventCell(
                       routerChange: widget.routerChange,
                       eventData: event,
                       buttonFun: () {
-                        con.interestedEvent(event['id']).then((value) {
-                          getEventNow();
-                        });
+                        getEventNow();
                       },
                     ),
                   )

@@ -79,7 +79,6 @@ class PeopleController extends ControllerMVC {
   }
 
   getFriends(name) async {
-    var userInfo = UserManager.userInfo;
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
         .where('state', isEqualTo: 1)
@@ -96,8 +95,8 @@ class PeopleController extends ControllerMVC {
   }
 
   getUserList({index = -1, isGetOnly5 = false}) async {
-    await getReceiveRequests(userInfo['userName']);
-    await getSendRequests(userInfo['userName']);
+    await getReceiveRequests(userInfo['uid']);
+    await getSendRequests(userInfo['uid']);
     await getList(index: index, isGetOnly5: isGetOnly5);
   }
 
@@ -112,7 +111,7 @@ class PeopleController extends ControllerMVC {
         .get();
     var snapshot1 = await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .where('userName', isNotEqualTo: UserManager.userInfo['userName'])
+        .where('uid', isNotEqualTo: userInfo['uid'])
         .get();
     var snapshot2 = await FirebaseFirestore.instance
         .collection(Helper.friendField)
@@ -120,8 +119,7 @@ class PeopleController extends ControllerMVC {
         .get();
     allFriendsList = snapshot2.docs;
     var friends = snapshot.docs
-        .where((element) =>
-            element['userName'] != UserManager.userInfo['userName'])
+        .where((element) => element['uid'] != userInfo['uid'])
         .toList();
     allUserList = getFilterList(snapshot1.docs);
     var arr = getFilterList(friends);
@@ -147,18 +145,18 @@ class PeopleController extends ControllerMVC {
     for (int i = 0; i < list.length; i++) {
       var f = 0;
       for (int j = 0; j < allFriendsList.length; j++) {
-        if (allFriendsList[j]['users'].contains(list[i]['userName']) &&
-            allFriendsList[j]['users'].contains(userInfo['userName'])) {
+        if (allFriendsList[j]['users'].contains(list[i]['uid']) &&
+            allFriendsList[j]['users'].contains(userInfo['uid'])) {
           f = 1;
         }
       }
       for (int j = 0; j < requestFriends.length; j++) {
-        if (list[i]['userName'] == requestFriends[j]['requester']) {
+        if (list[i]['uid'] == requestFriends[j]['requester']) {
           f = 1;
         }
       }
       for (int j = 0; j < sendFriends.length; j++) {
-        if (list[i]['userName'] == sendFriends[j]['receiver']) {
+        if (list[i]['uid'] == sendFriends[j]['receiver']) {
           f = 1;
         }
       }
@@ -174,7 +172,7 @@ class PeopleController extends ControllerMVC {
   requestFriend(receiver, fullName, avatar, index) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
-        .where('users', arrayContains: userInfo['userName'])
+        .where('users', arrayContains: userInfo['uid'])
         .get();
     var t = 0;
     var user = [];
@@ -190,21 +188,21 @@ class PeopleController extends ControllerMVC {
     setState(() {});
     Map<String, dynamic> notificationData;
     await FirebaseFirestore.instance.collection(Helper.friendField).add({
-      'requester': userInfo['userName'],
+      'requester': userInfo['uid'],
       'receiver': receiver,
       receiver: {'name': fullName, 'avatar': avatar},
-      userInfo['userName']: {
+      userInfo['uid']: {
         'name': userInfo['fullName'],
         'avatar': userInfo['avatar']
       },
-      'users': [userInfo['userName'], receiver],
+      'users': [userInfo['uid'], receiver],
       'state': 0
     }).then((value) async => {
           // await getUserList(index: index),
           notificationData = {
             'postType': 'requestFriend',
             'postId': value.id,
-            'postAdminId': UserManager.userInfo['uid'],
+            'postAdminId': userInfo['uid'],
             'notifyTime': DateTime.now().toString(),
             'tsNT': DateTime.now().millisecondsSinceEpoch,
             'userList': [],
@@ -217,14 +215,14 @@ class PeopleController extends ControllerMVC {
   }
 
   getReceiveRequestsFriends() async {
-    await getReceiveRequests(userInfo['userName']);
+    await getReceiveRequests(userInfo['uid']);
     setState(() {});
   }
 
-  getReceiveRequests(name) async {
+  getReceiveRequests(uid) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
-        .where('receiver', isEqualTo: name)
+        .where('receiver', isEqualTo: uid)
         .get();
     var arr = [];
     for (var element in snapshot.docs) {
@@ -238,14 +236,14 @@ class PeopleController extends ControllerMVC {
   }
 
   getSendRequestsFriends() async {
-    await getSendRequests(userInfo['userName']);
+    await getSendRequests(userInfo['uid']);
     setState(() {});
   }
 
-  getSendRequests(name) async {
+  getSendRequests(uid) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
-        .where('requester', isEqualTo: name)
+        .where('requester', isEqualTo: uid)
         .get();
     var arr = [];
     snapshot.docs.forEach((element) {
@@ -309,11 +307,9 @@ class PeopleController extends ControllerMVC {
       var snapshot =
           await FirebaseFirestore.instance.collection(Helper.userField).get();
       allRequestFriends.forEach((element) {
-        var a = element['users']
-            .where((e) => e != userInfo['userName'])
-            .toList()[0];
+        var a = element['users'].where((e) => e != userInfo['uid']).toList()[0];
         snapshot.docs.forEach((e) {
-          if (e['userName'] == a) {
+          if (e['uid'] == a) {
             search.forEach((key, value) {
               if (value != '') {
                 t = 1;
@@ -341,11 +337,9 @@ class PeopleController extends ControllerMVC {
       var snapshot =
           await FirebaseFirestore.instance.collection(Helper.userField).get();
       allSendFriends.forEach((element) {
-        var a = element['users']
-            .where((e) => e != userInfo['userName'])
-            .toList()[0];
+        var a = element['users'].where((e) => e != userInfo['uid']).toList()[0];
         snapshot.docs.forEach((e) {
-          if (e['userName'] == a) {
+          if (e['uid'] == a) {
             search.forEach((key, value) {
               if (value != '') {
                 t = 1;
@@ -361,7 +355,7 @@ class PeopleController extends ControllerMVC {
       });
       arr = c;
       if (t == 0) {
-        await getSendRequests(userInfo['userName']);
+        await getSendRequests(userInfo['uid']);
         isSearch = false;
         return;
       } else {
@@ -372,23 +366,12 @@ class PeopleController extends ControllerMVC {
     setState(() {});
   }
 
-  // var realNotifi = [];
-  // var allNotification = [];
-
-  // checkNotification(notiUid, userUid) async {
-  //   var notiSnap = await Helper.notifiCollection.doc(notiUid).get();
-  //   var allNotifi = notiSnap.data();
-  //   allNotifi!['userList'].add(userUid);
-  //   await Helper.notifiCollection
-  //       .doc(notiUid)
-  //       .update({'userList': allNotifi['userList']});
-  // }
-
-  // Future checkNotify(int check) async {
-  //   await FirebaseFirestore.instance
-  //       .collection(Helper.userField)
-  //       .doc(UserManager.userInfo['uid'])
-  //       .update({'checkNotifyTime': check});
-  //   print('check notify time');
-  // }
+  friendOrNot(uid) async {
+    var friendSnap = await FirebaseFirestore.instance
+        .collection(Helper.friendField)
+        .where('state', isEqualTo: 1)
+        .where('state', isEqualTo: 1)
+        .get();
+    var friend = friendSnap.docs;
+  }
 }
