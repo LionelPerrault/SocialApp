@@ -129,53 +129,52 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
               drawClicked: clickMenu,
               routerChange: routerChange,
             ),
-            GestureDetector(
-              onTap: () {
-                _drawerSlideController.reverse();
-                setState(() {
-                  showSideBar = false;
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      isEmailVerify
-                          ? const SizedBox()
-                          : emailVerificationNoify(),
-                      Stack(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizeConfig(context).screenWidth <
-                                      SizeConfig.mediumScreenSize
-                                  ? const SizedBox()
-                                  : LeftPanel(
-                                      routerFunction: routerChange,
-                                      router: mainRouterValue,
-                                    ),
-                              MainRouter.mainRouter(
-                                  mainRouterValue, routerChange),
-                            ],
-                          ),
-                          if (showSideBar)
-                            Container(
-                              width: SizeConfig(context).screenWidth,
-                              height: SizeConfig(context).screenHeight -
-                                  SizeConfig.navbarHeight,
-                              color: const Color.fromARGB(49, 63, 63, 63),
-                            ),
-                        ],
-                      )
-                    ],
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    isEmailVerify ? const SizedBox() : emailVerificationNoify(),
+                    Stack(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizeConfig(context).screenWidth <
+                                    SizeConfig.mediumScreenSize
+                                ? const SizedBox()
+                                : LeftPanel(
+                                    routerFunction: routerChange,
+                                    router: mainRouterValue,
+                                  ),
+                            MainRouter.mainRouter(
+                                mainRouterValue, routerChange),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
-              //when mobile toggle left panel
             ),
+            //when mobile toggle left panel
+            if (showSideBar)
+              GestureDetector(
+                  onTap: () {
+                    _drawerSlideController.reverse();
+                    setState(() {
+                      showSideBar = false;
+                    });
+                  },
+                  child: Positioned(
+                      top: SizeConfig.navbarHeight,
+                      child: Container(
+                        width: SizeConfig(context).screenWidth,
+                        height: SizeConfig(context).screenHeight,
+                        color: const Color.fromARGB(49, 63, 63, 63),
+                      ))),
+
             AnimatedBuilder(
               animation: _drawerSlideController,
               builder: (context, child) {
