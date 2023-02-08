@@ -37,8 +37,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   late AnimationController _drawerSlideController;
 
   Map mainRouterValue = {
-    'router': RouteNames.products,
-    'subRouter': 'o75YNsPmlVQC2ez8SJuw'
+    'router': RouteNames.homePage,
   };
   late UserController con;
 
