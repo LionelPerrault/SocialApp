@@ -128,6 +128,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
               drawClicked: clickMenu,
               routerChange: routerChange,
             ),
+
             Padding(
               padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
               child: SingleChildScrollView(
@@ -157,7 +158,6 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                 ),
               ),
             ),
-            //when mobile toggle left panel
             if (showSideBar)
               GestureDetector(
                   onTap: () {
@@ -167,12 +167,16 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                     });
                   },
                   child: Positioned(
-                      top: SizeConfig.navbarHeight,
-                      child: Container(
-                        width: SizeConfig(context).screenWidth,
-                        height: SizeConfig(context).screenHeight,
-                        color: const Color.fromARGB(49, 63, 63, 63),
+                      top: 100,
+                      width: SizeConfig(context).screenWidth,
+                      height: 300,
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: SizeConfig.navbarHeight),
+                        child: Container(
+                            color: const Color.fromARGB(0, 255, 255, 255)),
                       ))),
+            //when mobile toggle left panel
 
             AnimatedBuilder(
               animation: _drawerSlideController,
@@ -208,6 +212,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                           ));
               },
             ),
+
             showSearch
                 ? GestureDetector(
                     onTap: () {
