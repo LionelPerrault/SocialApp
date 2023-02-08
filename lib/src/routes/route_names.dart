@@ -50,6 +50,7 @@ class RouteNames {
   static const market = '/market';
   static const messages = '/messages';
   static const realEstate = '/realestate';
+  static const search = '/search';
 
   //admin routes
   static const adp = '/adminpanel';
