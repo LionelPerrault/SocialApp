@@ -31,7 +31,6 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
     con.setState(() {});
     super.initState();
     getProductNow();
-    con.getProductLikes();
   }
 
   void getProductNow() {
