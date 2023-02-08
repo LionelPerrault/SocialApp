@@ -1,12 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
@@ -15,7 +12,6 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
