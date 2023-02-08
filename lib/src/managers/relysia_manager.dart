@@ -229,8 +229,8 @@ class RelysiaManager {
         );
       }
     } catch (exception) {
-      // Helper.showToast(
-      //     "An error has occurred. Please check your internet connectivity or try again later");
+      Helper.showToast(
+          "An error has occurred. Please check your internet connectivity or try again later");
     }
     return {'history': transHistory, 'success': result, 'nextPageToken': next};
   }

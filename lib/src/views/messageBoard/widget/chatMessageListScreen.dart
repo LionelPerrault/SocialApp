@@ -38,6 +38,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
   late ScrollController _scrollController;
   var isMessageTap = 'all-list';
   var r = 0;
+  int verifyAlertHeight = 50;
   late Stream stream;
   @override
   void initState() {
@@ -82,7 +83,11 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                     var messageList = snapshot.data!.docs;
                     return Column(children: [
                       Container(
-                          height: SizeConfig(context).screenHeight - 220,
+                          height: UserManager.userInfo['isVerify']
+                              ? SizeConfig(context).screenHeight - 250
+                              : SizeConfig(context).screenHeight -
+                                  250 -
+                                  verifyAlertHeight,
                           child: ListView.builder(
                             itemCount: messageList.length,
                             itemBuilder: (context, index) {

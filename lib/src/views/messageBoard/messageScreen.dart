@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatMessageListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatUserListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/newMessageScreen.dart';
@@ -28,6 +29,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     with SingleTickerProviderStateMixin {
   bool isShowChatUserList = false;
   bool isCheckConnect = true;
+  int verifyAlertToastHeight = 50;
   late MessageController con;
 
   @override
@@ -73,7 +75,12 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth
           : SizeConfig(context).screenWidth - SizeConfig.leftBarWidth,
-      height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+      height: UserManager.userInfo['isVerify']
+          ? (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 30)
+          : (SizeConfig(context).screenHeight -
+              SizeConfig.navbarHeight -
+              verifyAlertToastHeight -
+              30),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -99,7 +106,11 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                 : con.isMessageTap == 'new'
                     ? Padding(
                         padding: EdgeInsets.only(
-                            top: SizeConfig(context).screenHeight - 220),
+                            top: UserManager.userInfo['isVerify']
+                                ? SizeConfig(context).screenHeight - 250
+                                : SizeConfig(context).screenHeight -
+                                    250 -
+                                    verifyAlertToastHeight),
                         child: WriteMessageScreen(
                           type: 'new',
                           goMessage: (value) {
