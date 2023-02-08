@@ -1010,14 +1010,26 @@ class PostController extends ControllerMVC {
       'productMarkAsSold': false,
       'productTimeline': true,
       'productOnOffCommenting': true,
+      'productPrivacy': 'Public'
     };
-
+    Map<String, dynamic> postData = {};
     Map<String, dynamic> notificationData;
     String id = '';
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .add(productData)
         .then((value) async => {
+              postData = {
+                'postAdmin': UserManager.userInfo['uid'],
+                'type': 'product',
+                'value': value.id,
+                'privacy': 'Public',
+                'postTime': FieldValue.serverTimestamp(),
+                'header': productData['productName'],
+                'timeline': true,
+                'comment': true,
+              },
+              await Helper.postCollection.add(postData),
               notificationData = {
                 'postType': 'products',
                 'postId': value.id,
@@ -1209,7 +1221,7 @@ class PostController extends ControllerMVC {
         'id': allPosts[i].id,
         'data': postData,
         'type': allPosts[i]['type'],
-        'admin': adminInfo,
+        'adminInfo': adminInfo,
         'time': allPosts[i]['postTime'],
         'adminUid': adminSnap.id,
         'privacy': allPosts[i]['privacy'],
@@ -1248,7 +1260,7 @@ class PostController extends ControllerMVC {
         'id': allPosts[i].id,
         'data': postData,
         'type': allPosts[i]['type'],
-        'admin': adminInfo,
+        'adminInfo': adminInfo,
         'time': allPosts[i]['postTime'],
         'adminUid': adminSnap.id,
         'privacy': allPosts[i]['privacy'],
@@ -1293,7 +1305,7 @@ class PostController extends ControllerMVC {
       'id': postSnap.id,
       'data': postData['value'],
       'type': postData['type'],
-      'admin': adminInfo,
+      'adminInfo': adminInfo,
       'time': postData['postTime'],
       'adminUid': adminSnap.id,
       'privacy': postData['privacy'],

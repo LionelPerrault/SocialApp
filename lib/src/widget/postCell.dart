@@ -9,6 +9,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/products/widget/productcell.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/audioPlayer.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
@@ -235,6 +236,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         return pollPostCell();
       case 'audio':
         return audioPostCell();
+      case 'product':
+        return ProductCell(
+            data: widget.postInfo, routerChange: widget.routerChange);
       default:
         return const SizedBox();
     }
@@ -261,10 +265,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['admin']['avatar'] != ''
+                          widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                  widget.postInfo['admin']['avatar'],
+                                  widget.postInfo['adminInfo']['avatar'],
                                 ))
                               : CircleAvatar(
                                   child: SvgPicture.network(Helper.avatar),
@@ -283,7 +287,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         children: <TextSpan>[
                                           TextSpan(
                                               text:
-                                                  '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -294,7 +298,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                     'router':
                                                         RouteNames.profile,
                                                     'subRouter':
-                                                        widget.postInfo['admin']
+                                                        widget.postInfo[
+                                                                'adminInfo']
                                                             ['userName'],
                                                   });
                                                 })
@@ -502,10 +507,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['admin']['avatar'] != ''
+                          widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                  widget.postInfo['admin']['avatar'],
+                                  widget.postInfo['adminInfo']['avatar'],
                                 ))
                               : CircleAvatar(
                                   child: SvgPicture.network(Helper.avatar),
@@ -524,7 +529,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         children: <TextSpan>[
                                           TextSpan(
                                               text:
-                                                  '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -535,7 +540,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                     'router':
                                                         RouteNames.profile,
                                                     'subRouter':
-                                                        widget.postInfo['admin']
+                                                        widget.postInfo[
+                                                                'adminInfo']
                                                             ['userName'],
                                                   });
                                                 })
@@ -735,10 +741,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['admin']['avatar'] != ''
+                          widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                  widget.postInfo['admin']['avatar'],
+                                  widget.postInfo['adminInfo']['avatar'],
                                 ))
                               : CircleAvatar(
                                   child: SvgPicture.network(Helper.avatar),
@@ -757,7 +763,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         children: <TextSpan>[
                                           TextSpan(
                                               text:
-                                                  '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -768,7 +774,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                     'router':
                                                         RouteNames.profile,
                                                     'subRouter':
-                                                        widget.postInfo['admin']
+                                                        widget.postInfo[
+                                                                'adminInfo']
                                                             ['userName'],
                                                   });
                                                 })
@@ -963,10 +970,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['admin']['avatar'] != ''
+                          widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                  widget.postInfo['admin']['avatar'],
+                                  widget.postInfo['adminInfo']['avatar'],
                                 ))
                               : CircleAvatar(
                                   child: SvgPicture.network(Helper.avatar),
@@ -985,7 +992,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       children: <TextSpan>[
                                         TextSpan(
                                           text:
-                                              '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                              '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
@@ -995,9 +1002,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               widget.routerChange(
                                                 {
                                                   'router': RouteNames.profile,
-                                                  'subRouter':
-                                                      widget.postInfo['admin']
-                                                          ['userName'],
+                                                  'subRouter': widget
+                                                          .postInfo['adminInfo']
+                                                      ['userName'],
                                                 },
                                               );
                                             },
@@ -1193,10 +1200,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['admin']['avatar'] != ''
+                          widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                  widget.postInfo['admin']['avatar'],
+                                  widget.postInfo['adminInfo']['avatar'],
                                 ))
                               : CircleAvatar(
                                   child: SvgPicture.network(Helper.avatar),
@@ -1215,7 +1222,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         children: <TextSpan>[
                                           TextSpan(
                                               text:
-                                                  '${widget.postInfo['admin']['firstName']} ${widget.postInfo['admin']['lastName']}',
+                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -1226,7 +1233,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                     'router':
                                                         RouteNames.profile,
                                                     'subRouter':
-                                                        widget.postInfo['admin']
+                                                        widget.postInfo[
+                                                                'adminInfo']
                                                             ['userName'],
                                                   });
                                                 })
@@ -1494,7 +1502,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                   user['avatar'] != ''
                                       ? CircleAvatar(
                                           backgroundImage: NetworkImage(
-                                          widget.postInfo['admin']['avatar'],
+                                          widget.postInfo['adminInfo']
+                                              ['avatar'],
                                         ))
                                       : CircleAvatar(
                                           child:

@@ -30,13 +30,6 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
   void initState() {
     add(widget.con);
     searchCon = controller as SearchController;
-    if (widget.searchValue != '') {
-      resultUsers = searchCon.users
-          .where((user) => (user['userName'].contains(widget.searchValue) ||
-              user['firstName'].contains(widget.searchValue) ||
-              user['lastName'].contains(widget.searchValue)))
-          .toList();
-    }
     super.initState();
   }
 

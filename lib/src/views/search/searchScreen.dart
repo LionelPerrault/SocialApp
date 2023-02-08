@@ -159,7 +159,10 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
           searchValue: searchValue,
         );
       case 'Post':
-        return PostSearch(routerChange: widget.routerChange);
+        return PostSearch(
+          routerChange: widget.routerChange,
+          searchValue: searchValue,
+        );
       case 'Group':
         return GroupSearch(routerChange: widget.routerChange);
       case 'Event':
