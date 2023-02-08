@@ -102,11 +102,9 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
         children: <Widget>[
           Expanded(
             child: SizeConfig(context).screenWidth < 600
-                ? GridView.count(
-                    crossAxisCount: 1,
-                    padding: const EdgeInsets.all(4.0),
-                    shrinkWrap: true,
-                    primary: false,
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: allProducts
                         .map((product) => MarketCell(
                               data: product,
