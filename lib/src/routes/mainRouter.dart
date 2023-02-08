@@ -11,6 +11,7 @@ import 'package:shnatter/src/views/postView/postscreen.dart';
 import 'package:shnatter/src/views/products/panel/productView/productscreen.dart';
 import 'package:shnatter/src/views/products/productsScreen.dart';
 import 'package:shnatter/src/views/profile/profilescreen.dart';
+import 'package:shnatter/src/views/search/searchScreen.dart';
 import 'package:shnatter/src/views/setting/settingsMain.dart';
 
 class MainRouter {
@@ -64,6 +65,8 @@ class MainRouter {
         }
       case RouteNames.market:
         return MarketPlaceScreen(routerChange: routerChange);
+      case RouteNames.search:
+        return SearchScreen(routerChange: routerChange);
     }
   }
 }

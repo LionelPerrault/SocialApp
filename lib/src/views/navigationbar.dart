@@ -522,7 +522,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       child: ButtonTheme(
                         minWidth: 30,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            widget.routerChange({
+                              'router': RouteNames.search,
+                            });
+                          },
                           style: ButtonStyle(
                             minimumSize:
                                 MaterialStateProperty.all(const Size(30, 30)),

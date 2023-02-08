@@ -278,7 +278,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                 },
                                 child: InkWell(
                                   onTap: () async {
-                                    isComment = !isComment;
+                                    isComment = true;
                                     await con.getReply(widget.productId);
                                     setState(() {});
                                   },
@@ -382,7 +382,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             ),
           ),
           !isComment
-              ? Container()
+              ? const SizedBox()
               : Container(
                   color: const Color.fromRGBO(245, 245, 245, 1),
                   padding: const EdgeInsets.only(left: 20, right: 20),

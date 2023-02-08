@@ -1352,7 +1352,7 @@ class PostController extends ControllerMVC {
     await Helper.postLikeComment.doc(postId).collection('comments').doc().set({
       'data': {'type': type, 'content': data, 'uid': userManager['uid']},
       'timeStamp': FieldValue.serverTimestamp(),
-      'likes': []
+      'likes': {}
     });
   }
 
@@ -1363,24 +1363,13 @@ class PostController extends ControllerMVC {
         .collection('comments')
         .doc(commentId)
         .get();
-    var arr = snapshot.data()!['likes'];
-    var a = [];
-    var aa = arr.where((val) => val['uid'] == userInfo['uid']).toList();
-    if (aa.isEmpty) {
-      a.add({'uid': userInfo['uid'], 'likes': likes});
-    }
-    for (int i = 0; i < arr.length; i++) {
-      var s = arr[i]['likes'];
-      if (arr[i]['uid'] == userInfo['uid']) {
-        s = likes;
-      }
-      a.add({'uid': arr[i]['uid'], 'likes': s});
-    }
+    var commentLike = snapshot.data()!['likes'];
+    commentLike[userInfo['uid']] = likes;
     await Helper.postLikeComment
         .doc(postId)
         .collection('comments')
         .doc(commentId)
-        .update({'likes': a});
+        .update({'likes': commentLike});
     getComment(postId);
   }
 
