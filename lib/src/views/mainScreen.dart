@@ -166,9 +166,9 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                     });
                   },
                   child: Positioned(
-                      top: 100,
+                      top: 10,
                       width: SizeConfig(context).screenWidth,
-                      height: 300,
+                      height: SizeConfig(context).screenHeight,
                       child: Padding(
                         padding:
                             const EdgeInsets.only(top: SizeConfig.navbarHeight),
