@@ -45,8 +45,8 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
     if (widget.searchValue != '') {
       resultUsers = searchCon.users
           .where((user) => (user['userName'].contains(widget.searchValue) ||
-              user['firstName'].contains(widget.searchValue) ||
-              user['lastName'].contains(widget.searchValue)))
+              '${user['firstName']} ${user['lastName']}'
+                  .contains(widget.searchValue)))
           .toList();
     }
     return resultUsers.isEmpty

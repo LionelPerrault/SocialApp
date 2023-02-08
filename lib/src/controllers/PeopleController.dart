@@ -111,7 +111,7 @@ class PeopleController extends ControllerMVC {
         .get();
     var snapshot1 = await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .where('uid', isNotEqualTo: userInfo['uid'])
+        .where('userName', isNotEqualTo: userInfo['userName'])
         .get();
     var snapshot2 = await FirebaseFirestore.instance
         .collection(Helper.friendField)
@@ -119,7 +119,7 @@ class PeopleController extends ControllerMVC {
         .get();
     allFriendsList = snapshot2.docs;
     var friends = snapshot.docs
-        .where((element) => element['uid'] != userInfo['uid'])
+        .where((element) => element['userName'] != userInfo['userName'])
         .toList();
     allUserList = getFilterList(snapshot1.docs);
     var arr = getFilterList(friends);
