@@ -469,8 +469,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
                 LikesCommentScreen(
-                    productId: widget.postInfo['id'],
-                    commentFlag: widget.postInfo['comment'])
+                  productId: widget.postInfo['id'],
+                  commentFlag: widget.postInfo['comment'],
+                  routerChange: widget.routerChange,
+                )
               ],
             ),
           ),
@@ -700,8 +702,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
                 LikesCommentScreen(
-                    productId: widget.postInfo['id'],
-                    commentFlag: widget.postInfo['comment'])
+                  productId: widget.postInfo['id'],
+                  commentFlag: widget.postInfo['comment'],
+                  routerChange: widget.routerChange,
+                )
               ],
             ),
           ),
@@ -926,8 +930,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 10)),
                 LikesCommentScreen(
-                    productId: widget.postInfo['id'],
-                    commentFlag: widget.postInfo['comment'])
+                  productId: widget.postInfo['id'],
+                  commentFlag: widget.postInfo['comment'],
+                  routerChange: widget.routerChange,
+                )
               ],
             ),
           ),
@@ -1154,8 +1160,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 10)),
                 LikesCommentScreen(
-                    productId: widget.postInfo['id'],
-                    commentFlag: widget.postInfo['comment'])
+                  productId: widget.postInfo['id'],
+                  commentFlag: widget.postInfo['comment'],
+                  routerChange: widget.routerChange,
+                )
               ],
             ),
           ),
@@ -1384,8 +1392,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
                 LikesCommentScreen(
-                    productId: widget.postInfo['id'],
-                    commentFlag: widget.postInfo['comment'])
+                  productId: widget.postInfo['id'],
+                  commentFlag: widget.postInfo['comment'],
+                  routerChange: widget.routerChange,
+                )
               ],
             ),
           ),

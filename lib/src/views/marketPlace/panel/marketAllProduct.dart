@@ -43,7 +43,6 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
 
     super.initState();
     getProductNow();
-    con.getProductLikes();
     if (con.allProduct == []) {
       roundFlag = false;
     }

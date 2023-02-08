@@ -699,6 +699,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
               LikesCommentScreen(
                 productId: productId,
                 commentFlag: product['productOnOffCommenting'],
+                routerChange: widget.routerChange,
               )
             ],
           ),
