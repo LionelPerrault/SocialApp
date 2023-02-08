@@ -482,278 +482,274 @@ class SettingShnatterTokenScreenState
                   : SizeConfig(context).screenWidth * 0.78,
           height: 200,
           margin: const EdgeInsets.only(top: 30, bottom: 15),
-          child: Expanded(
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xFFffffff),
-                borderRadius: BorderRadius.all(Radius.circular(7)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 3.0, // soften the shadow
-                    spreadRadius: 3.0, //extend the shadow
-                    offset: Offset(
-                      1.0, // Move to right 5  horizontally
-                      3.0, // Move to bottom 5 Vertically
-                    ),
-                  )
-                ],
-              ),
-              child: !loadingTransactionHistory && transactionData.isEmpty
-                  ? Container(
-                      padding: const EdgeInsets.only(top: 40),
-                      alignment: Alignment.center,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.network(Helper.emptySVG, width: 90),
-                            Container(
-                                alignment: Alignment.center,
-                                margin: const EdgeInsets.only(top: 10),
-                                padding:
-                                    const EdgeInsets.only(top: 10, bottom: 10),
-                                width: 140,
-                                decoration: const BoxDecoration(
-                                    color: Color.fromRGBO(240, 240, 240, 1),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: const Text(
-                                  'No data to show',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(108, 117, 125, 1)),
-                                ))
-                          ]))
-                  : Stack(children: [
-                      RefreshIndicator(
-                          onRefresh: reloadHistory,
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            padding: const EdgeInsets.only(top: 10),
-                            itemCount: transactionData.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              var data = transactionData[index];
+          child: Container(
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: Color(0xFFffffff),
+              borderRadius: BorderRadius.all(Radius.circular(7)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 3.0, // soften the shadow
+                  spreadRadius: 3.0, //extend the shadow
+                  offset: Offset(
+                    1.0, // Move to right 5  horizontally
+                    3.0, // Move to bottom 5 Vertically
+                  ),
+                )
+              ],
+            ),
+            child: !loadingTransactionHistory && transactionData.isEmpty
+                ? Container(
+                    padding: const EdgeInsets.only(top: 40),
+                    alignment: Alignment.center,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.network(Helper.emptySVG, width: 90),
+                          Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(top: 10),
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              width: 140,
+                              decoration: const BoxDecoration(
+                                  color: Color.fromRGBO(240, 240, 240, 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: const Text(
+                                'No data to show',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromRGBO(108, 117, 125, 1)),
+                              ))
+                        ]))
+                : Stack(children: [
+                    RefreshIndicator(
+                        onRefresh: reloadHistory,
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.only(top: 10),
+                          itemCount: transactionData.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var data = transactionData[index];
 
-                              return Container(
-                                  padding: const EdgeInsets.all(5),
-                                  alignment: Alignment.center,
-                                  child: Column(children: [
-                                    Container(
-                                        child: Theme(
-                                      data: Theme.of(context).copyWith(
-                                          dividerColor: Colors.transparent),
-                                      child: ExpansionTile(
-                                        tilePadding: const EdgeInsets.only(
-                                            top: 10, bottom: 10, right: 10),
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  child: Text(
-                                                    (data['from'] !=
-                                                            UserManager
-                                                                    .userInfo[
-                                                                'paymail']
-                                                        ? data['sender']
-                                                        : data['recipient']),
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  data['from'] !=
+                            return Container(
+                                padding: const EdgeInsets.all(5),
+                                alignment: Alignment.center,
+                                child: Column(children: [
+                                  Container(
+                                      child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                        dividerColor: Colors.transparent),
+                                    child: ExpansionTile(
+                                      tilePadding: const EdgeInsets.only(
+                                          top: 10, bottom: 10, right: 10),
+                                      title: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                child: Text(
+                                                  (data['from'] !=
                                                           UserManager.userInfo[
                                                               'paymail']
-                                                      ? 'received'
-                                                      : 'sent',
+                                                      ? data['sender']
+                                                      : data['recipient']),
                                                   style: const TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 12),
+                                                      color: Colors.black),
                                                 ),
-                                                formatDate(data['sendtime']),
-                                              ],
-                                            ),
-                                            // Container(
-                                            //   margin: const EdgeInsets.only(left: 25),
-                                            //   width: 160,
-                                            //   child: Text(
-                                            //     t['notes'].toString().length > 65
-                                            //         ? '${t['notes'].toString().substring(0, 65)}...'
-                                            //         : t['notes'],
-                                            //     style: const TextStyle(
-                                            //         fontSize: 13, color: Colors.black),
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),
-                                        trailing:
-                                            Wrap(spacing: 6, children: <Widget>[
-                                          Container(
-                                            margin:
-                                                const EdgeInsets.only(top: 2),
-                                            child: Text(
-                                              data['from'] !=
-                                                      UserManager
-                                                          .userInfo['paymail']
-                                                  ? '+${data['balance'].toString()}'
-                                                  : '-${data['balance'].toString()}',
-                                              style: TextStyle(
-                                                  color: data['from'] !=
-                                                          UserManager.userInfo[
-                                                              'paymail']
-                                                      ? Colors.green
-                                                      : Colors.red),
-                                            ),
+                                              ),
+                                              Text(
+                                                data['from'] !=
+                                                        UserManager
+                                                            .userInfo['paymail']
+                                                    ? 'received'
+                                                    : 'sent',
+                                                style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 12),
+                                              ),
+                                              formatDate(data['sendtime']),
+                                            ],
                                           ),
-                                          // GestureDetector(
-                                          //   onTap: () async {
-                                          //     var url = Uri.parse(
-                                          //         'https://whatsonchain.com/tx/${t['txId']}');
-                                          //     if (await canLaunchUrl(url)) {
-                                          //       await launchUrl(url);
-                                          //     } else {
-                                          //       throw 'Could not launch $url';
-                                          //     }
-                                          //   },
-                                          //   child: CircleAvatar(
-                                          //     radius: 10,
-                                          //     backgroundColor: !con.themeLight
-                                          //         ? const Color.fromRGBO(68, 68, 68, 1)
-                                          //         : Colors.white,
-                                          //     child: CircleAvatar(
-                                          //       radius: 9,
-                                          //       backgroundImage: Helper.tokenIcon != ''
-                                          //           ? NetworkImage(Helper.tokenIcon)
-                                          //           : null,
-                                          //     ),
+                                          // Container(
+                                          //   margin: const EdgeInsets.only(left: 25),
+                                          //   width: 160,
+                                          //   child: Text(
+                                          //     t['notes'].toString().length > 65
+                                          //         ? '${t['notes'].toString().substring(0, 65)}...'
+                                          //         : t['notes'],
+                                          //     style: const TextStyle(
+                                          //         fontSize: 13, color: Colors.black),
                                           //   ),
                                           // ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              var url = Uri.parse(
-                                                  'https://whatsonchain.com/tx/${data['txId']}');
-                                              if (await canLaunchUrl(url)) {
-                                                await launchUrl(
-                                                  url,
-                                                  mode: LaunchMode
-                                                      .externalApplication,
-                                                );
-                                              } else {
-                                                throw 'Could not launch $url';
-                                              }
-                                            },
-                                            child: const Icon(
-                                              Icons.arrow_forward,
-                                              color: Color.fromRGBO(
-                                                  200, 200, 200, 1),
-                                            ),
-                                          )
-                                        ]),
-                                        // children: [
-                                        //   isShowExpandingNotes
-                                        //       ? Padding(
-                                        //           padding: EdgeInsets.all(10),
-                                        //           child: Text(
-                                        //             t['notes'],
-                                        //             style: TextStyle(fontSize: 13),
-                                        //           ))
-                                        //       : Container()
-                                        // ],
+                                        ],
                                       ),
-                                    )),
-                                    Container(
-                                      height: 1,
-                                      color: const Color.fromARGB(
-                                          255, 243, 243, 243),
-                                    )
-                                  ]));
-                            },
-                          )),
-                      if (loadingTransactionHistory)
-                        const Positioned(
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                    ]),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   verticalDirection: VerticalDirection.down,
-              //   children: [
-              //     // Row(
-              //     //   verticalDirection: VerticalDirection.up,
-              //     //   children: [
-              //     //     Container(
-              //     //       margin: const EdgeInsets.only(top: 7, bottom: 7),
-              //     //       // alignment: Alignment.center,
-              //     //       child: Row(
-              //     //         children: [
-              //     //           Container(
-              //     //             width: 100,
-              //     //             alignment: Alignment.center,
-              //     //             child: const Text(
-              //     //               'Sender',
-              //     //               style: TextStyle(
-              //     //                 fontSize: 20,
-              //     //               ),
-              //     //             ),
-              //     //           ),
-              //     //           Container(
-              //     //             width: 100,
-              //     //             alignment: Alignment.center,
-              //     //             child: const Text(
-              //     //               'Recipient',
-              //     //               style: TextStyle(
-              //     //                 fontSize: 20,
-              //     //               ),
-              //     //             ),
-              //     //           ),
-              //     //           Container(
-              //     //             width: 100,
-              //     //             alignment: Alignment.center,
-              //     //             child: const Text(
-              //     //               'Time',
-              //     //               style: TextStyle(
-              //     //                 fontSize: 20,
-              //     //               ),
-              //     //             ),
-              //     //           ),
-              //     //           Container(
-              //     //             width: 100,
-              //     //             alignment: Alignment.center,
-              //     //             child: const Text(
-              //     //               'Note',
-              //     //               style: TextStyle(
-              //     //                 fontSize: 20,
-              //     //               ),
-              //     //             ),
-              //     //           ),
-              //     //           Container(
-              //     //             width: 100,
-              //     //             alignment: Alignment.center,
-              //     //             child: const Text(
-              //     //               'Balance',
-              //     //               style: TextStyle(
-              //     //                 fontSize: 20,
-              //     //               ),
-              //     //             ),
-              //     //           )
-              //     //         ],
-              //     //       ),
-              //     //     ),
-              //     //   ],
-              //     // ),
+                                      trailing:
+                                          Wrap(spacing: 6, children: <Widget>[
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 2),
+                                          child: Text(
+                                            data['from'] !=
+                                                    UserManager
+                                                        .userInfo['paymail']
+                                                ? '+${data['balance'].toString()}'
+                                                : '-${data['balance'].toString()}',
+                                            style: TextStyle(
+                                                color: data['from'] !=
+                                                        UserManager
+                                                            .userInfo['paymail']
+                                                    ? Colors.green
+                                                    : Colors.red),
+                                          ),
+                                        ),
+                                        // GestureDetector(
+                                        //   onTap: () async {
+                                        //     var url = Uri.parse(
+                                        //         'https://whatsonchain.com/tx/${t['txId']}');
+                                        //     if (await canLaunchUrl(url)) {
+                                        //       await launchUrl(url);
+                                        //     } else {
+                                        //       throw 'Could not launch $url';
+                                        //     }
+                                        //   },
+                                        //   child: CircleAvatar(
+                                        //     radius: 10,
+                                        //     backgroundColor: !con.themeLight
+                                        //         ? const Color.fromRGBO(68, 68, 68, 1)
+                                        //         : Colors.white,
+                                        //     child: CircleAvatar(
+                                        //       radius: 9,
+                                        //       backgroundImage: Helper.tokenIcon != ''
+                                        //           ? NetworkImage(Helper.tokenIcon)
+                                        //           : null,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            var url = Uri.parse(
+                                                'https://whatsonchain.com/tx/${data['txId']}');
+                                            if (await canLaunchUrl(url)) {
+                                              await launchUrl(
+                                                url,
+                                                mode: LaunchMode
+                                                    .externalApplication,
+                                              );
+                                            } else {
+                                              throw 'Could not launch $url';
+                                            }
+                                          },
+                                          child: const Icon(
+                                            Icons.arrow_forward,
+                                            color: Color.fromRGBO(
+                                                200, 200, 200, 1),
+                                          ),
+                                        )
+                                      ]),
+                                      // children: [
+                                      //   isShowExpandingNotes
+                                      //       ? Padding(
+                                      //           padding: EdgeInsets.all(10),
+                                      //           child: Text(
+                                      //             t['notes'],
+                                      //             style: TextStyle(fontSize: 13),
+                                      //           ))
+                                      //       : Container()
+                                      // ],
+                                    ),
+                                  )),
+                                  Container(
+                                    height: 1,
+                                    color: const Color.fromARGB(
+                                        255, 243, 243, 243),
+                                  )
+                                ]));
+                          },
+                        )),
+                    if (loadingTransactionHistory)
+                      const Positioned(
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                  ]),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   verticalDirection: VerticalDirection.down,
+            //   children: [
+            //     // Row(
+            //     //   verticalDirection: VerticalDirection.up,
+            //     //   children: [
+            //     //     Container(
+            //     //       margin: const EdgeInsets.only(top: 7, bottom: 7),
+            //     //       // alignment: Alignment.center,
+            //     //       child: Row(
+            //     //         children: [
+            //     //           Container(
+            //     //             width: 100,
+            //     //             alignment: Alignment.center,
+            //     //             child: const Text(
+            //     //               'Sender',
+            //     //               style: TextStyle(
+            //     //                 fontSize: 20,
+            //     //               ),
+            //     //             ),
+            //     //           ),
+            //     //           Container(
+            //     //             width: 100,
+            //     //             alignment: Alignment.center,
+            //     //             child: const Text(
+            //     //               'Recipient',
+            //     //               style: TextStyle(
+            //     //                 fontSize: 20,
+            //     //               ),
+            //     //             ),
+            //     //           ),
+            //     //           Container(
+            //     //             width: 100,
+            //     //             alignment: Alignment.center,
+            //     //             child: const Text(
+            //     //               'Time',
+            //     //               style: TextStyle(
+            //     //                 fontSize: 20,
+            //     //               ),
+            //     //             ),
+            //     //           ),
+            //     //           Container(
+            //     //             width: 100,
+            //     //             alignment: Alignment.center,
+            //     //             child: const Text(
+            //     //               'Note',
+            //     //               style: TextStyle(
+            //     //                 fontSize: 20,
+            //     //               ),
+            //     //             ),
+            //     //           ),
+            //     //           Container(
+            //     //             width: 100,
+            //     //             alignment: Alignment.center,
+            //     //             child: const Text(
+            //     //               'Balance',
+            //     //               style: TextStyle(
+            //     //                 fontSize: 20,
+            //     //               ),
+            //     //             ),
+            //     //           )
+            //     //         ],
+            //     //       ),
+            //     //     ),
+            //     //   ],
+            //     // ),
 
-              //   ],
-              // ),
-            ),
+            //   ],
+            // ),
           ),
         ),
       ],

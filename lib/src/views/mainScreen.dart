@@ -157,7 +157,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                 ),
               ),
             ),
-            if (showSideBar)
+            if (showSideBar == true)
               GestureDetector(
                   onTap: () {
                     _drawerSlideController.reverse();
@@ -165,16 +165,12 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                       showSideBar = false;
                     });
                   },
-                  child: Positioned(
-                      top: 10,
-                      width: SizeConfig(context).screenWidth,
-                      height: SizeConfig(context).screenHeight,
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                        child: Container(
-                            color: const Color.fromARGB(0, 255, 255, 255)),
-                      ))),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: SizeConfig.navbarHeight),
+                    child: Container(
+                        color: const Color.fromARGB(41, 236, 236, 236)),
+                  )),
             AnimatedBuilder(
               animation: _drawerSlideController,
               builder: (context, child) {
