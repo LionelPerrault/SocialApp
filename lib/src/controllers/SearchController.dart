@@ -23,12 +23,14 @@ class SearchController extends ControllerMVC {
   getUsers() async {
     var snapShots = await Helper.userCollection.orderBy('userName').get();
     var usersDocs = snapShots.docs;
+    var box = [];
     for (var i = 0; i < usersDocs.length; i++) {
-      users.add({
+      box.add({
         ...usersDocs[i].data(),
         'uid': usersDocs[i].id,
       });
     }
+    users = box;
     setState(() {});
   }
 
@@ -54,7 +56,7 @@ class SearchController extends ControllerMVC {
         'id': allPosts[i].id,
         'data': postData,
         'type': allPosts[i]['type'],
-        'admin': adminInfo,
+        'adminInfo': adminInfo,
         'time': allPosts[i]['postTime'],
         'adminUid': adminSnap.id,
         'privacy': allPosts[i]['privacy'],
@@ -74,24 +76,34 @@ class SearchController extends ControllerMVC {
   getEvents() async {
     var snapShots = await Helper.eventsData.get();
     var eventsDocs = snapShots.docs;
+    var box = [];
     for (var i = 0; i < eventsDocs.length; i++) {
-      events.add({
+      box.add({
         ...eventsDocs[i].data(),
         'uid': eventsDocs[i].id,
       });
     }
+    events = box;
     setState(() {});
   }
 
   getGroups() async {
     var snapShots = await Helper.groupsData.get();
     var groupsDocs = snapShots.docs;
+    var box = [];
     for (var i = 0; i < groupsDocs.length; i++) {
-      groups.add({
+      box.add({
         ...groupsDocs[i].data(),
         'uid': groupsDocs[i].id,
       });
     }
+    groups = box;
     setState(() {});
+  }
+
+  getAllSearchResult() async {
+    await getUsers();
+    await getEvents();
+    await getGroups();
   }
 }

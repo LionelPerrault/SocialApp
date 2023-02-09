@@ -20,38 +20,6 @@ class ShnatterGroupSuggest extends StatefulWidget {
 class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
   //
   bool isSound = true;
-  List<Map> sampleData = [
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Members',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Members',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Members',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Members',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Members',
-      'icon': Icons.nature
-    }
-  ];
   var con = PostController();
   var userInfo = UserManager.userInfo;
   var isJoining = {};

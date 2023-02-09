@@ -23,7 +23,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
-  bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;

@@ -136,7 +136,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 widget.routerChange({
-                                  'router': RouteNames.profile,
+                                  'router': RouteNames.groups,
                                   'subRouter': widget.groupData['data']
                                       ['groupUserName'],
                                 });

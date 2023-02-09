@@ -33,7 +33,6 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
-  bool showSearch = false;
   late FocusNode searchFocusNode;
   late FileController filecon;
   bool showMenu = false;
@@ -66,47 +65,6 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
               print('Successfully get event you want!!!'),
             }
         });
-  }
-
-  void onSearchBarFocus() {
-    searchFocusNode.requestFocus();
-    setState(() {
-      showSearch = true;
-    });
-  }
-
-  void clickMenu() {
-    if (_isDrawerOpen() || _isDrawerOpening()) {
-      _drawerSlideController.reverse();
-    } else {
-      _drawerSlideController.forward();
-    }
-  }
-
-  void onSearchBarDismiss() {
-    if (showSearch)
-      setState(() {
-        showSearch = false;
-      });
-  }
-
-  bool _isDrawerOpen() {
-    return _drawerSlideController.value == 1.0;
-  }
-
-  bool _isDrawerOpening() {
-    return _drawerSlideController.status == AnimationStatus.forward;
-  }
-
-  bool _isDrawerClosed() {
-    return _drawerSlideController.value == 0.0;
-  }
-
-  @override
-  void dispose() {
-    searchFocusNode.dispose();
-    _drawerSlideController.dispose();
-    super.dispose();
   }
 
   @override
