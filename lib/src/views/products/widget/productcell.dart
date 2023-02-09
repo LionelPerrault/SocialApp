@@ -269,10 +269,14 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 22,
-                            child: SvgPicture.network(Helper.avatar),
-                          ),
+                          productAdmin['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  productAdmin['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
