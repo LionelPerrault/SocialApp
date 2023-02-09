@@ -35,6 +35,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   bool showSideBar = false;
   bool isEmailVerify = true;
   late AnimationController _drawerSlideController;
+  String searchText = '';
 
   Map mainRouterValue = {
     'router': RouteNames.homePage,
@@ -111,6 +112,12 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
     setState(() {});
   }
 
+  textChange(value) {
+    searchText = value;
+    print('textChange');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,6 +134,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
               onSearchBarDismiss: onSearchBarDismiss,
               drawClicked: clickMenu,
               routerChange: routerChange,
+              textChange: textChange,
             ),
             Padding(
               padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
@@ -213,51 +221,60 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                       });
                     },
                     child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        color: const Color.fromARGB(0, 214, 212, 212),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.only(right: 20.0),
-                                    child: const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                    )),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10, right: 9),
-                                  width: SizeConfig(context).screenWidth * 0.4,
-                                  child: TextField(
-                                    focusNode: searchFocusNode,
-                                    controller: searchController,
-                                    cursorColor: Colors.white,
-                                    style: const TextStyle(color: Colors.white),
-                                    decoration: const InputDecoration(
-                                      prefixIcon: Icon(Icons.search,
-                                          color: Color.fromARGB(
-                                              150, 170, 212, 255),
-                                          size: 20),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0)),
-                                      ),
-                                      filled: true,
-                                      fillColor: Color(0xff202020),
-                                      hintText: 'Search',
-                                      hintStyle: TextStyle(
-                                          fontSize: 15.0, color: Colors.white),
+                      width: double.infinity,
+                      height: double.infinity,
+                      color: const Color.fromARGB(0, 214, 212, 212),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  padding: const EdgeInsets.only(right: 20.0),
+                                  child: const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                  )),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                    top: 10, bottom: 10, right: 9),
+                                width: SizeConfig(context).screenWidth * 0.4,
+                                child: TextField(
+                                  focusNode: searchFocusNode,
+                                  controller: searchController,
+                                  cursorColor: Colors.white,
+                                  style: const TextStyle(color: Colors.white),
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(Icons.search,
+                                        color:
+                                            Color.fromARGB(150, 170, 212, 255),
+                                        size: 20),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0)),
                                     ),
+                                    filled: true,
+                                    fillColor: Color(0xff202020),
+                                    hintText: 'Search',
+                                    hintStyle: TextStyle(
+                                        fontSize: 15.0, color: Colors.white),
                                   ),
-                                )
-                              ],
-                            ),
-                            ShnatterSearchBox()
-                          ],
-                        )),
+                                ),
+                              )
+                            ],
+                          ),
+                          ShnatterSearchBox(
+                            routerChange: routerChange,
+                            hideSearch: () {
+                              setState(() {
+                                showSearch = false;
+                              });
+                            },
+                            searchText: searchText,
+                          )
+                        ],
+                      ),
+                    ),
                   )
                 : const SizedBox(),
             ChatScreen(),

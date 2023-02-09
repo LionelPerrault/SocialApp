@@ -26,38 +26,6 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
   //
   bool isSound = true;
   var isLiked = {};
-  List<Map> sampleData = [
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Likes',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Likes',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Likes',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Likes',
-      'icon': Icons.nature
-    },
-    {
-      'avatarImg': '',
-      'name': 'Adetola',
-      'subname': '1 Likes',
-      'icon': Icons.nature
-    }
-  ];
   var con = PostController();
   var userInfo = UserManager.userInfo;
   @override

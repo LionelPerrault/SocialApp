@@ -9,6 +9,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/SearchController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
@@ -40,6 +41,7 @@ class ShnatterNavigation extends StatefulWidget {
     required this.onSearchBarDismiss,
     required this.drawClicked,
     required this.routerChange,
+    required this.textChange,
   })  : postCon = PostController(),
         super(key: key);
   PostController postCon;
@@ -48,21 +50,20 @@ class ShnatterNavigation extends StatefulWidget {
   final VoidCallback onSearchBarDismiss;
   final VoidCallback drawClicked;
   Function routerChange;
+  Function textChange;
   @override
   State createState() => ShnatterNavigationState();
 }
 
 class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  late TextEditingController searhCon;
+  late TextEditingController searchCon;
   late FocusNode searchFocusNode;
   var userInfo = UserManager.userInfo;
   bool onHover = false;
   var chatCon = ChatController();
   var peopleCon = PeopleController();
   late PostController postCon;
-  var noti = ShnatterNotificationState();
-  var settingMainScreen = SettingMainScreenState();
   var badgeCount = [];
   String userAvatar = '';
   //
@@ -70,10 +71,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   void initState() {
     add(widget.postCon);
     postCon = controller as PostController;
-    searhCon = widget.searchController;
+    searchCon = widget.searchController;
     searchFocusNode = FocusNode();
     userAvatar = UserManager.userInfo['avatar'];
     searchFocusNode.addListener(() {
+      widget.textChange(searchCon.text);
       widget.onSearchBarFocus();
     });
     Future.delayed(const Duration(milliseconds: 5), () async {
@@ -286,6 +288,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       // print('notification content ------${postCon.allNotification}');
     });
 
+    SearchController().getAllSearchResult();
     super.initState();
   }
 
@@ -951,7 +954,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
               padding: const EdgeInsets.only(top: 10, bottom: 10, right: 9),
               width: SizeConfig(context).screenWidth * 0.4,
               child: TextField(
-                controller: searhCon,
+                controller: searchCon,
                 cursorColor: Colors.white,
                 focusNode: searchFocusNode,
                 style: const TextStyle(color: Colors.white),

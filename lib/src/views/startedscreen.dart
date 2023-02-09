@@ -185,6 +185,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
               onSearchBarDismiss: onSearchBarDismiss,
               drawClicked: clickMenu,
               routerChange: () {},
+              textChange: () {},
             ),
             Padding(
               padding: const EdgeInsets.only(top: 80),
@@ -1900,61 +1901,6 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     children: []),
                               )));
                 }),
-            showSearch
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showSearch = false;
-                      });
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        color: const Color.fromARGB(0, 214, 212, 212),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.only(right: 20.0),
-                                    child: const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                    )),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10, right: 9),
-                                  width: SizeConfig(context).screenWidth * 0.4,
-                                  child: TextField(
-                                    focusNode: searchFocusNode,
-                                    controller: searchController,
-                                    cursorColor: Colors.white,
-                                    style: const TextStyle(color: Colors.white),
-                                    decoration: const InputDecoration(
-                                      prefixIcon: Icon(Icons.search,
-                                          color: Color.fromARGB(
-                                              150, 170, 212, 255),
-                                          size: 20),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0)),
-                                      ),
-                                      filled: true,
-                                      fillColor: Color(0xff202020),
-                                      hintText: 'Search',
-                                      hintStyle: TextStyle(
-                                          fontSize: 15.0, color: Colors.white),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            ShnatterSearchBox()
-                          ],
-                        )),
-                  )
-                : const SizedBox()
           ],
         ));
   }

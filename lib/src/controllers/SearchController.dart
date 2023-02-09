@@ -100,4 +100,10 @@ class SearchController extends ControllerMVC {
     groups = box;
     setState(() {});
   }
+
+  getAllSearchResult() async {
+    await getUsers();
+    await getEvents();
+    await getGroups();
+  }
 }

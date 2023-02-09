@@ -88,7 +88,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     con = controller as PostController;
     con.formatDate(widget.postInfo['time']).then((value) {
       postTime = value;
-      print('addnewposttime$postTime');
       setState(() {});
     });
     headerCon.text = widget.postInfo['header'];

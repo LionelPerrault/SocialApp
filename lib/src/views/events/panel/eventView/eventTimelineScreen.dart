@@ -22,7 +22,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
-  bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
   late AnimationController _drawerSlideController;
@@ -35,7 +34,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature}
   ];
-  //
   @override
   void initState() {
     super.initState();
