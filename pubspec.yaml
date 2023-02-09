@@ -46,7 +46,7 @@ dependencies:
   fluttertoast: ^8.0.9
   shared_preferences: ^2.0.15
   mvc_pattern: ^8.12.0
-  provider: ^4.3.3
+  provider: ^6.0.0
   url_launcher: ^6.1.6
   firebase_database: ^10.0.5
   cloud_firestore: ^4.0.2
@@ -86,6 +86,7 @@ dependencies:
   just_audio: ^0.9.31
   just_audio_libwinmedia: ^0.0.4+1
   file_picker: ^4.6.1
+  flutter_sound: ^9.2.13
 
 dev_dependencies:
   flutter_test:

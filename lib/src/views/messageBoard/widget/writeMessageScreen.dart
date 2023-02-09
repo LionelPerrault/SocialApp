@@ -1,15 +1,18 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import "./soundRecorder.dart";
 
 // ignore: must_be_immutable
 class WriteMessageScreen extends StatefulWidget {
   String type;
   Function goMessage;
+
   WriteMessageScreen({Key? key, required this.type, required this.goMessage})
       : con = MessageController(),
         super(key: key);
@@ -23,11 +26,18 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   bool check2 = false;
   bool isShift = false;
   bool isEnter = false;
+  bool showRecoder = false;
+  bool recordingStarted = false;
+  String recordingPath = "";
+  FlutterSound flutterSound = FlutterSound();
+
   String data = '';
   late MessageController con;
   var userInfo = UserManager.userInfo;
   var emojiList = <Widget>[];
   late FocusNode _focusNode;
+  late FlutterSoundRecorder _recordingSession;
+  String pathToAudio = '';
   var t = [];
   TextEditingController content = TextEditingController();
   @override
@@ -46,12 +56,35 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
         }
       },
     );
+    initializer();
     super.initState();
+  }
+
+  void initializer() async {
+    pathToAudio = '/sdcard/Download/temp.wav';
+    _recordingSession = FlutterSoundRecorder();
+  }
+
+  Future<void> startRecording() async {
+    recordingStarted = true;
+    await _recordingSession.startRecorder(
+      toFile: pathToAudio,
+      codec: Codec.pcm16WAV,
+    );
+    setState(() {});
+  }
+
+  Future<void> stopRecording() async {
+    await _recordingSession.stopRecorder();
+
+    recordingStarted = false;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         con.progress == 0
             ? Container()
@@ -66,30 +99,35 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(2))),
               ),
         SizedBox(
-          height: 35,
-          child: TextFormField(
-            focusNode: _focusNode,
-            controller: con.textController,
-            onChanged: ((value) {
-              data = value;
-            }),
-            minLines: 1,
-            maxLines: 5,
-            keyboardType: TextInputType.multiline,
-            style: TextStyle(fontSize: 12),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              hintText: 'Write message',
-              hintStyle: TextStyle(color: Colors.grey),
-              contentPadding:
-                  EdgeInsets.only(left: 15, bottom: 11, top: 0, right: 15),
+          height: 10,
+        ),
+        if (showRecoder) SoundRecorder(),
+        if (!showRecoder)
+          SizedBox(
+            height: 35,
+            child: TextFormField(
+              focusNode: _focusNode,
+              controller: con.textController,
+              onChanged: ((value) {
+                data = value;
+              }),
+              minLines: 1,
+              maxLines: 5,
+              keyboardType: TextInputType.multiline,
+              style: TextStyle(fontSize: 12),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: 'Write message',
+                hintStyle: TextStyle(color: Colors.grey),
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 0, right: 15),
+              ),
             ),
           ),
-        ),
         Container(
           child: Row(children: [
             const Padding(padding: EdgeInsets.only(left: 10)),
@@ -109,11 +147,17 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               ),
             ),
             const Padding(padding: EdgeInsets.only(left: 10)),
-            const Icon(
-              Icons.mic,
-              size: 20,
-              color: Color.fromRGBO(175, 175, 175, 1),
-            ),
+            GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showRecoder = !showRecoder;
+                  });
+                },
+                child: const Icon(
+                  Icons.mic,
+                  size: 20,
+                  color: Color.fromRGBO(175, 175, 175, 1),
+                )),
             const Padding(padding: EdgeInsets.only(left: 10)),
             MouseRegion(
               child: GestureDetector(
