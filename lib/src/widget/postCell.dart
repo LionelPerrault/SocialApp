@@ -84,11 +84,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   String editHeader = '';
   @override
   void initState() {
-    print('widget.postInfo${widget.postInfo}');
     add(widget.con);
     con = controller as PostController;
     con.formatDate(widget.postInfo['time']).then((value) {
       postTime = value;
+      print('addnewposttime$postTime');
       setState(() {});
     });
     headerCon.text = widget.postInfo['header'];

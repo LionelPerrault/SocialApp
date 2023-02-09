@@ -69,23 +69,25 @@ class PostSearchState extends mvc.StateMVC<PostSearch> {
                 SizeConfig.navbarHeight -
                 150 -
                 (UserManager.userInfo['isVerify'] ? 0 : 50),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      for (int i = 0; i < resultPosts.length; i++)
-                        PostCell(
-                          postInfo: resultPosts[i],
-                          routerChange: widget.routerChange,
-                        )
-                    ],
+            child: SingleChildScrollView(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < resultPosts.length; i++)
+                          PostCell(
+                            postInfo: resultPosts[i],
+                            routerChange: widget.routerChange,
+                          )
+                      ],
+                    ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           );
   }
