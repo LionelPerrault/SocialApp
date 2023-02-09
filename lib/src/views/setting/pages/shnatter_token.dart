@@ -157,19 +157,22 @@ class SettingShnatterTokenScreenState
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        setState(() {
-          loadingTransactionHistory = true;
-        });
-        con.getTransactionHistory(con.nextPageTokenCount).then(
-              (resData) => {
-                loadingTransactionHistory = false,
-                if (resData.isNotEmpty)
-                  {
-                    transactionData.add(resData),
-                    setState(() {}),
-                  },
-              },
-            );
+        if (con.nextPageTokenCount != 'null') {
+          setState(() {
+            loadingTransactionHistory = true;
+          });
+          con.getTransactionHistory(con.nextPageTokenCount).then(
+                (resData) => {
+                  loadingTransactionHistory = false,
+                  if (resData.isNotEmpty)
+                    {
+                      transactionData.addAll(resData),
+                      setState(() {}),
+                    },
+                  print('')
+                },
+              );
+        }
       }
     });
     con.getTransactionHistory(con.nextPageTokenCount).then(
