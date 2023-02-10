@@ -72,11 +72,7 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
             // print(con.isFriendRequest);
             requestStatus = true;
             setState(() {});
-            await PeopleController().requestFriend(
-                widget.userInfo['userName'],
-                '${widget.userInfo['firstName']} ${widget.userInfo['lastName']}',
-                widget.userInfo['avatar'],
-                1);
+            await PeopleController().requestFriend(widget.userInfo['uid']);
             requestStatus = false;
 
             setState(() {});

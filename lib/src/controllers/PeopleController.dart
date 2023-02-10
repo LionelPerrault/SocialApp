@@ -1,21 +1,9 @@
 // ignore_for_file: unused_local_variable
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
-
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import '../../firebase_options.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
-import '../models/chatModel.dart';
-import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
-
 import '../models/userModel.dart';
 
 enum EmailType { emailVerify, googleVerify }
@@ -165,11 +153,10 @@ class PeopleController extends ControllerMVC {
         arr.add(list[i]);
       }
     }
-    var arr1 = [];
     return arr;
   }
 
-  requestFriend(receiver, fullName, avatar, index) async {
+  requestFriend(receiver) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
         .where('users', arrayContains: userInfo['uid'])
@@ -190,11 +177,6 @@ class PeopleController extends ControllerMVC {
     await FirebaseFirestore.instance.collection(Helper.friendField).add({
       'requester': userInfo['uid'],
       'receiver': receiver,
-      receiver: {'name': fullName, 'avatar': avatar},
-      userInfo['uid']: {
-        'name': userInfo['fullName'],
-        'avatar': userInfo['avatar']
-      },
       'users': [userInfo['uid'], receiver],
       'state': 0
     }).then((value) async => {
@@ -364,14 +346,5 @@ class PeopleController extends ControllerMVC {
       sendFriends = arr1;
     }
     setState(() {});
-  }
-
-  friendOrNot(uid) async {
-    var friendSnap = await FirebaseFirestore.instance
-        .collection(Helper.friendField)
-        .where('state', isEqualTo: 1)
-        .where('state', isEqualTo: 1)
-        .get();
-    var friend = friendSnap.docs;
   }
 }
