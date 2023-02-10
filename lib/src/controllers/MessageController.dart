@@ -183,11 +183,10 @@ class MessageController extends ControllerMVC {
             reference = firebaseStorage
                 .ref()
                 .child('audios/${PPath.basename(pickedFile.path)}');
-            ;
+
             uploadTask = reference.putData(
               bytes,
-              SettableMetadata(
-                  contentType: 'audio/${pickedFile.path.split('.').last}'),
+              SettableMetadata(contentType: 'audio/mp3'),
             );
           } else {
             var file = File(pickedFile!.path);

@@ -74,14 +74,14 @@ class _SoundRecorderState extends State<SoundRecorder> {
       }
     }
     await _mRecorder!.openRecorder();
-    _mPath = '${generateRandomFilename()}.mp4';
-    if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
-      _codec = Codec.opusWebM;
-      _mPath = '${generateRandomFilename()}.webm';
+    _mPath = '${generateRandomFilename()}.mp3';
+    if (kIsWeb) {
+      _codec = Codec.mp3;
+      _mPath = '${generateRandomFilename()}.mp3';
     }
     if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
       var dir = await getExternalStorageDirectory();
-      _mPath = '${dir?.path}/${generateRandomFilename()}.mp4';
+      _mPath = '${dir?.path}/${generateRandomFilename()}.mp3';
       _mRecorderIsInited = true;
       return;
     }
