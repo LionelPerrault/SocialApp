@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -81,6 +82,12 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
     setState(() {});
   }
 
+  var audioPath = '';
+  saveFilePath(value) {
+    audioPath = value;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -101,7 +108,10 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
         SizedBox(
           height: 10,
         ),
-        if (showRecoder) SoundRecorder(),
+        if (showRecoder)
+          SoundRecorder(
+            savePath: saveFilePath,
+          ),
         if (!showRecoder)
           SizedBox(
             height: 35,
@@ -177,7 +187,16 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             ElevatedButton(
               onPressed: () async {
-                sendMessage();
+                if (showRecoder) {
+                  con.uploadFile(XFile(audioPath), widget.type, 'audio');
+                  if (widget.type == 'new') {
+                    widget.goMessage('message-list');
+                  }
+                  showRecoder = false;
+                  setState(() {});
+                } else {
+                  sendMessage();
+                }
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(33, 37, 41, 1),
