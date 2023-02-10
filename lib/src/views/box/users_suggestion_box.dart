@@ -139,10 +139,8 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                             con.isFriendRequest[index] = true;
                             setState(() {});
                             await con.requestFriend(
-                                con.userList[index]['uid'],
-                                '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
-                                con.userList[index]['avatar'],
-                                index);
+                              con.userList[index]['uid'],
+                            );
                             con.isFriendRequest[index] = false;
 
                             setState(() {});
