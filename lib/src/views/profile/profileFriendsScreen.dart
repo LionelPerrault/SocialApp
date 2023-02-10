@@ -39,9 +39,9 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     add(widget.con);
     con = controller as PeopleController;
     Future.delayed(const Duration(microseconds: 0), () async {
-      await con.getFriends(profileCon.viewProfileUserName);
-      con.getSendRequests(profileCon.viewProfileUserName);
-      con.getReceiveRequests(profileCon.viewProfileUserName);
+      await con.getAllFriends(profileCon.viewProfileUid);
+      con.getSendRequests(profileCon.viewProfileUid);
+      con.getReceiveRequests(profileCon.viewProfileUid);
       setState(() {});
     });
     _gotoHome();

@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
@@ -66,20 +67,98 @@ class PeopleController extends ControllerMVC {
         .add(data);
   }
 
-  getFriends(name) async {
+  requestFriend(receiver) async {
+    setState(() {});
+    Map<String, dynamic> notificationData;
+    await FirebaseFirestore.instance.collection(Helper.friendField).add({
+      'requester': userInfo['uid'],
+      'receiver': receiver,
+      'users': [userInfo['uid'], receiver],
+      'state': 0
+    }).then((value) async => {
+          // await getUserList(index: index),
+          notificationData = {
+            'postType': 'requestFriend',
+            'postId': value.id,
+            'postAdminId': userInfo['uid'],
+            'notifyTime': DateTime.now().toString(),
+            'tsNT': DateTime.now().millisecondsSinceEpoch,
+            'userList': [],
+            'timeStamp': FieldValue.serverTimestamp(),
+          },
+          saveNotifications(notificationData),
+        });
+    Helper.showToast('Sent request');
+    return "Sent request";
+  }
+
+  cancelRequest(receiver) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Helper.friendField)
+          .where('requester', isEqualTo: userInfo['uid'])
+          .where('receiver', isEqualTo: receiver)
+          .get()
+          .then((value) => {
+                FirebaseFirestore.instance
+                    .collection(Helper.friendField)
+                    .doc(value.docs[0].id)
+                    .delete(),
+              });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  cancelFriend(friend) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Helper.friendField)
+          .where('users', arrayContains: friend)
+          .where('users', arrayContains: userInfo['uid'])
+          .get()
+          .then((value) => {
+                FirebaseFirestore.instance
+                    .collection(Helper.friendField)
+                    .doc(value.docs[0].id)
+                    .delete(),
+              });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  confirmFriend(id) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Helper.friendField)
+          .doc(id)
+          .update({'state': 1});
+      await getReceiveRequestsFriends();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  getAllFriends(uid) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendField)
         .where('state', isEqualTo: 1)
+        .where('users', arrayContains: uid)
         .get();
-    var s = [];
-    for (int i = 0; i < snapshot.docs.length; i++) {
-      var data = snapshot.docs[i].data();
-      var arr1 = data['users'].where((val) => val == name).toList();
-      if (arr1.isNotEmpty) {
-        s.add(data);
-      }
+    var allFriendUid = snapshot.docs;
+    var allFriendsInfo = [];
+    for (var i = 0; i < allFriendUid.length; i++) {
+      var friendId =
+          allFriendUid[i]['users'].where((user) => user != uid).toList()[0];
+      var friendInfo = ProfileController().getUserInfo(friendId);
+      allFriendsInfo.add(friendInfo);
     }
-    friends = s;
+
+    friends = allFriendsInfo;
   }
 
   getUserList({index = -1, isGetOnly5 = false}) async {
@@ -156,46 +235,6 @@ class PeopleController extends ControllerMVC {
     return arr;
   }
 
-  requestFriend(receiver) async {
-    var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.friendField)
-        .where('users', arrayContains: userInfo['uid'])
-        .get();
-    var t = 0;
-    var user = [];
-    snapshot.docs.forEach((element) {
-      user = element['users'];
-      if (element['users'].contains(receiver)) {
-        t = 1;
-      }
-    });
-    if (t == 1) {
-      return;
-    }
-    setState(() {});
-    Map<String, dynamic> notificationData;
-    await FirebaseFirestore.instance.collection(Helper.friendField).add({
-      'requester': userInfo['uid'],
-      'receiver': receiver,
-      'users': [userInfo['uid'], receiver],
-      'state': 0
-    }).then((value) async => {
-          // await getUserList(index: index),
-          notificationData = {
-            'postType': 'requestFriend',
-            'postId': value.id,
-            'postAdminId': userInfo['uid'],
-            'notifyTime': DateTime.now().toString(),
-            'tsNT': DateTime.now().millisecondsSinceEpoch,
-            'userList': [],
-            'timeStamp': FieldValue.serverTimestamp(),
-          },
-          saveNotifications(notificationData),
-        });
-    Helper.showToast('Sent request');
-    return "Sent request";
-  }
-
   getReceiveRequestsFriends() async {
     await getReceiveRequests(userInfo['uid']);
     setState(() {});
@@ -236,14 +275,6 @@ class PeopleController extends ControllerMVC {
     });
     allSendFriends = arr;
     sendFriends = arr;
-  }
-
-  confirmFriend(id, key) async {
-    await FirebaseFirestore.instance
-        .collection(Helper.friendField)
-        .doc(id)
-        .update({'state': 1});
-    await getReceiveRequestsFriends();
   }
 
   deleteFriend(id) async {
