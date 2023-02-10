@@ -186,7 +186,7 @@ class MessageController extends ControllerMVC {
 
             uploadTask = reference.putData(
               bytes,
-              SettableMetadata(contentType: 'audio/mp3'),
+              SettableMetadata(contentType: 'audio/webm'),
             );
           } else {
             var file = File(pickedFile!.path);
