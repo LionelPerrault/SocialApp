@@ -76,7 +76,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
     await _mRecorder!.openRecorder();
     _mPath = '${generateRandomFilename()}.mp4';
     if (kIsWeb) {
-      _codec = Codec.mp3;
+      _codec = Codec.opusWebM;
       _mPath = '${generateRandomFilename()}.webm';
     }
     if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
