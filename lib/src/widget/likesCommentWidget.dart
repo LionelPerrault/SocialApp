@@ -20,10 +20,10 @@ import 'package:path/path.dart' as PPath;
 
 class LikesCommentScreen extends StatefulWidget {
   late PostController Postcon;
-  String productId;
+  String postId;
   LikesCommentScreen(
       {Key? key,
-      required this.productId,
+      required this.postId,
       required this.commentFlag,
       required this.routerChange})
       : Postcon = PostController(),
@@ -103,12 +103,12 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     add(widget.Postcon);
     con = controller as PostController;
     super.initState();
-    con.getComment(widget.productId);
+    con.getComment(widget.postId);
     getLikes();
   }
 
   getLikes() async {
-    await con.getPostLikes(widget.productId).then((value) {
+    await con.getPostLikes(widget.postId).then((value) {
       likes = value;
       print('mylikesssss$value');
       print(likes);
@@ -279,7 +279,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                 child: InkWell(
                                   onTap: () async {
                                     isComment = true;
-                                    await con.getReply(widget.productId);
+                                    await con.getReply(widget.postId);
                                     setState(() {});
                                   },
                                   child: AnimatedContainer(
@@ -372,7 +372,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           myLike['value'] = value;
                           myLike['value'] = value;
                           isLike = false;
-                          con.savePostLikes(widget.productId, value);
+                          con.savePostLikes(widget.postId, value);
                           whoHover = '';
                           setState(() {});
                         }),
@@ -413,7 +413,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         () async {
                           if (comment != '') {
                             await con.saveComment(
-                                widget.productId, comment, 'text');
+                                widget.postId, comment, 'text');
                             setState(() {});
                           }
                         },
@@ -648,7 +648,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                               whoComment = '';
                               con.commentLikes[e['id']] = whatImage;
                               con.saveLikesComment(
-                                  widget.productId, e['id'], whatImage);
+                                  widget.postId, e['id'], whatImage);
                               setState(() {});
                             }),
                           )
@@ -748,8 +748,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           reply[e['id']] = value;
                         }, () async {
                           if (reply[e['id']] != '') {
-                            await con.saveReply(widget.productId, e['id'],
-                                reply[e['id']], 'text');
+                            await con.saveReply(
+                                widget.postId, e['id'], reply[e['id']], 'text');
                             setState(() {});
                           }
                         }),
@@ -816,8 +816,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             child: likesWidget(val['id'], () {
                               whoComment = '';
                               con.replyLikes[val['id']] = whatImage;
-                              con.saveLikesReply(widget.productId, e['id'],
-                                  val['id'], whatImage);
+                              con.saveLikesReply(
+                                  widget.postId, e['id'], val['id'], whatImage);
                               setState(() {});
                             }),
                           )

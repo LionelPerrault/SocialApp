@@ -1358,13 +1358,13 @@ class PostController extends ControllerMVC {
         break;
       }
     }
-    if (!existId) {
-      await Helper.postLikeComment.doc(postId).set({'likes': []});
-    }
+    // if (!existId) {
+    //   await Helper.postLikeComment.doc(postId).set({'likes': {}});
+    // }
     await Helper.postLikeComment.doc(postId).collection('comments').doc().set({
       'data': {'type': type, 'content': data, 'uid': userManager['uid']},
       'timeStamp': FieldValue.serverTimestamp(),
-      'likes': {}
+      // 'likes': {}
     });
   }
 
@@ -1444,7 +1444,7 @@ class PostController extends ControllerMVC {
         .set({
       'data': {'type': type, 'content': data, 'uid': userInfo['uid']},
       'timeStamp': FieldValue.serverTimestamp(),
-      'likes': []
+      'likes': {}
     });
     await getReply(postId);
   }
