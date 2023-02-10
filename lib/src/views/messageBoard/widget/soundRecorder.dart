@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, must_be_immutable
 
 /*
  * Copyright 2018, 2019, 2020, 2021 Dooboolab.
@@ -20,6 +20,7 @@
  */
 
 import 'dart:async';
+import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -31,22 +32,23 @@ const theSource = AudioSource.microphone;
 
 /// Example app.
 class SoundRecorder extends StatefulWidget {
-  const SoundRecorder({super.key});
+  SoundRecorder({super.key, required this.savePath});
 
+  Function savePath;
   @override
   _SoundRecorderState createState() => _SoundRecorderState();
 }
 
 class _SoundRecorderState extends State<SoundRecorder> {
   Codec _codec = Codec.aacMP4;
-  String _mPath = 'tau_file.mp4';
+  String _mPath = '';
   late Timer _timer;
   int counter = 0;
   String recordingTime = "";
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool isRecording = false;
   bool _mRecorderIsInited = false;
-
+  bool showRecordedAudio = false;
   @override
   void initState() {
     openTheRecorder().then((value) {
@@ -72,13 +74,14 @@ class _SoundRecorderState extends State<SoundRecorder> {
       }
     }
     await _mRecorder!.openRecorder();
+    _mPath = '${generateRandomFilename()}.mp4';
     if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
       _codec = Codec.opusWebM;
-      _mPath = 'tau_file.webm';
+      _mPath = '${generateRandomFilename()}.webm';
     }
     if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
       var dir = await getExternalStorageDirectory();
-      _mPath = '${dir?.path}/tau_file.mp4';
+      _mPath = '${dir?.path}/${generateRandomFilename()}.mp4';
       _mRecorderIsInited = true;
       return;
     }
@@ -112,6 +115,16 @@ class _SoundRecorderState extends State<SoundRecorder> {
     );
   }
 
+  String generateRandomFilename() {
+    final random = Random();
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    final randomString = String.fromCharCodes(Iterable.generate(
+      10,
+      (_) => characters.codeUnitAt(random.nextInt(characters.length)),
+    ));
+    return 'file-$randomString';
+  }
+
   void record() {
     if (!_mRecorderIsInited) {
       return;
@@ -138,6 +151,8 @@ class _SoundRecorderState extends State<SoundRecorder> {
     await _mRecorder!.stopRecorder().then((value) {
       setState(() {
         isRecording = false;
+        showRecordedAudio = true;
+        widget.savePath(value);
         _timer.cancel();
       });
     });
@@ -147,62 +162,93 @@ class _SoundRecorderState extends State<SoundRecorder> {
 
   @override
   Widget build(BuildContext context) {
-    Widget makeBody() {
-      return !isRecording
-          ? InkWell(
-              onTap: () {
-                record();
-              },
-              child: Container(
-                  margin: EdgeInsets.only(left: 10),
-                  width: 100,
-                  height: 35,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.blue),
-                  child: Row(
-                    children: const [
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.mic,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 5),
-                      Text(
-                        "Record",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                      )
-                    ],
-                  )))
-          : InkWell(
-              onTap: () {
-                stopRecorder();
-              },
-              child: Container(
-                  margin: const EdgeInsets.only(left: 10),
-                  width: 158,
-                  height: 35,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.red),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      const Icon(
-                        Icons.stop,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        "Recording ${convertSecondsToMMSS(counter)}",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                      )
-                    ],
-                  )));
-    }
-
-    return makeBody();
+    return Row(
+      children: [
+        !isRecording
+            ? InkWell(
+                onTap: () {
+                  record();
+                },
+                child: Container(
+                    margin: EdgeInsets.only(left: 10),
+                    width: 100,
+                    height: 35,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.blue),
+                    child: Row(
+                      children: const [
+                        SizedBox(width: 10),
+                        Icon(
+                          Icons.mic,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Record",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        )
+                      ],
+                    )))
+            : InkWell(
+                onTap: () {
+                  stopRecorder();
+                },
+                child: Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    width: 158,
+                    height: 35,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.red),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        const Icon(
+                          Icons.stop,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Recording ${convertSecondsToMMSS(counter)}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        )
+                      ],
+                    ))),
+        const SizedBox(
+          width: 10,
+        ),
+        if (!isRecording && showRecordedAudio)
+          Container(
+              height: 35,
+              width: 80,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.audio_file,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        showRecordedAudio = false;
+                        setState(() {});
+                      },
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ))
+                ],
+              ))
+      ],
+    );
   }
 }

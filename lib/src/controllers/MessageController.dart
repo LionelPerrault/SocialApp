@@ -147,37 +147,62 @@ class MessageController extends ControllerMVC {
   }
 
   uploadFile(XFile? pickedFile, newOrNot, messageType) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    late UploadTask uploadTask;
+    Reference reference;
     try {
-      if (kIsWeb) {
-        //print("read bytes");
-        Uint8List bytes = await pickedFile!.readAsBytes();
-        //print(bytes);
-        _reference = await _firebaseStorage
-            .ref()
-            .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
-          bytes,
-          SettableMetadata(contentType: 'image/jpeg'),
-        );
-      } else {
-        var file = File(pickedFile!.path);
-        //write a code for android or ios
-        _reference = await _firebaseStorage
-            .ref()
-            .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+      switch (messageType) {
+        case 'image':
+          if (kIsWeb) {
+            //print("read bytes");
+            Uint8List bytes = await pickedFile!.readAsBytes();
+            //print(bytes);
+            reference = firebaseStorage
+                .ref()
+                .child('images/${PPath.basename(pickedFile.path)}');
+            uploadTask = reference.putData(
+              bytes,
+              SettableMetadata(contentType: 'image/jpeg'),
+            );
+          } else {
+            var file = File(pickedFile!.path);
+            reference = firebaseStorage
+                .ref()
+                .child('images/${PPath.basename(pickedFile.path)}');
+            uploadTask = reference.putFile(file);
+          }
+          uploadTask.whenComplete(() async {
+            var downloadUrl = await reference.getDownloadURL();
+            progress = 0;
+            sendMessage(newOrNot, messageType, downloadUrl);
+          });
+          break;
+        case "audio":
+          if (kIsWeb) {
+            Uint8List bytes = await pickedFile!.readAsBytes();
+            reference = firebaseStorage
+                .ref()
+                .child('audios/${PPath.basename(pickedFile.path)}');
+            uploadTask = reference.putData(
+              bytes,
+              SettableMetadata(
+                  contentType: 'audio/${PPath.basename(pickedFile.path)}'),
+            );
+          } else {
+            var file = File(pickedFile!.path);
+
+            reference = firebaseStorage
+                .ref()
+                .child('audios/${PPath.basename(pickedFile.path)}');
+            uploadTask = reference.putFile(file);
+          }
+          uploadTask.whenComplete(() async {
+            var downloadUrl = await reference.getDownloadURL();
+            progress = 0;
+            sendMessage(newOrNot, messageType, downloadUrl);
+          });
       }
-      uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
-        progress = 0;
-        sendMessage(newOrNot, messageType, downloadUrl);
-        //await _reference.getDownloadURL().then((value) {
-        //  uploadedPhotoUrl = value;
-        //});
-      });
+
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
         switch (taskSnapshot.state) {
           case TaskState.running:
