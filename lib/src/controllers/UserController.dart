@@ -314,7 +314,7 @@ class UserController extends ControllerMVC {
                     for (int i = 0; i < trdata.length; i++)
                       {
                         sender = trdata[i]['from'],
-                        recipient = "Unknown",
+                        recipient = "Treasury",
                         for (int j = 0; j < allUser.length; j++)
                           {
                             if (trdata[i]['from'] ==

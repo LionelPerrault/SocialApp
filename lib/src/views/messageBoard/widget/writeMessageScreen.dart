@@ -134,6 +134,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             MouseRegion(
               child: GestureDetector(
                 onTap: () {
+                  showRecoder = false;
+                  setState(() {});
                   con.uploadImage(widget.type, 'image');
                   if (widget.type == 'new') {
                     widget.goMessage('message-list');
@@ -162,6 +164,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             MouseRegion(
               child: GestureDetector(
                   onTap: () {
+                    showRecoder = false;
+                    setState(() {});
                     widget.goMessage(true);
                   },
                   child: Icon(
