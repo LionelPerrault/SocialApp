@@ -153,7 +153,8 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                                                           setState(() {});
                                                           await con
                                                               .confirmFriend(
-                                                                  e.value['id']);
+                                                                  e.value['id'],
+                                                                  e.key);
                                                           isConfirmRequest[
                                                               e.key] = false;
                                                           widget.onClick();

@@ -1015,7 +1015,10 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           onPressed: () async {
                             // print(con.isFriendRequest);
                             await PeopleController().requestFriend(
-                                likeUsers[index]['userInfo']['userName']);
+                                likeUsers[index]['userInfo']['userName'],
+                                '${likeUsers[index]['userInfo']['firstName']} ${likeUsers[index]['userInfo']['lastName']}',
+                                likeUsers[index]['userInfo']['avatar'],
+                                1);
                             setState(() {});
                           },
                           style: ElevatedButton.styleFrom(

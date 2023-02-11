@@ -136,13 +136,21 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                         trailing: ElevatedButton(
                           onPressed: () async {
                             // print(con.isFriendRequest);
-                            con.isFriendRequest[index] = true;
-                            setState(() {});
-                            await con.requestFriend(
-                              con.userList[index]['uid'],
-                            );
-                            con.isFriendRequest[index] = false;
 
+                            setState(() {});
+                            if (con.isFriendRequest[index] == false) {
+                              con.isFriendRequest[index] = null;
+                              await con.cancelFriend(
+                                  con.userList[index]['userName']);
+                            } else {
+                              con.isFriendRequest[index] = true;
+                              await con.requestFriend(
+                                  con.userList[index]['userName'],
+                                  '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
+                                  con.userList[index]['avatar'],
+                                  1);
+                              con.isFriendRequest[index] = false;
+                            }
                             setState(() {});
                           },
                           style: ElevatedButton.styleFrom(

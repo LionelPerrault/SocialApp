@@ -179,18 +179,18 @@ class MainLeftPanel extends StatelessWidget {
               width: 21,
             ),
           ),
-          ListText(
-            onTap: () => {
-              routerFunction({
-                'router': RouteNames.realEstate,
-              })
-            },
-            label: 'Real estate',
-            image: SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=70d45887-6f23-456d-8396-d38287ae8d9e',
-              width: 21,
-            ),
-          ),
+          // ListText(
+          //   onTap: () => {
+          //     routerFunction({
+          //       'router': RouteNames.realEstate,
+          //     })
+          //   },
+          //   label: 'Real estate',
+          //   image: SvgPicture.network(
+          //     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=70d45887-6f23-456d-8396-d38287ae8d9e',
+          //     width: 21,
+          //   ),
+          // ),
         ],
       ),
     );

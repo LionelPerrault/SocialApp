@@ -208,7 +208,10 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                       true;
                                                   setState(() {});
                                                   await con.requestFriend(
-                                                      e.value['uid']);
+                                                      e.value['userName'],
+                                                      '${e.value['firstName']} ${e.value['lastName']}',
+                                                      e.value['avatar'],
+                                                      e.key);
                                                   con.isFriendRequest[e.key] =
                                                       false;
 
@@ -317,7 +320,11 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
   requestFriends(e) async {
     con.isFriendRequest[e.key] = true;
     setState(() {});
-    await con.requestFriend(e.value['userName']);
+    await con.requestFriend(
+        e.value['userName'],
+        '${e.value['firstName']} ${e.value['lastName']}',
+        e.value['avatar'],
+        e.key);
     setState(() {});
   }
 }

@@ -8,6 +8,7 @@ import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 
 // ignore: must_be_immutable
@@ -29,11 +30,24 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
   late UserController con;
   bool requestStatus = false;
   String relationStatus = '';
+  int state = 0;
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as UserController;
+    getState();
+  }
+
+  getState() async {
+    await PeopleController()
+        .getRelation(
+            UserManager.userInfo['userName'], widget.userInfo['userName'])
+        .then((value) {
+      state = value;
+      print(state);
+      setState(() {});
+    });
   }
 
   @override
@@ -72,7 +86,21 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
             // print(con.isFriendRequest);
             requestStatus = true;
             setState(() {});
-            await PeopleController().requestFriend(widget.userInfo['uid']);
+            if (state == 0) {
+              await PeopleController().requestFriend(
+                  widget.userInfo['userName'],
+                  '${widget.userInfo['firstName']} ${widget.userInfo['lastName']}',
+                  widget.userInfo['avatar'],
+                  1);
+              state = 1;
+              setState(() {});
+            } else {
+              await PeopleController()
+                  .cancelFriend(widget.userInfo['userName']);
+              state = 0;
+              setState(() {});
+            }
+
             requestStatus = false;
 
             setState(() {});
@@ -88,43 +116,58 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
               maximumSize: requestStatus != null && requestStatus
                   ? const Size(60, 35)
                   : const Size(80, 35)),
-          child: requestStatus == null
-              ? Row(
-                  children: const [
-                    Icon(
-                      Icons.person_add_alt_rounded,
-                      color: Colors.white,
-                      size: 18.0,
-                    ),
-                    Text(' Add',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w900)),
-                  ],
+          child: requestStatus == true
+              ? const SizedBox(
+                  width: 10,
+                  height: 10,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 )
-              : requestStatus
-                  ? const SizedBox(
-                      width: 10,
-                      height: 10,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                    )
-                  : Row(
+              : state == 0
+                  ? Row(
                       children: const [
                         Icon(
-                          Icons.timelapse,
+                          Icons.person_add_alt_rounded,
                           color: Colors.white,
                           size: 18.0,
                         ),
-                        Text(' Sent',
+                        Text(' Add',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w900)),
                       ],
-                    ),
+                    )
+                  : state == 1
+                      ? Row(
+                          children: const [
+                            Icon(
+                              Icons.timelapse,
+                              color: Colors.white,
+                              size: 18.0,
+                            ),
+                            Text(' Sent',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w900)),
+                          ],
+                        )
+                      : Row(
+                          children: const [
+                            Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 18.0,
+                            ),
+                            Text(' Friend',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w900)),
+                          ],
+                        ),
         ),
       ),
     );
