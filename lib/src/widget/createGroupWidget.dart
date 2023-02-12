@@ -148,255 +148,199 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const Divider(
-          height: 0,
-          indent: 0,
-          endIndent: 0,
-        ),
-        const Padding(padding: EdgeInsets.only(top: 15)),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                width: 400,
-                child: customInput(
-                    title: 'Name Your Group',
-                    onChange: (value) async {
-                      groupInfo['groupName'] = value;
-                      setState(() {});
-                    }))
-          ],
-        ),
-        const Padding(padding: EdgeInsets.only(top: 15)),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                width: 400,
-                child: customInput(
-                    title: 'Location',
-                    onChange: (value) async {
-                      groupInfo['groupLocation'] = value;
-                      setState(() {});
-                    }))
-          ],
-        ),
-        const Padding(padding: EdgeInsets.only(top: 15)),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 400,
-              child: customInput(
-                  title: 'Group Username',
-                  onChange: (value) {
-                    groupInfo['groupUserName'] = value;
-                    setState(() {});
-                  },
-                  hintText: 'https://test.shnatter.com/groups/'),
-            )
-          ],
-        ),
+    return Column(
+      children: [
         Container(
-          width: 380,
-          child: const Text(
-            'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
-            style: TextStyle(fontSize: 12),
-          ),
-        ),
-        const Padding(padding: EdgeInsets.only(top: 15)),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                width: 400,
-                margin: EdgeInsets.only(
-                    right: SizeConfig(context).screenWidth > 540 ? 15 : 0),
-                height: 40,
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 17, 205, 239),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 17, 205, 239),
-                          width: 0.1), //bordrder raiuds of dropdown button
-                    ),
-                    child: Padding(
-                        padding: const EdgeInsets.only(top: 7, left: 15),
-                        child: DropdownButton(
-                          value: privacy,
-                          items: [
-                            DropdownMenuItem(
-                              value: "public",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.language,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Public",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                            DropdownMenuItem(
-                              value: "closed",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.groups,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Closed",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                            DropdownMenuItem(
-                              value: "security",
-                              child: Row(children: const [
-                                Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.black,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  "Security",
-                                  style: TextStyle(fontSize: 13),
-                                )
-                              ]),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            privacy = value.toString();
-                            groupInfo['groupPrivacy'] = privacy;
+          height: SizeConfig(context).screenHeight - 200,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Divider(
+                  height: 0,
+                  indent: 0,
+                  endIndent: 0,
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 400,
+                        child: customInput(
+                            title: 'Name Your Group',
+                            onChange: (value) async {
+                              groupInfo['groupName'] = value;
+                              setState(() {});
+                            }))
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 400,
+                        child: customInput(
+                            title: 'Location',
+                            onChange: (value) async {
+                              groupInfo['groupLocation'] = value;
+                              setState(() {});
+                            }))
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 400,
+                      child: customInput(
+                          title: 'Group Username',
+                          onChange: (value) {
+                            groupInfo['groupUserName'] = value;
                             setState(() {});
                           },
-                          icon: const Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Icon(Icons.arrow_drop_down)),
-                          iconEnabledColor: Colors.white, //Icon color
-                          style: const TextStyle(
-                            color: Colors.black, //Font color
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          dropdownColor: Colors.white,
-                          underline: Container(), //remove underline
-                          isExpanded: true,
-                          isDense: true,
-                        ))),
-              ),
+                          hintText: 'https://test.shnatter.com/groups/'),
+                    )
+                  ],
+                ),
+                Container(
+                  width: 380,
+                  child: const Text(
+                    'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: 400,
+                        margin: EdgeInsets.only(
+                            right:
+                                SizeConfig(context).screenWidth > 540 ? 15 : 0),
+                        height: 40,
+                        child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 17, 205, 239),
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 17, 205, 239),
+                                  width:
+                                      0.1), //bordrder raiuds of dropdown button
+                            ),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 7, left: 15),
+                                child: DropdownButton(
+                                  value: privacy,
+                                  items: [
+                                    DropdownMenuItem(
+                                      value: "public",
+                                      child: Row(children: const [
+                                        Icon(
+                                          Icons.language,
+                                          color: Colors.black,
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 5)),
+                                        Text(
+                                          "Public",
+                                          style: TextStyle(fontSize: 13),
+                                        )
+                                      ]),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "closed",
+                                      child: Row(children: const [
+                                        Icon(
+                                          Icons.groups,
+                                          color: Colors.black,
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 5)),
+                                        Text(
+                                          "Closed",
+                                          style: TextStyle(fontSize: 13),
+                                        )
+                                      ]),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "security",
+                                      child: Row(children: const [
+                                        Icon(
+                                          Icons.lock_outline,
+                                          color: Colors.black,
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.only(left: 5)),
+                                        Text(
+                                          "Security",
+                                          style: TextStyle(fontSize: 13),
+                                        )
+                                      ]),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    privacy = value.toString();
+                                    groupInfo['groupPrivacy'] = privacy;
+                                    setState(() {});
+                                  },
+                                  icon: const Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Icon(Icons.arrow_drop_down)),
+                                  iconEnabledColor: Colors.white, //Icon color
+                                  style: const TextStyle(
+                                    color: Colors.black, //Font color
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  dropdownColor: Colors.white,
+                                  underline: Container(), //remove underline
+                                  isExpanded: true,
+                                  isDense: true,
+                                ))),
+                      ),
+                    ),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 400,
+                      child:
+                          titleAndsubtitleInput('About', 70, 5, (value) async {
+                        groupInfo['groupAbout'] = value;
+                        // setState(() {});
+                      }),
+                    )
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                Container(
+                  width: 400,
+                  child: InterestsWidget(
+                    context: context,
+                    sendUpdate: (value) {
+                      groupInfo['groupInterests'] = value;
+                    },
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+              ],
             ),
-          ],
-        ),
-        // Row(
-        //   children: [
-        //     Expanded(
-        //         child: Container(
-        //       decoration: BoxDecoration(
-        //           border: Border.all(width: 0.5, color: Colors.grey)),
-        //       height: 70,
-        //       child: DropdownButton(
-        //         value: privacy,
-        //         itemHeight: 70,
-        //         items: GroupsDropDown.map(
-        //           (e) => DropdownMenuItem(
-        //             value: e['value'],
-        //             child: Container(
-        //               height: 70,
-        //               margin: const EdgeInsets.only(top: 15),
-        //               child: Row(
-        //                 children: [
-        //                   Container(
-        //                     height: 70,
-        //                     child: Icon(
-        //                       e['icon'],
-        //                       size: 40,
-        //                     ),
-        //                   ),
-        //                   Container(
-        //                     height: 70,
-        //                     margin: const EdgeInsets.only(top: 10, left: 5),
-        //                     alignment: Alignment.topLeft,
-        //                     child: Column(
-        //                       mainAxisAlignment: MainAxisAlignment.start,
-        //                       crossAxisAlignment: CrossAxisAlignment.start,
-        //                       children: [
-        //                         Text(
-        //                           e['title'],
-        //                           style: const TextStyle(
-        //                               fontSize: 14, color: Colors.grey),
-        //                         ),
-        //                         Text(
-        //                           e['subtitle'],
-        //                           style: const TextStyle(fontSize: 12),
-        //                         )
-        //                       ],
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //           ),
-        //         ).toList(),
-        //         onChanged: (value) {
-        //           privacy = value.toString();
-        //           groupInfo['groupPrivacy'] = privacy;
-        //           setState(() {});
-        //         },
-        //         icon: const Padding(
-        //             padding: EdgeInsets.only(left: 20),
-        //             child: Icon(Icons.arrow_drop_down)),
-        //         iconEnabledColor: Colors.white, //Icon color
-        //         style: const TextStyle(
-        //           color: Colors.black, //Font color
-        //           fontSize: 11,
-        //           fontWeight: FontWeight.bold,
-        //         ),
-        //         dropdownColor: Colors.white,
-        //         underline: Container(), //remove underline
-        //         isExpanded: true,
-        //         isDense: true,
-        //       ),
-        //     )),
-        //   ],
-        // ),
-        const Padding(padding: EdgeInsets.only(top: 15)),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 400,
-              child: titleAndsubtitleInput('About', 70, 5, (value) async {
-                groupInfo['groupAbout'] = value;
-                // setState(() {});
-              }),
-            )
-          ],
-        ),
-        const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          width: 400,
-          child: InterestsWidget(
-            context: context,
-            sendUpdate: (value) {
-              groupInfo['groupInterests'] = value;
-            },
           ),
         ),
-        const Padding(padding: EdgeInsets.only(top: 20)),
         Container(
           width: 400,
           margin: const EdgeInsets.only(right: 15, bottom: 10),
@@ -450,7 +394,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
           ),
         ),
       ],
-    ));
+    );
   }
 }
 

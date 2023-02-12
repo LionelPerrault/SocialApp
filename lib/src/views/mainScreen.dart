@@ -38,8 +38,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   String searchText = '';
 
   Map mainRouterValue = {
-    'router': RouteNames.products,
-    'subRouter': '2fcu8Y6lF3hg7b7yWC7c'
+    'router': RouteNames.homePage,
   };
   late UserController con;
 
