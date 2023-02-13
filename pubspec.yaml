@@ -1,9 +1,9 @@
 name: shnatter
-description: New Social Posting 
+description: New Social Posting
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.1 <3.0.0'
+  sdk: ">=2.18.1 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,11 +31,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations: 
+  flutter_localizations:
     sdk: flutter
-  intl: ^0.17.0 
+  intl: ^0.17.0
   dropdown_button2: ^1.9.0
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -59,7 +58,7 @@ dependencies:
   firebase_auth: ^4.1.1
   google_sign_in: ^5.4.2
   time_elapsed: ^0.2.6
-  firebase_storage: ^11.0.4 
+  firebase_storage: ^11.0.4
   image_picker: ^0.8.6
   permission_handler: ^10.2.0
   universal_html: ^2.0.8
@@ -104,7 +103,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  generate: true 
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -125,12 +124,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: Hind
+      fonts:
+        - asset: assets/fonts/Hind-Regular.ttf
+        - asset: assets/fonts/Hind-Medium.ttf
+        - asset: assets/fonts/Hind-Bold.ttf
+        - asset: assets/fonts/Hind-Light.ttf
+        - asset:
+            assets/fonts/Hind-SemiBold.ttf
+            #style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

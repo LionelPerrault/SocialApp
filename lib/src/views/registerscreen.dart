@@ -170,21 +170,6 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                           Icons.key,
                                           color: Colors.white,
                                         ),
-                                        suffixIcon: Padding(
-                                          padding: EdgeInsets.only(bottom: 10),
-                                          child: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isObscure = !isObscure;
-                                                });
-                                              },
-                                              icon: Icon(
-                                                isObscure
-                                                    ? Icons.visibility
-                                                    : Icons.visibility_off,
-                                                color: Colors.white,
-                                              )),
-                                        ),
                                         onchange: (value) async {
                                           signUpUserInfo['password'] = value;
                                           setState(() {});
@@ -524,7 +509,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
           suffixIcon: IconButton(
             padding: EdgeInsets.only(bottom: 3),
             icon: Icon(
-              isObscure ? Icons.visibility : Icons.visibility_off,
+              isObscure ? Icons.visibility_off : Icons.visibility,
               color: Colors.white,
             ),
             onPressed: () {

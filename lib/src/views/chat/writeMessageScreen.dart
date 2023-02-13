@@ -202,7 +202,8 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
                 maximumSize: Size(60, 38)),
             child: Text(
               'Send',
-              style: TextStyle(color: Colors.white, fontSize: 11),
+              style: TextStyle(
+                  fontFamily: 'Hind', color: Colors.white, fontSize: 11),
             ),
           ),
           const Padding(padding: EdgeInsets.only(right: 10)),
