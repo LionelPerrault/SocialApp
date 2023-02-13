@@ -218,21 +218,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                     Icons.key,
                                     color: Colors.white,
                                   ),
-                                  suffixIcon: Padding(
-                                    padding: EdgeInsets.only(bottom: 10),
-                                    child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isObscure = !isObscure;
-                                          });
-                                        },
-                                        icon: Icon(
-                                          isObscure
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          color: Colors.white,
-                                        )),
-                                  ),
                                   onchange: (value) async {
                                     password = value;
                                     setState(() {});
@@ -606,7 +591,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
           suffixIcon: IconButton(
             padding: EdgeInsets.only(bottom: 3),
             icon: Icon(
-              isObscure ? Icons.visibility : Icons.visibility_off,
+              isObscure ? Icons.visibility_off : Icons.visibility,
               color: Colors.white,
             ),
             onPressed: () {
