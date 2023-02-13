@@ -180,6 +180,7 @@ class RelysiaManager {
     bool? result;
     var next = '';
     next = nextPageToken;
+    transHistory = [];
     try {
       await http.get(
           Uri.parse('https://api.relysia.com/v2/history?nextPageToken=$next'),
@@ -190,6 +191,7 @@ class RelysiaManager {
           }).then(
         (res) async {
           response = jsonDecode(res.body);
+          print(response['data']['histories']);
           if (response['statusCode'] == 200) {
             if (response['data']['histories'] != []) {
               for (var elem in response['data']['histories']) {
@@ -210,7 +212,11 @@ class RelysiaManager {
                 next = 'null';
               } else {
                 next = response['data']['meta']['nextPageToken'].toString();
-                // next = response['data']['histories'].length.toString();
+                // next = (response['data']['histories'].length).toString();
+                print('next page next page next page next page next page');
+                print(next);
+                print(transHistory);
+                print(transHistory);
                 // print(next);
               }
               result = true;
