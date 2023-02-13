@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,16 +6,7 @@ import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/chat/chatUserListScreen.dart';
-import 'package:shnatter/src/views/chat/emoticonScreen.dart';
-import 'package:shnatter/src/views/chat/newMessageScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
 import 'package:shnatter/src/views/people/searchScreen.dart';
-
-import '../../controllers/ChatController.dart';
 
 class SendRequestsScreen extends StatefulWidget {
   SendRequestsScreen({Key? key})

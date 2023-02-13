@@ -98,7 +98,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
   Widget userListWidget() {
     return con.isGetList
         ? Container(
-            margin: EdgeInsets.only(top: 10),
+            margin: const EdgeInsets.only(top: 10),
             color: Colors.white,
             width: SizeConfig(context).screenWidth < 900
                 ? SizeConfig(context).screenWidth - 60
@@ -107,18 +107,18 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(padding: EdgeInsets.only(top: 25)),
+                const Padding(padding: EdgeInsets.only(top: 25)),
                 Container(
-                  padding: EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 20),
                   child: Text(
                     con.isSearch ? 'Search Results' : 'People You May Know',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 13),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 15)),
+                const Padding(padding: EdgeInsets.only(top: 15)),
                 Container(
                   height: 1,
                   color: color,
@@ -126,15 +126,18 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                 con.isSearch && con.userList.isEmpty
                     ? Container(
                         alignment: Alignment.topCenter,
-                        padding: EdgeInsets.only(top: 20, bottom: 50),
-                        child: Text('No people available for your search',
-                            style: TextStyle(fontSize: 14)))
+                        padding: const EdgeInsets.only(top: 20, bottom: 50),
+                        child: const Text(
+                          'No people available for your search',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      )
                     : Column(
                         children: con.userList
                             .asMap()
                             .entries
                             .map((e) => Container(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     top: 10, left: 20, right: 20),
                                 child: Column(
                                   children: [
@@ -144,7 +147,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Padding(
+                                          const Padding(
                                               padding:
                                                   EdgeInsets.only(left: 10)),
                                           e.value['avatar'] == ''
@@ -157,7 +160,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                   backgroundImage: NetworkImage(
                                                       e.value['avatar'])),
                                           Container(
-                                            padding: EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 10, top: 5),
                                             child: RichText(
                                               text: TextSpan(
@@ -192,18 +195,23 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                               ),
                                             ),
                                           ),
-                                          Flexible(
-                                              fit: FlexFit.tight,
-                                              child: SizedBox()),
+                                          const Flexible(
+                                            fit: FlexFit.tight,
+                                            child: SizedBox(),
+                                          ),
                                           Container(
-                                            padding: EdgeInsets.only(top: 6),
+                                            padding:
+                                                const EdgeInsets.only(top: 6),
                                             child: ElevatedButton(
                                                 onPressed: () async {
                                                   con.isFriendRequest[e.key] =
                                                       true;
                                                   setState(() {});
                                                   await con.requestFriend(
-                                                      e.value['uid']);
+                                                      e.value['userName'],
+                                                      '${e.value['firstName']} ${e.value['lastName']}',
+                                                      e.value['avatar'],
+                                                      e.key);
                                                   con.isFriendRequest[e.key] =
                                                       false;
 
@@ -227,7 +235,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                         ? const Size(90, 35)
                                                         : const Size(110, 35)),
                                                 child: con.isFriendRequest[e.key] != null && con.isFriendRequest[e.key]
-                                                    ? SizedBox(
+                                                    ? const SizedBox(
                                                         width: 10,
                                                         height: 10,
                                                         child:
@@ -255,7 +263,8 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                       )),
                                           )
                                         ]),
-                                    Padding(padding: EdgeInsets.only(top: 10)),
+                                    const Padding(
+                                        padding: EdgeInsets.only(top: 10)),
                                     Container(
                                       height: 1,
                                       color: color,
@@ -277,7 +286,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                             setState(() {});
                           },
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Color.fromRGBO(55, 213, 242, 1),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(3))),
@@ -291,7 +300,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                       color: Colors.grey,
                                     ),
                                   )
-                                : Text('See More',
+                                : const Text('See More',
                                     style: TextStyle(color: Colors.white)),
                           ),
                         ),
@@ -311,7 +320,11 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
   requestFriends(e) async {
     con.isFriendRequest[e.key] = true;
     setState(() {});
-    await con.requestFriend(e.value['userName']);
+    await con.requestFriend(
+        e.value['userName'],
+        '${e.value['firstName']} ${e.value['lastName']}',
+        e.value['avatar'],
+        e.key);
     setState(() {});
   }
 }

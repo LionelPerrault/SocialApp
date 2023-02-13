@@ -4,9 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shnatter/src/widget/createEventWidget.dart';
 import 'package:shnatter/src/widget/createGroupWidget.dart';
-import 'package:shnatter/src/widget/createPageWidget.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
-import 'package:universal_html/js_util.dart';
 
 class PostsNavBox extends StatefulWidget {
   PostsNavBox({Key? key, required this.routerChange}) : super(key: key);
@@ -24,7 +22,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
     //   'color': Color.fromARGB(255, 103, 58, 183),
     //   'text': 'Create Story',
     //   'onTap': (context) {
-    //     Navigator.of(context).pop(true);
+    //     //Navigator.of(context).pop(true);
     //     showDialog(
     //         context: context,
     //         builder: (BuildContext context) => AlertDialog(
@@ -49,7 +47,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
     //   'color': Color.fromARGB(255, 242, 94, 78),
     //   'text': 'Create News',
     //   'onTap': (context) {
-    //     Navigator.of(context).pop(true);
+    //     //Navigator.of(context).pop(true);
     //     showDialog(
     //         context: context,
     //         builder: (BuildContext context) => AlertDialog(
@@ -80,7 +78,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
       'color': Color.fromARGB(255, 43, 83, 164),
       'text': 'Create Product',
       'onTap': (context) {
-        Navigator.of(context).pop(true);
+        //Navigator.of(context).pop(true);
         showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
@@ -108,7 +106,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
     //   'color': Color.fromARGB(255, 33, 150, 243),
     //   'text': 'Create Page',
     //   'onTap': (context) {
-    //     Navigator.of(context).pop(true);
+    //     //Navigator.of(context).pop(true);
     //     showDialog(
     //         context: context,
     //         builder: (BuildContext context) => AlertDialog(
@@ -133,7 +131,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
       'color': Color.fromARGB(255, 43, 83, 164),
       'text': 'Create Group',
       'onTap': (context) {
-        Navigator.of(context).pop(true);
+        //Navigator.of(context).pop(true);
         showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
@@ -161,7 +159,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
       'color': Color.fromARGB(255, 247, 159, 88),
       'text': 'Create Event',
       'onTap': (context) {
-        Navigator.of(context).pop(true);
+        //Navigator.of(context).pop(true);
         showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
@@ -195,8 +193,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
   }
 
   @override
-  Widget build(BuildContext navBox) {
-    print(privacy);
+  Widget build(BuildContext nowContext) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Container(
@@ -212,7 +209,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
                   children: eachList
-                      .map((list) => PostButtonCell(navBox, list['icon'],
+                      .map((list) => PostButtonCell(nowContext, list['icon'],
                           list['color'], list['text'], list['onTap']))
                       .toList(),
                 ),
