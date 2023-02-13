@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, import_of_legacy_library_into_null_safe
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,6 +29,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   bool isShift = false;
   bool isEnter = false;
   bool showRecoder = false;
+  bool showEmojicon = false;
   bool recordingStarted = false;
   String recordingPath = "";
   FlutterSound flutterSound = FlutterSound();
@@ -162,7 +164,9 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               onTap: () {
                 setState(() {
                   showRecoder = !showRecoder;
+                  if (showRecoder) showEmojicon = false;
                 });
+                widget.goMessage(showEmojicon);
               },
               child: const Icon(
                 Icons.mic,
@@ -170,19 +174,25 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
                 color: Color.fromRGBO(175, 175, 175, 1),
               )),
           const Padding(padding: EdgeInsets.only(left: 10)),
-          MouseRegion(
-            child: GestureDetector(
-                onTap: () {
-                  showRecoder = false;
-                  setState(() {});
-                  widget.goMessage(true);
-                },
-                child: Icon(
-                  Icons.emoji_emotions,
-                  size: 20,
-                  color: Color.fromRGBO(175, 175, 175, 1),
-                )),
-          ),
+          if (kIsWeb)
+            MouseRegion(
+              child: GestureDetector(
+                  onTap: () {
+                    showRecoder = false;
+                    if (con.isShowEmoticon == false) {
+                      showEmojicon = true;
+                    } else {
+                      showEmojicon = false;
+                    }
+                    setState(() {});
+                    widget.goMessage(showEmojicon);
+                  },
+                  child: Icon(
+                    Icons.emoji_emotions,
+                    size: 20,
+                    color: Color.fromRGBO(175, 175, 175, 1),
+                  )),
+            ),
           Flexible(fit: FlexFit.tight, child: SizedBox()),
           ElevatedButton(
             onPressed: () async {

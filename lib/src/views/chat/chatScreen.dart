@@ -197,7 +197,6 @@ class ChatScreenState extends mvc.StateMVC<ChatScreen> {
                         ? Container()
                         : con.isMessageTap == 'all-list'
                             ? ChatUserListScreen(onBack: (value) {
-                                print(value);
                                 if (value == 'hidden') {
                                   con.hidden = con.hidden ? false : true;
                                 } else {
