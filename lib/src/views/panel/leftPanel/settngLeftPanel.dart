@@ -255,18 +255,18 @@ class SettingsLeftPanel extends StatelessWidget {
           //     label: 'Paywall for User',
           //     image: const Icon(Icons.money_sharp,
           //         color: Color.fromARGB(255, 76, 175, 80))),
-          ListText(
-              onTap: () => {
-                    routerFunction({
-                      'router': RouteNames.settings,
-                      'subRouter': RouteNames.settings_verification,
-                    })
-                  },
-              label: 'Verification',
-              image: const Icon(
-                Icons.check_circle,
-                color: Color.fromARGB(255, 33, 150, 243),
-              )),
+          // ListText(
+          //     onTap: () => {
+          //           routerFunction({
+          //             'router': RouteNames.settings,
+          //             'subRouter': RouteNames.settings_verification,
+          //           })
+          //         },
+          //     label: 'Verification',
+          //     image: const Icon(
+          //       Icons.check_circle,
+          //       color: Color.fromARGB(255, 33, 150, 243),
+          //     )),
           // ListText(
           //     onTap: () => {routerFunction('information')},
           //     label: 'Your Information',
