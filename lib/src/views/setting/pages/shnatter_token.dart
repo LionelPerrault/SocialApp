@@ -169,13 +169,12 @@ class SettingShnatterTokenScreenState
                       transactionData.addAll(resData),
                       setState(() {}),
                     },
-                  print('')
                 },
               );
         }
       }
     });
-    con.getTransactionHistory(con.nextPageTokenCount).then(
+    con.getTransactionHistory("0").then(
           (resData) => {
             if (resData != [])
               {

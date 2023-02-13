@@ -31,12 +31,13 @@ class SeekBarState extends State<SeekBar> {
     super.didChangeDependencies();
 
     _sliderThemeData = const SliderThemeData(
-        thumbColor: Colors.lightBlue,
-        trackHeight: 1,
-        thumbShape: RoundSliderThumbShape(
-          enabledThumbRadius: 6.0,
-        ),
-        activeTrackColor: Colors.lightBlue);
+      activeTrackColor: Colors.lightBlue,
+      thumbColor: Colors.lightBlue,
+      trackHeight: 1,
+      thumbShape: RoundSliderThumbShape(
+        enabledThumbRadius: 6.0,
+      ),
+    );
   }
 
   @override
@@ -50,8 +51,6 @@ class SeekBarState extends State<SeekBar> {
           child: ExcludeSemantics(
             child: Slider(
               min: 0.0,
-              thumbColor: Colors.lightBlue,
-              secondaryActiveColor: Colors.blue,
               max: widget.duration.inMilliseconds.toDouble(),
               value: min(widget.bufferedPosition.inMilliseconds.toDouble(),
                   widget.duration.inMilliseconds.toDouble()),
@@ -109,7 +108,7 @@ class SeekBarState extends State<SeekBar> {
     );
   }
 
-  Duration get _remaining => widget.duration - widget.position;
+  Duration get _remaining => widget.position;
 }
 
 class HiddenThumbComponentShape extends SliderComponentShape {

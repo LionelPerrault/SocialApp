@@ -1,24 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, must_be_immutable
 
-/*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
- *
- * This file is part of Flutter-Sound.
- *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the Mozilla Public License version 2 (MPL2.0),
- * as published by the Mozilla organization.
- *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * MPL General Public License for more details.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import 'dart:async';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
@@ -49,6 +30,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
   bool isRecording = false;
   bool _mRecorderIsInited = false;
   bool showRecordedAudio = false;
+  bool openedRecorder = false;
   @override
   void initState() {
     openTheRecorder().then((value) {
@@ -73,8 +55,14 @@ class _SoundRecorderState extends State<SoundRecorder> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await _mRecorder!.openRecorder();
-    _mPath = '${generateRandomFilename()}.mp4';
+    _mRecorder!.closeRecorder();
+
+    setState(() {
+      openedRecorder = false;
+    });
+    await _mRecorder!.openRecorder().then((value) => {openedRecorder = true});
+    setState(() {});
+    if (openedRecorder == false) return;
     if (kIsWeb) {
       _codec = Codec.opusWebM;
       _mPath = '${generateRandomFilename()}.webm';
@@ -129,7 +117,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
     if (!_mRecorderIsInited) {
       return;
     }
-
+    if (!openedRecorder) return;
     _mRecorder!
         .startRecorder(
       toFile: _mPath,
@@ -170,15 +158,15 @@ class _SoundRecorderState extends State<SoundRecorder> {
                   record();
                 },
                 child: Container(
-                    margin: EdgeInsets.only(left: 10),
-                    width: 100,
-                    height: 35,
+                    margin: const EdgeInsets.only(left: 10),
+                    width: 90,
+                    height: 25,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.blue),
                     child: Row(
                       children: const [
-                        SizedBox(width: 10),
+                        SizedBox(width: 5),
                         Icon(
                           Icons.mic,
                           color: Colors.white,

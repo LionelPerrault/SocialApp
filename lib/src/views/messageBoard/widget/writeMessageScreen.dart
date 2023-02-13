@@ -138,81 +138,79 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               ),
             ),
           ),
-        Container(
-          child: Row(children: [
-            const Padding(padding: EdgeInsets.only(left: 10)),
-            MouseRegion(
-              child: GestureDetector(
+        Row(children: [
+          const Padding(padding: EdgeInsets.only(left: 10)),
+          MouseRegion(
+            child: GestureDetector(
+              onTap: () {
+                showRecoder = false;
+                setState(() {});
+                con.uploadImage(widget.type, 'image');
+                if (widget.type == 'new') {
+                  widget.goMessage('message-list');
+                }
+              },
+              child: const Icon(
+                Icons.photo_size_select_actual_rounded,
+                size: 20,
+                color: Color.fromRGBO(175, 175, 175, 1),
+              ),
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(left: 10)),
+          GestureDetector(
+              onTap: () {
+                setState(() {
+                  showRecoder = !showRecoder;
+                });
+              },
+              child: const Icon(
+                Icons.mic,
+                size: 20,
+                color: Color.fromRGBO(175, 175, 175, 1),
+              )),
+          const Padding(padding: EdgeInsets.only(left: 10)),
+          MouseRegion(
+            child: GestureDetector(
                 onTap: () {
                   showRecoder = false;
                   setState(() {});
-                  con.uploadImage(widget.type, 'image');
-                  if (widget.type == 'new') {
-                    widget.goMessage('message-list');
-                  }
+                  widget.goMessage(true);
                 },
-                child: const Icon(
-                  Icons.photo_size_select_actual_rounded,
-                  size: 20,
-                  color: Color.fromRGBO(175, 175, 175, 1),
-                ),
-              ),
-            ),
-            const Padding(padding: EdgeInsets.only(left: 10)),
-            GestureDetector(
-                onTap: () {
-                  setState(() {
-                    showRecoder = !showRecoder;
-                  });
-                },
-                child: const Icon(
-                  Icons.mic,
+                child: Icon(
+                  Icons.emoji_emotions,
                   size: 20,
                   color: Color.fromRGBO(175, 175, 175, 1),
                 )),
-            const Padding(padding: EdgeInsets.only(left: 10)),
-            MouseRegion(
-              child: GestureDetector(
-                  onTap: () {
-                    showRecoder = false;
-                    setState(() {});
-                    widget.goMessage(true);
-                  },
-                  child: Icon(
-                    Icons.emoji_emotions,
-                    size: 20,
-                    color: Color.fromRGBO(175, 175, 175, 1),
-                  )),
-            ),
-            Flexible(fit: FlexFit.tight, child: SizedBox()),
-            ElevatedButton(
-              onPressed: () async {
-                if (showRecoder) {
-                  con.uploadFile(XFile(audioPath), widget.type, 'audio');
-                  if (widget.type == 'new') {
-                    widget.goMessage('message-list');
-                  }
-                  showRecoder = false;
-                  setState(() {});
-                } else {
-                  sendMessage();
+          ),
+          Flexible(fit: FlexFit.tight, child: SizedBox()),
+          ElevatedButton(
+            onPressed: () async {
+              if (showRecoder && audioPath != "") {
+                con.uploadFile(XFile(audioPath), widget.type, 'audio');
+                if (widget.type == 'new') {
+                  widget.goMessage('message-list');
                 }
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(33, 37, 41, 1),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2)),
-                  minimumSize: Size(60, 38),
-                  maximumSize: Size(60, 38)),
-              child: Text(
-                'Send',
-                style: TextStyle(color: Colors.white, fontSize: 11),
-              ),
+                showRecoder = false;
+                setState(() {});
+              } else {
+                sendMessage();
+              }
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromRGBO(33, 37, 41, 1),
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2)),
+                minimumSize: Size(60, 38),
+                maximumSize: Size(60, 38)),
+            child: Text(
+              'Send',
+              style: TextStyle(color: Colors.white, fontSize: 11),
             ),
-            const Padding(padding: EdgeInsets.only(right: 10)),
-          ]),
-        )
+          ),
+          const Padding(padding: EdgeInsets.only(right: 10)),
+        ]),
       ],
     );
   }

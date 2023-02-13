@@ -76,7 +76,7 @@ class MessageAudioPlayerState extends State<MessageAudioPlayer>
         width: 250,
         height: 50,
         decoration: const BoxDecoration(
-            color: Color.fromARGB(74, 3, 244, 164),
+            color: Color.fromRGBO(220, 245, 217, 1),
             borderRadius: BorderRadius.all(Radius.circular(25))),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

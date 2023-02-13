@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +9,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/chat/writeMessageScreen.dart';
+import 'package:shnatter/src/widget/messageAudioPlayer.dart';
 import '../../controllers/ChatController.dart';
 import '../../managers/user_manager.dart';
 
@@ -58,7 +59,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
           curve: Curves.easeOut,
         );
       });
-      print(con.docId);
       if (con.docId != '') {
         FirebaseFirestore.instance
             .collection(Helper.message)
@@ -166,28 +166,37 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                           style: TextStyle(
                                                               fontSize: 13),
                                                         ))
-                                                    : Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 10, top: 5),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    15),
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    15),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    15),
-                                                          ),
-                                                          child: Image.network(
-                                                            list['data'],
-                                                            width: 150,
-                                                          ),
-                                                        ),
-                                                      )
+                                                    : list['type'] == 'image'
+                                                        ? Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    left: 10,
+                                                                    top: 5),
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .only(
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        15),
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        15),
+                                                                bottomRight:
+                                                                    Radius
+                                                                        .circular(
+                                                                            15),
+                                                              ),
+                                                              child:
+                                                                  Image.network(
+                                                                list['data'],
+                                                                width: 150,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : MessageAudioPlayer(
+                                                            audioURL:
+                                                                list['data'])
                                               ])
                                         : list['type'] == 'text'
                                             ? Container(
@@ -216,18 +225,24 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                   style:
                                                       TextStyle(fontSize: 13),
                                                 ))
-                                            : ClipRRect(
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(15),
-                                                  topRight: Radius.circular(15),
-                                                  bottomLeft:
-                                                      Radius.circular(15),
-                                                ),
-                                                child: Image.network(
-                                                  list['data'],
-                                                  width: 150,
-                                                ),
-                                              )),
+                                            : list['type'] == 'image'
+                                                ? ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(15),
+                                                      topRight:
+                                                          Radius.circular(15),
+                                                      bottomLeft:
+                                                          Radius.circular(15),
+                                                    ),
+                                                    child: Image.network(
+                                                      list['data'],
+                                                      width: 150,
+                                                    ),
+                                                  )
+                                                : MessageAudioPlayer(
+                                                    audioURL: list['data'])),
                               );
                             },
                           )),

@@ -64,7 +64,6 @@ class RelysiaManager {
     } catch (exception) {
       print("occurs exception" + exception.toString());
     }
-    print(3);
     return responseData;
   }
 
@@ -81,7 +80,6 @@ class RelysiaManager {
       }).then((res) => {
                 r = 1,
                 respondData = jsonDecode(res.body),
-                print(respondData),
               });
       // ignore: empty_catches
     } catch (exception) {
@@ -119,7 +117,6 @@ class RelysiaManager {
         'serviceID': serviceId,
       }).then((res) => {
             resToken = jsonDecode(res.body),
-            print(resToken['data']['coins']),
             for (var i = 0; i < resToken['data']['coins'].length; i++)
               {
                 if (resToken['data']['coins'][i]['tokenId'] == shnToken)
@@ -173,7 +170,6 @@ class RelysiaManager {
             );
       }
     } catch (exception) {
-      print('fofofofo');
       print(exception.toString());
     }
     return returnData;
@@ -183,54 +179,54 @@ class RelysiaManager {
     var response = {};
     bool? result;
     var next = '';
-    int count = 0;
     next = nextPageToken;
     try {
-      while (count < 10 && next != "null") {
-        await http.get(
-            Uri.parse('https://api.relysia.com/v2/history?nextPageToken=$next'),
-            headers: {
-              'authToken': token,
-              'serviceID': serviceId,
-              'version': '1.1.0'
-            }).then(
-          (res) async {
-            response = jsonDecode(res.body);
-            if (response['statusCode'] == 200) {
-              if (response['data']['histories'] != []) {
-                for (var elem in response['data']['histories']) {
-                  for (var e in elem['to']) {
-                    print(e);
-                    if (e['tokenId'] == shnToken) {
-                      transHistory.add({
-                        'txId': e['txId'] ?? '',
-                        'from': elem['from'] ?? '',
-                        'notes': elem['notes'] ?? '',
-                        'to': e['to'] ?? '',
-                        'balance_change': elem['totalAmount'] ?? '',
-                        'timestamp': elem['timestamp'] ?? ''
-                      });
-                      count++;
-                    }
+      await http.get(
+          Uri.parse('https://api.relysia.com/v2/history?nextPageToken=$next'),
+          headers: {
+            'authToken': token,
+            'serviceID': serviceId,
+            'version': '1.1.0'
+          }).then(
+        (res) async {
+          response = jsonDecode(res.body);
+          if (response['statusCode'] == 200) {
+            if (response['data']['histories'] != []) {
+              for (var elem in response['data']['histories']) {
+                for (var e in elem['to']) {
+                  if (e['tokenId'] == shnToken) {
+                    transHistory.add({
+                      'txId': e['txId'] ?? '',
+                      'from': elem['from'] ?? '',
+                      'notes': elem['notes'] ?? '',
+                      'to': e['to'] ?? '',
+                      'balance_change': elem['totalAmount'] ?? '',
+                      'timestamp': elem['timestamp'] ?? ''
+                    });
                   }
                 }
-                next = response['data']['meta']['nextPageToken'].toString();
-                result = true;
-              } else {
-                result = true;
-                count = 10;
               }
-              // print(transHistory);
-            } else if (response['statusCode'] == 401) {
-              next = 'null';
-              result = false;
+              if (response['data']['histories'].length < 10) {
+                next = 'null';
+              } else {
+                next = response['data']['meta']['nextPageToken'].toString();
+                // next = response['data']['histories'].length.toString();
+                // print(next);
+              }
+              result = true;
+            } else {
+              result = true;
             }
-          },
-        );
-      }
+            // print(transHistory);
+          } else if (response['statusCode'] == 401) {
+            next = 'null';
+            result = false;
+          }
+        },
+      );
     } catch (exception) {
-      Helper.showToast(
-          "An error has occurred. Please check your internet connectivity or try again later");
+      print(exception);
+      Helper.showToast("An error has occurred. try again later");
     }
     return {'history': transHistory, 'success': result, 'nextPageToken': next};
   }
