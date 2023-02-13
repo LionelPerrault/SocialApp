@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +13,8 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
 import 'package:shnatter/src/widget/messageAudioPlayer.dart';
+
+import 'emoticonScreen.dart';
 
 // ignore: must_be_immutable
 class ChatMessageListScreen extends StatefulWidget {
@@ -41,6 +44,8 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
   var r = 0;
   int verifyAlertHeight = 50;
   late Stream stream;
+  bool showEmojicon = false;
+
   @override
   void initState() {
     add(widget.con);
@@ -82,176 +87,228 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data != null) {
                     var messageList = snapshot.data!.docs;
-                    return Column(children: [
-                      Container(
-                          height: UserManager.userInfo['isVerify']
-                              ? SizeConfig(context).screenHeight - 250
-                              : SizeConfig(context).screenHeight -
-                                  250 -
-                                  verifyAlertHeight,
-                          child: ListView.builder(
-                            itemCount: messageList.length,
-                            itemBuilder: (context, index) {
-                              var list = messageList[index].data();
-                              var chatUserName = '';
-                              var me = UserManager.userInfo['userName'];
-                              return Container(
-                                padding: EdgeInsets.only(
-                                    top: 5, bottom: 5, left: 15, right: 15),
-                                child: Align(
-                                    alignment: (list['sender'] != me
-                                        ? Alignment.topLeft
-                                        : Alignment.topRight),
-                                    child: list['sender'] != me
-                                        ? Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                                con.avatar == ''
-                                                    ? CircleAvatar(
-                                                        radius: 22,
-                                                        child:
-                                                            SvgPicture.network(
-                                                                Helper.avatar),
-                                                      )
-                                                    : CircleAvatar(
-                                                        radius: 22,
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                                con.avatar),
-                                                      ),
-                                                list['type'] == 'text'
-                                                    ? Container(
-                                                        constraints:
-                                                            BoxConstraints(
-                                                                minWidth: 30,
-                                                                maxWidth: 200),
-                                                        margin: EdgeInsets.only(
-                                                          left: 10,
+                    return Stack(children: [
+                      GestureDetector(
+                          onTap: () {
+                            showEmojicon = false;
+                            con.isShowEmoticon = false;
+                            setState(() {});
+                          },
+                          child: Column(children: [
+                            SizedBox(
+                                height: UserManager.userInfo['isVerify']
+                                    ? SizeConfig(context).screenHeight - 250
+                                    : SizeConfig(context).screenHeight -
+                                        250 -
+                                        verifyAlertHeight,
+                                child: ListView.builder(
+                                  itemCount: messageList.length,
+                                  itemBuilder: (context, index) {
+                                    var list = messageList[index].data();
+                                    var chatUserName = '';
+                                    var me = UserManager.userInfo['userName'];
+                                    return Container(
+                                      padding: EdgeInsets.only(
+                                          top: 5,
+                                          bottom: 5,
+                                          left: 15,
+                                          right: 15),
+                                      child: Align(
+                                          alignment: (list['sender'] != me
+                                              ? Alignment.topLeft
+                                              : Alignment.topRight),
+                                          child: list['sender'] != me
+                                              ? Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                      con.avatar == ''
+                                                          ? CircleAvatar(
+                                                              radius: 22,
+                                                              child: SvgPicture
+                                                                  .network(Helper
+                                                                      .avatar),
+                                                            )
+                                                          : CircleAvatar(
+                                                              radius: 22,
+                                                              backgroundImage:
+                                                                  NetworkImage(
+                                                                      con.avatar),
+                                                            ),
+                                                      list['type'] == 'text'
+                                                          ? Container(
+                                                              constraints:
+                                                                  BoxConstraints(
+                                                                      minWidth:
+                                                                          30,
+                                                                      maxWidth:
+                                                                          200),
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                left: 10,
+                                                              ),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .only(
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                ),
+                                                                color: (list[
+                                                                            'sender'] ==
+                                                                        me
+                                                                    ? Color
+                                                                        .fromRGBO(
+                                                                            219,
+                                                                            241,
+                                                                            255,
+                                                                            1)
+                                                                    : Color
+                                                                        .fromRGBO(
+                                                                            242,
+                                                                            246,
+                                                                            249,
+                                                                            1)),
+                                                              ),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                              child: Text(
+                                                                list['data'],
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        13),
+                                                              ))
+                                                          : list['type'] ==
+                                                                  'image'
+                                                              ? Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              10,
+                                                                          top:
+                                                                              5),
+                                                                  child:
+                                                                      ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .only(
+                                                                      topRight:
+                                                                          Radius.circular(
+                                                                              15),
+                                                                      bottomLeft:
+                                                                          Radius.circular(
+                                                                              15),
+                                                                      bottomRight:
+                                                                          Radius.circular(
+                                                                              15),
+                                                                    ),
+                                                                    child: Image
+                                                                        .network(
+                                                                      list[
+                                                                          'data'],
+                                                                      width:
+                                                                          150,
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              : MessageAudioPlayer(
+                                                                  audioURL: list[
+                                                                      'data'])
+                                                    ])
+                                              : list['type'] == 'text'
+                                                  ? Container(
+                                                      constraints:
+                                                          BoxConstraints(
+                                                              minWidth: 30,
+                                                              maxWidth: 200),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  15),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  15),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  15),
                                                         ),
-                                                        decoration:
-                                                            BoxDecoration(
+                                                        color: (list[
+                                                                    'sender'] ==
+                                                                me
+                                                            ? Color.fromRGBO(
+                                                                219,
+                                                                241,
+                                                                255,
+                                                                1)
+                                                            : Color.fromRGBO(
+                                                                242,
+                                                                246,
+                                                                249,
+                                                                1)),
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      child: Text(
+                                                        list['data'],
+                                                        style: TextStyle(
+                                                            fontSize: 13),
+                                                      ))
+                                                  : list['type'] == 'image'
+                                                      ? ClipRRect(
                                                           borderRadius:
                                                               BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    15),
                                                             topRight:
                                                                 Radius.circular(
                                                                     15),
                                                             bottomLeft:
                                                                 Radius.circular(
                                                                     15),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    15),
                                                           ),
-                                                          color:
-                                                              (list['sender'] ==
-                                                                      me
-                                                                  ? Color
-                                                                      .fromRGBO(
-                                                                          219,
-                                                                          241,
-                                                                          255,
-                                                                          1)
-                                                                  : Color
-                                                                      .fromRGBO(
-                                                                          242,
-                                                                          246,
-                                                                          249,
-                                                                          1)),
-                                                        ),
-                                                        padding:
-                                                            EdgeInsets.all(10),
-                                                        child: Text(
-                                                          list['data'],
-                                                          style: TextStyle(
-                                                              fontSize: 13),
-                                                        ))
-                                                    : list['type'] == 'image'
-                                                        ? Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 10,
-                                                                    top: 5),
-                                                            child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .only(
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        15),
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        15),
-                                                                bottomRight:
-                                                                    Radius
-                                                                        .circular(
-                                                                            15),
-                                                              ),
-                                                              child:
-                                                                  Image.network(
-                                                                list['data'],
-                                                                width: 150,
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : MessageAudioPlayer(
-                                                            audioURL:
-                                                                list['data'])
-                                              ])
-                                        : list['type'] == 'text'
-                                            ? Container(
-                                                constraints: BoxConstraints(
-                                                    minWidth: 30,
-                                                    maxWidth: 200),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(15),
-                                                    topRight:
-                                                        Radius.circular(15),
-                                                    bottomLeft:
-                                                        Radius.circular(15),
-                                                  ),
-                                                  color: (list['sender'] == me
-                                                      ? Color.fromRGBO(
-                                                          219, 241, 255, 1)
-                                                      : Color.fromRGBO(
-                                                          242, 246, 249, 1)),
-                                                ),
-                                                padding: EdgeInsets.all(10),
-                                                child: Text(
-                                                  list['data'],
-                                                  style:
-                                                      TextStyle(fontSize: 13),
-                                                ))
-                                            : list['type'] == 'image'
-                                                ? ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(15),
-                                                      topRight:
-                                                          Radius.circular(15),
-                                                      bottomLeft:
-                                                          Radius.circular(15),
-                                                    ),
-                                                    child: Image.network(
-                                                      list['data'],
-                                                      width: 150,
-                                                    ),
-                                                  )
-                                                : MessageAudioPlayer(
-                                                    audioURL: list['data'])),
-                              );
-                            },
-                          )),
-                      WriteMessageScreen(
-                        type: con.isMessageTap == 'new' ? 'new' : 'old',
-                        goMessage: (value) {
-                          widget.onBack(value);
-                        },
-                      )
+                                                          child: Image.network(
+                                                            list['data'],
+                                                            width: 150,
+                                                          ),
+                                                        )
+                                                      : MessageAudioPlayer(
+                                                          audioURL:
+                                                              list['data'])),
+                                    );
+                                  },
+                                )),
+                            WriteMessageScreen(
+                              type: con.isMessageTap == 'new' ? 'new' : 'old',
+                              goMessage: (value) {
+                                showEmojicon = value;
+
+                                setState(() {});
+                                widget.onBack(showEmojicon);
+                              },
+                            ),
+                          ])),
+                      showEmojicon
+                          ? Positioned(
+                              bottom: 60,
+                              left: 0,
+                              child: EmoticonScreen(onBack: (value) {
+                                con.isShowEmoticon = value;
+                                showEmojicon = value;
+                                setState(() {});
+                              }))
+                          : Container(),
                     ]);
                   } else {
                     return SizedBox(

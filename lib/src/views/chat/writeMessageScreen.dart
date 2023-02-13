@@ -28,6 +28,7 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
   bool isEnter = false;
   bool showRecoder = false;
   bool recordingStarted = false;
+  bool showEmojicon = false;
   String recordingPath = "";
   String pathToAudio = '';
   late FlutterSoundRecorder _recordingSession;
@@ -158,7 +159,9 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               onTap: () {
                 setState(() {
                   showRecoder = !showRecoder;
+                  if (showRecoder) showEmojicon = false;
                 });
+                widget.goMessage(showEmojicon);
               },
               child: const Icon(
                 Icons.mic,
@@ -170,8 +173,9 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
             child: GestureDetector(
                 onTap: () {
                   showRecoder = false;
+                  showEmojicon = !showEmojicon;
                   setState(() {});
-                  widget.goMessage(true);
+                  widget.goMessage(showEmojicon);
                 },
                 child: Icon(
                   Icons.emoji_emotions,

@@ -103,7 +103,7 @@ class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
           config: Config(
             columns: 7,
             // Issue: https://github.com/flutter/flutter/issues/28894
-            emojiSizeMax: 16,
+            emojiSizeMax: 24,
             verticalSpacing: 0,
             horizontalSpacing: 0,
             gridPadding: EdgeInsets.zero,
