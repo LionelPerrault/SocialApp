@@ -65,7 +65,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
         scrollDirection: Axis.horizontal,
         controller: _scrollController,
         child: Container(
-          height: 60,
+          height: 67,
           width: SizeConfig(context).screenWidth < 700
               ? SizeConfig(context).screenWidth
               : SizeConfig(context).screenWidth * 0.7,
@@ -91,7 +91,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                       ),
                       con.tabName == 'Discover'
                           ? Container(
-                              margin: EdgeInsets.only(top: 22.5),
+                              margin: EdgeInsets.only(top: 4.5),
                               height: 2,
                               decoration: BoxDecoration(
                                   color: Colors.black,
@@ -137,7 +137,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                       ),
                       con.tabName == 'Friend Requests'
                           ? Container(
-                              margin: EdgeInsets.only(top: 17),
+                              //margin: EdgeInsets.only(top: 17),
                               height: 2,
                               decoration: BoxDecoration(
                                   color: Colors.black,
@@ -183,7 +183,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                       ),
                       con.tabName == 'Send Requests'
                           ? Container(
-                              margin: EdgeInsets.only(top: 17),
+                              //margin: EdgeInsets.only(top: 17),
                               height: 2,
                               decoration: BoxDecoration(
                                   color: Colors.black,

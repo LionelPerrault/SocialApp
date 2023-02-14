@@ -99,11 +99,11 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                       child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Padding(
-                                          padding: EdgeInsets.only(
-                                              top: groupSubRoute == ''
-                                                  ? 26
-                                                  : 0)),
+                                      // Padding(
+                                      //     padding: EdgeInsets.only(
+                                      //         top: groupSubRoute == ''
+                                      //             ? 26
+                                      //             : 0)),
                                       RichText(
                                         text: TextSpan(children: <TextSpan>[
                                           TextSpan(
@@ -121,7 +121,8 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                       ),
                                       groupSubRoute == ''
                                           ? Container(
-                                              margin: EdgeInsets.only(top: 26),
+                                              //margin: EdgeInsets.only(top: 26),
+                                              width: 60,
                                               height: 1,
                                               color: Colors.black,
                                             )
@@ -134,11 +135,11 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                       child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Padding(
-                                          padding: EdgeInsets.only(
-                                              top: groupSubRoute == 'joined'
-                                                  ? 26
-                                                  : 0)),
+                                      // Padding(
+                                      //     padding: EdgeInsets.only(
+                                      //         top: groupSubRoute == 'joined'
+                                      //             ? 26
+                                      //             : 0)),
                                       RichText(
                                         text: TextSpan(children: <TextSpan>[
                                           TextSpan(
@@ -156,7 +157,8 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                       ),
                                       groupSubRoute == 'joined'
                                           ? Container(
-                                              margin: EdgeInsets.only(top: 26),
+                                              //margin: EdgeInsets.only(top: 26),
+                                              width: 90,
                                               height: 1,
                                               color: Colors.black,
                                             )
@@ -169,11 +171,11 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                       child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Padding(
-                                          padding: EdgeInsets.only(
-                                              top: groupSubRoute == 'manage'
-                                                  ? 26
-                                                  : 0)),
+                                      // Padding(
+                                      //     padding: EdgeInsets.only(
+                                      //         top: groupSubRoute == 'manage'
+                                      //             ? 26
+                                      //             : 0)),
                                       RichText(
                                         text: TextSpan(children: <TextSpan>[
                                           TextSpan(
@@ -191,8 +193,9 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                                       ),
                                       groupSubRoute == 'manage'
                                           ? Container(
-                                              margin: EdgeInsets.only(top: 26),
+                                              //margin: EdgeInsets.only(top: 26),
                                               height: 1,
+                                              width: 70,
                                               color: Colors.black,
                                             )
                                           : SizedBox()
