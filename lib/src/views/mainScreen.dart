@@ -54,6 +54,10 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
       duration: const Duration(milliseconds: 150),
     );
     triggerEmailVerify();
+    searchController.addListener(() {
+      searchText = searchController.text;
+      setState(() {});
+    });
   }
 
   void onSearchBarFocus() {
