@@ -116,7 +116,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                   padding: EdgeInsets.only(top: 15),
                   width: 150,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -158,14 +158,13 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                   await con.getSendRequestsFriends();
                   setState(() {});
                 },
-                child: Expanded(
-                    child: Container(
+                child: Container(
                   width: 130,
                   padding: EdgeInsets.only(top: 15),
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
@@ -198,7 +197,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                             )
                     ],
                   ),
-                )))
+                ))
           ]),
         ));
   }
