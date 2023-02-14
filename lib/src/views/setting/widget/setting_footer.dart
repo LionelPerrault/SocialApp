@@ -28,8 +28,10 @@ class SettingFooter extends StatelessWidget {
           ),
           padding: const EdgeInsets.only(top: 5, left: 15),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
+              //const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(3),

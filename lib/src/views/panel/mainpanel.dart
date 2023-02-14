@@ -130,24 +130,24 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // loadingFlag
-                //     ? const SizedBox(
-                //         width: 50,
-                //         height: 50,
-                //         child: CircularProgressIndicator(
-                //           color: Colors.grey,
-                //         ),
-                //       )
-                //     : Expanded(
-                //         child: Column(
-                //           children: con.posts
-                //               .map((product) => PostCell(
-                //                     postInfo: product,
-                //                     routerChange: widget.routerChange,
-                //                   ))
-                //               .toList(),
-                //         ),
-                //       )
+                loadingFlag
+                    ? const SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )
+                    : Expanded(
+                        child: Column(
+                          children: con.posts
+                              .map((product) => PostCell(
+                                    postInfo: product,
+                                    routerChange: widget.routerChange,
+                                  ))
+                              .toList(),
+                        ),
+                      )
               ],
             ),
           ),

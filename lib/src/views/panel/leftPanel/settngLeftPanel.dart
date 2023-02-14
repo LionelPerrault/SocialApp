@@ -228,18 +228,18 @@ class SettingsLeftPanel extends StatelessWidget {
                 Icons.privacy_tip_rounded,
                 color: Color.fromARGB(255, 255, 179, 7),
               )),
-          ListText(
-              onTap: () => {
-                    routerFunction({
-                      'router': RouteNames.settings,
-                      'subRouter': RouteNames.settings_notifications,
-                    })
-                  },
-              label: 'Notification',
-              image: const Icon(
-                Icons.notifications,
-                color: Color.fromARGB(255, 103, 58, 183),
-              )),
+          // ListText(
+          //     onTap: () => {
+          //           routerFunction({
+          //             'router': RouteNames.settings,
+          //             'subRouter': RouteNames.settings_notifications,
+          //           })
+          //         },
+          //     label: 'Notification',
+          //     image: const Icon(
+          //       Icons.notifications,
+          //       color: Color.fromARGB(255, 103, 58, 183),
+          //     )),
           ListText(
               onTap: () => {
                     routerFunction({
@@ -255,18 +255,18 @@ class SettingsLeftPanel extends StatelessWidget {
           //     label: 'Paywall for User',
           //     image: const Icon(Icons.money_sharp,
           //         color: Color.fromARGB(255, 76, 175, 80))),
-          ListText(
-              onTap: () => {
-                    routerFunction({
-                      'router': RouteNames.settings,
-                      'subRouter': RouteNames.settings_verification,
-                    })
-                  },
-              label: 'Verification',
-              image: const Icon(
-                Icons.check_circle,
-                color: Color.fromARGB(255, 33, 150, 243),
-              )),
+          // ListText(
+          //     onTap: () => {
+          //           routerFunction({
+          //             'router': RouteNames.settings,
+          //             'subRouter': RouteNames.settings_verification,
+          //           })
+          //         },
+          //     label: 'Verification',
+          //     image: const Icon(
+          //       Icons.check_circle,
+          //       color: Color.fromARGB(255, 33, 150, 243),
+          //     )),
           // ListText(
           //     onTap: () => {routerFunction('information')},
           //     label: 'Your Information',
