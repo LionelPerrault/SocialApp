@@ -17,6 +17,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as PPath;
+import 'package:shnatter/src/widget/sharePostWidget.dart';
 
 class LikesCommentScreen extends StatefulWidget {
   late PostController Postcon;
@@ -337,32 +338,63 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             whoHover = '';
                             setState(() {});
                           },
-                          child: AnimatedContainer(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: whoHover == 'share'
-                                    ? const Color.fromRGBO(240, 240, 245, 1)
-                                    : Colors.white,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(3))),
-                            duration: const Duration(milliseconds: 300),
-                            width: SizeConfig(context).screenWidth > 600
-                                ? (600 - 60) / 3
-                                : (SizeConfig(context).screenWidth - 60) / 3,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
-                                Icon(
-                                  FontAwesomeIcons.share,
-                                  size: 15,
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 5)),
-                                Text(
-                                  'Share',
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                )
-                              ],
+                          child: InkWell(
+                            onTap: () async {
+                              (showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                          title: Row(
+                                            children: const [
+                                              Icon(
+                                                FontAwesomeIcons.share,
+                                                size: 15,
+                                                color: Color.fromARGB(
+                                                    255, 0, 0, 0),
+                                              ),
+                                              Text(
+                                                'Share',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontStyle:
+                                                        FontStyle.normal),
+                                              ),
+                                            ],
+                                          ),
+                                          content: SharePostModal(
+                                            context: context,
+                                            routerChange: widget.routerChange,
+                                          ))));
+                            },
+                            child: AnimatedContainer(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: whoHover == 'share'
+                                      ? const Color.fromRGBO(240, 240, 245, 1)
+                                      : Colors.white,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(3))),
+                              duration: const Duration(milliseconds: 300),
+                              width: SizeConfig(context).screenWidth > 600
+                                  ? (600 - 60) / 3
+                                  : (SizeConfig(context).screenWidth - 60) / 3,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    FontAwesomeIcons.share,
+                                    size: 15,
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(
+                                    'Share',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w700),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
