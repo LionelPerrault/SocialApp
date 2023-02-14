@@ -63,147 +63,147 @@ class SettingPrivacyScreenState extends mvc.StateMVC<SettingPrivacyScreen> {
               button: {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
-              width:
-                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                      ? SizeConfig(context).screenWidth * 0.5 + 40
-                      : SizeConfig(context).screenWidth * 0.9 - 30,
-              padding: const EdgeInsets.only(left: 20),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 35,
-                              height: 35,
-                              child: SvgPicture.network(
-                                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings%2Fchat.svg?alt=media&token=7159b8b4-0333-4061-b09f-01688d80a049'),
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 10)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Chat Enabled',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Padding(padding: EdgeInsets.only(top: 5)),
-                                Container(
-                                  width: SizeConfig(context).screenWidth * 0.4,
-                                  child: const Text(
-                                    'If chat disabled you will appear offline and will no see who is online too',
-                                    style: TextStyle(fontSize: 11),
-                                  ),
-                                )
-                              ],
-                            ),
-                            const Flexible(
-                                fit: FlexFit.tight, child: SizedBox()),
-                            SizedBox(
-                              height: 20,
-                              child: Transform.scale(
-                                scaleX: 0.55,
-                                scaleY: 0.55,
-                                child: CupertinoSwitch(
-                                  //thumbColor: kprimaryColor,
-                                  activeColor: kprimaryColor,
-                                  value: chatEnable,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      chatEnable = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 15))
-                          ],
-                        ),
-                      ))
-                    ],
-                  )
-                ],
-              ),
-            ),
+            // Container(
+            //   width:
+            //       SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+            //           ? SizeConfig(context).screenWidth * 0.5 + 40
+            //           : SizeConfig(context).screenWidth * 0.9 - 30,
+            //   padding: const EdgeInsets.only(left: 20),
+            //   child: Column(
+            //     children: [
+            //       Row(
+            //         children: [
+            //           Expanded(
+            //               child: Container(
+            //             child: Row(
+            //               children: [
+            //                 Container(
+            //                   width: 35,
+            //                   height: 35,
+            //                   child: SvgPicture.network(
+            //                       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings%2Fchat.svg?alt=media&token=7159b8b4-0333-4061-b09f-01688d80a049'),
+            //                 ),
+            //                 const Padding(padding: EdgeInsets.only(left: 10)),
+            //                 Column(
+            //                   mainAxisAlignment: MainAxisAlignment.start,
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     const Text(
+            //                       'Chat Enabled',
+            //                       style: TextStyle(
+            //                           color: Color.fromARGB(255, 82, 95, 127),
+            //                           fontSize: 13,
+            //                           fontWeight: FontWeight.bold),
+            //                     ),
+            //                     const Padding(padding: EdgeInsets.only(top: 5)),
+            //                     Container(
+            //                       width: SizeConfig(context).screenWidth * 0.4,
+            //                       child: const Text(
+            //                         'If chat disabled you will appear offline and will no see who is online too',
+            //                         style: TextStyle(fontSize: 11),
+            //                       ),
+            //                     )
+            //                   ],
+            //                 ),
+            //                 const Flexible(
+            //                     fit: FlexFit.tight, child: SizedBox()),
+            //                 SizedBox(
+            //                   height: 20,
+            //                   child: Transform.scale(
+            //                     scaleX: 0.55,
+            //                     scaleY: 0.55,
+            //                     child: CupertinoSwitch(
+            //                       //thumbColor: kprimaryColor,
+            //                       activeColor: kprimaryColor,
+            //                       value: chatEnable,
+            //                       onChanged: (value) {
+            //                         setState(() {
+            //                           chatEnable = value;
+            //                         });
+            //                       },
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const Padding(padding: EdgeInsets.only(left: 15))
+            //               ],
+            //             ),
+            //           ))
+            //         ],
+            //       )
+            //     ],
+            //   ),
+            // ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
-              padding: const EdgeInsets.only(left: 20),
-              width:
-                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                      ? SizeConfig(context).screenWidth * 0.5 + 40
-                      : SizeConfig(context).screenWidth * 0.9 - 30,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 35,
-                              height: 35,
-                              child: SvgPicture.network(
-                                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings%2Fmail.svg?alt=media&token=307c1448-f196-4f96-ad89-2bcaf638f179'),
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 10)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Email you with our newsletter',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Padding(padding: EdgeInsets.only(top: 5)),
-                                SizedBox(
-                                  width: SizeConfig(context).screenWidth * 0.4,
-                                  child: const Text(
-                                    'From time to time we send newsletter email to all of our members',
-                                    style: TextStyle(fontSize: 11),
-                                  ),
-                                )
-                              ],
-                            ),
-                            const Flexible(
-                                fit: FlexFit.tight, child: SizedBox()),
-                            SizedBox(
-                              height: 20,
-                              child: Transform.scale(
-                                scaleX: 0.55,
-                                scaleY: 0.55,
-                                child: CupertinoSwitch(
-                                  //thumbColor: kprimaryColor,
-                                  activeColor: kprimaryColor,
-                                  value: chatEnable,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      chatEnable = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 15))
-                          ],
-                        ),
-                      ))
-                    ],
-                  )
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: const EdgeInsets.only(left: 20),
+            //   width:
+            //       SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+            //           ? SizeConfig(context).screenWidth * 0.5 + 40
+            //           : SizeConfig(context).screenWidth * 0.9 - 30,
+            //   child: Column(
+            //     children: [
+            //       Row(
+            //         children: [
+            //           Expanded(
+            //               child: Container(
+            //             child: Row(
+            //               children: [
+            //                 Container(
+            //                   width: 35,
+            //                   height: 35,
+            //                   child: SvgPicture.network(
+            //                       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings%2Fmail.svg?alt=media&token=307c1448-f196-4f96-ad89-2bcaf638f179'),
+            //                 ),
+            //                 const Padding(padding: EdgeInsets.only(left: 10)),
+            //                 Column(
+            //                   mainAxisAlignment: MainAxisAlignment.start,
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     const Text(
+            //                       'Email you with our newsletter',
+            //                       style: TextStyle(
+            //                           color: Color.fromARGB(255, 82, 95, 127),
+            //                           fontSize: 13,
+            //                           fontWeight: FontWeight.bold),
+            //                     ),
+            //                     const Padding(padding: EdgeInsets.only(top: 5)),
+            //                     SizedBox(
+            //                       width: SizeConfig(context).screenWidth * 0.4,
+            //                       child: const Text(
+            //                         'From time to time we send newsletter email to all of our members',
+            //                         style: TextStyle(fontSize: 11),
+            //                       ),
+            //                     )
+            //                   ],
+            //                 ),
+            //                 const Flexible(
+            //                     fit: FlexFit.tight, child: SizedBox()),
+            //                 SizedBox(
+            //                   height: 20,
+            //                   child: Transform.scale(
+            //                     scaleX: 0.55,
+            //                     scaleY: 0.55,
+            //                     child: CupertinoSwitch(
+            //                       //thumbColor: kprimaryColor,
+            //                       activeColor: kprimaryColor,
+            //                       value: chatEnable,
+            //                       onChanged: (value) {
+            //                         setState(() {
+            //                           chatEnable = value;
+            //                         });
+            //                       },
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const Padding(padding: EdgeInsets.only(left: 15))
+            //               ],
+            //             ),
+            //           ))
+            //         ],
+            //       )
+            //     ],
+            //   ),
+            // ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             GridView.count(
                 crossAxisCount:
