@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/createEventWidget.dart';
 import 'package:shnatter/src/widget/createGroupWidget.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
 
 class PostsNavBox extends StatefulWidget {
-  PostsNavBox({Key? key, required this.routerChange}) : super(key: key);
+  PostsNavBox({Key? key, required this.routerChange, required this.hideNavBox})
+      : super(key: key);
   Function routerChange;
+  Function hideNavBox;
   @override
   State createState() => PostsNavBoxState();
 }
@@ -71,7 +74,11 @@ class PostsNavBoxState extends State<PostsNavBox> {
       'icon': Icons.person_add_sharp,
       'color': Color.fromARGB(255, 43, 83, 164),
       'text': 'Add Friend',
-      'onTap': (context) {},
+      'onTap': (context) {
+        widget.routerChange({
+          'router': RouteNames.people,
+        });
+      },
     },
     {
       'icon': Icons.production_quantity_limits_sharp,
@@ -222,6 +229,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
   Widget PostButtonCell(nowContext, icon, iconColor, text, onTap) {
     return ListTile(
         onTap: () {
+          widget.hideNavBox();
           onTap(nowContext);
         },
         hoverColor: Colors.grey[100],
