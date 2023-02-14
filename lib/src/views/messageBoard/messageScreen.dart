@@ -147,7 +147,34 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                 toolbarHeight: 60,
                 backgroundColor: const Color.fromRGBO(51, 103, 214, 1),
                 automaticallyImplyLeading: false,
-                leading: Row(children: [
+                title: Row(
+                  children: [
+                    SizedBox(
+                      width: 46,
+                      height: 46,
+                      child: con.avatar == ''
+                          ? CircleAvatar(
+                              radius: 23,
+                              backgroundColor: Colors.blue,
+                              child: SvgPicture.network(Helper.avatar))
+                          : CircleAvatar(
+                              radius: 23,
+                              backgroundColor: Colors.blue,
+                              backgroundImage: NetworkImage(con.avatar),
+                            ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5, left: 5),
+                      child: Text(
+                        con.chatUserFullName,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    )
+                  ],
+                ),
+                leading:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   IconButton(
                       icon: const Icon(
                         Icons.arrow_back,
@@ -160,27 +187,6 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                         con.setState(() {});
                         setState(() {});
                       }),
-                  SizedBox(
-                    width: 46,
-                    height: 46,
-                    child: con.avatar == ''
-                        ? CircleAvatar(
-                            radius: 23,
-                            backgroundColor: Colors.blue,
-                            child: SvgPicture.network(Helper.avatar))
-                        : CircleAvatar(
-                            radius: 23,
-                            backgroundColor: Colors.blue,
-                            backgroundImage: NetworkImage(con.avatar),
-                          ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5, left: 5),
-                    child: Text(
-                      con.chatUserFullName,
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
                 ]))
           ],
         ));
