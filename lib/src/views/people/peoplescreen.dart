@@ -38,25 +38,23 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.only(
-            right: SizeConfig(context).screenWidth < 700 ? 30 : 70,
-            top: 10,
-            left: SizeConfig(context).screenWidth < 700 ? 30 : 70),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            mainTabWidget(),
-            con.tabName == 'Discover'
-                ? PeopleDiscoverScreen(
-                    routerChange: widget.routerChange,
-                  )
-                : con.tabName == 'Friend Requests'
-                    ? FriendRequestsScreen()
-                    : SendRequestsScreen()
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.only(
+          right: SizeConfig(context).screenWidth < 700 ? 30 : 70,
+          top: 10,
+          left: SizeConfig(context).screenWidth < 700 ? 30 : 70),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          mainTabWidget(),
+          con.tabName == 'Discover'
+              ? PeopleDiscoverScreen(
+                  routerChange: widget.routerChange,
+                )
+              : con.tabName == 'Friend Requests'
+                  ? FriendRequestsScreen()
+                  : SendRequestsScreen()
+        ],
       ),
     );
   }
