@@ -10,6 +10,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 // ignore: must_be_immutable
 class TwoFactorAuthenticationScreen extends StatefulWidget {
@@ -238,22 +239,41 @@ class TwoFactorAuthenticationScreenState
                     children: <Widget>[
                       Opacity(
                         opacity: 1.0,
-                        child: TextFormField(
-                          controller: _controller,
-                          focusNode: _textNode,
-                          keyboardType: TextInputType.number,
-                          onChanged: onCodeInput,
-                          maxLength: 6,
+                        child: OtpTextField(
+                          numberOfFields: 6,
+                          borderColor: Color(0xFF512DA8),
+                          showFieldAsBox:
+                              true, //set to true to show as box or false to show as dash
+                          onCodeChanged: (String code) {},
+                          onSubmit: (String verificationCode) {
+                            this.verificationCode = verificationCode;
+
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return AlertDialog(
+                            //         title: Text("Verification Code"),
+                            //         content: Text(this.verificationCode),
+                            //       );
+                            //     });
+                          }, // end onSubmit
                         ),
+                        // TextFormField(
+                        //   controller: _controller,
+                        //   focusNode: _textNode,
+                        //   keyboardType: TextInputType.number,
+                        //   onChanged: onCodeInput,
+                        //   maxLength: 6,
+                        // ),
                       ),
-                      Positioned(
-                        bottom: 40,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: getField(),
-                        ),
-                      )
+                      // Positioned(
+                      //   bottom: 40,
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.end,
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: getField(),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
