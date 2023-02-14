@@ -3,11 +3,13 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 
 class EmoticonScreen extends StatefulWidget {
   Function onBack;
@@ -45,7 +47,6 @@ class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
       FirebaseFirestore.instance.collection(Helper.emoticons).get().then(
         (value) {
           for (int i = 0; i < value.docs.length; i++) {
-            print(value.docs[i]['emoticon']);
             if ((i + 1) % 10 != 0) {
               t.add(value.docs[i]['emoticon']);
             }
@@ -93,7 +94,7 @@ class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
         ],
       ),
       padding: EdgeInsets.all(5),
-      width: 290,
+      width: kIsWeb ? 295 : SizeConfig(context).screenWidth,
       height: 200,
       child: EmojiPicker(
           onEmojiSelected: (category, emoji) {
@@ -103,11 +104,10 @@ class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
           config: Config(
             columns: 7,
             // Issue: https://github.com/flutter/flutter/issues/28894
-            emojiSizeMax: 24,
+            emojiSizeMax: 32,
             verticalSpacing: 0,
             horizontalSpacing: 0,
             gridPadding: EdgeInsets.zero,
-            initCategory: Category.SMILEYS,
             bgColor: Colors.white,
             indicatorColor: Colors.blue,
             iconColor: Colors.grey,

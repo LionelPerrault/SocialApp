@@ -43,7 +43,6 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
     if (con.viewProfileUserName == '') {
       con.viewProfileUserName = userInfo['userName'];
     }
-    print('this is profile username:${widget.userName}');
     con.getProfileInfo().then((value) {
       profileImage = con.userData['profileImage'] ?? '';
       if (con.userData['paywall'][UserManager.userInfo['uid']] == null ||
@@ -68,8 +67,6 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
               'Pay for view profile of user')
           .then(
             (value) => {
-              print(value),
-              print('this is end'),
               isPayProgressive = false,
               setState(() {}),
               if (value)

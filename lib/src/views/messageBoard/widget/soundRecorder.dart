@@ -29,7 +29,8 @@ class _SoundRecorderState extends State<SoundRecorder> {
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool isRecording = false;
   bool _mRecorderIsInited = false;
-  bool showRecordedAudio = false;
+  bool showRecordedAudio = true;
+  bool isRecorded = false;
   bool openedRecorder = false;
   @override
   void initState() {
@@ -126,6 +127,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
     )
         .then((value) {
       setState(() {
+        showRecordedAudio = false;
         isRecording = true;
         startTimer();
       });
@@ -139,7 +141,8 @@ class _SoundRecorderState extends State<SoundRecorder> {
     await _mRecorder!.stopRecorder().then((value) {
       setState(() {
         isRecording = false;
-        showRecordedAudio = true;
+        showRecordedAudio = false;
+        isRecorded = true;
         widget.savePath(value);
         _timer.cancel();
       });
@@ -152,87 +155,87 @@ class _SoundRecorderState extends State<SoundRecorder> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        !isRecording
-            ? InkWell(
-                onTap: () {
-                  record();
-                },
-                child: Container(
-                    margin: const EdgeInsets.only(left: 10),
-                    width: 90,
-                    height: 25,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blue),
-                    child: Row(
-                      children: const [
-                        SizedBox(width: 5),
-                        Icon(
-                          Icons.mic,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Record",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
-                        )
-                      ],
-                    )))
-            : InkWell(
-                onTap: () {
-                  stopRecorder();
-                },
-                child: Container(
-                    margin: const EdgeInsets.only(left: 10),
-                    width: 158,
-                    height: 35,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.red),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        const Icon(
-                          Icons.stop,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          "Recording ${convertSecondsToMMSS(counter)}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
-                        )
-                      ],
-                    ))),
+        if (showRecordedAudio)
+          InkWell(
+              onTap: () {
+                record();
+              },
+              child: Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  width: 90,
+                  height: 25,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.blue),
+                  child: Row(
+                    children: const [
+                      SizedBox(width: 5),
+                      Icon(
+                        Icons.mic,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "Record",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      )
+                    ],
+                  ))),
+        if (isRecording)
+          InkWell(
+              onTap: () {
+                stopRecorder();
+              },
+              child: Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  width: 158,
+                  height: 25,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.red),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      const Icon(
+                        Icons.stop,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "Recording ${convertSecondsToMMSS(counter)}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      )
+                    ],
+                  ))),
         const SizedBox(
           width: 10,
         ),
-        if (!isRecording && showRecordedAudio)
-          Container(
-              height: 35,
-              width: 80,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+        if (!isRecording && isRecorded)
+          SizedBox(
+              height: 25,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(
-                    Icons.audio_file,
-                    color: Colors.white,
+                    Icons.check_circle,
+                    color: Colors.green,
                   ),
+                  const Text("Voice note recorded successfully"),
                   const SizedBox(
                     width: 10,
                   ),
                   InkWell(
                       onTap: () {
-                        showRecordedAudio = false;
+                        showRecordedAudio = true;
+                        isRecorded = false;
                         setState(() {});
                       },
                       child: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
+                        Icons.close,
+                        color: Colors.black,
                       ))
                 ],
               ))

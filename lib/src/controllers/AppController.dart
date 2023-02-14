@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +8,6 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import '../../firebase_options.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/userModel.dart';
 
 class AppController extends ControllerMVC {
   factory AppController() => _this ??= AppController._();
@@ -22,7 +20,7 @@ class AppController extends ControllerMVC {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    FirebaseMessaging _firebaseMessaging =
+    FirebaseMessaging firebaseMessaging =
         FirebaseMessaging.instance; // Change here
     if (kIsWeb) {
       String vapidKey = "";
@@ -33,8 +31,8 @@ class AppController extends ControllerMVC {
         saveToken(token, "web");
       }).onError((error, stackTrace) => null);
     } else {
-      await _firebaseMessaging.requestPermission();
-      _firebaseMessaging.getToken().then((token) {
+      await firebaseMessaging.requestPermission();
+      firebaseMessaging.getToken().then((token) {
         //save to firebase
         saveToken(token, "mobile");
       }).onError((error, stackTrace) => null);
@@ -43,10 +41,11 @@ class AppController extends ControllerMVC {
     //    .getToken(vapidKey: "JQK8sPGz8ACuFBQdET1323FwvXlLWEC7E6dlaIzzdWU");
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
       // delete old one and add new
-      if (kIsWeb)
+      if (kIsWeb) {
         saveToken(fcmToken, "web");
-      else
+      } else {
         saveToken(fcmToken, "moible");
+      }
     }).onError((err) {
       // Error getting token.
     });
@@ -63,12 +62,14 @@ class AppController extends ControllerMVC {
           .collection("FCMToken")
           .where('token', isEqualTo: token)
           .get();
-      if (snapshot.docs.isEmpty)
+      if (snapshot.docs.isEmpty) {
         FirebaseFirestore.instance.collection("FCMToken").add({
           'token': token,
           'device': device,
           'createdAt': FieldValue.serverTimestamp()
         });
+      }
+      // ignore: empty_catches
     } catch (e) {}
   }
 
