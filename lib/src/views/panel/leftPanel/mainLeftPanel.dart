@@ -64,10 +64,7 @@ class MainLeftPanel extends StatelessWidget {
               })
             },
             label: 'Shnatter Token',
-            image: SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter_token.svg?alt=media&token=48ac103d-10fc-4847-943e-33ea5d6281bc',
-              width: 21,
-            ),
+            image: const Icon(Icons.money, size: 21, color: Colors.grey),
           ),
           UserManager.userInfo['admin'] == 'admin'
               ? ListText(

@@ -95,44 +95,47 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
               theme: setting.isBright
                   ? ThemeData(
                       brightness: Brightness.dark,
-                      primarySwatch: kprimarySwatch,
-                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                       fontFamily: 'Georgia',
                       buttonTheme: const ButtonThemeData(
                         buttonColor: Color(0xff00adb5),
                       ),
                       textTheme: const TextTheme(
-                        headline1: TextStyle(
+                        displayLarge: TextStyle(
                             fontSize: 72.0, fontWeight: FontWeight.bold),
-                        headline6: TextStyle(
+                        titleLarge: TextStyle(
                             fontSize: 36.0, fontStyle: FontStyle.italic),
-                        bodyText2:
+                        bodyMedium:
                             TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
                       ),
+                      colorScheme:
+                          ColorScheme.fromSwatch(primarySwatch: kprimarySwatch)
+                              .copyWith(
+                                  background:
+                                      const Color.fromARGB(255, 255, 255, 255)),
                     )
                   : ThemeData(
                       brightness: Brightness.light,
-                      primarySwatch: kprimarySwatch,
-                      backgroundColor: const Color(0xffeeeeee),
                       fontFamily: 'Georgia',
                       buttonTheme: const ButtonThemeData(
                         buttonColor: Color(0xff00adb5),
                       ),
                       textTheme: const TextTheme(
-                        headline1: TextStyle(
+                        displayLarge: TextStyle(
                             fontSize: 72.0, fontWeight: FontWeight.bold),
-                        headline6: TextStyle(
+                        titleLarge: TextStyle(
                             fontSize: 36.0, fontStyle: FontStyle.italic),
-                        bodyText2:
+                        bodyMedium:
                             TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
                       ),
+                      colorScheme:
+                          ColorScheme.fromSwatch(primarySwatch: kprimarySwatch)
+                              .copyWith(background: const Color(0xffeeeeee)),
                     ));
         });
   }
 
   @override
   Widget buildChild(BuildContext context) {
-    bool isBright = false;
     return createApp();
   }
 }

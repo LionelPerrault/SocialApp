@@ -65,6 +65,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   var peopleCon = PeopleController();
   late PostController postCon;
   var badgeCount = [];
+  final CustomPopupMenuController _navController = CustomPopupMenuController();
   String userAvatar = '';
   //
   @override
@@ -392,8 +393,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
+                        controller: _navController,
                         menuBuilder: () => PostsNavBox(
                               routerChange: widget.routerChange,
+                              hideNavBox: () {
+                                print('object');
+                                _navController.hideMenu();
+                              },
                             ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
@@ -719,8 +725,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
+                        controller: _navController,
                         menuBuilder: () => PostsNavBox(
                               routerChange: widget.routerChange,
+                              hideNavBox: () {
+                                print('object');
+                                _navController.hideMenu();
+                              },
                             ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
