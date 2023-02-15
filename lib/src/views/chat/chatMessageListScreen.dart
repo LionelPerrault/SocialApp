@@ -32,6 +32,7 @@ class ChatMessage {
 }
 
 class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
+  
   bool check1 = false;
   bool check2 = false;
   late ChatController con;

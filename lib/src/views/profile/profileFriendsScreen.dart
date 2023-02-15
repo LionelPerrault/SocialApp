@@ -99,7 +99,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                 ],
               )),
           Container(
-            margin: EdgeInsets.only(top: 22),
+            margin: EdgeInsets.only(top: 15),
             child: Row(children: [
               MouseRegion(
                 cursor: SystemMouseCursors.click,
