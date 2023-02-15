@@ -469,8 +469,7 @@ class SettingShnatterTokenScreenState
                                           Container(
                                             margin:
                                                 const EdgeInsets.only(left: 15),
-                                            child: Flexible(
-                                                child: Text(
+                                            child: Text(
                                               data['notes'].toString().length >
                                                       65
                                                   ? '${data['notes'].toString().substring(0, 65)}...'
@@ -479,7 +478,7 @@ class SettingShnatterTokenScreenState
                                               style: const TextStyle(
                                                   fontSize: 13,
                                                   color: Colors.black),
-                                            )),
+                                            ),
                                           ),
                                         ],
                                       ),
