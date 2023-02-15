@@ -243,6 +243,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                 ),
                 onPressed: () async {
                   setState(() {});
+                  if (_width != 2) return;
                   String postCase = 'share';
                   var postPayload;
                   String header = postMessage;
@@ -341,9 +342,6 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                     maxLines: line,
                     minLines: line,
                     onChanged: (value) {
-                      //controller.text = controller.text + value;
-                      //onChange(value);
-                      //print(controller.text);
                       postMessage = controller.text;
                     },
                     decoration: const InputDecoration(
