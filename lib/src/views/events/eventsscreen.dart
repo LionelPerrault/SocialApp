@@ -113,11 +113,11 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                             child: Container(
                                           alignment: Alignment.center,
                                           child: Column(children: [
-                                            Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: eventSubRoute == ''
-                                                        ? 26
-                                                        : 26)),
+                                            // Padding(
+                                            //     padding: EdgeInsets.only(
+                                            //         top: eventSubRoute == ''
+                                            //             ? 26
+                                            //             : 26)),
                                             Container(
                                                 alignment: Alignment.center,
                                                 child: const Text('Discover',
@@ -127,17 +127,18 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         fontSize: 14))),
                                             eventSubRoute == ''
                                                 ? Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 15),
+                                                    width: 60,
                                                     height: 1,
                                                     color: Colors.black,
                                                   )
                                                 : Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
-                                                  )
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 15),
+                                                    )
                                           ]),
                                         )),
                                       ),
@@ -160,12 +161,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                             child: Container(
                                           alignment: Alignment.center,
                                           child: Column(children: [
-                                            Padding(
-                                                padding: EdgeInsets.only(
-                                                    top:
-                                                        eventSubRoute == 'going'
-                                                            ? 26
-                                                            : 26)),
+                                            // Padding(
+                                            //     padding: EdgeInsets.only(
+                                            //         top:
+                                            //             eventSubRoute == 'going'
+                                            //                 ? 26
+                                            //                 : 26)),
                                             Container(
                                                 alignment: Alignment.center,
                                                 child: const Text('Going',
@@ -175,17 +176,18 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         fontSize: 14))),
                                             eventSubRoute == 'going'
                                                 ? Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 26),
+                                                    width: 60,
                                                     height: 1,
                                                     color: Colors.black,
                                                   )
                                                 : Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
-                                                  )
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 26),
+                                                    )
                                           ]),
                                         )),
                                       ),
@@ -206,12 +208,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                             child: Container(
                                           alignment: Alignment.center,
                                           child: Column(children: [
-                                            Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: eventSubRoute ==
-                                                            'interested'
-                                                        ? 26
-                                                        : 26)),
+                                            // Padding(
+                                            //     padding: EdgeInsets.only(
+                                            //         top: eventSubRoute ==
+                                            //                 'interested'
+                                            //             ? 26
+                                            //             : 26)),
                                             Container(
                                                 alignment: Alignment.center,
                                                 child: const Text('Interested',
@@ -221,17 +223,18 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         fontSize: 14))),
                                             eventSubRoute == 'interested'
                                                 ? Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 26),
                                                     height: 1,
+                                                    width: 70,
                                                     color: Colors.black,
                                                   )
                                                 : Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
-                                                  )
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 26),
+                                                    )
                                           ]),
                                         )),
                                       ),
@@ -252,12 +255,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                             child: Container(
                                           alignment: Alignment.center,
                                           child: Column(children: [
-                                            Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: eventSubRoute ==
-                                                            'invited'
-                                                        ? 26
-                                                        : 26)),
+                                            // Padding(
+                                            //     padding: EdgeInsets.only(
+                                            //         top: eventSubRoute ==
+                                            //                 'invited'
+                                            //             ? 26
+                                            //             : 26)),
                                             Container(
                                                 alignment: Alignment.center,
                                                 child: const Text('Invited',
@@ -267,17 +270,18 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         fontSize: 14))),
                                             eventSubRoute == 'invited'
                                                 ? Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 26),
                                                     height: 1,
+                                                    width: 60,
                                                     color: Colors.black,
                                                   )
                                                 : Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
-                                                  )
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 26),
+                                                    )
                                           ]),
                                         )),
                                       ),
@@ -298,12 +302,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                             child: Container(
                                           alignment: Alignment.center,
                                           child: Column(children: [
-                                            Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: eventSubRoute ==
-                                                            'manage'
-                                                        ? 26
-                                                        : 26)),
+                                            // Padding(
+                                            //     padding: EdgeInsets.only(
+                                            //         top: eventSubRoute ==
+                                            //                 'manage'
+                                            //             ? 26
+                                            //             : 26)),
                                             Container(
                                                 alignment: Alignment.center,
                                                 child: const Text('My Events',
@@ -313,17 +317,18 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                                         fontSize: 14))),
                                             eventSubRoute == 'manage'
                                                 ? Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 26),
                                                     height: 1,
+                                                    width: 75,
                                                     color: Colors.black,
                                                   )
                                                 : Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 26),
-                                                  )
+                                                    // margin:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 26),
+                                                    )
                                           ]),
                                         )),
                                       ),
