@@ -20,8 +20,12 @@ class PostCell extends StatefulWidget {
     super.key,
     required this.postInfo,
     required this.routerChange,
+    this.isSharedContent = false,
   }) : con = PostController();
   var postInfo;
+  var sharedPost;
+  bool isSharedContent = false;
+
   Function routerChange;
   late PostController con;
   @override
@@ -240,6 +244,16 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       case 'product':
         return ProductCell(
             data: widget.postInfo, routerChange: widget.routerChange);
+      case 'share':
+        print(widget.postInfo['data']);
+        for (int i = 0; i < con.posts.length; i++) {
+          if (con.posts[i]['id'] == widget.postInfo['data']) {
+            print('found:');
+            print(con.posts[i]['id']);
+            widget.sharedPost = con.posts[i];
+          }
+        }
+        return sharePostCell();
       default:
         return const SizedBox();
     }
@@ -253,9 +267,12 @@ class PostCellState extends mvc.StateMVC<PostCell> {
             margin: const EdgeInsets.only(top: 30, bottom: 30),
             width: 600,
             padding: const EdgeInsets.only(top: 20),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              border: widget.isSharedContent
+                  ? Border.all(color: Colors.blueAccent)
+                  : Border.all(color: Colors.white),
+              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
             ),
             child: Column(
               children: [
@@ -315,58 +332,65 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(right: 9.0),
-                                    child: PopupMenuButton(
-                                      onSelected: (value) {
-                                        popUpFunction(value);
-                                      },
-                                      child: const Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 18,
-                                      ),
-                                      itemBuilder: (BuildContext bc) {
-                                        return popupMenuItem
-                                            .map(
-                                              (e) => PopupMenuItem(
-                                                value: e['value'],
-                                                child: Row(
-                                                  children: [
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 5.0)),
-                                                    Icon(e['icon']),
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 12.0)),
-                                                    Text(
-                                                      e['value'] == 'timeline'
-                                                          ? widget.postInfo[
-                                                                  'timeline']
-                                                              ? e['label']
-                                                              : e['labelE']
-                                                          : e['value'] ==
-                                                                  'comment'
-                                                              ? widget.postInfo[
-                                                                      'comment']
-                                                                  ? e['label']
-                                                                  : e['labelE']
-                                                              : e['label'],
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 90, 90, 90),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 12),
-                                                    )
-                                                  ],
+                                  Visibility(
+                                    visible: !widget.isSharedContent,
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? widget.postInfo[
+                                                                    'timeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? widget.postInfo[
+                                                                        'comment']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList();
-                                      },
+                                              )
+                                              .toList();
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -474,10 +498,261 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
-                LikesCommentScreen(
-                  postId: widget.postInfo['id'],
-                  commentFlag: widget.postInfo['comment'],
-                  routerChange: widget.routerChange,
+                Visibility(
+                  visible: !widget.isSharedContent,
+                  child: LikesCommentScreen(
+                    postId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'],
+                    routerChange: widget.routerChange,
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget sharePostCell() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            width: 600,
+            padding: const EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: widget.isSharedContent
+                  ? Border.all(color: Colors.blueAccent)
+                  : Border.all(color: Colors.white),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          widget.postInfo['adminInfo']['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  widget.postInfo['adminInfo']['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text:
+                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo[
+                                                                'adminInfo']
+                                                            ['userName'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  Container(
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 240
+                                        : 350,
+                                    child: Text(
+                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: !widget.isSharedContent,
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? widget.postInfo[
+                                                                    'timeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? widget.postInfo[
+                                                                        'comment']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                              .toList();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3)),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              // text: Helper.formatDate(
+                                              //     widget.postInfo['time']),
+                                              text: postTime,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  const Text(' - '),
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
+                      PostCell(
+                        postInfo: widget.sharedPost,
+                        routerChange: widget.routerChange,
+                        isSharedContent: true,
+                      ),
+                    ],
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                Visibility(
+                  visible: !widget.isSharedContent,
+                  child: LikesCommentScreen(
+                    postId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'],
+                    shareFlag: false,
+                    routerChange: widget.routerChange,
+                  ),
                 )
               ],
             ),
@@ -493,10 +768,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         Expanded(
           child: Container(
             margin: const EdgeInsets.only(top: 30, bottom: 30),
-            width: 600,
+            width: widget.isSharedContent ? 400 : 600,
             padding: const EdgeInsets.only(top: 20),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
+              border: widget.isSharedContent
+                  ? Border.all(color: Colors.blueAccent)
+                  : Border.all(color: Colors.white),
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             child: Column(
@@ -557,58 +835,65 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(right: 9.0),
-                                    child: PopupMenuButton(
-                                      onSelected: (value) {
-                                        popUpFunction(value);
-                                      },
-                                      child: const Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 18,
-                                      ),
-                                      itemBuilder: (BuildContext bc) {
-                                        return popupMenuItem
-                                            .map(
-                                              (e) => PopupMenuItem(
-                                                value: e['value'],
-                                                child: Row(
-                                                  children: [
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 5.0)),
-                                                    Icon(e['icon']),
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 12.0)),
-                                                    Text(
-                                                      e['value'] == 'timeline'
-                                                          ? widget.postInfo[
-                                                                  'timeline']
-                                                              ? e['label']
-                                                              : e['labelE']
-                                                          : e['value'] ==
-                                                                  'comment'
-                                                              ? widget.postInfo[
-                                                                      'comment']
-                                                                  ? e['label']
-                                                                  : e['labelE']
-                                                              : e['label'],
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 90, 90, 90),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 12),
-                                                    )
-                                                  ],
+                                  Visibility(
+                                    visible: !widget.isSharedContent,
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? widget.postInfo[
+                                                                    'timeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? widget.postInfo[
+                                                                        'comment']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList();
-                                      },
+                                              )
+                                              .toList();
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -708,10 +993,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
-                LikesCommentScreen(
-                  postId: widget.postInfo['id'],
-                  commentFlag: widget.postInfo['comment'],
-                  routerChange: widget.routerChange,
+                Visibility(
+                  visible: !widget.isSharedContent,
+                  child: LikesCommentScreen(
+                    postId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'],
+                    routerChange: widget.routerChange,
+                  ),
                 )
               ],
             ),
@@ -727,10 +1015,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         Expanded(
           child: Container(
             margin: const EdgeInsets.only(top: 30, bottom: 30),
-            width: 600,
+            width: widget.isSharedContent ? 400 : 600,
             padding: const EdgeInsets.only(top: 20),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
+              border: widget.isSharedContent
+                  ? Border.all(color: Colors.blueAccent)
+                  : Border.all(color: Colors.white),
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             child: Column(
@@ -791,58 +1082,65 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(right: 9.0),
-                                    child: PopupMenuButton(
-                                      onSelected: (value) {
-                                        popUpFunction(value);
-                                      },
-                                      child: const Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 18,
-                                      ),
-                                      itemBuilder: (BuildContext bc) {
-                                        return popupMenuItem
-                                            .map(
-                                              (e) => PopupMenuItem(
-                                                value: e['value'],
-                                                child: Row(
-                                                  children: [
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 5.0)),
-                                                    Icon(e['icon']),
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 12.0)),
-                                                    Text(
-                                                      e['value'] == 'timeline'
-                                                          ? widget.postInfo[
-                                                                  'timeline']
-                                                              ? e['label']
-                                                              : e['labelE']
-                                                          : e['value'] ==
-                                                                  'comment'
-                                                              ? widget.postInfo[
-                                                                      'comment']
-                                                                  ? e['label']
-                                                                  : e['labelE']
-                                                              : e['label'],
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 90, 90, 90),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 12),
-                                                    )
-                                                  ],
+                                  Visibility(
+                                    visible: !widget.isSharedContent,
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? widget.postInfo[
+                                                                    'timeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? widget.postInfo[
+                                                                        'comment']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList();
-                                      },
+                                              )
+                                              .toList();
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -936,11 +1234,14 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     ],
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 10)),
-                LikesCommentScreen(
-                  postId: widget.postInfo['id'],
-                  commentFlag: widget.postInfo['comment'],
-                  routerChange: widget.routerChange,
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                Visibility(
+                  visible: !widget.isSharedContent,
+                  child: LikesCommentScreen(
+                    postId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'],
+                    routerChange: widget.routerChange,
+                  ),
                 )
               ],
             ),
@@ -956,10 +1257,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         Expanded(
           child: Container(
             margin: const EdgeInsets.only(top: 30, bottom: 30),
-            width: 600,
+            width: widget.isSharedContent ? 400 : 600,
             padding: const EdgeInsets.only(top: 20),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
+              border: widget.isSharedContent
+                  ? Border.all(color: Colors.blueAccent)
+                  : Border.all(color: Colors.white),
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             child: Column(
@@ -1013,58 +1317,65 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(right: 9.0),
-                                    child: PopupMenuButton(
-                                      onSelected: (value) {
-                                        popUpFunction(value);
-                                      },
-                                      child: const Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 18,
-                                      ),
-                                      itemBuilder: (BuildContext bc) {
-                                        return popupMenuItem
-                                            .map(
-                                              (e) => PopupMenuItem(
-                                                value: e['value'],
-                                                child: Row(
-                                                  children: [
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 5.0)),
-                                                    Icon(e['icon']),
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 12.0)),
-                                                    Text(
-                                                      e['value'] == 'timeline'
-                                                          ? widget.postInfo[
-                                                                  'timeline']
-                                                              ? e['label']
-                                                              : e['labelE']
-                                                          : e['value'] ==
-                                                                  'comment'
-                                                              ? widget.postInfo[
-                                                                      'comment']
-                                                                  ? e['label']
-                                                                  : e['labelE']
-                                                              : e['label'],
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 90, 90, 90),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 12),
-                                                    )
-                                                  ],
+                                  Visibility(
+                                    visible: !widget.isSharedContent,
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? widget.postInfo[
+                                                                    'timeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? widget.postInfo[
+                                                                        'comment']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList();
-                                      },
+                                              )
+                                              .toList();
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -1166,11 +1477,14 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     ],
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 10)),
-                LikesCommentScreen(
-                  postId: widget.postInfo['id'],
-                  commentFlag: widget.postInfo['comment'],
-                  routerChange: widget.routerChange,
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                Visibility(
+                  visible: !widget.isSharedContent,
+                  child: LikesCommentScreen(
+                    postId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'],
+                    routerChange: widget.routerChange,
+                  ),
                 )
               ],
             ),
@@ -1186,10 +1500,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         Expanded(
           child: Container(
             margin: const EdgeInsets.only(top: 30, bottom: 30),
-            width: 600,
+            width: widget.isSharedContent ? 400 : 600,
             padding: const EdgeInsets.only(top: 20),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
+              border: widget.isSharedContent
+                  ? Border.all(color: Colors.blueAccent)
+                  : Border.all(color: Colors.white),
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             child: Column(
@@ -1250,58 +1567,65 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(right: 9.0),
-                                    child: PopupMenuButton(
-                                      onSelected: (value) {
-                                        popUpFunction(value);
-                                      },
-                                      child: const Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 18,
-                                      ),
-                                      itemBuilder: (BuildContext bc) {
-                                        return popupMenuItem
-                                            .map(
-                                              (e) => PopupMenuItem(
-                                                value: e['value'],
-                                                child: Row(
-                                                  children: [
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 5.0)),
-                                                    Icon(e['icon']),
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 12.0)),
-                                                    Text(
-                                                      e['value'] == 'timeline'
-                                                          ? widget.postInfo[
-                                                                  'timeline']
-                                                              ? e['label']
-                                                              : e['labelE']
-                                                          : e['value'] ==
-                                                                  'comment'
-                                                              ? widget.postInfo[
-                                                                      'comment']
-                                                                  ? e['label']
-                                                                  : e['labelE']
-                                                              : e['label'],
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 90, 90, 90),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 12),
-                                                    )
-                                                  ],
+                                  Visibility(
+                                    visible: !widget.isSharedContent,
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? widget.postInfo[
+                                                                    'timeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? widget.postInfo[
+                                                                        'comment']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList();
-                                      },
+                                              )
+                                              .toList();
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -1400,10 +1724,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30)),
-                LikesCommentScreen(
-                  postId: widget.postInfo['id'],
-                  commentFlag: widget.postInfo['comment'],
-                  routerChange: widget.routerChange,
+                Visibility(
+                  visible: !widget.isSharedContent,
+                  child: LikesCommentScreen(
+                    postId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'],
+                    routerChange: widget.routerChange,
+                  ),
                 )
               ],
             ),

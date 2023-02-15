@@ -1211,6 +1211,12 @@ class PostController extends ControllerMVC {
         var valueSnap =
             await Helper.productsData.doc(allPosts[i]['value']).get();
         postData = valueSnap.data();
+        // } else if (allPosts[i]['type'] == 'share') {
+        //   var valueSnap =
+        //       await Helper.postCollection.doc(allPosts[i]['value']).get();
+        //   postData = valueSnap.data();
+        //   print(postData);
+        //
       } else {
         postData = allPosts[i]['value'];
       }
@@ -1250,8 +1256,15 @@ class PostController extends ControllerMVC {
         var valueSnap =
             await Helper.productsData.doc(allPosts[i]['value']).get();
         postData = valueSnap.data();
+        // } else if (allPosts[i]['type'] == 'share') {
+        //   var valueSnap =
+        //       await Helper.postCollection.doc(allPosts[i]['value']).get();
+        //   postData = valueSnap.data();
+        //   print(postData);
+        // }
       } else {
         postData = allPosts[i]['value'];
+        print("normal postdata:" + postData);
       }
       var adminSnap =
           await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();

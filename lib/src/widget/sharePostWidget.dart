@@ -20,10 +20,13 @@ class SharePostModal extends StatefulWidget {
   BuildContext context;
   final PostController Postcon;
 
+  String postId;
+
   SharePostModal({
     Key? key,
     required this.context,
     required this.routerChange,
+    required this.postId,
     this.editData,
   })  : Postcon = PostController(),
         super(key: key);
@@ -205,7 +208,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                         width: 400,
                         child: titleAndsubtitleInput('Message', 70, 5,
                             (value) async {
-                          postMessage = value;
+                          //postMessage = controller.text;
 
                           setState(() {});
                         }, widget.editData['data']['productAbout'] ?? ''),
@@ -244,10 +247,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                   var postPayload;
                   String header = postMessage;
 
-                  postPayload = {
-                    // 'value': optionValue,
-                    // 'optionUp': {},
-                  };
+                  postPayload = widget.postId;
 
                   postLoading = true;
                   await Postcon.savePost(postCase, postPayload, 'Public',
@@ -343,6 +343,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                       //controller.text = controller.text + value;
                       //onChange(value);
                       //print(controller.text);
+                      postMessage = controller.text;
                     },
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(top: 10, left: 10),
