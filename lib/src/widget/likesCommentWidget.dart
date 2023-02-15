@@ -329,106 +329,98 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                               ),
                             )
                           : const SizedBox(),
-                      IgnorePointer(
-                          ignoring: !widget.shareFlag,
-                          child: Expanded(
-                            child: MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              onEnter: (value) {
-                                if (widget.shareFlag == true) {
-                                  whoHover = 'share';
+                      Expanded(
+                          child: IgnorePointer(
+                        ignoring: !widget.shareFlag,
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          onEnter: (value) {
+                            if (widget.shareFlag == true) {
+                              whoHover = 'share';
 
-                                  setState(() {});
-                                }
-                              },
-                              onExit: (event) {
-                                if (widget.shareFlag == true) {
-                                  whoHover = '';
-                                  setState(() {});
-                                }
-                              },
-                              child: Container(
-                                foregroundDecoration: widget.shareFlag
-                                    ? null
-                                    : const BoxDecoration(
-                                        //this can make disabled effect
-                                        color: Colors.grey,
-                                        backgroundBlendMode: BlendMode.lighten),
-                                child: InkWell(
-                                  onTap: () async {
-                                    (widget.shareFlag
-                                        ? showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AlertDialog(
-                                                    title: Row(
-                                                      children: const [
-                                                        Icon(
-                                                          FontAwesomeIcons
-                                                              .share,
-                                                          size: 15,
-                                                          color: Color.fromARGB(
-                                                              255, 0, 0, 0),
-                                                        ),
-                                                        Text(
-                                                          'Share',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 15,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal),
-                                                        ),
-                                                      ],
+                              setState(() {});
+                            }
+                          },
+                          onExit: (event) {
+                            if (widget.shareFlag == true) {
+                              whoHover = '';
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            foregroundDecoration: widget.shareFlag
+                                ? null
+                                : const BoxDecoration(
+                                    //this can make disabled effect
+                                    color: Colors.grey,
+                                    backgroundBlendMode: BlendMode.lighten),
+                            child: InkWell(
+                              onTap: () async {
+                                (widget.shareFlag
+                                    ? showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                                title: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      FontAwesomeIcons.share,
+                                                      size: 15,
+                                                      color: Color.fromARGB(
+                                                          255, 0, 0, 0),
                                                     ),
-                                                    content: SharePostModal(
-                                                      context: context,
-                                                      routerChange:
-                                                          widget.routerChange,
-                                                      postId: widget.postId,
-                                                    )))
-                                        : {});
-                                  },
-                                  child: AnimatedContainer(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: whoHover == 'share'
-                                            ? const Color.fromRGBO(
-                                                240, 240, 245, 1)
-                                            : Colors.white,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(3))),
-                                    duration: const Duration(milliseconds: 300),
-                                    width: SizeConfig(context).screenWidth > 600
-                                        ? (600 - 60) / 3
-                                        : (SizeConfig(context).screenWidth -
-                                                60) /
-                                            3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: const [
-                                        Icon(
-                                          FontAwesomeIcons.share,
-                                          size: 15,
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          'Share',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700),
-                                        )
-                                      ],
+                                                    Text(
+                                                      'Share',
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontStyle:
+                                                              FontStyle.normal),
+                                                    ),
+                                                  ],
+                                                ),
+                                                content: SharePostModal(
+                                                  context: context,
+                                                  routerChange:
+                                                      widget.routerChange,
+                                                  postId: widget.postId,
+                                                )))
+                                    : {});
+                              },
+                              child: AnimatedContainer(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: whoHover == 'share'
+                                        ? const Color.fromRGBO(240, 240, 245, 1)
+                                        : Colors.white,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(3))),
+                                duration: const Duration(milliseconds: 300),
+                                width: SizeConfig(context).screenWidth > 600
+                                    ? (600 - 60) / 3
+                                    : (SizeConfig(context).screenWidth - 60) /
+                                        3,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      FontAwesomeIcons.share,
+                                      size: 15,
                                     ),
-                                  ),
+                                    Padding(padding: EdgeInsets.only(left: 5)),
+                                    Text(
+                                      'Share',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                          ))
+                          ),
+                        ),
+                      ))
                     ],
                   ),
                 ),
