@@ -198,7 +198,7 @@ class RelysiaManager {
                 for (var e in elem['to']) {
                   if (e['tokenId'] == shnToken) {
                     transHistory.add({
-                      'txId': e['txId'] ?? '',
+                      'txId': elem['txId'] ?? '',
                       'from': elem['from'] ?? '',
                       'notes': elem['notes'] ?? '',
                       'to': e['to'] ?? '',
