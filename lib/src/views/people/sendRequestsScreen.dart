@@ -210,7 +210,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                       Padding(
                                                           padding:
                                                               EdgeInsets.only(
-                                                                  left: 3)),
+                                                                  left: 2)),
                                                       Text('Sent',
                                                           style: TextStyle(
                                                               color:

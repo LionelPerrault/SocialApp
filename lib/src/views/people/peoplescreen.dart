@@ -38,25 +38,23 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.only(
-            right: SizeConfig(context).screenWidth < 700 ? 30 : 70,
-            top: 10,
-            left: SizeConfig(context).screenWidth < 700 ? 30 : 70),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            mainTabWidget(),
-            con.tabName == 'Discover'
-                ? PeopleDiscoverScreen(
-                    routerChange: widget.routerChange,
-                  )
-                : con.tabName == 'Friend Requests'
-                    ? FriendRequestsScreen()
-                    : SendRequestsScreen()
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.only(
+          right: SizeConfig(context).screenWidth < 700 ? 30 : 70,
+          top: 10,
+          left: SizeConfig(context).screenWidth < 700 ? 30 : 70),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          mainTabWidget(),
+          con.tabName == 'Discover'
+              ? PeopleDiscoverScreen(
+                  routerChange: widget.routerChange,
+                )
+              : con.tabName == 'Friend Requests'
+                  ? FriendRequestsScreen()
+                  : SendRequestsScreen()
+        ],
       ),
     );
   }
@@ -67,7 +65,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
         scrollDirection: Axis.horizontal,
         controller: _scrollController,
         child: Container(
-          height: 60,
+          height: 67,
           width: SizeConfig(context).screenWidth < 700
               ? SizeConfig(context).screenWidth
               : SizeConfig(context).screenWidth * 0.7,
@@ -93,7 +91,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                       ),
                       con.tabName == 'Discover'
                           ? Container(
-                              margin: EdgeInsets.only(top: 22.5),
+                              margin: EdgeInsets.only(top: 4.5),
                               height: 2,
                               decoration: BoxDecoration(
                                   color: Colors.black,
@@ -116,7 +114,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                   padding: EdgeInsets.only(top: 15),
                   width: 150,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +137,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                       ),
                       con.tabName == 'Friend Requests'
                           ? Container(
-                              margin: EdgeInsets.only(top: 17),
+                              //margin: EdgeInsets.only(top: 17),
                               height: 2,
                               decoration: BoxDecoration(
                                   color: Colors.black,
@@ -158,14 +156,13 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                   await con.getSendRequestsFriends();
                   setState(() {});
                 },
-                child: Expanded(
-                    child: Container(
+                child: Container(
                   width: 130,
                   padding: EdgeInsets.only(top: 15),
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
@@ -186,7 +183,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                       ),
                       con.tabName == 'Send Requests'
                           ? Container(
-                              margin: EdgeInsets.only(top: 17),
+                              //margin: EdgeInsets.only(top: 17),
                               height: 2,
                               decoration: BoxDecoration(
                                   color: Colors.black,
@@ -198,7 +195,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                             )
                     ],
                   ),
-                )))
+                ))
           ]),
         ));
   }
