@@ -18,7 +18,8 @@ import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 class SharePostModal extends StatefulWidget {
   BuildContext context;
-  late PostController Postcon;
+  final PostController Postcon;
+
   SharePostModal({
     Key? key,
     required this.context,
@@ -27,6 +28,7 @@ class SharePostModal extends StatefulWidget {
   })  : Postcon = PostController(),
         super(key: key);
   Function routerChange;
+
   var editData;
   @override
   State createState() => SharePostModalState();
@@ -35,19 +37,13 @@ class SharePostModal extends StatefulWidget {
 class SharePostModalState extends mvc.StateMVC<SharePostModal> {
   bool isSound = false;
   late PostController Postcon;
+  bool postLoading = false;
   Color _color = Color.fromRGBO(0, 0, 0, 0.2);
   Color _color2 = Color.fromRGBO(0, 0, 0, 0.2);
   double _width = 1;
   double _width2 = 1;
 
-  Map<String, dynamic> productInfo = {
-    'productStatus': 'New',
-    'productOffer': 'Sell',
-    'productAbout': '',
-    'productPhoto': [],
-    'productFile': [],
-  };
-  GlobalKey key = GlobalKey();
+  String postMessage = '';
   double uploadPhotoProgress = 0;
   List<dynamic> productPhoto = [];
   List<dynamic> productFile = [];
@@ -68,90 +64,8 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
         'id': '',
         'data': {},
       };
-    } else {
-      productInfo = widget.editData['data'];
-    }
+    } else {}
     super.initState();
-  }
-
-  getTokenBudget() async {
-    var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
-    var price = adminSnap.data()!['priceCreatingProduct'];
-    var userSnap =
-        await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
-    var paymail = userSnap.data()!['paymail'];
-    setState(() {});
-    print('price:$price');
-    if (price == '0') {
-      await Postcon.createProduct(context, productInfo).then(
-        (value) => {
-          footerBtnState = false,
-          setState(() => {}),
-          Navigator.of(context).pop(true),
-          Helper.showToast(value['msg']),
-          if (value['result'] == true)
-            {
-              widget.routerChange({
-                'router': RouteNames.products,
-                'subRouter': value['value'],
-              }),
-            }
-        },
-      );
-      setState(() {});
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) => AlertDialog(
-          title: const SizedBox(),
-          content: AlertYesNoWidget(
-              yesFunc: () async {
-                payLoading = true;
-                setState(() {});
-                await UserController()
-                    .payShnToken(paymail, price, 'Pay for creating product')
-                    .then((value) async => {
-                          if (value)
-                            {
-                              payLoading = false,
-                              setState(() {}),
-                              Navigator.of(dialogContext).pop(true),
-                              // loading = true,
-                              setState(() {}),
-                              await Postcon.createProduct(context, productInfo)
-                                  .then((value) {
-                                footerBtnState = false;
-                                setState(() => {});
-                                Navigator.of(context).pop(true);
-                                // loading = true;
-                                setState(() {});
-                                print('to create product page');
-                                Helper.showToast(value['msg']);
-                                if (value['result'] == true) {
-                                  widget.routerChange({
-                                    'router': RouteNames.products,
-                                    'subRouter': value['value'],
-                                  });
-                                }
-                              }),
-                              setState(() {}),
-                              // loading = false,
-                              setState(() {}),
-                            }
-                        });
-              },
-              noFunc: () {
-                Navigator.of(context).pop(true);
-                footerBtnState = false;
-                setState(() {});
-              },
-              header: 'Costs for creating page',
-              text:
-                  'By paying the fee of $price tokens, the product will be published.',
-              progress: payLoading),
-        ),
-      );
-    }
   }
 
   @override
@@ -237,6 +151,8 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                       GestureDetector(
                         onTap: () {
                           print("Container clicked");
+                          print(context);
+
                           setState(() {
                             _color2 = Color.fromRGBO(51, 103, 214, 0.65);
                             _color = Color.fromRGBO(0, 0, 0, 0.2);
@@ -289,7 +205,8 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                         width: 400,
                         child: titleAndsubtitleInput('Message', 70, 5,
                             (value) async {
-                          productInfo['productAbout'] = value;
+                          postMessage = value;
+
                           setState(() {});
                         }, widget.editData['data']['productAbout'] ?? ''),
                       ),
@@ -321,28 +238,26 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                       borderRadius: BorderRadius.circular(3.0)),
                   minimumSize: Size(100, 50),
                 ),
-                onPressed: () {
-                  post() async {
-                    setState(() {});
-                    String postCase = 'share';
-                    var postPayload;
-                    String header = '';
+                onPressed: () async {
+                  setState(() {});
+                  String postCase = 'share';
+                  var postPayload;
+                  String header = postMessage;
 
-                    postPayload = {
-                      // 'value': optionValue,
-                      // 'optionUp': {},
-                    };
+                  postPayload = {
+                    // 'value': optionValue,
+                    // 'optionUp': {},
+                  };
 
-                    // postLoading = true;
-                    // await con
-                    //     .savePost(postCase, postPayload, dropdownValue,
-                    //         header: header)
-                    //     .then((value) {
-                    //   print('after');
-                    //   postLoading = false;
+                  postLoading = true;
+                  await Postcon.savePost(postCase, postPayload, 'Public',
+                          header: header)
+                      .then((value) {
+                    print('after');
+                    postLoading = false;
 
                     setState(() {});
-                  }
+                  });
                 },
                 child: footerBtnState
                     ? const SizedBox(
@@ -363,242 +278,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
     );
   }
 
-  Widget productFileWidget(file, id) {
-    return Container(
-      width: 90,
-      height: 90,
-      decoration: BoxDecoration(
-        border: Border.all(width: 0.5, color: Colors.grey),
-        borderRadius: BorderRadius.circular(13),
-      ),
-      child: Stack(
-        children: [
-          file != null
-              ? Container(
-                  alignment: Alignment.topRight,
-                  child: Column(
-                    children: [
-                      Container(
-                        child: IconButton(
-                          icon: const Icon(Icons.close,
-                              color: Colors.black, size: 13.0),
-                          tooltip: 'Delete',
-                          onPressed: () {
-                            setState(() {
-                              productFile
-                                  .removeWhere((item) => item['id'] == id);
-                            });
-                          },
-                        ),
-                      ),
-                      const Icon(
-                        Icons.file_copy,
-                        size: 40,
-                        color: Colors.grey,
-                      ),
-                    ],
-                  ))
-              : const SizedBox(),
-          // : const SizedBox(),
-          (uploadPhotoProgress != 0 &&
-                  uploadPhotoProgress != 100 &&
-                  file == null)
-              ? AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  margin: const EdgeInsets.only(top: 78, left: 10),
-                  width: 130,
-                  padding: EdgeInsets.only(
-                      right: 130 - (130 * uploadPhotoProgress / 100)),
-                  child: const LinearProgressIndicator(
-                    color: Colors.blue,
-                    value: 10,
-                    semanticsLabel: 'Linear progress indicator',
-                  ),
-                )
-              : const SizedBox(),
-        ],
-      ),
-    );
-  }
-
-  Widget productPhotoWidget(photo, id) {
-    return Container(
-      width: 90,
-      height: 90,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(13),
-      ),
-      child: Stack(
-        children: [
-          // (uploadPhotoProgress != 0 && uploadPhotoProgress != 100)
-          photo != null
-              ? Container(
-                  width: 90,
-                  height: 90,
-                  alignment: Alignment.topRight,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(photo),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.close,
-                        color: Colors.black, size: 13.0),
-                    padding: EdgeInsets.only(left: 20),
-                    tooltip: 'Delete',
-                    onPressed: () {
-                      setState(() {
-                        productPhoto.removeWhere((item) => item['id'] == id);
-                      });
-                    },
-                  ),
-                )
-              : const SizedBox(),
-          // : const SizedBox(),
-          (uploadPhotoProgress != 0 && uploadPhotoProgress != 100)
-              ? AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  margin: const EdgeInsets.only(top: 78, left: 10),
-                  width: 130,
-                  padding: EdgeInsets.only(
-                      right: 130 - (130 * uploadPhotoProgress / 100)),
-                  child: const LinearProgressIndicator(
-                    color: Colors.blue,
-                    value: 10,
-                    semanticsLabel: 'Linear progress indicator',
-                  ),
-                )
-              : const SizedBox(),
-        ],
-      ),
-    );
-  }
-
-  Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
-    XFile? pickedFile;
-    if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-    } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
-
-      //if (permissionStatus.isGranted) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
-    }
-    return pickedFile!;
-  }
-
-  uploadFile(XFile? pickedFile, type) async {
-    if (type == 'photo') {
-      productPhoto.add({'id': productPhoto.length, 'url': ''});
-      photoLength = productPhoto.length - 1;
-      setState(() {});
-    } else {
-      productFile.add({'id': productFile.length, 'url': ''});
-      fileLength = productFile.length - 1;
-      setState(() {});
-    }
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
-    try {
-      if (kIsWeb) {
-        //print("read bytes");
-        Uint8List bytes = await pickedFile!.readAsBytes();
-        //print(bytes);
-        _reference = await _firebaseStorage
-            .ref()
-            .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
-          bytes,
-          SettableMetadata(contentType: 'image/jpeg'),
-        );
-      } else {
-        var file = File(pickedFile!.path);
-        //write a code for android or ios
-        _reference = await _firebaseStorage
-            .ref()
-            .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
-      }
-      uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
-        if (type == 'photo') {
-          for (var i = 0; i < productPhoto.length; i++) {
-            if (productPhoto[i]['id'] == photoLength) {
-              productPhoto[i]['url'] = downloadUrl;
-              productInfo['productPhoto'] = productPhoto;
-              setState(() {});
-            }
-          }
-        } else {
-          for (var i = 0; i < productFile.length; i++) {
-            if (productFile[i]['id'] == fileLength) {
-              productFile[i]['url'] = downloadUrl;
-              productInfo['productFile'] = productFile;
-              setState(() {});
-            }
-          }
-        }
-        print(productFile);
-      });
-      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-        switch (taskSnapshot.state) {
-          case TaskState.running:
-            if (type == 'photo') {
-              uploadPhotoProgress = 100.0 *
-                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-              setState(() {});
-              print("Upload is $uploadPhotoProgress% complete.");
-            } else {
-              uploadFileProgress = 100.0 *
-                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-              setState(() {});
-              print("Upload is $uploadFileProgress% complete.");
-            }
-
-            break;
-          case TaskState.paused:
-            print("Upload is paused.");
-            break;
-          case TaskState.canceled:
-            print("Upload was canceled");
-            break;
-          case TaskState.error:
-            // Handle unsuccessful uploads
-            break;
-          case TaskState.success:
-            print("Upload is completed");
-            uploadFileProgress = 0;
-            setState(() {});
-            // Handle successful uploads on complete
-            // ...
-            //  var downloadUrl = await _reference.getDownloadURL();
-            break;
-        }
-      });
-    } catch (e) {
-      // print("Exception $e");
-    }
-  }
-
-  uploadImage(type) async {
-    XFile? pickedFile = await chooseImage();
-    uploadFile(pickedFile, type);
-  }
-
   Widget customInput({title, onChange, value}) {
-    print(value);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -679,51 +359,5 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
         ],
       ),
     );
-  }
-
-  Widget customDropDownButton(
-      {title, double width = 0.0, item = const [], onChange, context, value}) {
-    List items = item;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
-        title,
-        style: TextStyle(
-            color: Color.fromRGBO(82, 95, 127, 1),
-            fontSize: 13,
-            fontWeight: FontWeight.w600),
-      ),
-      Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
-          height: 40,
-          width: width,
-          child: DropdownButtonFormField(
-            value: value,
-            items: items
-                .map((e) => DropdownMenuItem(
-                    value: e['value'], child: Text(e['title'])))
-                .toList(),
-            onChanged: onChange,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(top: 10, left: 10),
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
-              ),
-            ),
-            icon: const Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Icon(Icons.arrow_drop_down)),
-            iconEnabledColor: Colors.grey, //Icon color
-
-            style: const TextStyle(
-              color: Colors.grey, //Font color
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-            dropdownColor: Colors.white,
-            isExpanded: true,
-            isDense: true,
-          ))
-    ]);
   }
 }

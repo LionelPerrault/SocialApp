@@ -84,7 +84,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
           showDayTimeM
               ? DayTimeM(time: time, username: UserManager.userInfo['fullName'])
               : Container(),
-          newPostNum == 0
+          newPostNum <= 0
               ? const SizedBox()
               : ElevatedButton(
                   style: ElevatedButton.styleFrom(

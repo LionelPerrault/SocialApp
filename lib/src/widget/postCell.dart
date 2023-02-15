@@ -147,6 +147,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         content: AlertYesNoWidget(
             yesFunc: () async {
               con.deletePost(widget.postInfo['id']);
+              con.getAllPost();
+              setState(() {});
               Navigator.of(context).pop(true);
             },
             noFunc: () {
