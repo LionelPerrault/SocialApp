@@ -5,9 +5,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,119 +18,6 @@ class SettingShnatterTokenScreen extends StatefulWidget {
   @override
   State createState() => SettingShnatterTokenScreenState();
 }
-
-// class Employee {
-//   /// Creates the employee class with required details.
-//   Employee(this.id, this.sender, this.recipient, this.sendTime, this.note,
-//       this.balance, this.paymail, this.to
-//       // this.actions,
-//       );
-
-//   /// Id of an employee.
-//   final int id;
-
-//   /// name of an employee.
-//   final String sender;
-
-//   /// username of an employee.
-//   final String recipient;
-
-//   /// joined of an employee.
-//   final String sendTime;
-
-//   // activated of an employee.
-//   final String note;
-
-//   /// balance of an employee.
-//   final String balance;
-
-//   // // actions of an employee.
-//   final String paymail;
-
-//   final String to;
-// }
-
-// class EmployeeDataSource extends DataGridSource {
-//   int i = 1;
-
-//   /// Creates the employee data source class with required details.
-//   EmployeeDataSource({required List<Employee> employeeData}) {
-//     _employeeData = employeeData
-//         .map<DataGridRow>((e) => DataGridRow(cells: [
-//               DataGridCell<int>(columnName: 'id', value: i++),
-//               DataGridCell<Widget>(
-//                   columnName: 'Sender',
-//                   value: Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       Container(
-//                         margin: const EdgeInsets.only(left: 2),
-//                         child: Text(e.sender),
-//                       )
-//                     ],
-//                   )),
-//               DataGridCell<String>(columnName: 'Recipient', value: e.recipient),
-//               DataGridCell<String>(columnName: 'Send Time', value: e.sendTime),
-//               DataGridCell<String>(columnName: 'Note', value: e.note),
-//               DataGridCell<Widget>(
-//                 columnName: 'balance',
-//                 value: badges.Badge(
-//                   toAnimate: false,
-//                   shape: badges.BadgeShape.square,
-//                   badgeColor: Colors.teal,
-//                   borderRadius: BorderRadius.circular(16),
-//                   badgeContent: UserManager.userInfo['paymail'] != e.paymail
-//                       ? Text(
-//                           '+${e.balance.toString()}',
-//                           style: const TextStyle(
-//                               color: Colors.white, fontSize: 13),
-//                         )
-//                       : Text(
-//                           '-${e.balance.toString()}',
-//                           style: const TextStyle(
-//                               color: Colors.white, fontSize: 13),
-//                         ),
-//                 ),
-//               ),
-//             ]))
-//         .toList();
-//   }
-
-//   List<DataGridRow> _employeeData = [];
-
-//   @override
-//   List<DataGridRow> get rows => _employeeData;
-
-//   @override
-//   DataGridRowAdapter buildRow(DataGridRow row) {
-//     return DataGridRowAdapter(
-//         cells: row.getCells().map<Widget>((dataGridCell) {
-//       return Container(
-//           alignment: Alignment.center,
-//           child: dataGridCell.columnName == 'activated'
-//               ? LayoutBuilder(
-//                   builder: (BuildContext context, BoxConstraints constraints) {
-//                   return dataGridCell.value;
-//                 })
-//               : dataGridCell.columnName == 'balance'
-//                   ? LayoutBuilder(builder:
-//                       (BuildContext context, BoxConstraints constraints) {
-//                       return dataGridCell.value;
-//                     })
-//                   : dataGridCell.columnName == 'note'
-//                       ? LayoutBuilder(builder:
-//                           (BuildContext context, BoxConstraints constraints) {
-//                           return dataGridCell.value;
-//                         })
-//                       : dataGridCell.columnName == 'Sender'
-//                           ? LayoutBuilder(builder: (BuildContext context,
-//                               BoxConstraints constraints) {
-//                               return dataGridCell.value;
-//                             })
-//                           : Text(dataGridCell.value.toString()));
-//     }).toList());
-//   }
-// }
 
 // ignore: must_be_immutable
 class SettingShnatterTokenScreenState
@@ -581,17 +466,20 @@ class SettingShnatterTokenScreenState
                                               formatDate(data['sendtime']),
                                             ],
                                           ),
-                                          // Container(
-                                          //   margin: const EdgeInsets.only(left: 25),
-                                          //   width: 160,
-                                          //   child: Text(
-                                          //     t['notes'].toString().length > 65
-                                          //         ? '${t['notes'].toString().substring(0, 65)}...'
-                                          //         : t['notes'],
-                                          //     style: const TextStyle(
-                                          //         fontSize: 13, color: Colors.black),
-                                          //   ),
-                                          // ),
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(left: 15),
+                                            child: Text(
+                                              data['notes'].toString().length >
+                                                      65
+                                                  ? '${data['notes'].toString().substring(0, 65)}...'
+                                                  : data['notes'],
+                                              maxLines: 3,
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       trailing:
@@ -612,29 +500,6 @@ class SettingShnatterTokenScreenState
                                                     : Colors.red),
                                           ),
                                         ),
-                                        // GestureDetector(
-                                        //   onTap: () async {
-                                        //     var url = Uri.parse(
-                                        //         'https://whatsonchain.com/tx/${t['txId']}');
-                                        //     if (await canLaunchUrl(url)) {
-                                        //       await launchUrl(url);
-                                        //     } else {
-                                        //       throw 'Could not launch $url';
-                                        //     }
-                                        //   },
-                                        //   child: CircleAvatar(
-                                        //     radius: 10,
-                                        //     backgroundColor: !con.themeLight
-                                        //         ? const Color.fromRGBO(68, 68, 68, 1)
-                                        //         : Colors.white,
-                                        //     child: CircleAvatar(
-                                        //       radius: 9,
-                                        //       backgroundImage: Helper.tokenIcon != ''
-                                        //           ? NetworkImage(Helper.tokenIcon)
-                                        //           : null,
-                                        //     ),
-                                        //   ),
-                                        // ),
                                         GestureDetector(
                                           onTap: () async {
                                             var url = Uri.parse(

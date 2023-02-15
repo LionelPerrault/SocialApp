@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,11 +27,13 @@ class LikesCommentScreen extends StatefulWidget {
       {Key? key,
       required this.postId,
       required this.commentFlag,
-      required this.routerChange})
+      required this.routerChange,
+      this.shareFlag = true})
       : Postcon = PostController(),
         super(key: key);
   Function routerChange;
   bool commentFlag;
+  bool shareFlag;
   @override
   State createState() => LikesCommentScreenState();
 }
@@ -54,6 +57,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   var photoLength;
   var fileLength;
   var commentHeight = 0.0;
+  bool isVerified = false;
   bool offer1 = true;
   bool offer2 = false;
   var whoComment = '';
@@ -101,12 +105,19 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   List likes = [];
   Map myLike = {};
   @override
-  void initState() {
+  initState() {
     add(widget.Postcon);
     con = controller as PostController;
     super.initState();
     getLikes();
     getComment();
+    () async {
+      var user = await FirebaseAuth.instance.currentUser!;
+
+      setState(() {
+        isVerified = user.emailVerified;
+      });
+    }();
   }
 
   getComment() async {
@@ -214,58 +225,73 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          onEnter: (value) {
-                            whoHover = 'like';
-                            setState(() {});
-                          },
-                          onExit: (event) {
-                            whoHover = '';
-                            setState(() {});
-                          },
-                          child: InkWell(
-                            onTap: () {
-                              isLike = !isLike;
+                        child: IgnorePointer(
+                          ignoring: !isVerified,
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            onEnter: (value) {
+                              whoHover = 'like';
                               setState(() {});
                             },
-                            child: AnimatedContainer(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: whoHover == 'like'
-                                      ? const Color.fromRGBO(240, 240, 245, 1)
-                                      : Colors.white,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(3))),
-                              duration: const Duration(milliseconds: 300),
-                              width: SizeConfig(context).screenWidth > 600
-                                  ? (600 - 60) / 3
-                                  : (SizeConfig(context).screenWidth - 60) / 3,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  myLike['value'] == null
-                                      ? const Icon(
-                                          FontAwesomeIcons.thumbsUp,
-                                          size: 15,
-                                        )
-                                      : Image.network(
-                                          emoticon[myLike['value']].toString(),
-                                          width: 20,
+                            onExit: (event) {
+                              whoHover = '';
+                              setState(() {});
+                            },
+                            child: Container(
+                              foregroundDecoration: isVerified
+                                  ? null
+                                  : const BoxDecoration(
+                                      //this can make disabled effect
+                                      color: Colors.grey,
+                                      backgroundBlendMode: BlendMode.lighten),
+                              child: InkWell(
+                                onTap: () {
+                                  isLike = !isLike;
+                                  setState(() {});
+                                },
+                                child: AnimatedContainer(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: whoHover == 'like'
+                                          ? const Color.fromRGBO(
+                                              240, 240, 245, 1)
+                                          : Colors.white,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(3))),
+                                  duration: const Duration(milliseconds: 300),
+                                  width: SizeConfig(context).screenWidth > 600
+                                      ? (600 - 60) / 3
+                                      : (SizeConfig(context).screenWidth - 60) /
+                                          3,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      myLike['value'] == null
+                                          ? const Icon(
+                                              FontAwesomeIcons.thumbsUp,
+                                              size: 15,
+                                            )
+                                          : Image.network(
+                                              emoticon[myLike['value']]
+                                                  .toString(),
+                                              width: 20,
+                                            ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(left: 5)),
+                                      Text(
+                                        myLike['value'] ?? 'Like',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: myLike['value'] == null
+                                              ? Colors.black
+                                              : likesColor[myLike['value']],
                                         ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    myLike['value'] ?? 'Like',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: myLike['value'] == null
-                                          ? Colors.black
-                                          : likesColor[myLike['value']],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
@@ -328,77 +354,97 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             )
                           : const SizedBox(),
                       Expanded(
+                          child: IgnorePointer(
+                        ignoring: !widget.shareFlag,
                         child: MouseRegion(
                           cursor: SystemMouseCursors.click,
                           onEnter: (value) {
-                            whoHover = 'share';
-                            setState(() {});
+                            if (widget.shareFlag == true) {
+                              whoHover = 'share';
+
+                              setState(() {});
+                            }
                           },
                           onExit: (event) {
-                            whoHover = '';
-                            setState(() {});
+                            if (widget.shareFlag == true) {
+                              whoHover = '';
+                              setState(() {});
+                            }
                           },
-                          child: InkWell(
-                            onTap: () async {
-                              (showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                          title: Row(
-                                            children: const [
-                                              Icon(
-                                                FontAwesomeIcons.share,
-                                                size: 15,
-                                                color: Color.fromARGB(
-                                                    255, 0, 0, 0),
-                                              ),
-                                              Text(
-                                                'Share',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontStyle:
-                                                        FontStyle.normal),
-                                              ),
-                                            ],
-                                          ),
-                                          content: SharePostModal(
-                                            context: context,
-                                            routerChange: widget.routerChange,
-                                          ))));
-                            },
-                            child: AnimatedContainer(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: whoHover == 'share'
-                                      ? const Color.fromRGBO(240, 240, 245, 1)
-                                      : Colors.white,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(3))),
-                              duration: const Duration(milliseconds: 300),
-                              width: SizeConfig(context).screenWidth > 600
-                                  ? (600 - 60) / 3
-                                  : (SizeConfig(context).screenWidth - 60) / 3,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Icon(
-                                    FontAwesomeIcons.share,
-                                    size: 15,
-                                  ),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    'Share',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700),
-                                  )
-                                ],
+                          child: Container(
+                            foregroundDecoration: widget.shareFlag
+                                ? null
+                                : const BoxDecoration(
+                                    //this can make disabled effect
+                                    color: Colors.grey,
+                                    backgroundBlendMode: BlendMode.lighten),
+                            child: InkWell(
+                              onTap: () async {
+                                (widget.shareFlag
+                                    ? showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                                title: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      FontAwesomeIcons.share,
+                                                      size: 15,
+                                                      color: Color.fromARGB(
+                                                          255, 0, 0, 0),
+                                                    ),
+                                                    Text(
+                                                      'Share',
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontStyle:
+                                                              FontStyle.normal),
+                                                    ),
+                                                  ],
+                                                ),
+                                                content: SharePostModal(
+                                                  context: context,
+                                                  routerChange:
+                                                      widget.routerChange,
+                                                  postId: widget.postId,
+                                                )))
+                                    : {});
+                              },
+                              child: AnimatedContainer(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: whoHover == 'share'
+                                        ? const Color.fromRGBO(240, 240, 245, 1)
+                                        : Colors.white,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(3))),
+                                duration: const Duration(milliseconds: 300),
+                                width: SizeConfig(context).screenWidth > 600
+                                    ? (600 - 60) / 3
+                                    : (SizeConfig(context).screenWidth - 60) /
+                                        3,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      FontAwesomeIcons.share,
+                                      size: 15,
+                                    ),
+                                    Padding(padding: EdgeInsets.only(left: 5)),
+                                    Text(
+                                      'Share',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      )
+                      ))
                     ],
                   ),
                 ),
