@@ -257,6 +257,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                     postLoading = false;
 
                     setState(() {});
+                    Navigator.of(context).pop(true);
                   });
                 },
                 child: footerBtnState

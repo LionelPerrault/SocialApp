@@ -150,8 +150,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         title: const SizedBox(),
         content: AlertYesNoWidget(
             yesFunc: () async {
-              con.deletePost(widget.postInfo['id']);
-              con.getAllPost();
+              print("postlength:${con.posts.length}");
+              for (int i = 0; i < con.posts.length; i++) {
+                print(con.posts[i]['type']);
+                if (con.posts[i]['type'] == 'share') {
+                  print(con.posts[i]['data']);
+                  if (con.posts[i]['data'] == widget.postInfo['id']) {
+                    await con.deletePost(con.posts[i]['id']);
+                  }
+                }
+              }
+              await con.deletePost(widget.postInfo['id']);
+              await con.getAllPost();
+
               setState(() {});
               Navigator.of(context).pop(true);
             },
@@ -254,6 +265,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
           }
         }
         return sharePostCell();
+
       default:
         return const SizedBox();
     }
