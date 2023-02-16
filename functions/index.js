@@ -26,7 +26,7 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
   })
 })
 
-exports.sendFriendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
+exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
     functions.logger.log('********************2342342423*********************');
     functions.logger.log('sender');
