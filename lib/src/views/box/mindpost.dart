@@ -292,11 +292,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   post() async {
-    if (nowPost == '') {
-      return;
-    }
+    // if (nowPost == '') {
+
+    //   return;
+    // }
     setState(() {});
-    String postCase = '';
+    String postCase = 'normal';
+
     var postPayload;
     String header = _controller.text;
     switch (nowPost) {
@@ -352,9 +354,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         postPayload = postAudio;
         break;
       default:
-        return;
+        postCase = 'normal';
+        postPayload = null;
     }
     postLoading = true;
+
     await con
         .savePost(postCase, postPayload, dropdownValue, header: header)
         .then((value) {
