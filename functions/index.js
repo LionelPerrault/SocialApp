@@ -39,24 +39,24 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     functions.logger.log(senderSnapShot.docs[0].userName);
     functions.logger.log(receiverSnapShot.docs[0].userName);
     const tokens = [];
-    userTokens.forEach((tokenDoc) => {
-      tokens.push(tokenDoc.data().token);
-    });
-    functions.logger.log('*****************This is sender info ************************');
-    try{
-     const payload = {
-        notification: {
-          title: `Friend Request`,
-          body:`${senderSnapShot.docs[0].userName} sent you friend reqesst!`,
-          icon: senderSnapShot.docs[0].avatar || '/images/profile_placeholder.png',
-          click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
-        }
-      }
-      const response = await admin.messaging().sendToDevice(tokens, payload);
-      await cleanupTokens(response, tokens);
-    } catch(error) {
-      functions.logger.log("error occurs while executing",error);
-    }
+    // userTokens.forEach((tokenDoc) => {
+    //   tokens.push(tokenDoc.data().token);
+    // });
+    // functions.logger.log('*****************This is sender info ************************');
+    // try{
+    //  const payload = {
+    //     notification: {
+    //       title: `Friend Request`,
+    //       body:`${senderSnapShot.docs[0].userName} sent you friend reqesst!`,
+    //       icon: senderSnapShot.docs[0].avatar || '/images/profile_placeholder.png',
+    //       click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+    //     }
+    //   }
+    //   const response = await admin.messaging().sendToDevice(tokens, payload);
+    //   await cleanupTokens(response, tokens);
+    // } catch(error) {
+    //   functions.logger.log("error occurs while executing",error);
+    // }
   });
 // exports.sendNotifications = functions.firestore.document('User/{userId}').onUpdate(
 //   async (snapshot) =>{
