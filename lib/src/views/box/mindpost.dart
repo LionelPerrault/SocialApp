@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as PPath;
+
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -45,6 +47,16 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   String checkLocation = '';
   String pollQuestion = '';
   List<String> pollOption = [];
+  bool emojiShowing = false;
+
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   late PostController con;
   late List<Map> mindPostCase = [
     {
@@ -286,7 +298,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     setState(() {});
     String postCase = '';
     var postPayload;
-    String header = '';
+    String header = _controller.text;
     switch (nowPost) {
       case 'Upload Photos':
         if (postPhoto.isEmpty) {
@@ -399,7 +411,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     child: Container(
                   padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
                   child: TextField(
-                    controller: null,
+                    controller: _controller,
                     // cursorColor: Colors.white,
                     focusNode: _focus,
                     style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
@@ -414,12 +426,60 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     ),
                   ),
                 )),
-                Container(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: const Icon(Icons.emoji_emotions_outlined),
-                )
+                InkWell(
+                    onTap: () {
+                      //checkOption(label);
+                      setState(() {
+                        emojiShowing = !emojiShowing;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: const Icon(Icons.emoji_emotions_outlined),
+                    )),
               ],
             ),
+          ),
+          Offstage(
+            offstage: !emojiShowing,
+            child: SizedBox(
+                height: 250,
+                child: EmojiPicker(
+                  textEditingController: _controller,
+                  config: Config(
+                    columns: 7,
+                    // Issue: https://github.com/flutter/flutter/issues/28894
+                    emojiSizeMax: 32 *
+                        (foundation.defaultTargetPlatform == TargetPlatform.iOS
+                            ? 1.30
+                            : 1.0),
+                    verticalSpacing: 0,
+                    horizontalSpacing: 0,
+                    gridPadding: EdgeInsets.zero,
+                    initCategory: Category.RECENT,
+                    bgColor: const Color(0xFFF2F2F2),
+                    indicatorColor: Colors.blue,
+                    iconColor: Colors.grey,
+                    iconColorSelected: Colors.blue,
+                    backspaceColor: Colors.blue,
+                    skinToneDialogBgColor: Colors.white,
+                    skinToneIndicatorColor: Colors.grey,
+                    enableSkinTones: true,
+                    showRecentsTab: true,
+                    recentsLimit: 28,
+                    replaceEmojiOnLimitExceed: false,
+                    noRecents: const Text(
+                      'No Recents',
+                      style: TextStyle(fontSize: 20, color: Colors.black26),
+                      textAlign: TextAlign.center,
+                    ),
+                    loadingIndicator: const SizedBox.shrink(),
+                    tabIndicatorAnimDuration: kTabScrollDuration,
+                    categoryIcons: const CategoryIcons(),
+                    buttonMode: ButtonMode.MATERIAL,
+                    checkPlatformCompatibility: true,
+                  ),
+                )),
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
           Column(
@@ -1074,7 +1134,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   Future<XFile> chooseImage() async {
     final _imagePicker = ImagePicker();
     XFile? pickedFile;
-    if (kIsWeb) {
+    if (foundation.kIsWeb) {
       pickedFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
       );
@@ -1100,8 +1160,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.audio);
     if (result != null) {
-      if (kIsWeb) {
-        Uint8List? uploadfile = result.files.single.bytes;
+      if (foundation.kIsWeb) {
+        foundation.Uint8List? uploadfile = result.files.single.bytes;
         if (uploadfile != null) {
           pickedFile = XFile.fromData(uploadfile);
         } else {
@@ -1127,9 +1187,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     var uploadTask;
     Reference _reference;
     try {
-      if (kIsWeb) {
+      if (foundation.kIsWeb) {
         //print("read bytes");
-        Uint8List bytes = await pickedFile!.readAsBytes();
+        foundation.Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
         _reference = await _firebaseStorage
             .ref()
