@@ -1264,7 +1264,6 @@ class PostController extends ControllerMVC {
         // }
       } else {
         postData = allPosts[i]['value'];
-        print("normal postdata:" + postData);
       }
       var adminSnap =
           await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
@@ -1286,7 +1285,7 @@ class PostController extends ControllerMVC {
         posts = [eachPost, ...posts];
       }
     }
-    setState(() {});
+    //setState(() {});
     return true;
   }
 
@@ -1300,10 +1299,12 @@ class PostController extends ControllerMVC {
 
   deletePost(uid) async {
     await Helper.postCollection.doc(uid).delete();
+    posts.removeWhere((item) => item['id'] == uid);
   }
 
   deleteProduct(uid) async {
     await Helper.productsData.doc(uid).delete();
+    posts.removeWhere((item) => item['id'] == uid);
   }
 
   String postId = '';

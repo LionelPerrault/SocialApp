@@ -86,6 +86,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   var headerCon = TextEditingController();
   bool editShow = false;
   String editHeader = '';
+  bool loadingFlag = false;
   @override
   void initState() {
     add(widget.con);
@@ -148,27 +149,49 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: const SizedBox(),
-        content: AlertYesNoWidget(
-            yesFunc: () async {
-              for (int i = 0; i < con.posts.length; i++) {
-                if (con.posts[i]['type'] == 'share') {
-                  if (con.posts[i]['data'] == widget.postInfo['id']) {
-                    await con.deletePost(con.posts[i]['id']);
+        content: Stack(children: [
+          AlertYesNoWidget(
+              yesFunc: () async {
+                setState(() {
+                  loadingFlag = true;
+                });
+                loadingFlag = true;
+                setState(() {
+                  loadingFlag = true;
+                });
+                for (int i = 0; i < con.posts.length; i++) {
+                  if (con.posts[i]['type'] == 'share') {
+                    if (con.posts[i]['data'] == widget.postInfo['id']) {
+                      con.deletePost(con.posts[i]['id']);
+                    }
                   }
                 }
-              }
-              await con.deletePost(widget.postInfo['id']);
-              await con.getAllPost();
-
-              setState(() {});
-              Navigator.of(context).pop(true);
-            },
-            noFunc: () {
-              Navigator.of(context).pop(true);
-            },
-            header: 'Delete Post',
-            text: 'Are you sure you want to delete this post?',
-            progress: false),
+                con.deletePost(widget.postInfo['id']).then((value) {
+                  setState(() {});
+                  loadingFlag = false;
+                  setState(() {});
+                  Navigator.of(context).pop(true);
+                });
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Delete Post',
+              text: 'Are you sure you want to delete this post?',
+              progress: loadingFlag),
+          loadingFlag
+              ? Container(
+                  width: 10,
+                  height: 10,
+                  child: const CircularProgressIndicator(
+                    color: Colors.grey,
+                  ),
+                )
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                )
+        ]),
       ),
     );
   }
@@ -203,7 +226,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         setState(() {});
         break;
       case 'delete':
+        setState(() {});
         deletePostInfo();
+        setState(() {});
         break;
       case 'timeline':
         hideFromTimeline();
