@@ -26,7 +26,7 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
   })
 })
 
-exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
+exports.sendFriendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
     functions.logger.log('*******************//////////////////////////////////////////*********************');
     functions.logger.log('sender');
@@ -37,13 +37,17 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     
     const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
     functions.logger.log('recevierdocs. length!!!!!*34290@@@@#$@#$@$@#$@423');
+    functions.logger.log(receiverSnapShot.docs[0].id);
+      functions.logger.log(receiverSnapShot.docs[0].uid);
     if (receiverSnapShot.docs.length !=0){
       const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
       const tokens = [];
+      functions.logger.log(userTokens.length);
       userTokens.forEach((tokenDoc) => {
         tokens.push(tokenDoc.data().token);
       });
       functions.logger.log('*****************From now send notification to receiver ************************');
+      
       try{
       const payload = {
           notification: {
