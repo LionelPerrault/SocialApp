@@ -33,8 +33,8 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     functions.logger.log(snapshot.data().postAdminId);
     functions.logger.log("receiver");
     functions.logger.log(snapshot.data().receiver);
-    var receiverSnapShot = await admin.firestore().collection('users').where('userName','==',snapshot.data().receiver).get()
-    var senderSnapShot = await admin.firestore().collection('users').where('uid','==',snapshot.data().postAdminId).get()
+    var receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
+    var senderSnapShot = await admin.firestore().collection('user').where('uid','==',snapshot.data().postAdminId).get()
     const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].uid).get();
     functions.logger.log(senderSnapShot.docs[0].userName);
     functions.logger.log(receiverSnapShot.docs[0].userName);
