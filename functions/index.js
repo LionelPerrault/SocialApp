@@ -25,6 +25,7 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
     res.send('ok')
   })
 })
+
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
     // Notification details.
@@ -39,13 +40,27 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     // };
 
     // // Get the list of device tokens.
-    // const allTokens = await admin.firestore().collection('fcmTokens').get();
-    // const tokens = [];
-    // allTokens.forEach((tokenDoc) => {
-    //   tokens.push(tokenDoc.id);
-    // });
+    const allUsers = await admin.firestore().collection('users').get();
+    const receiver = await allUsers.where('userName','==',snapshot.data().receiver);
+    const sender =await allUsers.where('uid','==',snapshot.data().postAdminId )
+    const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiver.id).get();
+    //  const payload = {
+    //     notification: {
+    //       title: "Frend Request!",
+    //       body: `${sender.userName} sent you frend request`,
+    //       icon: sender.avatar,
+    //       click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+    //     }
+      // };
     functions.logger.log('Notifications have been sent and tokens cleaned up.');
     functions.logger.log(snapshot.data().postAdminId);
+    functions.logger.log("receiver");
+    functions.logger.log(receiver);
+    functions.logger.log('sender');
+    functions.logger.log(sender);
+    functions.logger.log('tokens');
+    functions.logger.log(userTokens);
+
 
 
     // if (tokens.length > 0) {
