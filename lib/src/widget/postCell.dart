@@ -86,6 +86,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   var headerCon = TextEditingController();
   bool editShow = false;
   String editHeader = '';
+  bool loadingFlag = false;
   @override
   void initState() {
     add(widget.con);
@@ -148,27 +149,49 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: const SizedBox(),
-        content: AlertYesNoWidget(
-            yesFunc: () async {
-              for (int i = 0; i < con.posts.length; i++) {
-                if (con.posts[i]['type'] == 'share') {
-                  if (con.posts[i]['data'] == widget.postInfo['id']) {
-                    await con.deletePost(con.posts[i]['id']);
+        content: Stack(children: [
+          AlertYesNoWidget(
+              yesFunc: () async {
+                setState(() {
+                  loadingFlag = true;
+                });
+                loadingFlag = true;
+                setState(() {
+                  loadingFlag = true;
+                });
+                for (int i = 0; i < con.posts.length; i++) {
+                  if (con.posts[i]['type'] == 'share') {
+                    if (con.posts[i]['data'] == widget.postInfo['id']) {
+                      con.deletePost(con.posts[i]['id']);
+                    }
                   }
                 }
-              }
-              await con.deletePost(widget.postInfo['id']);
-              await con.getAllPost();
-
-              setState(() {});
-              Navigator.of(context).pop(true);
-            },
-            noFunc: () {
-              Navigator.of(context).pop(true);
-            },
-            header: 'Delete Post',
-            text: 'Are you sure you want to delete this post?',
-            progress: false),
+                con.deletePost(widget.postInfo['id']).then((value) {
+                  setState(() {});
+                  loadingFlag = false;
+                  setState(() {});
+                  Navigator.of(context).pop(true);
+                });
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Delete Post',
+              text: 'Are you sure you want to delete this post?',
+              progress: loadingFlag),
+          loadingFlag
+              ? Container(
+                  width: 10,
+                  height: 10,
+                  child: const CircularProgressIndicator(
+                    color: Colors.grey,
+                  ),
+                )
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                )
+        ]),
       ),
     );
   }
@@ -203,7 +226,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         setState(() {});
         break;
       case 'delete':
+        setState(() {});
         deletePostInfo();
+        setState(() {});
         break;
       case 'timeline':
         hideFromTimeline();
@@ -259,7 +284,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
           }
         }
         return sharePostCell();
-
+      case 'normal':
+        return normalPostCell();
       default:
         return const SizedBox();
     }
@@ -520,6 +546,238 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     );
   }
 
+  Widget normalPostCell() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            width: 600,
+            padding: const EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: widget.isSharedContent
+                  ? Border.all(color: Colors.blueAccent)
+                  : Border.all(color: Colors.white),
+              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          widget.postInfo['adminInfo']['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  widget.postInfo['adminInfo']['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text:
+                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo[
+                                                                'adminInfo']
+                                                            ['userName'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  Visibility(
+                                    visible: !widget.isSharedContent,
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? widget.postInfo[
+                                                                    'timeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? widget.postInfo[
+                                                                        'comment']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                              .toList();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3)),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              // text: Helper.formatDate(
+                                              //     widget.postInfo['time']),
+                                              text: postTime,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  const Text(' - '),
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      privacy = value;
+                                      setState(() {});
+                                      upDatePostInfo(
+                                          {'privacy': value['label']});
+                                    },
+                                    child: Icon(
+                                      privacy['icon'],
+                                      size: 18,
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return privacyMenuItem
+                                          .map(
+                                            (e) => PopupMenuItem(
+                                              value: {
+                                                'label': e['label'],
+                                                'icon': e['icon'],
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.0)),
+                                                  Icon(e['icon']),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0)),
+                                                  Text(
+                                                    e['label'],
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 90, 90, 90),
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      editShow
+                          ? editPost()
+                          : Text(
+                              widget.postInfo['header'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.clip,
+                            ),
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: !widget.isSharedContent,
+                  child: LikesCommentScreen(
+                    postId: widget.postInfo['id'],
+                    commentFlag: widget.postInfo['comment'],
+                    routerChange: widget.routerChange,
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   Widget sharePostCell() {
     return Row(
       children: [
@@ -750,7 +1008,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     ],
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 30)),
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
@@ -998,7 +1255,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     ],
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 30)),
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
@@ -1240,7 +1496,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     ],
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 30)),
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
@@ -1483,7 +1738,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     ],
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 30)),
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
@@ -1729,7 +1983,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     ],
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 30)),
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
