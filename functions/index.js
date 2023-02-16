@@ -28,47 +28,11 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
-    // Notification details.
-    // const text = snapshot.data().text;
-    // const payload = {
-    //   notification: {
-    //     title: `${snapshot.data().name} posted ${text ? 'a message' : 'an image'}`,
-    //     body: text ? (text.length <= 100 ? text : text.substring(0, 97) + '...') : '',
-    //     icon: snapshot.data().profilePicUrl || '/images/profile_placeholder.png',
-    //     click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
-    //   }
-    // };
-
-    // // Get the list of device tokens.
-    // const allUsers = await admin.firestore().collection('users').get();
-    // const receiver = await allUsers.where('userName','==',snapshot.data().receiver);
-    // const sender =await allUsers.where('uid','==',snapshot.data().postAdminId )
-    // const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiver.id).get();
-    //  const payload = {
-    //     notification: {
-    //       title: "Frend Request!",
-    //       body: `${sender.userName} sent you frend request`,
-    //       icon: sender.avatar,
-    //       click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
-    //     }
-      // };
     functions.logger.log('Notifications have been sent and tokens cleaned up.');
     functions.logger.log(snapshot.data().postAdminId);
     functions.logger.log("receiver");
     functions.logger.log(snapshot.data().receiver);
     functions.logger.log('sender');
-    functions.logger.log(sender);
-    functions.logger.log('tokens');
-    functions.logger.log(userTokens);
-
-
-
-    // if (tokens.length > 0) {
-    //   // Send notifications to all tokens.
-    //   const response = await admin.messaging().sendToDevice(tokens, payload);
-    //   await cleanupTokens(response, tokens);
-    //   functions.logger.log('Notifications have been sent and tokens cleaned up.');
-    // }
   });
 // exports.sendNotifications = functions.firestore.document('User/{userId}').onUpdate(
 //   async (snapshot) =>{
