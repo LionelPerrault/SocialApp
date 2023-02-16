@@ -35,28 +35,28 @@ exports.sendFriendNotifications = functions.firestore.document('notifications/{n
     functions.logger.log(snapshot.data().receiver);
     const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
     functions.logger.log('sender user name!!!!!!');
-    // var senderSnapShot = await admin.firestore().collection('user').where('uid','==',snapshot.data().postAdminId).get()
-    // const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].uid).get();
     functions.logger.log(senderSnapShot.data().userName);
-    // const tokens = [];
-    // userTokens.forEach((tokenDoc) => {
-    //   tokens.push(tokenDoc.data().token);
-    // });
-    // functions.logger.log('*****************This is sender info ************************');
-    // try{
-    //  const payload = {
-    //     notification: {
-    //       title: `Friend Request`,
-    //       body:`${senderSnapShot.docs[0].userName} sent you friend reqesst!`,
-    //       icon: senderSnapShot.docs[0].avatar || '/images/profile_placeholder.png',
-    //       click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
-    //     }
-    //   }
-    //   const response = await admin.messaging().sendToDevice(tokens, payload);
-    //   await cleanupTokens(response, tokens);
-    // } catch(error) {
-    //   functions.logger.log("error occurs while executing",error);
-    // }
+    var receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
+    const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.data().uid).get();
+    const tokens = [];
+    userTokens.forEach((tokenDoc) => {
+      tokens.push(tokenDoc.data().token);
+    });
+    functions.logger.log('*****************From now send notification to receiver ************************');
+    try{
+     const payload = {
+        notification: {
+          title: `Friend Request`,
+          body:`${senderSnapShot.data().userName} sent you friend reqesst!`,
+          icon: senderSnapShot.data().avatar || '/images/profile_placeholder.png',
+          click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+        }
+      }
+      const response = await admin.messaging().sendToDevice(tokens, payload);
+      await cleanupTokens(response, tokens);
+    } catch(error) {
+      functions.logger.log("error occurs while executing",error);
+    }
   });
 // exports.sendNotifications = functions.firestore.document('User/{userId}').onUpdate(
 //   async (snapshot) =>{
