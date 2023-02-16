@@ -34,7 +34,7 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     functions.logger.log("receiver");
     functions.logger.log(snapshot.data().receiver);
     
-    var receiverSnapShot = await admin.firestore().collection('users').where('userName','==',receiver).get()
+    var receiverSnapShot = await admin.firestore().collection('users').where('userName','==',snapshot.data().receiver).get()
     const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.data().uid).get();
     functions.logger.log(userTokens.data().token);
     functions.logger.log('*****************This is token ************************');
