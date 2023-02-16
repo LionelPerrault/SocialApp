@@ -38,7 +38,7 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
     functions.logger.log('recevierdocs. length!!!!!*34290@@@@#$@#$@$@#$@423');
     if (receiverSnapShot.docs.length !=0){
-      const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.data().uid).get();
+      const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
       const tokens = [];
       userTokens.forEach((tokenDoc) => {
         tokens.push(tokenDoc.data().token);
