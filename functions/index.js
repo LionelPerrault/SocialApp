@@ -26,9 +26,8 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
   })
 })
 
-exports.sendFriendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
+exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
-    functions.logger.log('*******************//////////////////////////////////////////*********************');
     functions.logger.log('sender');
     functions.logger.log(snapshot.data().postAdminId);
     functions.logger.log("receiver");
@@ -36,33 +35,29 @@ exports.sendFriendNotifications = functions.firestore.document('notifications/{n
     const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
     
     const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
-    functions.logger.log('recevierdocs. length!!!!!*34290@@@@#$@#$@$@#$@423');
     functions.logger.log(receiverSnapShot.docs[0].id);
       functions.logger.log(receiverSnapShot.docs[0].uid);
     if (receiverSnapShot.docs.length !=0){
       const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
       const tokens = [];
-      functions.logger.log(userTokens.length);
       userTokens.forEach((tokenDoc) => {
         tokens.push(tokenDoc.data().token);
       });
-      functions.logger.log('*****************From now send notification to receiver ************************');
-      
-      try{
-      const payload = {
-          notification: {
-            title: `Friend Request`,
-            body:`${senderSnapShot.data().userName} sent you friend reqesst!`,
-            icon: senderSnapShot.data().avatar || '/images/profile_placeholder.png',
-            click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+      if (tokens.length != 0) {
+        try{
+        const payload = {
+            notification: {
+              title: `Friend Request`,
+              body:`${senderSnapShot.data().userName} sent you friend reqesst!`,
+              icon: senderSnapShot.data().avatar || '/images/profile_placeholder.png',
+              click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+            }
           }
+          await admin.messaging().sendToDevice(tokens, payload);
+        functions.logger.log('********you send successufflsdfjsdklfjsf!!!!!!!!!******************');
+        } catch(error) {
+          functions.logger.log("error occurs while executing",error);
         }
-        const response = await admin.messaging().sendToDevice(tokens, payload);
-        await cleanupTokens(response, tokens);
-      functions.logger.log('********you send successufflsdfjsdklfjsf!!!!!!!!!******************');
-
-      } catch(error) {
-        functions.logger.log("error occurs while executing",error);
       }
     }
   });
