@@ -28,11 +28,17 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
-    functions.logger.log('Notifications have been sent and tokens cleaned up.');
+    functions.logger.log('*****************************************');
+    functions.logger.log('sender');
     functions.logger.log(snapshot.data().postAdminId);
     functions.logger.log("receiver");
     functions.logger.log(snapshot.data().receiver);
-    functions.logger.log('sender');
+    
+    var receiverSnapShot = await admin.firestore().collection('users').where('userName','==',receiver).get()
+    const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.data().uid).get();
+    functions.logger.log(userTokens.data().token);
+    functions.logger.log('*****************This is token ************************');
+
   });
 // exports.sendNotifications = functions.firestore.document('User/{userId}').onUpdate(
 //   async (snapshot) =>{
