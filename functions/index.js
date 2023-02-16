@@ -28,17 +28,17 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
-    functions.logger.log('*****************************************');
+    functions.logger.log('********************2342342423*********************');
     functions.logger.log('sender');
     functions.logger.log(snapshot.data().postAdminId);
     functions.logger.log("receiver");
     functions.logger.log(snapshot.data().receiver);
-    var receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
-    var senderSnapShot = await admin.firestore().collection('user').where('uid','==',snapshot.data().postAdminId).get()
+    const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
+    functions.logger.log('sender user name!!!!!!');
+    // var senderSnapShot = await admin.firestore().collection('user').where('uid','==',snapshot.data().postAdminId).get()
     // const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].uid).get();
-    functions.logger.log(senderSnapShot.docs[0].userName);
-    functions.logger.log(receiverSnapShot.docs[0].userName);
-    const tokens = [];
+    functions.logger.log(senderSnapShot.data().userName);
+    // const tokens = [];
     // userTokens.forEach((tokenDoc) => {
     //   tokens.push(tokenDoc.data().token);
     // });
