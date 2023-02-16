@@ -40,10 +40,10 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     // };
 
     // // Get the list of device tokens.
-    const allUsers = await admin.firestore().collection('users').get();
-    const receiver = await allUsers.where('userName','==',snapshot.data().receiver);
-    const sender =await allUsers.where('uid','==',snapshot.data().postAdminId )
-    const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiver.id).get();
+    // const allUsers = await admin.firestore().collection('users').get();
+    // const receiver = await allUsers.where('userName','==',snapshot.data().receiver);
+    // const sender =await allUsers.where('uid','==',snapshot.data().postAdminId )
+    // const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiver.id).get();
     //  const payload = {
     //     notification: {
     //       title: "Frend Request!",
@@ -55,7 +55,7 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     functions.logger.log('Notifications have been sent and tokens cleaned up.');
     functions.logger.log(snapshot.data().postAdminId);
     functions.logger.log("receiver");
-    functions.logger.log(receiver);
+    functions.logger.log(snapshot.data().receiver);
     functions.logger.log('sender');
     functions.logger.log(sender);
     functions.logger.log('tokens');
