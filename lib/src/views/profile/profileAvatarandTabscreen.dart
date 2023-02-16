@@ -414,7 +414,10 @@ class ProfileAvatarandTabScreenState extends mvc
                             },
                             child: Container(
                               padding: const EdgeInsets.only(top: 30),
-                              width: itemWidth,
+                              width: (SizeConfig(context).screenWidth <
+                                      SizeConfig.smallScreenSize)
+                                  ? 50
+                                  : 85,
                               child: Column(
                                 children: [
                                   Row(
@@ -423,22 +426,33 @@ class ProfileAvatarandTabScreenState extends mvc
                                       children: [
                                         Icon(
                                           e['icon'],
-                                          size: 15,
+                                          size: (SizeConfig(context)
+                                                      .screenWidth <
+                                                  SizeConfig.smallScreenSize)
+                                              ? 25
+                                              : 15,
                                           color: Color.fromRGBO(76, 76, 76, 1),
                                         ),
-                                        const Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(e['title'],
-                                            style: const TextStyle(
-                                                fontSize: 13,
-                                                color: Color.fromRGBO(
-                                                    76, 76, 76, 1),
-                                                fontWeight: FontWeight.bold))
+                                        (SizeConfig(context).screenWidth < 750)
+                                            ? Container()
+                                            : const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5)),
+                                        (SizeConfig(context).screenWidth <
+                                                SizeConfig.smallScreenSize)
+                                            ? Container()
+                                            : Text(e['title'],
+                                                style: const TextStyle(
+                                                    fontSize: 13,
+                                                    color: Color.fromRGBO(
+                                                        76, 76, 76, 1),
+                                                    fontWeight:
+                                                        FontWeight.bold))
                                       ]),
                                   e['title'] == con.tab
                                       ? Container(
-                                          margin:
-                                              const EdgeInsets.only(top: 23),
+                                          // margin:
+                                          //     const EdgeInsets.only(top: 23),
                                           height: 2,
                                           color: Colors.grey,
                                         )

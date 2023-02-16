@@ -14,7 +14,7 @@ import '../../controllers/ProfileController.dart';
 
 class ProfilePhotosScreen extends StatefulWidget {
   Function onClick;
-  ProfilePhotosScreen({Key? key,required this.onClick})
+  ProfilePhotosScreen({Key? key, required this.onClick})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
@@ -23,7 +23,7 @@ class ProfilePhotosScreen extends StatefulWidget {
   State createState() => ProfilePhotosScreenState();
 }
 
-class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen>{
+class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
   @override
@@ -32,113 +32,119 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen>{
     add(widget.con);
     con = controller as ProfileController;
   }
+
   late ProfileController con;
-  
+
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      mainTabs(),
-      tab == 'Photos' ? 
-      PhotosData() :
-      AlbumsData()
-    ]);
+    return Column(
+        children: [mainTabs(), tab == 'Photos' ? PhotosData() : AlbumsData()]);
   }
-  Widget mainTabs(){
+
+  Widget mainTabs() {
     return Container(
-          width: SizeConfig(context).screenWidth ,
-          height: 100,
-          margin: const EdgeInsets.only(left: 30,right: 30),
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(240, 240, 240, 1),
-            borderRadius: BorderRadius.circular(3),
-          ),
-          alignment: Alignment.topLeft,
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left:20,top: 20),
-                child: Row(children: const [
-                  Icon(Icons.photo,size: 15,),
+      width: SizeConfig(context).screenWidth,
+      height: 100,
+      margin: const EdgeInsets.only(left: 30, right: 30),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(240, 240, 240, 1),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      alignment: Alignment.topLeft,
+      child: Column(
+        children: [
+          Container(
+              margin: const EdgeInsets.only(left: 20, top: 20),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.photo,
+                    size: 15,
+                  ),
                   Padding(padding: EdgeInsets.only(left: 5)),
-                  Text('Photos',style: TextStyle(
-                    fontSize: 15
-                  ),)
-                ],)
+                  Text(
+                    'Photos',
+                    style: TextStyle(fontSize: 15),
+                  )
+                ],
+              )),
+          Container(
+            margin: EdgeInsets.only(top: 15),
+            child: Row(children: [
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () {
+                    tab = 'Photos';
+                    setState(() {});
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 100,
+                    height: 40,
+                    color: tab == 'Photos'
+                        ? Colors.white
+                        : Color.fromRGBO(240, 240, 240, 1),
+                    child: const Text(
+                      'Photos',
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    ),
+                  ),
+                ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 22),
-                child: Row(
-                  children: [
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          tab = 'Photos';
-                          setState(() { });
-                        },
-                        child: Container(
-                      alignment: Alignment.center,
-                      width: 100,
-                      height: 40,
-                      color: tab == 'Photos' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
-                      child: const Text(
-                        'Photos',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black
-                        ),
-                      ),
-                    ),),
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () {
+                    tab = 'Albums';
+                    setState(() {});
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 100,
+                    height: 40,
+                    color: tab == 'Albums'
+                        ? Colors.white
+                        : Color.fromRGBO(240, 240, 240, 1),
+                    child: const Text(
+                      'Albums',
+                      style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          tab = 'Albums';
-                          setState(() { });
-                        },
-                        child: Container(
-                      alignment: Alignment.center,
-                      width: 100,
-                      height: 40,
-                      color: tab == 'Albums' ? Colors.white : Color.fromRGBO(240, 240, 240, 1),
-                      child: const Text(
-                        'Albums',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black
-                        ),
-                      ),
-                    ),
-                      ),
-                    ),
-                    
-                ]),
-              )
-            ],
-          ),
-      );
+                  ),
+                ),
+              ),
+            ]),
+          )
+        ],
+      ),
+    );
   }
-  Widget PhotosData(){
-    return userInfo['photos'] == null ? Container(
-      margin: const EdgeInsets.only(left: 30, right: 30),
-      height: SizeConfig(context).screenHeight * 0.2,
-      color: Colors.white,
-      alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have photos',style:const TextStyle(
-        color: Color.fromRGBO(108, 117, 125, 1)
-      )),
-    ) : Container();
+
+  Widget PhotosData() {
+    return userInfo['photos'] == null
+        ? Container(
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            height: SizeConfig(context).screenHeight * 0.2,
+            color: Colors.white,
+            alignment: Alignment.center,
+            child: Text('${userInfo['fullName']} doesn`t have photos',
+                style:
+                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
+          )
+        : Container();
   }
-  Widget AlbumsData(){
-    return userInfo['albums'] == null ? Container(
-      margin: const EdgeInsets.only(left: 30, right: 30),
-      height: SizeConfig(context).screenHeight * 0.2,
-      color: Colors.white,
-      alignment: Alignment.center,
-      child: Text('${userInfo['fullName']} doesn`t have albums',style:const TextStyle(
-        color: Color.fromRGBO(108, 117, 125, 1)
-      )),
-    ) : Container();
+
+  Widget AlbumsData() {
+    return userInfo['albums'] == null
+        ? Container(
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            height: SizeConfig(context).screenHeight * 0.2,
+            color: Colors.white,
+            alignment: Alignment.center,
+            child: Text('${userInfo['fullName']} doesn`t have albums',
+                style:
+                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
+          )
+        : Container();
   }
 }
