@@ -56,43 +56,38 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     }
   });
   
-
-  //send Message push notification
-  exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}').onCreate(
+  exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}/content/{contentId}').onCreate(
     async (snapshot) => {
-          functions.logger.log("*********************************");
-          functions.logger.log(snapshot.data().users);
-      // const receiverSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().users[1]}`).get();
-      // const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().users[0]}`).get();
-      //     functions.logger.log("*********************************");
-      //     functions.logger.log(senderSnapShot.docs[0].userName);
-      //     functions.logger.log(receiverSnapShot.docs[0].userName);
-      
-      // if (receiverSnapShot.docs.length !=0){
-      //   const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
-      //   const tokens = [];
-      //   userTokens.forEach((tokenDoc) => {
-      //     tokens.push(tokenDoc.data().token);
-      //   });
-      //   if (tokens.length != 0) {
-      //     functions.logger.log("????????????????????statart?????????????????????????");
+      functions.logger.log("????????????????????????????????");
+      const senderSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().sender).get()
+      const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
 
-      //     try{
-      //     const payload = {
-      //         notification: {
-      //           title: `New Message from ${snapshot.data().users[0]}`,
-      //           body:` ${snapshot.data().lastData}`,
-      //           icon: senderSnapShot.docs[0].avatar || '/images/profile_placeholder.png',
-      //           click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
-      //         }
-      //       }
-      //       await admin.messaging().sendToDevice(tokens, payload);
-      //     } catch(error) {
-      //       functions.logger.log("error occurs while executing",error);
-      //     }
-      //   }
-      // }
-    });
+      if (senderSnapShot.docs.length != 0 && receiverSnapShot.docs.length !=0) {
+        const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
+        const tokens = [];
+        userTokens.forEach((tokenDoc) => {
+          tokens.push(tokenDoc.data().token);
+        });
+        if (tokens.length != 0) {
+          try{
+          functions.logger.log("???????seding messages????????????????????");
+          const payload = {
+              notification: {
+                title: `New Message from ${senderSnapShot.docs[0].userName}`,
+                body:`${snapshot.data().data}`,
+                icon: senderSnapShot.docs[0].avatar || '/images/profile_placeholder.png',
+                click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+              }
+            }
+            await admin.messaging().sendToDevice(tokens, payload);        
+          } catch(error) {
+            functions.logger.log("error occurs while executing",error);
+          }
+        }
+      }
+    
+    })
+  
 
 
 exports.emailVerification = functions.https.onRequest(async (req, res) => {
