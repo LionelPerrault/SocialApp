@@ -658,8 +658,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               Row(
                 children: [
                   //  const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                  const SizedBox(
-                    width: 80,
+                  SizedBox(
+                    width: SizeConfig(context).screenWidth >
+                            SizeConfig.smallScreenSize
+                        ? 530 / 4.5
+                        : 350 / 4.5,
                   ),
                   Expanded(
                     child: SizedBox(

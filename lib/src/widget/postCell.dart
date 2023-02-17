@@ -151,27 +151,26 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         title: const SizedBox(),
         content: Stack(children: [
           AlertYesNoWidget(
-              yesFunc: () async {
+              yesFunc: () {
                 setState(() {
                   loadingFlag = true;
                 });
-                loadingFlag = true;
-                setState(() {
-                  loadingFlag = true;
-                });
+
                 for (int i = 0; i < con.posts.length; i++) {
                   if (con.posts[i]['type'] == 'share') {
                     if (con.posts[i]['data'] == widget.postInfo['id']) {
                       con.deletePost(con.posts[i]['id']);
+                      con.deletePostFromTimeline(con.posts[i]['id']);
                     }
                   }
                 }
-                con.deletePost(widget.postInfo['id']).then((value) {
-                  setState(() {});
+                con.deletePost(widget.postInfo['id']);
+                con.deletePostFromTimeline(widget.postInfo['id']);
+
+                setState(() {
                   loadingFlag = false;
-                  setState(() {});
-                  Navigator.of(context).pop(true);
                 });
+                Navigator.of(context).pop(true);
               },
               noFunc: () {
                 Navigator.of(context).pop(true);

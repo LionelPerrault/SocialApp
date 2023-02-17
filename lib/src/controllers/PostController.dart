@@ -1298,7 +1298,10 @@ class PostController extends ControllerMVC {
   }
 
   deletePost(uid) async {
-    await Helper.postCollection.doc(uid).delete();
+    Helper.postCollection.doc(uid).delete();
+  }
+
+  deletePostFromTimeline(uid) {
     posts.removeWhere((item) => item['id'] == uid);
   }
 
