@@ -384,31 +384,42 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                     ? showDialog(
                                         context: context,
                                         builder: (BuildContext context) =>
-                                            AlertDialog(
-                                                title: Row(
-                                                  children: const [
-                                                    Icon(
-                                                      FontAwesomeIcons.share,
-                                                      size: 15,
-                                                      color: Color.fromARGB(
-                                                          255, 0, 0, 0),
+                                            ConstrainedBox(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        maxHeight: 100.0),
+                                                child: AlertDialog(
+                                                    title: Row(
+                                                      children: const [
+                                                        Icon(
+                                                          FontAwesomeIcons
+                                                              .share,
+                                                          size: 15,
+                                                          color: Color.fromARGB(
+                                                              255, 0, 0, 0),
+                                                        ),
+                                                        Text(
+                                                          'Share',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 15,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      'Share',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 15,
-                                                          fontStyle:
-                                                              FontStyle.normal),
-                                                    ),
-                                                  ],
-                                                ),
-                                                content: SharePostModal(
-                                                  context: context,
-                                                  routerChange:
-                                                      widget.routerChange,
-                                                  postId: widget.postId,
-                                                )))
+                                                    insetPadding:
+                                                        const EdgeInsets
+                                                                .symmetric(
+                                                            vertical: 1),
+                                                    content: SharePostModal(
+                                                      context: context,
+                                                      routerChange:
+                                                          widget.routerChange,
+                                                      postId: widget.postId,
+                                                    ))))
                                     : {});
                               },
                               child: AnimatedContainer(
@@ -1127,7 +1138,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             elevation: 3,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(2.0)),
-                            minimumSize: const Size(80, 35),
+                            // minimumSize: const Size(80, 35),
                             maximumSize: const Size(80, 35),
                           ),
                           child: Row(

@@ -657,11 +657,14 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               ),
               Row(
                 children: [
-                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  //  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  const SizedBox(
+                    width: 80,
+                  ),
                   Expanded(
                     child: SizedBox(
                       width: 100,
-                      height: 38,
+                      height: 42,
                       child: DecoratedBox(
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 17, 205, 239),
@@ -672,7 +675,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                     0.1), //bordrder raiuds of dropdown button
                           ),
                           child: Padding(
-                              padding: const EdgeInsets.only(top: 7, left: 15),
+                              padding: const EdgeInsets.only(top: 7, left: 5),
                               child: DropdownButton(
                                 value: dropdownValue,
                                 // hint: Container(
