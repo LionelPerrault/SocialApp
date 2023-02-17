@@ -73,9 +73,9 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
           functions.logger.log("???????seding messages????????????????????");
           const payload = {
               notification: {
-                title: `New Message from ${senderSnapShot.docs[0].userName}`,
+                title: `New Message from ${senderSnapShot.docs[0].data().userName}`,
                 body:`${snapshot.data().data}`,
-                icon: senderSnapShot.docs[0].avatar || '/images/profile_placeholder.png',
+                icon: senderSnapShot.docs[0].data().avatar || '/images/profile_placeholder.png',
                 click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
               }
             }
