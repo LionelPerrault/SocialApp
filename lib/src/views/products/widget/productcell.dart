@@ -23,8 +23,10 @@ class ProductCell extends StatefulWidget {
     super.key,
     required this.data,
     required this.routerChange,
+    this.isShared = false,
   }) : con = PostController();
   var data;
+  var isShared = false;
   Function routerChange;
   late PostController con;
   @override
@@ -256,8 +258,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
           margin: const EdgeInsets.only(top: 30, bottom: 30),
           width: 600,
           padding: const EdgeInsets.only(top: 20),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
+            border: widget.isShared
+                ? Border.all(color: Colors.blueAccent)
+                : Border.all(color: Colors.white),
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Column(
@@ -320,58 +325,65 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(right: 9.0),
-                                    child: PopupMenuButton(
-                                      onSelected: (value) {
-                                        popUpFunction(value);
-                                      },
-                                      child: const Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 18,
-                                      ),
-                                      itemBuilder: (BuildContext bc) {
-                                        return popupMenuItem
-                                            .map(
-                                              (e) => PopupMenuItem(
-                                                value: e['value'],
-                                                child: Row(
-                                                  children: [
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 5.0)),
-                                                    Icon(e['icon']),
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 12.0)),
-                                                    Text(
-                                                      e['value'] == 'timeline'
-                                                          ? product[
-                                                                  'productTimeline']
-                                                              ? e['label']
-                                                              : e['labelE']
-                                                          : e['value'] ==
-                                                                  'comment'
-                                                              ? product[
-                                                                      'productOnOffCommenting']
-                                                                  ? e['label']
-                                                                  : e['labelE']
-                                                              : e['label'],
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 90, 90, 90),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 12),
-                                                    )
-                                                  ],
+                                  Visibility(
+                                    visible: !widget.isShared,
+                                    child: Container(
+                                      padding: EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? product[
+                                                                    'productTimeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? product[
+                                                                        'productOnOffCommenting']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList();
-                                      },
+                                              )
+                                              .toList();
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -649,6 +661,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                               ["productAdmin"]["uid"]
                                           .toString()
                                     });
+
                                     setState(() {});
                                   },
                                   child: Row(
@@ -696,11 +709,14 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       ),
                     ]),
               ),
-              LikesCommentScreen(
-                postId: productId,
-                commentFlag: product['productOnOffCommenting'],
-                routerChange: widget.routerChange,
-              )
+              Visibility(
+                  visible: !widget.isShared,
+                  child: LikesCommentScreen(
+                    postId: productId,
+                    commentFlag: product['productOnOffCommenting'],
+                    routerChange: widget.routerChange,
+                  )),
+              const Padding(padding: EdgeInsets.only(top: 10)),
             ],
           ),
         ))

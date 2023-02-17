@@ -275,7 +275,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         return audioPostCell();
       case 'product':
         return ProductCell(
-            data: widget.postInfo, routerChange: widget.routerChange);
+            data: widget.postInfo,
+            isShared: widget.isSharedContent,
+            routerChange: widget.routerChange);
       case 'share':
         for (int i = 0; i < con.posts.length; i++) {
           if (con.posts[i]['id'] == widget.postInfo['data']) {
@@ -536,7 +538,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
-                )
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),
@@ -768,7 +771,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
-                )
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),
@@ -1015,7 +1019,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     shareFlag: false,
                     routerChange: widget.routerChange,
                   ),
-                )
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),
@@ -1261,7 +1266,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
-                )
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),
@@ -1502,7 +1508,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
-                )
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),
@@ -1744,7 +1751,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
-                )
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),
@@ -1989,7 +1997,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
-                )
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),
