@@ -30,7 +30,7 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> formatDate(d) async {
-    String trDate = '';
+    String trDate = 'Just Now';
     try {
       var time = changeTimeType(d: d);
       var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;

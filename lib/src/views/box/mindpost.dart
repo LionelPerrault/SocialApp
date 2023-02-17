@@ -144,55 +144,70 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   ];
 
   List<Map> activityCase = [
-    {'label': 'Feeling', 'svg': '', 'subLabel': 'How are you feeling?'},
+    {
+      'label': 'Feeling',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Ffeeling_post.svg?alt=media',
+      'subLabel': 'How are you feeling?'
+    },
     {
       'label': 'Listening To',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fmusic_file.svg?alt=media',
       'subLabel': 'What are you listening to?',
     },
     {
       'label': 'Watching',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fmovies.svg?alt=media',
       'subLabel': 'What are you watching?',
     },
     {
       'label': 'Playing',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgames.svg?alt=media',
       'subLabel': 'What are you playing?',
     },
     {
       'label': 'Eating',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fcookie.svg?alt=media',
       'subLabel': 'What are you eating?',
     },
     {
       'label': 'Drinking',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2FdayTimeMessage%2Fnight.svg?alt=media',
       'subLabel': 'What are you drinking?',
     },
     {
       'label': 'Traveling To',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgeolocation.svg?alt=media',
       'subLabel': 'Where are you traveling to?',
     },
     {
       'label': 'Reading',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Farticle.svg?alt=media',
       'subLabel': 'What are you reading?',
     },
     {
       'label': 'Attending',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fsocial.svg?alt=media',
       'subLabel': 'What are you attending?',
     },
     {
       'label': 'Celebrating',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgifts.svg?alt=media',
       'subLabel': 'What are you celebrating?',
     },
     {
       'label': 'Looking For',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsearch.svg?alt=media',
       'subLabel': 'What are you looking for?',
     },
   ];
@@ -890,6 +905,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         (e) => PopupMenuItem(
                           value: {
                             'label': e['label'],
+                            'svg': e['svg'],
                             'subLabel': e['subLabel'],
                           },
                           child: Row(
@@ -897,7 +913,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                               const Padding(
                                   padding: EdgeInsets.only(left: 12.0)),
                               SvgPicture.network(
-                                'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda',
+                                e['svg'],
                                 width: 30,
                               ),
                               const Padding(
