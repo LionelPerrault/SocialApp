@@ -562,7 +562,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                     hintText: 'Write a comment',
                     hintStyle: TextStyle(fontSize: 12, fontFamily: 'Hind'),
                     contentPadding:
-                        EdgeInsets.only(top: 0, left: 10, bottom: 17),
+                        EdgeInsets.only(top: 20, left: 10, bottom: 7),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none),
               ),
