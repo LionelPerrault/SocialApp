@@ -56,7 +56,7 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     }
   });
   
-  exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}').onCreate(
+  exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}/content/{contentId}').onCreate(
     async (snapshot) => {
       functions.logger.log("New message notification");
     })
