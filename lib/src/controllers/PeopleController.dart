@@ -204,6 +204,7 @@ class PeopleController extends ControllerMVC {
           notificationData = {
             'postType': 'requestFriend',
             'postId': value.id,
+            'receiver': receiver,
             'postAdminId': UserManager.userInfo['uid'],
             'notifyTime': DateTime.now().toString(),
             'tsNT': DateTime.now().millisecondsSinceEpoch,
