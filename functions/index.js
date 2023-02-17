@@ -61,6 +61,9 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     async (snapshot) => {
       const receiverSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().users[1]}`).get();
       const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().users[0]}`).get();
+          functions.logger.log("*********************************");
+          functions.logger.log(senderSnapShot.docs[0].userName);
+          functions.logger.log(receiverSnapShot.docs[0].userName);
       
       if (receiverSnapShot.docs.length !=0){
         const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
@@ -69,6 +72,8 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
           tokens.push(tokenDoc.data().token);
         });
         if (tokens.length != 0) {
+          functions.logger.log("????????????????????statart?????????????????????????");
+
           try{
           const payload = {
               notification: {
