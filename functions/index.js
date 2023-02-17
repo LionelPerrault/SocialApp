@@ -28,15 +28,10 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
-    functions.logger.log('sender');
-    functions.logger.log(snapshot.data().postAdminId);
-    functions.logger.log("receiver");
-    functions.logger.log(snapshot.data().receiver);
     const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
     
     const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
     functions.logger.log(receiverSnapShot.docs[0].id);
-      functions.logger.log(receiverSnapShot.docs[0].uid);
     if (receiverSnapShot.docs.length !=0){
       const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
       const tokens = [];
@@ -53,61 +48,45 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
               click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
             }
           }
-          await admin.messaging().sendToDevice(tokens, payload);
-        functions.logger.log('********you send successufflsdfjsdklfjsf!!!!!!!!!******************');
+          await admin.messaging().sendToDevice(tokens, payload);        
         } catch(error) {
           functions.logger.log("error occurs while executing",error);
         }
       }
     }
   });
-// exports.sendNotifications = functions.firestore.document('User/{userId}').onUpdate(
-//   async (snapshot) =>{
-//     const docId = snapshot.after.id;
-//     functions.logger.log('doc id is ', snapshot.after.id);
-//     functions.logger.log(snapshot);
-//     try{
-//       if (snapshot.before.data().count == snapshot.after.data().count || snapshot.after.data().count == 0)
-//       {
-//         functions.logger.log('transaction doesn\'t made');
-//         return;
-//       }
-//       functions.logger.log('count is',snapshot.after.data().count);
-//       // get datas for this doc id;
-//       const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', docId).get();
-//       const tokens = [];
-//       userTokens.forEach((tokenDoc) => {
-//         tokens.push(tokenDoc.data().token);
-//       });
-//       // const payload = {
-//       //   notification: {
-//       //     title: `${snapshot.data().name} posted ${text ? 'a message' : 'an image'}`,
-//       //     body: text ? (text.length <= 100 ? text : text.substring(0, 97) + '...') : '',
-//       //     icon: snapshot.data().profilePicUrl || '/images/profile_placeholder.png',
-//       //     click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
-//       //   }
-//       // };
-//       const payload = {
-//         notification: {
-//           title: `Success!`,
-//           body: 'You\'ve got transactions',
-//           icon: '',
-//           click_action: ``,
-//           badge:snapshot.after.data().count.toString()
-//         }
-//       };
-//       if (tokens.length > 0) {
-//         // Send notifications to all tokens.
-//         const response = await admin.messaging().sendToDevice(tokens, payload);
-//         //await cleanupTokens(response, tokens);
-//         //functions.logger.log('Notifications have been sent and tokens cleaned up.');
-//       }
-//     }catch (error)
-//     {
-//       functions.logger.log("error occurs while executing",error);
-//     }
-//   }
-// )
+
+  //send Message push notification
+  exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}').onCreate(
+    async (snapshot) => {
+      const receiverSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().users[1]}`).get();
+      const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().users[0]}`).get();
+      
+      if (receiverSnapShot.docs.length !=0){
+        const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
+        const tokens = [];
+        userTokens.forEach((tokenDoc) => {
+          tokens.push(tokenDoc.data().token);
+        });
+        if (tokens.length != 0) {
+          try{
+          const payload = {
+              notification: {
+                title: `New Message from ${snapshot.data().users[0]}`,
+                body:` ${snapshot.data().lastData}`,
+                icon: senderSnapShot.docs[0].avatar || '/images/profile_placeholder.png',
+                click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+              }
+            }
+            await admin.messaging().sendToDevice(tokens, payload);
+          } catch(error) {
+            functions.logger.log("error occurs while executing",error);
+          }
+        }
+      }
+    });
+
+
 exports.emailVerification = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     res.set("Access-Control-Allow-Origin", "*"); // you can also whitelist a specific domain like "http://127.0.0.1:4000"
