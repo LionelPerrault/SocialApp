@@ -66,7 +66,7 @@ class Helper {
   static var notificationField = 'notifications';
   static var postField = 'posts';
   static var interestsField = 'interests';
-  static var friendField = 'friends';
+  static var friendCollection = 'friends';
   static var pages = 'staticContent';
   static var terms = 'Terms';
   static var privacy = 'Privacy';

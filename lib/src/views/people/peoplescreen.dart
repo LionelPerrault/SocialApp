@@ -6,9 +6,9 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/people/discoverScreen.dart';
-import 'package:shnatter/src/views/people/friendRequestsScreen.dart';
-import 'package:shnatter/src/views/people/sendRequestsScreen.dart';
+import 'package:shnatter/src/views/people/tabs/discoverScreen.dart';
+import 'package:shnatter/src/views/people/tabs/friendRequestsScreen.dart';
+import 'package:shnatter/src/views/people/tabs/sendRequestsScreen.dart';
 
 class PeopleScreen extends StatefulWidget {
   PeopleScreen({Key? key, required this.routerChange})
@@ -31,20 +31,18 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
   void initState() {
     add(widget.con);
     con = controller as PeopleController;
-    Helper.getJSONPreference(Helper.userField)
-        .then((value) async => {await con.getUserList(), setState(() {})});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-          right: SizeConfig(context).screenWidth < 700 ? 30 : 70,
-          top: 10,
-          left: SizeConfig(context).screenWidth < 700 ? 30 : 70),
+      // padding: EdgeInsets.only(
+      //     right: SizeConfig(context).screenWidth < 700 ? 30 : 70,
+      //     top: 10,
+      //     left: SizeConfig(context).screenWidth < 700 ? 30 : 70),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           mainTabWidget(),
           con.tabName == 'Discover'
@@ -66,7 +64,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
         controller: _scrollController,
         child: Container(
           height: 67,
-          width: SizeConfig(context).screenWidth < 700
+          width: SizeConfig(context).screenWidth < 900
               ? SizeConfig(context).screenWidth
               : SizeConfig(context).screenWidth * 0.7,
           decoration: BoxDecoration(
