@@ -112,7 +112,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
               verifyAlertToastHeight -
               30),
       child: SingleChildScrollView(
-        child: widget.chatUser != ''
+        child: widget.chatUser.isEmpty
             ? Column(
                 children: [
                   con.isMessageTap == 'all-list'
@@ -167,13 +167,33 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                 ? const SizedBox()
                 : Column(children: [
                     ChatScreenHeader(),
-                    ChatMessageListScreen(
-                      showWriteMessage: true,
-                      onBack: (value) {
-                        con.isShowEmoticon = value;
-                        setState(() {});
-                      },
-                    ),
+                    con.isMessageTap == 'new'
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: UserManager.userInfo['isVerify']
+                                    ? SizeConfig(context).screenHeight - 250
+                                    : SizeConfig(context).screenHeight -
+                                        250 -
+                                        verifyAlertToastHeight),
+                            child: WriteMessageScreen(
+                              type: 'new',
+                              goMessage: (value) {
+                                con.isMessageTap = value;
+                                if (value == 'message-list') {
+                                  isShowChatUserList = false;
+                                }
+                                setState(() {});
+                                con.setState(() {});
+                              },
+                            ),
+                          )
+                        : ChatMessageListScreen(
+                            showWriteMessage: true,
+                            onBack: (value) {
+                              con.isShowEmoticon = value;
+                              setState(() {});
+                            },
+                          ),
                     Padding(
                       padding: EdgeInsets.only(
                           top: UserManager.userInfo['isVerify']

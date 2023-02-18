@@ -34,57 +34,55 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        child: Expanded(
-            child: SizeConfig(context).screenWidth >
-                    SizeConfig.mediumScreenSize + 300
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 7,
-                        child: MainPanel(
-                          routerChange: widget.routerChange,
-                        ),
-                      ),
-                      Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: SizeConfig.rightPaneWidth,
-                                child: RightPanel(
-                                    routerChange: widget.routerChange),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: rightFootbar(),
-                              )
-                            ],
-                          ))
-                    ],
-                  )
-                : Container(
-                    margin: const EdgeInsets.only(bottom: 40),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        MainPanel(
-                          routerChange: widget.routerChange,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: RightPanel(routerChange: widget.routerChange),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: footbar(),
-                        )
-                      ],
+    return Expanded(
+        child: SizeConfig(context).screenWidth >
+                SizeConfig.mediumScreenSize + 300
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: MainPanel(
+                      routerChange: widget.routerChange,
                     ),
-                  )),
-        onWillPop: () => Future.value(false));
+                  ),
+                  Expanded(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: SizeConfig.rightPaneWidth,
+                            child:
+                                RightPanel(routerChange: widget.routerChange),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: rightFootbar(),
+                          )
+                        ],
+                      ))
+                ],
+              )
+            : Container(
+                margin: const EdgeInsets.only(bottom: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    MainPanel(
+                      routerChange: widget.routerChange,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: RightPanel(routerChange: widget.routerChange),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: footbar(),
+                    )
+                  ],
+                ),
+              ));
   }
 }
