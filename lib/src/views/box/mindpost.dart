@@ -276,6 +276,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     nowPost = 'Upload Audio';
     setState(() {});
     uploadReady('audio');
+    postAudio = 'loading';
   }
 
   feelingReady() {
@@ -378,11 +379,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         .savePost(postCase, postPayload, dropdownValue, header: header)
         .then((value) {
       print('after');
-      postLoading = false;
+
       nowPost = '';
       postPhoto = [];
       postAudio = '';
-      setState(() {});
+      setState(() {
+        postLoading = false;
+      });
     });
   }
 
@@ -568,7 +571,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                             ],
                                           ),
                                         )
-                                      : postAudio == ''
+                                      : postAudio == '' ||
+                                              postAudio == 'loading'
                                           ? const SizedBox()
                                           : Container(
                                               child: Row(
@@ -785,7 +789,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     onPressed: () {
                       postLoading ? () {} : post();
                     },
-                    child: postLoading
+                    child: (postAudio == 'loading')
                         ? Container(
                             width: 40,
                             height: 40,
