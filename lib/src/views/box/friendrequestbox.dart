@@ -222,7 +222,7 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                                                           widget.onClick();
                                                           isDeclineRequest[
                                                               e.key] = false;
-                                                          con.getList();
+                                                          con.getDiscoverList();
                                                           setState(() {});
                                                         },
                                                         style: ElevatedButton.styleFrom(

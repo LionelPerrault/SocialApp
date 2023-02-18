@@ -47,6 +47,25 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    if (screenWidth <= 210) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: realAllEvents
+            .map(
+              (event) => EventCell(
+                routerChange: widget.routerChange,
+                eventData: event,
+                buttonFun: () {
+                  con.interestedEvent(event['id']).then((value) {
+                    getEventNow();
+                  });
+                },
+              ),
+            )
+            .toList(),
+      );
+    }
     return Container(
       child: Row(
         mainAxisSize: MainAxisSize.min,

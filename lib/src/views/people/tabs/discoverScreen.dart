@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,7 +7,7 @@ import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/people/searchScreen.dart';
+import 'package:shnatter/src/views/people/widget/searchScreen.dart';
 
 class PeopleDiscoverScreen extends StatefulWidget {
   PeopleDiscoverScreen({Key? key, required this.routerChange})
@@ -19,48 +20,69 @@ class PeopleDiscoverScreen extends StatefulWidget {
 }
 
 class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
-  bool showMenu = false;
   late PeopleController con;
   //route variable
-  Map isFriendRequest = {};
-  String tabName = 'Discover';
   Color color = const Color.fromRGBO(230, 236, 245, 1);
-  List gender = [
-    {'value': 'Any', 'title': 'Any'},
-    {'value': 'Male', 'title': 'male'},
-    {'value': 'Female', 'title': 'female'},
-    {'value': 'Other', 'title': 'other'},
-  ];
-  List relationShip = [
-    {'value': 'Any', 'title': 'Any'},
-    {'value': 'Single', 'title': 'Single'},
-    {'value': 'In a relationship', 'title': 'In a relationship'},
-    {'value': 'Married', 'title': 'Married'},
-    {'value': "It's complicated", 'title': "It's complicated"},
-    {'value': "Separated", 'title': "Separated"},
-    {'value': "Divorced", 'title': "Divorced"},
-    {'value': "Widowed", 'title': "Widowed"},
-  ];
-  List onlineStatus = [
-    {'value': 'Any', 'title': 'Any'},
-    {'value': 'Online', 'title': 'Online'},
-    {'value': 'Offline', 'title': 'Offline'},
-  ];
-  List religion = [
-    {'value': 'Any', 'title': 'Any'},
-    {'value': 'Jewish', 'title': 'Jewish'},
-    {'value': 'Lizard', 'title': 'Lizard'},
-    {'value': 'world', 'title': 'world'},
-    {
-      'value': 'Serbian Christian Orthodox',
-      'title': 'Serbian Christian Orthodox'
-    },
-  ];
   @override
   void initState() {
     add(widget.con);
     con = controller as PeopleController;
+    con.getUserList();
+    con.logsData();
     super.initState();
+  }
+
+  Widget searchButton() {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          elevation: 3,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),
+          minimumSize: Size(
+              SizeConfig(context).screenWidth < 900
+                  ? SizeConfig(context).screenWidth - 60
+                  : SizeConfig(context).screenWidth * 0.3 - 90,
+              50),
+          maximumSize: Size(
+              SizeConfig(context).screenWidth < 900
+                  ? SizeConfig(context).screenWidth - 60
+                  : SizeConfig(context).screenWidth * 0.3 - 90,
+              50),
+        ),
+        onPressed: () async {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    content: SingleChildScrollView(
+                      child: SearchScreen(
+                        isModal: true,
+                        onClick: (value) async {
+                          await con.fieldSearch(value);
+                          setState(() {});
+                        },
+                      ),
+                    ),
+
+                    ///title:Text("Search")
+                  ));
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(
+              Icons.search,
+              color: Colors.black,
+              size: 16,
+            ),
+            Padding(padding: EdgeInsets.only(left: 3)),
+            Text('Search',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 33, 37, 41),
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.bold)),
+          ],
+        ));
   }
 
   @override
@@ -73,6 +95,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
               userListWidget(),
               Padding(padding: EdgeInsets.only(left: 20)),
               SearchScreen(
+                isModal: false,
                 onClick: (value) async {
                   await con.fieldSearch(value);
                   setState(() {});
@@ -84,18 +107,18 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SearchScreen(
-                onClick: (value) async {
-                  await con.fieldSearch(value);
-                  setState(() {});
-                },
-              ),
+              searchButton(),
               userListWidget(),
             ],
           );
   }
 
   Widget userListWidget() {
+    // get only pagination list;
+    int lastIndex = con.pageIndex * 5;
+    if (lastIndex > con.userList.length) lastIndex = con.userList.length;
+    List<DocumentSnapshot> data = con.userList.getRange(0, lastIndex).toList();
+
     return con.isGetList
         ? Container(
             margin: const EdgeInsets.only(top: 10),
@@ -133,7 +156,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                         ),
                       )
                     : Column(
-                        children: con.userList
+                        children: data
                             .asMap()
                             .entries
                             .map((e) => Container(

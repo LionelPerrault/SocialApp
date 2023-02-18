@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +16,23 @@ import 'dart:io' show File, Platform;
 
 import '../models/userModel.dart';
 
-enum EmailType { emailVerify, googleVerify }
+enum EmailType { statusFriendRequestSent, statusFriendsNow }
+/*firebase data base structure looks like this.
+{
+	'user1id':{
+		avatar:"avatar url",
+		name:"user name",
+	},
+	'user2id':{
+		avatar:"avatar url",
+		name:"user name",
+	},
+	'receiver':"user1id or user2id who received',
+	'requester':"user1id or ueer2id who sent',
+	'state': "status of friend request" 0:statusFriendRequestSent, 1:statusFriendsNow
+	'users': [ user1id, user2id] // used for search
+}
+*/
 
 class PeopleController extends ControllerMVC {
   factory PeopleController([StateMVC? state]) =>
@@ -41,7 +55,12 @@ class PeopleController extends ControllerMVC {
         isFirst = false,
         super(state);
   static PeopleController? _this;
-  List userList;
+  // array of my friends
+  List friends = [];
+  // discover user
+  List<DocumentSnapshot> userList;
+  // avoid bugs
+  bool isLocked = false;
   List allFriendsList;
   int pageIndex;
   String ind = '';
@@ -52,7 +71,7 @@ class PeopleController extends ControllerMVC {
   List sendFriends;
   List allUserList;
   List allSendFriends;
-  List friends = [];
+
   Map isFriendRequest = {};
   Map isConfirmRequest;
   bool isGetList;
@@ -61,135 +80,67 @@ class PeopleController extends ControllerMVC {
   var userInfo = UserManager.userInfo;
   @override
   Future<bool> initAsync() async {
-    //
-    Helper.authdata = FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .withConverter<TokenLogin>(
-          fromFirestore: (snapshots, _) =>
-              TokenLogin.fromJSON(snapshots.data()!),
-          toFirestore: (tokenlogin, _) => tokenlogin.toMap(),
-        );
     return true;
   }
 
-  saveNotifications(data) async {
-    await FirebaseFirestore.instance
+  // save the notifcation when friend request sent
+  saveNotifications(addFriendsDocumentId) {
+    var notificationData = {
+      'postType': 'requestFriend',
+      'postId': addFriendsDocumentId,
+      'postAdminId': UserManager.userInfo['uid'],
+      'notifyTime': DateTime.now().toString(),
+      'tsNT': DateTime.now().millisecondsSinceEpoch,
+      'userList': [],
+      'timeStamp': FieldValue.serverTimestamp(),
+    };
+    FirebaseFirestore.instance
         .collection(Helper.notificationField)
-        .add(data);
+        .add(notificationData);
   }
 
+  logsData() {
+    print("for test. user list length is #===========");
+    print(userList.length);
+  }
+
+  // get my  friends in collection
   getFriends(name) async {
     var userInfo = UserManager.userInfo;
     var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .where('state', isEqualTo: 1)
+        .where('users', arrayContains: name)
         .get();
     var s = [];
-    for (int i = 0; i < snapshot.docs.length; i++) {
-      var data = snapshot.docs[i].data();
-      var arr1 = data['users'].where((val) => val == name).toList();
-      if (arr1.isNotEmpty) {
-        s.add(data);
-      }
-    }
+    s = snapshot.docs.map((doc) => doc.data()).toList();
     friends = s;
   }
 
-  getUserList({index = -1, isGetOnly5 = false}) async {
+  // fetch all related data for Discover , Friend Rqeust, Send Reqeust.
+  // all data will be saved in
+  getUserList() async {
+    if (isLocked) return;
+    isLocked = true;
     await getReceiveRequests(userInfo['userName']);
     await getSendRequests(userInfo['userName']);
-    await getList(index: index, isGetOnly5: isGetOnly5);
+    await getDiscoverList();
+    isLocked = false;
   }
 
-  getList({index = -1, isGetOnly5 = false, int add = 0}) async {
-    int pagination = pageIndex;
-    if (isGetOnly5) {
-      pagination = 1;
-    }
-    var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .limit(5 * pagination + add)
-        .get();
-    var snapshot1 = await FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .where('userName', isNotEqualTo: UserManager.userInfo['userName'])
-        .get();
-    var snapshot2 = await FirebaseFirestore.instance
-        .collection(Helper.friendField)
-        .where('state', isEqualTo: 1)
-        .get();
-    allFriendsList = snapshot2.docs;
-    var friends = snapshot.docs
-        .where((element) =>
-            element['userName'] != UserManager.userInfo['userName'])
-        .toList();
-    allUserList = getFilterList(snapshot1.docs);
-    var arr = getFilterList(friends);
-    print(arr.length);
-    if (arr.length < 5 * pagination && arr.length != allUserList.length) {
-      int addIndex = 0;
-      addIndex += 5 * pagination - arr.length + add as int;
-      await getList(index: index, isGetOnly5: isGetOnly5, add: addIndex);
-    } else if (arr.length == 5 * pagination ||
-        arr.length == allUserList.length) {
-      print('---------');
-      if (index != -1) {
-        isFriendRequest[index] = false;
-      }
-      userList = arr;
-      isGetList = true;
-      setState(() {});
-    }
-  }
-
-  getFilterList(list) {
-    var arr = [];
-    for (int i = 0; i < list.length; i++) {
-      var f = 0;
-      for (int j = 0; j < allFriendsList.length; j++) {
-        if (allFriendsList[j]['users'].contains(list[i]['userName']) &&
-            allFriendsList[j]['users'].contains(userInfo['userName'])) {
-          f = 1;
-        }
-      }
-      for (int j = 0; j < requestFriends.length; j++) {
-        if (list[i]['userName'] == requestFriends[j]['requester']) {
-          f = 1;
-        }
-      }
-      for (int j = 0; j < sendFriends.length; j++) {
-        if (list[i]['userName'] == sendFriends[j]['receiver']) {
-          f = 1;
-        }
-      }
-
-      if (f == 0) {
-        arr.add(list[i]);
-      }
-    }
-    var arr1 = [];
-    return arr;
-  }
-
+  // send friend request
   requestFriend(receiver, fullName, avatar, index) async {
     var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .where('users', arrayContains: userInfo['userName'])
+        .where('users', arrayContains: receiver)
         .get();
-    var t = 0;
-    var user = [];
-    snapshot.docs.forEach((element) {
-      user = element['users'];
-      if (element['users'].contains(receiver)) {
-        t = 1;
-      }
-    });
-    if (t == 1) {
+    if (snapshot.docs.length > 0) {
       return;
     }
     setState(() {});
     Map<String, dynamic> notificationData;
-    await FirebaseFirestore.instance.collection(Helper.friendField).add({
+    await FirebaseFirestore.instance.collection(Helper.friendCollection).add({
       'requester': userInfo['userName'],
       'receiver': receiver,
       receiver: {'name': fullName, 'avatar': avatar},
@@ -197,24 +148,64 @@ class PeopleController extends ControllerMVC {
         'name': userInfo['fullName'],
         'avatar': userInfo['avatar']
       },
-      'users': [userInfo['userName'], receiver],
+      'users': {userInfo['userName']: true, receiver: true},
       'state': 0
     }).then((value) async => {
-          // await getUserList(index: index),
-          notificationData = {
-            'postType': 'requestFriend',
-            'postId': value.id,
-            'receiver': receiver,
-            'postAdminId': UserManager.userInfo['uid'],
-            'notifyTime': DateTime.now().toString(),
-            'tsNT': DateTime.now().millisecondsSinceEpoch,
-            'userList': [],
-            'timeStamp': FieldValue.serverTimestamp(),
-          },
-          saveNotifications(notificationData),
+          saveNotifications(value.id),
         });
     Helper.showToast('Sent request');
     return "Sent request";
+  }
+
+  getDiscoverList() async {
+    //print(
+    //    "========================================================================call");
+    int pagination = pageIndex;
+    if (userList.length > pagination * 5) return;
+    var lastData = null;
+    if (userList.length > 0) lastData = userList[userList.length - 1];
+
+    while (userList.length <= pagination * 5) {
+      var snapshot = null;
+      if (lastData == null)
+        snapshot = await FirebaseFirestore.instance
+            .collection(Helper.userField)
+            .orderBy('userName')
+            .where('userName', isNotEqualTo: UserManager.userInfo['userName'])
+            .limit(20)
+            .get();
+      else
+        snapshot = await FirebaseFirestore.instance
+            .collection(Helper.userField)
+            .orderBy('userName')
+            .where('userName', isNotEqualTo: UserManager.userInfo['userName'])
+            .startAfterDocument(lastData)
+            .limit(20)
+            .get();
+      List<DocumentSnapshot> newDocumentList = snapshot.docs;
+      for (var elem in newDocumentList) {
+        //check if it is already friends now.
+        Map data = elem.data() as Map;
+        var userName = '';
+        try {
+          userName = data['userName'];
+        } catch (e) {}
+        var snapshotFriend = await FirebaseFirestore.instance
+            .collection(Helper.friendCollection)
+            .where('users.' + UserManager.userInfo['userName'], isEqualTo: true)
+            .where('users' + userName.toString(), isEqualTo: true)
+            //.where('state', isEqualTo: 1)
+            .get();
+        var dataLength = snapshotFriend.docs.length;
+        if (snapshotFriend.docs.length == 0) {
+          print(elem);
+          userList.add(elem);
+        }
+      }
+      lastData = newDocumentList[newDocumentList.length - 1];
+    }
+    isGetList = true;
+    setState(() {});
   }
 
   getReceiveRequestsFriends() async {
@@ -224,16 +215,13 @@ class PeopleController extends ControllerMVC {
 
   getReceiveRequests(name) async {
     var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .where('receiver', isEqualTo: name)
+        .where('state', isEqualTo: 0)
         .get();
+
     var arr = [];
-    for (var element in snapshot.docs) {
-      if (element['state'] == 0) {
-        var j = {...element.data(), 'id': element.id};
-        arr.add(j);
-      }
-    }
+    arr = snapshot.docs.map((doc) => doc.data()).toList();
     allRequestFriends = arr;
     requestFriends = arr;
   }
@@ -245,23 +233,19 @@ class PeopleController extends ControllerMVC {
 
   getSendRequests(name) async {
     var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .where('requester', isEqualTo: name)
+        .where('state', isEqualTo: 0)
         .get();
     var arr = [];
-    snapshot.docs.forEach((element) {
-      if (element['state'] == 0) {
-        var j = {...element.data(), 'id': element.id};
-        arr.add(j);
-      }
-    });
+    arr = snapshot.docs.map((doc) => doc.data()).toList();
     allSendFriends = arr;
     sendFriends = arr;
   }
 
   confirmFriend(id, key) async {
     await FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .doc(id)
         .update({'state': 1});
     await getReceiveRequestsFriends();
@@ -269,7 +253,7 @@ class PeopleController extends ControllerMVC {
 
   deleteFriend(id) async {
     await FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .doc(id)
         .delete();
     await getReceiveRequestsFriends();
@@ -277,12 +261,12 @@ class PeopleController extends ControllerMVC {
 
   cancelFriend(name) async {
     await FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .where('users', arrayContains: userInfo['userName'])
         .get()
         .then((value) => {
               FirebaseFirestore.instance
-                  .collection(Helper.friendField)
+                  .collection(Helper.friendCollection)
                   .doc(value.docs
                       .where((element) => element['users'].contains(name))
                       .toList()[0]
@@ -293,7 +277,7 @@ class PeopleController extends ControllerMVC {
 
   Future<int> getRelation(name, friendName) async {
     var getDocs = await FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .where('users', arrayContains: name)
         .get();
     var getData = getDocs.docs
@@ -309,6 +293,7 @@ class PeopleController extends ControllerMVC {
   }
 
   fieldSearch(Map search) async {
+    /*
     var arr = [];
     var arr1 = [];
     print(search);
@@ -331,7 +316,7 @@ class PeopleController extends ControllerMVC {
         });
       });
       if (t == 0) {
-        await getList();
+        await getDiscoverList();
         isSearch = false;
         return;
       } else {
@@ -403,6 +388,7 @@ class PeopleController extends ControllerMVC {
       }
       sendFriends = arr1;
     }
+    */
     setState(() {});
   }
 }

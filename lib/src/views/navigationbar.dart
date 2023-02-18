@@ -84,7 +84,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       setState(() {});
     });
     final Stream<QuerySnapshot> friendStrem = FirebaseFirestore.instance
-        .collection(Helper.friendField)
+        .collection(Helper.friendCollection)
         .where('receiver', isEqualTo: userInfo['userName'])
         .snapshots();
     friendStrem.listen((event) {
