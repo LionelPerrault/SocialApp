@@ -95,12 +95,14 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     minimumSize: const Size(240, 42),
                     maximumSize: const Size(240, 42),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {});
-                    con.addNewPosts(newPostNum).then((value) {
-                      newPostNum = 0;
-                      setState(() {});
-                    });
+                    loadingFlag = true;
+                    await con.addNewPosts(newPostNum);
+                    //await con.getAllPost();
+                    newPostNum = 0;
+                    loadingFlag = false;
+                    setState(() {});
                   },
                   child: Column(
                     children: [

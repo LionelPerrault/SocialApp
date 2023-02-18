@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as PPath;
+
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -45,6 +47,16 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   String checkLocation = '';
   String pollQuestion = '';
   List<String> pollOption = [];
+  bool emojiShowing = false;
+
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   late PostController con;
   late List<Map> mindPostCase = [
     {
@@ -132,55 +144,70 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   ];
 
   List<Map> activityCase = [
-    {'label': 'Feeling', 'svg': '', 'subLabel': 'How are you feeling?'},
+    {
+      'label': 'Feeling',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Ffeeling_post.svg?alt=media',
+      'subLabel': 'How are you feeling?'
+    },
     {
       'label': 'Listening To',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fmusic_file.svg?alt=media',
       'subLabel': 'What are you listening to?',
     },
     {
       'label': 'Watching',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fmovies.svg?alt=media',
       'subLabel': 'What are you watching?',
     },
     {
       'label': 'Playing',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgames.svg?alt=media',
       'subLabel': 'What are you playing?',
     },
     {
       'label': 'Eating',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fcookie.svg?alt=media',
       'subLabel': 'What are you eating?',
     },
     {
       'label': 'Drinking',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2FdayTimeMessage%2Fnight.svg?alt=media',
       'subLabel': 'What are you drinking?',
     },
     {
       'label': 'Traveling To',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgeolocation.svg?alt=media',
       'subLabel': 'Where are you traveling to?',
     },
     {
       'label': 'Reading',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Farticle.svg?alt=media',
       'subLabel': 'What are you reading?',
     },
     {
       'label': 'Attending',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fsocial.svg?alt=media',
       'subLabel': 'What are you attending?',
     },
     {
       'label': 'Celebrating',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgifts.svg?alt=media',
       'subLabel': 'What are you celebrating?',
     },
     {
       'label': 'Looking For',
-      'svg': '',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsearch.svg?alt=media',
       'subLabel': 'What are you looking for?',
     },
   ];
@@ -249,6 +276,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     nowPost = 'Upload Audio';
     setState(() {});
     uploadReady('audio');
+    postAudio = 'loading';
   }
 
   feelingReady() {
@@ -280,13 +308,15 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   post() async {
-    if (nowPost == '') {
-      return;
-    }
+    // if (nowPost == '') {
+
+    //   return;
+    // }
     setState(() {});
-    String postCase = '';
+    String postCase = 'normal';
+
     var postPayload;
-    String header = '';
+    String header = _controller.text;
     switch (nowPost) {
       case 'Upload Photos':
         if (postPhoto.isEmpty) {
@@ -340,18 +370,22 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         postPayload = postAudio;
         break;
       default:
-        return;
+        postCase = 'normal';
+        postPayload = null;
     }
     postLoading = true;
+
     await con
         .savePost(postCase, postPayload, dropdownValue, header: header)
         .then((value) {
       print('after');
-      postLoading = false;
+
       nowPost = '';
       postPhoto = [];
       postAudio = '';
-      setState(() {});
+      setState(() {
+        postLoading = false;
+      });
     });
   }
 
@@ -399,7 +433,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     child: Container(
                   padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
                   child: TextField(
-                    controller: null,
+                    controller: _controller,
                     // cursorColor: Colors.white,
                     focusNode: _focus,
                     style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
@@ -414,12 +448,60 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     ),
                   ),
                 )),
-                Container(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: const Icon(Icons.emoji_emotions_outlined),
-                )
+                InkWell(
+                    onTap: () {
+                      //checkOption(label);
+                      setState(() {
+                        emojiShowing = !emojiShowing;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: const Icon(Icons.emoji_emotions_outlined),
+                    )),
               ],
             ),
+          ),
+          Offstage(
+            offstage: !emojiShowing,
+            child: SizedBox(
+                height: 250,
+                child: EmojiPicker(
+                  textEditingController: _controller,
+                  config: Config(
+                    columns: 7,
+                    // Issue: https://github.com/flutter/flutter/issues/28894
+                    emojiSizeMax: 32 *
+                        (foundation.defaultTargetPlatform == TargetPlatform.iOS
+                            ? 1.30
+                            : 1.0),
+                    verticalSpacing: 0,
+                    horizontalSpacing: 0,
+                    gridPadding: EdgeInsets.zero,
+                    initCategory: Category.RECENT,
+                    bgColor: const Color(0xFFF2F2F2),
+                    indicatorColor: Colors.blue,
+                    iconColor: Colors.grey,
+                    iconColorSelected: Colors.blue,
+                    backspaceColor: Colors.blue,
+                    skinToneDialogBgColor: Colors.white,
+                    skinToneIndicatorColor: Colors.grey,
+                    enableSkinTones: true,
+                    showRecentsTab: true,
+                    recentsLimit: 28,
+                    replaceEmojiOnLimitExceed: false,
+                    noRecents: const Text(
+                      'No Recents',
+                      style: TextStyle(fontSize: 20, color: Colors.black26),
+                      textAlign: TextAlign.center,
+                    ),
+                    loadingIndicator: const SizedBox.shrink(),
+                    tabIndicatorAnimDuration: kTabScrollDuration,
+                    categoryIcons: const CategoryIcons(),
+                    buttonMode: ButtonMode.MATERIAL,
+                    checkPlatformCompatibility: true,
+                  ),
+                )),
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
           Column(
@@ -489,7 +571,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                             ],
                                           ),
                                         )
-                                      : postAudio == ''
+                                      : postAudio == '' ||
+                                              postAudio == 'loading'
                                           ? const SizedBox()
                                           : Container(
                                               child: Row(
@@ -578,11 +661,17 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               ),
               Row(
                 children: [
-                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  //  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  SizedBox(
+                    width: SizeConfig(context).screenWidth >
+                            SizeConfig.smallScreenSize
+                        ? 530 / 4.5
+                        : 350 / 4.5,
+                  ),
                   Expanded(
                     child: SizedBox(
                       width: 100,
-                      height: 38,
+                      height: 42,
                       child: DecoratedBox(
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 17, 205, 239),
@@ -593,7 +682,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                     0.1), //bordrder raiuds of dropdown button
                           ),
                           child: Padding(
-                              padding: const EdgeInsets.only(top: 7, left: 15),
+                              padding: const EdgeInsets.only(top: 7, left: 5),
                               child: DropdownButton(
                                 value: dropdownValue,
                                 // hint: Container(
@@ -700,7 +789,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     onPressed: () {
                       postLoading ? () {} : post();
                     },
-                    child: postLoading
+                    child: (postAudio == 'loading')
                         ? Container(
                             width: 40,
                             height: 40,
@@ -826,6 +915,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         (e) => PopupMenuItem(
                           value: {
                             'label': e['label'],
+                            'svg': e['svg'],
                             'subLabel': e['subLabel'],
                           },
                           child: Row(
@@ -833,7 +923,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                               const Padding(
                                   padding: EdgeInsets.only(left: 12.0)),
                               SvgPicture.network(
-                                'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda',
+                                e['svg'],
                                 width: 30,
                               ),
                               const Padding(
@@ -1074,7 +1164,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   Future<XFile> chooseImage() async {
     final _imagePicker = ImagePicker();
     XFile? pickedFile;
-    if (kIsWeb) {
+    if (foundation.kIsWeb) {
       pickedFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
       );
@@ -1100,8 +1190,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.audio);
     if (result != null) {
-      if (kIsWeb) {
-        Uint8List? uploadfile = result.files.single.bytes;
+      if (foundation.kIsWeb) {
+        foundation.Uint8List? uploadfile = result.files.single.bytes;
         if (uploadfile != null) {
           pickedFile = XFile.fromData(uploadfile);
         } else {
@@ -1127,9 +1217,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     var uploadTask;
     Reference _reference;
     try {
-      if (kIsWeb) {
+      if (foundation.kIsWeb) {
         //print("read bytes");
-        Uint8List bytes = await pickedFile!.readAsBytes();
+        foundation.Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
         _reference = await _firebaseStorage
             .ref()

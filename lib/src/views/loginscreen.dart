@@ -25,9 +25,9 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends mvc.StateMVC<LoginScreen> {
   bool isRememberme = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  List<TextEditingController> _controllers =
+  final List<TextEditingController> _controllers =
       List.generate(6, (_) => TextEditingController());
-  List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
+  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
   String _verificationCode = '';
   String password = '';
   String email = '';
@@ -41,63 +41,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
   }
 
   late UserController con;
-
-  // void onCodeInput() async {
-  //   if (verificationCode.length == 6) {
-  //     var verificaCode = verificationCode.toString();
-  //     print(verificaCode);
-  //     con.loginWithVerificationCode(verificaCode, context).then((value) => {
-  //           if (!value) {Helper.failAlert('Verification Code is incorrect!')}
-  //         });
-  //   }
-  // }
-
-  // List<Widget> getField() {
-  //   final List<Widget> result = <Widget>[];
-  //   for (int i = 1; i <= 6; i++) {
-  //     result.add(
-  //       ShakeAnimatedWidget(
-  //         enabled: false,
-  //         duration: const Duration(
-  //           milliseconds: 100,
-  //         ),
-  //         shakeAngle: Rotation.deg(
-  //           z: 2,
-  //         ),
-  //         curve: Curves.linear,
-  //         child: Column(
-  //           children: <Widget>[
-  //             if (verificationCode.length >= i)
-  //               Padding(
-  //                 padding: const EdgeInsets.symmetric(
-  //                   horizontal: 5.0,
-  //                 ),
-  //                 child: Text(
-  //                   verificationCode[i - 1],
-  //                   style: const TextStyle(
-  //                     color: Colors.white,
-  //                     fontSize: 20,
-  //                     fontWeight: FontWeight.w700,
-  //                   ),
-  //                 ),
-  //               ),
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(
-  //                 horizontal: 5.0,
-  //               ),
-  //               child: Container(
-  //                 height: 5.0,
-  //                 width: 20.0,
-  //                 color: Colors.white,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     );
-  //   }
-  //   return result;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -200,17 +143,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                     email = value;
                                     setState(() {});
                                   }),
-                              // input(
-                              //     label: 'Password',
-                              //     obscureText: true,
-                              //     icon: const Icon(
-                              //       Icons.key,
-                              //       color: Colors.white,
-                              //     ),
-                              //     onchange: (value) async {
-                              //       password = value;
-                              //       setState(() {});
-                              //     }),
                               passwordTextField(
                                   obscureText: isObscure,
                                   label: 'Password',
@@ -429,14 +361,11 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                               filled: true,
                               fillColor: Color.fromRGBO(35, 35, 35, 0.7)),
                           onChanged: (value) {
-                            print(value);
                             if (value.isNotEmpty) {
                               setState(() {
                                 _verificationCode += value;
                                 _verificationCode.length;
-                                print(_verificationCode);
                                 if (_verificationCode.length == 6) {
-                                  print(_verificationCode);
                                   con
                                       .loginWithVerificationCode(
                                           _verificationCode, context)
@@ -472,38 +401,12 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                       .requestFocus(_focusNodes[0]);
                                 }
                               });
-                              print(_verificationCode);
                             }
                           },
                         ),
                       ),
                   ],
                 )
-
-                // Opacity(
-                //   opacity: 1.0,
-                //   child: TextFormField(
-                //     controller: _controller,
-                //     focusNode: _textNode,
-                //     keyboardType: TextInputType.number,
-                //     onChanged: onCodeInput,
-                //     maxLength: 6,
-                //     decoration: const InputDecoration(
-                //         border: OutlineInputBorder(),
-                //         filled: true,
-                //         fillColor: Colors.blue),
-                //     style: const TextStyle(
-                //         color: Colors.white, backgroundColor: Colors.white),
-                //   ),
-                // ),
-                // Positioned(
-                //   // bottom: 0,
-                //   child: Row(
-                //     crossAxisAlignment: CrossAxisAlignment.end,
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: getField(),
-                //   ),
-                // )
               ],
             )),
         Container(
@@ -538,12 +441,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
           child: MyPrimaryButton(
             color: Colors.white,
             buttonName: "Back",
-            onPressed: () => {
-              // if (!con.isSendLoginedInfo)
-              //   con.loginWithEmail(
-              //       context, email, password, isRememberme)
-              // con.createPassword()
-            },
+            onPressed: () => {},
           ),
         ),
       ],

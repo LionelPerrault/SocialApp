@@ -30,7 +30,7 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> formatDate(d) async {
-    String trDate = '';
+    String trDate = 'Just Now';
     try {
       var time = changeTimeType(d: d);
       var nowTimeStamp = DateTime.now().millisecondsSinceEpoch;
@@ -1264,7 +1264,6 @@ class PostController extends ControllerMVC {
         // }
       } else {
         postData = allPosts[i]['value'];
-        print("normal postdata:" + postData);
       }
       var adminSnap =
           await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
@@ -1286,7 +1285,7 @@ class PostController extends ControllerMVC {
         posts = [eachPost, ...posts];
       }
     }
-    setState(() {});
+    //setState(() {});
     return true;
   }
 
@@ -1299,11 +1298,16 @@ class PostController extends ControllerMVC {
   }
 
   deletePost(uid) async {
-    await Helper.postCollection.doc(uid).delete();
+    Helper.postCollection.doc(uid).delete();
+  }
+
+  deletePostFromTimeline(uid) {
+    posts.removeWhere((item) => item['id'] == uid);
   }
 
   deleteProduct(uid) async {
     await Helper.productsData.doc(uid).delete();
+    posts.removeWhere((item) => item['id'] == uid);
   }
 
   String postId = '';
@@ -1344,7 +1348,8 @@ class PostController extends ControllerMVC {
     var likesArray = [];
     var myLikes = {};
     print(allLikesofProduct);
-    allLikesofProduct!.forEach((key, value) async {
+    if (allLikesofProduct == null) return [];
+    allLikesofProduct.forEach((key, value) async {
       var userInfo = await ProfileController().getUserInfo(key);
       if (key == UserManager.userInfo['uid']) {
         myLikes = {
@@ -1409,31 +1414,8 @@ class PostController extends ControllerMVC {
         .orderBy('timeStamp', descending: true)
         .get();
     var comment = [];
-    print(snapshot.docs[0].data());
+    if (snapshot.docs.isEmpty) return [];
     for (int i = 0; i < snapshot.docs.length; i++) {
-      // var aa = snapshot.docs[i]['likes'];
-      // commentLikesCount[snapshot.docs[i].id] = [];
-      // for (int j = 0; j < aa.length; j++) {
-      //   if (userInfo['uid'] == aa[j]['uid']) {
-      //     commentLikes[snapshot.docs[i].id] = aa[j]['likes'];
-      //   }
-      //   var arr = commentLikesCount[snapshot.docs[i].id];
-
-      //   var a = [];
-      //   var s = arr.where((val) => val['likes'] == aa[j]['likes']).toList();
-      //   if (s.isEmpty) {
-      //     a.add({'likes': aa[j]['likes'], 'count': 1});
-      //   }
-      //   for (int k = 0; k < arr.length; k++) {
-      //     var count = arr[k]['count'];
-      //     if (arr[k]['likes'] == aa[j]['likes']) {
-      //       count += 1;
-      //     }
-      //     a.add({'likes': arr[k]['likes'], 'count': count});
-      //   }
-      //   commentLikesCount[snapshot.docs[i].id] = a;
-      // }
-      print(commentLikesCount[snapshot.docs[i].id]);
       var userINFO = await ProfileController()
           .getUserInfo(snapshot.docs[i]['data']['uid']);
       var reply = [];
@@ -1447,7 +1429,6 @@ class PostController extends ControllerMVC {
         'reply': reply
       });
     }
-    print('this is comment $comment');
     return comment;
   }
 

@@ -7,9 +7,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
-import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
 
 class NewMessageScreen extends StatefulWidget {
   Function onBack;
@@ -52,7 +49,6 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
             onChanged: ((value) async {
               var list = [];
               if (value == '') {
-                print('$value');
                 searchUser = [];
                 widget.onBack(false);
                 setState(
@@ -77,7 +73,6 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
                       }
                       if (con.chatUserList.length - 1 == j && flag != 1) {
                         list.add(allUsersList[i]);
-                        print(allUsersList[i]['userName']);
                       }
                     }
                   }

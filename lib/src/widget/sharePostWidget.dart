@@ -76,7 +76,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
     return Column(
       children: [
         Container(
-          height: SizeConfig(context).screenHeight - 300,
+          height: SizeConfig(context).screenHeight - 400,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -228,6 +228,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
         ),
         Container(
           width: 400,
+          height: 50,
           margin: const EdgeInsets.only(right: 20, bottom: 10),
           child: Row(
             children: [

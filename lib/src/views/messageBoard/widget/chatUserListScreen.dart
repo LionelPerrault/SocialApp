@@ -35,7 +35,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
     super.initState();
     scrollController = ScrollController();
     if (!mounted) {
-      print('mounted');
+      return;
     }
     final Stream<QuerySnapshot> stream = con.getChatUsers();
     stream.listen((event) {

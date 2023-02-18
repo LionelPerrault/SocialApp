@@ -212,12 +212,6 @@ class RelysiaManager {
                 next = 'null';
               } else {
                 next = response['data']['meta']['nextPageToken'].toString();
-                // next = (response['data']['histories'].length).toString();
-                print('next page next page next page next page next page');
-                print(next);
-                print(transHistory);
-                print(transHistory);
-                // print(next);
               }
               result = true;
             } else {

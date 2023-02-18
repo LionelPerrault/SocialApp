@@ -38,6 +38,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   @override
   void initState() {
     add(widget.con);
+
     con = controller as MessageController;
     if (widget.chatUser != "") {
       checkHistoryChat();
@@ -56,7 +57,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     bool exist = false;
 
     for (QueryDocumentSnapshot document in documents) {
-      if (document.get('users')[0] == value['userName'] ||
+      if (document.get('users')[0] == UserManager.userInfo['userName'] &&
           document.get('users')[1] == value['userName']) {
         exist = true;
         con.docId = document.id;
@@ -76,7 +77,6 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       con.newRLastName = value['lastName'];
       con.chatUserFullName = value['firstName'] + ' ' + value['lastName'];
       con.isMessageTap = "new";
-      con.setState(() {});
     }
     isCheckingChatHistory = false;
     setState(() {});
@@ -106,14 +106,16 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth
           : SizeConfig(context).screenWidth - SizeConfig.leftBarWidth,
-      height: UserManager.userInfo['isVerify']
+      height: UserManager.userInfo['isVerify'] == false ||
+              UserManager.userInfo['isVerify'].toString().toLowerCase() ==
+                  'null'
           ? (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 30)
           : (SizeConfig(context).screenHeight -
               SizeConfig.navbarHeight -
               verifyAlertToastHeight -
               30),
       child: SingleChildScrollView(
-        child: widget.chatUser == ''
+        child: widget.chatUser.isEmpty
             ? Column(
                 children: [
                   con.isMessageTap == 'all-list'
@@ -168,13 +170,33 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                 ? const SizedBox()
                 : Column(children: [
                     ChatScreenHeader(),
-                    ChatMessageListScreen(
-                      showWriteMessage: true,
-                      onBack: (value) {
-                        con.isShowEmoticon = value;
-                        setState(() {});
-                      },
-                    ),
+                    con.isMessageTap == 'new'
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: UserManager.userInfo['isVerify']
+                                    ? SizeConfig(context).screenHeight - 250
+                                    : SizeConfig(context).screenHeight -
+                                        250 -
+                                        verifyAlertToastHeight),
+                            child: WriteMessageScreen(
+                              type: 'new',
+                              goMessage: (value) {
+                                con.isMessageTap = value;
+                                if (value == 'message-list') {
+                                  isShowChatUserList = false;
+                                }
+                                setState(() {});
+                                con.setState(() {});
+                              },
+                            ),
+                          )
+                        : ChatMessageListScreen(
+                            showWriteMessage: true,
+                            onBack: (value) {
+                              con.isShowEmoticon = value;
+                              setState(() {});
+                            },
+                          ),
                     Padding(
                       padding: EdgeInsets.only(
                           top: UserManager.userInfo['isVerify']

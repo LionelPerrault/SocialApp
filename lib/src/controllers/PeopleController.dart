@@ -151,7 +151,22 @@ class PeopleController extends ControllerMVC {
       'users': {userInfo['userName']: true, receiver: true},
       'state': 0
     }).then((value) async => {
+<<<<<<< HEAD
           saveNotifications(value.id),
+=======
+          // await getUserList(index: index),
+          notificationData = {
+            'postType': 'requestFriend',
+            'postId': value.id,
+            'receiver': receiver,
+            'postAdminId': UserManager.userInfo['uid'],
+            'notifyTime': DateTime.now().toString(),
+            'tsNT': DateTime.now().millisecondsSinceEpoch,
+            'userList': [],
+            'timeStamp': FieldValue.serverTimestamp(),
+          },
+          saveNotifications(notificationData),
+>>>>>>> efd832309fac23c7bffab11efb7d591bdeb62401
         });
     Helper.showToast('Sent request');
     return "Sent request";

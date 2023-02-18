@@ -425,114 +425,100 @@ class SettingShnatterTokenScreenState
                                 padding: const EdgeInsets.all(5),
                                 alignment: Alignment.center,
                                 child: Column(children: [
-                                  Container(
-                                      child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                        dividerColor: Colors.transparent),
-                                    child: ExpansionTile(
-                                      tilePadding: const EdgeInsets.only(
-                                          top: 10, bottom: 10, right: 10),
-                                      title: Row(
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                child: Text(
-                                                  (data['from'] !=
-                                                          UserManager.userInfo[
-                                                              'paymail']
-                                                      ? data['sender']
-                                                      : data['recipient']),
-                                                  style: const TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                data['from'] !=
-                                                        UserManager
-                                                            .userInfo['paymail']
-                                                    ? 'received'
-                                                    : 'sent',
-                                                style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 12),
-                                              ),
-                                              formatDate(data['sendtime']),
-                                            ],
-                                          ),
                                           Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 15),
                                             child: Text(
-                                              data['notes'].toString().length >
-                                                      65
-                                                  ? '${data['notes'].toString().substring(0, 65)}...'
-                                                  : data['notes'],
-                                              maxLines: 3,
+                                              (data['from'] !=
+                                                      UserManager
+                                                          .userInfo['paymail']
+                                                  ? data['sender']
+                                                  : data['recipient']),
                                               style: const TextStyle(
-                                                  fontSize: 13,
                                                   color: Colors.black),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      trailing:
-                                          Wrap(spacing: 6, children: <Widget>[
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 2),
-                                          child: Text(
+                                          Text(
                                             data['from'] !=
                                                     UserManager
                                                         .userInfo['paymail']
-                                                ? '+${data['balance'].toString()}'
-                                                : '-${data['balance'].toString()}',
-                                            style: TextStyle(
-                                                color: data['from'] !=
-                                                        UserManager
-                                                            .userInfo['paymail']
-                                                    ? Colors.green
-                                                    : Colors.red),
+                                                ? 'received'
+                                                : 'sent',
+                                            style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 12),
                                           ),
+                                          formatDate(data['sendtime']),
+                                        ],
+                                      ),
+                                      Flexible(
+                                          child: Container(
+                                        margin: const EdgeInsets.only(left: 15),
+                                        child: Text(
+                                          data['notes'].toString().length > 65
+                                              ? '${data['notes'].toString().substring(0, 65)}...'
+                                              : data['notes'],
+                                          maxLines: 3,
+                                          style: const TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 13,
+                                              color: Colors.black),
                                         ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            var url = Uri.parse(
-                                                'https://whatsonchain.com/tx/${data['txId']}');
-                                            if (await canLaunchUrl(url)) {
-                                              await launchUrl(
-                                                url,
-                                                mode: LaunchMode
-                                                    .externalApplication,
-                                              );
-                                            } else {
-                                              throw 'Could not launch $url';
-                                            }
-                                          },
-                                          child: const Icon(
-                                            Icons.arrow_forward,
-                                            color: Color.fromRGBO(
-                                                200, 200, 200, 1),
+                                      )),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 2),
+                                            child: Text(
+                                              data['from'] !=
+                                                      UserManager
+                                                          .userInfo['paymail']
+                                                  ? '+${data['balance'].toString()}'
+                                                  : '-${data['balance'].toString()}',
+                                              style: TextStyle(
+                                                  color: data['from'] !=
+                                                          UserManager.userInfo[
+                                                              'paymail']
+                                                      ? Colors.green
+                                                      : Colors.red),
+                                            ),
                                           ),
-                                        )
-                                      ]),
-                                      // children: [
-                                      //   isShowExpandingNotes
-                                      //       ? Padding(
-                                      //           padding: EdgeInsets.all(10),
-                                      //           child: Text(
-                                      //             t['notes'],
-                                      //             style: TextStyle(fontSize: 13),
-                                      //           ))
-                                      //       : Container()
-                                      // ],
-                                    ),
-                                  )),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              var url = Uri.parse(
+                                                  'https://whatsonchain.com/tx/${data['txId']}');
+                                              if (await canLaunchUrl(url)) {
+                                                await launchUrl(
+                                                  url,
+                                                  mode: LaunchMode
+                                                      .externalApplication,
+                                                );
+                                              } else {
+                                                throw 'Could not launch $url';
+                                              }
+                                            },
+                                            child: const Icon(
+                                              Icons.arrow_forward,
+                                              color: Color.fromRGBO(
+                                                  200, 200, 200, 1),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                   Container(
                                     height: 1,
                                     color: const Color.fromARGB(
