@@ -557,7 +557,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 onChanged: (value) {
                   onChange(value);
                 },
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12, fontFamily: 'Hind'),
                 decoration: const InputDecoration(
                     hintText: 'Write a comment',
                     hintStyle: TextStyle(fontSize: 12, fontFamily: 'Hind'),
