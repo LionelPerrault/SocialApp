@@ -56,7 +56,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     bool exist = false;
 
     for (QueryDocumentSnapshot document in documents) {
-      if (document.get('users')[0] == value['userName'] ||
+      if (document.get('users')[0] == UserManager.userInfo['userName'] &&
           document.get('users')[1] == value['userName']) {
         exist = true;
         con.docId = document.id;
@@ -76,7 +76,6 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       con.newRLastName = value['lastName'];
       con.chatUserFullName = value['firstName'] + ' ' + value['lastName'];
       con.isMessageTap = "new";
-      con.setState(() {});
     }
     isCheckingChatHistory = false;
     setState(() {});
@@ -113,7 +112,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
               verifyAlertToastHeight -
               30),
       child: SingleChildScrollView(
-        child: widget.chatUser == ''
+        child: widget.chatUser != ''
             ? Column(
                 children: [
                   con.isMessageTap == 'all-list'
