@@ -101,6 +101,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                         250 -
                                         verifyAlertHeight,
                                 child: ListView.builder(
+                                  controller: _scrollController,
                                   itemCount: messageList.length,
                                   itemBuilder: (context, index) {
                                     var list = messageList[index].data();
