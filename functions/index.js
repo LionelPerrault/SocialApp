@@ -28,9 +28,8 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
+    const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
     if (snapshot.data().postType == 'requestFriend') {
-      const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
-      
       const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
       
       if (receiverSnapShot.docs.length !=0){
