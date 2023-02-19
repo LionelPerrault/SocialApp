@@ -28,37 +28,61 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
-    const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
-    
-    const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
-    functions.logger.log(receiverSnapShot.docs[0].id);
-    if (receiverSnapShot.docs.length !=0){
-      const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
-      const tokens = [];
-      userTokens.forEach((tokenDoc) => {
-        tokens.push(tokenDoc.data().token);
-      });
-      if (tokens.length != 0) {
-        try{
-        const payload = {
-            notification: {
-              title: `Friend Request`,
-              body:`${senderSnapShot.data().userName} sent you friend reqesst!`,
-              icon: senderSnapShot.data().avatar || '/images/profile_placeholder.png',
-              click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+    if (snapshot.data().postType == 'requestFriend') {
+      const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
+      
+      const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
+      
+      if (receiverSnapShot.docs.length !=0){
+        const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
+        const tokens = [];
+        userTokens.forEach((tokenDoc) => {
+          tokens.push(tokenDoc.data().token);
+        });
+        if (tokens.length != 0) {
+          try{
+          const payload = {
+              notification: {
+                title: `Friend Request`,
+                body:`${senderSnapShot.data().userName} sent you friend reqesst!`,
+                icon: senderSnapShot.data().avatar || '/images/profile_placeholder.png',
+                click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+              }
             }
+            await admin.messaging().sendToDevice(tokens, payload);        
+          } catch(error) {
+            functions.logger.log("error occurs while executing",error);
           }
-          await admin.messaging().sendToDevice(tokens, payload);        
-        } catch(error) {
-          functions.logger.log("error occurs while executing",error);
         }
       }
     }
+
+    else {
+      const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
+        const tokens = [];
+        userTokens.forEach((tokenDoc) => {
+          tokens.push(tokenDoc.data().token);
+        });
+        if (tokens.length != 0) {
+          try{
+          const payload = {
+              notification: {
+                title: snapshot.data().postType,
+                body:`${senderSnapShot.data().userName} created new ${snapshot.data().postType}`,
+                icon: senderSnapShot.data().avatar || '/images/profile_placeholder.png',
+                click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+              }
+            }
+            await admin.messaging().sendToDevice(tokens, payload);        
+          } catch(error) {
+            functions.logger.log("error occurs while executing",error);
+          }
+        }
+      }
   });
   
   exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}/content/{contentId}').onCreate(
     async (snapshot) => {
-      functions.logger.log("????????????????????????????????");
       const senderSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().sender).get()
       const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
 
@@ -70,7 +94,6 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
         });
         if (tokens.length != 0) {
           try{
-          functions.logger.log("???????seding messages????????????????????");
           const payload = {
               notification: {
                 title: `New Message from ${senderSnapShot.docs[0].data().userName}`,
