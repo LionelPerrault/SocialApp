@@ -58,7 +58,7 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
     }
 
     else {
-      const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '==', receiverSnapShot.docs[0].id).get();
+      const userTokens = await admin.firestore().collection('FCMToken').where('userDocId', '!=', snapshot.data().postAdminId).get();
         const tokens = [];
         userTokens.forEach((tokenDoc) => {
           tokens.push(tokenDoc.data().token);
