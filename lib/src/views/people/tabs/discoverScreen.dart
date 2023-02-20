@@ -27,8 +27,8 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
   Color color = const Color.fromRGBO(230, 236, 245, 1);
   @override
   void initState() {
-    super.initState();
     add(widget.con);
+    super.initState();
     con = controller as PeopleController;
     con.getUserList();
   }

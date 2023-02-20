@@ -31,7 +31,13 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
   void initState() {
     add(widget.con);
     con = controller as PeopleController;
+    updateBadge();
     super.initState();
+  }
+
+  Future<void> updateBadge() async {
+    await con.getSendRequest();
+    setState(() {});
   }
 
   @override

@@ -38,7 +38,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     super.initState();
     add(widget.con);
     con = controller as PeopleController;
-
+    con.getFriends('');
     _gotoHome();
   }
 
@@ -291,9 +291,9 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
   }
 
   Widget friendCell(value) {
-    var friendUserName = value['users']
-        .where((val) => val != profileCon.viewProfileUserName)
-        .toList()[0];
+    var friendUserName = value['requester'];
+    if (friendUserName == profileCon.viewProfileUserName)
+      friendUserName = value['receiver'];
     var friendFullName = value[friendUserName]['name'];
     var friendAvatar = value[friendUserName]['avatar'];
     return Container(
