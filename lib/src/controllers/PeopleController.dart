@@ -361,7 +361,7 @@ class PeopleController extends ControllerMVC {
     if (search['userName'] != null) {
       await getUserListByUserName(search['userName']);
     } else {
-      await getDiscoverList();
+      await getUserList();
     }
     /*
     var arr = [];
