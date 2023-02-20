@@ -276,7 +276,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     nowPost = 'Upload Audio';
     setState(() {});
     uploadReady('audio');
-    postAudio = 'loading';
   }
 
   feelingReady() {
@@ -571,8 +570,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                             ],
                                           ),
                                         )
-                                      : postAudio == '' ||
-                                              postAudio == 'loading'
+                                      : postLoading
                                           ? const SizedBox()
                                           : Container(
                                               child: Row(
@@ -602,6 +600,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                                     tooltip: 'Delete',
                                                     onPressed: () {
                                                       postAudio = '';
+                                                      postLoading = false;
                                                       nowPost = '';
                                                       setState(() {});
                                                     },
@@ -789,7 +788,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     onPressed: () {
                       postLoading ? () {} : post();
                     },
-                    child: (postAudio == 'loading')
+                    child: (postLoading)
                         ? Container(
                             width: 40,
                             height: 40,
@@ -1249,6 +1248,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           postAudio = downloadUrl;
           setState(() {});
         }
+        postLoading = false;
         print(postAudio);
       });
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
@@ -1300,6 +1300,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       pickedFile = await chooseAudio();
     }
     if (type != 'photo' && pickedFile.path == '') return;
+    postLoading = true;
     uploadFile(pickedFile, type);
   }
 }
