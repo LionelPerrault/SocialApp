@@ -345,7 +345,28 @@ class PeopleController extends ControllerMVC {
     }
   }
 
+  getUserListByUserName(String userName) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('userName', isEqualTo: userName)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      userList = [];
+      for (var elem in snapshot.docs) {
+        userList.add(elem.data());
+      }
+
+      setState(() {});
+    }
+  }
+
   fieldSearch(Map search) async {
+    if (search['userName'] != null) {
+      await getUserListByUserName(search['userName']);
+    } else {
+      await getUserList();
+    }
     /*
     var arr = [];
     var arr1 = [];
