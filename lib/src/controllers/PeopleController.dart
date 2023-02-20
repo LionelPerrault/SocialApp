@@ -81,6 +81,10 @@ class PeopleController extends ControllerMVC {
   }
 
   void disposeAll() {
+    userList = [];
+    pageIndex = 1;
+    requestFriends = [];
+    sendFriends = [];
     //subscription.cancel();
     isListenAlready = false;
     isLocked = false;
