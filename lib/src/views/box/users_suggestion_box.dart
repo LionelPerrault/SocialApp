@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
@@ -101,7 +102,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                           con.userList.length < 5 ? con.userList.length : 5,
                       itemBuilder: (context, index) {
                         var item = con.userList[index];
-                        var itemData = item.data() as Map;
+                        var itemData = item as Map;
                         return Material(
                             child: ListTile(
                           contentPadding:
@@ -137,78 +138,80 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                             ),
                           ),
                           trailing: ElevatedButton(
-                            onPressed: () async {
-                              // print(con.isFriendRequest);
-
-                              setState(() {});
-                              if (con.isFriendRequest[index] == false) {
-                                con.isFriendRequest[index] = null;
-                                await con.cancelFriend(itemData['userName']);
-                              } else {
-                                con.isFriendRequest[index] = true;
-                                await con.requestFriend(
-                                    itemData['userName'],
-                                    '${itemData['firstName']} ${itemData['lastName']}',
-                                    itemData['avatar'],
-                                    1);
-                                con.isFriendRequest[index] = false;
-                              }
-                              setState(() {});
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 33, 37, 41),
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2.0)),
-                                minimumSize:
-                                    con.isFriendRequest[index] != null &&
-                                            con.isFriendRequest[index]
-                                        ? const Size(60, 35)
-                                        : const Size(80, 35),
-                                maximumSize:
-                                    con.isFriendRequest[index] != null &&
-                                            con.isFriendRequest[index]
-                                        ? const Size(60, 35)
-                                        : const Size(80, 35)),
-                            child: con.isFriendRequest[index] == null
-                                ? Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.person_add_alt_rounded,
+                              onPressed: () async {
+                                if (!itemData.containsKey('state')) {
+                                  itemData['state'] = -1;
+                                  setState(() {});
+                                  await con.requestFriend(item);
+                                  setState(() {});
+                                } else {
+                                  var status = itemData['state'];
+                                  if (status == 0) {
+                                    itemData['state'] = -1;
+                                    setState(() {});
+                                    await con.cancelFriend(item);
+                                    setState(() {});
+                                  }
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 33, 37, 41),
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(2.0)),
+                                  minimumSize: itemData.containsKey('state') &&
+                                          itemData['state'] == -1
+                                      ? const Size(60, 35)
+                                      : const Size(80, 35),
+                                  maximumSize: itemData.containsKey('state') &&
+                                          itemData['state'] == -1
+                                      ? const Size(60, 35)
+                                      : const Size(80, 35)),
+                              child: itemData.containsKey('state') &&
+                                      itemData['state'] == -1
+                                  ? const SizedBox(
+                                      width: 10,
+                                      height: 10,
+                                      child: CircularProgressIndicator(
                                         color: Colors.white,
-                                        size: 18.0,
                                       ),
-                                      Text(' Add',
-                                          style: TextStyle(
+                                    )
+                                  : itemData.containsKey('state') &&
+                                          itemData['state'] == 0
+                                      ? Row(
+                                          children: const [
+                                            Icon(
+                                              FontAwesomeIcons.clock,
                                               color: Colors.white,
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w900)),
-                                    ],
-                                  )
-                                : con.isFriendRequest[index]
-                                    ? const SizedBox(
-                                        width: 10,
-                                        height: 10,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    : Row(
-                                        children: const [
-                                          Icon(
-                                            Icons.timelapse,
-                                            color: Colors.white,
-                                            size: 18.0,
-                                          ),
-                                          Text(' Sent',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w900)),
-                                        ],
-                                      ),
-                          ),
+                                              size: 13,
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 2)),
+                                            Text(' Sent',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w900)),
+                                          ],
+                                        )
+                                      : Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.person_add_alt_rounded,
+                                              color: Colors.white,
+                                              size: 18.0,
+                                            ),
+                                            Text(' Add',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w900)),
+                                          ],
+                                        )),
                         ));
                       },
                       separatorBuilder: (BuildContext context, int index) =>

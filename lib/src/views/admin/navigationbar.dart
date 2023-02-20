@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
@@ -58,14 +59,7 @@ class AdminShnatterNavigationState
   }
 
   Future<void> onLogOut() async {
-    UserManager.isLogined = false;
-    Helper.makeOffline();
-
-    UserManager.userInfo = {};
-
-    await Helper.removeAllPreference();
-    // ignore: use_build_context_synchronously
-    await Navigator.pushReplacementNamed(context, RouteNames.login);
+    await UserController().signOutUser(context);
   }
 
   Widget buildSmallSize() {

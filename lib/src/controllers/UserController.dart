@@ -1,13 +1,11 @@
-// ignore_for_file: unused_local_variable
-
 import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:otp/otp.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
@@ -639,6 +637,20 @@ class UserController extends ControllerMVC {
         handleCodeInApp: true);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return 'ok';
+  }
+
+  signOutUser(context) async {
+    UserManager.isLogined = false;
+    Helper.makeOffline();
+    FirebaseAuth.instance.signOut();
+    UserManager.userInfo = {};
+    setState(() {});
+    PeopleController().disposeAll();
+    await Helper.removeAllPreference();
+    // ignore: use_build_context_synchronously
+    await Navigator.pushReplacementNamed(context, RouteNames.login);
+
+    setState(() {});
   }
 
   createRelysiaAccount(context) async {

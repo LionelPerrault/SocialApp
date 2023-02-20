@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
@@ -21,15 +22,15 @@ class PeopleDiscoverScreen extends StatefulWidget {
 
 class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
   late PeopleController con;
+  bool isShowProgressive = false;
   //route variable
   Color color = const Color.fromRGBO(230, 236, 245, 1);
   @override
   void initState() {
+    super.initState();
     add(widget.con);
     con = controller as PeopleController;
     con.getUserList();
-    con.logsData();
-    super.initState();
   }
 
   Widget searchButton() {
@@ -117,7 +118,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
     // get only pagination list;
     int lastIndex = con.pageIndex * 5;
     if (lastIndex > con.userList.length) lastIndex = con.userList.length;
-    List<DocumentSnapshot> data = con.userList.getRange(0, lastIndex).toList();
+    List data = con.userList.getRange(0, lastIndex).toList();
 
     return con.isGetList
         ? Container(
@@ -156,115 +157,144 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                         ),
                       )
                     : Column(
-                        children: data
-                            .asMap()
-                            .entries
-                            .map((e) => Container(
-                                padding: const EdgeInsets.only(
-                                    top: 10, left: 20, right: 20),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 10)),
-                                          e.value['avatar'] == ''
-                                              ? CircleAvatar(
-                                                  radius: 20,
-                                                  child: SvgPicture.network(
-                                                      Helper.avatar))
-                                              : CircleAvatar(
-                                                  radius: 20,
-                                                  backgroundImage: NetworkImage(
-                                                      e.value['avatar'])),
-                                          Container(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, top: 5),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 11),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text:
-                                                          '${e.value['firstName']} ${e.value['lastName']}',
-                                                      style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 11),
-                                                      recognizer:
-                                                          TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              print(
-                                                                  'visit profile');
-                                                              widget
-                                                                  .routerChange({
-                                                                'router':
-                                                                    RouteNames
-                                                                        .profile,
-                                                                'subRouter': e
-                                                                        .value[
-                                                                    'userName']
-                                                              });
-                                                            })
-                                                ],
-                                              ),
-                                            ),
+                        children: data.map((item) {
+                        var e = item;
+                        return Container(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 20, right: 20),
+                            child: Column(
+                              children: [
+                                Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Padding(
+                                          padding: EdgeInsets.only(left: 10)),
+                                      e['avatar'] == ''
+                                          ? CircleAvatar(
+                                              radius: 20,
+                                              child: SvgPicture.network(
+                                                  Helper.avatar))
+                                          : CircleAvatar(
+                                              radius: 20,
+                                              backgroundImage:
+                                                  NetworkImage(e['avatar'])),
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, top: 5),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text:
+                                                      '${e['firstName']} ${e['lastName']}',
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      fontSize: 11),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          print(
+                                                              'visit profile');
+                                                          widget.routerChange({
+                                                            'router': RouteNames
+                                                                .profile,
+                                                            'subRouter':
+                                                                e['userName']
+                                                          });
+                                                        })
+                                            ],
                                           ),
-                                          const Flexible(
-                                            fit: FlexFit.tight,
-                                            child: SizedBox(),
-                                          ),
-                                          Container(
-                                            padding:
-                                                const EdgeInsets.only(top: 6),
-                                            child: ElevatedButton(
-                                                onPressed: () async {
-                                                  con.isFriendRequest[e.key] =
-                                                      true;
+                                        ),
+                                      ),
+                                      const Flexible(
+                                        fit: FlexFit.tight,
+                                        child: SizedBox(),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.only(top: 6),
+                                        child: ElevatedButton(
+                                            onPressed: () async {
+                                              if (!e.containsKey('state')) {
+                                                e['state'] = -1;
+                                                setState(() {});
+                                                await con.requestFriend(item);
+                                                setState(() {});
+                                              } else {
+                                                var status = e['state'];
+                                                if (status == 0) {
                                                   setState(() {});
-                                                  await con.requestFriend(
-                                                      e.value['userName'],
-                                                      '${e.value['firstName']} ${e.value['lastName']}',
-                                                      e.value['avatar'],
-                                                      e.key);
-                                                  con.isFriendRequest[e.key] =
-                                                      false;
-
+                                                  e['state'] = -1;
+                                                  await con.cancelFriend(item);
+                                                  e.remove('state');
                                                   setState(() {});
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor: const Color.fromARGB(
+                                                }
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    const Color.fromARGB(
                                                         255, 33, 37, 41),
-                                                    elevation: 3,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                2.0)),
-                                                    minimumSize: con.isFriendRequest[e.key] != null &&
-                                                            con.isFriendRequest[
-                                                                e.key]
-                                                        ? const Size(90, 35)
+                                                elevation: 3,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2.0)),
+                                                minimumSize: e.containsKey(
+                                                            'state') &&
+                                                        e['state'] == -1
+                                                    ? const Size(90, 35)
+                                                    : e.containsKey('state') &&
+                                                            e['state'] == 0
+                                                        ? const Size(80, 35)
                                                         : const Size(110, 35),
-                                                    maximumSize: con.isFriendRequest[e.key] != null &&
-                                                            con.isFriendRequest[e.key]
-                                                        ? const Size(90, 35)
+                                                maximumSize: e.containsKey(
+                                                            'state') &&
+                                                        e['state'] == -1
+                                                    ? const Size(90, 35)
+                                                    : e.containsKey('state') &&
+                                                            e['state'] == 0
+                                                        ? const Size(80, 35)
                                                         : const Size(110, 35)),
-                                                child: con.isFriendRequest[e.key] != null && con.isFriendRequest[e.key]
-                                                    ? const SizedBox(
-                                                        width: 10,
-                                                        height: 10,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          color: Colors.white,
-                                                        ),
+                                            child: e.containsKey('state') &&
+                                                    e['state'] == -1
+                                                ? const SizedBox(
+                                                    width: 10,
+                                                    height: 10,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Colors.white,
+                                                    ),
+                                                  )
+                                                : e.containsKey('state') &&
+                                                        e['state'] == 0
+                                                    ? Row(
+                                                        children: const [
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .clock,
+                                                            color: Colors.white,
+                                                            size: 13,
+                                                          ),
+                                                          Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 2)),
+                                                          Text(' Sent',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900)),
+                                                        ],
                                                       )
                                                     : Row(
                                                         children: const [
@@ -284,17 +314,17 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                                           .w900)),
                                                         ],
                                                       )),
-                                          )
-                                        ]),
-                                    const Padding(
-                                        padding: EdgeInsets.only(top: 10)),
-                                    Container(
-                                      height: 1,
-                                      color: color,
-                                    ),
-                                  ],
-                                )))
-                            .toList()),
+                                      )
+                                    ]),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 10)),
+                                Container(
+                                  height: 1,
+                                  color: color,
+                                ),
+                              ],
+                            ));
+                      }).toList()),
                 con.isSearch
                     ? Container()
                     : MouseRegion(
@@ -302,10 +332,10 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                         child: InkWell(
                           onTap: () async {
                             con.pageIndex++;
-                            con.isShowProgressive = true;
+                            isShowProgressive = true;
                             setState(() {});
                             await con.getUserList();
-                            con.isShowProgressive = false;
+                            isShowProgressive = false;
                             setState(() {});
                           },
                           child: Container(
@@ -315,7 +345,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                     BorderRadius.all(Radius.circular(3))),
                             alignment: Alignment.center,
                             height: 45,
-                            child: con.isShowProgressive
+                            child: isShowProgressive
                                 ? const SizedBox(
                                     width: 20,
                                     height: 20.0,
@@ -338,16 +368,5 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
             alignment: Alignment.center,
             child: const CircularProgressIndicator(),
           );
-  }
-
-  requestFriends(e) async {
-    con.isFriendRequest[e.key] = true;
-    setState(() {});
-    await con.requestFriend(
-        e.value['userName'],
-        '${e.value['firstName']} ${e.value['lastName']}',
-        e.value['avatar'],
-        e.key);
-    setState(() {});
   }
 }

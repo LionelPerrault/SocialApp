@@ -2,6 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,7 @@ import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/SearchController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
@@ -79,28 +81,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       widget.textChange(searchCon.text);
       widget.onSearchBarFocus();
     });
-    Future.delayed(const Duration(milliseconds: 5), () async {
-      await PeopleController().getReceiveRequests(userInfo['userName']);
-      setState(() {});
-    });
-    final Stream<QuerySnapshot> friendStrem = FirebaseFirestore.instance
-        .collection(Helper.friendCollection)
-        .where('receiver', isEqualTo: userInfo['userName'])
-        .snapshots();
-    friendStrem.listen((event) {
-      var arr = [];
-      for (int i = 0; i < event.docs.length; i++) {
-        var data = event.docs[i].data() as Map;
-        if (data['state'] == 0) {
-          var j = {...data, 'id': event.docs[i].id};
-          arr.add(j);
-        }
-      }
-      peopleCon.allRequestFriends = arr;
-      peopleCon.requestFriends = arr;
-      setState(() {});
-    });
-
+    PeopleController().listenData();
     final Stream<QuerySnapshot> messageStrem = FirebaseFirestore.instance
         .collection(Helper.message)
         .where('users', arrayContains: userInfo['userName'])
@@ -300,16 +281,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   }
 
   Future<void> onLogOut() async {
-    UserManager.isLogined = false;
-    Helper.makeOffline();
-
-    UserManager.userInfo = {};
-    setState(() {});
-
-    await Helper.removeAllPreference();
-    // ignore: use_build_context_synchronously
-    await Navigator.pushReplacementNamed(context, RouteNames.login);
-    setState(() {});
+    await UserController().signOutUser(context);
   }
 
   @override
