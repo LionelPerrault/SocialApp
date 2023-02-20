@@ -34,6 +34,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
   //route variable
   Map isFriendRequest = {};
   final TextEditingController hometownController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
   final TextEditingController currentController = TextEditingController();
   final TextEditingController keydownController = TextEditingController();
   List location = [];
@@ -103,6 +104,15 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
         Container(
           margin: EdgeInsets.only(top: 65),
           child: customInput(
+              title: 'UserName',
+              controller: userNameController,
+              onChange: (value) {
+                search = {'userName': value};
+              }),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 65 * 2),
+          child: customInput(
               title: 'Hometown',
               controller: hometownController,
               onChange: (value) {
@@ -114,7 +124,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               }),
         ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 2),
+          margin: EdgeInsets.only(top: 65 * 3),
           child: customInput(
             title: 'Current place',
             controller: currentController,
@@ -125,7 +135,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 3),
+          margin: EdgeInsets.only(top: 65 * 4),
           child: customInput(
               title: 'Keyword',
               onChange: (value) {
@@ -133,7 +143,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               }),
         ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 4),
+          margin: EdgeInsets.only(top: 65 * 5),
           child: customDropDownButton(
               title: 'Gender',
               item: gender,
@@ -143,7 +153,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               context: context),
         ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 5),
+          margin: EdgeInsets.only(top: 65 * 6),
           child: customDropDownButton(
               title: 'Relationship',
               item: relationShip,
@@ -153,7 +163,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               context: context),
         ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 6),
+          margin: EdgeInsets.only(top: 65 * 7),
           child: customDropDownButton(
               title: 'Online Status',
               item: onlineStatus,
@@ -161,7 +171,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               context: context),
         ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 7),
+          margin: EdgeInsets.only(top: 65 * 8),
           child: customDropDownButton(
               title: 'Religion',
               item: religion,
@@ -169,7 +179,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               context: context),
         ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 8),
+          margin: EdgeInsets.only(top: 65 * 9),
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
