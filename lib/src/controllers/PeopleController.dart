@@ -349,7 +349,10 @@ class PeopleController extends ControllerMVC {
 
     if (snapshot.docs.isNotEmpty) {
       userList = [];
-      userList.addAll(snapshot.docs);
+      for (var elem in snapshot.docs) {
+        userList.add(elem.data());
+      }
+
       setState(() {});
     }
   }
