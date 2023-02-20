@@ -14,7 +14,6 @@ class RelysiaManager {
   // ignore: prefer_typing_uninitialized_variables
   static var nextPageTokenId;
   static Future<Map> authUser(String email, String password) async {
-    print('dfdf$email');
     Map responseData = {};
     try {
       String bodyCode =

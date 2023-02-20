@@ -50,6 +50,25 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    print("screen width is $screenWidth");
+    if (screenWidth <= 210) {
+      print("small size ===============================================");
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: myGroups
+            .map(
+              (group) => GroupCell(
+                groupData: group,
+                refreshFunc: () {
+                  getGroupNow();
+                },
+                routerChange: widget.routerChange,
+              ),
+            )
+            .toList(),
+      );
+    }
     return Container(
       child: Row(
         mainAxisSize: MainAxisSize.min,

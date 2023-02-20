@@ -43,7 +43,7 @@ class EventsScreen extends StatefulWidget {
 class EventsScreenState extends mvc.StateMVC<EventsScreen>
     with SingleTickerProviderStateMixin {
   //route variable
-  String eventSubRoute = '';
+  String eventSubRoute = 'Discover';
   late PostController con;
 
   @override
@@ -53,8 +53,140 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
     super.initState();
   }
 
+  Widget makePane(String paneName) {
+    return Column(children: [
+      MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+              onTap: () {
+                eventSubRoute = paneName;
+                setState(() {});
+              },
+              child: Padding(
+                  padding: SizeConfig(context).screenWidth < 460
+                      ? EdgeInsets.all(2)
+                      : EdgeInsets.all(10),
+                  child: Text(
+                    paneName,
+                    style: TextStyle(
+                        fontSize:
+                            SizeConfig(context).screenWidth < 460 ? 12 : 13),
+                  )))),
+      eventSubRoute == paneName
+          ? Container(
+              width: SizeConfig(context).screenWidth < 460 ? 30 : 50,
+              margin: EdgeInsets.only(top: 2),
+              height: 2,
+              color: Colors.black,
+            )
+          : SizedBox()
+    ]);
+  }
+
+  Widget button() {
+    return Container(
+      width: SizeConfig(context).screenWidth > 900 ? 120 : 50,
+      margin: const EdgeInsets.only(right: 20),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(3),
+            backgroundColor: const Color.fromARGB(255, 45, 206, 137),
+            // elevation: 3,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3.0)),
+            minimumSize:
+                Size(SizeConfig(context).screenWidth > 900 ? 120 : 50, 50),
+            maximumSize:
+                Size(SizeConfig(context).screenWidth > 900 ? 120 : 50, 50),
+          ),
+          onPressed: () {
+            (showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                    title: Row(
+                      children: const [
+                        Icon(
+                          Icons.event,
+                          color: Color.fromARGB(255, 247, 159, 88),
+                        ),
+                        Text(
+                          'Create New Event',
+                          style: TextStyle(
+                              fontSize: 15, fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                    content: CreateEventModal(
+                      context: context,
+                      routerChange: widget.routerChange,
+                    ))));
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(Icons.add_circle),
+              const Padding(padding: EdgeInsets.only(left: 4)),
+              SizeConfig(context).screenWidth > 900
+                  ? const Text('Create Event',
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold))
+                  : const SizedBox()
+            ],
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        //color: Colors.redAccent,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                color: Colors.blue,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        makePane("Discover"),
+                        makePane("Going"),
+                        makePane("Interested"),
+                        makePane("Invited"),
+                        makePane("My Events")
+                      ],
+                    ),
+                    button()
+                  ],
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              eventSubRoute == 'Discover'
+                  ? AllEvents(routerChange: widget.routerChange)
+                  : const SizedBox(),
+              eventSubRoute == 'Going'
+                  ? GoingEvents(routerChange: widget.routerChange)
+                  : const SizedBox(),
+              eventSubRoute == 'Interested'
+                  ? InterestedEvents(routerChange: widget.routerChange)
+                  : const SizedBox(),
+              eventSubRoute == 'Invited'
+                  ? InvitedEvents(routerChange: widget.routerChange)
+                  : const SizedBox(),
+              eventSubRoute == 'My Events'
+                  ? MyEvents(routerChange: widget.routerChange)
+                  : const SizedBox(),
+            ]),
+      ),
+    );
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,

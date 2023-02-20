@@ -41,6 +41,7 @@ class LikesCommentScreen extends StatefulWidget {
 class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   bool isSound = false;
   late PostController con;
+  late PeopleController peopleCon;
   Map<String, dynamic> productInfo = {
     'productStatus': 'New',
     'productOffer': 'Sell'
@@ -108,6 +109,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   initState() {
     add(widget.Postcon);
     con = controller as PostController;
+    //peopleCon = controller as PeopleController;
     super.initState();
     getLikes();
     getComment();
@@ -1125,11 +1127,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       : ElevatedButton(
                           onPressed: () async {
                             // print(con.isFriendRequest);
-                            await PeopleController().requestFriend(
-                                likeUsers[index]['userInfo']['userName'],
-                                '${likeUsers[index]['userInfo']['firstName']} ${likeUsers[index]['userInfo']['lastName']}',
-                                likeUsers[index]['userInfo']['avatar'],
-                                1);
+                            PeopleController().requestFriendAsData(
+                              likeUsers[index]['userInfo']['userName'],
+                              '${likeUsers[index]['userInfo']['firstName']} ${likeUsers[index]['userInfo']['lastName']}',
+                              likeUsers[index]['userInfo']['avatar'],
+                            );
                             setState(() {});
                           },
                           style: ElevatedButton.styleFrom(

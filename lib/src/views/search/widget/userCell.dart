@@ -28,9 +28,6 @@ class SearchUserCell extends StatefulWidget {
 
 class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
   late UserController con;
-  bool requestStatus = false;
-  String relationStatus = '';
-  int state = 0;
   @override
   void initState() {
     super.initState();
@@ -44,14 +41,16 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
         .getRelation(
             UserManager.userInfo['userName'], widget.userInfo['userName'])
         .then((value) {
-      state = value;
-      print(state);
+      if (value >= 0) {
+        widget.userInfo['state'] = value;
+      }
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var itemData = widget.userInfo;
     return Material(
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 10, right: 10),
@@ -83,40 +82,38 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
         ),
         trailing: ElevatedButton(
           onPressed: () async {
-            // print(con.isFriendRequest);
-            requestStatus = true;
-            setState(() {});
-            if (state == 0) {
-              await PeopleController().requestFriend(
-                  widget.userInfo['userName'],
-                  '${widget.userInfo['firstName']} ${widget.userInfo['lastName']}',
-                  widget.userInfo['avatar'],
-                  1);
-              state = 1;
+            var e = widget.userInfo;
+            if (!e.containsKey('state')) {
+              e['state'] = -1;
+              setState(() {});
+              await PeopleController()
+                  .requestFriendDirectlyMap(widget.userInfo);
               setState(() {});
             } else {
-              await PeopleController()
-                  .cancelFriend(widget.userInfo['userName']);
-              state = 0;
-              setState(() {});
+              var status = e['state'];
+              if (status == 0) {
+                setState(() {});
+                e['state'] = -1;
+                await PeopleController()
+                    .cancelFriendDirectlyMap(widget.userInfo);
+                setState(() {});
+              }
             }
-
-            requestStatus = false;
-
-            setState(() {});
           },
           style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 33, 37, 41),
               elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(2.0)),
-              minimumSize: requestStatus != null && requestStatus
-                  ? const Size(60, 35)
-                  : const Size(80, 35),
-              maximumSize: requestStatus != null && requestStatus
-                  ? const Size(60, 35)
-                  : const Size(80, 35)),
-          child: requestStatus == true
+              minimumSize:
+                  itemData.containsKey('state') && itemData['state'] == -1
+                      ? const Size(60, 35)
+                      : const Size(80, 35),
+              maximumSize:
+                  itemData.containsKey('state') && itemData['state'] == -1
+                      ? const Size(60, 35)
+                      : const Size(80, 35)),
+          child: itemData.containsKey('state') && itemData['state'] == -1
               ? const SizedBox(
                   width: 10,
                   height: 10,
@@ -124,7 +121,8 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                     color: Colors.white,
                   ),
                 )
-              : state == 0
+              : !widget.userInfo.containsKey("state") ||
+                      widget.userInfo['state'] == -1
                   ? Row(
                       children: const [
                         Icon(
@@ -139,7 +137,7 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                                 fontWeight: FontWeight.w900)),
                       ],
                     )
-                  : state == 1
+                  : widget.userInfo['state'] == 0
                       ? Row(
                           children: const [
                             Icon(

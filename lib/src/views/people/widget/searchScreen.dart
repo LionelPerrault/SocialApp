@@ -10,12 +10,12 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:uuid/uuid.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({Key? key, required this.onClick})
+  SearchScreen({Key? key, required this.onClick, required this.isModal})
       : con = PeopleController(),
         super(key: key);
   final PeopleController con;
   Function onClick;
-
+  bool isModal;
   @override
   State createState() => SearchScreenState();
 }
@@ -79,7 +79,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
   Widget build(BuildContext context) {
     return Container(
       width: SizeConfig(context).screenWidth < 900
-          ? SizeConfig(context).screenWidth - 60
+          ? SizeConfig(context).screenWidth - 90
           : SizeConfig(context).screenWidth * 0.3 - 90,
       margin: EdgeInsets.only(top: 10, bottom: 20),
       child: Stack(children: [
@@ -189,6 +189,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               ),
               onPressed: () async {
                 widget.onClick(search);
+                if (widget.isModal) Navigator.of(context).pop(true);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

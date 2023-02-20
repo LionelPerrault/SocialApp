@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
@@ -27,12 +28,10 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
   var isFirst = false;
   @override
   void initState() {
-    con.getUserList();
-    Future.delayed(const Duration(microseconds: 0), () async {
-      await con.getUserList(isGetOnly5: true);
-      setState(() {});
-    });
     super.initState();
+
+    print("call======================================== suggest");
+    con.getUserList();
   }
 
   @override
@@ -92,97 +91,85 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
               ),
               AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
-                  height: isSound ? con.userList.length * 60 : 0,
+                  height: isSound
+                      ? (con.userList.length < 5 ? con.userList.length : 5) * 60
+                      : 0,
                   curve: Curves.fastOutSlowIn,
                   child: SizedBox(
                     //size: Size(100,100),
                     child: ListView.separated(
-                      itemCount: con.userList.length,
-                      itemBuilder: (context, index) => Material(
-                          child: ListTile(
-                        contentPadding:
-                            const EdgeInsets.only(left: 10, right: 10),
-                        leading: con.userList[index]['avatar'] == ''
-                            ? CircleAvatar(
-                                radius: 17,
-                                child: SvgPicture.network(Helper.avatar))
-                            : CircleAvatar(
-                                radius: 17,
-                                backgroundImage: NetworkImage(
-                                    con.userList[index]['avatar'])),
-                        title: RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 11),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text:
-                                      '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11,
-                                      color: Colors.black),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      widget.routerChange({
-                                        'router': RouteNames.profile,
-                                        'subRouter': con.userList[index]
-                                            ['userName']
-                                      });
-                                    })
-                            ],
+                      itemCount:
+                          con.userList.length < 5 ? con.userList.length : 5,
+                      itemBuilder: (context, index) {
+                        var item = con.userList[index];
+                        var itemData = item as Map;
+                        return Material(
+                            child: ListTile(
+                          contentPadding:
+                              const EdgeInsets.only(left: 10, right: 10),
+                          leading: itemData['avatar'] == ''
+                              ? CircleAvatar(
+                                  radius: 17,
+                                  child: SvgPicture.network(Helper.avatar))
+                              : CircleAvatar(
+                                  radius: 17,
+                                  backgroundImage:
+                                      NetworkImage(itemData['avatar'])),
+                          title: RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 11),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text:
+                                        '${itemData['firstName']} ${itemData['lastName']}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
+                                        color: Colors.black),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        widget.routerChange({
+                                          'router': RouteNames.profile,
+                                          'subRouter': itemData['userName']
+                                        });
+                                      })
+                              ],
+                            ),
                           ),
-                        ),
-                        trailing: ElevatedButton(
-                          onPressed: () async {
-                            // print(con.isFriendRequest);
-
-                            setState(() {});
-                            if (con.isFriendRequest[index] == false) {
-                              con.isFriendRequest[index] = null;
-                              await con.cancelFriend(
-                                  con.userList[index]['userName']);
-                            } else {
-                              con.isFriendRequest[index] = true;
-                              await con.requestFriend(
-                                  con.userList[index]['userName'],
-                                  '${con.userList[index]['firstName']} ${con.userList[index]['lastName']}',
-                                  con.userList[index]['avatar'],
-                                  1);
-                              con.isFriendRequest[index] = false;
-                            }
-                            setState(() {});
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 33, 37, 41),
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(2.0)),
-                              minimumSize: con.isFriendRequest[index] != null &&
-                                      con.isFriendRequest[index]
-                                  ? const Size(60, 35)
-                                  : const Size(80, 35),
-                              maximumSize: con.isFriendRequest[index] != null &&
-                                      con.isFriendRequest[index]
-                                  ? const Size(60, 35)
-                                  : const Size(80, 35)),
-                          child: con.isFriendRequest[index] == null
-                              ? Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.person_add_alt_rounded,
-                                      color: Colors.white,
-                                      size: 18.0,
-                                    ),
-                                    Text(' Add',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w900)),
-                                  ],
-                                )
-                              : con.isFriendRequest[index]
+                          trailing: ElevatedButton(
+                              onPressed: () async {
+                                if (!itemData.containsKey('state')) {
+                                  itemData['state'] = -1;
+                                  setState(() {});
+                                  await con.requestFriend(item);
+                                  setState(() {});
+                                } else {
+                                  var status = itemData['state'];
+                                  if (status == 0) {
+                                    itemData['state'] = -1;
+                                    setState(() {});
+                                    await con.cancelFriend(item);
+                                    setState(() {});
+                                  }
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 33, 37, 41),
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(2.0)),
+                                  minimumSize: itemData.containsKey('state') &&
+                                          itemData['state'] == -1
+                                      ? const Size(60, 35)
+                                      : const Size(80, 35),
+                                  maximumSize: itemData.containsKey('state') &&
+                                          itemData['state'] == -1
+                                      ? const Size(60, 35)
+                                      : const Size(80, 35)),
+                              child: itemData.containsKey('state') &&
+                                      itemData['state'] == -1
                                   ? const SizedBox(
                                       width: 10,
                                       height: 10,
@@ -190,22 +177,43 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                         color: Colors.white,
                                       ),
                                     )
-                                  : Row(
-                                      children: const [
-                                        Icon(
-                                          Icons.timelapse,
-                                          color: Colors.white,
-                                          size: 18.0,
-                                        ),
-                                        Text(' Sent',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w900)),
-                                      ],
-                                    ),
-                        ),
-                      )),
+                                  : itemData.containsKey('state') &&
+                                          itemData['state'] == 0
+                                      ? Row(
+                                          children: const [
+                                            Icon(
+                                              FontAwesomeIcons.clock,
+                                              color: Colors.white,
+                                              size: 13,
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 2)),
+                                            Text(' Sent',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w900)),
+                                          ],
+                                        )
+                                      : Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.person_add_alt_rounded,
+                                              color: Colors.white,
+                                              size: 18.0,
+                                            ),
+                                            Text(' Add',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w900)),
+                                          ],
+                                        )),
+                        ));
+                      },
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
                         height: 1,

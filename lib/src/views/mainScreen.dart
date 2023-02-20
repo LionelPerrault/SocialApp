@@ -292,7 +292,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
     return Container(
       width: SizeConfig(context).screenWidth,
       height: 50,
-      color: Colors.red,
+      color: Colors.redAccent,
       padding: const EdgeInsets.only(left: 30, top: 3),
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

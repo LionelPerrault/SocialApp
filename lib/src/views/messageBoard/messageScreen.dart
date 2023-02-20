@@ -38,6 +38,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   @override
   void initState() {
     add(widget.con);
+
     con = controller as MessageController;
     if (widget.chatUser != "") {
       checkHistoryChat();
@@ -105,7 +106,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth
           : SizeConfig(context).screenWidth - SizeConfig.leftBarWidth,
-      height: UserManager.userInfo['isVerify']
+      height: UserManager.userInfo['isVerify'] == false ||
+              UserManager.userInfo['isVerify'].toString().toLowerCase() ==
+                  'null'
           ? (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 30)
           : (SizeConfig(context).screenHeight -
               SizeConfig.navbarHeight -
