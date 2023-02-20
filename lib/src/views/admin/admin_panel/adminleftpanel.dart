@@ -21,105 +21,105 @@ class AdminLeftPanel extends StatelessWidget {
                   style: TextStyle(
                       color: Color.fromARGB(255, 150, 150, 150), fontSize: 10)),
             ]),
-            ListText(
-                onTap: () => {},
-                label: 'Dashboard',
-                icon: const Icon(Icons.dashboard)),
-            ExpansionTileTheme(
-              data: const ExpansionTileThemeData(),
-              child: ExpansionTile(
-                tilePadding: const EdgeInsets.all(0),
-                title: Row(
-                  children: const [
-                    Padding(padding: EdgeInsets.only(left: 43)),
-                    Icon(
-                      Icons.settings,
-                      size: 28,
-                      color: Colors.black,
-                    ),
-                    Padding(padding: EdgeInsets.only(left: 10)),
-                    Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 13,
-                      ),
-                    )
-                  ],
-                ),
-                children: <Widget>[
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 15.0),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListText(
-                              onTap: () => {onClick('/settings/system')},
-                              label: 'System Settings',
-                              icon:
-                                  const Icon(Icons.settings_suggest_outlined)),
-                          ListText(
-                              onTap: () => {onClick('/settings/posts')},
-                              label: 'Posts Settings',
-                              icon: const Icon(Icons.message_rounded)),
-                          ListText(
-                              onTap: () => {onClick('/settings/registration')},
-                              label: 'Registration Settings',
-                              icon: const Icon(Icons.input_outlined)),
-                          ListText(
-                              onTap: () => {onClick('/settings/account')},
-                              label: 'Accounts Settings',
-                              icon: const Icon(Icons.manage_accounts)),
-                          ListText(
-                              onTap: () => {onClick('/settings/sms')},
-                              label: 'SMS Settings',
-                              icon: const Icon(Icons.sms)),
-                          ListText(
-                              onTap: () => {onClick('/settings/notification')},
-                              label: 'Notification Settings',
-                              icon: const Icon(Icons.notifications)),
-                          ListText(
-                              onTap: () => {onClick('/settings/chat')},
-                              label: 'Chat Settings',
-                              icon: const Icon(Icons.message_rounded)),
-                          ListText(
-                              onTap: () => {onClick('/settings/live')},
-                              label: 'Live Stream Settings',
-                              icon: const Icon(Icons.network_cell_rounded)),
-                          ListText(
-                              onTap: () => {onClick('/settings/upload')},
-                              label: 'Uploads Settings',
-                              icon: const Icon(Icons.file_upload_rounded)),
-                          ListText(
-                              onTap: () => {onClick('/settings/payments')},
-                              label: 'Payments Settings',
-                              icon: const Icon(Icons.credit_card)),
-                          ListText(
-                              onTap: () => {onClick('/settings/security')},
-                              label: 'Security Settings',
-                              icon: const Icon(Icons.security_rounded)),
-                          ListText(
-                              onTap: () => {onClick('/settings/limits')},
-                              label: 'Limits Settings',
-                              icon: const Icon(Icons.iso_rounded)),
-                          ListText(
-                              onTap: () => {onClick('/settings/analystics')},
-                              label: 'Analytics Settings',
-                              icon: const Icon(Icons.pie_chart)),
-                          ListText(
-                              onTap: () => {onClick('/settings/email')},
-                              label: 'Email Settings',
-                              icon: const Icon(Icons.mail)),
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
+            // ListText(
+            //     onTap: () => {},
+            //     label: 'Dashboard',
+            //     icon: const Icon(Icons.dashboard)),
+            // ExpansionTileTheme(
+            //   data: const ExpansionTileThemeData(),
+            //   child: ExpansionTile(
+            //     tilePadding: const EdgeInsets.all(0),
+            //     title: Row(
+            //       children: const [
+            //         Padding(padding: EdgeInsets.only(left: 43)),
+            //         Icon(
+            //           Icons.settings,
+            //           size: 28,
+            //           color: Colors.black,
+            //         ),
+            //         Padding(padding: EdgeInsets.only(left: 10)),
+            //         Text(
+            //           'Settings',
+            //           style: TextStyle(
+            //             fontSize: 13,
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //     children: <Widget>[
+            //       Row(
+            //         children: [
+            //           const Padding(
+            //             padding: EdgeInsets.only(left: 15.0),
+            //           ),
+            //           Column(
+            //             mainAxisAlignment: MainAxisAlignment.start,
+            //             crossAxisAlignment: CrossAxisAlignment.start,
+            //             children: [
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/system')},
+            //                   label: 'System Settings',
+            //                   icon:
+            //                       const Icon(Icons.settings_suggest_outlined)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/posts')},
+            //                   label: 'Posts Settings',
+            //                   icon: const Icon(Icons.message_rounded)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/registration')},
+            //                   label: 'Registration Settings',
+            //                   icon: const Icon(Icons.input_outlined)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/account')},
+            //                   label: 'Accounts Settings',
+            //                   icon: const Icon(Icons.manage_accounts)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/sms')},
+            //                   label: 'SMS Settings',
+            //                   icon: const Icon(Icons.sms)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/notification')},
+            //                   label: 'Notification Settings',
+            //                   icon: const Icon(Icons.notifications)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/chat')},
+            //                   label: 'Chat Settings',
+            //                   icon: const Icon(Icons.message_rounded)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/live')},
+            //                   label: 'Live Stream Settings',
+            //                   icon: const Icon(Icons.network_cell_rounded)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/upload')},
+            //                   label: 'Uploads Settings',
+            //                   icon: const Icon(Icons.file_upload_rounded)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/payments')},
+            //                   label: 'Payments Settings',
+            //                   icon: const Icon(Icons.credit_card)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/security')},
+            //                   label: 'Security Settings',
+            //                   icon: const Icon(Icons.security_rounded)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/limits')},
+            //                   label: 'Limits Settings',
+            //                   icon: const Icon(Icons.iso_rounded)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/analystics')},
+            //                   label: 'Analytics Settings',
+            //                   icon: const Icon(Icons.pie_chart)),
+            //               ListText(
+            //                   onTap: () => {onClick('/settings/email')},
+            //                   label: 'Email Settings',
+            //                   icon: const Icon(Icons.mail)),
+            //             ],
+            //           )
+            //         ],
+            //       )
+            //     ],
+            //   ),
+            // ),
             // ListText(
             //     onTap: () => {onClick('/themes')},
             //     label: 'Themes',
