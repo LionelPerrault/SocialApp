@@ -178,7 +178,7 @@ class Helper {
 
   static Future<void> removeAllPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(userField);
+    await prefs.remove(userField);
   }
 
   static connectOnlineDatabase() async {

@@ -20,9 +20,6 @@ class SendRequestsScreen extends StatefulWidget {
 class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
   bool showMenu = false;
   late PeopleController con;
-  var isConfirmRequest = {};
-  var isDeclineRequest = {};
-  var isDeleteRequest = {};
   var userInfo = UserManager.userInfo;
   //route variable
   String tabName = 'Discover';
@@ -31,6 +28,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
   void initState() {
     add(widget.con);
     con = controller as PeopleController;
+    con.getSendRequest();
     super.initState();
   }
 
@@ -159,8 +157,6 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                           Text('No new sent', style: TextStyle(fontSize: 14)))
                   : Column(
                       children: con.sendFriends
-                          .asMap()
-                          .entries
                           .map((e) => Container(
                               padding:
                                   EdgeInsets.only(top: 10, left: 20, right: 20),
@@ -174,9 +170,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                       children: [
                                         Padding(
                                             padding: EdgeInsets.only(left: 10)),
-                                        e.value[e.value['receiver']]
-                                                    ['avatar'] ==
-                                                ''
+                                        e[e['receiver']]['avatar'] == ''
                                             ? CircleAvatar(
                                                 radius: 20,
                                                 child: SvgPicture.network(
@@ -184,14 +178,13 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                             : CircleAvatar(
                                                 radius: 20,
                                                 backgroundImage: NetworkImage(
-                                                    e.value[e.value['receiver']]
+                                                    e[e['receiver']]
                                                         ['avatar'])),
                                         Container(
                                           padding:
                                               EdgeInsets.only(left: 10, top: 5),
                                           child: Text(
-                                            e.value[e.value['receiver']]
-                                                ['name'],
+                                            e[e['receiver']]['name'],
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.w900,
@@ -205,38 +198,63 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                           padding: EdgeInsets.only(top: 6),
                                           child: ElevatedButton(
                                             onPressed: () async {
-                                              isDeleteRequest[e.key] = true;
-                                              setState(() {});
-                                              await con
-                                                  .deleteFriend(e.value['id']);
-                                              await con.getSendRequests(
-                                                  userInfo['userName']);
-                                              isDeleteRequest[e.key] = false;
-                                              await con.getDiscoverList();
-                                              setState(() {});
+                                              if (!e.containsKey('state') ||
+                                                  e['state'] == 0) {
+                                                e['state'] = -1;
+                                                setState(() {});
+                                                //await con.rejectFriend(e['id']);
+                                                await con
+                                                    .cancelFriendDirectlyMap({
+                                                  'userName': e['receiver']
+                                                });
+                                                e['state'] = -2;
+                                                setState(() {});
+                                              } else if (e['state'] == 0) {
+                                                e['state'] = -1;
+                                                setState(() {});
+                                                //await con.rejectFriend(e['id']);
+                                                await con
+                                                    .cancelFriendDirectlyMap({
+                                                  'userName': e['receiver']
+                                                });
+                                                e['state'] = -2;
+                                                setState(() {});
+                                              } else if (e['state'] == -2) {
+                                                e['state'] = -1;
+                                                setState(() {});
+                                                //await con.rejectFriend(e['id']);
+                                                await con.requestFriendAsData(
+                                                    e['receiver'],
+                                                    e[e['receiver']]['name'],
+                                                    e[e['receiver']]['avatar']);
+                                                e['state'] = 0;
+                                                setState(() {});
+                                              }
                                             },
                                             style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromRGBO(
-                                                    245, 54, 92, 1),
+                                                backgroundColor:
+                                                    (e as Map).containsKey('state') && e['state'] == -2
+                                                        ? Colors.black
+                                                        : Color.fromRGBO(
+                                                            245, 54, 92, 1),
                                                 elevation: 3,
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             2.0)),
-                                                minimumSize: isDeleteRequest[e.key] !=
-                                                            null &&
-                                                        isDeleteRequest[e.key]
-                                                    ? const Size(60, 35)
-                                                    : const Size(70, 35),
-                                                maximumSize: isDeleteRequest[
-                                                                e.key] !=
-                                                            null &&
-                                                        isDeleteRequest[e.key]
-                                                    ? const Size(60, 35)
-                                                    : const Size(70, 35)),
-                                            child: isDeleteRequest[e.key] !=
-                                                        null &&
-                                                    isDeleteRequest[e.key]
+                                                minimumSize:
+                                                    (e as Map).containsKey('state') &&
+                                                            e['state'] == -1
+                                                        ? const Size(60, 35)
+                                                        : const Size(70, 35),
+                                                maximumSize:
+                                                    (e as Map).containsKey('state') &&
+                                                            e['state'] == -1
+                                                        ? const Size(60, 35)
+                                                        : const Size(70, 35)),
+                                            child: (e as Map)
+                                                        .containsKey('state') &&
+                                                    e['state'] == -1
                                                 ? SizedBox(
                                                     width: 10,
                                                     height: 10,
@@ -245,30 +263,59 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                       color: Colors.white,
                                                     ),
                                                   )
-                                                : Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: const [
-                                                      Icon(
-                                                        FontAwesomeIcons.clock,
-                                                        color: Colors.white,
-                                                        size: 13,
+                                                : (e as Map).containsKey(
+                                                            'state') &&
+                                                        e['state'] == -2
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: const [
+                                                          Icon(
+                                                            Icons
+                                                                .person_add_alt_rounded,
+                                                            color: Colors.white,
+                                                            size: 13,
+                                                          ),
+                                                          Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 2)),
+                                                          Text('Add',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900))
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: const [
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .clock,
+                                                            color: Colors.white,
+                                                            size: 13,
+                                                          ),
+                                                          Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 2)),
+                                                          Text('Sent',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900))
+                                                        ],
                                                       ),
-                                                      Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 2)),
-                                                      Text('Sent',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 11,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900))
-                                                    ],
-                                                  ),
                                           ),
                                         )
                                       ]),
