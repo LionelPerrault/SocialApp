@@ -45,28 +45,49 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                 autofocus: true,
                 invalidNumberMessage: 'Invalid Phone Number!',
                 textAlignVertical: TextAlignVertical.center,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
                 onChanged: (phone) => phoneNumber = phone.completeNumber,
                 initialCountryCode: 'US',
                 flagsButtonPadding: const EdgeInsets.only(right: 10),
                 showDropdownIcon: false,
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.number,
               ),
             ),
           ),
           const SizedBox(height: 15),
-          MyPrimaryButton(
-            onPressed: () async {
-              if (isNullOrBlank(phoneNumber) ||
-                  !_formKey.currentState!.validate()) {
-                Helper.showToast('Please enter a valid phone number!');
-              } else {
-                widget.onBack(phoneNumber);
-              }
-            },
-            buttonName: "Verify",
-            color: Colors.white,
-          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              OutlinedButton(
+                  child: Text('Back'),
+                  style: OutlinedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 44, 44, 44),
+                      foregroundColor: Colors.white70,
+                      fixedSize: const Size(100, 40)),
+                  onPressed: () {
+                    widget.onBack('', true);
+                  }),
+              const SizedBox(
+                width: 10,
+              ),
+              OutlinedButton(
+                  child: Text('Verify'),
+                  style: OutlinedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 44, 44, 44),
+                      foregroundColor: Colors.white70,
+                      fixedSize: const Size(100, 40)),
+                  onPressed: () {
+                    if (isNullOrBlank(phoneNumber) ||
+                        !_formKey.currentState!.validate()) {
+                      Helper.showToast('Please enter a valid phone number!');
+                    } else {
+                      widget.onBack(phoneNumber, false);
+                    }
+                  }),
+            ],
+          )
         ],
       ),
     );
