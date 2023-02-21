@@ -422,24 +422,20 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               isShowProgressive:
                                                   con.isSendRegisterInfo,
                                               buttonName: "Sign up",
-                                              onPressed: () => {
-                                                if (!check1 || !check2)
-                                                  {
-                                                    con.failRegister =
-                                                        'You must read and agree to our terms and privacy policy',
-                                                    con.setState(() {}),
+                                              onPressed: () async {
+                                                if (!check1 || !check2) {
+                                                  con.failRegister =
+                                                      'You must read and agree to our terms and privacy policy';
+                                                  con.setState(() {});
+                                                } else {
+                                                  await con.validate(
+                                                      context, signUpUserInfo);
+                                                  if (con.failRegister == '') {
+                                                    setState(() {
+                                                      registerStep = 2;
+                                                    });
                                                   }
-                                                else
-                                                  {
-                                                    if (!con.isSendRegisterInfo)
-                                                      {
-                                                        setState(
-                                                          () {
-                                                            registerStep = 2;
-                                                          },
-                                                        ),
-                                                      }
-                                                  }
+                                                }
                                                 // con.createPassword()
                                               },
                                             ),
@@ -489,8 +485,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                         phoneNumber: phoneNumber,
                                         onBack: (value) {
                                           if (value == true) {
-                                            con.validate(
-                                                context, signUpUserInfo);
+                                            con.createRelysiaAccount(context);
                                           }
                                         },
                                       )
