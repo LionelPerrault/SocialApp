@@ -556,7 +556,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo,
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -789,7 +789,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo,
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -1036,7 +1036,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo,
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     shareFlag: false,
                     routerChange: widget.routerChange,
@@ -1284,7 +1284,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo,
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -1526,7 +1526,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo,
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -1769,7 +1769,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo,
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -2015,7 +2015,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo,
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),

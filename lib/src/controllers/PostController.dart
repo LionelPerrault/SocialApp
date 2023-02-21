@@ -1398,7 +1398,6 @@ class PostController extends ControllerMVC {
     var allLikesofProduct = snapshot.data();
     var likesArray = [];
     var myLikes = {};
-    print(allLikesofProduct);
     if (allLikesofProduct == null) return [];
     allLikesofProduct.forEach((key, value) async {
       var userInfo = await ProfileController().getUserInfo(key);
@@ -1452,6 +1451,7 @@ class PostController extends ControllerMVC {
         .collection('comments')
         .doc(commentId)
         .update({'likes': commentLike});
+    print('saveLikesComment end');
     // getComment(postId);
   }
 
