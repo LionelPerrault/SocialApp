@@ -42,9 +42,11 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
     if (widget.searchText != '') {
       var total = [];
       var totalUsers = con.users
-          .where((user) => (user['userName'].contains(widget.searchText) ||
-              '${user['firstName']} ${user['lastName']}'
-                  .contains(widget.searchText)))
+          .where((user) =>
+              (user['userName'] != UserManager.userInfo['userName'] &&
+                  (user['userName'].contains(widget.searchText) ||
+                      '${user['firstName']} ${user['lastName']}'
+                          .contains(widget.searchText))))
           .toList();
       var totalEvents = con.events
           .where((event) => event['eventName'].contains(widget.searchText))

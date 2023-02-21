@@ -85,6 +85,7 @@ class PeopleController extends ControllerMVC {
     pageIndex = 1;
     requestFriends = [];
     sendFriends = [];
+    friends = [];
     //subscription.cancel();
     isListenAlready = false;
     isLocked = false;
@@ -114,6 +115,7 @@ class PeopleController extends ControllerMVC {
   // get my  friends in collection
   getFriends(name) async {
     var userInfo = UserManager.userInfo;
+    name = userInfo['userName'];
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendCollection)
         .where('state', isEqualTo: 1)
@@ -247,8 +249,10 @@ class PeopleController extends ControllerMVC {
       }
       lastData = newDocumentList[newDocumentList.length - 1];
     }
-    isGetList = true;
-    setState(() {});
+
+    setState(() {
+      isGetList = true;
+    });
   }
 
   listenReceiveRequests() async {
@@ -341,7 +345,28 @@ class PeopleController extends ControllerMVC {
     }
   }
 
+  getUserListByUserName(String userName) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('userName', isEqualTo: userName)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      userList = [];
+      for (var elem in snapshot.docs) {
+        userList.add(elem.data());
+      }
+
+      setState(() {});
+    }
+  }
+
   fieldSearch(Map search) async {
+    if (search['userName'] != null) {
+      await getUserListByUserName(search['userName']);
+    } else {
+      await getUserList();
+    }
     /*
     var arr = [];
     var arr1 = [];
