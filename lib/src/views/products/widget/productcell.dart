@@ -712,7 +712,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
               Visibility(
                   visible: !widget.isShared,
                   child: LikesCommentScreen(
-                    postId: productId,
+                    postInfo: widget.data,
                     commentFlag: product['productOnOffCommenting'],
                     routerChange: widget.routerChange,
                   )),
