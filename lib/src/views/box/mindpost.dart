@@ -307,10 +307,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   post() async {
-    // if (nowPost == '') {
-
-    //   return;
-    // }
     setState(() {});
     String postCase = 'normal';
 
@@ -377,8 +373,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     await con
         .savePost(postCase, postPayload, dropdownValue, header: header)
         .then((value) {
-      print('after');
-
       nowPost = '';
       postPhoto = [];
       postAudio = '';

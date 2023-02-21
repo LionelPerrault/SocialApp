@@ -87,7 +87,7 @@ class UserController extends ControllerMVC {
     return "relysia$code@shnatter.com";
   }
 
-  void validate(cont, info) async {
+  Future<void> validate(cont, info) async {
     print("------1-------- start validate");
     isSendRegisterInfo = true;
     var fill = true;
@@ -172,7 +172,8 @@ class UserController extends ControllerMVC {
     if (isSendRegisterInfo = false) {
       return;
     }
-    createRelysiaAccount(cont);
+    failRegister = '';
+    // createRelysiaAccount(cont);
     setState(() {});
   }
 

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
@@ -28,7 +26,6 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
   void initState() {
     add(widget.con);
     con = controller as UserController;
-    // print(UserManager.userInfo);
     super.initState();
   }
 

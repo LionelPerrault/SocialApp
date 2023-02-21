@@ -29,9 +29,18 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   DateTime nowTime = DateTime.now();
   late PostController con;
   bool loadingFlag = true;
+  bool loadingFlagBottom = false;
   bool postsFlag = false;
+  bool isLoading = false; // track if posts fetching
+  int documentLimit = 10; // documents to be fetched per request
+  late DocumentSnapshot
+      lastDocument; // flag for last document from where next 10 records to be fetched
   int postsCount = 0;
   int newPostNum = 0;
+  int nextPostNum = 0;
+  var lastTime;
+  bool hasMore = true; // flag for more posts available or not
+
   var showTenCountPosts = [];
   final ScrollController _scrollController = ScrollController();
   @override
@@ -65,7 +74,14 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     (post['postAdmin'] == UserManager.userInfo['uid'] ||
                         post['privacy'] == 'Public'))
                 .length -
-            con.posts.length;
+            con.allposts;
+
+        nextPostNum = event.docs
+                .where((post) =>
+                    (post['postAdmin'] == UserManager.userInfo['uid'] ||
+                        post['privacy'] == 'Public'))
+                .length -
+            10;
         setState(() {});
       });
     });
@@ -100,6 +116,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     loadingFlag = true;
                     await con.addNewPosts(newPostNum);
                     //await con.getAllPost();
+                    con.allposts = con.allposts + newPostNum;
                     newPostNum = 0;
                     loadingFlag = false;
                     setState(() {});
@@ -125,34 +142,86 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     ],
                   ),
                 ),
-          Container(
+          loadingFlag
+              ? const SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: CircularProgressIndicator(
+                    color: Colors.grey,
+                  ),
+                )
+              : const SizedBox(),
+          SizedBox(
             width: 600,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                loadingFlag
-                    ? const SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    : Expanded(
-                        child: Column(
-                          children: con.posts
-                              .map((product) => PostCell(
-                                    postInfo: product,
-                                    routerChange: widget.routerChange,
-                                  ))
-                              .toList(),
-                        ),
-                      )
+                Expanded(
+                  child: Column(
+                    children: con.posts
+                        .map((product) => PostCell(
+                              postInfo: product,
+                              routerChange: widget.routerChange,
+                            ))
+                        .toList(),
+                  ),
+                )
               ],
             ),
           ),
+          loadingFlagBottom
+              ? const SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: CircularProgressIndicator(
+                    color: Colors.grey,
+                  ),
+                )
+              : const SizedBox(),
+          nextPostNum <= 0 || loadingFlagBottom
+              ? const SizedBox()
+              : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21.0)),
+                    minimumSize: const Size(240, 42),
+                    maximumSize: const Size(240, 42),
+                  ),
+                  onPressed: () async {
+                    setState(() {});
+                    loadingFlagBottom = true;
+                    var newPostNumP = nextPostNum > 10 ? 10 : nextPostNum;
+                    await con.loadNextPosts(newPostNumP);
+                    //await con.getAllPost();
+                    nextPostNum = nextPostNum - newPostNumP;
+                    loadingFlagBottom = false;
+                    setState(() {});
+                  },
+                  child: Column(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(top: 11.0)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Load More...',
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 90, 90, 90),
+                                fontFamily: 'var(--body-font-family)',
+                                fontWeight: FontWeight.w900,
+                                fontSize: 15),
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 8.0)),
+                    ],
+                  ),
+                ),
         ],
       ),
     );

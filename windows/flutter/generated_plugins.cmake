@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   flutter_window_close
   libwinmedia
   permission_handler_windows
+  smart_auth
   url_launcher_windows
 )
 

@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   emoji_picker_flutter
   flutter_window_close
   libwinmedia
+  smart_auth
   url_launcher_linux
 )
 
