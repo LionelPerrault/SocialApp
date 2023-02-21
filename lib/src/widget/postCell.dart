@@ -93,6 +93,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     con = controller as PostController;
     con.formatDate(widget.postInfo['time']).then((value) {
       postTime = value;
+
       setState(() {});
     });
     headerCon.text = widget.postInfo['header'];
@@ -123,9 +124,22 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
   void checkOption(value) async {
     widget.postInfo['data']['optionUp'][UserManager.userInfo['uid']] = value;
+
     await Helper.postCollection
         .doc(widget.postInfo['id'])
         .update({'value': widget.postInfo['data']});
+    var allSnap = await Helper.postCollection
+        .where('value.id', isEqualTo: widget.postInfo['id'])
+        .get();
+
+    var posts = allSnap.docs;
+
+    for (int i = 0; i < posts.length; i++) {
+      await Helper.postCollection
+          .doc(posts[i].id)
+          .update({'value': widget.postInfo});
+    }
+
     checkedOption = value;
     setState(() {});
     getUpUserInfo();
@@ -158,7 +172,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
                 for (int i = 0; i < con.posts.length; i++) {
                   if (con.posts[i]['type'] == 'share') {
-                    if (con.posts[i]['data'] == widget.postInfo['id']) {
+                    print("con.posts[i]['data'][id]");
+
+                    print(con.posts[i]['data']['id']);
+                    print("widget.postInfo['id']");
+
+                    print(widget.postInfo['id']);
+                    if (con.posts[i]['data']['id'] == widget.postInfo['id']) {
                       con.deletePost(con.posts[i]['id']);
                       con.deletePostFromTimeline(con.posts[i]['id']);
                     }
@@ -279,11 +299,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
             isShared: widget.isSharedContent,
             routerChange: widget.routerChange);
       case 'share':
-        for (int i = 0; i < con.posts.length; i++) {
-          if (con.posts[i]['id'] == widget.postInfo['data']) {
-            widget.sharedPost = con.posts[i];
-          }
-        }
+        //  for (int i = 0; i < con.posts.length; i++) {
+        //    if (con.posts[i]['id'] == widget.postInfo['data']) {
+        print('widget.postinfo[value]');
+        print(widget.postInfo['data']);
+        widget.sharedPost = widget.postInfo['data'];
+        //    }
+        //  }
         return sharePostCell();
       case 'normal':
         return normalPostCell();
@@ -534,7 +556,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo['id'],
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -767,7 +789,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo['id'],
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -850,7 +872,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         ? SizeConfig(context).screenWidth - 240
                                         : 350,
                                     child: Text(
-                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
+                                      ' shared ${widget.postInfo['data']['adminInfo']['firstName']} ${widget.postInfo['data']['adminInfo']['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' ? widget.postInfo['data']['type'] : 'Post'}',
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
@@ -1014,7 +1036,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo['id'],
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     shareFlag: false,
                     routerChange: widget.routerChange,
@@ -1262,7 +1284,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo['id'],
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -1504,7 +1526,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo['id'],
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -1747,7 +1769,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo['id'],
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -1993,7 +2015,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postId: widget.postInfo['id'],
+                    postInfo: widget.postInfo,
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
@@ -2023,6 +2045,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
           Expanded(
             child: InkWell(
               onTap: () {
+                print("checked1");
                 checkOption(label);
               },
               child: Container(
@@ -2035,6 +2058,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                   children: [
                     RoundCheckBox(
                       onTap: (selected) {
+                        print("checked");
                         checkOption(label);
                       },
                       checkedWidget: const Icon(

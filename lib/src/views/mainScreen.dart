@@ -12,6 +12,7 @@ import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/panel/leftpanel.dart';
 
+import '../helpers/emailverified.dart';
 import '../utils/size_config.dart';
 
 class MainScreen extends StatefulWidget {
@@ -46,14 +47,21 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   void initState() {
     add(widget.con);
     con = controller as UserController;
+
     // print(UserManager.userInfo);
     super.initState();
+    () async {
+      var user = FirebaseAuth.instance.currentUser!;
+      EmailVerified.setVerified(user.emailVerified);
+    }();
+
+    triggerEmailVerify();
     searchFocusNode = FocusNode();
     _drawerSlideController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    triggerEmailVerify();
+
     searchController.addListener(() {
       searchText = searchController.text;
       setState(() {});
@@ -328,6 +336,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
       await FirebaseAuth.instance.currentUser!.reload();
       // ignore: await_only_futures
       var user = await FirebaseAuth.instance.currentUser!;
+
       if (user.emailVerified) {
         setState(() {
           isEmailVerify = true;
