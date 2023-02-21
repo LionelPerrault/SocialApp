@@ -20,7 +20,7 @@ class SharePostModal extends StatefulWidget {
   BuildContext context;
   final PostController Postcon;
 
-  String postId;
+  var postId;
 
   SharePostModal({
     Key? key,
@@ -255,7 +255,6 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                   await Postcon.savePost(postCase, postPayload, 'Public',
                           header: header)
                       .then((value) {
-                    print('after');
                     postLoading = false;
 
                     setState(() {});

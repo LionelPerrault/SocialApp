@@ -22,7 +22,7 @@ import 'package:shnatter/src/widget/sharePostWidget.dart';
 
 class LikesCommentScreen extends StatefulWidget {
   late PostController Postcon;
-  String postId;
+  var postId;
   LikesCommentScreen(
       {Key? key,
       required this.postId,
