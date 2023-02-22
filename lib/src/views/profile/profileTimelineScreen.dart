@@ -105,13 +105,11 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       },
     ];
     setState(() {});
-    print('this is avatar :${mainInfoList[0]['add']}');
     for (int i = 0; i < mainInfoList.length; i++) {
       if (mainInfoList[i]['add'] == true) {
         percent = percent + 10;
       } else {}
     }
-    print('percent is $percent');
     _gotoHome();
   }
 
@@ -173,7 +171,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                       height: (SizeConfig(context).screenHeight -
                               SizeConfig.navbarHeight) /
                           2,
-                      padding: const EdgeInsets.only(bottom: 90),
+                      padding: const EdgeInsets.only(bottom: 60),
                       child: profileCompletion(),
                     ),
                   ]),
@@ -207,24 +205,23 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                         size: 15,
                       ),
                       const Padding(padding: EdgeInsets.only(left: 5)),
-                      RichText(
-                        text: e['add']
-                            ? TextSpan(
-                                text: e['title'],
-                                style: const TextStyle(
-                                    decoration: TextDecoration.lineThrough))
-                            : TextSpan(
-                                text: e['title'],
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    e['route'] != null
-                                        ? widget.routerChange({
-                                            'router': RouteNames.settings,
-                                            'subRouter': e['route'],
-                                          })
-                                        : () {};
-                                  }),
-                      )
+                      e['add']
+                          ? Text(e['title'],
+                              style: const TextStyle(
+                                  decoration: TextDecoration.lineThrough))
+                          : GestureDetector(
+                              child: Text(
+                                e['title'],
+                              ),
+                              onTap: () {
+                                e['route'] != null
+                                    ? widget.routerChange({
+                                        'router': RouteNames.settings,
+                                        'subRouter': e['route'],
+                                      })
+                                    : () {};
+                              },
+                            )
                     ],
                   )))
               .toList(),
