@@ -358,6 +358,10 @@ class PeopleController extends ControllerMVC {
       }
 
       setState(() {});
+    } else {
+      userList = [];
+      setState(() {});
+      Helper.showToast("No User by $userName");
     }
   }
 
