@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -16,6 +17,7 @@ import '../models/chatModel.dart';
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File, Platform;
 
+import '../models/sendBadgeModel.dart';
 import '../models/userModel.dart';
 
 enum EmailType { statusFriendRequestSent, statusFriendsNow }
@@ -44,6 +46,7 @@ class PeopleController extends ControllerMVC {
         pageIndex = 1,
         requestFriends = [],
         sendFriends = [],
+        notifiers = [],
         super(state);
   static PeopleController? _this;
   // array of my friends
@@ -66,11 +69,31 @@ class PeopleController extends ControllerMVC {
   late StreamSubscription subscription;
   //is Searching state or discover
   bool isSearch = false;
+
+  BadgeModel sendBadge = BadgeModel();
+
+  //fix bugs on people screen
+  List<mvc.StateMVC> notifiers;
   @override
   Future<bool> initAsync() async {
     listenReceiveRequests();
     //listenSendRequests();
     return true;
+  }
+
+  //fix bugs of unknown
+  void addNotifyCallBack(mvc.StateMVC notifi) {
+    notifiers.add(notifi);
+  }
+  //fix bugs of unknown
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    for (int i = 0; i < notifiers.length; i++) {
+      mvc.StateMVC notifi = notifiers[i];
+      notifi.setState(() {});
+    }
   }
 
   void listenData() {
@@ -132,10 +155,10 @@ class PeopleController extends ControllerMVC {
     if (isLocked) return;
     isLocked = true;
     //await getReceiveRequests(userInfo['userName']);
+
     await getDiscoverList();
-    isGetList = true;
-    setState(() {});
     isLocked = false;
+    setState(() {});
   }
 
   requestFriendDirectlyMap(Map mapData) async {
@@ -182,8 +205,8 @@ class PeopleController extends ControllerMVC {
           docId = value.id
         });
     Helper.showToast('Sent request');
+    sendBadge.increaseBadge();
     setState(() {});
-
     return docId;
   }
 
@@ -199,6 +222,7 @@ class PeopleController extends ControllerMVC {
       data['id'] = doc.id;
       return data;
     }).toList();
+    sendBadge.updateBadge(sendFriends.length);
     setState(() {});
   }
 
@@ -207,6 +231,8 @@ class PeopleController extends ControllerMVC {
     //    "========================================================================call");
     int pagination = pageIndex;
     if (userList.length > pagination * 5) return;
+    isGetList = false;
+
     var lastData = null;
     if (userList.length > 0) lastData = userList[userList.length - 1];
 
@@ -305,6 +331,8 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.friendCollection)
         .doc(id)
         .delete();
+    sendBadge.decreaseBadge();
+    setState(() {});
   }
 
   cancelFriendDirectlyMap(Map mapData) async {
@@ -323,7 +351,9 @@ class PeopleController extends ControllerMVC {
           .doc(id)
           .delete();
     }
+    sendBadge.decreaseBadge();
     await mapData.remove('state');
+    setState(() {});
   }
 
   cancelFriend(Map data) async {

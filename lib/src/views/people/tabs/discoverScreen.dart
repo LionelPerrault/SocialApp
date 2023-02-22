@@ -31,6 +31,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
     add(widget.con);
     super.initState();
     con = controller as PeopleController;
+    con.addNotifyCallBack(this);
     con.getUserList();
   }
 
