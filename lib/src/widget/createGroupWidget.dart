@@ -449,7 +449,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
               flex: 2,
               child: Container(
                 width: 400,
-                height: height,
+                height: double.parse(height.toString()),
                 child: TextField(
                   maxLines: line,
                   minLines: line,
