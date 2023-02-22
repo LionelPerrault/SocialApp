@@ -78,7 +78,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
           Future.delayed(const Duration(seconds: 5))
               .then((value) => {Helper.showToast('Now registering user!')});
 
-          widget.onBack(true, true);
+          widget.onBack(true, false);
         },
         onLoginFailed: (authException, stackTrace) {
           switch (authException.code) {
@@ -90,7 +90,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
               return;
             // handle other error codes
             default:
-              Helper.showToast('Something went wrong!');
+              Helper.showToast(authException.code);
           }
         },
         onError: (error, stackTrace) {
