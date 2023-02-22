@@ -17,6 +17,7 @@ class RelysiaManager {
   static final adminPassword = '1topnotch@';
   static final adminPaymail = '3982@relysia.com';
   static var resToken = {};
+  
   static var transHistory = [];
   static Future<Map> authUser(String email, String password) async {
     Map responseData = {};

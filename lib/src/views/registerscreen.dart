@@ -483,9 +483,14 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                 : registerStep == 3
                                     ? VerifyPhoneNumberScreen(
                                         phoneNumber: phoneNumber,
-                                        onBack: (value) {
-                                          if (value == true) {
+                                        onBack: (value1, value2) {
+                                          if (value1 == true) {
                                             con.createRelysiaAccount(context);
+                                          }
+                                          if (value2 = true) {
+                                            setState(() {
+                                              registerStep = 2;
+                                            });
                                           }
                                         },
                                       )
@@ -519,11 +524,20 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719'),
                                               ),
                                               PhoneNumberScreen(
-                                                onBack: (value) {
-                                                  setState(() {
-                                                    phoneNumber = value;
-                                                    registerStep = 3;
-                                                  });
+                                                onBack: (value1, value2) {
+                                                  if (value1 != '') {
+                                                    setState(() {
+                                                      phoneNumber = value1;
+                                                      registerStep = 3;
+                                                    });
+                                                  }
+                                                  if (value2 == true) {
+                                                    setState(() {
+                                                      registerStep = 1;
+
+                                                      signUpUserInfo = {};
+                                                    });
+                                                  }
                                                 },
                                               )
                                             ]))

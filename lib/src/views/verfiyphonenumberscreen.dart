@@ -78,7 +78,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
           Future.delayed(const Duration(seconds: 5))
               .then((value) => {Helper.showToast('Now registering user!')});
 
-          widget.onBack(true);
+          widget.onBack(true, true);
         },
         onLoginFailed: (authException, stackTrace) {
           switch (authException.code) {
@@ -98,11 +98,15 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
         },
         builder: (context, controller) {
           return Scaffold(
-            backgroundColor: Color.fromARGB(255, 37, 37, 37),
+            backgroundColor: Colors.black,
             appBar: AppBar(
-              leadingWidth: 0,
               backgroundColor: Color.fromARGB(255, 44, 44, 44),
-              leading: const SizedBox.shrink(),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  widget.onBack(false, true);
+                },
+              ),
               title: const Text(
                 'Verify Phone Number',
                 style: TextStyle(

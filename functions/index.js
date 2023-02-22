@@ -132,6 +132,7 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
     var bodyCode = {'email': adminEmail, 'password': adminPassword};
 
     if(!snapshot.data().isEmailVerify){
+      functions.logger.log("get auth now");
       await axios({
         method: 'post', //you can set what request you want to be
         url: apiUrlAuth,
@@ -145,6 +146,7 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
         console.log('res.body: ', res['data']['data']['token']);
         token = res['data']['data']['token'];
       });
+      functions.logger.log("send token now");
       await axios({
         method: 'post', //you can set what request you want to be
         url: 'https://api.relysia.com/v1/send',
@@ -173,6 +175,7 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
           }
         },
       );
+      functions.logger.log("verify true now");
       admin.firestore().collection('user').doc(`${uuid}`).set(
         {
           isEmailVerify: true
