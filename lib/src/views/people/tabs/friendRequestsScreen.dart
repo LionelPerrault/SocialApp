@@ -28,9 +28,9 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
   @override
   void initState() {
     add(widget.con);
-
-    con = controller as PeopleController;
     super.initState();
+    con = controller as PeopleController;
+    con.addNotifyCallBack(this);
   }
 
   Widget searchButton() {

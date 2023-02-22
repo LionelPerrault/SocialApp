@@ -3,8 +3,10 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:provider/provider.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/models/sendBadgeModel.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/people/tabs/discoverScreen.dart';
 import 'package:shnatter/src/views/people/tabs/friendRequestsScreen.dart';
@@ -30,9 +32,10 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
   @override
   void initState() {
     add(widget.con);
-    con = controller as PeopleController;
-    updateBadge();
     super.initState();
+    con = controller as PeopleController;
+    con.addNotifyCallBack(this);
+    updateBadge();
   }
 
   Future<void> updateBadge() async {
@@ -176,9 +179,12 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                             badgeStyle: badges.BadgeStyle(
                               badgeColor: Colors.blue,
                             ),
-                            badgeContent: Text(
-                              con.sendFriends.length.toString(),
-                              style: TextStyle(color: Colors.white),
+                            badgeContent: ChangeNotifierProvider(
+                              create: (context) => con.sendBadge,
+                              child: Text(
+                                con.sendBadge.badgeNumber.toString(),
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           )
                         ],
