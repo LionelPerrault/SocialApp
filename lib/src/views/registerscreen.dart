@@ -307,7 +307,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               const Text(
                                                 'I expressly agree to receive the newsletter',
                                                 style: TextStyle(
-                                                    fontSize: 10,
+                                                    fontSize: 12,
                                                     color: Color.fromRGBO(
                                                         150, 150, 150, 1)),
                                               ),
@@ -352,7 +352,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                           'By creating your account, you agree to our',
                                                       style: const TextStyle(
                                                           color: Colors.grey,
-                                                          fontSize: 10),
+                                                          fontSize: 12),
                                                       children: <TextSpan>[
                                                         TextSpan(
                                                           text: ' Terms',
@@ -360,7 +360,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                               const TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 10),
+                                                                  fontSize: 12),
                                                           recognizer:
                                                               TapGestureRecognizer()
                                                                 ..onTap = () {
@@ -382,7 +382,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.grey,
-                                                              fontSize: 11),
+                                                              fontSize: 14),
                                                         ),
                                                         TextSpan(
                                                             text:
@@ -390,7 +390,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                             style: const TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 10),
+                                                                fontSize: 12),
                                                             recognizer:
                                                                 TapGestureRecognizer()
                                                                   ..onTap = () {
@@ -458,13 +458,13 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                 text: 'Have an account?',
                                                 style: const TextStyle(
                                                     color: Colors.grey,
-                                                    fontSize: 10),
+                                                    fontSize: 12),
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                       text: ' Login Now',
                                                       style: const TextStyle(
                                                           color: Colors.white,
-                                                          fontSize: 10),
+                                                          fontSize: 14),
                                                       recognizer:
                                                           TapGestureRecognizer()
                                                             ..onTap = () {
@@ -586,7 +586,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
         onChanged: (val) async {
           onchange(val);
         },
-        style: const TextStyle(color: Colors.white, fontSize: 11),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
         cursorColor: Colors.white,
         decoration: InputDecoration(
           filled: true,
@@ -609,7 +609,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
           hintText: label,
           hintStyle: const TextStyle(
             color: Colors.grey,
-            fontSize: 11,
+            fontSize: 14,
             fontFamily: "verdana_regular",
             fontWeight: FontWeight.w400,
           ),
