@@ -124,7 +124,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
         await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
     var paymail = userSnap.data()!['paymail'];
     setState(() {});
-    print('price:$price');
     if (price == '0') {
       await Postcon.createProduct(context, productInfo).then(
         (value) => {
@@ -168,7 +167,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                 Navigator.of(context).pop(true);
                                 // loading = true;
                                 setState(() {});
-                                print('to create product page');
                                 Helper.showToast(value['msg']);
                                 if (value['result'] == true) {
                                   widget.routerChange({
@@ -961,7 +959,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   }
 
   Widget customInput({title, onChange, value}) {
-    print(value);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1023,7 +1020,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     maxLines: line,
                     minLines: line,
                     onChanged: (value) {
-                      onChange(value);
+                      productInfo['productAbout'] = value;
                     },
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(top: 10, left: 10),
