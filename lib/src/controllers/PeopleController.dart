@@ -53,6 +53,9 @@ class PeopleController extends ControllerMVC {
   List friends = [];
   // discover user
   List userList;
+
+  var lastData = null;
+
   // avoid bugs
   bool isLocked = false;
   bool isListenAlready = false;
@@ -230,11 +233,13 @@ class PeopleController extends ControllerMVC {
     //print(
     //    "========================================================================call");
     int pagination = pageIndex;
-    if (userList.length > pagination * 5) return;
+    if (userList.length > pagination * 5) {
+      isLocked = false;
+      return;
+    }
     isGetList = false;
 
-    var lastData = null;
-    if (userList.length > 0) lastData = userList[userList.length - 1];
+    //if (userList.length > 0) lastData = userList[userList.length - 1];
 
     while (userList.length <= pagination * 5) {
       var snapshot = null;

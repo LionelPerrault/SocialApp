@@ -58,9 +58,16 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                     padding: EdgeInsets.only(top: 45.0),
                   ),
                   Row(children: [
-                    const Text(
-                      'See All',
-                      style: TextStyle(fontSize: 11),
+                    GestureDetector(
+                      onTap: () {
+                        widget.routerChange({
+                          'router': RouteNames.people,
+                        });
+                      },
+                      child: const Text(
+                        'See All',
+                        style: TextStyle(fontSize: 11),
+                      ),
                     ),
                     SizedBox(
                       height: 20,
