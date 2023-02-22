@@ -118,24 +118,24 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 
     super.initState();
     isVerified = EmailVerified.getVerified();
-    setState(() {});
+
     getLikes();
     getComment();
-    setState(() {});
-    setState(() {});
   }
 
   getComment() {
     con.getComment(widget.postInfo['id']).then((value) {
-      allComment = value;
-      setState(() {});
+      setState(() {
+        allComment = value;
+      });
     });
   }
 
   getLikes() {
     con.getPostLikes(widget.postInfo['id']).then((value) {
-      likes = value;
-      setState(() {});
+      setState(() {
+        likes = value;
+      });
     });
   }
 
@@ -166,11 +166,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
       for (var j = 0; j < totalLikeImage.length; j++) {
         if (likes[i]['value'] == totalLikeImage[j]) {
           flag = false;
+
           continue;
         }
       }
       if (flag) totalLikeImage.add(likes[i]['value']);
     }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,6 +238,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             cursor: SystemMouseCursors.click,
                             onEnter: (value) {
                               whoHover = 'like';
+
                               setState(() {});
                             },
                             onExit: (event) {

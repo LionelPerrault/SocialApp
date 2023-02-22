@@ -1249,6 +1249,7 @@ class PostController extends ControllerMVC {
         postsBox.add(eachPost);
       }
     }
+
     posts = postsBox;
     setState(() {});
     return true;
@@ -1399,20 +1400,22 @@ class PostController extends ControllerMVC {
     var likesArray = [];
     var myLikes = {};
     if (allLikesofProduct == null) return [];
-    allLikesofProduct.forEach((key, value) async {
-      var userInfo = await ProfileController().getUserInfo(key);
-      if (key == UserManager.userInfo['uid']) {
+
+    for (var entry in allLikesofProduct.entries) {
+      var userInfo = await ProfileController().getUserInfo(entry.key);
+      if (entry.key == UserManager.userInfo['uid']) {
         myLikes = {
           'userInfo': userInfo,
-          'value': value,
+          'value': entry.value,
         };
       }
       likesArray.add({
         'userInfo': userInfo,
-        'value': value,
+        'value': entry.value,
       });
       print('likesArray$likesArray');
-    });
+    }
+
     return likesArray;
   }
 
@@ -1466,6 +1469,7 @@ class PostController extends ControllerMVC {
         .get();
     var comment = [];
     if (snapshot.docs.isEmpty) return [];
+
     for (int i = 0; i < snapshot.docs.length; i++) {
       var userINFO = await ProfileController()
           .getUserInfo(snapshot.docs[i]['data']['uid']);

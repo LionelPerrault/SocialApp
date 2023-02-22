@@ -147,10 +147,12 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
   getUpUserInfo() async {
     upUserInfo = [];
-    widget.postInfo['data']['optionUp'].forEach((key, value) async {
-      var userInfo = await ProfileController().getUserInfo(key);
-      upUserInfo.add({...userInfo!, 'value': value});
-    });
+
+    for (var entry in widget.postInfo['data']['optionUp'].entries) {
+      var userInfo = await ProfileController().getUserInfo(entry.key);
+      upUserInfo.add({...userInfo!, 'value': entry.value});
+    }
+
     setState(() {});
   }
 
