@@ -309,7 +309,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   post() async {
     setState(() {});
     String postCase = 'normal';
-
+    print("nowPost---$nowPost");
+    if (nowPost == '' && _controller.text == '') {
+      return;
+    }
     var postPayload;
     String header = _controller.text;
     switch (nowPost) {
@@ -564,7 +567,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                             ],
                                           ),
                                         )
-                                      : postLoading
+                                      : postLoading || postAudio == ''
                                           ? const SizedBox()
                                           : Container(
                                               child: Row(
@@ -780,7 +783,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       maximumSize: const Size(85, 45),
                     ),
                     onPressed: () {
-                      postLoading ? () {} : post();
+                      postLoading ||
+                              (postAudio == '' && nowPost == 'Upload Audio') ||
+                              (postPhoto == '' && nowPost == 'Upload Photos')
+                          ? () {}
+                          : post();
                     },
                     child: (postLoading)
                         ? Container(
