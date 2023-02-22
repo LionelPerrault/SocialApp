@@ -11,13 +11,9 @@ import '../helpers/relysiaHelper.dart';
 class RelysiaManager {
   static final apiUrlAuth = 'https://api.relysia.com/v1/auth';
   static final serviceId = '9ab1b69e-92ae-4612-9a4f-c5a102a6c068';
-  static final shnToken1 = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-BNAF';
-  static final shnToken = '63ba08ecee1af9ebfa172e0b5d78dea0a95745e8-SHNA';
-  static final adminEmail = 'kalininviktor848@gmail.com';
-  static final adminPassword = '1topnotch@';
-  static final adminPaymail = '3982@relysia.com';
+  static final shnToken = 'aceaa115dc98a05876e6e13453538fdeb4ab8ee4-SHNA1-TEST';
   static var resToken = {};
-  
+
   static var transHistory = [];
   static Future<Map> authUser(String email, String password) async {
     Map responseData = {};
