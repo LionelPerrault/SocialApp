@@ -314,6 +314,7 @@ class ProfileAvatarandTabScreenState extends mvc
                         //     "Turn Off Chat",
                         //     style: TextStyle(fontSize: 14),
                         //   ),
+
                         // ),
                         PopupMenuItem(
                           value: 'paywall',

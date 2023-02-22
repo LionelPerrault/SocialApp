@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatMessageListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/chatUserListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/newMessageScreen.dart';
@@ -271,6 +272,8 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                         con.isMessageTap = 'all-list';
                         con.setState(() {});
                         setState(() {});
+                        widget.routerChange(
+                            {'router': RouteNames.messages, 'subRouter': ''});
                       }),
                 ]))
           ],
