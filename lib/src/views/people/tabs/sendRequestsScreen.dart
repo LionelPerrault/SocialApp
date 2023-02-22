@@ -27,9 +27,14 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
   @override
   void initState() {
     add(widget.con);
-    con = controller as PeopleController;
-    con.getSendRequest();
     super.initState();
+    con = controller as PeopleController;
+    con.addNotifyCallBack(this);
+
+    Future.delayed(const Duration(microseconds: 5), () async {
+      await con.getSendRequest();
+      setState(() {});
+    });
   }
 
   Widget searchButton() {

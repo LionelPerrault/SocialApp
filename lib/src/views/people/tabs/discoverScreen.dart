@@ -31,6 +31,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
     add(widget.con);
     super.initState();
     con = controller as PeopleController;
+    con.addNotifyCallBack(this);
     con.getUserList();
   }
 
@@ -131,7 +132,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
     if (lastIndex > con.userList.length) lastIndex = con.userList.length;
     List data = con.userList.getRange(0, lastIndex).toList();
 
-    return con.isGetList
+    return con.isGetList || con.pageIndex > 1
         ? Container(
             margin: const EdgeInsets.only(top: 10),
             color: Colors.white,

@@ -118,11 +118,10 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
     res.set("Access-Control-Allow-Headers", "Content-Type");
     const apiUrlAuth = 'https://api.relysia.com/v1/auth';
     const serviceId = '9ab1b69e-92ae-4612-9a4f-c5a102a6c068';
-    const shnToken1 = '9a0e862be07d8aa56311e5b211a4fdf9ddf03b2f-BNAF';
-    const shnToken = '63ba08ecee1af9ebfa172e0b5d78dea0a95745e8-SHNA';
+    const shnToken = 'aceaa115dc98a05876e6e13453538fdeb4ab8ee4-SHNA1-TEST';
     const adminEmail = 'kalininviktor848@gmail.com';
-    const adminPassword = '1topnotch@';
-    const adminPaymail = '3982@relysia.com';
+    const adminPassword = '123456789';
+    const adminPaymail = '4410@shnatter.com';
     const uuid = req.query.uid;
     const snapshot = await admin.firestore().collection('user').doc(`${uuid}`).get();
     const payMail = snapshot.data().paymail;
