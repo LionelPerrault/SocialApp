@@ -65,7 +65,7 @@ class PrimaryInputState extends State<PrimaryInput> {
         //make hint text
         hintStyle: const TextStyle(
           color: Colors.grey,
-          fontSize: 11,
+          fontSize: 14,
           fontFamily: "verdana_regular",
           fontWeight: FontWeight.w400,
         ),

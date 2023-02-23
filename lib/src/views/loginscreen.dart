@@ -188,7 +188,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                       style: TextStyle(
                                           color: Color.fromARGB(
                                               255, 150, 150, 150),
-                                          fontSize: 11)),
+                                          fontSize: 12)),
                                   const Flexible(
                                       fit: FlexFit.tight, child: SizedBox()),
                                   RichText(
@@ -200,7 +200,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                               text: 'Forgotten password?',
                                               style: const TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 10),
+                                                  fontSize: 12),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
                                                   Navigator
@@ -249,12 +249,12 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                               text: TextSpan(
                                   text: 'Not Regsitered?',
                                   style: const TextStyle(
-                                      color: Colors.grey, fontSize: 10),
+                                      color: Colors.grey, fontSize: 12),
                                   children: <TextSpan>[
                                     TextSpan(
                                         text: ' Create an account',
                                         style: const TextStyle(
-                                            color: Colors.white, fontSize: 10),
+                                            color: Colors.white, fontSize: 14),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             Navigator.pushReplacementNamed(
@@ -458,7 +458,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
         onChanged: (val) async {
           onchange(val);
         },
-        style: const TextStyle(color: Colors.white, fontSize: 11),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
         cursorColor: Colors.white,
         decoration: InputDecoration(
           filled: true,
@@ -481,7 +481,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
           hintText: label,
           hintStyle: const TextStyle(
             color: Colors.grey,
-            fontSize: 11,
+            fontSize: 14,
             fontFamily: "verdana_regular",
             fontWeight: FontWeight.w400,
           ),
