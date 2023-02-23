@@ -1393,6 +1393,7 @@ class PostController extends ControllerMVC {
     Map<String, dynamic> gotLikes = snapshot.data() ?? {};
     gotLikes[userInfo['uid']] = likes;
     await Helper.postLikeComment.doc(postId).set(gotLikes);
+    setState(() {});
   }
 
   Future<List> getPostLikes(postId) async {

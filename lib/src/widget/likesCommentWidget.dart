@@ -121,10 +121,12 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 
     getLikes();
     getComment();
+    setState(() {});
   }
 
   getComment() {
     con.getComment(widget.postInfo['id']).then((value) {
+      allComment = value;
       setState(() {
         allComment = value;
       });
@@ -133,6 +135,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 
   getLikes() {
     con.getPostLikes(widget.postInfo['id']).then((value) {
+      likes = value;
       setState(() {
         likes = value;
       });
