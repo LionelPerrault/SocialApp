@@ -967,6 +967,7 @@ class UserController extends ControllerMVC {
       setState(() {});
       isProfileChange = false;
       setState(() {});
+      Helper.showToast("Succesfully updated your profile!");
     }
   }
 

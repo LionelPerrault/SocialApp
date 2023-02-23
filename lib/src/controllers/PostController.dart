@@ -1355,6 +1355,7 @@ class PostController extends ControllerMVC {
 
   deletePostFromTimeline(uid) {
     posts.removeWhere((item) => item['id'] == uid);
+    allposts--;
   }
 
   deleteProduct(uid) async {

@@ -28,7 +28,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   int time = 0;
   DateTime nowTime = DateTime.now();
   late PostController con;
-  bool loadingFlag = true;
+  bool loadingFlag = false;
   bool loadingFlagBottom = false;
   bool postsFlag = false;
   bool isLoading = false; // track if posts fetching
@@ -64,8 +64,9 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     }
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
+    //loadingFlag = true;
     con.getAllPost().then((value) {
-      loadingFlag = false;
+      //loadingFlag = false;
       setState(() {});
       postStream.listen((event) {
         print('difference');
