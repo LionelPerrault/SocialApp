@@ -43,6 +43,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               key: _formKey,
               child: IntlPhoneField(
                 autofocus: true,
+                disableLengthCheck: true,
                 invalidNumberMessage: 'Invalid Phone Number!',
                 textAlignVertical: TextAlignVertical.center,
                 style: const TextStyle(

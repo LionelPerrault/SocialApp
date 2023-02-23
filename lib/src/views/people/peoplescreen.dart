@@ -27,7 +27,6 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
     with SingleTickerProviderStateMixin {
   late PeopleController con;
   final ScrollController _scrollController = ScrollController();
-  String tabName = 'Discover';
   //route variable
   @override
   void initState() {
@@ -54,11 +53,11 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           mainTabWidget(),
-          tabName == 'Discover'
+          con.tabName == 'Discover'
               ? PeopleDiscoverScreen(
                   routerChange: widget.routerChange,
                 )
-              : tabName == 'Friend Requests'
+              : con.tabName == 'Friend Requests'
                   ? FriendRequestsScreen(routerChange: widget.routerChange)
                   : SendRequestsScreen()
         ],
@@ -83,7 +82,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
           child: Row(children: [
             InkWell(
                 onTap: () async {
-                  tabName = 'Discover';
+                  con.tabName = 'Discover';
                   setState(() {});
                 },
                 child: Container(
@@ -96,7 +95,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                         'Discover',
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
-                      tabName == 'Discover'
+                      con.tabName == 'Discover'
                           ? Container(
                               margin: EdgeInsets.only(top: 4.5),
                               height: 2,
@@ -113,7 +112,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                 )),
             InkWell(
                 onTap: () async {
-                  tabName = 'Friend Requests';
+                  con.tabName = 'Friend Requests';
                   setState(() {});
                 },
                 child: Container(
@@ -141,7 +140,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                           )
                         ],
                       ),
-                      tabName == 'Friend Requests'
+                      con.tabName == 'Friend Requests'
                           ? Container(
                               //margin: EdgeInsets.only(top: 17),
                               height: 2,
@@ -158,7 +157,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                 )),
             InkWell(
                 onTap: () async {
-                  tabName = 'Send Requests';
+                  con.tabName = 'Send Requests';
                   setState(() {});
                 },
                 child: Container(
@@ -189,7 +188,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                           )
                         ],
                       ),
-                      tabName == 'Send Requests'
+                      con.tabName == 'Send Requests'
                           ? Container(
                               //margin: EdgeInsets.only(top: 17),
                               height: 2,
