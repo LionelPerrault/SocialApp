@@ -43,12 +43,12 @@ class AlertYesNoWidgetState extends mvc.StateMVC<AlertYesNoWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
               height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 350,
                     child: Text(
                       widget.header,
@@ -58,7 +58,7 @@ class AlertYesNoWidgetState extends mvc.StateMVC<AlertYesNoWidget> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: 380,
                     child: Text(
                       widget.text,
