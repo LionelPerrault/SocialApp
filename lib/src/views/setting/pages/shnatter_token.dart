@@ -182,65 +182,65 @@ class SettingShnatterTokenScreenState
                       const Padding(
                         padding: EdgeInsets.only(left: 20.0),
                       ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 20),
-                              width: 330,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[400],
-                                borderRadius: BorderRadius.circular(3),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.attach_money, color: Colors.black),
-                                  Text(
-                                    'Reserved Balance',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 330,
-                              height: 90,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3),
-                                gradient: const LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.topRight,
-                                  colors: <Color>[
-                                    Color.fromARGB(255, 94, 114, 228),
-                                    Color.fromARGB(255, 130, 94, 228),
-                                  ],
-                                  tileMode: TileMode.mirror,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    '0.00',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: Column(
+                      //     children: [
+                      //       Container(
+                      //         margin: const EdgeInsets.only(bottom: 20),
+                      //         width: 330,
+                      //         height: 40,
+                      //         decoration: BoxDecoration(
+                      //           color: Colors.grey[400],
+                      //           borderRadius: BorderRadius.circular(3),
+                      //         ),
+                      //         child: Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           crossAxisAlignment: CrossAxisAlignment.center,
+                      //           children: const [
+                      //             Icon(Icons.attach_money, color: Colors.black),
+                      //             Text(
+                      //               'Reserved Balance',
+                      //               style: TextStyle(
+                      //                 fontSize: 13,
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //       Container(
+                      //         width: 330,
+                      //         height: 90,
+                      //         decoration: BoxDecoration(
+                      //           borderRadius: BorderRadius.circular(3),
+                      //           gradient: const LinearGradient(
+                      //             begin: Alignment.topLeft,
+                      //             end: Alignment.topRight,
+                      //             colors: <Color>[
+                      //               Color.fromARGB(255, 94, 114, 228),
+                      //               Color.fromARGB(255, 130, 94, 228),
+                      //             ],
+                      //             tileMode: TileMode.mirror,
+                      //           ),
+                      //         ),
+                      //         child: Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           crossAxisAlignment: CrossAxisAlignment.center,
+                      //           children: const [
+                      //             Text(
+                      //               '0.00',
+                      //               style: TextStyle(
+                      //                 fontSize: 25,
+                      //                 color: Colors.white,
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                   // const Padding(padding: EdgeInsets.only(top: 15)),
