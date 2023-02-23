@@ -362,39 +362,36 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                       ],
                                     ));
                           }).toList()),
-                con.isSearch
-                    ? Container()
-                    : MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: InkWell(
-                          onTap: () async {
-                            con.pageIndex++;
-                            isShowProgressive = true;
-                            setState(() {});
-                            await con.getUserList();
-                            isShowProgressive = false;
-                            setState(() {});
-                          },
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                color: Color.fromRGBO(55, 213, 242, 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(3))),
-                            alignment: Alignment.center,
-                            height: 45,
-                            child: isShowProgressive
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20.0,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                                : const Text('See More',
-                                    style: TextStyle(color: Colors.white)),
-                          ),
-                        ),
-                      )
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: InkWell(
+                    onTap: () async {
+                      con.pageIndex++;
+                      isShowProgressive = true;
+                      setState(() {});
+                      await con.getUserList();
+                      isShowProgressive = false;
+                      setState(() {});
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: Color.fromRGBO(55, 213, 242, 1),
+                          borderRadius: BorderRadius.all(Radius.circular(3))),
+                      alignment: Alignment.center,
+                      height: 45,
+                      child: isShowProgressive
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20.0,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : const Text('See More',
+                              style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                )
               ],
             ))
         : Container(

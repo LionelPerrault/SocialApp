@@ -72,11 +72,14 @@ class PeopleController extends ControllerMVC {
   late StreamSubscription subscription;
   //is Searching state or discover
   bool isSearch = false;
+  var searchQuery = null;
 
   BadgeModel sendBadge = BadgeModel();
 
   //fix bugs on people screen
   List<mvc.StateMVC> notifiers;
+
+  String tabName = 'Discover';
   @override
   Future<bool> initAsync() async {
     listenReceiveRequests();
@@ -158,8 +161,11 @@ class PeopleController extends ControllerMVC {
     if (isLocked) return;
     isLocked = true;
     //await getReceiveRequests(userInfo['userName']);
-
-    await getDiscoverList();
+    var query = FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .orderBy('userName')
+        .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
+    await getDiscoverList(isSearch ? searchQuery : query);
     isLocked = false;
     setState(() {});
   }
@@ -229,61 +235,65 @@ class PeopleController extends ControllerMVC {
     setState(() {});
   }
 
-  getDiscoverList() async {
+  getDiscoverList(Query<Map<String, dynamic>> query) async {
     //print(
     //    "========================================================================call");
-    int pagination = pageIndex;
-    if (userList.length > pagination * 5) {
-      isLocked = false;
-      return;
-    }
-    isGetList = false;
+    try {
+      int pagination = pageIndex;
+      if (userList.length > pagination * 5) {
+        isLocked = false;
+        return;
+      }
+      isGetList = false;
 
-    //if (userList.length > 0) lastData = userList[userList.length - 1];
+      //if (userList.length > 0) lastData = userList[userList.length - 1];
 
-    while (userList.length <= pagination * 5) {
-      var snapshot = null;
-      if (lastData == null)
-        snapshot = await FirebaseFirestore.instance
-            .collection(Helper.userField)
-            .orderBy('userName')
-            .where('userName', isNotEqualTo: UserManager.userInfo['userName'])
-            .limit(20)
-            .get();
-      else
-        snapshot = await FirebaseFirestore.instance
-            .collection(Helper.userField)
-            .orderBy('userName')
-            .where('userName', isNotEqualTo: UserManager.userInfo['userName'])
-            .startAfterDocument(lastData)
-            .limit(20)
-            .get();
-      List<DocumentSnapshot> newDocumentList = snapshot.docs;
-      for (var elem in newDocumentList) {
-        //check if it is already friends now.
-        Map data = elem.data() as Map;
-        var userName = '';
-        try {
-          userName = data['userName'];
-        } catch (e) {}
+      while (userList.length <= pagination * 5) {
+        var snapshot = null;
+        if (lastData == null)
+          snapshot = await query.limit(20).get();
+        else
+          snapshot = await query.startAfterDocument(lastData).limit(20).get();
+        // get friends list and make hash;
         var snapshotFriend = await FirebaseFirestore.instance
             .collection(Helper.friendCollection)
             .where('users.' + UserManager.userInfo['userName'], isEqualTo: true)
-            .where('users.' + userName, isEqualTo: true)
             //.where('state', isEqualTo: 1)
             .get();
-        var dataLength = snapshotFriend.docs.length;
-        if (snapshotFriend.docs.length == 0) {
-          print(elem);
-          userList.add(elem.data());
-        }
-      }
-      lastData = newDocumentList[newDocumentList.length - 1];
-    }
+        List friends = snapshotFriend.docs.map((doc) {
+          Map data = doc.data() as Map;
+          data['id'] = doc.id;
+          return data;
+        }).toList();
 
-    setState(() {
-      isGetList = true;
-    });
+        List<DocumentSnapshot> newDocumentList = snapshot.docs;
+        for (var elem in newDocumentList) {
+          //check if it is already friends now.
+          Map data = elem.data() as Map;
+          var userName = '';
+          try {
+            userName = data['userName'];
+          } catch (e) {}
+          Iterable value = friends.where((element) {
+            Map m = element as Map;
+            return m['users'][userName] == true;
+          });
+          if (value.isEmpty) {
+            print(elem);
+            userList.add(elem.data());
+          }
+        }
+        lastData = newDocumentList[newDocumentList.length - 1];
+      }
+      setState(() {
+        isGetList = true;
+      });
+    } catch (exception) {
+      setState(() {
+        isGetList = true;
+        isLocked = false;
+      });
+    }
   }
 
   listenReceiveRequests() async {
@@ -380,128 +390,22 @@ class PeopleController extends ControllerMVC {
     }
   }
 
-  getUserListByUserName(String userName) async {
-    var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .where('userName', isEqualTo: userName)
-        .get();
-
-    if (snapshot.docs.isNotEmpty) {
-      userList = [];
-      for (var elem in snapshot.docs) {
-        userList.add(elem.data());
-      }
-
-      setState(() {});
-    } else {
-      userList = [];
-      setState(() {});
-      Helper.showToast("No User by $userName");
-    }
-  }
-
   fieldSearch(Map search) async {
+    var query = FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .orderBy('userName')
+        .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
     if (search['userName'] != null) {
-      await getUserListByUserName(search['userName']);
-    } else {
-      await getUserList();
+      query = query.where('userName', isGreaterThan: search['userName']);
+      query = query.where('userName', isLessThan: search['userName'] + 'z');
     }
-    /*
-    var arr = [];
-    var arr1 = [];
-    print(search);
-
-    var t = 0;
-    if (tabName == 'Discover') {
-      search.forEach((key, value) {
-        if (value != '') {
-          t = 1;
-        }
-        allUserList.forEach((element) {
-          element.data().forEach((key1, value1) {
-            if (key1 == 'sex') {
-              // print(element['sex']);
-            }
-            if (key == key1 && value == value1) {
-              arr1.add(element);
-            }
-          });
-        });
-      });
-      if (t == 0) {
-        await getDiscoverList();
-        isSearch = false;
-        return;
-      } else {
-        isSearch = true;
-      }
-      userList = arr1;
-    } else if (tabName == 'Friend Requests') {
-      var c = [];
-      var snapshot =
-          await FirebaseFirestore.instance.collection(Helper.userField).get();
-      allRequestFriends.forEach((element) {
-        var a = element['users']
-            .where((e) => e != userInfo['userName'])
-            .toList()[0];
-        snapshot.docs.forEach((e) {
-          if (e['userName'] == a) {
-            search.forEach((key, value) {
-              if (value != '') {
-                t = 1;
-              }
-              e.data().forEach((key1, value1) {
-                if (key == key1 && value == value1) {
-                  arr1.add(element);
-                }
-              });
-            });
-          }
-        });
-      });
-      arr = c;
-      if (t == 0) {
-        await getReceiveRequestsFriends();
-        isSearch = false;
-        return;
-      } else {
-        isSearch = true;
-      }
-      requestFriends = arr1;
-    } else {
-      var c = [];
-      var snapshot =
-          await FirebaseFirestore.instance.collection(Helper.userField).get();
-      allSendFriends.forEach((element) {
-        var a = element['users']
-            .where((e) => e != userInfo['userName'])
-            .toList()[0];
-        snapshot.docs.forEach((e) {
-          if (e['userName'] == a) {
-            search.forEach((key, value) {
-              if (value != '') {
-                t = 1;
-              }
-              e.data().forEach((key1, value1) {
-                if (key == key1 && value == value1) {
-                  arr1.add(element);
-                }
-              });
-            });
-          }
-        });
-      });
-      arr = c;
-      if (t == 0) {
-        await getSendRequests(userInfo['userName']);
-        isSearch = false;
-        return;
-      } else {
-        isSearch = true;
-      }
-      sendFriends = arr1;
-    }
-    */
-    setState(() {});
+    pageIndex = 1;
+    lastData = null;
+    userList = [];
+    isSearch = true;
+    isGetList = false;
+    searchQuery = query;
+    tabName = 'Discover';
+    getDiscoverList(query);
   }
 }
