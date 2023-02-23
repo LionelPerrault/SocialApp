@@ -84,17 +84,24 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
           switch (authException.code) {
             case 'invalid-phone-number':
               Helper.showToast('Invalid phone number!');
+              widget.onBack(false, true);
+
               return;
             case 'invalid-verification-code':
               Helper.showToast('The entered OTP is invalid!');
+              widget.onBack(false, true);
+
               return;
             // handle other error codes
             default:
+              widget.onBack(false, true);
+
               Helper.showToast(authException.code);
           }
         },
         onError: (error, stackTrace) {
           Helper.showToast('An error occurred!');
+          widget.onBack(false, true);
         },
         builder: (context, controller) {
           return Scaffold(
