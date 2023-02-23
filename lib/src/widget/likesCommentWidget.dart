@@ -377,40 +377,37 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             onTap: () async {
                               showDialog(
                                   context: context,
-                                  builder: (BuildContext context) =>
-                                      ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                              maxHeight: 100.0),
-                                          child: AlertDialog(
-                                              title: Row(
-                                                children: const [
-                                                  Icon(
-                                                    FontAwesomeIcons.share,
-                                                    size: 15,
-                                                    color: Color.fromARGB(
-                                                        255, 0, 0, 0),
-                                                  ),
-                                                  Text(
-                                                    'Share',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                        fontStyle:
-                                                            FontStyle.normal),
-                                                  ),
-                                                ],
+                                  builder: (BuildContext context) => Padding(
+                                      padding: EdgeInsets.all(20),
+                                      child: AlertDialog(
+                                          title: Row(
+                                            children: const [
+                                              Icon(
+                                                FontAwesomeIcons.share,
+                                                size: 15,
+                                                color: Color.fromARGB(
+                                                    255, 0, 0, 0),
                                               ),
-                                              insetPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 1),
-                                              content: SharePostModal(
-                                                context: context,
-                                                routerChange:
-                                                    widget.routerChange,
-                                                postInfo: widget.shareFlag
-                                                    ? widget.postInfo
-                                                    : widget.postInfo['data'],
-                                              ))));
+                                              Text(
+                                                'Share',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontStyle:
+                                                        FontStyle.normal),
+                                              ),
+                                            ],
+                                          ),
+                                          insetPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 1),
+                                          content: SharePostModal(
+                                            context: context,
+                                            routerChange: widget.routerChange,
+                                            postInfo: widget.shareFlag
+                                                ? widget.postInfo
+                                                : widget.postInfo['data'],
+                                          ))));
                             },
                             child: AnimatedContainer(
                               alignment: Alignment.center,
