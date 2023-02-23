@@ -26,6 +26,7 @@ class LikesCommentScreen extends StatefulWidget {
   late PostController Postcon;
   var postInfo;
   var postId;
+
   LikesCommentScreen(
       {Key? key,
       this.postInfo,
@@ -46,6 +47,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   bool isSound = false;
   late PostController con;
   late PeopleController peopleCon;
+
   Map<String, dynamic> productInfo = {
     'productStatus': 'New',
     'productOffer': 'Sell'
@@ -107,8 +109,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     {'image': emoticon['Angry'], 'value': 'Angry'}
   ];
 
-  List likes = [];
-  Map myLike = {};
   @override
   initState() {
     add(widget.Postcon);
@@ -117,28 +117,21 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     //peopleCon = controller as PeopleController;
 
     super.initState();
-    isVerified = EmailVerified.getVerified();
 
-    getLikes();
-    getComment();
-    setState(() {});
+    isVerified = EmailVerified.getVerified();
   }
 
   getComment() {
     con.getComment(widget.postInfo['id']).then((value) {
       allComment = value;
-      setState(() {
-        allComment = value;
-      });
+      setState(() {});
     });
   }
 
   getLikes() {
     con.getPostLikes(widget.postInfo['id']).then((value) {
       likes = value;
-      setState(() {
-        likes = value;
-      });
+      setState(() {});
     });
   }
 
@@ -151,8 +144,15 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     );
   }
 
+  List likes = [];
+  Map myLike = {};
+
   @override
   Widget build(BuildContext context) {
+    //setState(() {});
+
+    getLikes();
+    getComment();
     myLike = likes
             .where(
                 (like) => like['userInfo']['userName'] == userInfo['userName'])
@@ -163,6 +163,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             .where(
                 (like) => like['userInfo']['userName'] == userInfo['userName'])
             .toList()[0];
+
     var totalLikeImage = [];
     for (var i = 0; i < likes.length; i++) {
       var flag = true;
@@ -454,9 +455,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                     ? Container(
                         margin: const EdgeInsets.only(top: 6),
                         child: likesWidget('product', (value) async {
-                          myLike['value'] = value;
                           isLike = false;
-                          con.savePostLikes(widget.postInfo['id'], value);
+                          await con.savePostLikes(widget.postInfo['id'], value);
+
+                          await getLikes();
+                          await getComment();
+                          myLike['value'] = value;
+
                           whoHover = '';
                           setState(() {});
                         }),
@@ -735,7 +740,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       ? Container(
                           margin: EdgeInsets.only(top: commentHeight - 40),
                           child: likesWidget(e['id'], (value) {
-                            print('onenter');
                             whoComment = '';
                             // con.commentLikes[e['id']] = whatImage;
                             setState(() {});
@@ -1120,7 +1124,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       ? const SizedBox()
                       : ElevatedButton(
                           onPressed: () async {
-                            // print(con.isFriendRequest);
                             PeopleController().requestFriendAsData(
                               likeUsers[index]['userInfo']['userName'],
                               '${likeUsers[index]['userInfo']['firstName']} ${likeUsers[index]['userInfo']['lastName']}',

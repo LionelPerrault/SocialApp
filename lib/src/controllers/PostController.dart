@@ -18,6 +18,9 @@ class PostController extends ControllerMVC {
         groupSubRoute = '',
         super(state);
   static PostController? _this;
+
+  var posts = [];
+  int allposts = 0;
   List unlikedPages = [];
   List unJoindGroups = [];
   List unInterestedEvents = [];
@@ -1198,8 +1201,6 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  var posts = [];
-  int allposts = 0;
   var lastTime;
   getAllPost() async {
     var allSanp =
@@ -1288,13 +1289,15 @@ class PostController extends ControllerMVC {
         'comment': allPosts[i]['comment']
       };
 
+      print("adminsnapid:");
+      print(adminSnap.id);
       if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
           eachPost['privacy'] == 'Public') {
         posts = [eachPost, ...posts];
       }
     }
-    //setState(() {});
-    return true;
+
+    return posts;
   }
 
   loadNextPosts(newCount) async {
@@ -1353,9 +1356,10 @@ class PostController extends ControllerMVC {
     Helper.postCollection.doc(uid).delete();
   }
 
-  deletePostFromTimeline(uid) {
-    posts.removeWhere((item) => item['id'] == uid);
+  deletePostFromTimeline(post) {
+    posts.removeWhere((item) => item['id'] == post['id']);
     allposts--;
+    setState(() {});
   }
 
   deleteProduct(uid) async {
@@ -1415,7 +1419,7 @@ class PostController extends ControllerMVC {
         'userInfo': userInfo,
         'value': entry.value,
       });
-      print('likesArray$likesArray');
+      // print('likesArray$likesArray');
     }
 
     return likesArray;
