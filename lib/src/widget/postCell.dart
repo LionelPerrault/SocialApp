@@ -2123,8 +2123,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                   user['avatar'] != ''
                                       ? CircleAvatar(
                                           backgroundImage: NetworkImage(
-                                          widget.postInfo['adminInfo']
-                                              ['avatar'],
+                                          user['avatar'],
                                         ))
                                       : CircleAvatar(
                                           child:
