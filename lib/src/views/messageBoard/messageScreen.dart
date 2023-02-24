@@ -10,7 +10,6 @@ import 'package:shnatter/src/views/messageBoard/widget/chatUserListScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/newMessageScreen.dart';
 import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
 
 import '../../controllers/MessageController.dart';
 import '../../utils/size_config.dart';
@@ -64,22 +63,21 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
               document.get('users')[0] == value['userName'])) {
         exist = true;
         con.docId = document.id;
+        con.chatUserFullName = value['firstName'] + value['lastName'];
+        con.avatar = value['avatar'];
+        con.chattingUser = value['userName'];
+        con.isMessageTap = "message-list";
+        con.setState(() {});
       }
     }
-    if (exist == true) {
-      con.chatUserFullName = value['firstName'] + value['lastName'];
-      con.avatar = value['avatar'];
-      con.chattingUser = value['userName'];
-      con.isMessageTap = "message-list";
-      con.setState(() {});
-      setState(() {});
-    } else {
+    if (exist == false) {
       con.avatar = value['avatar'];
       con.chattingUser = value['userName'];
       con.newRFirstName = value['firstName'];
       con.newRLastName = value['lastName'];
       con.chatUserFullName = value['firstName'] + ' ' + value['lastName'];
       con.isMessageTap = "new";
+      con.setState(() {});
     }
     isCheckingChatHistory = false;
     setState(() {});
@@ -200,25 +198,6 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                               setState(() {});
                             },
                           ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: UserManager.userInfo['isVerify']
-                              ? SizeConfig(context).screenHeight - 250
-                              : SizeConfig(context).screenHeight -
-                                  250 -
-                                  verifyAlertToastHeight),
-                      child: WriteMessageScreen(
-                        type: 'new',
-                        goMessage: (value) {
-                          con.isMessageTap = value;
-                          if (value == 'message-list') {
-                            isShowChatUserList = false;
-                          }
-                          setState(() {});
-                          con.setState(() {});
-                        },
-                      ),
-                    )
                   ]),
       ),
     );

@@ -8,8 +8,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import '../../controllers/ChatController.dart';
 import '../../managers/user_manager.dart';
-import '../../models/chatModel.dart';
-import '../../utils/size_config.dart';
 
 class ChatUserListScreen extends StatefulWidget {
   Function onBack;
