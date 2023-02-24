@@ -58,8 +58,10 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
     bool exist = false;
 
     for (QueryDocumentSnapshot document in documents) {
-      if (document.get('users')[0] == UserManager.userInfo['userName'] &&
-          document.get('users')[1] == value['userName']) {
+      if ((document.get('users')[0] == UserManager.userInfo['userName'] &&
+              document.get('users')[1] == value['userName']) ||
+          (document.get('users')[1] == UserManager.userInfo['userName'] &&
+              document.get('users')[0] == value['userName'])) {
         exist = true;
         con.docId = document.id;
       }
