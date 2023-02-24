@@ -115,6 +115,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                   onPressed: () async {
                     setState(() {});
                     loadingFlag = true;
+                    setState(() {});
                     await con.addNewPosts(newPostNum);
                     //await con.getAllPost();
                     con.allposts = con.allposts + newPostNum;
