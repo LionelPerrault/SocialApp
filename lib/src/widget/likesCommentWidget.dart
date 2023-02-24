@@ -152,7 +152,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     //setState(() {});
 
     getLikes();
-    getComment();
     myLike = likes
             .where(
                 (like) => like['userInfo']['userName'] == userInfo['userName'])
@@ -163,7 +162,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             .where(
                 (like) => like['userInfo']['userName'] == userInfo['userName'])
             .toList()[0];
-
     var totalLikeImage = [];
     for (var i = 0; i < likes.length; i++) {
       var flag = true;
@@ -176,6 +174,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
       }
       if (flag) totalLikeImage.add(likes[i]['value']);
     }
+
+    totalLikeImage.sort();
+    getComment();
+
+    //setState(() {});
 
     return SingleChildScrollView(
       child: Column(
@@ -243,11 +246,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             onEnter: (value) {
                               whoHover = 'like';
 
-                              setState(() {});
+                              //  setState(() {});
                             },
                             onExit: (event) {
                               whoHover = '';
-                              setState(() {});
+                              //  setState(() {});
                             },
                             child: Container(
                               foregroundDecoration: isVerified
@@ -454,13 +457,10 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         child: likesWidget('product', (value) async {
                           isLike = false;
                           await con.savePostLikes(widget.postInfo['id'], value);
-
-                          await getLikes();
-                          await getComment();
-                          myLike['value'] = value;
+                          setState(() {});
+                          // myLike['value'] = value;
 
                           whoHover = '';
-                          setState(() {});
                         }),
                       )
                     : Container()
@@ -556,8 +556,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 decoration: const InputDecoration(
                     hintText: 'Write a comment',
                     hintStyle: TextStyle(fontSize: 12, fontFamily: 'Hind'),
-                    contentPadding:
-                        EdgeInsets.only(top: 20, left: 10, bottom: 7),
+                    contentPadding: kIsWeb
+                        ? EdgeInsets.only(top: 20, left: 10, bottom: 12)
+                        : EdgeInsets.only(top: 20, left: 10, bottom: 7),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none),
               ),
@@ -998,6 +999,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   }
 
   Widget allLikeUser() {
+    print("likesimage");
+    print(likesImage);
     return Row(
       children: [
         Expanded(
@@ -1134,7 +1137,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             elevation: 3,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(2.0)),
-                            // minimumSize: const Size(80, 35),
+                            minimumSize: const Size(80, 35),
                             maximumSize: const Size(80, 35),
                           ),
                           child: Row(
