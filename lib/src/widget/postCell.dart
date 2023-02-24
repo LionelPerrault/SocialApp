@@ -390,40 +390,46 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                             children: [
                               Row(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                  SizedBox(
+                                      width: SizeConfig(context).screenWidth <
+                                              600
+                                          ? SizeConfig(context).screenWidth -
+                                              150
+                                          : 450, // 1st set height
+                                      child: RichText(
+                                          text: TextSpan(
                                               style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router':
-                                                        RouteNames.profile,
-                                                    'subRouter':
-                                                        widget.postInfo[
-                                                                'adminInfo']
-                                                            ['userName'],
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  Container(
-                                    width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 240
-                                        : 350,
-                                    child: Text(
-                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ),
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              children: <TextSpan>[
+                                            TextSpan(
+                                                text:
+                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        widget.routerChange({
+                                                          'router': RouteNames
+                                                              .profile,
+                                                          'subRouter': widget
+                                                                      .postInfo[
+                                                                  'adminInfo']
+                                                              ['userName'],
+                                                        });
+                                                      }),
+                                            TextSpan(
+                                                text:
+                                                    ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
+                                          ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
@@ -657,7 +663,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
+                                                  fontSize: 15),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
                                                   widget.routerChange({
@@ -879,43 +885,46 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                             children: [
                               Row(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router':
-                                                        RouteNames.profile,
-                                                    'subRouter':
-                                                        widget.postInfo[
-                                                                'adminInfo']
-                                                            ['userName'],
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  const SizedBox(width: 10),
                                   SizedBox(
-                                    width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 240
-                                        : 350,
-                                    child: Text(
-                                      ' shared ${widget.postInfo['data']['adminInfo']['firstName']} ${widget.postInfo['data']['adminInfo']['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' ? widget.postInfo['data']['type'] : 'Post'}',
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          overflow: TextOverflow.ellipsis),
-                                    ),
-                                  ),
+                                      width: SizeConfig(context).screenWidth <
+                                              600
+                                          ? SizeConfig(context).screenWidth -
+                                              150
+                                          : 450, // 1st set height
+                                      child: RichText(
+                                          text: TextSpan(
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              children: <TextSpan>[
+                                            TextSpan(
+                                                text:
+                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        widget.routerChange({
+                                                          'router': RouteNames
+                                                              .profile,
+                                                          'subRouter': widget
+                                                                      .postInfo[
+                                                                  'adminInfo']
+                                                              ['userName'],
+                                                        });
+                                                      }),
+                                            TextSpan(
+                                                text:
+                                                    ' shared ${widget.postInfo['data']['adminInfo']['firstName']} ${widget.postInfo['data']['adminInfo']['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' ? widget.postInfo['data']['type'] : 'Post'}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
+                                          ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
@@ -1130,40 +1139,45 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                             children: [
                               Row(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                  SizedBox(
+                                      width: SizeConfig(context).screenWidth <
+                                              600
+                                          ? SizeConfig(context).screenWidth -
+                                              150
+                                          : 450, // 1st set height
+                                      child: RichText(
+                                          text: TextSpan(
                                               style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router':
-                                                        RouteNames.profile,
-                                                    'subRouter':
-                                                        widget.postInfo[
-                                                                'adminInfo']
-                                                            ['userName'],
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  Container(
-                                    width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 240
-                                        : 350,
-                                    child: Text(
-                                      ' added an audio',
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ),
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              children: <TextSpan>[
+                                            TextSpan(
+                                                text:
+                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        widget.routerChange({
+                                                          'router': RouteNames
+                                                              .profile,
+                                                          'subRouter': widget
+                                                                      .postInfo[
+                                                                  'adminInfo']
+                                                              ['userName'],
+                                                        });
+                                                      }),
+                                            const TextSpan(
+                                                text: ' added an audio',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
+                                          ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
@@ -1377,40 +1391,46 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                             children: [
                               Row(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                  SizedBox(
+                                      width: SizeConfig(context).screenWidth <
+                                              600
+                                          ? SizeConfig(context).screenWidth -
+                                              150
+                                          : 450, // 1st set height
+                                      child: RichText(
+                                          text: TextSpan(
                                               style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router':
-                                                        RouteNames.profile,
-                                                    'subRouter':
-                                                        widget.postInfo[
-                                                                'adminInfo']
-                                                            ['userName'],
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  Container(
-                                    width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 240
-                                        : 350,
-                                    child: Text(
-                                      ' is ${widget.postInfo['data']['action']} ${widget.postInfo['data']['subAction']}',
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ),
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              children: <TextSpan>[
+                                            TextSpan(
+                                                text:
+                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        widget.routerChange({
+                                                          'router': RouteNames
+                                                              .profile,
+                                                          'subRouter': widget
+                                                                      .postInfo[
+                                                                  'adminInfo']
+                                                              ['userName'],
+                                                        });
+                                                      }),
+                                            TextSpan(
+                                                text:
+                                                    ' is ${widget.postInfo['data']['action']} ${widget.postInfo['data']['subAction']}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
+                                          ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
@@ -1630,7 +1650,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 16),
+                                              fontSize: 15),
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
                                               widget.routerChange(
@@ -1862,40 +1882,45 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                             children: [
                               Row(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                  SizedBox(
+                                      width: SizeConfig(context).screenWidth <
+                                              600
+                                          ? SizeConfig(context).screenWidth -
+                                              150
+                                          : 450, // 1st set height
+                                      child: RichText(
+                                          text: TextSpan(
                                               style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router':
-                                                        RouteNames.profile,
-                                                    'subRouter':
-                                                        widget.postInfo[
-                                                                'adminInfo']
-                                                            ['userName'],
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  Container(
-                                    width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 240
-                                        : 350,
-                                    child: const Text(
-                                      ' added a poll',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              children: <TextSpan>[
+                                            TextSpan(
+                                                text:
+                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        widget.routerChange({
+                                                          'router': RouteNames
+                                                              .profile,
+                                                          'subRouter': widget
+                                                                      .postInfo[
+                                                                  'adminInfo']
+                                                              ['userName'],
+                                                        });
+                                                      }),
+                                            const TextSpan(
+                                                text: ' added a poll',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
+                                          ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
