@@ -87,9 +87,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   bool editShow = false;
   String editHeader = '';
   bool loadingFlag = false;
+
   @override
   void initState() {
     add(widget.con);
+
     con = controller as PostController;
     con.formatDate(widget.postInfo['time']).then((value) {
       postTime = value;
@@ -107,16 +109,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
             widget.postInfo['data']['optionUp'][UserManager.userInfo['uid']];
       }
       getUpUserInfo();
-    }
-    if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
-      privacyMenuItem = [];
-      popupMenuItem = [
-        {
-          'icon': Icons.link,
-          'label': 'Open post in new tab',
-          'value': 'open',
-        },
-      ];
     }
 
     super.initState();
@@ -167,7 +159,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         title: const SizedBox(),
         content: Stack(children: [
           AlertYesNoWidget(
-              yesFunc: () {
+              yesFunc: () async {
                 setState(() {
                   loadingFlag = true;
                 });
@@ -181,13 +173,15 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
                     print(widget.postInfo['id']);
                     if (con.posts[i]['data']['id'] == widget.postInfo['id']) {
-                      con.deletePost(con.posts[i]['id']);
-                      con.deletePostFromTimeline(con.posts[i]['id']);
+                      await con.deletePost(con.posts[i]['id']);
+
+                      con.deletePostFromTimeline(con.posts[i]);
                     }
                   }
                 }
-                con.deletePost(widget.postInfo['id']);
-                con.deletePostFromTimeline(widget.postInfo['id']);
+                await con.deletePost(widget.postInfo['id']);
+
+                await con.deletePostFromTimeline(widget.postInfo);
 
                 setState(() {
                   loadingFlag = false;
@@ -271,6 +265,48 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.isSharedContent) {
+      if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
+        privacyMenuItem = [];
+        popupMenuItem = [
+          {
+            'icon': Icons.link,
+            'label': 'Open post in new tab',
+            'value': 'open',
+          },
+        ];
+      } else {
+        popupMenuItem = [
+          {
+            'icon': Icons.edit,
+            'label': 'Edit Post',
+            'value': 'edit',
+          },
+          {
+            'icon': Icons.delete,
+            'label': 'Delete Post',
+            'value': 'delete',
+          },
+          {
+            'icon': Icons.remove_red_eye_sharp,
+            'label': 'Hide from Timeline',
+            'labelE': 'Allow on Timeline',
+            'value': 'timeline',
+          },
+          {
+            'icon': Icons.chat_bubble,
+            'label': 'Turn off Commenting',
+            'labelE': 'Turn on Commenting',
+            'value': 'comment',
+          },
+          {
+            'icon': Icons.link,
+            'label': 'Open post in new tab',
+            'value': 'open',
+          },
+        ];
+      }
+    }
     return widget.postInfo['timeline'] == false
         ? DottedBorder(
             borderType: BorderType.RRect,
@@ -303,8 +339,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       case 'share':
         //  for (int i = 0; i < con.posts.length; i++) {
         //    if (con.posts[i]['id'] == widget.postInfo['data']) {
-        print('widget.postinfo[value]');
-        print(widget.postInfo['data']);
+
         widget.sharedPost = widget.postInfo['data'];
         //    }
         //  }
