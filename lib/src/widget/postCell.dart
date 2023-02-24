@@ -904,13 +904,16 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 })
                                         ]),
                                   ),
-                                  Container(
+                                  const SizedBox(width: 10),
+                                  SizedBox(
                                     width: SizeConfig(context).screenWidth < 600
                                         ? SizeConfig(context).screenWidth - 240
                                         : 350,
                                     child: Text(
                                       ' shared ${widget.postInfo['data']['adminInfo']['firstName']} ${widget.postInfo['data']['adminInfo']['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' ? widget.postInfo['data']['type'] : 'Post'}',
-                                      style: const TextStyle(fontSize: 14),
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          overflow: TextOverflow.ellipsis),
                                     ),
                                   ),
                                   Visibility(
