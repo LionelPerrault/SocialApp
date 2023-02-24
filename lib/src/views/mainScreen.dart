@@ -126,7 +126,6 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
 
   textChange(value) {
     searchText = value;
-    print('textChange');
     setState(() {});
   }
 

@@ -285,14 +285,12 @@ class PeopleController extends ControllerMVC {
         }
         lastData = newDocumentList[newDocumentList.length - 1];
       }
-      setState(() {
-        isGetList = true;
-      });
+      isGetList = true;
+      setState(() {});
     } catch (exception) {
-      setState(() {
-        isGetList = true;
-        isLocked = false;
-      });
+      isGetList = true;
+      isLocked = false;
+      setState(() {});
     }
   }
 

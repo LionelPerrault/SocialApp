@@ -688,7 +688,6 @@ class UserController extends ControllerMVC {
             }
           else
             {
-              print('relysiaPassword: $relysiaPassword'),
               RelysiaManager.authUser(relysiaEmail, relysiaPassword)
                   .then((responseData) => {
                         if (responseData['data'] != null)
