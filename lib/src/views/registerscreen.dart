@@ -142,6 +142,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                 Icons.person,
                                                 color: Colors.white,
                                               ),
+                                              initialValue:
+                                                  signUpUserInfo['firstName'] ??
+                                                      "",
                                               validator: (value) async {},
                                               onchange: (value) async {
                                                 signUpUserInfo['firstName'] =
@@ -155,6 +158,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                 Icons.person,
                                                 color: Colors.white,
                                               ),
+                                              initialValue:
+                                                  signUpUserInfo['lastName'] ??
+                                                      "",
                                               onchange: (value) async {
                                                 signUpUserInfo['lastName'] =
                                                     value;
@@ -163,6 +169,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               }),
                                           input(
                                               label: 'User Name',
+                                              initialValue:
+                                                  signUpUserInfo['userName'] ??
+                                                      "",
                                               icon: const Icon(
                                                 Icons.ev_station_sharp,
                                                 color: Colors.white,
@@ -176,6 +185,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               }),
                                           input(
                                               label: 'Email',
+                                              initialValue:
+                                                  signUpUserInfo['email'] ?? "",
                                               icon: const Icon(
                                                 Icons.email,
                                                 color: Colors.white,
@@ -189,6 +200,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                           passwordTextField(
                                               obscureText: isObscure,
                                               label: 'Password',
+                                              initialValue:
+                                                  signUpUserInfo['password'] ??
+                                                      "",
                                               icon: const Icon(
                                                 Icons.key,
                                                 color: Colors.white,
@@ -553,8 +567,6 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                   if (value2 == true) {
                                                     setState(() {
                                                       registerStep = 1;
-
-                                                      signUpUserInfo = {};
                                                     });
                                                   }
                                                 },
@@ -577,7 +589,13 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   }
 
   Widget input(
-      {label, icon, eyeIcon, onchange, obscureText = false, validator}) {
+      {label,
+      icon,
+      eyeIcon,
+      onchange,
+      obscureText = false,
+      validator,
+      initialValue}) {
     return Container(
       height: 38,
       padding: const EdgeInsets.only(top: 10),
@@ -589,6 +607,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
         onChange: (val) async {
           onchange(val);
         },
+        initialValue: initialValue,
         icon: icon,
         label: label,
       ),
@@ -596,11 +615,18 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   }
 
   Widget passwordTextField(
-      {label, icon, suffixIcon, onchange, obscureText = false, validator}) {
+      {label,
+      icon,
+      suffixIcon,
+      onchange,
+      obscureText = false,
+      validator,
+      initialValue}) {
     return Container(
       height: 38,
       padding: const EdgeInsets.only(top: 10),
-      child: TextField(
+      child: TextFormField(
+        initialValue: initialValue,
         obscureText: obscureText,
         onChanged: (val) async {
           onchange(val);
