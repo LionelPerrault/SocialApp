@@ -41,9 +41,9 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
   bool isSound = false;
   late PostController Postcon;
   bool postLoading = false;
-  Color _color = Color.fromRGBO(0, 0, 0, 0.2);
+  Color _color = Color.fromRGBO(51, 103, 214, 0.65);
   Color _color2 = Color.fromRGBO(0, 0, 0, 0.2);
-  double _width = 1;
+  double _width = 2;
   double _width2 = 1;
 
   String postMessage = '';
@@ -149,53 +149,53 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                           ),
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(left: 15)),
-                      GestureDetector(
-                        onTap: () {
-                          print("Container clicked");
-                          print(context);
+                      // const Padding(padding: EdgeInsets.only(left: 15)),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     print("Container clicked");
+                      //     print(context);
 
-                          setState(() {
-                            _color2 = Color.fromRGBO(51, 103, 214, 0.65);
-                            _color = Color.fromRGBO(0, 0, 0, 0.2);
-                            _width2 = 2;
-                            _width = 1;
-                          });
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(13),
-                            border: Border.all(color: _color2, width: _width2),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 100,
-                                height: 70,
-                                child: const Icon(Icons.camera_enhance_rounded,
-                                    color: Colors.grey, size: 30.0),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    'Groups',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(82, 95, 127, 1),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              const Padding(padding: EdgeInsets.only(top: 15)),
-                            ],
-                          ),
-                        ),
-                      ),
+                      //     setState(() {
+                      //       _color2 = Color.fromRGBO(51, 103, 214, 0.65);
+                      //       _color = Color.fromRGBO(0, 0, 0, 0.2);
+                      //       _width2 = 2;
+                      //       _width = 1;
+                      //     });
+                      //   },
+                      //   child: Container(
+                      //     alignment: Alignment.center,
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(13),
+                      //       border: Border.all(color: _color2, width: _width2),
+                      //     ),
+                      //     child: Column(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       crossAxisAlignment: CrossAxisAlignment.center,
+                      //       children: [
+                      //         Container(
+                      //           alignment: Alignment.center,
+                      //           width: 100,
+                      //           height: 70,
+                      //           child: const Icon(Icons.camera_enhance_rounded,
+                      //               color: Colors.grey, size: 30.0),
+                      //         ),
+                      //         Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: const [
+                      //             Text(
+                      //               'Groups',
+                      //               style: TextStyle(
+                      //                   color: Color.fromRGBO(82, 95, 127, 1),
+                      //                   fontSize: 13,
+                      //                   fontWeight: FontWeight.w600),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         const Padding(padding: EdgeInsets.only(top: 15)),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

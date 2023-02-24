@@ -1395,9 +1395,12 @@ class PostController extends ControllerMVC {
     var userInfo = UserManager.userInfo;
     var snapshot = await Helper.postLikeComment.doc(postId).get();
     Map<String, dynamic> gotLikes = snapshot.data() ?? {};
-    gotLikes[userInfo['uid']] = likes;
+    if (gotLikes[userInfo['uid']] == likes) {
+      gotLikes.removeWhere((key, value) => key == userInfo['uid']);
+    } else {
+      gotLikes[userInfo['uid']] = likes;
+    }
     await Helper.postLikeComment.doc(postId).set(gotLikes);
-    setState(() {});
   }
 
   Future<List> getPostLikes(postId) async {
