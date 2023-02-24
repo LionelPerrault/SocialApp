@@ -27,6 +27,7 @@ class RegisterScreen extends StatefulWidget {
 class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   bool check1 = false;
   bool check2 = false;
+  bool allInputed = false;
   int registerStep = 1;
   String phoneNumber = '';
   late UserController con;
@@ -49,6 +50,23 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
     setState(() {
       _isButtonDisabled = true;
     });
+  }
+
+  final RegExp emailValidatorRegExp =
+      RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+  Future<void> checkAllForms() async {
+    print('checking.........................');
+    allInputed = true;
+    if (signUpUserInfo['firstName'] == null) allInputed = false;
+    if (signUpUserInfo['lastName'] == null) allInputed = false;
+    if (signUpUserInfo['userName'] == null) allInputed = false;
+    if (signUpUserInfo['email'] == null) allInputed = false;
+
+    if (signUpUserInfo['password'] == null) allInputed = false;
+    if (!check1) allInputed = false;
+    if (!check2) allInputed = false;
+    setState(() {});
   }
 
   Widget build(BuildContext context) {
@@ -133,12 +151,11 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                 Icons.person,
                                                 color: Colors.white,
                                               ),
-                                              validator: (value) async {
-                                                print(value);
-                                              },
+                                              validator: (value) async {},
                                               onchange: (value) async {
                                                 signUpUserInfo['firstName'] =
                                                     value;
+                                                checkAllForms();
                                                 setState(() {});
                                               }),
                                           input(
@@ -150,6 +167,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               onchange: (value) async {
                                                 signUpUserInfo['lastName'] =
                                                     value;
+                                                checkAllForms();
                                                 setState(() {});
                                               }),
                                           input(
@@ -161,6 +179,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               onchange: (value) async {
                                                 signUpUserInfo['userName'] =
                                                     value;
+                                                checkAllForms();
+
                                                 setState(() {});
                                               }),
                                           input(
@@ -171,6 +191,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               ),
                                               onchange: (value) async {
                                                 signUpUserInfo['email'] = value;
+                                                checkAllForms();
+
                                                 setState(() {});
                                               }),
                                           passwordTextField(
@@ -183,6 +205,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               onchange: (value) async {
                                                 signUpUserInfo['password'] =
                                                     value;
+                                                checkAllForms();
                                                 setState(() {});
                                               }),
                                           Container(
@@ -299,6 +322,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                             ? false
                                                             : true;
                                                       });
+                                                      checkAllForms();
                                                     },
                                                   )),
                                               const Padding(
@@ -340,6 +364,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                             ? false
                                                             : true;
                                                       });
+                                                      checkAllForms();
                                                     },
                                                   )),
                                               const Padding(
@@ -418,7 +443,10 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                             padding:
                                                 const EdgeInsets.only(top: 10),
                                             child: MyPrimaryButton(
-                                              color: Colors.white,
+                                              color: allInputed
+                                                  ? Color.fromARGB(
+                                                      255, 103, 181, 245)
+                                                  : Colors.white,
                                               isShowProgressive:
                                                   con.isSendRegisterInfo,
                                               buttonName: "Sign up",
@@ -487,7 +515,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                           if (value1 == true) {
                                             con.createRelysiaAccount(context);
                                           }
-                                          if (value2 = true) {
+                                          if (value2 == true) {
                                             setState(() {
                                               registerStep = 2;
                                             });
