@@ -117,48 +117,48 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                   ),
                 ),
               ),
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Follows';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Follows'
-                        ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Follows',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Followings';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Followings'
-                        ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Followings',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              )
+              // MouseRegion(
+              //   cursor: SystemMouseCursors.click,
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       tab = 'Follows';
+              //       setState(() {});
+              //     },
+              //     child: Container(
+              //       alignment: Alignment.center,
+              //       width: 100,
+              //       height: 40,
+              //       color: tab == 'Follows'
+              //           ? Colors.white
+              //           : Color.fromRGBO(240, 240, 240, 1),
+              //       child: const Text(
+              //         'Follows',
+              //         style: TextStyle(fontSize: 15, color: Colors.black),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // MouseRegion(
+              //   cursor: SystemMouseCursors.click,
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       tab = 'Followings';
+              //       setState(() {});
+              //     },
+              //     child: Container(
+              //       alignment: Alignment.center,
+              //       width: 100,
+              //       height: 40,
+              //       color: tab == 'Followings'
+              //           ? Colors.white
+              //           : Color.fromRGBO(240, 240, 240, 1),
+              //       child: const Text(
+              //         'Followings',
+              //         style: TextStyle(fontSize: 15, color: Colors.black),
+              //       ),
+              //     ),
+              //   ),
+              // )
             ]),
           )
         ],
