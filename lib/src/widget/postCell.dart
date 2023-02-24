@@ -426,7 +426,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                     ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 14))
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
                                           ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
@@ -919,7 +921,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                     ' shared ${widget.postInfo['data']['adminInfo']['firstName']} ${widget.postInfo['data']['adminInfo']['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' ? widget.postInfo['data']['type'] : 'Post'}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 14))
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
                                           ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
@@ -1170,7 +1174,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 text: ' added an audio',
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 14))
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
                                           ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
@@ -1421,7 +1427,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                     ' is ${widget.postInfo['data']['action']} ${widget.postInfo['data']['subAction']}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 14))
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
                                           ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
@@ -1909,7 +1917,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 text: ' added a poll',
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 14))
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
                                           ]))),
                                   Visibility(
                                     visible: !widget.isSharedContent,
