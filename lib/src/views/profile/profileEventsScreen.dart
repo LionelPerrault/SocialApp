@@ -1,15 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import '../../controllers/HomeController.dart';
+
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
@@ -44,7 +39,6 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
             myEvents.where((event) =>
                 event['data']['eventAdmin'] == UserManager.userInfo['id']),
             getFlag = false,
-            print(myEvents),
             setState(() {})
           },
         );

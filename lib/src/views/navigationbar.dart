@@ -1,11 +1,8 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:extended_image/extended_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
@@ -19,7 +16,6 @@ import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
 import 'package:shnatter/src/views/box/notification.dart';
-import 'package:shnatter/src/views/setting/settingsMain.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import '../utils/size_config.dart';
@@ -369,7 +365,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         menuBuilder: () => PostsNavBox(
                               routerChange: widget.routerChange,
                               hideNavBox: () {
-                                print('object');
                                 _navController.hideMenu();
                               },
                             ),
@@ -433,7 +428,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      menuBuilder: () => ShnatterMessage(),
+                      controller: _navController,
+                      menuBuilder: () => ShnatterMessage(
+                        routerChange: widget.routerChange,
+                        hideNavBox: () {
+                          _navController.hideMenu();
+                        },
+                      ),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
                       child: Row(
@@ -701,7 +702,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         menuBuilder: () => PostsNavBox(
                               routerChange: widget.routerChange,
                               hideNavBox: () {
-                                print('object');
                                 _navController.hideMenu();
                               },
                             ),
@@ -765,7 +765,12 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      menuBuilder: () => ShnatterMessage(),
+                      menuBuilder: () => ShnatterMessage(
+                        routerChange: widget.routerChange,
+                        hideNavBox: () {
+                          _navController.hideMenu();
+                        },
+                      ),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
                       child: Row(

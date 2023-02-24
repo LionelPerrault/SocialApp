@@ -115,7 +115,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                   con.docId = docId;
                   con.setState(() {});
                 },
-                hoverColor: Color.fromRGBO(240, 240, 240, 1),
+                // hoverColor: Color.fromRGBO(240, 240, 240, 1),
                 leading: Container(
                   width: 44,
                   height: 44,
