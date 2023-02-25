@@ -115,7 +115,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         Helper.notifiCollection.snapshots();
     streamBadge.listen((event) async {
       var allNotifi = event.docs;
-      print('Stream Start');
       var userSnap = await FirebaseFirestore.instance
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
@@ -191,7 +190,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     final Stream<QuerySnapshot> streamContent =
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
-      print('notification Stream');
       var notiSnap = await Helper.notifiCollection
           .orderBy('timeStamp', descending: true)
           .get();
