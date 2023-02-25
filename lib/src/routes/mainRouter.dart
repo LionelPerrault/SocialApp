@@ -6,6 +6,7 @@ import 'package:shnatter/src/views/groups/panel/groupView/groupscreen.dart';
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/marketPlace/marketPlaceScreen.dart';
 import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
+import 'package:shnatter/src/views/neearby/nearbyscreen.dart';
 import 'package:shnatter/src/views/people/peoplescreen.dart';
 import 'package:shnatter/src/views/postView/postscreen.dart';
 import 'package:shnatter/src/views/products/panel/productView/productscreen.dart';
@@ -31,6 +32,8 @@ class MainRouter {
             settingRouter: mainRouterValue, routerChange: routerChange);
       case RouteNames.people:
         return PeopleScreen(routerChange: routerChange);
+      case RouteNames.nearby:
+        return UserExplore(routerChange: routerChange);
       case RouteNames.events:
         if (mainRouterValue['subRouter'] != null &&
             mainRouterValue['subRouter'] != '') {

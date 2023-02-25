@@ -9,6 +9,7 @@ class PrimaryInput extends StatefulWidget {
   String label;
   bool isObscure = true;
   bool obscureText = false;
+  String initialValue = '';
   var icon = const Icon(
     Icons.person_outline_rounded,
     color: Colors.white,
@@ -20,6 +21,7 @@ class PrimaryInput extends StatefulWidget {
     required this.label,
     this.obscureText = false,
     required this.validator,
+    required this.initialValue,
     this.icon = const Icon(
       null,
     ),
@@ -38,6 +40,7 @@ class PrimaryInputState extends State<PrimaryInput> {
       onChanged: (newIndex) {
         widget.onChange(newIndex);
       },
+      initialValue: widget.initialValue,
       obscureText: widget.obscureText,
       style: const TextStyle(color: Colors.white, fontSize: 11),
       cursorColor: Colors.white,

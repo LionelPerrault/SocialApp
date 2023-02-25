@@ -368,6 +368,10 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                     onTap: () async {
                       con.pageIndex++;
                       isShowProgressive = true;
+                      if (con.isSearch == true) {
+                        con.isSearch = false;
+                        con.pageIndex = 1;
+                      }
                       setState(() {});
                       await con.getUserList();
                       isShowProgressive = false;

@@ -93,7 +93,10 @@ dependencies:
   intl_phone_field: ^3.1.0
   easy_container: ^1.0.4
   country_code_picker: ^2.0.2
-
+  google_maps_flutter: ^2.2.3
+  geolocator: ^8.2.0
+  geocoding: ^2.0.4
+  geoflutterfire2: ^2.3.14
 dev_dependencies:
   flutter_test:
     sdk: flutter
