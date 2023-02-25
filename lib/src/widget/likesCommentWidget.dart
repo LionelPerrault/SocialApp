@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,17 +12,17 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
-import 'dart:io' show File;
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as PPath;
+
 import 'package:shnatter/src/widget/sharePostWidget.dart';
 
+import '../controllers/LikeCommentController.dart';
 import '../helpers/emailverified.dart';
 
 class LikesCommentScreen extends StatefulWidget {
-  late PostController Postcon;
+  late PostController con;
+
   var postInfo;
   var postId;
 
@@ -34,7 +33,7 @@ class LikesCommentScreen extends StatefulWidget {
       required this.commentFlag,
       required this.routerChange,
       this.shareFlag = true})
-      : Postcon = PostController(),
+      : con = PostController(),
         super(key: key);
   Function routerChange;
   bool commentFlag;
@@ -55,8 +54,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   var category = 'Choose Category';
   TextEditingController commentController = TextEditingController();
   double uploadPhotoProgress = 0;
-  List<dynamic> productPhoto = [];
-  List<dynamic> productFile = [];
+  // List<dynamic> postPhoto = [];
+  // List<dynamic> productFile = [];
   String comment = '';
   List allComment = [];
   var userInfo = UserManager.userInfo;
@@ -111,29 +110,32 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 
   @override
   initState() {
-    add(widget.Postcon);
+    add(widget.con);
     con = controller as PostController;
 
     //peopleCon = controller as PeopleController;
 
     super.initState();
-
+    con.addNotifyCallBack(this);
+    LikeCommentController().addNotifyCallBack(this);
     isVerified = EmailVerified.getVerified();
+
+    con.loadPostLikes(widget.postInfo['id']);
   }
 
-  getComment() {
-    con.getComment(widget.postInfo['id']).then((value) {
-      allComment = value;
-      setState(() {});
-    });
-  }
+  // getComment() {
+  //   con.getComment(widget.postInfo['id']).then((value) {
+  //     allComment = value;
+  //     setState(() {});
+  //   });
+  // }
 
-  getLikes() {
-    con.getPostLikes(widget.postInfo['id']).then((value) {
-      likes = value;
-      setState(() {});
-    });
-  }
+  // getLikes() {
+  //   con.getPostLikes(widget.postInfo['id']).then((value) {
+  //     likes = value;
+  //     setState(() {});
+  //   });
+  // }
 
   viewLikeUser() {
     showDialog(
@@ -144,48 +146,51 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     );
   }
 
-  List likes = [];
-  Map myLike = {};
-
   @override
   Widget build(BuildContext context) {
     //setState(() {});
-
-    getLikes();
-    myLike = likes
-            .where(
-                (like) => like['userInfo']['userName'] == userInfo['userName'])
-            .toList()
-            .isEmpty
-        ? {}
-        : likes
-            .where(
-                (like) => like['userInfo']['userName'] == userInfo['userName'])
-            .toList()[0];
-    var totalLikeImage = [];
-    for (var i = 0; i < likes.length; i++) {
-      var flag = true;
-      for (var j = 0; j < totalLikeImage.length; j++) {
-        if (likes[i]['value'] == totalLikeImage[j]) {
-          flag = false;
-
-          continue;
-        }
-      }
-      if (flag) totalLikeImage.add(likes[i]['value']);
-    }
-
-    totalLikeImage.sort();
-    getComment();
+    // getLikes();
+    // getComment();
 
     //setState(() {});
+    // var mylikevalue = con.myLike.firstWhere(
+    //     (element) => element['postId'] == widget.postInfo['id'],
+    //     orElse: () => null);
+    var totalLikeImage = [];
+    Map myLike = {};
+    var likesvalue = con.likes[widget.postInfo['id'].toString()];
+    if (likesvalue != null) {
+      for (var i = 0; i < likesvalue.length; i++) {
+        var flag = true;
+        for (var j = 0; j < totalLikeImage.length; j++) {
+          if (likesvalue[i]['value'] == totalLikeImage[j]) {
+            flag = false;
 
+            continue;
+          }
+        }
+        if (flag) totalLikeImage.add(likesvalue[i]['value']);
+      }
+
+      totalLikeImage.sort();
+
+      myLike = likesvalue
+              .where((like) =>
+                  like['userInfo']['userName'] == userInfo['userName'])
+              .toList()
+              .isEmpty
+          ? {}
+          : likesvalue
+              .where((like) =>
+                  like['userInfo']['userName'] == userInfo['userName'])
+              .toList()[0];
+    }
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             child: Stack(
               children: [
                 Container(
@@ -220,7 +225,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                               .toList(),
                         ),
                       ),
-                      Text('${likes.length == 0 ? '' : likes.length}'),
+                      Text(
+                          '${likesvalue == null || likesvalue.length == 0 ? '' : likesvalue.length}'),
                       const Flexible(fit: FlexFit.tight, child: SizedBox()),
                       const Icon(
                         FontAwesomeIcons.comment,
@@ -246,11 +252,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             onEnter: (value) {
                               whoHover = 'like';
 
-                              //  setState(() {});
+                              setState(() {});
                             },
                             onExit: (event) {
                               whoHover = '';
-                              //  setState(() {});
+                              setState(() {});
                             },
                             child: Container(
                               foregroundDecoration: isVerified
@@ -349,7 +355,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Icon(
                                           FontAwesomeIcons.message,
                                           size: 15,
@@ -457,7 +463,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         child: likesWidget('product', (value) async {
                           isLike = false;
                           await con.savePostLikes(widget.postInfo['id'], value);
-                          setState(() {});
+
                           // myLike['value'] = value;
 
                           whoHover = '';
@@ -467,6 +473,20 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               ],
             ),
           ),
+          // SingleChildScrollView(
+          //   controller: _scrollController,
+          //   scrollDirection: Axis.horizontal,
+          //   child: Container(
+          //     alignment: Alignment.centerLeft,
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.start,
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: postPhoto
+          //           .map(((e) => postPhotoWidget(e['url'], e['id'])))
+          //           .toList(),
+          //     ),
+          //   ),
+          // ),
           !isComment
               ? const SizedBox()
               : Container(
@@ -536,12 +556,12 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             ? 500
             : SizeConfig(context).screenWidth - 88,
         decoration: BoxDecoration(
-            border:
-                Border.all(color: Color.fromRGBO(220, 220, 220, 1), width: 1),
-            borderRadius: BorderRadius.all(Radius.circular(30))),
+            border: Border.all(
+                color: const Color.fromRGBO(220, 220, 220, 1), width: 1),
+            borderRadius: const BorderRadius.all(Radius.circular(30))),
         child: Row(
           children: [
-            Container(
+            SizedBox(
               height: 30,
               width: SizeConfig(context).screenWidth > 600
                   ? 350
@@ -579,30 +599,32 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               ),
             ),
             const Padding(padding: EdgeInsets.only(right: 5)),
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: InkWell(
-                onTap: () {},
-                child: const Icon(
-                  Icons.photo,
-                  size: 20,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            const Padding(padding: EdgeInsets.only(right: 5)),
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: InkWell(
-                onTap: () {},
-                child: const Icon(
-                  Icons.mic,
-                  size: 20,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            const Padding(padding: EdgeInsets.only(right: 5)),
+            // MouseRegion(
+            //   cursor: SystemMouseCursors.click,
+            //   child: InkWell(
+            //     onTap: () {
+            //       // uploadImage('photo');
+            //     },
+            //     child: const Icon(
+            //       Icons.photo,
+            //       size: 20,
+            //       color: Colors.grey,
+            //     ),
+            //   ),
+            // ),
+            // const Padding(padding: EdgeInsets.only(right: 5)),
+            // MouseRegion(
+            //   cursor: SystemMouseCursors.click,
+            //   child: InkWell(
+            //     onTap: () {},
+            //     child: const Icon(
+            //       Icons.mic,
+            //       size: 20,
+            //       color: Colors.grey,
+            //     ),
+            //   ),
+            // ),
+            // const Padding(padding: EdgeInsets.only(right: 5)),
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: InkWell(
@@ -659,7 +681,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: likesImage
                 .map(
-                  (e) => Container(
+                  (e) => SizedBox(
                     width: SizeConfig(context).screenWidth > 600
                         ? (370 - 10) / 7
                         : (SizeConfig(context).screenWidth * 3.7 / 6 - 10) / 7,
@@ -729,7 +751,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           Text(
                               '${e['userInfo']['firstName']} ${e['userInfo']['lastName']}'),
                           const Padding(padding: EdgeInsets.only(top: 10)),
-                          Text(e['data']['content']),
+                          // e['data']['type'] == 'text'
+                          //     ? Text(e['data']['content'])
+                          //     : e['data']['type'] == 'photo'
+                          //         ? Image.network(
+                          //             e['data']['content'].toString(),
+                          //             width: 20)
+                          //         : const SizedBox(),
                         ],
                       ),
                     ),
@@ -1034,9 +1062,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 ),
                 body: TabBarView(
                   children: [
-                    userCell(likes),
+                    userCell(con.likes[widget.postInfo['id']]),
                     for (int i = 0; i < likesImage.length; i++)
-                      userCell(likes
+                      userCell(con.likes[widget.postInfo['id']]
                           .where((element) =>
                               element['value'] == likesImage[i]['value'])
                           .toList()),
@@ -1166,128 +1194,185 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
           );
   }
 
-  Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
-    XFile? pickedFile;
-    if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-    } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
+  // Widget postPhotoWidget(photo, id) {
+  //   return Container(
+  //     width: 90,
+  //     height: 90,
+  //     margin: const EdgeInsets.all(5),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(13),
+  //     ),
+  //     child: Stack(
+  //       children: [
+  //         photo != null
+  //             ? Container(
+  //                 width: 90,
+  //                 height: 90,
+  //                 alignment: Alignment.topRight,
+  //                 decoration: BoxDecoration(
+  //                   image: DecorationImage(
+  //                     image: NetworkImage(photo),
+  //                     fit: BoxFit.cover,
+  //                   ),
+  //                 ),
+  //                 child: IconButton(
+  //                   icon: const Icon(Icons.close,
+  //                       color: Colors.black, size: 13.0),
+  //                   padding: EdgeInsets.only(left: 20),
+  //                   tooltip: 'Delete',
+  //                   onPressed: () {
+  //                     postPhoto.removeWhere((item) => item['id'] == id);
+  //                     if (postPhoto.isEmpty) {
+  //                       //  nowPost = '';
+  //                     }
+  //                     setState(() {});
+  //                   },
+  //                 ),
+  //               )
+  //             : const SizedBox(),
+  //         // : const SizedBox(),
+  //         (uploadPhotoProgress != 0 && uploadPhotoProgress != 100)
+  //             ? AnimatedContainer(
+  //                 duration: const Duration(milliseconds: 500),
+  //                 margin: const EdgeInsets.only(top: 78, left: 10),
+  //                 width: 130,
+  //                 padding: EdgeInsets.only(
+  //                     right: 130 - (130 * uploadPhotoProgress / 100)),
+  //                 child: const LinearProgressIndicator(
+  //                   color: Colors.blue,
+  //                   value: 10,
+  //                   semanticsLabel: 'Linear progress indicator',
+  //                 ),
+  //               )
+  //             : const SizedBox(),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-      //if (permissionStatus.isGranted) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
-    }
-    return pickedFile!;
-  }
+  // Future<XFile> chooseImage() async {
+  //   final _imagePicker = ImagePicker();
+  //   XFile? pickedFile;
+  //   if (kIsWeb) {
+  //     pickedFile = await _imagePicker.pickImage(
+  //       source: ImageSource.gallery,
+  //     );
+  //   } else {
+  //     //Check Permissions
+  //     // await Permission.photos.request();
+  //     // var permissionStatus = await Permission.photos.status;
 
-  uploadFile(XFile? pickedFile, type) async {
-    if (type == 'photo') {
-      productPhoto.add({'id': productPhoto.length, 'url': ''});
-      photoLength = productPhoto.length - 1;
-      setState(() {});
-    } else {
-      productFile.add({'id': productFile.length, 'url': ''});
-      fileLength = productFile.length - 1;
-      setState(() {});
-    }
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
-    try {
-      if (kIsWeb) {
-        //print("read bytes");
-        Uint8List bytes = await pickedFile!.readAsBytes();
-        //print(bytes);
-        _reference = await _firebaseStorage
-            .ref()
-            .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
-          bytes,
-          SettableMetadata(contentType: 'image/jpeg'),
-        );
-      } else {
-        var file = File(pickedFile!.path);
-        //write a code for android or ios
-        _reference = await _firebaseStorage
-            .ref()
-            .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
-      }
+  //     //if (permissionStatus.isGranted) {
+  //     pickedFile = await _imagePicker.pickImage(
+  //       source: ImageSource.gallery,
+  //     );
+  //     //} else {
+  //     //  print('Permission not granted. Try Again with permission access');
+  //     //}
+  //   }
+  //   return pickedFile!;
+  // }
 
-      uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
-        if (type == 'photo') {
-          for (var i = 0; i < productPhoto.length; i++) {
-            if (productPhoto[i]['id'] == photoLength) {
-              productPhoto[i]['url'] = downloadUrl;
-              productInfo['productPhoto'] = productPhoto;
-              setState(() {});
-            }
-          }
-        } else {
-          for (var i = 0; i < productFile.length; i++) {
-            if (productFile[i]['id'] == fileLength) {
-              productFile[i]['url'] = downloadUrl;
-              productInfo['productFile'] = productFile;
-              setState(() {});
-            }
-          }
-        }
-        print(productFile);
-      });
-      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-        switch (taskSnapshot.state) {
-          case TaskState.running:
-            if (type == 'photo') {
-              uploadPhotoProgress = 100.0 *
-                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-              setState(() {});
-              print("Upload is $uploadPhotoProgress% complete.");
-            } else {
-              uploadFileProgress = 100.0 *
-                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-              setState(() {});
-              print("Upload is $uploadFileProgress% complete.");
-            }
+  // uploadFile(XFile? pickedFile, type) async {
+  //   if (type == 'photo') {
+  //     postPhoto.add({'id': postPhoto.length, 'url': ''});
+  //     photoLength = postPhoto.length - 1;
+  //     setState(() {});
+  //   } else {
+  //     productFile.add({'id': productFile.length, 'url': ''});
+  //     fileLength = productFile.length - 1;
+  //     setState(() {});
+  //   }
+  //   final _firebaseStorage = FirebaseStorage.instance;
+  //   var uploadTask;
+  //   Reference _reference;
+  //   try {
+  //     if (kIsWeb) {
+  //       //print("read bytes");
+  //       Uint8List bytes = await pickedFile!.readAsBytes();
+  //       //print(bytes);
+  //       _reference = await _firebaseStorage
+  //           .ref()
+  //           .child('images/${PPath.basename(pickedFile.path)}');
+  //       uploadTask = _reference.putData(
+  //         bytes,
+  //         SettableMetadata(contentType: 'image/jpeg'),
+  //       );
+  //     } else {
+  //       var file = File(pickedFile!.path);
+  //       //write a code for android or ios
+  //       _reference = await _firebaseStorage
+  //           .ref()
+  //           .child('images/${PPath.basename(pickedFile.path)}');
+  //       uploadTask = _reference.putFile(file);
+  //     }
 
-            break;
-          case TaskState.paused:
-            print("Upload is paused.");
-            break;
-          case TaskState.canceled:
-            print("Upload was canceled");
-            break;
-          case TaskState.error:
-            // Handle unsuccessful uploads
-            break;
-          case TaskState.success:
-            print("Upload is completed");
-            uploadFileProgress = 0;
-            setState(() {});
-            // Handle successful uploads on complete
-            // ...
-            //  var downloadUrl = await _reference.getDownloadURL();
-            break;
-        }
-      });
-    } catch (e) {
-      // print("Exception $e");
-    }
-  }
+  //     uploadTask.whenComplete(() async {
+  //       var downloadUrl = await _reference.getDownloadURL();
+  //       print(downloadUrl);
+  //       if (type == 'photo') {
+  //         for (var i = 0; i < postPhoto.length; i++) {
+  //           if (postPhoto[i]['id'] == photoLength) {
+  //             postPhoto[i]['url'] = downloadUrl;
 
-  uploadImage(type) async {
-    XFile? pickedFile = await chooseImage();
-    uploadFile(pickedFile, type);
-  }
+  //             setState(() {});
+  //           }
+  //         }
+  //       } else {
+  //         // for (var i = 0; i < productFile.length; i++) {
+  //         //   if (productFile[i]['id'] == fileLength) {
+  //         //     productFile[i]['url'] = downloadUrl;
+  //         //     productInfo['productFile'] = productFile;
+  //         //     setState(() {});
+  //         //   }
+  //         // }
+  //       }
+  //       print(productFile);
+  //     });
+  //     uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+  //       switch (taskSnapshot.state) {
+  //         case TaskState.running:
+  //           if (type == 'photo') {
+  //             uploadPhotoProgress = 100.0 *
+  //                 (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+  //             setState(() {});
+  //             print("Upload is $uploadPhotoProgress% complete.");
+  //           } else {
+  //             uploadFileProgress = 100.0 *
+  //                 (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+  //             setState(() {});
+  //             print("Upload is $uploadFileProgress% complete.");
+  //           }
+
+  //           break;
+  //         case TaskState.paused:
+  //           print("Upload is paused.");
+  //           break;
+  //         case TaskState.canceled:
+  //           print("Upload was canceled");
+  //           break;
+  //         case TaskState.error:
+  //           // Handle unsuccessful uploads
+  //           break;
+  //         case TaskState.success:
+  //           print("Upload is completed");
+  //           uploadFileProgress = 0;
+  //           setState(() {});
+  //           // Handle successful uploads on complete
+  //           // ...
+  //           //  var downloadUrl = await _reference.getDownloadURL();
+  //           break;
+  //       }
+  //     });
+  //   } catch (e) {
+  //     // print("Exception $e");
+  //   }
+  // }
+
+  // uploadImage(type) async {
+  //   XFile? pickedFile = await chooseImage();
+  //   uploadFile(pickedFile, type);
+  // }
 }
 
 Widget input({label, onchange, obscureText = false, validator}) {
