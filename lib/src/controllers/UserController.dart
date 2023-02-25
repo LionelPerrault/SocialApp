@@ -87,8 +87,7 @@ class UserController extends ControllerMVC {
     return "relysia$code@shnatter.com";
   }
 
-  Future<void> validate(cont, info) async {
-    print("------1-------- start validate");
+  Future<bool> validate(cont, info) async {
     isSendRegisterInfo = true;
     var fill = true;
     bool passworkdValidation = false;
@@ -105,25 +104,22 @@ class UserController extends ControllerMVC {
         break;
       }
     }
-    print("------2-------- validation check");
     if (!fill) {
       failRegister = 'You must fill all field';
       isSendRegisterInfo = false;
       setState(() {});
-      return;
+      return false;
     }
-    print("------3-------- after return validation");
     context = cont;
     signUpUserInfo = info;
     email = signUpUserInfo['email'].toLowerCase().trim();
-    print('registration email is : $email');
     password = signUpUserInfo['password'];
     var check = email.contains('@'); //return true if contains
     if (!check) {
       failRegister = 'Invalid Email';
       isSendRegisterInfo = false;
       setState(() {});
-      return;
+      return false;
     }
 
     passworkdValidation = await passworkdValidate(password);
@@ -134,13 +130,12 @@ class UserController extends ControllerMVC {
             'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
         isSendRegisterInfo = false;
         setState(() {});
-        return;
+        return false;
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
     }
 
-    print("------4-------- password strong check");
     QuerySnapshot<TokenLogin> querySnapshot =
         await Helper.authdata.where('email', isEqualTo: email).get();
     QuerySnapshot<TokenLogin> querySnapshot1 = await Helper.authdata
@@ -151,14 +146,14 @@ class UserController extends ControllerMVC {
           'Sorry, it looks like $email belongs to an existing account';
       isSendRegisterInfo = false;
       setState(() {});
-      return;
+      return false;
     }
     if (querySnapshot1.size > 0) {
       failRegister =
           'Sorry, it looks like ${signUpUserInfo['userName']} belongs to an existing account';
       isSendRegisterInfo = false;
       setState(() {});
-      return;
+      return false;
     }
     print("------5-------- email exist check");
     RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
@@ -170,11 +165,13 @@ class UserController extends ControllerMVC {
             }
         });
     if (isSendRegisterInfo = false) {
-      return;
+      return false;
     }
     failRegister = '';
     // createRelysiaAccount(cont);
     setState(() {});
+
+    return true;
   }
 
   bool passworkdValidate(String value) {

@@ -297,6 +297,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
         validator: (val) async {
           validator(val);
         },
+        initialValue: '',
         obscureText: obscureText,
         onChange: (val) async {
           onchange(val);
