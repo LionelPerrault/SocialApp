@@ -43,6 +43,9 @@ class RouteNames {
   //product routes
   static const products = "/products";
 
+  //near by
+  static const nearby = "/explore";
+
   //posts routes
   static const posts = '/posts';
 

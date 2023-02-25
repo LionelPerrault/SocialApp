@@ -176,6 +176,15 @@ class MainLeftPanel extends StatelessWidget {
               width: 21,
             ),
           ),
+          ListText(
+            onTap: () => {
+              routerFunction({
+                'router': RouteNames.nearby,
+              })
+            },
+            label: 'Near By',
+            image: const Icon(Icons.pin_drop, size: 21, color: Colors.grey),
+          ),
           // ListText(
           //   onTap: () => {
           //     routerFunction({
