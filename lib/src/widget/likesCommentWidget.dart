@@ -17,7 +17,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:shnatter/src/widget/sharePostWidget.dart';
 
-import '../controllers/LikeCommentController.dart';
+//import '../controllers/LikeCommentController.dart';
 import '../helpers/emailverified.dart';
 
 class LikesCommentScreen extends StatefulWidget {
@@ -117,7 +117,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 
     super.initState();
     con.addNotifyCallBack(this);
-    LikeCommentController().addNotifyCallBack(this);
+    //LikeCommentController().addNotifyCallBack(this);
     isVerified = EmailVerified.getVerified();
 
     con.loadPostLikes(widget.postInfo['id']);
