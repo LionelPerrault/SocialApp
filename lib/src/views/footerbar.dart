@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/terms.dart';
 
-import '../routes/route_names.dart';
 import 'about.dart';
 
 class footbar extends StatefulWidget {
