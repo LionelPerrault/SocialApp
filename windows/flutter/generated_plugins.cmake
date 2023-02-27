@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   emoji_picker_flutter
   flutter_window_close
+  geolocator_windows
   libwinmedia
   permission_handler_windows
   smart_auth
