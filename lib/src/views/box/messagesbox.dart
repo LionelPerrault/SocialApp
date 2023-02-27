@@ -75,7 +75,7 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                   ? const SizedBox(
                       height: 100,
                       child: Center(
-                        child: Text("No new items"),
+                        child: Text("No new messages"),
                       ))
                   : SizedBox(
                       height: 300,
