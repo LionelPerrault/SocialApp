@@ -17,7 +17,6 @@ import 'package:flutter/foundation.dart';
 
 import 'package:shnatter/src/widget/sharePostWidget.dart';
 
-import '../controllers/LikeCommentController.dart';
 import '../helpers/emailverified.dart';
 
 class LikesCommentScreen extends StatefulWidget {
@@ -57,7 +56,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   // List<dynamic> postPhoto = [];
   // List<dynamic> productFile = [];
   String comment = '';
-  List allComment = [];
+
   var userInfo = UserManager.userInfo;
   double uploadFileProgress = 0;
   var photoLength;
@@ -112,15 +111,14 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   initState() {
     add(widget.con);
     con = controller as PostController;
-
     //peopleCon = controller as PeopleController;
 
     super.initState();
-    con.addNotifyCallBack(this);
-    LikeCommentController().addNotifyCallBack(this);
+    // con.addNotifyCallBack(this);
     isVerified = EmailVerified.getVerified();
 
     con.loadPostLikes(widget.postInfo['id']);
+    con.loadComments(widget.postInfo['id']);
   }
 
   // getComment() {
@@ -137,11 +135,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   //   });
   // }
 
-  viewLikeUser() {
+  viewLikeUser(postlike) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        content: allLikeUser(),
+        content: allLikeUser(postlike),
       ),
     );
   }
@@ -185,6 +183,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   like['userInfo']['userName'] == userInfo['userName'])
               .toList()[0];
     }
+
+    List allComment = [];
+    if (con.comments != {}) {
+      if (con.comments[widget.postInfo['id']] != null) {
+        allComment = con.comments[widget.postInfo['id']];
+      }
+    }
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,7 +209,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       const Padding(padding: EdgeInsets.only(left: 15)),
                       InkWell(
                         onTap: () {
-                          viewLikeUser();
+                          viewLikeUser(con.likes[widget.postInfo['id']]);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -233,7 +238,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         size: 15,
                       ),
                       const Padding(padding: EdgeInsets.only(left: 5)),
-                      Text('${allComment.length} comments')
+                      Text(
+                          '${allComment != null ? allComment.length : 0} comments')
                     ],
                   ),
                 ),
@@ -518,7 +524,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         },
                         () async {
                           if (comment != '') {
-                            setState(() {});
                             await con.saveComment(
                                 widget.postInfo['id'], comment, 'text');
 
@@ -589,7 +594,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               child: InkWell(
                 onTap: () async {
                   onClick();
-                  setState(() {});
+                  //  setState(() {});
                 },
                 child: const Icon(
                   Icons.send,
@@ -649,12 +654,12 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         } else {
           whoComment = what;
         }
-        setState(() {});
+        //   setState(() {});
       },
       onExit: (event) {
         whoHover = '';
         whoComment = '';
-        setState(() {});
+        //  setState(() {});
       },
       child: Container(
         padding: const EdgeInsets.only(left: 5, right: 5),
@@ -708,7 +713,39 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 
   Widget eachComment(e) {
     List replies = con.commentReply[e['id']] ?? [];
-    List commentLikesCount = con.commentLikesCount[e['id']] ?? [];
+    //List commentLikesCount = con.commentLikesCount[e['id']] ?? [];
+    var totalLikeImage = [];
+    Map myLike = {};
+    var likesvalue = con.commentLikes[e['id']] ?? [];
+    if (likesvalue != null) {
+      //  for (var key in likesvalue.values) {
+      for (var i = 0; i < likesvalue.length; i++) {
+        var flag = true;
+        for (var j = 0; j < totalLikeImage.length; j++) {
+          if (likesvalue[i]['value'] == totalLikeImage[j]) {
+            flag = false;
+
+            continue;
+          }
+        }
+        if (flag) {
+          print(likesvalue[i]['value']);
+          totalLikeImage.add(likesvalue[i]['value']);
+        }
+      }
+    }
+    print(totalLikeImage);
+    var commentLikesCount = totalLikeImage;
+    Map myCommentLike = {};
+    print("likesavalue -------- $likesvalue");
+    myCommentLike = likesvalue
+            .where((like) => like['uid'] == userInfo['uid'])
+            .toList()
+            .isEmpty
+        ? {}
+        : likesvalue
+            .where((like) => like['uid'] == userInfo['uid'])
+            .toList()[0];
     var key = GlobalKey();
     double width = SizeConfig(context).screenWidth > 600
         ? 500
@@ -751,13 +788,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           Text(
                               '${e['userInfo']['firstName']} ${e['userInfo']['lastName']}'),
                           const Padding(padding: EdgeInsets.only(top: 10)),
-                          // e['data']['type'] == 'text'
-                          //     ? Text(e['data']['content'])
-                          //     : e['data']['type'] == 'photo'
-                          //         ? Image.network(
-                          //             e['data']['content'].toString(),
-                          //             width: 20)
-                          //         : const SizedBox(),
+                          e['data']['type'] == 'text'
+                              ? Text(e['data']['content'])
+                              //     : e['data']['type'] == 'photo'
+                              //         ? Image.network(
+                              //             e['data']['content'].toString(),
+                              //             width: 20)
+                              : const SizedBox(),
                         ],
                       ),
                     ),
@@ -768,10 +805,10 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           child: likesWidget(e['id'], (value) {
                             whoComment = '';
                             // con.commentLikes[e['id']] = whatImage;
-                            setState(() {});
+                            //  setState(() {});
                             con.saveLikesComment(
                                 widget.postInfo['id'], e['id'], value);
-                            setState(() {});
+                            //  setState(() {});
                           }),
                         )
                       : Container()
@@ -787,19 +824,21 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         if (whoComment == '') {
                           whoComment = e['id'];
                           commentHeight = key.currentContext!.size!.height;
+                          print("aaaaaaaaaa");
                           setState(() {});
                         } else {
                           whoComment = '';
+                          print("aaaaaaaaaa1");
                           setState(() {});
                         }
                       },
                       child: Text(
-                        con.commentLikes[e['id']] ?? 'Like',
+                        myCommentLike['value'] ?? 'Like',
                         style: TextStyle(
                             fontSize: 13,
-                            color: con.commentLikes[e['id']] == null
+                            color: myCommentLike['value'] == null
                                 ? Colors.black
-                                : likesColor[con.commentLikes[e['id']]]),
+                                : likesColor[myCommentLike['value']]),
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 6)),
@@ -810,7 +849,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           if (!whatReply.contains(e['id'])) {
                             whatReply.add(e['id']);
                           }
-                          setState(() {});
+                          //  setState(() {});
                         },
                         child: const Text(
                           'Reply',
@@ -819,26 +858,33 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
-                    Row(
-                      children: commentLikesCount
-                          .map(
-                            (value) => Container(
-                              padding: const EdgeInsets.only(left: 3),
-                              child: Row(
-                                children: [
-                                  Image.network(
-                                    emoticon[value['likes']].toString(),
-                                    width: 20,
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 3)),
-                                  Text(value['count'].toString())
-                                ],
+                    InkWell(
+                      onTap: () {
+                        viewLikeUser(con.commentLikes[e['id']]);
+                      },
+                      child: Row(
+                        children: commentLikesCount
+                            .map(
+                              (value) => Container(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Row(
+                                  children: [
+                                    Image.network(
+                                      emoticon[value].toString(),
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                          .toList(),
-                    )
+                            )
+                            .toList(),
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 3)),
+                    //${likesvalue == null || likesvalue.length == 0 ? '' : likesvalue.length}'
+                    likesvalue.length > 1
+                        ? Text(likesvalue.length.toString())
+                        : SizedBox()
                   ],
                 ),
               ),
@@ -864,7 +910,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             if (!whatReply.contains(e['id'])) {
                               whatReply.add(e['id']);
                             }
-                            setState(() {});
+                            //  setState(() {});
                           },
                           child: Text(
                             '${e['reply'].length} Replies',
@@ -882,7 +928,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         if (reply[e['id']] != '') {
                           await con.saveReply(widget.postInfo['id'], e['id'],
                               reply[e['id']], 'text');
-                          setState(() {});
+                          //   setState(() {});
                         }
                       }),
                     )
@@ -950,7 +996,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             con.replyLikes[val['id']] = whatImage;
                             con.saveLikesReply(widget.postInfo['id'], e['id'],
                                 val['id'], whatImage);
-                            setState(() {});
+                            //  setState(() {});
                           }),
                         )
                       : Container()
@@ -966,11 +1012,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       onEnter: (event) {
                         whoComment = val['id'];
                         commentHeight = key1.currentContext!.size!.height;
-                        setState(() {});
+                        //   setState(() {});
                       },
                       onExit: (event) {
                         whoComment = '';
-                        setState(() {});
+                        // setState(() {});
                       },
                       child: Text(
                         con.replyLikes[val['id']] ?? 'Like',
@@ -989,7 +1035,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           if (!whatReply.contains(e['id'])) {
                             whatReply.add(e['id']);
                           }
-                          setState(() {});
+                          //  setState(() {});
                         },
                         child: const Text(
                           'Reply',
@@ -1026,7 +1072,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     );
   }
 
-  Widget allLikeUser() {
+  Widget allLikeUser(postlike) {
     print("likesimage");
     print(likesImage);
     return Row(
@@ -1062,9 +1108,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 ),
                 body: TabBarView(
                   children: [
-                    userCell(con.likes[widget.postInfo['id']]),
+                    userCell(postlike),
                     for (int i = 0; i < likesImage.length; i++)
-                      userCell(con.likes[widget.postInfo['id']]
+                      userCell(postlike
                           .where((element) =>
                               element['value'] == likesImage[i]['value'])
                           .toList()),
@@ -1157,7 +1203,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                               '${likeUsers[index]['userInfo']['firstName']} ${likeUsers[index]['userInfo']['lastName']}',
                               likeUsers[index]['userInfo']['avatar'],
                             );
-                            setState(() {});
+                            //   setState(() {});
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
