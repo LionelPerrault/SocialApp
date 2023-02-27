@@ -8,6 +8,7 @@ import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class PostController extends ControllerMVC {
   factory PostController([StateMVC? state]) =>
@@ -16,20 +17,39 @@ class PostController extends ControllerMVC {
       : eventSubRoute = '',
         pageSubRoute = '',
         groupSubRoute = '',
+        notifiers = [],
         super(state);
   static PostController? _this;
 
   var posts = [];
+
+  Map likes = {};
   int allposts = 0;
   List unlikedPages = [];
   List unJoindGroups = [];
   List unInterestedEvents = [];
+  List<mvc.StateMVC> notifiers;
   @override
   Future<bool> initAsync() async {
     //
     Helper.eventsData =
         FirebaseFirestore.instance.collection(Helper.eventsField);
     return true;
+  }
+
+  //fix bugs of unknown
+  void addNotifyCallBack(mvc.StateMVC notifi) {
+    notifiers.add(notifi);
+  }
+  //fix bugs of unknown
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    for (int i = 0; i < notifiers.length; i++) {
+      mvc.StateMVC notifi = notifiers[i];
+      notifi.setState(() {});
+    }
   }
 
   Future<String> formatDate(d) async {
@@ -1198,6 +1218,9 @@ class PostController extends ControllerMVC {
       'comment': true,
     };
     Helper.postCollection.add(postData);
+    setState(
+      () {},
+    );
     return true;
   }
 
@@ -1241,7 +1264,7 @@ class PostController extends ControllerMVC {
         'privacy': allPosts[i]['privacy'],
         'header': allPosts[i]['header'],
         'timeline': allPosts[i]['timeline'],
-        'comment': allPosts[i]['comment']
+        'comment': allPosts[i]['comment'],
       };
 
       lastTime = allPosts[firstlength - 1]['postTime'];
@@ -1293,7 +1316,9 @@ class PostController extends ControllerMVC {
       print(adminSnap.id);
       if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
           eachPost['privacy'] == 'Public') {
-        posts = [eachPost, ...posts];
+        setState(() {
+          posts = [eachPost, ...posts];
+        });
       }
     }
 
@@ -1391,41 +1416,52 @@ class PostController extends ControllerMVC {
     setState(() {});
   }
 
-  savePostLikes(postId, likes) async {
-    var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.postLikeComment.doc(postId).get();
-    Map<String, dynamic> gotLikes = snapshot.data() ?? {};
-    if (gotLikes[userInfo['uid']] == likes) {
-      gotLikes.removeWhere((key, value) => key == userInfo['uid']);
-    } else {
-      gotLikes[userInfo['uid']] = likes;
-    }
-    await Helper.postLikeComment.doc(postId).set(gotLikes);
-  }
-
-  Future<List> getPostLikes(postId) async {
+  loadPostLikes(postId) async {
     var snapshot = await Helper.postLikeComment.doc(postId).get();
     var allLikesofProduct = snapshot.data();
-    var likesArray = [];
-    var myLikes = {};
-    if (allLikesofProduct == null) return [];
 
+    if (allLikesofProduct == null) return;
+
+    List likesdata = [];
     for (var entry in allLikesofProduct.entries) {
       var userInfo = await ProfileController().getUserInfo(entry.key);
-      if (entry.key == UserManager.userInfo['uid']) {
-        myLikes = {
-          'userInfo': userInfo,
-          'value': entry.value,
-        };
-      }
-      likesArray.add({
+
+      likesdata.add({
         'userInfo': userInfo,
         'value': entry.value,
       });
-      // print('likesArray$likesArray');
+      setState(() {});
     }
 
-    return likesArray;
+    likes[postId] = likesdata;
+
+    setState(() {});
+  }
+
+  savePostLikes(postId, like) async {
+    print("save post likes");
+    var userInfo = UserManager.userInfo;
+    var snapshot = await Helper.postLikeComment.doc(postId).get();
+    Map<String, dynamic> gotLikes = snapshot.data() ?? {};
+    List likesdata = likes[postId] ?? [];
+    likesdata.removeWhere(
+        (item) => item['userInfo']['username'] == userInfo['username']);
+
+    if (gotLikes[userInfo['uid']] == like) {
+      gotLikes.removeWhere((key, value) => key == userInfo['uid']);
+    } else {
+      gotLikes[userInfo['uid']] = like;
+
+      likesdata.add({
+        'userInfo': userInfo,
+        'value': like,
+      });
+
+      likes[postId] = likesdata;
+    }
+
+    await Helper.postLikeComment.doc(postId).set(gotLikes);
+    setState(() {});
   }
 
   saveComment(postId, data, type) async {
@@ -1446,6 +1482,7 @@ class PostController extends ControllerMVC {
       'timeStamp': FieldValue.serverTimestamp(),
       // 'likes': {}
     });
+    setState(() {});
   }
 
   saveLikesComment(postId, commentId, likes) async {
@@ -1465,6 +1502,7 @@ class PostController extends ControllerMVC {
         .update({'likes': commentLike});
     print('saveLikesComment end');
     // getComment(postId);
+    setState(() {});
   }
 
   var commentLikes = {};
@@ -1589,6 +1627,7 @@ class PostController extends ControllerMVC {
         .collection('reply')
         .doc(replyId)
         .update({'likes': a});
+    setState(() {});
   }
 
   saveNotifications(data) async {

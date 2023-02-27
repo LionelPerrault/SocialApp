@@ -22,7 +22,7 @@ class PostCell extends StatefulWidget {
     required this.routerChange,
     this.isSharedContent = false,
   }) : con = PostController();
-  var postInfo;
+  Map postInfo;
   var sharedPost;
   bool isSharedContent = false;
 
@@ -93,6 +93,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     add(widget.con);
 
     con = controller as PostController;
+    con.addNotifyCallBack(this);
     con.formatDate(widget.postInfo['time']).then((value) {
       postTime = value;
 
@@ -1829,7 +1830,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
-                    postInfo: widget.postInfo,
+                    postInfo: {...widget.postInfo},
                     commentFlag: widget.postInfo['comment'],
                     routerChange: widget.routerChange,
                   ),
