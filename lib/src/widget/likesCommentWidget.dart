@@ -115,12 +115,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     //peopleCon = controller as PeopleController;
 
     super.initState();
-<<<<<<< HEAD
-    // con.addNotifyCallBack(this);
-=======
     con.addNotifyCallBack(this);
     //LikeCommentController().addNotifyCallBack(this);
->>>>>>> a9a9553ff6908d05c2e4868ba0185fa5ae04aa07
     isVerified = EmailVerified.getVerified();
 
     con.loadPostLikes(widget.postInfo['id']);
