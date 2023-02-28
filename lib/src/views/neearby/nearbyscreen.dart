@@ -170,7 +170,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         mapController.moveCamera(CameraUpdate.newCameraPosition(
             // on below line we have given positions of Location 5
             CameraPosition(
-          target: LatLng(searchPoint!.latitude, searchPoint!.longitude),
+          target: LatLng(searchPoint.latitude, searchPoint!.longitude),
           zoom: zoomv.toDouble(),
         )));
       setState(() => {
@@ -180,7 +180,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
             //searchPoint = LatLng(48.84311, 2.345817)
           });
       _startQuery();
-      _getAddressFromLatLng(searchPoint!);
+      _getAddressFromLatLng(searchPoint);
     }).catchError((e) {
       debugPrint(e);
     });

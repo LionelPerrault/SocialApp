@@ -101,6 +101,7 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                                       'subRouter':
                                           snapshot.docs[0].id.toString()
                                     });
+                                    setState(() {});
                                   } else {
                                     con.avatar =
                                         con.newMessage[index]['avatar'];
@@ -170,8 +171,8 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
-                          child:
-                              Text('See All', style: TextStyle(fontSize: 11)),
+                          child: const Text('See All',
+                              style: TextStyle(fontSize: 11)),
                           onPressed: () {}),
                     ],
                   ))
