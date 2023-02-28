@@ -22,7 +22,8 @@ class PostController extends ControllerMVC {
   static PostController? _this;
 
   var posts = [];
-
+  var replyLikes = {};
+  var replyLikesCount = {};
   Map likes = {};
   Map comments = {};
   int allposts = 0;
@@ -1454,9 +1455,8 @@ class PostController extends ControllerMVC {
       var userINFO = await ProfileController()
           .getUserInfo(snapshot.docs[i]['data']['uid']);
       var reply = [];
-      await getReply(postId, snapshot.docs[i].id).then((value) {
-        reply = value;
-      });
+      reply = await getReply(postId, snapshot.docs[i].id);
+
       comment.add({
         'data': snapshot.docs[i]['data'],
         'userInfo': userINFO!,
@@ -1619,12 +1619,28 @@ class PostController extends ControllerMVC {
       'timeStamp': FieldValue.serverTimestamp(),
       'likes': {}
     });
-    await getReply(postId, commentId);
+
+    var reply;
+    await getReply(postId, commentId).then((value) {
+      reply = value;
+
+      var comment = comments[postId].firstWhere((o) => o['id'] == commentId);
+
+      comment['reply'] = reply;
+      // comments[postId].add({
+      //   'data': {'type': type, 'content': data, 'uid': userInfo['uid']},
+      //   'userInfo': userInfo,
+      //   'id': commentId,
+      //   'reply': reply,
+      //   'likes': {}
+      // });
+      print(comments[postId]);
+      setState(() {});
+    });
   }
 
   var commentReply = {};
-  var replyLikes = {};
-  var replyLikesCount = {};
+
   Future<List> getReply(postId, commentId) async {
     var userInfo = UserManager.userInfo;
     var replies = await Helper.postLikeComment
@@ -1667,6 +1683,7 @@ class PostController extends ControllerMVC {
         'id': replies.docs[j].id
       });
     }
+
     return arr;
   }
 
@@ -1681,7 +1698,9 @@ class PostController extends ControllerMVC {
         .get();
     var arr = snapshot.data()!['likes'];
     var a = [];
-    var aa = arr.where((val) => val['uid'] == userInfo['uid']).toList();
+    var aa = arr == {}
+        ? []
+        : arr.where((val) => val['uid'] == userInfo['uid']).toList();
     if (aa.isEmpty) {
       a.add({'uid': userInfo['uid'], 'likes': likes});
     }
