@@ -22,8 +22,10 @@ class PostController extends ControllerMVC {
   static PostController? _this;
 
   var posts = [];
-
+  var replyLikes = {};
+  var replyLikesCount = {};
   Map likes = {};
+  Map comments = {};
   int allposts = 0;
   List unlikedPages = [];
   List unJoindGroups = [];
@@ -1430,11 +1432,54 @@ class PostController extends ControllerMVC {
         'userInfo': userInfo,
         'value': entry.value,
       });
-      setState(() {});
     }
 
     likes[postId] = likesdata;
 
+    setState(() {});
+  }
+
+  var commentLikes = {};
+  var commentLikesCount = {};
+  loadComments(postId) async {
+    var userInfo = UserManager.userInfo;
+    var snapshot = await Helper.postLikeComment
+        .doc(postId)
+        .collection('comments')
+        .orderBy('timeStamp', descending: true)
+        .get();
+    var comment = [];
+    if (snapshot.docs.isEmpty) return [];
+
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      var userINFO = await ProfileController()
+          .getUserInfo(snapshot.docs[i]['data']['uid']);
+      var reply = [];
+      reply = await getReply(postId, snapshot.docs[i].id);
+
+      comment.add({
+        'data': snapshot.docs[i]['data'],
+        'userInfo': userINFO!,
+        'id': snapshot.docs[i].id,
+        'reply': reply,
+        'likes': snapshot.docs[i]['likes']
+      });
+      List likesdata = [];
+      for (var j = 0; j < snapshot.docs[i]['likes'].length; j++) {
+        var userInfo = await ProfileController()
+            .getUserInfo(snapshot.docs[i]['likes'][j]['userInfo']);
+
+        likesdata.add({
+          'userInfo': userInfo,
+          'uid': snapshot.docs[i]['likes'][j]['userInfo'],
+          'value': snapshot.docs[i]['likes'][j]['value'],
+        });
+      }
+
+      //commentLikes[snapshot.docs[i].id] = snapshot.docs[i]['likes'];
+      commentLikes[snapshot.docs[i].id] = likesdata;
+    }
+    comments[postId] = comment;
     setState(() {});
   }
 
@@ -1445,7 +1490,7 @@ class PostController extends ControllerMVC {
     Map<String, dynamic> gotLikes = snapshot.data() ?? {};
     List likesdata = likes[postId] ?? [];
     likesdata.removeWhere(
-        (item) => item['userInfo']['username'] == userInfo['username']);
+        (item) => item['userInfo']['userName'] == userInfo['userName']);
 
     if (gotLikes[userInfo['uid']] == like) {
       gotLikes.removeWhere((key, value) => key == userInfo['uid']);
@@ -1468,20 +1513,40 @@ class PostController extends ControllerMVC {
     var snapshot = await Helper.postLikeComment.get();
     var userManager = UserManager.userInfo;
     var existId = false;
+    var comment = [];
+
+    comment = comments[postId] ?? [];
+
     for (int i = 0; i < snapshot.docs.length; i++) {
       if (snapshot.docs[i].id == postId) {
         existId = true;
+
         break;
       }
     }
+
+    var reply = [];
+    //  await getReply(postId, snapshot.docs[i].id).then((value) {
+    //    reply = value;
+    //  });
+    print("comment-------------$userManager");
+    comment.insert(0, {
+      'data': {'uid': userManager['uid'], 'content': data, 'type': type},
+      'userInfo': userManager,
+      'id': postId,
+      'reply': reply,
+      'likes': [],
+    });
+    print("comment- added------------$comment");
     // if (!existId) {
     //   await Helper.postLikeComment.doc(postId).set({'likes': {}});
     // }
     await Helper.postLikeComment.doc(postId).collection('comments').doc().set({
       'data': {'type': type, 'content': data, 'uid': userManager['uid']},
       'timeStamp': FieldValue.serverTimestamp(),
-      // 'likes': {}
+      'likes': []
     });
+    comments[postId] = comment;
     setState(() {});
   }
 
@@ -1492,46 +1557,53 @@ class PostController extends ControllerMVC {
         .collection('comments')
         .doc(commentId)
         .get();
-    var commentLike = snapshot.data()!['likes'];
-    commentLike[userInfo['uid']] = likes;
-    print('$postId $commentId $likes');
-    await Helper.postLikeComment
-        .doc(postId)
-        .collection('comments')
-        .doc(commentId)
-        .update({'likes': commentLike});
-    print('saveLikesComment end');
-    // getComment(postId);
-    setState(() {});
-  }
+    var data = snapshot.data();
 
-  var commentLikes = {};
-  var commentLikesCount = {};
-  Future<List> getComment(postId) async {
-    var userInfo = UserManager.userInfo;
-    var snapshot = await Helper.postLikeComment
-        .doc(postId)
-        .collection('comments')
-        .orderBy('timeStamp', descending: true)
-        .get();
-    var comment = [];
-    if (snapshot.docs.isEmpty) return [];
+    //Map<String, dynamic> gotLikes = snapshot.data() ?? {};
+    if (data != null) {
+      List commentLike = data['likes'] ?? [];
 
-    for (int i = 0; i < snapshot.docs.length; i++) {
-      var userINFO = await ProfileController()
-          .getUserInfo(snapshot.docs[i]['data']['uid']);
-      var reply = [];
-      await getReply(postId, snapshot.docs[i].id).then((value) {
-        reply = value;
+      //List likesdata = likes[postId] ?? [];
+      for (var i = 0; i < commentLike.length; i++) {
+        if (commentLike[i]['userInfo'] == userInfo['uid']) {
+          commentLike.removeAt(i);
+        }
+      }
+      // commentLike.removeWhere(
+      //      (item) => item['userInfo']['userName'] == userInfo['uid']);
+
+      // if (gotLikes[userInfo['uid']] == like) {
+      //   gotLikes.removeWhere((key, value) => key == userInfo['uid']);
+      // } else {
+      //   gotLikes[userInfo['uid']] = like;
+      List gotLike = List.from(commentLike);
+      commentLike.add({
+        'userInfo': userInfo,
+        'uid': userInfo['uid'],
+        'value': likes,
       });
-      comment.add({
-        'data': snapshot.docs[i]['data'],
-        'userInfo': userINFO!,
-        'id': snapshot.docs[i].id,
-        'reply': reply
+      gotLike.add({
+        'userInfo': userInfo['uid'],
+        'value': likes,
       });
+
+      // if (gotLikes['likes'][userInfo['uid']] == likes) {
+      //   gotLikes['likes'].removeWhere((key, value) => key == userInfo['uid']);
+      // } else {
+      //   gotLikes['likes'][userInfo['uid']] = likes;
+
+      print('$postId $commentId $likes');
+      await Helper.postLikeComment
+          .doc(postId)
+          .collection('comments')
+          .doc(commentId)
+          .update({'likes': gotLike});
+
+      commentLikes[commentId] = commentLike;
+      print('saveLikesComment end');
+      // getComment(postId);
+      setState(() {});
     }
-    return comment;
   }
 
   saveReply(postId, commentId, data, type) async {
@@ -1547,12 +1619,28 @@ class PostController extends ControllerMVC {
       'timeStamp': FieldValue.serverTimestamp(),
       'likes': {}
     });
-    await getReply(postId, commentId);
+
+    var reply;
+    await getReply(postId, commentId).then((value) {
+      reply = value;
+
+      var comment = comments[postId].firstWhere((o) => o['id'] == commentId);
+
+      comment['reply'] = reply;
+      // comments[postId].add({
+      //   'data': {'type': type, 'content': data, 'uid': userInfo['uid']},
+      //   'userInfo': userInfo,
+      //   'id': commentId,
+      //   'reply': reply,
+      //   'likes': {}
+      // });
+      print(comments[postId]);
+      setState(() {});
+    });
   }
 
   var commentReply = {};
-  var replyLikes = {};
-  var replyLikesCount = {};
+
   Future<List> getReply(postId, commentId) async {
     var userInfo = UserManager.userInfo;
     var replies = await Helper.postLikeComment
@@ -1595,6 +1683,7 @@ class PostController extends ControllerMVC {
         'id': replies.docs[j].id
       });
     }
+
     return arr;
   }
 
@@ -1609,7 +1698,9 @@ class PostController extends ControllerMVC {
         .get();
     var arr = snapshot.data()!['likes'];
     var a = [];
-    var aa = arr.where((val) => val['uid'] == userInfo['uid']).toList();
+    var aa = arr == {}
+        ? []
+        : arr.where((val) => val['uid'] == userInfo['uid']).toList();
     if (aa.isEmpty) {
       a.add({'uid': userInfo['uid'], 'likes': likes});
     }

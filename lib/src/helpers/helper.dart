@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../models/setting.dart';
@@ -159,6 +160,10 @@ class Helper {
 
   static saveJSONPreference(String field, Map<String, dynamic> data) async {
     final prefs = await SharedPreferences.getInstance();
+    // fix exception
+    if (data.containsKey('position')) {
+      data.remove('position');
+    }
     String saveData = jsonEncode(data);
     prefs.setString(field, saveData);
   }
@@ -181,6 +186,23 @@ class Helper {
     await prefs.remove(userField);
   }
 
+  static updateGeoPoint(double lat, double long) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection(userField)
+        .where('userName', isEqualTo: UserManager.userInfo['userName'])
+        .get();
+    final geo = GeoFlutterFire();
+
+    GeoFirePoint myLocation = geo.point(latitude: lat, longitude: long);
+
+    if (snapshot.docs.isNotEmpty) {
+      FirebaseFirestore.instance
+          .collection(userField)
+          .doc(snapshot.docs[0].id)
+          .set({'position': myLocation.data}, SetOptions(merge: true));
+    }
+  }
+
   static connectOnlineDatabase() async {
     var snapshot = await FirebaseFirestore.instance
         .collection(onlineStatusField)
@@ -196,11 +218,12 @@ class Helper {
           .doc(snapshot.docs[0].id)
           .update({'status': 1});
     }
-    final Stream<QuerySnapshot> stream =
-        FirebaseFirestore.instance.collection(onlineStatusField).snapshots();
-    stream.listen((event) {
-      event.docs.forEach((e) {});
-    });
+
+    // final Stream<QuerySnapshot> stream =
+    //     FirebaseFirestore.instance.collection(onlineStatusField).snapshots();
+    // stream.listen((event) {
+    //   event.docs.forEach((e) {});
+    // });
   }
 
   static makeOffline() async {
