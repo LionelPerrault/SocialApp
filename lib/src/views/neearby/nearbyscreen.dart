@@ -3,8 +3,10 @@ import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,6 +14,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 
@@ -75,58 +79,36 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
           itemCount: clientData.length,
           itemBuilder: (BuildContext context, int index) {
             var data = clientData[index];
-            return InkWell(
-                onTap: () async {},
-                child: Padding(
-                    padding: EdgeInsets.only(left: 15, right: 10, top: 5),
-                    child: Stack(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //Center(
-                            //    child:
-                            Text(data['landingPage']['title'],
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                            Text(
-                              data['landingPage']['subtitle'],
-                              textAlign: TextAlign.left,
-                            ),
-                            Container(
-                              //padding: EdgeInsets.only(top: 5),
-                              child: Html(
-                                data: data['landingPage']['description'],
-                                style: {
-                                  'html': Style(
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  "body": Style(padding: EdgeInsets.zero)
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(data['tokenName'].toString()),
-                              const Padding(padding: EdgeInsets.only(left: 3)),
-                              CircleAvatar(
-                                radius: 10,
-                                child: CircleAvatar(
-                                    radius: 9,
-                                    backgroundImage: NetworkImage(
-                                        data['token']['tokenIcon'])),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )));
+            return ListTile(
+              contentPadding: const EdgeInsets.only(left: 10, right: 10),
+              leading: data['avatar'] == ''
+                  ? CircleAvatar(
+                      radius: 17, child: SvgPicture.network(Helper.avatar))
+                  : CircleAvatar(
+                      radius: 17,
+                      backgroundImage: NetworkImage(data['avatar'])),
+              title: RichText(
+                text: TextSpan(
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 11),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: '${data['firstName']} ${data['lastName']}',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                            color: Colors.black),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            widget.routerChange({
+                              'router': RouteNames.profile,
+                              'subRouter': data['userName']
+                            });
+                          })
+                  ],
+                ),
+              ),
+            );
           },
         ));
   }
@@ -179,6 +161,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
             searchPoint = LatLng(47.3707688, 8.5110079)
             //searchPoint = LatLng(48.84311, 2.345817)
           });
+      Helper.updateGeoPoint(searchPoint.latitude, searchPoint.longitude);
       _startQuery();
       _getAddressFromLatLng(searchPoint!);
     }).catchError((e) {
@@ -273,24 +256,11 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           infoWindow: InfoWindow(
               onTap: () async {},
-              title: data['title'],
-              snippet: data['mapPinDes']),
+              title: '${data['firstName']} ${data['lastName']}',
+              snippet: ''),
           onTap: () async {
-            // if (FirebaseAuth.instance.currentUser != null) {
-            //   //Helper.selectedClientForExplore = data;
-            //   //Navigator.pushNamed(context, RouteNames.tokenExploreDetail);
-            //   //Navigator.pop(context);
-            //   var router = '/${document.id}';
-            //   Helper.suburl = router.replaceAll('/', '');
-            //   await Helper.saveJSONPreference(
-            //       'router', {'router': Helper.suburl});
-            //   // ignore: use_build_context_synchronously
-            //   Helper.isTokenExplorer = true;
-            //   Navigator.pushNamed(context, router);
-            // } else {
-            //   Helper.selectedClientForExplore = data;
-            //   Navigator.pushNamed(context, RouteNames.tokenExploreDetail);
-            // }
+            widget.routerChange(
+                {'router': RouteNames.profile, 'subRouter': data['userName']});
           });
       markers[marker.markerId] = marker;
     });
