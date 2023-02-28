@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
@@ -264,7 +266,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                             ],
                           )),
                           const Padding(padding: EdgeInsets.only(top: 20)),
-                          new Divider(
+                          const Divider(
                             indent: 5,
                             endIndent: 20,
                           ),
@@ -341,6 +343,95 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                           },
                                         ),
                                       )),
+                                    ]),
+                                  ))
+                            ],
+                          ),
+                          const Divider(
+                            indent: 5,
+                            endIndent: 20,
+                          ),
+                          const Text(
+                            'SHARE MY CODE',
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 20)),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child:
+                                    Padding(padding: EdgeInsets.only(left: 30)),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  width: 80,
+                                  child: const Text(
+                                    'INVITE CODE',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color:
+                                            Color.fromARGB(244, 82, 95, 127)),
+                                  ),
+                                ),
+                              ),
+                              const Padding(padding: EdgeInsets.only(left: 30)),
+                              Expanded(
+                                  flex: 7,
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 20),
+                                    width: 350,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(7)),
+                                    ),
+                                    child: Row(children: [
+                                      Expanded(
+                                          child: Container(
+                                        width: 350,
+                                        height: 30,
+                                        child: TextFormField(
+                                          readOnly: true,
+                                          initialValue:
+                                              userInfo['uid'].toString(),
+                                          decoration: InputDecoration(
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                  color: Color.fromARGB(
+                                                      255, 54, 54, 54),
+                                                  width: 1.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(0),
+                                            ),
+                                          ),
+                                          style: const TextStyle(fontSize: 14),
+                                          onSaved: (String? value) {
+                                            // This optional block of code can be used to run
+                                            // code when the user saves the form.
+                                          },
+                                          validator: (String? value) {
+                                            return (value != null &&
+                                                    value.contains('@'))
+                                                ? 'Do not use the @ char.'
+                                                : null;
+                                          },
+                                        ),
+                                      )),
+                                      IconButton(
+                                          onPressed: () {
+                                            FlutterClipboard.copy(
+                                                    userInfo['uid'])
+                                                .then((value) => Helper.showToast(
+                                                    'Secret Key was cofied!'));
+                                          },
+                                          icon: Icon(
+                                            Icons.copy,
+                                            color: Colors.grey,
+                                          ))
                                     ]),
                                   ))
                             ],
@@ -526,6 +617,61 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     },
                                   ),
                                 )),
+                              ]),
+                            ),
+                            const Text(
+                              'SHARE MY CODE',
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 20)),
+                            Container(
+                              child: const Text(
+                                'INVITE CODE',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(244, 82, 95, 127)),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(7)),
+                              ),
+                              child: Row(children: [
+                                Expanded(
+                                    child: Container(
+                                  height: 30,
+                                  child: TextFormField(
+                                    initialValue: userInfo['uid'],
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color:
+                                                Color.fromARGB(255, 54, 54, 54),
+                                            width: 1.0),
+                                        borderRadius: BorderRadius.circular(0),
+                                      ),
+                                    ),
+                                    style: const TextStyle(fontSize: 14),
+                                    onSaved: (String? value) {
+                                      // This optional block of code can be used to run
+                                      // code when the user saves the form.
+                                    },
+                                  ),
+                                )),
+                                IconButton(
+                                    onPressed: () {
+                                      FlutterClipboard.copy(userInfo['uid'])
+                                          .then((value) => Helper.showToast(
+                                              'Secret Key was cofied!'));
+                                    },
+                                    icon: Icon(
+                                      Icons.copy,
+                                      color: Colors.grey,
+                                    ))
                               ]),
                             ),
                             const Padding(padding: EdgeInsets.only(top: 20)),

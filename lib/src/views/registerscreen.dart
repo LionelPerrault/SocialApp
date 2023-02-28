@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -172,12 +171,21 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                       'You must input the invite code';
                                                   con.setState(() {});
                                                 } else {
-                                                  setState(() {
-                                                    con.failRegister = '';
+                                                  bool valid =
+                                                      await con.inviteCodecheck(
+                                                          inviteCode);
+                                                  if (!valid) {
+                                                    con.failRegister =
+                                                        'Invite code is not correct.';
+                                                    con.setState(() {});
+                                                  } else {
+                                                    setState(() {
+                                                      con.failRegister = '';
 
-                                                    registerStep =
-                                                        Menu.register;
-                                                  });
+                                                      registerStep =
+                                                          Menu.register;
+                                                    });
+                                                  }
                                                 }
                                               },
                                             ),
