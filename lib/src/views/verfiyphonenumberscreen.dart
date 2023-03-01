@@ -172,9 +172,9 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                       if (controller.isListeningForOtpAutoRetrieve)
                         Column(
                           children: const [
-                            CustomLoader(
-                              color: Colors.blue,
-                            ),
+                            // CustomLoader(
+                            //   color: Colors.blue,
+                            // ),
                             SizedBox(height: 50),
                             Text(
                               'Listening for OTP',

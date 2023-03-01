@@ -716,7 +716,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               if (value2 == true) {
                                                 setState(() {
                                                   registerStep =
-                                                      Menu.verifyphonenumber;
+                                                      Menu.phonenumber;
                                                 });
                                               }
                                             },
