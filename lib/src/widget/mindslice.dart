@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
@@ -64,10 +65,10 @@ class MindSlice extends StatelessWidget {
             maximumSize: const Size(240, 42),
           ),
           onPressed: () {
-            if (label.toLowerCase() == "upload photos") {
+            if (label.toLowerCase() == "upload photos" && !kIsWeb) {
               showPhotoSelectionMode(context);
             } else {
-              mindFunc();
+              mindFunc(0);
             }
           },
           child: Column(
