@@ -1001,6 +1001,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     );
   }
 
+  var replyLikesCount;
   Widget replyWidget(val, e) {
     double width = SizeConfig(context).screenWidth > 600
         ? 500
@@ -1018,20 +1019,21 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         for (var i = 0; i < likesvalue.length; i++) {
           var flag = true;
           for (var j = 0; j < totalLikeImage.length; j++) {
-            if (likesvalue[i]['value'] == totalLikeImage[j]) {
+            if (likesvalue[i]['likes'] == totalLikeImage[j]) {
               flag = false;
 
               continue;
             }
           }
           if (flag) {
-            print(likesvalue[i]['value']);
-            totalLikeImage.add(likesvalue[i]['value']);
+            print(likesvalue[i]['likes']);
+            totalLikeImage.add(likesvalue[i]['likes']);
           }
         }
       }
+      print("--------totallikeimage----------");
       print(totalLikeImage);
-      var replyLikesCount = totalLikeImage;
+      replyLikesCount = totalLikeImage;
       Map myCommentLike = {};
       print("likesavalue -------- $likesvalue");
       myCommentLike = likesvalue
@@ -1043,6 +1045,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               .where((like) => like['uid'] == userInfo['uid'])
               .toList()[0];
     }
+
     return Container(
       padding: const EdgeInsets.only(top: 15),
       child: Row(
@@ -1112,7 +1115,10 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         if (whoComment == '') {
                           whoComment = val['id'];
                           commentHeight = key1.currentContext!.size!.height;
-                          print("aaaaaaaaaa");
+                          // print("aaaaaaaaaa");
+                          // print(con.replyLikesCount);
+                          // print("val----${val['id']}");
+                          // print("e----${e['id']}");
                           setState(() {});
                         } else {
                           whoComment = '';
@@ -1157,24 +1163,31 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      // children: replyLikesCount
-                      //     .map((val) => Container(
-                      //         padding: const EdgeInsets.only(left: 3),
-                      //         child: Row(
-                      //           children: [
-                      //             Image.network(
-                      //               emoticon[val['likes']].toString(),
-                      //               width: 20,
-                      //             ),
-                      //             const Padding(
-                      //                 padding: EdgeInsets.only(left: 3)),
-                      //             Text(val['count'].toString())
-                      //           ],
-                      //         )))
-                      //     .toList(),
+                    InkWell(
+                      onTap: () {
+                        viewLikeUser(con.replyLikesCount[val['id']]);
+                      },
+                      child: Row(
+                        //children: con.replyLikesCount[val['id']]
+                        children: totalLikeImage
+                            .map<Widget>(
+                              (value) => Container(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Row(
+                                  children: [
+                                    Image.network(
+                                      emoticon[value].toString(),
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
+                    const Padding(padding: EdgeInsets.only(left: 3)),
+                    Text(totalLikeImage.length.toString())
                   ],
                 ),
               ),
