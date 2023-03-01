@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
@@ -16,6 +15,39 @@ class MindSlice extends StatelessWidget {
   String image;
   var mindFunc;
   bool disabled;
+  Future<void> showPhotoSelectionMode(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Please select upload photo',
+            style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'Georgia',
+                fontStyle: FontStyle.normal),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('Take photo'),
+              onPressed: () {
+                mindFunc(1);
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Gallery'),
+              onPressed: () {
+                mindFunc(0);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,8 +64,11 @@ class MindSlice extends StatelessWidget {
             maximumSize: const Size(240, 42),
           ),
           onPressed: () {
-            print('now click');
-            mindFunc();
+            if (label.toLowerCase() == "upload photos") {
+              showPhotoSelectionMode(context);
+            } else {
+              mindFunc();
+            }
           },
           child: Column(
             children: [
