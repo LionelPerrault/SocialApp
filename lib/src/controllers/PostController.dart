@@ -1698,9 +1698,12 @@ class PostController extends ControllerMVC {
         .get();
     var arr = snapshot.data()!['likes'];
     var a = [];
-    var aa = arr == {}
-        ? []
-        : arr.where((val) => val['uid'] == userInfo['uid']).toList();
+    var aa = [];
+    if (arr == null || arr.length == 0) {
+      print(" arr empty");
+    } else {
+      aa = arr.where((val) => val['uid'] == userInfo['uid']).toList();
+    }
     if (aa.isEmpty) {
       a.add({'uid': userInfo['uid'], 'likes': likes});
     }
