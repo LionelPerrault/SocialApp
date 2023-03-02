@@ -117,6 +117,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   }
 
   routerChange(value) {
+    print("call route change now $value");
     mainRouterValue = value;
     showSideBar = false;
     _drawerSlideController.reverse();

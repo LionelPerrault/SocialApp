@@ -306,6 +306,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
                                                   print('username');
+                                                  ProfileController()
+                                                      .updateProfile(
+                                                          productAdmin[
+                                                              'userName']);
                                                   widget.routerChange({
                                                     'router':
                                                         RouteNames.profile,

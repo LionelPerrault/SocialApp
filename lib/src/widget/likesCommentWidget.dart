@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -1185,6 +1186,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                 color: Colors.black),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
+                                ProfileController().updateProfile(
+                                    likeUsers[index]['userInfo']['userName']);
                                 widget.routerChange({
                                   'router': RouteNames.profile,
                                   'subRouter': likeUsers[index]['userInfo']

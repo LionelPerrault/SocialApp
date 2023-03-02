@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
@@ -72,6 +73,8 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                       color: Colors.black),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
+                      ProfileController()
+                          .updateProfile(widget.userInfo['userName']);
                       widget.routerChange({
                         'router': RouteNames.profile,
                         'subRouter': widget.userInfo['userName']

@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/userModel.dart';
@@ -27,7 +28,7 @@ class ProfileController extends ControllerMVC {
   var responseData;
   Map<String, dynamic> userData = {};
   var signUpUserInfo = {};
-
+  bool isGetData = false;
   @override
   Future<bool> initAsync() async {
     //
@@ -41,9 +42,22 @@ class ProfileController extends ControllerMVC {
     return true;
   }
 
+  updateProfile(userName) {
+    tab = 'Timeline';
+    var userInfo = UserManager.userInfo;
+
+    viewProfileUserName = userName;
+    if (viewProfileUserName == '') {
+      viewProfileUserName = userInfo['userName'];
+    }
+    getProfileInfo();
+  }
+
   //get user profile info
   Future<bool> getProfileInfo() async {
+    print("callll profile get info =============");
     bool getFlag = false;
+    isGetData = false;
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .where('userName', isEqualTo: viewProfileUserName)
@@ -55,6 +69,7 @@ class ProfileController extends ControllerMVC {
       userData = value.docs[0].data();
       profile_cover = userData['profile_cover'] ?? '';
       setState(() {});
+      isGetData = true;
       getFlag = true;
     });
     return getFlag;

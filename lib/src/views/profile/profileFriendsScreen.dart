@@ -9,12 +9,14 @@ import '../../controllers/ProfileController.dart';
 
 class ProfileFriendScreen extends StatefulWidget {
   Function onClick;
-  ProfileFriendScreen(
-      {Key? key, required this.onClick, required this.routerChange})
-      : con = PeopleController(),
+  ProfileFriendScreen({
+    Key? key,
+    required this.onClick,
+    required this.routerChangeProile,
+  })  : con = PeopleController(),
         super(key: key);
   final PeopleController con;
-  Function routerChange;
+  Function routerChangeProile;
   @override
   State createState() => ProfileFriendScreenState();
 }
@@ -316,10 +318,12 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    widget.routerChange({
-                      'router': RouteNames.profile,
-                      'subRouter': friendUserName
-                    });
+                    ProfileController().updateProfile(friendUserName);
+                    () => widget.routerChangeProile({
+                          'router': RouteNames.profile,
+                          'subRouter': friendUserName
+                        });
+                    setState(() {});
                   },
                   child: Text(friendFullName),
                 ),
