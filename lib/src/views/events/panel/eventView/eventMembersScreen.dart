@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -251,6 +252,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   children: going
                       .map((user) => UserCell(
                           eventTap: () {
+                            ProfileController().updateProfile(user["userName"]);
                             widget.routerChange({
                               'router': RouteNames.profile,
                               'subRouter': user["userName"],
@@ -295,6 +297,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   children: interested
                       .map((user) => UserCell(
                           eventTap: () {
+                            ProfileController().updateProfile(user["userName"]);
                             widget.routerChange({
                               'router': RouteNames.profile,
                               'subRouter': user["userName"],
@@ -339,6 +342,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   children: invited
                       .map((user) => UserCell(
                           eventTap: () {
+                            ProfileController().updateProfile(user["userName"]);
                             widget.routerChange({
                               'router': RouteNames.profile,
                               'subRouter': user["userName"],
@@ -383,6 +387,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   children: invites
                       .map((user) => UserCell(
                           eventTap: () {
+                            ProfileController().updateProfile(user["userName"]);
                             widget.routerChange({
                               'router': RouteNames.profile,
                               'subRouter': user["userName"],

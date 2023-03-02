@@ -238,6 +238,7 @@ class SettingNotificationScreenState
                     'notification': notificationEnable
                   }
                 };
+
                 con.profileChange(value);
               },
               isChange: con.isProfileChange,

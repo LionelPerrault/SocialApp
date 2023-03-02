@@ -93,7 +93,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     add(widget.con);
 
     con = controller as PostController;
-    con.addNotifyCallBack(this);
+    //con.addNotifyCallBack(this);
     con.formatDate(widget.postInfo['time']).then((value) {
       postTime = value;
 
@@ -266,6 +266,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
   @override
   Widget build(BuildContext context) {
+    //return Text("test");
     if (!widget.isSharedContent) {
       if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
         privacyMenuItem = [];
@@ -413,6 +414,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 recognizer:
                                                     TapGestureRecognizer()
                                                       ..onTap = () {
+                                                        ProfileController()
+                                                            .updateProfile(widget
+                                                                        .postInfo[
+                                                                    'adminInfo']
+                                                                ['userName']);
                                                         widget.routerChange({
                                                           'router': RouteNames
                                                               .profile,
@@ -908,6 +914,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 recognizer:
                                                     TapGestureRecognizer()
                                                       ..onTap = () {
+                                                        ProfileController()
+                                                            .updateProfile(widget
+                                                                        .postInfo[
+                                                                    'adminInfo']
+                                                                ['userName']);
                                                         widget.routerChange({
                                                           'router': RouteNames
                                                               .profile,
@@ -1162,6 +1173,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 recognizer:
                                                     TapGestureRecognizer()
                                                       ..onTap = () {
+                                                        ProfileController()
+                                                            .updateProfile(widget
+                                                                        .postInfo[
+                                                                    'adminInfo']
+                                                                ['userName']);
                                                         widget.routerChange({
                                                           'router': RouteNames
                                                               .profile,
@@ -1414,6 +1430,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 recognizer:
                                                     TapGestureRecognizer()
                                                       ..onTap = () {
+                                                        ProfileController()
+                                                            .updateProfile(widget
+                                                                        .postInfo[
+                                                                    'adminInfo']
+                                                                ['userName']);
                                                         widget.routerChange({
                                                           'router': RouteNames
                                                               .profile,
@@ -1654,6 +1675,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               fontSize: 15),
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
+                                              ProfileController().updateProfile(
+                                                  widget.postInfo['adminInfo']
+                                                      ['userName']);
                                               widget.routerChange(
                                                 {
                                                   'router': RouteNames.profile,
@@ -1905,6 +1929,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 recognizer:
                                                     TapGestureRecognizer()
                                                       ..onTap = () {
+                                                        ProfileController()
+                                                            .updateProfile(widget
+                                                                        .postInfo[
+                                                                    'adminInfo']
+                                                                ['userName']);
                                                         widget.routerChange({
                                                           'router': RouteNames
                                                               .profile,

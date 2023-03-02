@@ -22,6 +22,7 @@ class UserProfileScreen extends StatefulWidget {
   final ProfileController con;
   Function routerChange;
   String userName;
+
   @override
   State createState() => UserProfileScreenState();
 }
@@ -31,28 +32,14 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   var userInfo = UserManager.userInfo;
   String profileImage = '';
-  bool isgetdata = false;
   bool isProfileView = false;
   bool isPayProgressive = false;
   late ProfileController con;
   @override
   void initState() {
+    print("call load data is ${widget.userName}");
     add(widget.con);
     con = controller as ProfileController;
-    con.viewProfileUserName = widget.userName;
-    if (con.viewProfileUserName == '') {
-      con.viewProfileUserName = userInfo['userName'];
-    }
-    con.getProfileInfo().then((value) {
-      profileImage = con.userData['profileImage'] ?? '';
-      if (con.userData['paywall'][UserManager.userInfo['uid']] == null ||
-          con.userData['paywall'][UserManager.userInfo['uid']] == '0' ||
-          con.userData['userName'] == UserManager.userInfo['userName']) {
-        isProfileView = true;
-      }
-      isgetdata = true;
-      setState(() {});
-    });
     super.initState();
   }
 
@@ -81,9 +68,17 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    if (con.isGetData) {
+      profileImage = con.userData['profileImage'] ?? '';
+      if (con.userData['paywall'][UserManager.userInfo['uid']] == null ||
+          con.userData['paywall'][UserManager.userInfo['uid']] == '0' ||
+          con.userData['userName'] == UserManager.userInfo['userName']) {
+        isProfileView = true;
+      }
+    }
     return Expanded(
       child: SingleChildScrollView(
-        child: !isgetdata
+        child: !con.isGetData
             ? Container()
             : !isProfileView
                 ? YesNoWidget(
@@ -116,9 +111,11 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                             con.tab = value;
                             setState(() {});
                           },
-                          routerChange: widget.routerChange,
+                          routerChange: (_) {
+                            widget.routerChange(_);
+                          },
                         ),
-                        con.tab == 'Timeline' && isgetdata
+                        con.tab == 'Timeline' && con.isGetData
                             ? ProfileTimelineScreen(
                                 onClick: (value) {
                                   con.tab = value;
@@ -128,13 +125,12 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                                 routerChange: widget.routerChange,
                               )
                             : con.tab == 'Friends'
-                                ? ProfileFriendScreen(
-                                    onClick: (value) {
-                                      con.tab = value;
-                                      setState(() {});
-                                    },
-                                    routerChange: widget.routerChange,
-                                  )
+                                ? ProfileFriendScreen(onClick: (value) {
+                                    con.tab = value;
+                                    setState(() {});
+                                  }, routerChangeProile: (val) {
+                                    widget.routerChange(val);
+                                  })
                                 : con.tab == 'Photos'
                                     ? ProfilePhotosScreen(onClick: (value) {
                                         con.tab = value;

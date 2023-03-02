@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -168,6 +169,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                   children: members
                       .map((user) => UserCell(
                           groupTap: () {
+                            ProfileController().updateProfile(user["userName"]);
                             widget.routerChange({
                               'router': RouteNames.profile,
                               'subRouter': user["userName"],
@@ -212,6 +214,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                   children: invites
                       .map((user) => UserCell(
                           groupTap: () {
+                            ProfileController().updateProfile(user["userName"]);
                             widget.routerChange({
                               'router': RouteNames.profile,
                               'subRouter': user["userName"],

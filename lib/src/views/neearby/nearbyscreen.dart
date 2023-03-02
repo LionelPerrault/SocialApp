@@ -13,6 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -100,6 +101,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                             color: Colors.black),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
+                            ProfileController().updateProfile(data["userName"]);
                             widget.routerChange({
                               'router': RouteNames.profile,
                               'subRouter': data['userName']
