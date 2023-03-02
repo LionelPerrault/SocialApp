@@ -177,6 +177,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 
       myLike = likesvalue
               .where((like) =>
+                  like['userInfo'] != null &&
                   like['userInfo']['userName'] == userInfo['userName'])
               .toList()
               .isEmpty

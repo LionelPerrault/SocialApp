@@ -78,11 +78,17 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     add(widget.con);
     con = controller as PostController;
     super.initState();
+    getData();
+  }
+
+  Future<void> getData() async {
+    if (!mounted) return;
     product = widget.data['data'];
     productAdmin = widget.data['adminInfo'];
     productId = widget.data['id'];
     con.formatDate(product['productDate']).then((value) {
       postTime = value;
+
       setState(() {});
     });
   }
@@ -272,162 +278,191 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          productAdmin['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  productAdmin['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
-                          const Padding(padding: EdgeInsets.only(left: 10)),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  '${productAdmin['firstName']} ${productAdmin['lastName']}',
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                  overflow:
-                                                      TextOverflow.ellipsis),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  print('username');
-                                                  ProfileController()
-                                                      .updateProfile(
-                                                          productAdmin[
-                                                              'userName']);
-                                                  widget.routerChange({
-                                                    'router':
-                                                        RouteNames.profile,
-                                                    'subRouter': productAdmin[
-                                                        'userName'],
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  Container(
-                                    width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 240
-                                        : 350,
-                                    child: Text(
-                                      ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: !widget.isShared,
-                                    child: Container(
-                                      padding: EdgeInsets.only(right: 9.0),
-                                      child: PopupMenuButton(
-                                        onSelected: (value) {
-                                          popUpFunction(value);
-                                        },
-                                        child: const Icon(
-                                          Icons.arrow_drop_down,
-                                          size: 18,
-                                        ),
-                                        itemBuilder: (BuildContext bc) {
-                                          return popupMenuItem
-                                              .map(
-                                                (e) => PopupMenuItem(
-                                                  value: e['value'],
-                                                  child: Row(
-                                                    children: [
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5.0)),
-                                                      Icon(e['icon']),
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 12.0)),
-                                                      Text(
-                                                        e['value'] == 'timeline'
-                                                            ? product[
-                                                                    'productTimeline']
-                                                                ? e['label']
-                                                                : e['labelE']
-                                                            : e['value'] ==
-                                                                    'comment'
-                                                                ? product[
-                                                                        'productOnOffCommenting']
-                                                                    ? e['label']
-                                                                    : e['labelE']
-                                                                : e['label'],
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    90,
-                                                                    90,
-                                                                    90),
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            fontSize: 12),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                              .toList();
-                                        },
+                      productAdmin == null
+                          ? SizedBox(
+                              child: Text('No Owenr'),
+                            )
+                          : Row(
+                              children: [
+                                productAdmin['avatar'] != ''
+                                    ? CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                        productAdmin['avatar'],
+                                      ))
+                                    : CircleAvatar(
+                                        child:
+                                            SvgPicture.network(Helper.avatar),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Padding(padding: EdgeInsets.only(top: 3)),
-                              Row(
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text: postTime,
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 10)),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
                                               style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 10,
-                                                  overflow:
-                                                      TextOverflow.ellipsis),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router':
-                                                        RouteNames.products,
-                                                    'subRouter': productId,
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  const Text(' - '),
-                                  const Icon(
-                                    Icons.language,
-                                    size: 12,
-                                  )
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                        '${productAdmin['firstName']} ${productAdmin['lastName']}',
+                                                    style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16,
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {
+                                                            print('username');
+                                                            ProfileController()
+                                                                .updateProfile(
+                                                                    productAdmin[
+                                                                        'userName']);
+                                                            widget
+                                                                .routerChange({
+                                                              'router':
+                                                                  RouteNames
+                                                                      .profile,
+                                                              'subRouter':
+                                                                  productAdmin[
+                                                                      'userName'],
+                                                            });
+                                                          })
+                                              ]),
+                                        ),
+                                        Container(
+                                          width:
+                                              SizeConfig(context).screenWidth <
+                                                      600
+                                                  ? SizeConfig(context)
+                                                          .screenWidth -
+                                                      240
+                                                  : 350,
+                                          child: Text(
+                                            ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible: !widget.isShared,
+                                          child: Container(
+                                            padding:
+                                                EdgeInsets.only(right: 9.0),
+                                            child: PopupMenuButton(
+                                              onSelected: (value) {
+                                                popUpFunction(value);
+                                              },
+                                              child: const Icon(
+                                                Icons.arrow_drop_down,
+                                                size: 18,
+                                              ),
+                                              itemBuilder: (BuildContext bc) {
+                                                return popupMenuItem
+                                                    .map(
+                                                      (e) => PopupMenuItem(
+                                                        value: e['value'],
+                                                        child: Row(
+                                                          children: [
+                                                            const Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            5.0)),
+                                                            Icon(e['icon']),
+                                                            const Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            12.0)),
+                                                            Text(
+                                                              e['value'] ==
+                                                                      'timeline'
+                                                                  ? product[
+                                                                          'productTimeline']
+                                                                      ? e[
+                                                                          'label']
+                                                                      : e[
+                                                                          'labelE']
+                                                                  : e['value'] ==
+                                                                          'comment'
+                                                                      ? product[
+                                                                              'productOnOffCommenting']
+                                                                          ? e['label']
+                                                                          : e['labelE']
+                                                                      : e['label'],
+                                                              style: const TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          90,
+                                                                          90,
+                                                                          90),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                  fontSize: 12),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                    .toList();
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Padding(
+                                        padding: EdgeInsets.only(top: 3)),
+                                    Row(
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: postTime,
+                                                    style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 10,
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {
+                                                            widget
+                                                                .routerChange({
+                                                              'router':
+                                                                  RouteNames
+                                                                      .products,
+                                                              'subRouter':
+                                                                  productId,
+                                                            });
+                                                          })
+                                              ]),
+                                        ),
+                                        const Text(' - '),
+                                        const Icon(
+                                          Icons.language,
+                                          size: 12,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                       const Padding(padding: EdgeInsets.only(top: 15)),
                       Text(
                         product['productName'],
