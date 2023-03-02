@@ -63,8 +63,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Upload Photos',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcamera.svg?alt=media&token=0b7478a3-c746-47ed-a4fc-7505accf22a5',
-      'mindFunc': () {
-        uploadPhotoReady();
+      'mindFunc': (option) {
+        uploadPhotoReady(option);
       }
     },
     // {
@@ -266,16 +266,16 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     super.initState();
   }
 
-  uploadPhotoReady() {
+  uploadPhotoReady(int option) {
     nowPost = 'Upload Photos';
     setState(() {});
-    uploadReady('photo');
+    uploadReady('photo', option);
   }
 
   uploadAudioReady() {
     nowPost = 'Upload Audio';
     setState(() {});
-    uploadReady('audio');
+    uploadReady('audio', 0);
   }
 
   feelingReady() {
@@ -880,7 +880,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               margin: const EdgeInsets.only(right: 20),
               child: PopupMenuButton(
                 onSelected: (value) {
-                  print(activity);
                   activity = value['label'].toString();
                   subActivity = '';
                   subActivityLabel = value['subLabel'].toString();
@@ -1131,7 +1130,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(padding: EdgeInsets.only(top: 2)),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             onChanged: onChange,
@@ -1161,27 +1160,50 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     );
   }
 
-  Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
-    XFile? pickedFile;
-    if (foundation.kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-    } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
+  Future<XFile> chooseImage(int option) async {
+    if (option == 0) {
+      final imagePicker = ImagePicker();
+      XFile? pickedFile;
+      if (foundation.kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      } else {
+        //Check Permissions
+        // await Permission.photos.request();
+        // var permissionStatus = await Permission.photos.status;
 
-      //if (permissionStatus.isGranted) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
+        //if (permissionStatus.isGranted) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+        //} else {
+        //  print('Permission not granted. Try Again with permission access');
+        //}
+      }
+      return pickedFile!;
+    } else {
+      final imagePicker = ImagePicker();
+      XFile? pickedFile;
+      if (foundation.kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      } else {
+        //Check Permissions
+        // await Permission.photos.request();
+        // var permissionStatus = await Permission.photos.status;
+
+        //if (permissionStatus.isGranted) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+        //} else {
+        //  print('Permission not granted. Try Again with permission access');
+        //}
+      }
+      return pickedFile!;
     }
-    return pickedFile!;
   }
 
   Future<XFile> chooseAudio() async {
@@ -1201,7 +1223,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         pickedFile = result as XFile;
       }
     } else {
-      print("cancel upload -0-----------------");
       pickedFile = XFile('');
     }
     return pickedFile;
@@ -1293,10 +1314,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     }
   }
 
-  uploadReady(type) async {
+  uploadReady(type, option) async {
     XFile? pickedFile;
     if (type == 'photo') {
-      pickedFile = await chooseImage();
+      pickedFile = await chooseImage(option);
     } else {
       pickedFile = await chooseAudio();
     }

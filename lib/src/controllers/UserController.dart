@@ -199,7 +199,6 @@ class UserController extends ControllerMVC {
 
   Future<void> registerUserInfo() async {
     setState(() {});
-    print('start register');
     var uuid = await sendEmailVeryfication();
     signUpUserInfo.removeWhere((key, value) => key == 'password');
     await FirebaseFirestore.instance
@@ -251,6 +250,18 @@ class UserController extends ControllerMVC {
     } else {
       return false;
     }
+  }
+
+  Future<bool> inviteCodecheck(String inviteCode) async {
+    var user = await Helper.userCollection.get();
+    var allUser = user.docs;
+    bool exist = false;
+    String id = '';
+    for (int i = 0; i < allUser.length; i++) {
+      id = allUser[i].id.toString();
+      if (id == inviteCode) exist = true;
+    }
+    return exist;
   }
 
   Future<bool> enableDisableTwoFactorAuthentication(
@@ -805,6 +816,7 @@ class UserController extends ControllerMVC {
   Future<List> getAllInterests() async {
     QuerySnapshot querySnapshot =
         await Helper.allInterests.orderBy('title').get();
+
     var doc = querySnapshot.docs;
     return doc;
   }
