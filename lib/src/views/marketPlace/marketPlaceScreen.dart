@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/marketPlace/panel/marketAllProduct.dart';
-import 'package:shnatter/src/views/marketPlace/panel/marketPlaceLeftPanel.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/widget/createProductWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
 
+// ignore: must_be_immutable
 class MarketPlaceScreen extends StatefulWidget {
   MarketPlaceScreen({Key? key, required this.routerChange})
       : con = PostController(),

@@ -45,7 +45,6 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
     var future = Future.delayed(const Duration(milliseconds: 100), () {
       readyShow = !readyShow;
       setState(() {});
-      print('here is getsturedetector');
     });
   }
 
