@@ -140,7 +140,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
         if (tsNT > usercheckTime) {
-          print('user check time: $usercheckTime');
           var addData;
           if (adminUid != UserManager.userInfo['uid'] &&
               postType != 'requestFriend') {
@@ -152,7 +151,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 .get()
                 .then((userV) => {
                       addData = {
-                        // ...allNotifi[i],
                         'uid': allNotifi[i].id,
                       },
                       changeData.add(addData),

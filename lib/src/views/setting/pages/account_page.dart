@@ -619,6 +619,11 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                 )),
                               ]),
                             ),
+                            const Padding(padding: EdgeInsets.only(top: 20)),
+                            Divider(
+                              indent: 5,
+                              endIndent: 20,
+                            ),
                             const Text(
                               'SHARE MY CODE',
                               style: TextStyle(

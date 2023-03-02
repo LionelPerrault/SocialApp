@@ -35,7 +35,6 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
     final Stream<QuerySnapshot> streamContent =
         Helper.notifiCollection.snapshots();
     streamContent.listen((event) async {
-      print('notification Stream');
       var notiSnap = await Helper.notifiCollection
           .orderBy('timeStamp', descending: true)
           .get();
