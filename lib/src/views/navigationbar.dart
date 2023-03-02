@@ -7,7 +7,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/SearchController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -218,21 +217,17 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 .doc(allNotifi[i]['postAdminId'])
                 .get()
                 .then((userV) async => {
-                      if (userV.exists)
-                        {
-                          addData = {
-                            ...allNotifi[i].data(),
-                            'uid': allNotifi[i].id,
-                            'avatar': userV.data()!['avatar'],
-                            'userName': userV.data()!['userName'],
-                            'text': Helper
-                                    .notificationText[allNotifi[i]['postType']]
-                                ['text'],
-                            'date': await postCon
-                                .formatDate(allNotifi[i]['timeStamp']),
-                          },
-                          changeData.add(addData),
-                        }
+                      addData = {
+                        ...allNotifi[i].data(),
+                        'uid': allNotifi[i].id,
+                        'avatar': userV.data()!['avatar'],
+                        'userName': userV.data()!['userName'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date':
+                            await postCon.formatDate(allNotifi[i]['timeStamp']),
+                      },
+                      changeData.add(addData),
                     });
           }
           if (postType == 'requestFriend' &&
@@ -569,8 +564,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           switch (item) {
                             case Menu.itemProfile:
                               {
-                                ProfileController().updateProfile(
-                                    UserManager.userInfo['userName']);
                                 widget.routerChange({
                                   'router': RouteNames.profile,
                                   'subRouter': UserManager.userInfo['userName']
@@ -878,8 +871,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           switch (item) {
                             case Menu.itemProfile:
                               {
-                                ProfileController().updateProfile(
-                                    UserManager.userInfo['userName']);
                                 widget.routerChange({
                                   'router': RouteNames.profile,
                                   'subRouter': UserManager.userInfo['userName']
