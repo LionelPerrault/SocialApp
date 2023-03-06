@@ -59,7 +59,11 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
       RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   Future<void> checkAllForms() async {
-    allInputed = await con.validate(context, signUpUserInfo);
+    if (!check1 || !check2) {
+      allInputed = false;
+    } else {
+      allInputed = await con.validate(context, signUpUserInfo);
+    }
     setState(() {});
   }
 
