@@ -31,7 +31,6 @@ class GoingEventsState extends mvc.StateMVC<GoingEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
     super.initState();
     getEventNow();
   }

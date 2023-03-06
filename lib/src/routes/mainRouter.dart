@@ -2,7 +2,8 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/events/eventsscreen.dart';
 import 'package:shnatter/src/views/events/panel/eventView/eventscreen.dart';
 import 'package:shnatter/src/views/groups/groupsscreen.dart';
-import 'package:shnatter/src/views/groups/panel/groupView/groupscreen.dart';
+import 'package:shnatter/src/views/groups/panel/groupView/groupeachscreen.dart';
+
 import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/marketPlace/marketPlaceScreen.dart';
 import 'package:shnatter/src/views/messageBoard/messageScreen.dart';

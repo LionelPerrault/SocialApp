@@ -35,7 +35,7 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
 
   Widget mainTabs() {
     return Container(
-      width: SizeConfig(context).screenWidth,
+      width: SizeConfig(context).screenWidth - 60,
       height: 100,
       margin: const EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(

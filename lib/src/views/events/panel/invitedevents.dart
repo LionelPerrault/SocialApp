@@ -31,7 +31,6 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
     super.initState();
     getEventNow();
   }

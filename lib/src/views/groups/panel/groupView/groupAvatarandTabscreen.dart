@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -7,11 +6,9 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
@@ -60,10 +57,8 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   }
 
   groupJoinFunc() async {
-    print(con.group['groupAdmin'][0]['uid']);
     var groupAdminInfo = await ProfileController()
         .getUserInfo(con.group['groupAdmin'][0]['uid']);
-    print(groupAdminInfo);
     if (groupAdminInfo!['paywall']['joinMyGroup'] == null ||
         groupAdminInfo['paywall']['joinMyGroup'] == '0' ||
         con.group['groupAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
@@ -134,10 +129,12 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
     return Stack(
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 30, right: 30),
+          margin: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+              ? const EdgeInsets.only(left: 0, right: 0)
+              : const EdgeInsets.only(left: 30, right: 30),
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-              ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
-              : SizeConfig(context).screenWidth,
+              ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
+              : SizeConfig(context).screenWidth - 60,
           height: SizeConfig(context).screenHeight * 0.5,
           decoration: con.group['groupCover'] == ''
               ? const BoxDecoration(
@@ -352,11 +349,11 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
               width:
                   SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
                       ? SizeConfig(context).screenWidth -
-                          SizeConfig.leftBarAdminWidth -
+                          SizeConfig.leftBarWidth -
                           250
                       : SizeConfig(context).screenWidth - 20,
               margin: const EdgeInsets.only(top: 10, left: 20),
-              height: 70,
+              height: 80,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(3),
@@ -385,7 +382,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                                               Icon(
                                                 e['icon'],
                                                 size: 15,
-                                                color: Color.fromRGBO(
+                                                color: const Color.fromRGBO(
                                                     76, 76, 76, 1),
                                               ),
                                               const Padding(
@@ -505,26 +502,21 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
               avatarProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $avatarProgress% complete.");
             } else {
               coverProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $coverProgress% complete.");
             }
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
             // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
             coverProgress = 0;
             setState(() {});
             // Handle successful uploads on complete

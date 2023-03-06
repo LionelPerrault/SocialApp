@@ -30,10 +30,7 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
-    super.initState();
     getEventNow();
-    print('now initstate');
   }
 
   void getEventNow() {

@@ -30,7 +30,6 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
     super.initState();
     getGroupNow();
   }

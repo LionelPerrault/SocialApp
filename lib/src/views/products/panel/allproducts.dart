@@ -28,7 +28,6 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
     super.initState();
     getProductNow();
   }

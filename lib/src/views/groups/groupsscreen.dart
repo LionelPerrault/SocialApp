@@ -138,43 +138,41 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        width: double.infinity,
-        //color: Colors.redAccent,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                color: Colors.blue,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        makePane("Discover"),
-                        makePane("Joined Group"),
-                        makePane("My Groups")
-                      ],
-                    ),
-                    button()
-                  ],
-                ),
+    return SizedBox(
+      width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+          ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
+          : SizeConfig(context).screenWidth,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: Colors.blue,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      makePane("Discover"),
+                      makePane("Joined Group"),
+                      makePane("My Groups")
+                    ],
+                  ),
+                  button()
+                ],
               ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              groupSubRoute == 'Discover'
-                  ? AllGroup(routerChange: widget.routerChange)
-                  : const SizedBox(),
-              groupSubRoute == 'Joined Group'
-                  ? JoinedGroups(routerChange: widget.routerChange)
-                  : const SizedBox(),
-              groupSubRoute == 'My Groups'
-                  ? MyGroups(routerChange: widget.routerChange)
-                  : const SizedBox(),
-            ]),
-      ),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            groupSubRoute == 'Discover'
+                ? AllGroup(routerChange: widget.routerChange)
+                : const SizedBox(),
+            groupSubRoute == 'Joined Group'
+                ? JoinedGroups(routerChange: widget.routerChange)
+                : const SizedBox(),
+            groupSubRoute == 'My Groups'
+                ? MyGroups(routerChange: widget.routerChange)
+                : const SizedBox(),
+          ]),
     );
     /* child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

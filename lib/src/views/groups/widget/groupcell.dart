@@ -1,8 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
+
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
@@ -37,15 +38,12 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    // TODO: implement initState
     super.initState();
   }
 
   groupJoinFunc() async {
-    print(widget.groupData['data']['groupAdmin'][0]['uid']);
     var groupAdminInfo = await ProfileController()
         .getUserInfo(widget.groupData['data']['groupAdmin'][0]['uid']);
-    print(groupAdminInfo);
     if (groupAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         groupAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         widget.groupData['data']['groupAdmin'][0]['uid'] ==
@@ -111,14 +109,14 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
         Container(
           alignment: Alignment.center,
           width: 200,
-          height: 250,
+          height: 260,
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
               Container(
                 width: 200,
-                margin: EdgeInsets.only(top: 60),
-                padding: EdgeInsets.only(top: 70),
+                margin: const EdgeInsets.only(top: 60),
+                padding: const EdgeInsets.only(top: 70),
                 decoration: BoxDecoration(
                   color: Colors.grey[350],
                   borderRadius: BorderRadius.circular(5),

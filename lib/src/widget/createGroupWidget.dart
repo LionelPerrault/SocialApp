@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -70,7 +72,6 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
         await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
     var paymail = userSnap.data()!['paymail'];
     setState(() {});
-    print('price:$price');
     if (price == '0') {
       await Postcon.createGroup(context, groupInfo).then((value) => {
             footerBtnState = false,
@@ -97,7 +98,6 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
               yesFunc: () async {
                 payLoading = true;
                 setState(() {});
-                print('adminPrice---$paymail,$price');
                 await UserController()
                     .payShnToken(paymail, price, 'Pay for creating group')
                     .then(
@@ -107,16 +107,13 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                             payLoading = false,
                             setState(() {}),
                             Navigator.of(dialogContext).pop(true),
-                            // loading = true,
                             setState(() {}),
-                            await Postcon.createEvent(context, groupInfo)
+                            await Postcon.createGroup(context, groupInfo)
                                 .then((value) {
                               footerBtnState = false;
                               setState(() => {});
                               Navigator.of(context).pop(true);
-                              // loading = true;
                               setState(() {});
-                              print('to create group page');
                               Helper.showToast(value['msg']);
                               if (value['result'] == true) {
                                 widget.routerChange({
@@ -126,8 +123,6 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                               }
                             }),
                             setState(() {}),
-                            // loading = false,
-                            // setState(() {}),
                           }
                       },
                     );

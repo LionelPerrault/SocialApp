@@ -31,7 +31,6 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
     super.initState();
     getEventNow();
   }

@@ -30,10 +30,8 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
     super.initState();
     getGroupNow();
-    print('now initstate');
   }
 
   void getGroupNow() {
@@ -42,7 +40,6 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
           myGroups.where((group) =>
               group['data']['groupAdmin'][0]['userName'] ==
               UserManager.userInfo['id']),
-          print(myGroups),
           setState(() {})
         });
   }
@@ -50,9 +47,7 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
-    print("screen width is $screenWidth");
     if (screenWidth <= 210) {
-      print("small size ===============================================");
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -51,7 +51,10 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 10, left: 10, top: 15),
-      child: SizeConfig(context).screenWidth < 800 + 220
+      width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+          ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
+          : SizeConfig(context).screenWidth,
+      child: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               con.group['groupAdmin'][0]['userName'] ==
                       UserManager.userInfo['userName']
@@ -65,18 +68,18 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
               )
             ])
           : Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                   con.group['groupAdmin'][0]['userName'] ==
                           UserManager.userInfo['userName']
                       ? MindPost()
                       : Container(),
-                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [eventInfo(), friendInvites()],
+                    // children: [eventInfo()],
                   )
                 ]),
     );

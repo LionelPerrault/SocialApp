@@ -31,7 +31,6 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
     super.initState();
     getGroupNow();
   }
@@ -40,7 +39,6 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
     con.getGroup('all', UserManager.userInfo['uid']).then((value) => {
           realAllGroups = value,
           realAllGroups.where((group) => group['data']['groupPost'] == true),
-          print(realAllGroups),
           setState(() {}),
         });
   }
@@ -48,7 +46,6 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
-    print("screen width is $screenWidth");
     Widget small = Container();
     var data = ["1", "safdfsad", "sdfafasd"];
     if (screenWidth <= 210) {
@@ -67,18 +64,6 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
             )
             .toList(),
       );
-      // return ListView.builder(
-      //     itemCount: realAllGroups.length,
-      //     itemBuilder: (BuildContext context, int index) {
-      //       return GroupCell(
-      //         groupData: realAllGroups[index],
-      //         refreshFunc: () {
-      //           getGroupNow();
-      //         },
-      //         routerChange: widget.routerChange,
-      //       );
-      //     });
-      return small;
     }
     return Container(
       child: Row(
