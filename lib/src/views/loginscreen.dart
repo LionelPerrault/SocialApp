@@ -221,7 +221,9 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                             padding:
                                 const EdgeInsets.only(left: 30.0, right: 30),
                             child: MyPrimaryButton(
-                              color: Colors.white,
+                              color: email != "" && password != ""
+                                  ? const Color.fromARGB(255, 104, 184, 250)
+                                  : Colors.white,
                               isShowProgressive: con.isSendLoginedInfo,
                               buttonName: "Login",
                               onPressed: () => {

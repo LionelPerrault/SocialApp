@@ -126,8 +126,7 @@ class UserController extends ControllerMVC {
 
     try {
       if (!passworkdValidation) {
-        failRegister =
-            'A minimum 8 Characters password contains a combination of Special Characters, Uppercase and Lowercase Letter and Number are required.';
+        failRegister = 'A minimum 8 Characters required for password';
         isSendRegisterInfo = false;
         setState(() {});
         return false;
@@ -155,7 +154,6 @@ class UserController extends ControllerMVC {
       setState(() {});
       return false;
     }
-    print("------5-------- email exist check");
     RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
           if (res['data'] == null)
             {
@@ -177,7 +175,7 @@ class UserController extends ControllerMVC {
   bool passworkdValidate(String value) {
     String pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_\-+=@,\.;\{\}\[\]]).{8,}$';
-    RegExp regExp = new RegExp(pattern);
+    RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(value);
   }
 
@@ -675,7 +673,6 @@ class UserController extends ControllerMVC {
         setState(() {});
       } else if (responseData['statusCode'] == 400 &&
           responseData['data']['msg'] == "EMAIL_EXISTS") {
-        print(responseData['statusCode']);
         Helper.showToast(responseData['data']['msg']);
         showModal(context, relysiaEmail, relysiaPassword);
         // createRelysiaAccount();
