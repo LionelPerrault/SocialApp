@@ -244,36 +244,36 @@ class SettingShnatterTokenScreenState
                     ],
                   ),
                   // const Padding(padding: EdgeInsets.only(top: 15)),
-                  Container(
-                    margin: const EdgeInsets.all(20),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(3),
-                          backgroundColor:
-                              const Color.fromARGB(255, 251, 99, 64),
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(3.0)),
-                          minimumSize: const Size(720, 40),
-                          maximumSize: const Size(720, 40),
-                        ),
-                        onPressed: () {
-                          (() => {});
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                            Text(
-                              'Buy Tokens',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        )),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.all(20),
+                  //   child: ElevatedButton(
+                  //       style: ElevatedButton.styleFrom(
+                  //         padding: const EdgeInsets.all(3),
+                  //         backgroundColor:
+                  //             const Color.fromARGB(255, 251, 99, 64),
+                  //         elevation: 3,
+                  //         shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(3.0)),
+                  //         minimumSize: const Size(720, 40),
+                  //         maximumSize: const Size(720, 40),
+                  //       ),
+                  //       onPressed: () {
+                  //         (() => {});
+                  //       },
+                  //       child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         crossAxisAlignment: CrossAxisAlignment.center,
+                  //         children: const [
+                  //           Text(
+                  //             'Buy Tokens',
+                  //             style: TextStyle(
+                  //                 fontSize: 11,
+                  //                 color: Colors.white,
+                  //                 fontWeight: FontWeight.bold),
+                  //           ),
+                  //         ],
+                  //       )),
+                  // ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

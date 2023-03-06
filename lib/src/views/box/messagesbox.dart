@@ -95,7 +95,12 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                                                 isEqualTo: con.newMessage[index]
                                                     ['userName'])
                                             .get();
-
+// con.avatar = t[chatUserName]['avatar'];
+//                   widget.onBack('message-list');
+//                   con.chattingUser = chatUserName;
+//                   con.chatUserFullName = chatUserFullName;
+                                    con.docId = snapshot.docs[0].id;
+                                    con.setState(() {});
                                     widget.routerChange({
                                       'router': RouteNames.messages,
                                       'subRouter':
