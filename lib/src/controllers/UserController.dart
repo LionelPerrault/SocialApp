@@ -173,10 +173,15 @@ class UserController extends ControllerMVC {
   }
 
   bool passworkdValidate(String value) {
-    String pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_\-+=@,\.;\{\}\[\]]).{8,}$';
-    RegExp regExp = RegExp(pattern);
-    return regExp.hasMatch(value);
+    // String pattern =
+    //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_\-+=@,\.;\{\}\[\]]).{8,}$';
+    // RegExp regExp = RegExp(pattern);
+    // return regExp.hasMatch(value);
+    if (value.length < 8) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   String createActivationCode() {
@@ -836,7 +841,7 @@ class UserController extends ControllerMVC {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       uuid = userCredential.user!.uid;
-      print('uuid: $uuid');
+
       var snapshot = await FirebaseFirestore.instance
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
