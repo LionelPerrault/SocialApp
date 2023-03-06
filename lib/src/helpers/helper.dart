@@ -147,7 +147,7 @@ class Helper {
                   ])
             : Text(
                 str,
-                style: TextStyle(color: Colors.white, fontSize: 11),
+                style: const TextStyle(color: Colors.white, fontSize: 11),
               ));
   }
 
@@ -229,11 +229,6 @@ class Helper {
   static makeOffline() async {
     var userInfo = UserManager.userInfo;
     if (userInfo['userName'] != null) {
-      print('offline');
-      // HttpsCallable callable =
-      //     FirebaseFunctions.instance.httpsCallable('offlineRequest');
-      // var res = await callable
-      //     .call(<String, dynamic>{'userName': userInfo['userName']});
       var data = {"userName": userInfo['userName']};
       http.post(
         Uri.parse(

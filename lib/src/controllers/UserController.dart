@@ -552,7 +552,6 @@ class UserController extends ControllerMVC {
   Future<bool> loginWithVerificationCode(
       String verificationCode, context) async {
     var returnVal = await twoFactorAuthenticationChecker(verificationCode);
-    print(returnVal);
     if (returnVal) {
       await Helper.saveJSONPreference(Helper.userField, {...userInfo});
       await UserManager.getUserInfo();
@@ -624,7 +623,6 @@ class UserController extends ControllerMVC {
       uuid = userCredential.user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
@@ -769,7 +767,6 @@ class UserController extends ControllerMVC {
               UserManager.getUserInfo(),
               await Helper.saveJSONPreference(Helper.userField,
                   {...userInfo, 'avatar': value.data()!['avatar']}),
-              print(userInfo),
               await Helper.getJSONPreference(Helper.userField),
               setState(() {})
             });
@@ -880,12 +877,10 @@ class UserController extends ControllerMVC {
       setState(() {});
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         uuid = userCredential.user!.uid;
-        print('this is save account uuid: $uuid');
       } else {}
       isSettingAction = false;
       setState(() {});
@@ -941,9 +936,7 @@ class UserController extends ControllerMVC {
       setState(() {});
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('email already in use');
       } else {}
       isSettingAction = false;
       setState(() {});

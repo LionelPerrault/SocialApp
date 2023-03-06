@@ -136,10 +136,7 @@ class PeopleController extends ControllerMVC {
         .add(notificationData);
   }
 
-  logsData() {
-    print("for test. user list length is #===========");
-    print(userList.length);
-  }
+  logsData() {}
 
   // get my  friends in collection
   getFriends(name) async {
@@ -186,7 +183,7 @@ class PeopleController extends ControllerMVC {
   requestFriendAsData(String receiver, String fullName, String avatar,
       {dynamic mapData}) async {
     var fieldName1 = 'users.' + UserManager.userInfo['userName'];
-    var fieldName2 = 'users.' + receiver;
+    var fieldName2 = 'users.$receiver';
     var docId = '';
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendCollection)
@@ -236,8 +233,6 @@ class PeopleController extends ControllerMVC {
   }
 
   getDiscoverList(Query<Map<String, dynamic>> query) async {
-    //print(
-    //    "========================================================================call");
     try {
       int pagination = pageIndex;
       if (userList.length > pagination * 5) {
@@ -279,7 +274,6 @@ class PeopleController extends ControllerMVC {
             return m['users'][userName] == true;
           });
           if (value.isEmpty) {
-            print(elem);
             userList.add(elem.data());
           }
         }
@@ -352,13 +346,13 @@ class PeopleController extends ControllerMVC {
     var receiver = mapData['userName'];
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendCollection)
+        // ignore: prefer_interpolation_to_compose_strings
         .where('users.' + UserManager.userInfo['userName'], isEqualTo: true)
-        .where('users.' + receiver.toString(), isEqualTo: true)
+        .where('users.$receiver', isEqualTo: true)
         .get();
     int len = snapshot.docs.length;
     for (int i = 0; i < len; i++) {
       var id = snapshot.docs[i].id;
-      print('deletedata doc id is $id');
       FirebaseFirestore.instance
           .collection(Helper.friendCollection)
           .doc(id)

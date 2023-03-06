@@ -1,15 +1,11 @@
 import 'dart:async';
-import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
@@ -20,6 +16,7 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 
+// ignore: must_be_immutable
 class UserExplore extends StatefulWidget {
   UserExplore({Key? key, required this.routerChange})
       : con = UserController(),
@@ -41,8 +38,8 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
   double zoomv = 19;
   GeoFlutterFire geo = GeoFlutterFire();
   late StreamSubscription subscription;
-  LatLng searchPoint = LatLng(0, 0);
-  LatLng choosePoint = LatLng(0, 0);
+  LatLng searchPoint = const LatLng(0, 0);
+  LatLng choosePoint = const LatLng(0, 0);
 
   String _currentAddress = "...";
   //Position? _currentPosition;
@@ -51,10 +48,6 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
   Map<MarkerId, Marker> markers =
       <MarkerId, Marker>{}; // CLASS MEMBER, MAP OF MARKS
   List<Map> clientData = [];
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
   static const CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
       target: LatLng(37.43296265331129, -122.08832357078792),
@@ -71,9 +64,9 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
 
   Widget listData() {
     return Padding(
-        padding: EdgeInsets.only(top: 150),
+        padding: const EdgeInsets.only(top: 150),
         child: ListView.separated(
-          separatorBuilder: (context, index) => Divider(
+          separatorBuilder: (context, index) => const Divider(
             thickness: 0.5,
             height: 1,
           ),
@@ -150,17 +143,18 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-      if (isInitialized)
+      if (isInitialized) {
         mapController.moveCamera(CameraUpdate.newCameraPosition(
             // on below line we have given positions of Location 5
             CameraPosition(
-          target: LatLng(searchPoint.latitude, searchPoint!.longitude),
+          target: LatLng(searchPoint.latitude, searchPoint.longitude),
           zoom: zoomv.toDouble(),
         )));
+      }
       setState(() => {
             searchPoint = LatLng(position.latitude, position.longitude),
             choosePoint = LatLng(position.latitude, position.longitude),
-            searchPoint = LatLng(47.3707688, 8.5110079)
+            searchPoint = const LatLng(47.3707688, 8.5110079)
             //searchPoint = LatLng(48.84311, 2.345817)
           });
       Helper.updateGeoPoint(searchPoint.latitude, searchPoint.longitude);
@@ -173,11 +167,8 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
 
   Future<void> _getAddressFromLatLng(LatLng position) async {
     if (!kIsWeb) {
-      print("current posstion is ");
-      print(position.longitude);
-      print(position.latitude);
       try {
-        await placemarkFromCoordinates(position!.latitude, position!.longitude)
+        await placemarkFromCoordinates(position.latitude, position.longitude)
             .then((List<Placemark> placemarks) {
           Placemark place = placemarks[0];
           //
@@ -202,17 +193,8 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     // Make a referece to firestore
     var ref = FirebaseFirestore.instance.collection('user');
     GeoFirePoint center = geo.point(
-        latitude: searchPoint!.latitude, longitude: searchPoint!.longitude);
+        latitude: searchPoint.latitude, longitude: searchPoint.longitude);
 
-    // subscribe to query
-    //subscription = radius.switchMap((rad) {
-    //  return geo.collection(collectionRef: ref).within(
-    //    center: center,
-    //    radius: rad,
-    //    field: 'position',
-    //    strictMode: true
-    //  );
-    //}).listen(_updateMarkers);
     Stream<List<DocumentSnapshot>> stream = geo
         .collection(collectionRef: ref)
         .within(
@@ -234,24 +216,21 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
 
   void _updateMarkers(List<DocumentSnapshot> documentList) {
     // add my position
-    print(documentList);
     markers = {};
     var marker = Marker(
-      markerId: MarkerId("it's my position"),
-      position: LatLng(searchPoint!.latitude, searchPoint!.longitude),
+      markerId: const MarkerId("it's my position"),
+      position: LatLng(searchPoint.latitude, searchPoint.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      infoWindow: InfoWindow(title: 'Magic Marker', snippet: '*'),
+      infoWindow: const InfoWindow(title: 'Magic Marker', snippet: '*'),
       onTap: () {},
     );
     markers[marker.markerId] = marker;
     clientData = [];
-    documentList.forEach((DocumentSnapshot document) {
+    for (var document in documentList) {
       Map data = document.data() as Map;
       clientData.add({...data, 'id': document.id});
-      //print("data is ------------------ $data");
       GeoPoint pos = data['position']['geopoint'] as GeoPoint;
 
-      //double distance = data['distance'];
       var marker = Marker(
           markerId: MarkerId(document.id),
           position: LatLng(pos.latitude, pos.longitude),
@@ -265,7 +244,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                 {'router': RouteNames.profile, 'subRouter': data['userName']});
           });
       markers[marker.markerId] = marker;
-    });
+    }
     setState(() {});
   }
 
@@ -276,7 +255,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Color.fromARGB(255, 219, 224, 223),
             blurRadius: 3.0,
@@ -286,7 +265,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         ],
       ),
       child: Padding(
-          padding: EdgeInsets.only(right: 10, left: 10),
+          padding: const EdgeInsets.only(right: 10, left: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -294,27 +273,24 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 50,
                     child: Text(
                       _currentAddress,
                       textAlign: TextAlign.start,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 20,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w900,
                           color: Colors.lightBlue),
                     ),
                   ),
                   Text("within $_currentSliderValue km",
-                      style: TextStyle(
-                          //fontSize: 17,
-                          //fontWeight: FontWeight.w900,
-                          color: Colors.lightBlue))
+                      style: const TextStyle(color: Colors.lightBlue))
                 ],
               ),
-              Icon(Icons.arrow_circle_down)
+              const Icon(Icons.arrow_circle_down)
             ],
           )),
     );
@@ -323,18 +299,12 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        // child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.end,
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //   Container(
-        //       child: Material(
-        child: Container(
+        child: SizedBox(
       height: SizeConfig(context).screenHeight - 80,
       child: Stack(children: [
         _currentTabIndex == 1 ? googleMap() : listData(),
         Padding(
-          padding: EdgeInsets.only(top: 10, left: 80, right: 80),
+          padding: const EdgeInsets.only(top: 10, left: 80, right: 80),
           child: InkWell(
             child: boardPane(),
             onTap: () {
@@ -373,7 +343,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         //           ))),
         // ),
         Padding(
-          padding: EdgeInsets.only(top: 100),
+          padding: const EdgeInsets.only(top: 100),
           child: tabPane(),
         ),
         isShowChoosePane == true ? choosePane() : Container(),
@@ -388,7 +358,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(color: Color.fromARGB(115, 97, 96, 96)),
+      decoration: const BoxDecoration(color: Color.fromARGB(115, 97, 96, 96)),
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Stack(
@@ -397,7 +367,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
               color: Colors.white,
               alignment: Alignment.center,
               child: Column(
-                children: [
+                children: const [
                   Padding(padding: EdgeInsets.only(top: 10)),
                   Text(
                     "Choose a radius to see",
@@ -424,14 +394,14 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         ),
         Container(
           alignment: Alignment.bottomCenter,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           ),
           width: double.infinity,
           child: Column(children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(20),
               child: Text("Select a distance",
                   style: TextStyle(fontWeight: FontWeight.w900, fontSize: 17)),
@@ -455,40 +425,11 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                 Text("$_currentSliderValue km")
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            // GestureDetector(
-            //   onTap: () {
-            //     _getCurrentPosition();
-            //   },
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Text(
-            //         "Use my current location ",
-            //         style: TextStyle(
-            //             color: Colors.lightBlue,
-            //             fontWeight: FontWeight.w900,
-            //             fontSize: 15),
-            //       )
-            //     ],
-            //   ),
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.all(20),
-            //   child: MyPrimaryButton(
-            //       backgroundColor: Color.fromARGB(255, 46, 151, 250),
-            //       buttonName: "Change Location",
-            //       onPressed: () {
-            //         isShowChoosePane = false;
-            //         isSelectArea = true;
-            //         _currentTabIndex = 1;
-            //         setState(() {});
-            //       }),
-            // ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: MyPrimaryButton(
                   color: Colors.lightBlue,
                   buttonName: "Apply",
@@ -547,16 +488,16 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Text("Explore here",
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.lightBlue,
                               fontWeight: FontWeight.bold,
                               fontSize: 17,
                             )),
                       ],
                     )),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 ElevatedButton(
@@ -566,7 +507,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                       elevation: 5,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0)),
-                      minimumSize: Size(50, 50),
+                      minimumSize: const Size(50, 50),
                     ),
                     onPressed: () {
                       _currentAddress = "Loading...";
@@ -576,7 +517,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(
                           Icons.location_pin,
                           color: Colors.lightBlue,
@@ -590,7 +531,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
   }
 
   Widget tabPane() {
-    Color dselColor = Color.fromARGB(51, 33, 73, 54);
+    Color dselColor = const Color.fromARGB(51, 33, 73, 54);
     Color selColor = Colors.lightBlue;
     Color selText = Colors.white;
     Color dselText = Colors.lightBlue;
@@ -607,7 +548,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
             width: (SizeConfig(context).screenWidth - leftPaneWidth - 20) / 2,
             decoration: BoxDecoration(
               color: _currentTabIndex == 0 ? selColor : dselColor,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   bottomLeft: Radius.circular(20)),
             ),
@@ -630,7 +571,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                 height: 40,
                 decoration: BoxDecoration(
                   color: _currentTabIndex == 1 ? selColor : dselColor,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20)),
                 ),
@@ -677,33 +618,21 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         break;
       }
     }
-    //}
-    print("Zoov is $zoomv");
-    // if (isInitialized) {
-    //   mapController.moveCamera(CameraUpdate.newCameraPosition(
-    //       // on below line we have given positions of Location 5
-    //       CameraPosition(
-    //     target: LatLng(searchPoint!.latitude, searchPoint!.longitude),
-    //     zoom: zoomv.toDouble(),
-    //   )));
-    // }
 
-    Set<Circle> circles = Set.from([]);
-    //if (isSelectArea) {
-    circles = Set.from([
+    Set<Circle> circles = {};
+    circles = {
       Circle(
-        circleId: CircleId("current"),
-        center: LatLng(searchPoint!.latitude, searchPoint!.longitude),
+        circleId: const CircleId("current"),
+        center: LatLng(searchPoint.latitude, searchPoint.longitude),
         strokeWidth: 2,
         radius: _currentSliderValue * 100,
       )
-    ]);
-    //}
+    };
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: searchPoint != null
           ? CameraPosition(
-              target: LatLng(searchPoint!.latitude, searchPoint!.longitude),
+              target: LatLng(searchPoint.latitude, searchPoint.longitude),
               zoom: zoomv.toDouble(),
             )
           : _kLake,
@@ -723,10 +652,10 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         mapController = controller;
         isInitialized = true;
         var marker = Marker(
-          markerId: MarkerId("it's my position"),
-          position: LatLng(searchPoint!.latitude, searchPoint!.longitude),
+          markerId: const MarkerId("it's my position"),
+          position: LatLng(searchPoint.latitude, searchPoint.longitude),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          infoWindow: InfoWindow(title: 'Me', snippet: '*'),
+          infoWindow: const InfoWindow(title: 'Me', snippet: '*'),
           onTap: () {
             //
           },

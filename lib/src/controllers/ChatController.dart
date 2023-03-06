@@ -1,5 +1,4 @@
 // ignore: file_names
-// ignore: deprecated_member_use
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,14 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../firebase_options.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
-import '../models/chatModel.dart';
+// ignore: library_prefixes
 import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
+import 'dart:io' show File;
 
 class ChatController extends ControllerMVC {
   factory ChatController([StateMVC? state]) =>
@@ -135,27 +133,21 @@ class ChatController extends ControllerMVC {
       // await Permission.photos.request();
       // var permissionStatus = await Permission.photos.status;
 
-      //if (permissionStatus.isGranted) {
       pickedFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
       );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
     }
     return pickedFile!;
   }
 
   uploadFile(XFile? pickedFile, newOrNot, messageType) async {
     final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
+    UploadTask uploadTask;
     Reference _reference;
     try {
       if (kIsWeb) {
-        //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
-        //print(bytes);
-        _reference = await _firebaseStorage
+        _reference = _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = _reference.putData(
@@ -184,23 +176,15 @@ class ChatController extends ControllerMVC {
             progress = 100.0 *
                 (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
             setState(() {});
-            print("Upload is $progress% complete.");
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
-            // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
-            // Handle successful uploads on complete
-            // ...
-            //  var downloadUrl = await _reference.getDownloadURL();
             break;
         }
       });
@@ -239,7 +223,6 @@ class ChatController extends ControllerMVC {
       newRFirstName = snapshot['firstName'];
       newRLastName = snapshot['lastName'];
       chatUserFullName = snapshot['firstName'] + ' ' + snapshot['lastName'];
-
     }
     setState(() {});
     return false;

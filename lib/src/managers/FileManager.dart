@@ -53,13 +53,9 @@ class FileController extends ControllerMVC {
       // await Permission.photos.request();
       // var permissionStatus = await Permission.photos.status;
 
-      //if (permissionStatus.isGranted) {
       pickedFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
       );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
     }
     return pickedFile!;
   }
@@ -70,10 +66,8 @@ class FileController extends ControllerMVC {
     Reference _reference;
     try {
       if (kIsWeb) {
-        //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
-        //print(bytes);
-        _reference = await _firebaseStorage
+        _reference = _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = _reference.putData(
@@ -103,20 +97,16 @@ class FileController extends ControllerMVC {
             progress = 100.0 *
                 (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
             setState(() {});
-            print("Upload is $progress% complete.");
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
             // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
             // Handle successful uploads on complete
             // ...
             //  var downloadUrl = await _reference.getDownloadURL();

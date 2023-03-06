@@ -131,17 +131,9 @@ class MessageController extends ControllerMVC {
         source: ImageSource.gallery,
       );
     } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
-
-      //if (permissionStatus.isGranted) {
       pickedFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
       );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
     }
     return pickedFile!;
   }
@@ -154,9 +146,7 @@ class MessageController extends ControllerMVC {
       switch (messageType) {
         case 'image':
           if (kIsWeb) {
-            //print("read bytes");
             Uint8List bytes = await pickedFile!.readAsBytes();
-            //print(bytes);
             reference = firebaseStorage
                 .ref()
                 .child('images/${PPath.basename(pickedFile.path)}');
@@ -209,23 +199,15 @@ class MessageController extends ControllerMVC {
             progress = 100.0 *
                 (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
             setState(() {});
-            print("Upload is $progress% complete.");
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
-            // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
-            // Handle successful uploads on complete
-            // ...
-            //  var downloadUrl = await _reference.getDownloadURL();
             break;
         }
       });

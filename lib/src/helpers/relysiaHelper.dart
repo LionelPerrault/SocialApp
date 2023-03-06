@@ -132,7 +132,6 @@ class RelysiaHelper {
         .collection(RelysiaHelper.pages)
         .doc(RelysiaHelper.privacy)
         .get();
-    print(str);
     return str['content'] as String;
   }
 
@@ -141,7 +140,6 @@ class RelysiaHelper {
         .collection(RelysiaHelper.pages)
         .doc(RelysiaHelper.terms)
         .get();
-    print(str);
     return str['content'] as String;
   }
 }
