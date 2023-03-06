@@ -38,7 +38,6 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
           myEvents = [...value],
           myEvents.where((event) =>
               event['data']['eventAdmin'] == UserManager.userInfo['id']),
-          print(myEvents),
           setState(() {})
         });
   }

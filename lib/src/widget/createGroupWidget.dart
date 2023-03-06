@@ -72,6 +72,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
         await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
     var paymail = userSnap.data()!['paymail'];
     setState(() {});
+
     if (price == '0') {
       await Postcon.createGroup(context, groupInfo).then((value) => {
             footerBtnState = false,
@@ -188,30 +189,6 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   ],
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 400,
-                      child: customInput(
-                          title: 'Group Username',
-                          onChange: (value) {
-                            groupInfo['groupUserName'] = value;
-                            setState(() {});
-                          },
-                          hintText: 'https://test.shnatter.com/groups/'),
-                    )
-                  ],
-                ),
-                Container(
-                  width: 380,
-                  child: const Text(
-                    'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
-                    style: TextStyle(fontSize: 12),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
                 Row(
                   children: [
                     Expanded(
@@ -228,8 +205,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                               border: Border.all(
                                   color:
                                       const Color.fromARGB(255, 17, 205, 239),
-                                  width:
-                                      0.1), //bordrder raiuds of dropdown button
+                                  width: 0.1),
                             ),
                             child: Padding(
                                 padding:
@@ -369,6 +345,18 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   minimumSize: Size(100, 50),
                 ),
                 onPressed: () {
+                  if (groupInfo['groupName'] == null ||
+                      groupInfo['groupName'] == '') {
+                    Helper.showToast('Please add your group name');
+                    return;
+                  } else if (groupInfo['groupLocation'] == null ||
+                      groupInfo['groupLocation'] == '') {
+                    Helper.showToast('Please add your group location');
+                    return;
+                  } else if (groupInfo['groupInterests'].length == 0) {
+                    Helper.showToast('Please select interest');
+                    return;
+                  }
                   footerBtnState = true;
                   setState(() {});
                   getTokenBudget();

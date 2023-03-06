@@ -852,7 +852,6 @@ class PostController extends ControllerMVC {
       };
     }
     setState(() {});
-    print('This group was posted by ${group['groupAdmin'][0]['userName']}');
     return true;
   }
 
@@ -861,12 +860,6 @@ class PostController extends ControllerMVC {
     if (groupData['groupName'] == null || groupData['groupName'] == '') {
       return {
         'msg': 'Please add your group name',
-        'result': false,
-      };
-    } else if (groupData['groupUserName'] == null ||
-        groupData['groupUserName'] == '') {
-      return {
-        'msg': 'Please add your group user name',
         'result': false,
       };
     } else if (groupData['groupLocation'] == null ||

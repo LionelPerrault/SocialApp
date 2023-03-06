@@ -69,81 +69,81 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-                flex: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: const [
-                        Text('INTERESTS',
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 11)),
-                        Flexible(fit: FlexFit.tight, child: SizedBox()),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 30),
-                        ),
-                      ],
-                    ),
-                    Column(children: [
-                      Column(
-                        children: [
-                          Container(
-                            width: 750,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 250, 250, 250),
-                                border: Border.all(color: Colors.grey)),
-                            padding: const EdgeInsets.only(left: 20),
-                            child: DropdownButton(
-                              value: interests,
-                              items: category
-                                  .map((inte) => DropdownMenuItem(
-                                        value: inte['title'],
-                                        child: Text(inte['title'] == 'none'
-                                            ? "Select Interests"
-                                            : inte['title']),
-                                      ))
-                                  .toList(),
-                              onChanged: (dynamic? value) {
-                                interests = value!;
-                                for (var i = 0;
-                                    i < interestsCheck.length;
-                                    i++) {
-                                  if (interestsCheck[i]['parentId'] ==
-                                      interests) {
-                                    interestsCheck[i]['interested'] = true;
-                                  }
-                                }
-                                setState(() {});
-                                saveData = [];
-                                for (int i = 0;
-                                    i < interestsCheck.length;
-                                    i++) {
-                                  if (interestsCheck[i]['interested'] == true) {
-                                    saveData.add(interestsCheck[i]['id']);
-                                  }
-                                }
-                                widget.sendUpdate(saveData);
-                              },
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 12),
-                              dropdownColor: Colors.white,
-                              underline: Container(),
-                              isExpanded: true,
-                              isDense: true,
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.only(bottom: 10))
-                        ],
-                      ),
-                    ]),
-                  ],
-                )),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //         flex: 1,
+        //         child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.start,
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Row(
+        //               children: const [
+        //                 Text('INTERESTS',
+        //                     style:
+        //                         TextStyle(color: Colors.black, fontSize: 11)),
+        //                 Flexible(fit: FlexFit.tight, child: SizedBox()),
+        //                 const Padding(
+        //                   padding: EdgeInsets.only(top: 30),
+        //                 ),
+        //               ],
+        //             ),
+        //             Column(children: [
+        //               Column(
+        //                 children: [
+        //                   Container(
+        //                     width: 750,
+        //                     decoration: BoxDecoration(
+        //                         color: Color.fromARGB(255, 250, 250, 250),
+        //                         border: Border.all(color: Colors.grey)),
+        //                     padding: const EdgeInsets.only(left: 20),
+        //                     child: DropdownButton(
+        //                       value: interests,
+        //                       items: category
+        //                           .map((inte) => DropdownMenuItem(
+        //                                 value: inte['title'],
+        //                                 child: Text(inte['title'] == 'none'
+        //                                     ? "Select Interests"
+        //                                     : inte['title']),
+        //                               ))
+        //                           .toList(),
+        //                       onChanged: (dynamic? value) {
+        //                         interests = value!;
+        //                         for (var i = 0;
+        //                             i < interestsCheck.length;
+        //                             i++) {
+        //                           if (interestsCheck[i]['parentId'] ==
+        //                               interests) {
+        //                             interestsCheck[i]['interested'] = true;
+        //                           }
+        //                         }
+        //                         setState(() {});
+        //                         saveData = [];
+        //                         for (int i = 0;
+        //                             i < interestsCheck.length;
+        //                             i++) {
+        //                           if (interestsCheck[i]['interested'] == true) {
+        //                             saveData.add(interestsCheck[i]['id']);
+        //                           }
+        //                         }
+        //                         widget.sendUpdate(saveData);
+        //                       },
+        //                       style: const TextStyle(
+        //                           color: Colors.black, fontSize: 12),
+        //                       dropdownColor: Colors.white,
+        //                       underline: Container(),
+        //                       isExpanded: true,
+        //                       isDense: true,
+        //                     ),
+        //                   ),
+        //                   const Padding(padding: EdgeInsets.only(bottom: 10))
+        //                 ],
+        //               ),
+        //             ]),
+        //           ],
+        //         )),
+        //   ],
+        // ),
         //all interests
         Container(
           child: SingleChildScrollView(
