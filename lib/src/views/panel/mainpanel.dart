@@ -64,9 +64,9 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     }
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
-    //loadingFlag = true;
-    con.getAllPost().then((value) {
-      //loadingFlag = false;
+    loadingFlag = true;
+    con.getAllPost(0).then((value) {
+      loadingFlag = false;
       setState(() {});
       postStream.listen((event) {
         print('difference');
@@ -197,7 +197,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {});
                     loadingFlagBottom = true;
                     var newPostNumP = nextPostNum > 10 ? 10 : nextPostNum;
-                    await con.loadNextPosts(newPostNumP);
+                    await con.loadNextPosts(newPostNumP, 0);
                     //await con.getAllPost();
                     nextPostNum = nextPostNum - newPostNumP;
                     loadingFlagBottom = false;
