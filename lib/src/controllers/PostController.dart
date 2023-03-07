@@ -886,16 +886,16 @@ class PostController extends ControllerMVC {
       'groupApproval': true,
     };
 
-    var reuturnValue = await Helper.groupsData
-        .where('groupUserName', isEqualTo: groupData['groupUserName'])
-        .get();
-    var value = reuturnValue.docs;
-    if (value.isNotEmpty) {
-      return {
-        'msg': 'Group name already exist',
-        'result': false,
-      };
-    }
+    // var reuturnValue = await Helper.groupsData
+    //     .where('groupUserName', isEqualTo: groupData['groupUserName'])
+    //     .get();
+    // var value = reuturnValue.docs;
+    // if (value.isNotEmpty) {
+    //   return {
+    //     'msg': 'Group name already exist',
+    //     'result': false,
+    //   };
+    // }
     Map<String, dynamic> notificationData;
     String id = '';
     await FirebaseFirestore.instance
