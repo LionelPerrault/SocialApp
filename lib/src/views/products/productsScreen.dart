@@ -5,10 +5,8 @@ import 'package:shnatter/src/widget/createProductWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/gestures.dart';
 
+// ignore: must_be_immutable
 class ProductsScreen extends StatefulWidget {
   ProductsScreen({Key? key, required this.routerChange})
       : con = PostController(),
@@ -43,7 +41,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
           Expanded(
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   width: SizeConfig(context).screenWidth >
                           SizeConfig.mediumScreenSize
                       ? 700
@@ -52,15 +50,13 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                           : SizeConfig(context).screenWidth,
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                           height: 70,
                           child: Row(
                             children: [
-                              Container(
-                                child: const Text(
-                                  'My Products',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
+                              const Text(
+                                'My Products',
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               const Flexible(
                                   fit: FlexFit.tight, child: SizedBox()),
@@ -72,7 +68,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                 margin: const EdgeInsets.only(right: 20),
                                 child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.all(3),
+                                      padding: const EdgeInsets.all(3),
                                       backgroundColor: Colors.white,
                                       // elevation: 3,
                                       shape: RoundedRectangleBorder(
@@ -140,7 +136,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                                     color: Colors.black,
                                                     fontWeight:
                                                         FontWeight.bold))
-                                            : SizedBox()
+                                            : const SizedBox()
                                       ],
                                     )),
                               )

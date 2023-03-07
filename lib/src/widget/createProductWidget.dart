@@ -15,17 +15,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as PPath;
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
+// ignore: must_be_immutable
 class CreateProductModal extends StatefulWidget {
   BuildContext context;
-  late PostController Postcon;
+  late PostController postCon;
   CreateProductModal({
     Key? key,
     required this.context,
     required this.routerChange,
     this.editData,
-  })  : Postcon = PostController(),
+  })  : postCon = PostController(),
         super(key: key);
   Function routerChange;
+  // ignore: prefer_typing_uninitialized_variables
   var editData;
   @override
   State createState() => CreateProductModalState();
@@ -33,7 +35,7 @@ class CreateProductModal extends StatefulWidget {
 
 class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   bool isSound = false;
-  late PostController Postcon;
+  late PostController postCon;
   Map<String, dynamic> productInfo = {
     'productStatus': 'New',
     'productOffer': 'Sell',
@@ -104,8 +106,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   // bool loading = false;
   @override
   void initState() {
-    add(widget.Postcon);
-    Postcon = controller as PostController;
+    add(widget.postCon);
+    postCon = controller as PostController;
     if (widget.editData == null) {
       widget.editData = {
         'id': '',
@@ -125,21 +127,21 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     var paymail = userSnap.data()!['paymail'];
     setState(() {});
     if (price == '0') {
-      await Postcon.createProduct(context, productInfo).then(
-        (value) => {
-          footerBtnState = false,
-          setState(() => {}),
-          Navigator.of(context).pop(true),
-          Helper.showToast(value['msg']),
-          if (value['result'] == true)
-            {
-              widget.routerChange({
-                'router': RouteNames.products,
-                'subRouter': value['value'],
-              }),
-            }
-        },
-      );
+      await postCon.createProduct(context, productInfo).then(
+            (value) => {
+              footerBtnState = false,
+              setState(() => {}),
+              Navigator.of(context).pop(true),
+              Helper.showToast(value['msg']),
+              if (value['result'] == true)
+                {
+                  widget.routerChange({
+                    'router': RouteNames.products,
+                    'subRouter': value['value'],
+                  }),
+                }
+            },
+          );
       setState(() {});
     } else {
       showDialog(
@@ -160,7 +162,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                               Navigator.of(dialogContext).pop(true),
                               // loading = true,
                               setState(() {}),
-                              await Postcon.createProduct(context, productInfo)
+                              await postCon
+                                  .createProduct(context, productInfo)
                                   .then((value) {
                                 footerBtnState = false;
                                 setState(() => {});
@@ -199,7 +202,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: SizeConfig(context).screenHeight - 200,
           child: SingleChildScrollView(
             child: Column(
@@ -216,7 +219,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   children: [
                     Expanded(
                       flex: 285,
-                      child: Container(
+                      child: SizedBox(
                         width: 285,
                         child: customInput(
                           title: 'Product Name',
@@ -230,7 +233,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     const Padding(padding: EdgeInsets.only(left: 15)),
                     Expanded(
                       flex: 100,
-                      child: Container(
+                      child: SizedBox(
                         width: 100,
                         child: customInput(
                           title: 'Price',
@@ -252,7 +255,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                         children: [
                           Expanded(
                             flex: 200,
-                            child: Container(
+                            child: SizedBox(
                               width: 200,
                               child: customDropDownButton(
                                 title: 'Category',
@@ -271,7 +274,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                           ),
                           Expanded(
                             flex: 100,
-                            child: Container(
+                            child: SizedBox(
                               width: 100,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -291,7 +294,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                       ),
                                     ],
                                   ),
-                                  Container(
+                                  SizedBox(
                                       width: 85,
                                       child: Row(
                                         children: [
@@ -320,10 +323,10 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                                   setState(() {});
                                                 },
                                               )),
-                                          Text('Sell')
+                                          const Text('Sell')
                                         ],
                                       )),
-                                  Container(
+                                  SizedBox(
                                       width: 85,
                                       child: Row(
                                         children: [
@@ -351,7 +354,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                                   setState(() {});
                                                 },
                                               )),
-                                          Text('Rent')
+                                          const Text('Rent')
                                         ],
                                       )),
                                 ],
@@ -360,7 +363,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                           ),
                           Expanded(
                             flex: 100,
-                            child: Container(
+                            child: SizedBox(
                               width: 100,
                               child: customDropDownButton(
                                 title: 'Status',
@@ -387,7 +390,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                           Row(
                             children: [
                               Expanded(
-                                child: Container(
+                                child: SizedBox(
                                   width: 400,
                                   child: customDropDownButton(
                                     title: 'Category',
@@ -409,7 +412,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                           Row(
                             children: [
                               Expanded(
-                                child: Container(
+                                child: SizedBox(
                                   width: 400,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -429,7 +432,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                               fontWeight: FontWeight.w600),
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                           width: 85,
                                           child: Row(
                                             children: [
@@ -460,10 +463,10 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                                       setState(() {});
                                                     },
                                                   )),
-                                              Text('Sell')
+                                              const Text('Sell')
                                             ],
                                           )),
-                                      Container(
+                                      SizedBox(
                                           width: 85,
                                           child: Row(
                                             children: [
@@ -493,7 +496,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                                       setState(() {});
                                                     },
                                                   )),
-                                              Text('Rent')
+                                              const Text('Rent')
                                             ],
                                           )),
                                     ],
@@ -505,7 +508,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                           Row(
                             children: [
                               Expanded(
-                                child: Container(
+                                child: SizedBox(
                                   width: 400,
                                   child: customDropDownButton(
                                     title: 'Status',
@@ -532,7 +535,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
+                      child: SizedBox(
                         width: 400,
                         child: customInput(
                           title: 'Location',
@@ -549,7 +552,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
+                      child: SizedBox(
                         width: 400,
                         child: titleAndsubtitleInput('About', 70, 5,
                             (value) async {
@@ -590,7 +593,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                           ),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(4),
+                              padding: const EdgeInsets.all(4),
                               backgroundColor: Colors.grey[300],
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(13)),
@@ -641,7 +644,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                           ),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(4),
+                              padding: const EdgeInsets.all(4),
                               backgroundColor: Colors.grey[300],
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(13)),
@@ -683,6 +686,22 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
           margin: const EdgeInsets.only(right: 20, bottom: 10),
           child: Row(
             children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey[300],
+                  shadowColor: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3.0)),
+                  minimumSize: const Size(100, 50),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Cancel',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold)),
+              ),
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -691,7 +710,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
+                  minimumSize: const Size(100, 50),
                 ),
                 onPressed: () {
                   footerBtnState = true;
@@ -699,7 +718,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   if (widget.editData['id'] == '') {
                     getTokenBudget();
                   } else {
-                    Postcon.editProduct(
+                    postCon
+                        .editProduct(
                             context, widget.editData['id'], productInfo)
                         .then((value) => {Helper.showToast(value['msg'])});
                     Navigator.of(context).pop(true);
@@ -806,7 +826,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                   child: IconButton(
                     icon: const Icon(Icons.close,
                         color: Colors.black, size: 13.0),
-                    padding: EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20),
                     tooltip: 'Delete',
                     onPressed: () {
                       setState(() {
@@ -844,17 +864,9 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
         source: ImageSource.gallery,
       );
     } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
-
-      //if (permissionStatus.isGranted) {
       pickedFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
       );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
     }
     return pickedFile!;
   }
@@ -869,31 +881,29 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
       fileLength = productFile.length - 1;
       setState(() {});
     }
-    final _firebaseStorage = FirebaseStorage.instance;
+    final firebaseStorage = FirebaseStorage.instance;
     var uploadTask;
-    Reference _reference;
+    Reference reference;
     try {
       if (kIsWeb) {
-        //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
-        //print(bytes);
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         if (type == 'photo') {
           for (var i = 0; i < productPhoto.length; i++) {
             if (productPhoto[i]['id'] == photoLength) {
@@ -911,7 +921,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
             }
           }
         }
-        print(productFile);
       });
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
         switch (taskSnapshot.state) {
@@ -920,37 +929,27 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
               uploadPhotoProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $uploadPhotoProgress% complete.");
             } else {
               uploadFileProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $uploadFileProgress% complete.");
             }
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
-            // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
             uploadFileProgress = 0;
             setState(() {});
-            // Handle successful uploads on complete
-            // ...
-            //  var downloadUrl = await _reference.getDownloadURL();
+
             break;
         }
       });
-    } catch (e) {
-      // print("Exception $e");
-    }
+    } catch (e) {}
   }
 
   uploadImage(type) async {
@@ -970,7 +969,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
               fontWeight: FontWeight.w600),
         ),
         const Padding(padding: EdgeInsets.only(top: 2)),
-        Container(
+        SizedBox(
           height: 40,
           child: TextFormField(
             initialValue: value,
@@ -1012,7 +1011,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: TextField(
@@ -1045,13 +1044,13 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
             color: Color.fromRGBO(82, 95, 127, 1),
             fontSize: 13,
             fontWeight: FontWeight.w600),
       ),
-      Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      const Padding(padding: EdgeInsets.only(top: 2)),
+      SizedBox(
           height: 40,
           width: width,
           child: DropdownButtonFormField(
@@ -1061,20 +1060,19 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     value: e['value'], child: Text(e['title'])))
                 .toList(),
             onChanged: onChange,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10, left: 10),
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
               ),
             ),
             icon: const Padding(
                 padding: EdgeInsets.only(left: 20),
                 child: Icon(Icons.arrow_drop_down)),
-            iconEnabledColor: Colors.grey, //Icon color
-
+            iconEnabledColor: Colors.grey,
             style: const TextStyle(
-              color: Colors.grey, //Font color
+              color: Colors.grey,
               fontSize: 14,
               fontWeight: FontWeight.bold,
             ),

@@ -2,11 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/marketPlace/widget/marketCell.dart';
-import 'package:shnatter/src/views/products/widget/productcell.dart';
 
 import '../../../controllers/PostController.dart';
 
@@ -25,6 +23,7 @@ class MarketAllProduct extends StatefulWidget {
   String arrayOption;
   String searchValue;
   Function routerChange;
+  @override
   State createState() => MarketAllProductState();
 }
 
@@ -39,7 +38,6 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    con.setState(() {});
 
     super.initState();
     getProductNow();
@@ -91,7 +89,7 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
         .where((product) =>
             product['data']['productName'].contains(widget.searchValue) == true)
         .toList();
-    return Container(
+    return SizedBox(
       width: SizeConfig(context).screenWidth < 800
           ? SizeConfig(context).screenWidth
           : (SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth) *
