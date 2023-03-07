@@ -42,7 +42,7 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
           Expanded(
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   width: SizeConfig(context).screenWidth >
                           SizeConfig.mediumScreenSize
                       ? 700
@@ -52,7 +52,7 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 3),
+                        padding: const EdgeInsets.only(top: 3),
                         child: customInput(
                           place: 'I am looking for',
                           onChange: (value) {
@@ -92,7 +92,7 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                                 alignment: Alignment.center,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 33, 37, 41),
+                                  color: const Color.fromARGB(255, 33, 37, 41),
                                   borderRadius: BorderRadius.circular(2),
                                 ),
                                 child: Row(
@@ -163,7 +163,7 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                           )
                         ],
                       ),
-                      Container(
+                      SizedBox(
                         width: SizeConfig(context).screenWidth >
                                 SizeConfig.mediumScreenSize
                             ? 700
@@ -198,7 +198,7 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(padding: EdgeInsets.only(top: 2)),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             onChanged: onChange,

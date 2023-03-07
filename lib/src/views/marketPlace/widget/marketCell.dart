@@ -41,13 +41,6 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
     productId = widget.data['id'];
   }
 
-  void _onFocusChange() {
-    var future = Future.delayed(const Duration(milliseconds: 100), () {
-      readyShow = !readyShow;
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -62,7 +55,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
             width: SizeConfig(context).screenWidth > 800
                 ? 208
                 : SizeConfig(context).screenWidth * 0.9,
-            height: 380,
+            height: 390,
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: readyShow
