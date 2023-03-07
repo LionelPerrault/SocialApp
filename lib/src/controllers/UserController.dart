@@ -890,8 +890,6 @@ class UserController extends ControllerMVC {
   }
 
   changePassword(email, password) async {
-    var userManager = UserManager.userInfo;
-    var uuid = '';
     isSettingAction = true;
     setState(() {});
     if (password.length < Helper.passwordMinLength) {
@@ -899,38 +897,17 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: userManager['email'], password: userManager['password']);
-    await FirebaseAuth.instance.currentUser?.delete();
-
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      uuid = userCredential.user!.uid;
-      var snapshot = await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .where('email', isEqualTo: email)
-          .get();
-      await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .doc(snapshot.docs[0].id)
-          .delete();
-      var user = {};
-      snapshot.docs[0].data().forEach((key, value) {
-        user = {...user, key: key == 'password' ? password : value};
+      final auth = FirebaseAuth.instance;
+
+      final user = auth.currentUser;
+
+      // Update password
+      user?.updatePassword(password).then((_) {
+        Helper.showToast("Password updated successfully!");
+      }).catchError((error) {
+        Helper.showToast("Error updating password: $error");
       });
-      await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .doc(uuid)
-          .set({
-        ...user,
-      });
-      var j = {};
-      user.forEach((key, value) {
-        j = {...j, key.toString(): value.toString()};
-      });
-      await Helper.saveJSONPreference(Helper.userField, {...j, 'uid': uuid});
-      await UserManager.getUserInfo();
       setState(() {});
       isSettingAction = false;
       setState(() {});
