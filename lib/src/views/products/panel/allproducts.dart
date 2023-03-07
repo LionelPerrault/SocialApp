@@ -3,14 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/pages/widget/pagecell.dart';
 import 'package:shnatter/src/views/products/widget/productcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
+// ignore: must_be_immutable
 class AllProducts extends StatefulWidget {
   AllProducts({Key? key, required this.routerChange})
       : con = PostController(),
@@ -43,8 +41,7 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
 
   @override
   Widget build(BuildContext context) {
-    var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
-    return Container(
+    return SizedBox(
       width: SizeConfig(context).screenWidth < 600
           ? SizeConfig(context).screenWidth
           : 600,

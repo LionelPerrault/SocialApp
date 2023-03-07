@@ -118,7 +118,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                               // alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
-                                color: Color.fromRGBO(0, 0, 0, 0.4),
+                                color: const Color.fromRGBO(0, 0, 0, 0.4),
                               ),
                               width: SizeConfig(context).screenWidth > 800
                                   ? 208
@@ -126,7 +126,8 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                               height: 250,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.4),
+                                  backgroundColor:
+                                      const Color.fromRGBO(0, 0, 0, 0.4),
                                   elevation: 3,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
@@ -140,13 +141,11 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                                     'subRouter': widget.data["id"],
                                   });
                                 },
-                                child: Container(
-                                  child: const Text('More',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w600)),
-                                ),
+                                child: const Text('More',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600)),
                               ),
                             )
                           : const SizedBox(),
