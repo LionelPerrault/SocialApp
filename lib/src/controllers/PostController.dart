@@ -814,7 +814,6 @@ class PostController extends ControllerMVC {
         }
         setState(() {});
       }
-      print('Now you get all groups');
     });
 
     return realAllGroups;
@@ -822,14 +821,12 @@ class PostController extends ControllerMVC {
 
   //get one group function that using uid of firebase database
   Future<bool> getSelectedGroup(String name) async {
-    name = name.split('/')[name.split('/').length - 1];
-    viewGroupName = name;
-    var reuturnValue = await Helper.groupsData
-        .where('groupUserName', isEqualTo: viewGroupName)
-        .get();
-    var value = reuturnValue.docs;
-    viewGroupId = value[0].id;
-    group = value[0].data();
+    // name = name.split('/')[name.split('/').length - 1];
+    // viewGroupName = name;
+    var reuturnValue = await Helper.groupsData.doc(name).get();
+    var value = reuturnValue.data();
+    viewGroupId = name;
+    group = value;
     viewGroupJoined = await boolJoined(group, UserManager.userInfo['uid']);
     setState(() {});
     for (var i = 0; i < group['groupAdmin'].length; i++) {
@@ -886,16 +883,16 @@ class PostController extends ControllerMVC {
       'groupApproval': true,
     };
 
-    // var reuturnValue = await Helper.groupsData
-    //     .where('groupUserName', isEqualTo: groupData['groupUserName'])
-    //     .get();
-    // var value = reuturnValue.docs;
-    // if (value.isNotEmpty) {
-    //   return {
-    //     'msg': 'Group name already exist',
-    //     'result': false,
-    //   };
-    // }
+    var reuturnValue = await Helper.groupsData
+        .where('groupName', isEqualTo: groupData['groupName'])
+        .get();
+    var value = reuturnValue.docs;
+    if (value.isNotEmpty) {
+      return {
+        'msg': 'Group name already exist',
+        'result': false,
+      };
+    }
     Map<String, dynamic> notificationData;
     String id = '';
     await FirebaseFirestore.instance
