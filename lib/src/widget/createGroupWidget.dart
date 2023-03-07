@@ -146,7 +146,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: SizeConfig(context).screenHeight - 200,
           child: SingleChildScrollView(
             child: Column(
@@ -163,7 +163,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                         width: 400,
                         child: customInput(
                             title: 'Name Your Group',
@@ -178,7 +178,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                         width: 400,
                         child: customInput(
                             title: 'Location',
@@ -287,7 +287,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 400,
                       child:
                           titleAndsubtitleInput('About', 70, 5, (value) async {
@@ -298,7 +298,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   ],
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                Container(
+                SizedBox(
                   width: 400,
                   child: InterestsWidget(
                     context: context,
@@ -325,7 +325,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
+                  minimumSize: const Size(100, 50),
                 ),
                 onPressed: () {
                   Navigator.of(widget.context).pop(true);
@@ -342,7 +342,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
+                  minimumSize: const Size(100, 50),
                 ),
                 onPressed: () {
                   if (groupInfo['groupName'] == null ||
@@ -393,7 +393,7 @@ Widget customInput({title, onChange, controller, hintText}) {
             fontWeight: FontWeight.w600),
       ),
       const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
         height: 40,
         child: TextField(
           controller: controller,
@@ -430,7 +430,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
           children: [
             Expanded(
               flex: 2,
-              child: Container(
+              child: SizedBox(
                 width: 400,
                 height: double.parse(height.toString()),
                 child: TextField(

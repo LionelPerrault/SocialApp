@@ -135,8 +135,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                               ..onTap = () {
                                 widget.routerChange({
                                   'router': RouteNames.groups,
-                                  'subRouter': widget.groupData['data']
-                                      ['groupUserName'],
+                                  'subRouter': widget.groupData['id'],
                                 });
                               }),
                       ]),
