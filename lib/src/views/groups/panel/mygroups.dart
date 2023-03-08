@@ -7,8 +7,8 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/groups/widget/groupcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
+// ignore: must_be_immutable
 class MyGroups extends StatefulWidget {
   MyGroups({Key? key, required this.routerChange})
       : con = PostController(),
@@ -16,6 +16,7 @@ class MyGroups extends StatefulWidget {
   late PostController con;
   Function routerChange;
 
+  @override
   State createState() => MyGroupsState();
 }
 
@@ -64,39 +65,32 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
             .toList(),
       );
     }
-    return Container(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: screenWidth > 800
-                  ? 4
-                  : screenWidth > 600
-                      ? 3
-                      : screenWidth > 210
-                          ? 2
-                          : 1,
-              childAspectRatio: 2 / 3,
-              padding: const EdgeInsets.all(4.0),
-              mainAxisSpacing: 4.0,
-              shrinkWrap: true,
-              crossAxisSpacing: 4.0,
-              children: myGroups
-                  .map(
-                    (group) => GroupCell(
-                      groupData: group,
-                      refreshFunc: () {
-                        getGroupNow();
-                      },
-                      routerChange: widget.routerChange,
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        ],
-      ),
-    );
+    return SizedBox(
+        height: SizeConfig(context).screenHeight - 200,
+        child: GridView.count(
+          crossAxisCount: screenWidth > 800
+              ? 4
+              : screenWidth > 600
+                  ? 3
+                  : screenWidth > 210
+                      ? 2
+                      : 1,
+          childAspectRatio: 2 / 3,
+          padding: const EdgeInsets.all(4.0),
+          mainAxisSpacing: 4.0,
+          shrinkWrap: true,
+          crossAxisSpacing: 4.0,
+          children: myGroups
+              .map(
+                (group) => GroupCell(
+                  groupData: group,
+                  refreshFunc: () {
+                    getGroupNow();
+                  },
+                  routerChange: widget.routerChange,
+                ),
+              )
+              .toList(),
+        ));
   }
 }

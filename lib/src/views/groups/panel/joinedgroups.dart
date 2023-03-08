@@ -7,14 +7,15 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/groups/widget/groupcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
+// ignore: must_be_immutable
 class JoinedGroups extends StatefulWidget {
   JoinedGroups({Key? key, required this.routerChange})
       : con = PostController(),
         super(key: key);
   late PostController con;
   Function routerChange;
+  @override
   State createState() => JoinedGroupsState();
 }
 
@@ -44,9 +45,7 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
-    print("screen width is $screenWidth");
     if (screenWidth <= 210) {
-      print("small size ===============================================");
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,38 +63,32 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
       );
     }
 
-    return Container(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: screenWidth > 800
-                  ? 4
-                  : screenWidth > 600
-                      ? 3
-                      : screenWidth > 210
-                          ? 2
-                          : 1,
-              childAspectRatio: 2 / 3,
-              padding: const EdgeInsets.all(4.0),
-              mainAxisSpacing: 4.0,
-              shrinkWrap: true,
-              crossAxisSpacing: 4.0,
-              children: joinedGroups
-                  .map(
-                    (group) => GroupCell(
-                      groupData: group,
-                      refreshFunc: () {
-                        getGroupNow();
-                      },
-                      routerChange: widget.routerChange,
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        ],
+    return SizedBox(
+      height: SizeConfig(context).screenHeight - 200,
+      child: GridView.count(
+        crossAxisCount: screenWidth > 800
+            ? 4
+            : screenWidth > 600
+                ? 3
+                : screenWidth > 210
+                    ? 2
+                    : 1,
+        childAspectRatio: 2 / 3,
+        padding: const EdgeInsets.all(4.0),
+        mainAxisSpacing: 4.0,
+        shrinkWrap: true,
+        crossAxisSpacing: 4.0,
+        children: joinedGroups
+            .map(
+              (group) => GroupCell(
+                groupData: group,
+                refreshFunc: () {
+                  getGroupNow();
+                },
+                routerChange: widget.routerChange,
+              ),
+            )
+            .toList(),
       ),
     );
   }
