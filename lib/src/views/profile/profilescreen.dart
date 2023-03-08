@@ -125,12 +125,15 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                                 routerChange: widget.routerChange,
                               )
                             : con.tab == 'Friends'
-                                ? ProfileFriendScreen(onClick: (value) {
-                                    con.tab = value;
-                                    setState(() {});
-                                  }, routerChangeProile: (val) {
-                                    widget.routerChange(val);
-                                  })
+                                ? ProfileFriendScreen(
+                                    profileName: widget.userName,
+                                    onClick: (value) {
+                                      con.tab = value;
+                                      setState(() {});
+                                    },
+                                    routerChangeProile: (val) {
+                                      widget.routerChange(val);
+                                    })
                                 : con.tab == 'Photos'
                                     ? ProfilePhotosScreen(onClick: (value) {
                                         con.tab = value;
