@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
@@ -8,6 +9,8 @@ import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../managers/relysia_manager.dart';
 
 class SettingShnatterTokenScreen extends StatefulWidget {
   SettingShnatterTokenScreen({Key? key, required this.routerChange})
@@ -274,6 +277,13 @@ class SettingShnatterTokenScreenState
                   //         ],
                   //       )),
                   // ),
+                  ElevatedButton(
+                    onPressed: () {
+                      RelysiaManager.payNow(
+                          con.token, "4747@shnatter.com", "1000", "for test");
+                    },
+                    child: Text("send for test"),
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,10 +322,19 @@ class SettingShnatterTokenScreenState
                               ),
                               const Flexible(
                                   fit: FlexFit.tight, child: SizedBox()),
-                              const Icon(
-                                Icons.file_copy,
-                                color: Colors.black,
-                              ),
+                              InkWell(
+                                onTap: () async => {
+                                  await Clipboard.setData(ClipboardData(
+                                      text: UserManager.userInfo['paymail'])),
+                                  Helper.showToast('Copied'),
+                                },
+                                child: GestureDetector(
+                                  child: const Icon(
+                                    Icons.file_copy,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
