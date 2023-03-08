@@ -126,17 +126,20 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
+    PostController().posts = [];
     PostController().getAllPost(1).then((value) {
       loadingFlag = false;
       setState(() {});
       // nextPostNum = PostController().allposts - 10;
       postStream.listen((event) {
-        print('difference');
         newPostNum = event.docs
-                .where((post) =>
-                    (post['postAdmin'] == UserManager.userInfo['uid']))
-                .length -
-            PostController().allposts;
+            .where((post) =>
+                (post['postAdmin'] == UserManager.userInfo['uid']) &&
+                (Timestamp(
+                        post['postTime'].seconds, post['postTime'].nanoseconds)
+                    .toDate()
+                    .isAfter(PostController().latestTime)))
+            .length;
 
         nextPostNum = event.docs
                 .where((post) =>
@@ -239,7 +242,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           setState(() {});
                           loadingFlagBottom = true;
                           var newPostNumP = nextPostNum > 10 ? 10 : nextPostNum;
-                          await PostController().loadNextPosts(newPostNumP, 1);
+                          await PostController().loadNextPosts(1);
                           //await con.getAllPost();
                           nextPostNum = nextPostNum - newPostNumP;
                           loadingFlagBottom = false;
@@ -357,8 +360,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               loadingFlagBottom = true;
                               var newPostNumP =
                                   nextPostNum > 10 ? 10 : nextPostNum;
-                              await PostController()
-                                  .loadNextPosts(newPostNumP, 1);
+                              await PostController().loadNextPosts(1);
                               //await con.getAllPost();
                               nextPostNum = nextPostNum - newPostNumP;
                               loadingFlagBottom = false;

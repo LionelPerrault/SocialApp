@@ -65,17 +65,20 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
+    con.posts = [];
     con.getAllPost(0).then((value) {
       loadingFlag = false;
       setState(() {});
       postStream.listen((event) {
-        print('difference');
         newPostNum = event.docs
-                .where((post) =>
-                    (post['postAdmin'] == UserManager.userInfo['uid'] ||
-                        post['privacy'] == 'Public'))
-                .length -
-            con.allposts;
+            .where((post) =>
+                (post['postAdmin'] == UserManager.userInfo['uid'] ||
+                    post['privacy'] == 'Public') &&
+                (Timestamp(
+                        post['postTime'].seconds, post['postTime'].nanoseconds)
+                    .toDate()
+                    .isAfter(con.latestTime)))
+            .length;
 
         nextPostNum = event.docs
                 .where((post) =>
@@ -117,8 +120,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     loadingFlag = true;
                     setState(() {});
                     await con.addNewPosts(newPostNum);
-                    //await con.getAllPost();
-                    con.allposts = con.allposts + newPostNum;
+
                     newPostNum = 0;
                     loadingFlag = false;
                     setState(() {});
@@ -197,7 +199,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {});
                     loadingFlagBottom = true;
                     var newPostNumP = nextPostNum > 10 ? 10 : nextPostNum;
-                    await con.loadNextPosts(newPostNumP, 0);
+                    await con.loadNextPosts(0);
                     //await con.getAllPost();
                     nextPostNum = nextPostNum - newPostNumP;
                     loadingFlagBottom = false;
