@@ -1379,7 +1379,9 @@ class PostController extends ControllerMVC {
           newitemindex++;
         }
       }
-    } while (i++ < newCount);
+      print("i----------$i");
+      print("newCount----------$newCount");
+    } while (++i < newCount);
     setState(() {});
     return true;
   }
