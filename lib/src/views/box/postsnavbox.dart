@@ -87,6 +87,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
       'onTap': (context) {
         //Navigator.of(context).pop(true);
         showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) => AlertDialog(
                 title: Row(
@@ -140,6 +141,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
       'onTap': (context) {
         //Navigator.of(context).pop(true);
         showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) => AlertDialog(
                 title: Row(

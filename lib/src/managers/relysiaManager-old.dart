@@ -200,9 +200,7 @@ class RelysiaManager {
           result = 'false';
         }
       });
-    } catch (exception) {
-      print(exception.toString());
-    }
+    } catch (exception) {}
     return {'history': trHistory, 'success': result};
   }
 

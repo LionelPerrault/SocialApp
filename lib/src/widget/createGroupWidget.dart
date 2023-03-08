@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -73,9 +74,11 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   getTokenBudget() async {
     var adminSnap = await Helper.systemSnap.doc('config').get();
     var price = adminSnap.data()!['priceCreatingGroup'];
-    var userSnap =
-        await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
-    var paymail = userSnap.data()!['paymail'];
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.backPaymail)
+        .get();
+    var paymail = snapshot.data()!['address'];
     setState(() {});
 
     if (price == '0') {

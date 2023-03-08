@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -13,6 +14,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/interests.dart';
 
+// ignore: must_be_immutable
 class CreateEventModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
@@ -50,11 +52,12 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   getTokenBudget() async {
     var adminSnap = await Helper.systemSnap.doc('config').get();
     var price = adminSnap.data()!['priceCreatingEvent'];
-    var userSnap =
-        await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
-    var paymail = userSnap.data()!['paymail'];
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.backPaymail)
+        .get();
+    var paymail = snapshot.data()!['address'];
     setState(() {});
-    print('price:$price');
     if (price == '0') {
       await Postcon.createEvent(context, eventInfo).then((value) => {
             footerBtnState = false,
@@ -73,6 +76,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
           });
       setState(() {});
     } else {
+      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) => AlertDialog(
@@ -81,7 +85,6 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
               yesFunc: () async {
                 payLoading = true;
                 setState(() {});
-                print('adminPrice---$paymail,$price');
                 await UserController()
                     .payShnToken(paymail, price, 'Pay for creating event')
                     .then(
@@ -100,7 +103,6 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                               Navigator.of(context).pop(true);
                               // loading = true;
                               setState(() {});
-                              print('to create event page');
                               Helper.showToast(value['msg']);
                               if (value['result'] == true) {
                                 widget.routerChange({

@@ -294,6 +294,7 @@ class UserController extends ControllerMVC {
     }
     await RelysiaManager.getBalance(token).then(
         (res) => {balance = res, Helper.balance = balance, setState(() {})});
+    print("call get balance now balance is =========$balance");
     return balance;
   }
 
@@ -1023,7 +1024,6 @@ class UserController extends ControllerMVC {
     });
   }
 
-  //for Paywall
   Future<bool> payShnToken(String payMail, String amount, String notes) async {
     bool payResult = false;
     if (token == '') {
