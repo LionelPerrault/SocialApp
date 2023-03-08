@@ -131,8 +131,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Upload Audio',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fmusic_file.svg?alt=media&token=b2d62e94-0c58-487e-b3dc-da02bdfd7ac9',
-      'mindFunc': () {
-        uploadAudioReady();
+      'mindFunc': (option) {
+        uploadAudioReady(option);
       }
     },
     // {
@@ -272,7 +272,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     uploadReady('photo', option);
   }
 
-  uploadAudioReady() {
+  uploadAudioReady(int option) {
     nowPost = 'Upload Audio';
     setState(() {});
     uploadReady('audio', 0);
@@ -1216,11 +1216,19 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         foundation.Uint8List? uploadfile = result.files.single.bytes;
         if (uploadfile != null) {
           pickedFile = XFile.fromData(uploadfile);
+          print("uploadFile is not null. pickedFile is $pickedFile");
+        } else {
+          pickedFile = XFile('');
+          print("pickedFile is $pickedFile. bytes is ${result.files.single}");
+        }
+      } else {
+        if (result.files.single.path != null) {
+          pickedFile = XFile(result.files.single.path.toString());
         } else {
           pickedFile = XFile('');
         }
-      } else {
-        pickedFile = result as XFile;
+
+        print("pickedfile ${pickedFile.path}");
       }
     } else {
       pickedFile = XFile('');

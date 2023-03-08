@@ -7,9 +7,12 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/widget/list_text.dart';
+import '../../controllers/PostController.dart';
+import '../../helpers/helper.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
+import '../../widget/postCell.dart';
 
 class ProfileTimelineScreen extends StatefulWidget {
   Function onClick;
@@ -21,6 +24,7 @@ class ProfileTimelineScreen extends StatefulWidget {
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
+  late PostController postCon = PostController();
   String userName = '';
   Function routerChange;
   @override
@@ -40,6 +44,11 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   late AnimationController _drawerSlideController;
   double width = 0;
   double itemWidth = 0;
+  bool loadingFlag = false;
+  bool loadingFlagBottom = false;
+  int newPostNum = 0;
+  int nextPostNum = 0;
+  late PostController postCon;
   //
   var userInfo = UserManager.userInfo;
   List<Map> mainInfoList = [];
@@ -51,6 +60,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
+
+    //postCon = controller as PostController;
     userName = widget.userName;
     if (userName == '') {
       userName = UserManager.userInfo['userName'];
@@ -111,6 +122,31 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       } else {}
     }
     _gotoHome();
+
+    final Stream<QuerySnapshot> postStream =
+        Helper.postCollection.orderBy('postTime').snapshots();
+    loadingFlag = true;
+    PostController().getAllPost(1).then((value) {
+      loadingFlag = false;
+      setState(() {});
+      // nextPostNum = PostController().allposts - 10;
+      postStream.listen((event) {
+        print('difference');
+        newPostNum = event.docs
+                .where((post) =>
+                    (post['postAdmin'] == UserManager.userInfo['uid']))
+                .length -
+            PostController().allposts;
+
+        nextPostNum = event.docs
+                .where((post) =>
+                    (post['postAdmin'] == UserManager.userInfo['uid']))
+                .length -
+            10;
+        print("nextPostNum is $nextPostNum");
+        setState(() {});
+      });
+    });
   }
 
   late ProfileController con;
@@ -128,30 +164,116 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
       child: SizeConfig(context).screenWidth < 800
-          ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Padding(padding: EdgeInsets.only(top: 30)),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width - 100,
-                  animation: true,
-                  lineHeight: 20.0,
-                  animationDuration: 1000,
-                  percent: percent / 100,
-                  center: Text("Profile Completion  $percent %"),
-                  // ignore: deprecated_member_use
-                  linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: Colors.blueAccent,
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: LinearPercentIndicator(
+                    width: MediaQuery.of(context).size.width - 100,
+                    animation: true,
+                    lineHeight: 20.0,
+                    animationDuration: 1000,
+                    percent: percent / 100,
+                    center: Text("Profile Completion  $percent %"),
+                    // ignore: deprecated_member_use
+                    linearStrokeCap: LinearStrokeCap.roundAll,
+                    progressColor: Colors.blueAccent,
+                  ),
                 ),
-              ),
-              profileCompletion(),
-              MindPost()
-            ])
+                profileCompletion(),
+                MindPost(),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                loadingFlag
+                    ? const SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )
+                    : const SizedBox(),
+                SizedBox(
+                  width: 600,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: PostController()
+                              .posts
+                              .map<Widget>((product) => PostCell(
+                                    postInfo: product,
+                                    routerChange: widget.routerChange,
+                                  ))
+                              .toList(),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                loadingFlagBottom
+                    ? const SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )
+                    : const SizedBox(),
+                nextPostNum <= 0 || loadingFlagBottom
+                    ? const SizedBox()
+                    : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(21.0)),
+                          minimumSize: const Size(240, 42),
+                          maximumSize: const Size(240, 42),
+                        ),
+                        onPressed: () async {
+                          setState(() {});
+                          loadingFlagBottom = true;
+                          var newPostNumP = nextPostNum > 10 ? 10 : nextPostNum;
+                          await PostController().loadNextPosts(newPostNumP, 1);
+                          //await con.getAllPost();
+                          nextPostNum = nextPostNum - newPostNumP;
+                          loadingFlagBottom = false;
+                          setState(() {});
+                        },
+                        child: Column(
+                          children: [
+                            const Padding(padding: EdgeInsets.only(top: 11.0)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Load More...',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 90, 90, 90),
+                                      fontFamily: 'var(--body-font-family)',
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 15),
+                                )
+                              ],
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 8.0)),
+                          ],
+                        ),
+                      ),
+              ],
+            )
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  Column(children: [
+                Column(
+                  children: [
                     const Padding(padding: EdgeInsets.only(top: 30)),
                     Padding(
                       padding: const EdgeInsets.all(15.0),
@@ -174,9 +296,102 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                       padding: const EdgeInsets.only(bottom: 60),
                       child: profileCompletion(),
                     ),
-                  ]),
-                  MindPost()
-                ]),
+                  ],
+                ),
+                Column(
+                  children: [
+                    MindPost(),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    loadingFlag
+                        ? const SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey,
+                            ),
+                          )
+                        : const SizedBox(),
+                    SizedBox(
+                      width: 600,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: PostController()
+                                  .posts
+                                  .map<Widget>((product) => PostCell(
+                                        postInfo: product,
+                                        routerChange: widget.routerChange,
+                                      ))
+                                  .toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    loadingFlagBottom
+                        ? const SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey,
+                            ),
+                          )
+                        : const SizedBox(),
+                    nextPostNum <= 0 || loadingFlagBottom
+                        ? const SizedBox()
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(21.0)),
+                              minimumSize: const Size(240, 42),
+                              maximumSize: const Size(240, 42),
+                            ),
+                            onPressed: () async {
+                              setState(() {});
+                              loadingFlagBottom = true;
+                              var newPostNumP =
+                                  nextPostNum > 10 ? 10 : nextPostNum;
+                              await PostController()
+                                  .loadNextPosts(newPostNumP, 1);
+                              //await con.getAllPost();
+                              nextPostNum = nextPostNum - newPostNumP;
+                              loadingFlagBottom = false;
+                              setState(() {});
+                            },
+                            child: Column(
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 11.0)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Load More...',
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 90, 90, 90),
+                                          fontFamily: 'var(--body-font-family)',
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 8.0)),
+                              ],
+                            ),
+                          ),
+                  ],
+                )
+              ],
+            ),
     );
   }
 

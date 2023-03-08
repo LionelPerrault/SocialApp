@@ -1,19 +1,21 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/interests.dart';
+import 'package:uuid/uuid.dart';
 
+// ignore: must_be_immutable
 class CreateGroupModal extends StatefulWidget {
   BuildContext context;
   late PostController Postcon;
@@ -36,6 +38,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   };
   var privacy = 'public';
   var interest = 'none';
+  // ignore: non_constant_identifier_names
   List<Map> GroupsDropDown = [
     {
       'value': 'public',
@@ -58,6 +61,8 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   ];
   bool footerBtnState = false;
   bool payLoading = false;
+  List<Suggestion> autoLocationList = [];
+  TextEditingController locationTextController = TextEditingController();
   @override
   void initState() {
     add(widget.Postcon);
@@ -142,242 +147,330 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
     }
   }
 
+  Future<void> fetchSuggestions(
+    String input,
+  ) async {
+    final sessionToken = Uuid().v4();
+
+    final request =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
+    try {
+      final response = await http.get(Uri.parse(request));
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        if (result['status'] == 'OK') {
+          // compose suggestions in a list
+          autoLocationList = result['predictions']
+              .map<Suggestion>(
+                  (p) => Suggestion(p['place_id'], p['description']))
+              .toList();
+          setState(() {});
+        }
+        if (result['status'] == 'ZERO_RESULTS') {
+          autoLocationList = [];
+          setState(() {});
+        }
+      } else {
+        throw Exception('Failed to fetch suggestion');
+      }
+    } catch (e) {
+      autoLocationList = [];
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: SizeConfig(context).screenHeight - 200,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Divider(
-                  height: 0,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+    return Stack(children: [
+      Column(
+        children: [
+          SizedBox(
+              height: SizeConfig(context).screenHeight - 250,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        width: 400,
-                        child: customInput(
-                            title: 'Name Your Group',
-                            onChange: (value) async {
-                              groupInfo['groupName'] = value;
-                              setState(() {});
-                            }))
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        width: 400,
-                        child: customInput(
-                            title: 'Location',
-                            onChange: (value) async {
-                              groupInfo['groupLocation'] = value;
-                              setState(() {});
-                            }))
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: 400,
-                        margin: EdgeInsets.only(
-                            right:
-                                SizeConfig(context).screenWidth > 540 ? 15 : 0),
-                        height: 40,
-                        child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 17, 205, 239),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
+                  children: <Widget>[
+                    const Divider(
+                      height: 0,
+                      indent: 0,
+                      endIndent: 0,
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width: 400,
+                            child: customInput(
+                                title: 'Name Your Group',
+                                onChange: (value) async {
+                                  groupInfo['groupName'] = value;
+                                  setState(() {});
+                                }))
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width: 400,
+                            child: customInput(
+                                controller: locationTextController,
+                                title: 'Location',
+                                onChange: (value) async {
+                                  groupInfo['groupLocation'] = value;
+                                  await fetchSuggestions(value);
+
+                                  setState(() {});
+                                }))
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 400,
+                            margin: EdgeInsets.only(
+                                right: SizeConfig(context).screenWidth > 540
+                                    ? 15
+                                    : 0),
+                            height: 40,
+                            child: DecoratedBox(
+                                decoration: BoxDecoration(
                                   color:
                                       const Color.fromARGB(255, 17, 205, 239),
-                                  width: 0.1),
-                            ),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 7, left: 15),
-                                child: DropdownButton(
-                                  value: privacy,
-                                  items: [
-                                    DropdownMenuItem(
-                                      value: "public",
-                                      child: Row(children: const [
-                                        Icon(
-                                          Icons.language,
-                                          color: Colors.black,
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                      color: const Color.fromARGB(
+                                          255, 17, 205, 239),
+                                      width: 0.1),
+                                ),
+                                child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(top: 7, left: 15),
+                                    child: DropdownButton(
+                                      value: privacy,
+                                      items: [
+                                        DropdownMenuItem(
+                                          value: "public",
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.language,
+                                              color: Colors.black,
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5)),
+                                            Text(
+                                              "Public",
+                                              style: TextStyle(fontSize: 13),
+                                            )
+                                          ]),
                                         ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Public",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "closed",
-                                      child: Row(children: const [
-                                        Icon(
-                                          Icons.groups,
-                                          color: Colors.black,
+                                        DropdownMenuItem(
+                                          value: "closed",
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.groups,
+                                              color: Colors.black,
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5)),
+                                            Text(
+                                              "Closed",
+                                              style: TextStyle(fontSize: 13),
+                                            )
+                                          ]),
                                         ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Closed",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "security",
-                                      child: Row(children: const [
-                                        Icon(
-                                          Icons.lock_outline,
-                                          color: Colors.black,
+                                        DropdownMenuItem(
+                                          value: "security",
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.lock_outline,
+                                              color: Colors.black,
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5)),
+                                            Text(
+                                              "Security",
+                                              style: TextStyle(fontSize: 13),
+                                            )
+                                          ]),
                                         ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Security",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    privacy = value.toString();
-                                    groupInfo['groupPrivacy'] = privacy;
-                                    setState(() {});
-                                  },
-                                  icon: const Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.arrow_drop_down)),
-                                  iconEnabledColor: Colors.white, //Icon color
-                                  style: const TextStyle(
-                                    color: Colors.black, //Font color
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  dropdownColor: Colors.white,
-                                  underline: Container(), //remove underline
-                                  isExpanded: true,
-                                  isDense: true,
-                                ))),
+                                      ],
+                                      onChanged: (value) {
+                                        privacy = value.toString();
+                                        groupInfo['groupPrivacy'] = privacy;
+                                        setState(() {});
+                                      },
+                                      icon: const Padding(
+                                          padding: EdgeInsets.only(left: 20),
+                                          child: Icon(Icons.arrow_drop_down)),
+                                      iconEnabledColor:
+                                          Colors.white, //Icon color
+                                      style: const TextStyle(
+                                        color: Colors.black, //Font color
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      dropdownColor: Colors.white,
+                                      underline: Container(), //remove underline
+                                      isExpanded: true,
+                                      isDense: true,
+                                    ))),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 400,
+                          child: titleAndsubtitleInput('About', 70, 5,
+                              (value) async {
+                            groupInfo['groupAbout'] = value;
+                            // setState(() {});
+                          }),
+                        )
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    SizedBox(
+                      width: 400,
+                      child: InterestsWidget(
+                        context: context,
+                        sendUpdate: (value) {
+                          groupInfo['groupInterests'] = value;
+                        },
                       ),
                     ),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
                   ],
                 ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 400,
-                      child:
-                          titleAndsubtitleInput('About', 70, 5, (value) async {
-                        groupInfo['groupAbout'] = value;
-                        // setState(() {});
-                      }),
-                    )
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
-                Container(
-                  width: 400,
-                  child: InterestsWidget(
-                    context: context,
-                    sendUpdate: (value) {
-                      groupInfo['groupInterests'] = value;
-                    },
+              )),
+          const SizedBox(
+            height: 15,
+          ),
+          Container(
+            width: 400,
+            margin: const EdgeInsets.only(
+              right: 15,
+            ),
+            child: Row(
+              children: [
+                const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[400],
+                    shadowColor: Colors.grey[400],
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0)),
+                    minimumSize: const Size(100, 50),
                   ),
+                  onPressed: () {
+                    Navigator.of(widget.context).pop(true);
+                  },
+                  child: const Text('Cancel',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
+                const Padding(padding: EdgeInsets.only(left: 10)),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shadowColor: Colors.white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0)),
+                    minimumSize: const Size(100, 50),
+                  ),
+                  onPressed: () {
+                    if (groupInfo['groupName'] == null ||
+                        groupInfo['groupName'] == '') {
+                      Helper.showToast('Please add your group name');
+                      return;
+                    } else if (groupInfo['groupLocation'] == null ||
+                        groupInfo['groupLocation'] == '') {
+                      Helper.showToast('Please add your group location');
+                      return;
+                    } else if (groupInfo['groupInterests'].length == 0) {
+                      Helper.showToast('Please select interest');
+                      return;
+                    }
+                    footerBtnState = true;
+                    setState(() {});
+                    getTokenBudget();
+                  },
+                  child: footerBtnState
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const Text('Create',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
+                )
               ],
             ),
           ),
-        ),
-        Container(
-          width: 400,
-          margin: const EdgeInsets.only(right: 15, bottom: 10),
-          child: Row(
-            children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[400],
-                  shadowColor: Colors.grey[400],
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
-                ),
-                onPressed: () {
-                  Navigator.of(widget.context).pop(true);
-                },
-                child: const Text('Cancel',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-              ),
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shadowColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
-                ),
-                onPressed: () {
-                  if (groupInfo['groupName'] == null ||
-                      groupInfo['groupName'] == '') {
-                    Helper.showToast('Please add your group name');
-                    return;
-                  } else if (groupInfo['groupLocation'] == null ||
-                      groupInfo['groupLocation'] == '') {
-                    Helper.showToast('Please add your group location');
-                    return;
-                  } else if (groupInfo['groupInterests'].length == 0) {
-                    Helper.showToast('Please select interest');
-                    return;
-                  }
-                  footerBtnState = true;
-                  setState(() {});
-                  getTokenBudget();
-                },
-                child: footerBtnState
-                    ? const SizedBox(
-                        width: 10,
-                        height: 10.0,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
+        ],
+      ),
+      if (autoLocationList.isNotEmpty)
+        Positioned(
+            top: 150,
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              height: 230,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: autoLocationList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                      onTap: () {
+                        locationTextController.text =
+                            autoLocationList[index].description;
+                        groupInfo['groupLocation'] =
+                            autoLocationList[index].description;
+                        setState(() {
+                          autoLocationList = [];
+                        });
+                      },
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.only(bottom: 3),
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Color.fromARGB(255, 209, 209, 209))),
+                            color: Color.fromARGB(255, 224, 224, 224)),
+                        child: Text(
+                          autoLocationList[index].description,
+                          textAlign: TextAlign.center,
                         ),
-                      )
-                    : const Text('Create',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold)),
-              )
-            ],
-          ),
-        ),
-      ],
-    );
+                      ));
+                },
+              ),
+            ))
+    ]);
   }
 }
 
@@ -393,7 +486,7 @@ Widget customInput({title, onChange, controller, hintText}) {
             fontWeight: FontWeight.w600),
       ),
       const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
         height: 40,
         child: TextField(
           controller: controller,
@@ -430,7 +523,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
           children: [
             Expanded(
               flex: 2,
-              child: Container(
+              child: SizedBox(
                 width: 400,
                 height: double.parse(height.toString()),
                 child: TextField(
@@ -454,4 +547,16 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
       ],
     ),
   );
+}
+
+class Suggestion {
+  final String placeId;
+  final String description;
+
+  Suggestion(this.placeId, this.description);
+
+  @override
+  String toString() {
+    return 'Suggestion(description: $description, placeId: $placeId)';
+  }
 }

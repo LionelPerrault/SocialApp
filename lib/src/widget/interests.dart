@@ -179,8 +179,8 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                   color: Colors.black,
                 )
               ]),
-              Container(
-                height: 300,
+              SizedBox(
+                height: 250,
                 child: ListView.builder(
                     itemCount: subCategory.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -189,7 +189,7 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                           children: [
                             const Padding(padding: EdgeInsets.only(left: 10)),
                             Expanded(
-                              child: Container(
+                              child: SizedBox(
                                 width: 400,
                                 child: Text(
                                   subCategory[index]['title'],

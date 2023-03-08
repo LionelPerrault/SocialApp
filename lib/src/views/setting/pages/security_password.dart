@@ -199,10 +199,7 @@ class SettingSecurityPasswordScreenState
   }
 
   void saveAccountSettings() {
-    print(userInfo['password']);
     if (currentPassword == userInfo['password']) {
-      print(newPassword);
-      print(confirmPassword);
       if (newPassword == confirmPassword) {
         con.changePassword(userInfo['email'], newPassword);
       }

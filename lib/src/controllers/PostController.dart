@@ -814,7 +814,6 @@ class PostController extends ControllerMVC {
         }
         setState(() {});
       }
-      print('Now you get all groups');
     });
 
     return realAllGroups;
@@ -822,14 +821,12 @@ class PostController extends ControllerMVC {
 
   //get one group function that using uid of firebase database
   Future<bool> getSelectedGroup(String name) async {
-    name = name.split('/')[name.split('/').length - 1];
-    viewGroupName = name;
-    var reuturnValue = await Helper.groupsData
-        .where('groupUserName', isEqualTo: viewGroupName)
-        .get();
-    var value = reuturnValue.docs;
-    viewGroupId = value[0].id;
-    group = value[0].data();
+    // name = name.split('/')[name.split('/').length - 1];
+    // viewGroupName = name;
+    var reuturnValue = await Helper.groupsData.doc(name).get();
+    var value = reuturnValue.data();
+    viewGroupId = name;
+    group = value;
     viewGroupJoined = await boolJoined(group, UserManager.userInfo['uid']);
     setState(() {});
     for (var i = 0; i < group['groupAdmin'].length; i++) {
@@ -887,7 +884,7 @@ class PostController extends ControllerMVC {
     };
 
     var reuturnValue = await Helper.groupsData
-        .where('groupUserName', isEqualTo: groupData['groupUserName'])
+        .where('groupName', isEqualTo: groupData['groupName'])
         .get();
     var value = reuturnValue.docs;
     if (value.isNotEmpty) {
@@ -1220,25 +1217,31 @@ class PostController extends ControllerMVC {
   }
 
   var lastTime;
-  getAllPost() async {
+  getAllPost(type) async {
     var allSanp =
         await Helper.postCollection.orderBy('postTime', descending: true).get();
 
     var allPosts = allSanp.docs;
     allposts = 0;
     for (var i = 0; i < allSanp.docs.length; i++) {
-      if (allPosts[i]['postAdmin'] == UserManager.userInfo['uid'] ||
-          allPosts[i]['privacy'] == 'Public') {
-        allposts++;
+      if (type == 0) {
+        if (allPosts[i]['postAdmin'] == UserManager.userInfo['uid'] ||
+            allPosts[i]['privacy'] == 'Public') {
+          allposts++;
+        }
+      } else if (type == 1) {
+        if (allPosts[i]['postAdmin'] == UserManager.userInfo['uid']) allposts++;
       }
     }
 
     var postData;
     var adminInfo;
     var postsBox = [];
-    int firstlength = allSanp.docs.length > 10 ? 10 : allSanp.docs.length;
+    int i = 0;
+    //int firstlength = allSanp.docs.length > 10 ? 10 : allSanp.docs.length;
 
-    for (var i = 0; i < firstlength; i++) {
+    //for (var i = 0; i < firstlength; i++) {
+    do {
       if (allPosts[i]['type'] == 'product') {
         var valueSnap =
             await Helper.productsData.doc(allPosts[i]['value']).get();
@@ -1262,12 +1265,19 @@ class PostController extends ControllerMVC {
         'comment': allPosts[i]['comment'],
       };
 
-      lastTime = allPosts[firstlength - 1]['postTime'];
-      if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
-          eachPost['privacy'] == 'Public') {
-        postsBox.add(eachPost);
+      if (type == 0) {
+        if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
+            eachPost['privacy'] == 'Public') {
+          postsBox.add(eachPost);
+        }
+      } else if (type == 1) {
+        if (eachPost['adminUid'] == UserManager.userInfo['uid']) {
+          postsBox.add(eachPost);
+        }
       }
-    }
+      lastTime = allPosts[i]['postTime'];
+      i++;
+    } while (postsBox.length < 10 && i < allSanp.docs.length);
 
     posts = postsBox;
     setState(() {});
@@ -1320,7 +1330,7 @@ class PostController extends ControllerMVC {
     return posts;
   }
 
-  loadNextPosts(newCount) async {
+  loadNextPosts(newCount, type) async {
     var allSanp = await Helper.postCollection
         .orderBy('postTime', descending: true)
         .where('postTime', isLessThan: lastTime)
@@ -1329,7 +1339,9 @@ class PostController extends ControllerMVC {
     var allPosts = allSanp.docs;
     var postData;
     var adminInfo;
-    for (var i = 0; i < newCount; i++) {
+    int i = 0;
+    int newitemindex = 0;
+    do {
       if (allPosts[i]['type'] == 'product') {
         var valueSnap =
             await Helper.productsData.doc(allPosts[i]['value']).get();
@@ -1355,12 +1367,22 @@ class PostController extends ControllerMVC {
       };
 
       lastTime = allPosts[allPosts.length - 1]['postTime'];
-      if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
-          eachPost['privacy'] == 'Public') {
-        posts.add(eachPost);
+      if (type == 0) {
+        if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
+            eachPost['privacy'] == 'Public') {
+          posts.add(eachPost);
+          newitemindex++;
+        }
+      } else if (type == 1) {
+        if (eachPost['adminUid'] == UserManager.userInfo['uid']) {
+          posts.add(eachPost);
+          newitemindex++;
+        }
       }
-    }
-    //setState(() {});
+      print("i----------$i");
+      print("newCount----------$newCount");
+    } while (++i < newCount);
+    setState(() {});
     return true;
   }
 
