@@ -1024,7 +1024,6 @@ class UserController extends ControllerMVC {
     });
   }
 
-  //for Paywall
   Future<bool> payShnToken(String payMail, String amount, String notes) async {
     bool payResult = false;
     if (token == '') {

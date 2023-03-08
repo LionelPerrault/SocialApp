@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -128,9 +129,11 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   getTokenBudget() async {
     var adminSnap = await Helper.systemSnap.doc(Helper.adminConfig).get();
     var price = adminSnap.data()!['priceCreatingProduct'];
-    var userSnap =
-        await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
-    var paymail = userSnap.data()!['paymail'];
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.backPaymail)
+        .get();
+    var paymail = snapshot.data()!['address'];
     setState(() {});
     if (price == '0') {
       await postCon.createProduct(context, productInfo).then(

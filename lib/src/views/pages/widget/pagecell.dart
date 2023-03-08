@@ -57,6 +57,7 @@ class PageCellState extends mvc.StateMVC<PageCell> {
       loading = false;
       setState(() {});
     } else {
+      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(

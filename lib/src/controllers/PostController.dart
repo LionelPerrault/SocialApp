@@ -1057,8 +1057,7 @@ class PostController extends ControllerMVC {
               saveNotifications(notificationData),
               id = value.id,
             });
-    // RelysiaManager.payNow(UserManager.userInfo, RelysiaManager.adminPaymail,
-    //     '10', 'for create product');
+
     return {
       'msg': 'Successfully created',
       'result': true,
