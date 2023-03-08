@@ -801,7 +801,7 @@ class PostController extends ControllerMVC {
         var joined = await boolJoined(data, UserManager.userInfo['uid']);
         if (uid == data['groupAdmin'][0]['uid'] && condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
-        } else if (condition == 'all') {
+        } else if (condition == 'all' && uid != data['groupAdmin'][0]['uid']) {
           if (data['groupPost']) {
             realAllGroups.add({'data': data, 'id': id, 'joined': joined});
           }
@@ -873,7 +873,7 @@ class PostController extends ControllerMVC {
       ],
       'groupDate': DateTime.now().toString(),
       'groupJoined': [],
-      'groupPost': false,
+      'groupPost': true,
       'groupPicture': '',
       'groupCover': '',
       'groupPhotos': [],

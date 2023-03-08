@@ -35,6 +35,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
   late PostController con;
   var loading = false;
   bool payLoading = false;
+  bool isOwner = false;
   @override
   void initState() {
     add(widget.con);
@@ -187,13 +188,13 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                                       widget.groupData['joined']
                                           ? 'Joined'
                                           : 'Join',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold)),
                                 ],
                               )),
-                    Padding(padding: EdgeInsets.only(top: 30))
+                    const Padding(padding: EdgeInsets.only(top: 30))
                   ],
                 ),
               ),

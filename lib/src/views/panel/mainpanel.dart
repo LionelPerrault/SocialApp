@@ -69,7 +69,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
       loadingFlag = false;
       setState(() {});
       postStream.listen((event) {
-        print('difference');
         newPostNum = event.docs
                 .where((post) =>
                     (post['postAdmin'] == UserManager.userInfo['uid'] ||
