@@ -89,6 +89,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                     ),
                                     onPressed: () {
                                       (showDialog(
+                                          barrierDismissible: false,
                                           context: context,
                                           builder: (BuildContext context) =>
                                               AlertDialog(
