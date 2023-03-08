@@ -107,7 +107,8 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               title: 'UserName',
               controller: userNameController,
               onChange: (value) {
-                search = {'userName': value};
+                search['userName'] = value;
+                if (value == '') search.remove('userName');
               }),
         ),
         Container(
@@ -116,7 +117,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               title: 'Hometown',
               controller: hometownController,
               onChange: (value) {
-                search = {'hometown': value};
+                //search = {'hometown': value};
                 geoLocator(
                   value,
                   'hometown',
@@ -129,7 +130,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
             title: 'Current place',
             controller: currentController,
             onChange: (value) {
-              search = {'current': value};
+              //search = {'current': value};
               geoLocator(value, 'current');
             },
           ),
@@ -139,7 +140,8 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
           child: customInput(
               title: 'Keyword',
               onChange: (value) {
-                search = {'keyword': value};
+                search['keyword'] = value;
+                if (value == '') search.remove('keyword');
               }),
         ),
         Container(
@@ -148,7 +150,10 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               title: 'Gender',
               item: gender,
               onChange: (value) {
-                search = {'sex': value == 'any' ? '' : value};
+                if (value == 'any')
+                  search.remove('sex');
+                else
+                  search['sex'] = value;
               },
               context: context),
         ),
@@ -158,7 +163,10 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               title: 'Relationship',
               item: relationShip,
               onChange: (value) {
-                // search = {'sex': value == 'any' ? '' : value};
+                if (value == 'any')
+                  search.remove('relationship');
+                else
+                  search['relationship'] = value;
               },
               context: context),
         ),
@@ -167,7 +175,12 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
           child: customDropDownButton(
               title: 'Online Status',
               item: onlineStatus,
-              onChange: (value) {},
+              onChange: (value) {
+                if (value == 'any')
+                  search.remove('checkonline');
+                else
+                  search['checkonline'] = value;
+              },
               context: context),
         ),
         Container(
@@ -175,7 +188,12 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
           child: customDropDownButton(
               title: 'Religion',
               item: religion,
-              onChange: (value) {},
+              onChange: (value) {
+                if (value == 'any')
+                  search.remove('religion');
+                else
+                  search['religion'] = value;
+              },
               context: context),
         ),
         Container(
