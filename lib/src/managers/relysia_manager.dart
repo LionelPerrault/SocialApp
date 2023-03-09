@@ -1,17 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
 import 'package:http/http.dart' as http;
-import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/controllers/UserController.dart';
 
 import '../helpers/helper.dart';
-import '../helpers/relysiaHelper.dart';
 
 class RelysiaManager {
-  static final apiUrlAuth = 'https://api.relysia.com/v1/auth';
-  static final serviceId = '9ab1b69e-92ae-4612-9a4f-c5a102a6c068';
-  static final shnToken = 'aceaa115dc98a05876e6e13453538fdeb4ab8ee4-SHNA1-TEST';
+  static const apiUrlAuth = 'https://api.relysia.com/v1/auth';
+  static const serviceId = '9ab1b69e-92ae-4612-9a4f-c5a102a6c068';
+  static const shnToken = 'aceaa115dc98a05876e6e13453538fdeb4ab8ee4-SHNA1-TEST';
   static var resToken = {};
 
   static var transHistory = [];
@@ -41,7 +36,6 @@ class RelysiaManager {
 
   static Future<Map> createUser(String email, String password) async {
     Map responseData = {};
-    print(2);
     try {
       String bodyCode =
           jsonEncode(<String, String>{'email': email, 'password': password});
@@ -57,6 +51,29 @@ class RelysiaManager {
           .then((res) => {
                 responseData = jsonDecode(res.body),
                 print('this is responseData in createUser: $responseData'),
+              });
+    } catch (exception) {
+      print("occurs exception" + exception.toString());
+    }
+    return responseData;
+  }
+
+  static Future<Map> changePassword(String password, String token) async {
+    Map responseData = {};
+    try {
+      String bodyCode = jsonEncode(<String, String>{'newPassword': password});
+      await http
+          .post(
+            Uri.parse('https://api.relysia.com/v1/password/change'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'serviceID': serviceId,
+              'authToken': token,
+            },
+            body: bodyCode,
+          )
+          .then((res) => {
+                responseData = jsonDecode(res.body),
               });
     } catch (exception) {
       print("occurs exception" + exception.toString());

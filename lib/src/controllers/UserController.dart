@@ -904,29 +904,37 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    try {
-      final auth = FirebaseAuth.instance;
+    await RelysiaManager.changePassword(password, token).then((value) {
+      if (value['statusCode'] != 200) {
+        Helper.showToast('change password failed. please try again');
+        isSettingAction = false;
+        setState(() {});
+        return;
+      }
+      try {
+        final auth = FirebaseAuth.instance;
 
-      final user = auth.currentUser;
+        final user = auth.currentUser;
 
-      // Update password
-      user?.updatePassword(password).then((_) {
-        Helper.showToast("Password updated successfully!");
-      }).catchError((error) {
-        Helper.showToast("Error updating password: $error");
-      });
-      setState(() {});
-      isSettingAction = false;
-      setState(() {});
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-      } else if (e.code == 'email-already-in-use') {
-      } else {}
-      isSettingAction = false;
-      setState(() {});
-    } catch (e) {
-      rethrow;
-    }
+        // Update password
+        user?.updatePassword(password).then((_) {
+          Helper.showToast("Password updated successfully!");
+        }).catchError((error) {
+          Helper.showToast("Error updating password: $error");
+        });
+        setState(() {});
+        isSettingAction = false;
+        setState(() {});
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+        } else if (e.code == 'email-already-in-use') {
+        } else {}
+        isSettingAction = false;
+        setState(() {});
+      } catch (e) {
+        rethrow;
+      }
+    });
   }
 
   profileChange(profile) async {
