@@ -123,7 +123,13 @@ class UserController extends ControllerMVC {
     }
 
     passworkdValidation = await passworkdValidate(password);
-
+    if (signUpUserInfo['password'] != signUpUserInfo['confirmPassword']) {
+      failRegister =
+          'password is mismatching. please check your password again';
+      isSendRegisterInfo = false;
+      setState(() {});
+      return false;
+    }
     try {
       if (!passworkdValidation) {
         failRegister = 'A minimum 8 Characters required for password';

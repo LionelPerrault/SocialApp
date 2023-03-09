@@ -347,6 +347,22 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                     checkAllForms();
                                                     setState(() {});
                                                   }),
+                                              passwordTextField(
+                                                  obscureText: isObscure,
+                                                  label: 'Confirm Password',
+                                                  initialValue: signUpUserInfo[
+                                                      'confirmPassword'],
+                                                  icon: const Icon(
+                                                    Icons.key,
+                                                    color: Colors.white,
+                                                  ),
+                                                  onchange: (value) async {
+                                                    signUpUserInfo[
+                                                            'confirmPassword'] =
+                                                        value;
+                                                    checkAllForms();
+                                                    setState(() {});
+                                                  }),
                                               Container(
                                                   width: double.infinity - 50,
                                                   padding:
