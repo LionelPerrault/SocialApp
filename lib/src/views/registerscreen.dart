@@ -101,10 +101,10 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                             ),
                             height: SizeConfig(context).screenWidth <
                                     SizeConfig.smallScreenSize
-                                ? 687
+                                ? 700
                                 : con.failRegister == ''
                                     ? 600
-                                    : 630,
+                                    : 650,
                             decoration: const BoxDecoration(
                               color: Color.fromRGBO(0, 0, 0, 1),
                               borderRadius:
