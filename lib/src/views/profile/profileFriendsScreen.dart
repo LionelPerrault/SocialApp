@@ -212,7 +212,6 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
               ],
             ),
           );
-    ;
   }
 
   // Widget followingsData() {
@@ -307,7 +306,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
       alignment: Alignment.center,
       margin: EdgeInsets.only(left: 10),
       width: 200,
-      height: 110,
+      height: 100,
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
