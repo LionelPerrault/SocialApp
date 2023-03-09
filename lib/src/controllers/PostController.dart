@@ -546,6 +546,7 @@ class PostController extends ControllerMVC {
         var id = doc[i].id;
         var data = doc[i];
         var liked = await boolLiked(data, UserManager.userInfo['uid']);
+        print("uid----$uid,  pageadminuid: ${data['pageAdmin'][0]['uid']}");
         if (uid == data['pageAdmin'][0]['uid'] && condition == 'manage') {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
         } else if (condition == 'all') {
