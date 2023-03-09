@@ -44,7 +44,8 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     super.initState();
     //add(widget.con);
     //con = controller as PeopleController;
-    friendModel.getFriends('').then((value) {
+
+    friendModel.getFriends(userInfo['userName']).then((value) {
       setState(() {});
     });
     _gotoHome();
