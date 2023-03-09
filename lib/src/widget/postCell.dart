@@ -277,7 +277,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
           },
         ];
       } else {
-        print("privacy: ${widget.postInfo['privacy']}");
         privacy = privacyMenuItem
             .where((element) => element['label'] == widget.postInfo['privacy'])
             .toList()[0];

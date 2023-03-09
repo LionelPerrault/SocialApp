@@ -37,7 +37,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
       lastDocument; // flag for last document from where next 10 records to be fetched
   int postsCount = 0;
   int newPostNum = 0;
-  int nextPostNum = 0;
+  bool nextPostFlag = true;
   var lastTime;
   bool hasMore = true; // flag for more posts available or not
 
@@ -64,29 +64,27 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     }
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
-    loadingFlag = true;
+    setState(() {
+      loadingFlag = true;
+    });
+
     con.posts = [];
     con.getAllPost(0).then((value) {
-      loadingFlag = false;
-      setState(() {});
+      setState(() {
+        loadingFlag = false;
+      });
       postStream.listen((event) {
-        newPostNum = event.docs
-            .where((post) =>
-                (post['postAdmin'] == UserManager.userInfo['uid'] ||
-                    post['privacy'] == 'Public') &&
-                (Timestamp(
-                        post['postTime'].seconds, post['postTime'].nanoseconds)
-                    .toDate()
-                    .isAfter(con.latestTime)))
-            .length;
-
-        nextPostNum = event.docs
-                .where((post) =>
-                    (post['postAdmin'] == UserManager.userInfo['uid'] ||
-                        post['privacy'] == 'Public'))
-                .length -
-            10;
-        setState(() {});
+        setState(() {
+          newPostNum = event.docs
+              .where((post) =>
+                  (post['postAdmin'] == UserManager.userInfo['uid'] ||
+                      post['privacy'] == 'Public') &&
+                  (Timestamp(post['postTime'].seconds,
+                          post['postTime'].nanoseconds)
+                      .toDate()
+                      .isAfter(con.latestTime)))
+              .length;
+        });
       });
     });
   }
@@ -116,14 +114,15 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     maximumSize: const Size(240, 42),
                   ),
                   onPressed: () async {
-                    setState(() {});
-                    loadingFlag = true;
-                    setState(() {});
-                    await con.addNewPosts(newPostNum);
-
+                    setState(() {
+                      loadingFlag = true;
+                    });
+                    nextPostFlag = await con.addNewPosts(newPostNum);
                     newPostNum = 0;
-                    loadingFlag = false;
-                    setState(() {});
+
+                    setState(() async {
+                      loadingFlag = false;
+                    });
                   },
                   child: Column(
                     children: [
@@ -184,7 +183,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                   ),
                 )
               : const SizedBox(),
-          nextPostNum <= 0 || loadingFlagBottom
+          loadingFlagBottom || loadingFlag || !nextPostFlag
               ? const SizedBox()
               : ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -196,14 +195,13 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     maximumSize: const Size(240, 42),
                   ),
                   onPressed: () async {
-                    setState(() {});
-                    loadingFlagBottom = true;
-                    var newPostNumP = nextPostNum > 10 ? 10 : nextPostNum;
-                    await con.loadNextPosts(0);
-                    //await con.getAllPost();
-                    nextPostNum = nextPostNum - newPostNumP;
-                    loadingFlagBottom = false;
-                    setState(() {});
+                    setState(() {
+                      loadingFlagBottom = true;
+                    });
+                    nextPostFlag = await con.loadNextPosts(0);
+                    setState(() {
+                      loadingFlagBottom = false;
+                    });
                   },
                   child: Column(
                     children: [

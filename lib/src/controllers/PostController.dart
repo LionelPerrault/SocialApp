@@ -1374,7 +1374,6 @@ class PostController extends ControllerMVC {
           latestTime = Timestamp(allPosts[0]['postTime'].seconds,
                   allPosts[0]['postTime'].nanoseconds)
               .toDate();
-          print("latesttime is ${latestTime}");
         });
       }
     }
@@ -1410,7 +1409,7 @@ class PostController extends ControllerMVC {
     var adminInfo;
     int i = 0;
     int newitemindex = 0;
-    do {
+    while (i < 10 && i < allPosts.length) {
       if (allPosts[i]['type'] == 'product') {
         if (valueSnapHash[allPosts[i]['value']] == null) {
           var valueSnap =
@@ -1457,8 +1456,10 @@ class PostController extends ControllerMVC {
       } else if (type == 1) {
         postsProfile.add(eachPost);
       }
-    } while (i < 10 && i < allPosts.length);
-
+    }
+    if (i == 0) {
+      return false;
+    }
     if (type == 0) {
       posts = postsTimeline;
     } else if (type == 1) {

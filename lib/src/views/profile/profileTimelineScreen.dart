@@ -47,7 +47,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   bool loadingFlag = false;
   bool loadingFlagBottom = false;
   int newPostNum = 0;
-
+  bool nextPostFlag = true;
   late PostController postCon;
   //
   var userInfo = UserManager.userInfo;
@@ -221,7 +221,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                         ),
                       )
                     : const SizedBox(),
-                loadingFlagBottom || loadingFlag
+                loadingFlagBottom || loadingFlag || !nextPostFlag
                     ? const SizedBox()
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -237,7 +237,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                             loadingFlagBottom = true;
                           });
 
-                          await PostController().loadNextPosts(1);
+                          nextPostFlag =
+                              await PostController().loadNextPosts(1);
 
                           setState(() {
                             loadingFlagBottom = false;
