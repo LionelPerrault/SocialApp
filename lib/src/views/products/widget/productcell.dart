@@ -337,7 +337,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                           })
                                               ]),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           width:
                                               SizeConfig(context).screenWidth <
                                                       600
@@ -682,7 +682,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                       UserManager.userInfo['uid'] ==
                               product['productAdmin']['uid']
                           ? Container()
-                          : Container(
+                          : SizedBox(
                               height: 50,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -720,32 +720,39 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                   )),
                             ),
                       const Padding(padding: EdgeInsets.only(top: 10)),
-                      Container(
-                        height: 50,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 240, 96, 63),
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(3.0)),
+                      UserManager.userInfo['uid'] ==
+                              product['productAdmin']['uid']
+                          ? Container()
+                          : SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 240, 96, 63),
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(3.0)),
+                                  ),
+                                  onPressed: () {
+                                    buyProduct();
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.wechat_outlined),
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 10)),
+                                      Text(
+                                        'Buy',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  )),
                             ),
-                            onPressed: () {
-                              buyProduct();
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.wechat_outlined),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                                Text(
-                                  'Buy',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            )),
-                      ),
                     ]),
               ),
               Visibility(
