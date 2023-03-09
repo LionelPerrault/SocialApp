@@ -246,21 +246,42 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
             borderRadius: BorderRadius.circular(13),
             color: Colors.grey[400],
           ),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(4),
-              backgroundColor: Colors.grey[300],
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(13)),
-              minimumSize: const Size(26, 26),
-              maximumSize: const Size(26, 26),
-            ),
-            onPressed: () {
-              uploadImage('avatar');
-            },
-            child: const Icon(Icons.camera_enhance_rounded,
-                color: Colors.black, size: 16.0),
-          ),
+          child: kIsWeb
+              ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(4),
+                    backgroundColor: Colors.grey[300],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13)),
+                    minimumSize: const Size(26, 26),
+                    maximumSize: const Size(26, 26),
+                  ),
+                  onPressed: () {
+                    uploadImage('avatar');
+                  },
+                  child: const Icon(Icons.camera_enhance_rounded,
+                      color: Colors.black, size: 16.0),
+                )
+              : PopupMenuButton(
+                  onSelected: (value) {
+                    _onMenuItemSelected(value, 'avatar');
+                  },
+                  child: const Icon(Icons.camera_enhance_rounded,
+                      color: Colors.black, size: 16.0),
+                  itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 1,
+                          child: Text(
+                            'Camera',
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 2,
+                          child: Text(
+                            "Gallery",
+                          ),
+                        )
+                      ]),
         ),
       ],
     );
@@ -431,27 +452,34 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
     );
   }
 
-  Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
-    XFile? pickedFile;
-    if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-    } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
+  Future<XFile> chooseImage(int value) async {
+    final imagePicker = ImagePicker();
 
-      //if (permissionStatus.isGranted) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
+    if (value == 1 && !kIsWeb) {
+      XFile? pickedFile;
+      if (kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      } else {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      }
+      return pickedFile!;
+    } else {
+      XFile? pickedFile;
+      if (kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      } else {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      }
+      return pickedFile!;
     }
-    return pickedFile!;
   }
 
   uploadFile(XFile? pickedFile, type) async {
@@ -532,7 +560,13 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   }
 
   uploadImage(type) async {
-    XFile? pickedFile = await chooseImage();
+    XFile? pickedFile = await chooseImage(2);
+    uploadFile(pickedFile, type);
+  }
+
+  Future<void> _onMenuItemSelected(int value, type) async {
+    XFile? pickedFile = await chooseImage(value);
+
     uploadFile(pickedFile, type);
   }
 }
