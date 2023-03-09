@@ -509,19 +509,9 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
       uploadTask.whenComplete(() async {
         var downloadUrl = await _reference.getDownloadURL();
         if (type == 'cover') {
-          await con
-              .updateGroupInfo({'groupCover': downloadUrl}).then((value) => {
-                    con
-                        .getSelectedGroup(con.viewGroupName)
-                        .then((value) => {setState((() {}))})
-                  });
+          await con.updateGroupInfo({'groupCover': downloadUrl});
         } else {
-          await con
-              .updateGroupInfo({'groupPicture': downloadUrl}).then((value) => {
-                    con
-                        .getSelectedGroup(con.viewGroupName)
-                        .then((value) => {setState((() {}))})
-                  });
+          await con.updateGroupInfo({'groupPicture': downloadUrl});
         }
       });
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
@@ -529,7 +519,8 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
           case TaskState.running:
             if (type == 'avatar') {
               avatarProgress = 100.0 *
-                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                  taskSnapshot.bytesTransferred.toDouble() /
+                  taskSnapshot.totalBytes.toDouble();
               setState(() {});
             } else {
               coverProgress = 100.0 *

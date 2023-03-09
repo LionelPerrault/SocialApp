@@ -968,10 +968,13 @@ class PostController extends ControllerMVC {
   Future<String> updateGroupInfo(dynamic groupInfo) async {
     if (groupInfo['groupUserName'] == null) {
       var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+
+      await updateGroup();
       return group['groupUserName'];
     }
     if (groupInfo['groupUserName'] == group['groupUserName']) {
       var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+      await updateGroup();
       return group['groupUserName'];
     } else {
       QuerySnapshot querySnapshot = await Helper.groupsData.get();
@@ -979,12 +982,21 @@ class PostController extends ControllerMVC {
       var flag = allGroup.where((eachGroup) =>
           eachGroup['groupUserName'] == groupInfo['groupUserName']);
       if (flag.isNotEmpty) {
+        await updateGroup();
         return 'dobuleName${groupInfo['groupUserName']}';
       } else {
+        await updateGroup();
         var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+
         return groupInfo['groupUserName'];
       }
     }
+  }
+
+  Future<void> updateGroup() async {
+    var doc = await Helper.groupsData.doc(viewGroupId).get();
+    group = doc.data();
+    setState(() {});
   }
 
   ////////////////////functions that make comment to group/////////////////////////////
