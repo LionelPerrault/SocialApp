@@ -1219,19 +1219,22 @@ class PostController extends ControllerMVC {
 
   var lastTime;
   var latestTime;
+
+  Map adminSnapHash = {};
+  Map valueSnapHash = {};
   getAllPost(type) async {
     latestTime = DateTime.now();
 
-    if (type == 0 && postsTimeline.isNotEmpty) {
-      posts = postsTimeline;
-      // setState(() {});
-      return true;
-    }
-    if (type == 1 && postsProfile.isNotEmpty) {
-      posts = postsProfile;
-      // setState(() {});
-      return true;
-    }
+    // if (type == 0 && postsTimeline.isNotEmpty) {
+    //   posts = postsTimeline;
+    //   // setState(() {});
+    //   return true;
+    // }
+    // if (type == 1 && postsProfile.isNotEmpty) {
+    //   posts = postsProfile;
+    //   // setState(() {});
+    //   return true;
+    // }
     var profileSnap, publicSnap, allSnap;
     List allPosts = [];
     profileSnap = await Helper.postCollection
@@ -1262,26 +1265,40 @@ class PostController extends ControllerMVC {
 
     do {
       if (allPosts[i]['type'] == 'product') {
-        var valueSnap =
-            await Helper.productsData.doc(allPosts[i]['value']).get();
-        postData = valueSnap.data();
+        if (valueSnapHash[allPosts[i]['value']] == null) {
+          var valueSnap =
+              await Helper.productsData.doc(allPosts[i]['value']).get();
+          valueSnapHash[allPosts[i]['value']] = valueSnap;
+        }
+
+        postData = valueSnapHash[allPosts[i]['value']].data();
       } else {
         postData = allPosts[i]['value'];
       }
-      var adminSnap =
-          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
-      adminInfo = adminSnap.data();
+
+      if (adminSnapHash[allPosts[i]['postAdmin']] == null) {
+        var adminSnap =
+            await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+        if (adminSnap.data() == null) {
+          i++;
+          continue;
+        }
+        adminSnapHash[allPosts[i]['postAdmin']] = adminSnap;
+      }
+
+      adminInfo = adminSnapHash[allPosts[i]['postAdmin']].data();
+
       var eachPost = {
         'id': allPosts[i].id,
         'data': postData,
         'type': allPosts[i]['type'],
         'adminInfo': adminInfo,
         'time': allPosts[i]['postTime'],
-        'adminUid': adminSnap.id,
+        'adminUid': adminSnapHash[allPosts[i]['postAdmin']].id,
         'privacy': allPosts[i]['privacy'],
         'header': allPosts[i]['header'],
         'timeline': allPosts[i]['timeline'],
-        'comment': allPosts[i]['comment'],
+        'comment': allPosts[i]['comment']
       };
 
       postsBox.add(eachPost);
@@ -1313,15 +1330,28 @@ class PostController extends ControllerMVC {
     var adminInfo;
     for (var i = newCount - 1; i >= 0; i--) {
       if (allPosts[i]['type'] == 'product') {
-        var valueSnap =
-            await Helper.productsData.doc(allPosts[i]['value']).get();
-        postData = valueSnap.data();
+        if (valueSnapHash[allPosts[i]['value']] == null) {
+          var valueSnap =
+              await Helper.productsData.doc(allPosts[i]['value']).get();
+          valueSnapHash[allPosts[i]['value']] = valueSnap;
+        }
+
+        postData = valueSnapHash[allPosts[i]['value']].data();
       } else {
         postData = allPosts[i]['value'];
       }
-      var adminSnap =
-          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
-      adminInfo = adminSnap.data();
+
+      if (adminSnapHash[allPosts[i]['postAdmin']] == null) {
+        var adminSnap =
+            await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+        if (adminSnap.data() == null) {
+          i++;
+          continue;
+        }
+        adminSnapHash[allPosts[i]['postAdmin']] = adminSnap;
+      }
+
+      adminInfo = adminSnapHash[allPosts[i]['postAdmin']].data();
 
       var eachPost = {
         'id': allPosts[i].id,
@@ -1329,15 +1359,14 @@ class PostController extends ControllerMVC {
         'type': allPosts[i]['type'],
         'adminInfo': adminInfo,
         'time': allPosts[i]['postTime'],
-        'adminUid': adminSnap.id,
+        'adminUid': adminSnapHash[allPosts[i]['postAdmin']].id,
         'privacy': allPosts[i]['privacy'],
         'header': allPosts[i]['header'],
         'timeline': allPosts[i]['timeline'],
         'comment': allPosts[i]['comment']
       };
       lastTime = eachPost['time'];
-      print("adminsnapid:");
-      print(adminSnap.id);
+
       if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
           eachPost['privacy'] == 'Public') {
         setState(() {
@@ -1354,19 +1383,13 @@ class PostController extends ControllerMVC {
   }
 
   loadNextPosts(type) async {
-    // var allSanp = await Helper.postCollection
-    //     .orderBy('postTime', descending: true)
-    //     .where('postTime', isLessThan: lastTime)
-    //     .limit(newCount)
-    //     .get();
-
     var profileSnap, publicSnap, allSnap;
     List allPosts = [];
     profileSnap = await Helper.postCollection
         .orderBy('postTime', descending: true)
         .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
         .where('postTime', isLessThan: lastTime)
-        .limit(5)
+        .limit(10)
         .get();
     if (type == 1) {
       allPosts = profileSnap.docs;
@@ -1375,7 +1398,7 @@ class PostController extends ControllerMVC {
           .where('privacy', isEqualTo: 'Public')
           .where('postTime', isLessThan: lastTime)
           .orderBy('postTime', descending: true)
-          .limit(5)
+          .limit(10)
           .get();
       allPosts = profileSnap.docs + publicSnap.docs;
       final ids = allPosts.map((e) => e.id).toSet();
@@ -1389,43 +1412,57 @@ class PostController extends ControllerMVC {
     int newitemindex = 0;
     do {
       if (allPosts[i]['type'] == 'product') {
-        var valueSnap =
-            await Helper.productsData.doc(allPosts[i]['value']).get();
+        if (valueSnapHash[allPosts[i]['value']] == null) {
+          var valueSnap =
+              await Helper.productsData.doc(allPosts[i]['value']).get();
+          valueSnapHash[allPosts[i]['value']] = valueSnap;
+        }
 
-        postData = valueSnap.data();
+        postData = valueSnapHash[allPosts[i]['value']].data();
       } else {
         postData = allPosts[i]['value'];
       }
-      var adminSnap =
-          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
-      adminInfo = adminSnap.data();
-      if (adminInfo == null) {
-        i++;
-        continue;
+
+      if (adminSnapHash[allPosts[i]['postAdmin']] == null) {
+        var adminSnap =
+            await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+        if (adminSnap.data() == null) {
+          i++;
+          continue;
+        }
+        adminSnapHash[allPosts[i]['postAdmin']] = adminSnap;
       }
+
+      adminInfo = adminSnapHash[allPosts[i]['postAdmin']].data();
+
       var eachPost = {
         'id': allPosts[i].id,
         'data': postData,
         'type': allPosts[i]['type'],
         'adminInfo': adminInfo,
         'time': allPosts[i]['postTime'],
-        'adminUid': adminSnap.id,
+        'adminUid': adminSnapHash[allPosts[i]['postAdmin']].id,
         'privacy': allPosts[i]['privacy'],
         'header': allPosts[i]['header'],
         'timeline': allPosts[i]['timeline'],
         'comment': allPosts[i]['comment']
       };
 
+      print("allPosts[i]----$i -- ${allPosts[i]['header']}");
       lastTime = allPosts[i]['postTime'];
 
       i++;
-      posts.add(eachPost);
-    } while (i < 5 && i < allPosts.length);
+      if (type == 0) {
+        postsTimeline.add(eachPost);
+      } else if (type == 1) {
+        postsProfile.add(eachPost);
+      }
+    } while (i < 10 && i < allPosts.length);
 
     if (type == 0) {
-      postsTimeline = posts;
+      posts = postsTimeline;
     } else if (type == 1) {
-      postsProfile = posts;
+      posts = postsProfile;
     }
 
     setState(() {});

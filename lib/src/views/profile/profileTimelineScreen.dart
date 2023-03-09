@@ -47,7 +47,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   bool loadingFlag = false;
   bool loadingFlagBottom = false;
   int newPostNum = 0;
-  int nextPostNum = 0;
+
   late PostController postCon;
   //
   var userInfo = UserManager.userInfo;
@@ -130,7 +130,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     PostController().getAllPost(1).then((value) {
       loadingFlag = false;
       setState(() {});
-      // nextPostNum = PostController().allposts - 10;
+
       postStream.listen((event) {
         newPostNum = event.docs
             .where((post) =>
@@ -141,12 +141,6 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     .isAfter(PostController().latestTime)))
             .length;
 
-        nextPostNum = event.docs
-                .where((post) =>
-                    (post['postAdmin'] == UserManager.userInfo['uid']))
-                .length -
-            10;
-        print("nextPostNum is $nextPostNum");
         setState(() {});
       });
     });
@@ -227,7 +221,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                         ),
                       )
                     : const SizedBox(),
-                nextPostNum <= 0 || loadingFlagBottom
+                loadingFlagBottom || loadingFlag
                     ? const SizedBox()
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -239,14 +233,15 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           maximumSize: const Size(240, 42),
                         ),
                         onPressed: () async {
-                          setState(() {});
-                          loadingFlagBottom = true;
-                          var newPostNumP = nextPostNum > 10 ? 10 : nextPostNum;
+                          setState(() {
+                            loadingFlagBottom = true;
+                          });
+
                           await PostController().loadNextPosts(1);
-                          //await con.getAllPost();
-                          nextPostNum = nextPostNum - newPostNumP;
-                          loadingFlagBottom = false;
-                          setState(() {});
+
+                          setState(() {
+                            loadingFlagBottom = false;
+                          });
                         },
                         child: Column(
                           children: [
@@ -344,7 +339,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                             ),
                           )
                         : const SizedBox(),
-                    nextPostNum <= 0 || loadingFlagBottom
+                    loadingFlagBottom || loadingFlag
                         ? const SizedBox()
                         : ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -356,15 +351,15 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               maximumSize: const Size(240, 42),
                             ),
                             onPressed: () async {
-                              setState(() {});
-                              loadingFlagBottom = true;
-                              var newPostNumP =
-                                  nextPostNum > 10 ? 10 : nextPostNum;
+                              setState(() {
+                                loadingFlagBottom = true;
+                              });
+
                               await PostController().loadNextPosts(1);
-                              //await con.getAllPost();
-                              nextPostNum = nextPostNum - newPostNumP;
-                              loadingFlagBottom = false;
-                              setState(() {});
+
+                              setState(() {
+                                loadingFlagBottom = false;
+                              });
                             },
                             child: Column(
                               children: [

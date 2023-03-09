@@ -265,9 +265,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   @override
   Widget build(BuildContext context) {
     //return Text("test");
-    privacy = privacyMenuItem
-        .where((element) => element['label'] == widget.postInfo['privacy'])
-        .toList()[0];
+
     if (!widget.isSharedContent) {
       if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
         privacyMenuItem = [];
@@ -279,6 +277,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
           },
         ];
       } else {
+        print("privacy: ${widget.postInfo['privacy']}");
+        privacy = privacyMenuItem
+            .where((element) => element['label'] == widget.postInfo['privacy'])
+            .toList()[0];
         popupMenuItem = [
           {
             'icon': Icons.edit,
