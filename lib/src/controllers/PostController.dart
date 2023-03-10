@@ -1129,10 +1129,7 @@ class PostController extends ControllerMVC {
         var data = doc[i];
         var adminInfo =
             await ProfileController().getUserInfo(data['productAdmin']['uid']);
-        if (adminInfo != null) {
-          allProduct
-              .add({'data': data.data(), 'id': id, 'adminInfo': adminInfo});
-        }
+        allProduct.add({'data': data.data(), 'id': id, 'adminInfo': adminInfo});
         setState(() {});
       }
       print('Now you get all products');
@@ -1238,41 +1235,27 @@ class PostController extends ControllerMVC {
 
   Map adminSnapHash = {};
   Map valueSnapHash = {};
-  getAllPost(type) async {
-    latestTime = DateTime.now();
 
-    // if (type == 0 && postsTimeline.isNotEmpty) {
-    //   posts = postsTimeline;
-    //   // setState(() {});
-    //   return true;
-    // }
-    // if (type == 1 && postsProfile.isNotEmpty) {
-    //   posts = postsProfile;
-    //   // setState(() {});
-    //   return true;
-    // }
+  getProfilePost(uid) async {
+    latestTime = DateTime.now();
     var profileSnap, publicSnap, allSnap;
     List allPosts = [];
-    profileSnap = await Helper.postCollection
-        .orderBy('postTime', descending: true)
-        .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
-        .limit(10)
-        .get();
-    if (type == 1) {
-      allPosts = profileSnap.docs;
-    } else if (type == 0) {
-      publicSnap = await Helper.postCollection
-          .where('privacy', isEqualTo: 'Public')
+    if (UserManager.userInfo['uid'] == uid) {
+      profileSnap = await Helper.postCollection
           .orderBy('postTime', descending: true)
+          .where('postAdmin', isEqualTo: uid)
           .limit(10)
           .get();
-
-      allPosts = profileSnap.docs + publicSnap.docs;
-      final ids = allPosts.map((e) => e.id).toSet();
-      allPosts.retainWhere((x) => ids.remove(x.id));
-      allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
-      allPosts.removeRange(10, allPosts.length - 1);
+    } else {
+      profileSnap = await Helper.postCollection
+          .orderBy('postTime', descending: true)
+          .where('postAdmin', isEqualTo: uid)
+          .where('privacy', isEqualTo: 'Public')
+          .limit(10)
+          .get();
     }
+
+    allPosts = profileSnap.docs;
 
     var postData;
     var adminInfo;
@@ -1325,11 +1308,98 @@ class PostController extends ControllerMVC {
       i++;
     } while (postsBox.length < 10 && i < allPosts.length);
 
-    if (type == 0) {
-      postsTimeline = postsBox;
-    } else if (type == 1) {
-      postsProfile = postsBox;
-    }
+    postsProfile = postsBox;
+
+    posts = postsBox;
+    setState(() {});
+    return posts;
+  }
+
+  getTimelinePost() async {
+    latestTime = DateTime.now();
+
+    // if (type == 0 && postsTimeline.isNotEmpty) {
+    //   posts = postsTimeline;
+    //   // setState(() {});
+    //   return true;
+    // }
+    // if (type == 1 && postsProfile.isNotEmpty) {
+    //   posts = postsProfile;
+    //   // setState(() {});
+    //   return true;
+    // }
+    var profileSnap, publicSnap, allSnap;
+    List allPosts = [];
+    profileSnap = await Helper.postCollection
+        .orderBy('postTime', descending: true)
+        .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
+        .limit(10)
+        .get();
+
+    publicSnap = await Helper.postCollection
+        .where('privacy', isEqualTo: 'Public')
+        .orderBy('postTime', descending: true)
+        .limit(10)
+        .get();
+
+    allPosts = profileSnap.docs + publicSnap.docs;
+    final ids = allPosts.map((e) => e.id).toSet();
+    allPosts.retainWhere((x) => ids.remove(x.id));
+    allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
+    allPosts.removeRange(10, allPosts.length - 1);
+
+    var postData;
+    var adminInfo;
+    var postsBox = [];
+    int i = 0;
+
+    do {
+      if (allPosts[i]['type'] == 'product') {
+        if (valueSnapHash[allPosts[i]['value']] == null) {
+          var valueSnap =
+              await Helper.productsData.doc(allPosts[i]['value']).get();
+          valueSnapHash[allPosts[i]['value']] = valueSnap;
+        }
+
+        postData = valueSnapHash[allPosts[i]['value']].data();
+      } else {
+        postData = allPosts[i]['value'];
+      }
+
+      if (adminSnapHash[allPosts[i]['postAdmin']] == null) {
+        var adminSnap =
+            await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+        if (adminSnap.data() == null) {
+          i++;
+          continue;
+        }
+        adminSnapHash[allPosts[i]['postAdmin']] = adminSnap;
+      }
+
+      adminInfo = adminSnapHash[allPosts[i]['postAdmin']].data();
+
+      var eachPost = {
+        'id': allPosts[i].id,
+        'data': postData,
+        'type': allPosts[i]['type'],
+        'adminInfo': adminInfo,
+        'time': allPosts[i]['postTime'],
+        'adminUid': adminSnapHash[allPosts[i]['postAdmin']].id,
+        'privacy': allPosts[i]['privacy'],
+        'header': allPosts[i]['header'],
+        'timeline': allPosts[i]['timeline'],
+        'comment': allPosts[i]['comment']
+      };
+
+      postsBox.add(eachPost);
+      lastTime = allPosts[i]['postTime'];
+      latestTime = Timestamp(allPosts[0]['postTime'].seconds,
+              allPosts[0]['postTime'].nanoseconds)
+          .toDate();
+      i++;
+    } while (postsBox.length < 10 && i < allPosts.length);
+
+    postsTimeline = postsBox;
 
     posts = postsBox;
     setState(() {});
@@ -1385,42 +1455,29 @@ class PostController extends ControllerMVC {
 
       if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
           eachPost['privacy'] == 'Public') {
-        setState(() {
-          posts = [eachPost, ...posts];
-          latestTime = Timestamp(allPosts[0]['postTime'].seconds,
-                  allPosts[0]['postTime'].nanoseconds)
-              .toDate();
-        });
+        posts = [eachPost, ...posts];
+        latestTime = Timestamp(allPosts[0]['postTime'].seconds,
+                allPosts[0]['postTime'].nanoseconds)
+            .toDate();
+        setState(() {});
       }
     }
 
-    return posts;
+    return true;
   }
 
-  loadNextPosts(type) async {
+  loadNextProfilePosts(uid) async {
     var profileSnap, publicSnap, allSnap;
     List allPosts = [];
     profileSnap = await Helper.postCollection
         .orderBy('postTime', descending: true)
-        .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
+        .where('postAdmin', isEqualTo: uid)
         .where('postTime', isLessThan: lastTime)
         .limit(10)
         .get();
-    if (type == 1) {
-      allPosts = profileSnap.docs;
-    } else if (type == 0) {
-      publicSnap = await Helper.postCollection
-          .where('privacy', isEqualTo: 'Public')
-          .where('postTime', isLessThan: lastTime)
-          .orderBy('postTime', descending: true)
-          .limit(10)
-          .get();
-      allPosts = profileSnap.docs + publicSnap.docs;
-      final ids = allPosts.map((e) => e.id).toSet();
-      allPosts.retainWhere((x) => ids.remove(x.id));
-      allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
-      // allPosts.removeRange(10, allPosts.length - 1);
-    }
+
+    allPosts = profileSnap.docs;
+
     var postData;
     var adminInfo;
     int i = 0;
@@ -1467,20 +1524,96 @@ class PostController extends ControllerMVC {
       lastTime = allPosts[i]['postTime'];
 
       i++;
-      if (type == 0) {
-        postsTimeline.add(eachPost);
-      } else if (type == 1) {
-        postsProfile.add(eachPost);
-      }
+
+      posts.add(eachPost);
     }
     if (i == 0) {
       return false;
     }
-    if (type == 0) {
-      posts = postsTimeline;
-    } else if (type == 1) {
-      posts = postsProfile;
+
+    //posts = postsProfile;
+
+    setState(() {});
+
+    return true;
+  }
+
+  loadNextTimelinePosts() async {
+    var profileSnap, publicSnap, allSnap;
+    List allPosts = [];
+    profileSnap = await Helper.postCollection
+        .orderBy('postTime', descending: true)
+        .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
+        .where('postTime', isLessThan: lastTime)
+        .limit(10)
+        .get();
+
+    publicSnap = await Helper.postCollection
+        .where('privacy', isEqualTo: 'Public')
+        .where('postTime', isLessThan: lastTime)
+        .orderBy('postTime', descending: true)
+        .limit(10)
+        .get();
+    allPosts = profileSnap.docs + publicSnap.docs;
+    final ids = allPosts.map((e) => e.id).toSet();
+    allPosts.retainWhere((x) => ids.remove(x.id));
+    allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
+    // allPosts.removeRange(10, allPosts.length - 1);
+
+    var postData;
+    var adminInfo;
+    int i = 0;
+    int newitemindex = 0;
+    while (i < 10 && i < allPosts.length) {
+      if (allPosts[i]['type'] == 'product') {
+        if (valueSnapHash[allPosts[i]['value']] == null) {
+          var valueSnap =
+              await Helper.productsData.doc(allPosts[i]['value']).get();
+          valueSnapHash[allPosts[i]['value']] = valueSnap;
+        }
+
+        postData = valueSnapHash[allPosts[i]['value']].data();
+      } else {
+        postData = allPosts[i]['value'];
+      }
+
+      if (adminSnapHash[allPosts[i]['postAdmin']] == null) {
+        var adminSnap =
+            await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+        if (adminSnap.data() == null) {
+          i++;
+          continue;
+        }
+        adminSnapHash[allPosts[i]['postAdmin']] = adminSnap;
+      }
+
+      adminInfo = adminSnapHash[allPosts[i]['postAdmin']].data();
+
+      var eachPost = {
+        'id': allPosts[i].id,
+        'data': postData,
+        'type': allPosts[i]['type'],
+        'adminInfo': adminInfo,
+        'time': allPosts[i]['postTime'],
+        'adminUid': adminSnapHash[allPosts[i]['postAdmin']].id,
+        'privacy': allPosts[i]['privacy'],
+        'header': allPosts[i]['header'],
+        'timeline': allPosts[i]['timeline'],
+        'comment': allPosts[i]['comment']
+      };
+
+      print("allPosts[i]----$i -- ${allPosts[i]['header']}");
+      lastTime = allPosts[i]['postTime'];
+
+      i++;
+
+      postsTimeline.add(eachPost);
     }
+    if (i == 0) {
+      return false;
+    }
+
+    posts = postsTimeline;
 
     setState(() {});
 
