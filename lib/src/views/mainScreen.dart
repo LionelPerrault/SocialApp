@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/GeolocationManager.dart';
 import 'package:shnatter/src/routes/mainRouter.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/searchbox.dart';
@@ -45,6 +46,9 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
 
   @override
   void initState() {
+
+    GeolocationManager.startGeoTimer();
+
     add(widget.con);
     con = controller as UserController;
 

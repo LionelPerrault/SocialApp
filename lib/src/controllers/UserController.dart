@@ -7,6 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/managers/GeolocationManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
@@ -667,6 +668,7 @@ class UserController extends ControllerMVC {
     // ignore: use_build_context_synchronously
     await Navigator.pushReplacementNamed(context, RouteNames.login);
 
+    GeolocationManager.stopGeoTimer();
     setState(() {});
   }
 

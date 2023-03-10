@@ -69,22 +69,21 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     });
 
     con.posts = [];
-    con.getAllPost(0).then((value) {
+    con.getTimelinePost().then((value) {
       setState(() {
         loadingFlag = false;
       });
       postStream.listen((event) {
-        setState(() {
-          newPostNum = event.docs
-              .where((post) =>
-                  (post['postAdmin'] == UserManager.userInfo['uid'] ||
-                      post['privacy'] == 'Public') &&
-                  (Timestamp(post['postTime'].seconds,
-                          post['postTime'].nanoseconds)
-                      .toDate()
-                      .isAfter(con.latestTime)))
-              .length;
-        });
+        newPostNum = event.docs
+            .where((post) =>
+                (post['postAdmin'] == UserManager.userInfo['uid'] ||
+                    post['privacy'] == 'Public') &&
+                (Timestamp(
+                        post['postTime'].seconds, post['postTime'].nanoseconds)
+                    .toDate()
+                    .isAfter(con.latestTime)))
+            .length;
+        setState(() {});
       });
     });
   }
@@ -117,10 +116,10 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {
                       loadingFlag = true;
                     });
-                    nextPostFlag = await con.addNewPosts(newPostNum);
-                    newPostNum = 0;
+                    await con.addNewPosts(newPostNum);
 
-                    setState(() async {
+                    setState(() {
+                      newPostNum = 0;
                       loadingFlag = false;
                     });
                   },
@@ -153,27 +152,26 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     color: Colors.grey,
                   ),
                 )
-              : const SizedBox(),
-          SizedBox(
-            width: 600,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: con.posts
-                        .map((product) => PostCell(
-                              postInfo: product,
-                              routerChange: widget.routerChange,
-                            ))
-                        .toList(),
+              : SizedBox(
+                  width: 600,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: con.posts
+                              .map((product) => PostCell(
+                                    postInfo: product,
+                                    routerChange: widget.routerChange,
+                                  ))
+                              .toList(),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-          ),
+                ),
           loadingFlagBottom
               ? const SizedBox(
                   width: 50,
@@ -198,7 +196,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {
                       loadingFlagBottom = true;
                     });
-                    nextPostFlag = await con.loadNextPosts(0);
+                    nextPostFlag = await con.loadNextTimelinePosts();
                     setState(() {
                       loadingFlagBottom = false;
                     });

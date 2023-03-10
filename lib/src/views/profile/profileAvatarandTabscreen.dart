@@ -42,8 +42,8 @@ class ProfileAvatarandTabScreenState extends mvc
     {'title': 'Timeline', 'icon': Icons.tab},
     {'title': 'Friends', 'icon': Icons.group_sharp},
     {'title': 'Photos', 'icon': Icons.photo},
-    {'title': 'Videos', 'icon': Icons.video_call},
-    {'title': 'Likes', 'icon': Icons.flag},
+    // {'title': 'Videos', 'icon': Icons.video_call},
+    // {'title': 'Likes', 'icon': Icons.flag},
     {'title': 'Groups', 'icon': Icons.group_sharp},
     {'title': 'Events', 'icon': Icons.gif_box},
   ];
@@ -433,11 +433,13 @@ class ProfileAvatarandTabScreenState extends mvc
                               setState(() {});
                             },
                             child: Container(
-                              padding: const EdgeInsets.only(top: 30),
+                              padding: const EdgeInsets.only(
+                                top: 30,
+                              ),
                               width: (SizeConfig(context).screenWidth <
                                       SizeConfig.smallScreenSize)
-                                  ? 50
-                                  : 85,
+                                  ? 70
+                                  : 115,
                               child: Column(
                                 children: [
                                   Row(

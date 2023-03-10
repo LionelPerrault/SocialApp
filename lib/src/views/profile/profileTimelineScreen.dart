@@ -49,6 +49,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   int newPostNum = 0;
   bool nextPostFlag = true;
   late PostController postCon;
+  var profilePosts;
   //
   var userInfo = UserManager.userInfo;
   List<Map> mainInfoList = [];
@@ -126,8 +127,9 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
-    PostController().posts = [];
-    PostController().getAllPost(1).then((value) {
+    //PostController().posts = [];
+    PostController().getProfilePost(con.viewProfileUid).then((value) {
+      profilePosts = value;
       loadingFlag = false;
       setState(() {});
 
@@ -140,7 +142,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     .toDate()
                     .isAfter(PostController().latestTime)))
             .length;
-
+        print("newPostNum of profile is $newPostNum");
         setState(() {});
       });
     });
@@ -157,6 +159,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("conprofileid is ${con.viewProfileUid}");
+    print("userprofileid is ${UserManager.userInfo['uid']}");
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
@@ -180,8 +184,54 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   ),
                 ),
                 profileCompletion(),
-                MindPost(),
+                con.viewProfileUid == UserManager.userInfo['uid']
+                    ? MindPost()
+                    : const SizedBox(),
                 const Padding(padding: EdgeInsets.only(top: 20)),
+                newPostNum <= 0 ||
+                        con.viewProfileUid != UserManager.userInfo['uid']
+                    ? const SizedBox()
+                    : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(21.0)),
+                          minimumSize: const Size(240, 42),
+                          maximumSize: const Size(240, 42),
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            loadingFlag = true;
+                          });
+                          await PostController().addNewPosts(newPostNum);
+
+                          setState(() {
+                            newPostNum = 0;
+                            loadingFlag = false;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            const Padding(padding: EdgeInsets.only(top: 11.0)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                                  style: const TextStyle(
+                                      color: Color.fromARGB(255, 90, 90, 90),
+                                      fontFamily: 'var(--body-font-family)',
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 15),
+                                )
+                              ],
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 8.0)),
+                          ],
+                        ),
+                      ),
                 loadingFlag
                     ? const SizedBox(
                         width: 50,
@@ -190,28 +240,26 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           color: Colors.grey,
                         ),
                       )
-                    : const SizedBox(),
-                SizedBox(
-                  width: 600,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: PostController()
-                              .posts
-                              .map<Widget>((product) => PostCell(
-                                    postInfo: product,
-                                    routerChange: widget.routerChange,
-                                  ))
-                              .toList(),
+                    : SizedBox(
+                        width: 600,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: profilePosts
+                                    .map<Widget>((product) => PostCell(
+                                          postInfo: product,
+                                          routerChange: widget.routerChange,
+                                        ))
+                                    .toList(),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                      ),
                 loadingFlagBottom
                     ? const SizedBox(
                         width: 50,
@@ -222,7 +270,9 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                       )
                     : const SizedBox(),
                 loadingFlagBottom || loadingFlag || !nextPostFlag
-                    ? const SizedBox()
+                    ? !nextPostFlag
+                        ? Text("There is no more data to show")
+                        : const SizedBox()
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -237,8 +287,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                             loadingFlagBottom = true;
                           });
 
-                          nextPostFlag =
-                              await PostController().loadNextPosts(1);
+                          nextPostFlag = await PostController()
+                              .loadNextProfilePosts(con.viewProfileUid);
 
                           setState(() {
                             loadingFlagBottom = false;
@@ -299,8 +349,57 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                 ),
                 Column(
                   children: [
-                    MindPost(),
+                    con.viewProfileUid == UserManager.userInfo['uid']
+                        ? MindPost()
+                        : const SizedBox(),
                     const Padding(padding: EdgeInsets.only(top: 20)),
+                    newPostNum <= 0 ||
+                            con.viewProfileUid != UserManager.userInfo['uid']
+                        ? const SizedBox()
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(21.0)),
+                              minimumSize: const Size(240, 42),
+                              maximumSize: const Size(240, 42),
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                loadingFlag = true;
+                              });
+                              await PostController().addNewPosts(newPostNum);
+
+                              setState(() {
+                                newPostNum = 0;
+                                loadingFlag = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 11.0)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 90, 90, 90),
+                                          fontFamily: 'var(--body-font-family)',
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 8.0)),
+                              ],
+                            ),
+                          ),
                     loadingFlag
                         ? const SizedBox(
                             width: 50,
@@ -309,28 +408,26 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               color: Colors.grey,
                             ),
                           )
-                        : const SizedBox(),
-                    SizedBox(
-                      width: 600,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: PostController()
-                                  .posts
-                                  .map<Widget>((product) => PostCell(
-                                        postInfo: product,
-                                        routerChange: widget.routerChange,
-                                      ))
-                                  .toList(),
+                        : SizedBox(
+                            width: 600,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: profilePosts
+                                        .map<Widget>((product) => PostCell(
+                                              postInfo: product,
+                                              routerChange: widget.routerChange,
+                                            ))
+                                        .toList(),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
+                          ),
                     loadingFlagBottom
                         ? const SizedBox(
                             width: 50,
@@ -340,8 +437,10 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                             ),
                           )
                         : const SizedBox(),
-                    loadingFlagBottom || loadingFlag
-                        ? const SizedBox()
+                    loadingFlagBottom || loadingFlag || !nextPostFlag
+                        ? !nextPostFlag
+                            ? Text("There is no more data to show")
+                            : const SizedBox()
                         : ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
@@ -356,7 +455,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                                 loadingFlagBottom = true;
                               });
 
-                              await PostController().loadNextPosts(1);
+                              nextPostFlag = await PostController()
+                                  .loadNextProfilePosts(con.viewProfileUid);
 
                               setState(() {
                                 loadingFlagBottom = false;
