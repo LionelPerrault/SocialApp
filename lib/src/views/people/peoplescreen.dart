@@ -83,6 +83,8 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
             InkWell(
                 onTap: () async {
                   con.tabName = 'Discover';
+                  // reload again.
+
                   setState(() {});
                 },
                 child: Container(
