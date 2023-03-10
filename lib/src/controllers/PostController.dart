@@ -1129,7 +1129,10 @@ class PostController extends ControllerMVC {
         var data = doc[i];
         var adminInfo =
             await ProfileController().getUserInfo(data['productAdmin']['uid']);
-        allProduct.add({'data': data.data(), 'id': id, 'adminInfo': adminInfo});
+        if (adminInfo != null) {
+          allProduct
+              .add({'data': data.data(), 'id': id, 'adminInfo': adminInfo});
+        }
         setState(() {});
       }
       print('Now you get all products');
