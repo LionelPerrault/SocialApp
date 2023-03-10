@@ -70,10 +70,8 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
   }
 
   eventInterestedFunc() async {
-    print(con.event['eventAdmin'][0]['uid']);
     var eventAdminInfo = await ProfileController()
         .getUserInfo(con.event['eventAdmin'][0]['uid']);
-    print(eventAdminInfo);
     if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         con.event['groupAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
@@ -159,17 +157,45 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               : Image.network(con.event['eventPicture'], fit: BoxFit.cover),
         ),
         Container(
-            alignment: Alignment.topLeft,
-            margin: const EdgeInsets.only(left: 50, top: 30),
-            child: GestureDetector(
-              onTap: () {
-                uploadImage('profile_cover');
-              },
-              child: const Icon(
-                Icons.photo_camera,
-                size: 25,
-              ),
-            )),
+          alignment: Alignment.topLeft,
+          margin: const EdgeInsets.only(left: 50, top: 30),
+          child: kIsWeb
+              ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(4),
+                    backgroundColor: Colors.grey[300],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13)),
+                    minimumSize: const Size(26, 26),
+                    maximumSize: const Size(26, 26),
+                  ),
+                  onPressed: () {
+                    uploadImage('profile_cover');
+                  },
+                  child: const Icon(Icons.camera_enhance_rounded,
+                      color: Colors.black, size: 16.0),
+                )
+              : PopupMenuButton(
+                  onSelected: (value) {
+                    _onMenuItemSelected(value, 'profile_cover');
+                  },
+                  child: const Icon(Icons.camera_enhance_rounded,
+                      color: Colors.black, size: 16.0),
+                  itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 1,
+                          child: Text(
+                            'Camera',
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 2,
+                          child: Text(
+                            "Gallery",
+                          ),
+                        )
+                      ]),
+        ),
         Container(
             width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
                 ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
@@ -454,27 +480,34 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     );
   }
 
-  Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
-    XFile? pickedFile;
-    if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-    } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
+  Future<XFile> chooseImage(int value) async {
+    final imagePicker = ImagePicker();
 
-      //if (permissionStatus.isGranted) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
+    if (value == 1 && !kIsWeb) {
+      XFile? pickedFile;
+      if (kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      } else {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      }
+      return pickedFile!;
+    } else {
+      XFile? pickedFile;
+      if (kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      } else {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      }
+      return pickedFile!;
     }
-    return pickedFile!;
   }
 
   uploadFile(XFile? pickedFile, type) async {
@@ -557,7 +590,13 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
   }
 
   uploadImage(type) async {
-    XFile? pickedFile = await chooseImage();
+    XFile? pickedFile = await chooseImage(2);
+    uploadFile(pickedFile, type);
+  }
+
+  Future<void> _onMenuItemSelected(int value, type) async {
+    XFile? pickedFile = await chooseImage(value);
+
     uploadFile(pickedFile, type);
   }
 }
