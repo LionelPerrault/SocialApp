@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -7,6 +6,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 
+// ignore: must_be_immutable
 class GroupTimelineScreen extends StatefulWidget {
   Function onClick;
   GroupTimelineScreen({Key? key, required this.onClick})

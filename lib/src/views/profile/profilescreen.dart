@@ -8,10 +8,8 @@ import 'package:shnatter/src/views/profile/profileAvatarandTabscreen.dart';
 import 'package:shnatter/src/views/profile/profileEventsScreen.dart';
 import 'package:shnatter/src/views/profile/profileFriendsScreen.dart';
 import 'package:shnatter/src/views/profile/profileGroupsScreen.dart';
-import 'package:shnatter/src/views/profile/profileLikesScreen.dart';
 import 'package:shnatter/src/views/profile/profilePhotosScreen.dart';
 import 'package:shnatter/src/views/profile/profileTimelineScreen.dart';
-import 'package:shnatter/src/views/profile/profileVideosScreen.dart';
 import 'package:shnatter/src/widget/yesNoWidget.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -37,7 +35,6 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   late ProfileController con;
   @override
   void initState() {
-    print("call load data is ${widget.userName}");
     add(widget.con);
     con = controller as ProfileController;
     super.initState();

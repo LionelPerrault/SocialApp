@@ -186,15 +186,6 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                           ),
                         )
                       ]),
-          //           child: GestureDetector(
-          //   onTap: () {
-          //     uploadImage('cover');
-          //   },
-          //   child: const Icon(
-          //     Icons.photo_camera,
-          //     size: 25,
-          //   ),
-          // )
         ),
         Container(
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
@@ -331,7 +322,8 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
       children: [
         Container(
           margin: const EdgeInsets.only(left: 20),
-          child: Row(children: [
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             Row(
               children: [
                 Text(
@@ -354,7 +346,6 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                 )
               ],
             ),
-            const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Row(
               children: [
                 ElevatedButton(
@@ -369,10 +360,10 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                       groupJoinFunc();
                     },
                     child: joinStatus
-                        ? Container(
+                        ? const SizedBox(
                             width: 10,
                             height: 10,
-                            child: const CircularProgressIndicator(
+                            child: CircularProgressIndicator(
                               color: Colors.grey,
                             ),
                           )

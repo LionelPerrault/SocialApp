@@ -39,13 +39,15 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
   Widget build(BuildContext context) {
     return Column(children: [
       mainTabs(),
-      tab == 'Members' ? MembersData() : InvitesData()
+      // tab == 'Members' ? MembersData() : InvitesData()
     ]);
   }
 
   Widget mainTabs() {
     return Container(
-      width: SizeConfig(context).screenWidth - 60,
+      width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+          ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
+          : SizeConfig(context).screenWidth,
       height: 100,
       margin: const EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
@@ -86,7 +88,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                       height: 40,
                       color: tab == 'Members'
                           ? Colors.white
-                          : Color.fromRGBO(240, 240, 240, 1),
+                          : const Color.fromRGBO(240, 240, 240, 1),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -97,7 +99,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                           badges.Badge(
                             badgeContent: Text(
                               '${con.group["groupJoined"].length}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                             badgeStyle: const badges.BadgeStyle(
                               badgeColor: Color.fromARGB(255, 23, 162, 184),
@@ -120,7 +122,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                       height: 40,
                       color: tab == 'Invites'
                           ? Colors.white
-                          : Color.fromRGBO(240, 240, 240, 1),
+                          : const Color.fromRGBO(240, 240, 240, 1),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
@@ -139,6 +141,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget MembersData() {
     List members = con.group['groupJoined'];
     return members.isEmpty
@@ -152,34 +155,32 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
         : Container(
             child: Row(
             children: [
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: SizeConfig(context).screenWidth > 800
-                      ? 4
-                      : SizeConfig(context).screenWidth > 600
-                          ? 3
-                          : SizeConfig(context).screenWidth > 210
-                              ? 2
-                              : 1,
-                  childAspectRatio: 1 / 1,
-                  padding: const EdgeInsets.all(4.0),
-                  mainAxisSpacing: 4.0,
-                  shrinkWrap: true,
-                  crossAxisSpacing: 4.0,
-                  children: members
-                      .map((user) => UserCell(
-                          groupTap: () {
-                            ProfileController().updateProfile(user["userName"]);
-                            widget.routerChange({
-                              'router': RouteNames.profile,
-                              'subRouter': user["userName"],
-                            });
-                          },
-                          picture: user['avatar'] ?? '',
-                          header: user['fullName']))
-                      .toList(),
-                ),
-              )
+              GridView.count(
+                crossAxisCount: SizeConfig(context).screenWidth > 800
+                    ? 4
+                    : SizeConfig(context).screenWidth > 600
+                        ? 3
+                        : SizeConfig(context).screenWidth > 210
+                            ? 2
+                            : 1,
+                childAspectRatio: 1 / 1,
+                padding: const EdgeInsets.all(4.0),
+                mainAxisSpacing: 4.0,
+                shrinkWrap: true,
+                crossAxisSpacing: 4.0,
+                children: members
+                    .map((user) => UserCell(
+                        groupTap: () {
+                          ProfileController().updateProfile(user["userName"]);
+                          widget.routerChange({
+                            'router': RouteNames.profile,
+                            'subRouter': user["userName"],
+                          });
+                        },
+                        picture: user['avatar'] ?? '',
+                        header: user['fullName']))
+                    .toList(),
+              ),
             ],
           ));
   }
@@ -245,15 +246,15 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
             children: [
               Container(
                 width: 160,
-                margin: EdgeInsets.only(top: 50),
-                padding: EdgeInsets.only(top: 50),
+                margin: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 50),
                 decoration: BoxDecoration(
                   color: Colors.grey[350],
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Column(
                   children: [
-                    Padding(padding: EdgeInsets.only(top: 10)),
+                    const Padding(padding: EdgeInsets.only(top: 10)),
                     Container(
                       alignment: Alignment.center,
                       width: 150,
@@ -270,7 +271,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                         ]),
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10))
+                    const Padding(padding: EdgeInsets.only(top: 10))
                   ],
                 ),
               ),
@@ -278,7 +279,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                 alignment: Alignment.topCenter,
                 width: 100,
                 height: 100,
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50)),
