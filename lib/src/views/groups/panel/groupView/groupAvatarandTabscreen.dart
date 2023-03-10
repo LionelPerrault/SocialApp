@@ -15,6 +15,7 @@ import 'dart:io' show File;
 
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
+// ignore: must_be_immutable
 class GroupAvatarandTabScreen extends StatefulWidget {
   Function onClick;
   GroupAvatarandTabScreen({Key? key, required this.onClick})
@@ -27,7 +28,7 @@ class GroupAvatarandTabScreen extends StatefulWidget {
 
 class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
     with SingleTickerProviderStateMixin {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   double width = 0;
   double itemWidth = 0;
   var tap = 'Timeline';
@@ -147,17 +148,54 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
               : Image.network(con.group['groupCover'], fit: BoxFit.cover),
         ),
         Container(
-            alignment: Alignment.topLeft,
-            margin: const EdgeInsets.only(left: 50, top: 30),
-            child: GestureDetector(
-              onTap: () {
-                uploadImage('cover');
-              },
-              child: const Icon(
-                Icons.photo_camera,
-                size: 25,
-              ),
-            )),
+          alignment: Alignment.topLeft,
+          margin: const EdgeInsets.only(left: 50, top: 30),
+          child: kIsWeb
+              ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(4),
+                    backgroundColor: Colors.grey[300],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13)),
+                    minimumSize: const Size(26, 26),
+                    maximumSize: const Size(26, 26),
+                  ),
+                  onPressed: () {
+                    uploadImage('cover');
+                  },
+                  child: const Icon(Icons.photo_camera,
+                      color: Colors.black, size: 16.0),
+                )
+              : PopupMenuButton(
+                  onSelected: (value) {
+                    _onMenuItemSelected(value, 'cover');
+                  },
+                  child: const Icon(Icons.photo_camera,
+                      color: Colors.black, size: 16.0),
+                  itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 1,
+                          child: Text(
+                            'Camera',
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 2,
+                          child: Text(
+                            "Gallery",
+                          ),
+                        )
+                      ]),
+          //           child: GestureDetector(
+          //   onTap: () {
+          //     uploadImage('cover');
+          //   },
+          //   child: const Icon(
+          //     Icons.photo_camera,
+          //     size: 25,
+          //   ),
+          // )
+        ),
         Container(
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
               ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
