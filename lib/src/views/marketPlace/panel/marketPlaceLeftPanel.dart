@@ -127,6 +127,7 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
             ),
             onPressed: () {
               (showDialog(
+                  barrierDismissible: false,
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                       title: Row(

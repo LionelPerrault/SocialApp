@@ -1,31 +1,14 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/groups/panel/allgroups.dart';
 import 'package:shnatter/src/views/groups/panel/joinedgroups.dart';
 import 'package:shnatter/src/views/groups/panel/mygroups.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
-import 'package:shnatter/src/views/panel/rightpanel.dart';
 import 'package:shnatter/src/widget/createGroupWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
-import '../../widget/mprimary_button.dart';
-import '../../widget/list_text.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/gestures.dart';
-import '../box/notification.dart';
 
+// ignore: must_be_immutable
 class GroupsScreen extends StatefulWidget {
   GroupsScreen({Key? key, required this.routerChange})
       : con = PostController(),
@@ -76,6 +59,7 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
           ),
           onPressed: () {
             (showDialog(
+                barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                     title: Row(
@@ -139,40 +123,39 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-          ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
-          : SizeConfig(context).screenWidth,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              color: Colors.blue,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      makePane("Discover"),
-                      makePane("Joined Group"),
-                      makePane("My Groups")
-                    ],
-                  ),
-                  button()
-                ],
+        width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+            ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
+            : SizeConfig(context).screenWidth,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        makePane("Discover"),
+                        makePane("Joined Group"),
+                        makePane("My Groups")
+                      ],
+                    ),
+                    button()
+                  ],
+                ),
               ),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            groupSubRoute == 'Discover'
-                ? AllGroup(routerChange: widget.routerChange)
-                : const SizedBox(),
-            groupSubRoute == 'Joined Group'
-                ? JoinedGroups(routerChange: widget.routerChange)
-                : const SizedBox(),
-            groupSubRoute == 'My Groups'
-                ? MyGroups(routerChange: widget.routerChange)
-                : const SizedBox(),
-          ]),
-    );
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              groupSubRoute == 'Discover'
+                  ? AllGroup(routerChange: widget.routerChange)
+                  : const SizedBox(),
+              groupSubRoute == 'Joined Group'
+                  ? JoinedGroups(routerChange: widget.routerChange)
+                  : const SizedBox(),
+              groupSubRoute == 'My Groups'
+                  ? MyGroups(routerChange: widget.routerChange)
+                  : const SizedBox(),
+            ]));
   }
 }

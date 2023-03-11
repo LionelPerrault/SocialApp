@@ -101,10 +101,10 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                             ),
                             height: SizeConfig(context).screenWidth <
                                     SizeConfig.smallScreenSize
-                                ? 687
+                                ? 700
                                 : con.failRegister == ''
                                     ? 600
-                                    : 630,
+                                    : 650,
                             decoration: const BoxDecoration(
                               color: Color.fromRGBO(0, 0, 0, 1),
                               borderRadius:
@@ -343,6 +343,22 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                   ),
                                                   onchange: (value) async {
                                                     signUpUserInfo['password'] =
+                                                        value;
+                                                    checkAllForms();
+                                                    setState(() {});
+                                                  }),
+                                              passwordTextField(
+                                                  obscureText: isObscure,
+                                                  label: 'Confirm Password',
+                                                  initialValue: signUpUserInfo[
+                                                      'confirmPassword'],
+                                                  icon: const Icon(
+                                                    Icons.key,
+                                                    color: Colors.white,
+                                                  ),
+                                                  onchange: (value) async {
+                                                    signUpUserInfo[
+                                                            'confirmPassword'] =
                                                         value;
                                                     checkAllForms();
                                                     setState(() {});

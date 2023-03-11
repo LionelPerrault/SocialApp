@@ -11,6 +11,7 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
@@ -34,6 +35,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
   late PostController con;
   var loading = false;
   bool payLoading = false;
+  bool isOwner = false;
   @override
   void initState() {
     add(widget.con);
@@ -108,8 +110,8 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
       children: [
         Container(
           alignment: Alignment.center,
-          width: 200,
-          height: 260,
+          width: SizeConfig(context).screenWidth > 600 ? 200 : 180,
+          height: 280,
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
@@ -158,10 +160,10 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                           groupJoinFunc();
                         },
                         child: loading
-                            ? Container(
+                            ? const SizedBox(
                                 width: 10,
                                 height: 10,
-                                child: const CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   color: Colors.grey,
                                 ),
                               )
@@ -186,13 +188,13 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                                       widget.groupData['joined']
                                           ? 'Joined'
                                           : 'Join',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold)),
                                 ],
                               )),
-                    Padding(padding: EdgeInsets.only(top: 30))
+                    const Padding(padding: EdgeInsets.only(top: 30))
                   ],
                 ),
               ),

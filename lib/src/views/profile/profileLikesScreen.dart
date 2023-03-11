@@ -44,7 +44,7 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
         .then((value) => {
               myPages = value,
               getFlag = false,
-              print(myPages),
+              print("myPages----------$myPages"),
               setState(() {}),
             });
   }

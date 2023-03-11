@@ -4,19 +4,22 @@ import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/profile/model/friends.dart';
 import '../../utils/size_config.dart';
 import '../../controllers/ProfileController.dart';
 
 class ProfileFriendScreen extends StatefulWidget {
   Function onClick;
-  ProfileFriendScreen({
-    Key? key,
-    required this.onClick,
-    required this.routerChangeProile,
-  })  : con = PeopleController(),
+  ProfileFriendScreen(
+      {Key? key,
+      required this.onClick,
+      required this.routerChangeProile,
+      required this.profileName})
+      : //con = PeopleController(),
         super(key: key);
-  final PeopleController con;
+  //final PeopleController con;
   Function routerChangeProile;
+  String profileName;
   @override
   State createState() => ProfileFriendScreenState();
 }
@@ -35,16 +38,19 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
   var userInfo = UserManager.userInfo;
   var profileCon = ProfileController();
   List<Map> mainInfoList = [];
+  Friends friendModel = Friends();
   @override
   void initState() {
     super.initState();
-    add(widget.con);
-    con = controller as PeopleController;
-    con.getFriends('');
+    //add(widget.con);
+    //con = controller as PeopleController;
+
+    friendModel.getFriends(userInfo['userName']).then((value) {
+      setState(() {});
+    });
     _gotoHome();
   }
 
-  late PeopleController con;
   void _gotoHome() {
     Future.delayed(Duration.zero, () {
       width = SizeConfig(context).screenWidth - 260;
@@ -60,11 +66,10 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
             const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
         child: Column(children: [
           mainTabs(),
-          tab == 'Friends'
-              ? friendsData()
-              : tab == 'Follows'
-                  ? followsData()
-                  : followingsData()
+          friendsData()
+          //: tab == 'Follows'
+          //    ? followsData()
+          //    : followingsData()
         ]));
   }
 
@@ -170,7 +175,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
 
   Widget friendsData() {
     var screenWidth = SizeConfig(context).screenWidth;
-    return con.friends.isEmpty
+    return friendModel.friends.isEmpty
         ? Container(
             margin: const EdgeInsets.only(left: 10),
             height: SizeConfig(context).screenHeight * 0.2,
@@ -199,49 +204,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                     mainAxisSpacing: 4.0,
                     shrinkWrap: true,
                     crossAxisSpacing: 4.0,
-                    children: con.friends
-                        .map((friend) => friendCell(friend))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          );
-    ;
-  }
-
-  Widget followingsData() {
-    var screenWidth = SizeConfig(context).screenWidth;
-    return con.requestFriends.isEmpty
-        ? Container(
-            margin: const EdgeInsets.only(left: 10),
-            height: SizeConfig(context).screenHeight * 0.2,
-            color: Colors.white,
-            alignment: Alignment.center,
-            child: Text(
-                '${profileCon.viewProfileFullName} doesn`t have followings',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
-        : Container(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: screenWidth > 800
-                        ? 4
-                        : screenWidth > 600
-                            ? 3
-                            : screenWidth > 210
-                                ? 2
-                                : 1,
-                    childAspectRatio: 3 / 2.5,
-                    padding: const EdgeInsets.only(top: 30),
-                    mainAxisSpacing: 4.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 4.0,
-                    children: con.requestFriends
+                    children: friendModel.friends
                         .map((friend) => friendCell(friend))
                         .toList(),
                   ),
@@ -251,46 +214,87 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
           );
   }
 
-  Widget followsData() {
-    var screenWidth = SizeConfig(context).screenWidth;
-    return con.sendFriends.isEmpty
-        ? Container(
-            margin: const EdgeInsets.only(left: 10),
-            height: SizeConfig(context).screenHeight * 0.2,
-            color: Colors.white,
-            alignment: Alignment.center,
-            child: Text(
-                '${profileCon.viewProfileFullName} doesn`t have followers',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
-        : Container(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: screenWidth > 800
-                        ? 4
-                        : screenWidth > 600
-                            ? 3
-                            : screenWidth > 210
-                                ? 2
-                                : 1,
-                    childAspectRatio: 3 / 3,
-                    padding: const EdgeInsets.only(top: 30),
-                    mainAxisSpacing: 4.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 4.0,
-                    children: con.sendFriends
-                        .map((friend) => friendCell(friend))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          );
-  }
+  // Widget followingsData() {
+  //   var screenWidth = SizeConfig(context).screenWidth;
+  //   return friendModel.requestFriends.isEmpty
+  //       ? Container(
+  //           margin: const EdgeInsets.only(left: 10),
+  //           height: SizeConfig(context).screenHeight * 0.2,
+  //           color: Colors.white,
+  //           alignment: Alignment.center,
+  //           child: Text(
+  //               '${profileCon.viewProfileFullName} doesn`t have followings',
+  //               style:
+  //                   const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
+  //         )
+  //       : Container(
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: <Widget>[
+  //               Expanded(
+  //                 child: GridView.count(
+  //                   crossAxisCount: screenWidth > 800
+  //                       ? 4
+  //                       : screenWidth > 600
+  //                           ? 3
+  //                           : screenWidth > 210
+  //                               ? 2
+  //                               : 1,
+  //                   childAspectRatio: 3 / 2.5,
+  //                   padding: const EdgeInsets.only(top: 30),
+  //                   mainAxisSpacing: 4.0,
+  //                   shrinkWrap: true,
+  //                   crossAxisSpacing: 4.0,
+  //                   children: con.requestFriends
+  //                       .map((friend) => friendCell(friend))
+  //                       .toList(),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  // }
+
+  // Widget followsData() {
+  //   var screenWidth = SizeConfig(context).screenWidth;
+  //   return con.sendFriends.isEmpty
+  //       ? Container(
+  //           margin: const EdgeInsets.only(left: 10),
+  //           height: SizeConfig(context).screenHeight * 0.2,
+  //           color: Colors.white,
+  //           alignment: Alignment.center,
+  //           child: Text(
+  //               '${profileCon.viewProfileFullName} doesn`t have followers',
+  //               style:
+  //                   const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
+  //         )
+  //       : Container(
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: <Widget>[
+  //               Expanded(
+  //                 child: GridView.count(
+  //                   crossAxisCount: screenWidth > 800
+  //                       ? 4
+  //                       : screenWidth > 600
+  //                           ? 3
+  //                           : screenWidth > 210
+  //                               ? 2
+  //                               : 1,
+  //                   childAspectRatio: 3 / 3,
+  //                   padding: const EdgeInsets.only(top: 30),
+  //                   mainAxisSpacing: 4.0,
+  //                   shrinkWrap: true,
+  //                   crossAxisSpacing: 4.0,
+  //                   children: con.sendFriends
+  //                       .map((friend) => friendCell(friend))
+  //                       .toList(),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  // }
 
   Widget friendCell(value) {
     var friendUserName = value['requester'];
@@ -302,7 +306,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
       alignment: Alignment.center,
       margin: EdgeInsets.only(left: 10),
       width: 200,
-      height: 110,
+      height: 100,
       child: Stack(
         alignment: Alignment.topCenter,
         children: [

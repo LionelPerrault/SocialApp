@@ -148,7 +148,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
       setState(() => {
             searchPoint = LatLng(position.latitude, position.longitude),
             choosePoint = LatLng(position.latitude, position.longitude),
-            searchPoint = const LatLng(47.3707688, 8.5110079)
+            //searchPoint = const LatLng(47.3707688, 8.5110079)
             //searchPoint = LatLng(48.84311, 2.345817)
           });
       Helper.updateGeoPoint(searchPoint.latitude, searchPoint.longitude);
@@ -252,6 +252,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
               title: '${data['firstName']} ${data['lastName']}',
               snippet: ''),
           onTap: () async {
+            ProfileController().updateProfile(data["userName"]);
             widget.routerChange(
                 {'router': RouteNames.profile, 'subRouter': data['userName']});
           });

@@ -47,8 +47,9 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   bool loadingFlag = false;
   bool loadingFlagBottom = false;
   int newPostNum = 0;
-  int nextPostNum = 0;
+  bool nextPostFlag = true;
   late PostController postCon;
+  var profilePosts;
   //
   var userInfo = UserManager.userInfo;
   List<Map> mainInfoList = [];
@@ -126,24 +127,22 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
-    PostController().getAllPost(1).then((value) {
+    //PostController().posts = [];
+    PostController().getProfilePost(con.viewProfileUid).then((value) {
+      profilePosts = value;
       loadingFlag = false;
       setState(() {});
-      // nextPostNum = PostController().allposts - 10;
-      postStream.listen((event) {
-        print('difference');
-        newPostNum = event.docs
-                .where((post) =>
-                    (post['postAdmin'] == UserManager.userInfo['uid']))
-                .length -
-            PostController().allposts;
 
-        nextPostNum = event.docs
-                .where((post) =>
-                    (post['postAdmin'] == UserManager.userInfo['uid']))
-                .length -
-            10;
-        print("nextPostNum is $nextPostNum");
+      postStream.listen((event) {
+        newPostNum = event.docs
+            .where((post) =>
+                (post['postAdmin'] == UserManager.userInfo['uid']) &&
+                (Timestamp(
+                        post['postTime'].seconds, post['postTime'].nanoseconds)
+                    .toDate()
+                    .isAfter(PostController().latestTime)))
+            .length;
+        print("newPostNum of profile is $newPostNum");
         setState(() {});
       });
     });
@@ -160,6 +159,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("conprofileid is ${con.viewProfileUid}");
+    print("userprofileid is ${UserManager.userInfo['uid']}");
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
@@ -183,48 +184,12 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   ),
                 ),
                 profileCompletion(),
-                MindPost(),
+                con.viewProfileUid == UserManager.userInfo['uid']
+                    ? MindPost()
+                    : const SizedBox(),
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                loadingFlag
-                    ? const SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    : const SizedBox(),
-                SizedBox(
-                  width: 600,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: PostController()
-                              .posts
-                              .map<Widget>((product) => PostCell(
-                                    postInfo: product,
-                                    routerChange: widget.routerChange,
-                                  ))
-                              .toList(),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                loadingFlagBottom
-                    ? const SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    : const SizedBox(),
-                nextPostNum <= 0 || loadingFlagBottom
+                newPostNum <= 0 ||
+                        con.viewProfileUid != UserManager.userInfo['uid']
                     ? const SizedBox()
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -236,14 +201,98 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           maximumSize: const Size(240, 42),
                         ),
                         onPressed: () async {
-                          setState(() {});
-                          loadingFlagBottom = true;
-                          var newPostNumP = nextPostNum > 10 ? 10 : nextPostNum;
-                          await PostController().loadNextPosts(newPostNumP, 1);
-                          //await con.getAllPost();
-                          nextPostNum = nextPostNum - newPostNumP;
-                          loadingFlagBottom = false;
-                          setState(() {});
+                          setState(() {
+                            loadingFlag = true;
+                          });
+                          await PostController().addNewPosts(newPostNum);
+
+                          setState(() {
+                            newPostNum = 0;
+                            loadingFlag = false;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            const Padding(padding: EdgeInsets.only(top: 11.0)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                                  style: const TextStyle(
+                                      color: Color.fromARGB(255, 90, 90, 90),
+                                      fontFamily: 'var(--body-font-family)',
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 15),
+                                )
+                              ],
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 8.0)),
+                          ],
+                        ),
+                      ),
+                loadingFlag
+                    ? const SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )
+                    : SizedBox(
+                        width: 600,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: profilePosts
+                                    .map<Widget>((product) => PostCell(
+                                          postInfo: product,
+                                          routerChange: widget.routerChange,
+                                        ))
+                                    .toList(),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                loadingFlagBottom
+                    ? const SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey,
+                        ),
+                      )
+                    : const SizedBox(),
+                loadingFlagBottom || loadingFlag || !nextPostFlag
+                    ? !nextPostFlag
+                        ? Text("There is no more data to show")
+                        : const SizedBox()
+                    : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(21.0)),
+                          minimumSize: const Size(240, 42),
+                          maximumSize: const Size(240, 42),
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            loadingFlagBottom = true;
+                          });
+
+                          nextPostFlag = await PostController()
+                              .loadNextProfilePosts(con.viewProfileUid);
+
+                          setState(() {
+                            loadingFlagBottom = false;
+                          });
                         },
                         child: Column(
                           children: [
@@ -300,48 +349,12 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                 ),
                 Column(
                   children: [
-                    MindPost(),
+                    con.viewProfileUid == UserManager.userInfo['uid']
+                        ? MindPost()
+                        : const SizedBox(),
                     const Padding(padding: EdgeInsets.only(top: 20)),
-                    loadingFlag
-                        ? const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : const SizedBox(),
-                    SizedBox(
-                      width: 600,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: PostController()
-                                  .posts
-                                  .map<Widget>((product) => PostCell(
-                                        postInfo: product,
-                                        routerChange: widget.routerChange,
-                                      ))
-                                  .toList(),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    loadingFlagBottom
-                        ? const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : const SizedBox(),
-                    nextPostNum <= 0 || loadingFlagBottom
+                    newPostNum <= 0 ||
+                            con.viewProfileUid != UserManager.userInfo['uid']
                         ? const SizedBox()
                         : ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -353,16 +366,101 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               maximumSize: const Size(240, 42),
                             ),
                             onPressed: () async {
-                              setState(() {});
-                              loadingFlagBottom = true;
-                              var newPostNumP =
-                                  nextPostNum > 10 ? 10 : nextPostNum;
-                              await PostController()
-                                  .loadNextPosts(newPostNumP, 1);
-                              //await con.getAllPost();
-                              nextPostNum = nextPostNum - newPostNumP;
-                              loadingFlagBottom = false;
-                              setState(() {});
+                              setState(() {
+                                loadingFlag = true;
+                              });
+                              await PostController().addNewPosts(newPostNum);
+
+                              setState(() {
+                                newPostNum = 0;
+                                loadingFlag = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 11.0)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 90, 90, 90),
+                                          fontFamily: 'var(--body-font-family)',
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 8.0)),
+                              ],
+                            ),
+                          ),
+                    loadingFlag
+                        ? const SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey,
+                            ),
+                          )
+                        : SizedBox(
+                            width: 600,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: profilePosts
+                                        .map<Widget>((product) => PostCell(
+                                              postInfo: product,
+                                              routerChange: widget.routerChange,
+                                            ))
+                                        .toList(),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                    loadingFlagBottom
+                        ? const SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey,
+                            ),
+                          )
+                        : const SizedBox(),
+                    loadingFlagBottom || loadingFlag || !nextPostFlag
+                        ? !nextPostFlag
+                            ? Text("There is no more data to show")
+                            : const SizedBox()
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(21.0)),
+                              minimumSize: const Size(240, 42),
+                              maximumSize: const Size(240, 42),
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                loadingFlagBottom = true;
+                              });
+
+                              nextPostFlag = await PostController()
+                                  .loadNextProfilePosts(con.viewProfileUid);
+
+                              setState(() {
+                                loadingFlagBottom = false;
+                              });
                             },
                             child: Column(
                               children: [

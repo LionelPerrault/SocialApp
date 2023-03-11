@@ -125,43 +125,43 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                                 routerChange: widget.routerChange,
                               )
                             : con.tab == 'Friends'
-                                ? ProfileFriendScreen(onClick: (value) {
-                                    con.tab = value;
-                                    setState(() {});
-                                  }, routerChangeProile: (val) {
-                                    widget.routerChange(val);
-                                  })
+                                ? ProfileFriendScreen(
+                                    profileName: widget.userName,
+                                    onClick: (value) {
+                                      con.tab = value;
+                                      setState(() {});
+                                    },
+                                    routerChangeProile: (val) {
+                                      widget.routerChange(val);
+                                    })
                                 : con.tab == 'Photos'
                                     ? ProfilePhotosScreen(onClick: (value) {
                                         con.tab = value;
                                         setState(() {});
                                       })
-                                    : con.tab == 'Videos'
-                                        ? ProfileVideosScreen(onClick: (value) {
-                                            con.tab = value;
-                                            setState(() {});
-                                          })
-                                        : con.tab == 'Likes'
-                                            ? ProfileLikesScreen(
-                                                onClick: (value) {
-                                                  con.tab = value;
-                                                  setState(() {});
-                                                },
-                                                routerChange:
-                                                    widget.routerChange,
-                                              )
-                                            : con.tab == 'Groups'
-                                                ? ProfileGroupsScreen(
-                                                    onClick: (value) {
-                                                      con.tab = value;
-                                                      setState(() {});
-                                                    },
-                                                    routerChange:
-                                                        widget.routerChange,
-                                                  )
-                                                : ProfileEventsScreen(
-                                                    routerChange:
-                                                        widget.routerChange)
+                                    // : con.tab == 'Videos'
+                                    //     ? ProfileVideosScreen(onClick: (value) {
+                                    //         con.tab = value;
+                                    //         setState(() {});
+                                    //       })
+                                    // : con.tab == 'Likes'
+                                    //     ? ProfileLikesScreen(
+                                    //         onClick: (value) {
+                                    //           con.tab = value;
+                                    //           setState(() {});
+                                    //         },
+                                    //         routerChange: widget.routerChange,
+                                    //       )
+                                    : con.tab == 'Groups'
+                                        ? ProfileGroupsScreen(
+                                            onClick: (value) {
+                                              con.tab = value;
+                                              setState(() {});
+                                            },
+                                            routerChange: widget.routerChange,
+                                          )
+                                        : ProfileEventsScreen(
+                                            routerChange: widget.routerChange)
                         // ProfileFriendScreen(),
                       ],
                     ),

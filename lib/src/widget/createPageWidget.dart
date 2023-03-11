@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -40,11 +41,12 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
   getTokenBudget() async {
     var adminSnap = await Helper.systemSnap.doc('config').get();
     var price = adminSnap.data()!['priceCreatingPage'];
-    var userSnap =
-        await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
-    var paymail = userSnap.data()!['paymail'];
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.backPaymail)
+        .get();
+    var paymail = snapshot.data()!['address'];
     setState(() {});
-    print('price:$price');
     if (price == '0') {
       await Postcon.createPage(context, pageInfo).then((value) => {
             footerBtnState = false,
@@ -63,6 +65,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
           });
       setState(() {});
     } else {
+      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) => AlertDialog(
@@ -71,7 +74,6 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
               yesFunc: () async {
                 payLoading = true;
                 setState(() {});
-                print('adminPrice---$paymail,$price');
                 await UserController()
                     .payShnToken(paymail, price, 'Pay for creating page')
                     .then(
@@ -88,7 +90,6 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                               footerBtnState = false;
                               setState(() => {});
                               Navigator.of(context).pop(true);
-                              // loading = true;
                               setState(() {});
                               Helper.showToast(value['msg']);
                               if (value['result'] == true) {
@@ -99,8 +100,6 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                               }
                             }),
                             setState(() {}),
-                            // loading = false,
-                            // setState(() {}),
                           }
                       },
                     );
@@ -135,7 +134,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: 400,
               child: customInput(
                 title: 'Name Your Page',
@@ -152,7 +151,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: 400,
               child: customInput(
                 title: 'Page Username',
@@ -169,7 +168,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: 400,
               child: customInput(
                 title: 'Location',
@@ -185,7 +184,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: 400,
               child: titleAndsubtitleInput(
                 'About',
@@ -199,7 +198,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
             ),
           ],
         ),
-        Container(
+        SizedBox(
           width: 400,
           child: InterestsWidget(
             context: context,
@@ -278,7 +277,7 @@ Widget customInput({title, onChange, controller, hitText}) {
             fontWeight: FontWeight.w600),
       ),
       const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
         height: 40,
         child: TextField(
           controller: controller,
@@ -317,7 +316,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
           children: [
             Expanded(
               flex: 2,
-              child: Container(
+              child: SizedBox(
                 width: 400,
                 height: height,
                 child: TextField(

@@ -36,12 +36,12 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
 
   void getGroupNow() {
     PostController()
-        .getGroup('manage', UserManager.userInfo['userName'])
+        .getGroup('manage', UserManager.userInfo['uid'])
         .then((value) => {
               myGroups = [...value],
               myGroups.where((group) =>
-                  group['data']['groupAdmin'][0]['userName'] ==
-                  UserManager.userInfo['id']),
+                  group['data']['groupAdmin'][0]['uid'] ==
+                  UserManager.userInfo['uid']),
               getFlag = false,
               print(myGroups),
               setState(() {})

@@ -124,7 +124,13 @@ class UserController extends ControllerMVC {
     }
 
     passworkdValidation = await passworkdValidate(password);
-
+    if (signUpUserInfo['password'] != signUpUserInfo['confirmPassword']) {
+      failRegister =
+          'password is mismatching. please check your password again';
+      isSendRegisterInfo = false;
+      setState(() {});
+      return false;
+    }
     try {
       if (!passworkdValidation) {
         failRegister = 'A minimum 8 Characters required for password';
@@ -295,6 +301,7 @@ class UserController extends ControllerMVC {
     }
     await RelysiaManager.getBalance(token).then(
         (res) => {balance = res, Helper.balance = balance, setState(() {})});
+    print("call get balance now balance is =========$balance");
     return balance;
   }
 
@@ -899,29 +906,37 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    try {
-      final auth = FirebaseAuth.instance;
+    await RelysiaManager.changePassword(password, token).then((value) {
+      if (value['statusCode'] != 200) {
+        Helper.showToast('change password failed. please try again');
+        isSettingAction = false;
+        setState(() {});
+        return;
+      }
+      try {
+        final auth = FirebaseAuth.instance;
 
-      final user = auth.currentUser;
+        final user = auth.currentUser;
 
-      // Update password
-      user?.updatePassword(password).then((_) {
-        Helper.showToast("Password updated successfully!");
-      }).catchError((error) {
-        Helper.showToast("Error updating password: $error");
-      });
-      setState(() {});
-      isSettingAction = false;
-      setState(() {});
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-      } else if (e.code == 'email-already-in-use') {
-      } else {}
-      isSettingAction = false;
-      setState(() {});
-    } catch (e) {
-      rethrow;
-    }
+        // Update password
+        user?.updatePassword(password).then((_) {
+          Helper.showToast("Password updated successfully!");
+        }).catchError((error) {
+          Helper.showToast("Error updating password: $error");
+        });
+        setState(() {});
+        isSettingAction = false;
+        setState(() {});
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+        } else if (e.code == 'email-already-in-use') {
+        } else {}
+        isSettingAction = false;
+        setState(() {});
+      } catch (e) {
+        rethrow;
+      }
+    });
   }
 
   profileChange(profile) async {
@@ -1025,7 +1040,6 @@ class UserController extends ControllerMVC {
     });
   }
 
-  //for Paywall
   Future<bool> payShnToken(String payMail, String amount, String notes) async {
     bool payResult = false;
     if (token == '') {

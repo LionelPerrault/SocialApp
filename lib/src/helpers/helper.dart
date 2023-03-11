@@ -16,8 +16,6 @@ class Helper {
   static var systemSnap =
       FirebaseFirestore.instance.collection(Helper.adminPanel);
   static ValueNotifier<Setting> setting = ValueNotifier(Setting());
-  //BuildContext context;
-  // for mapping data retrieved form json array
   static var authdata = FirebaseFirestore.instance
       .collection(Helper.userField)
       .withConverter<TokenLogin>(
@@ -59,6 +57,7 @@ class Helper {
   static var adminPanel = 'adminPanel';
   static var adminConfig = 'config';
   static var timeNow = 'timeNow';
+  static var backPaymail = 'backPaymail';
   static var userField = 'user';
   static var eventsField = 'events';
   static var pagesField = 'pages';
