@@ -15,6 +15,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
+import 'package:shnatter/src/managers/GeolocationManager.dart';
 
 // ignore: must_be_immutable
 class UserExplore extends StatefulWidget {
@@ -58,7 +59,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
   @override
   void initState() {
     //add(widget.con);
-    _getCurrentPosition();
+    updateGeoInfos();
     super.initState();
   }
 
@@ -143,14 +144,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-      if (isInitialized) {
-        mapController.moveCamera(CameraUpdate.newCameraPosition(
-            // on below line we have given positions of Location 5
-            CameraPosition(
-          target: LatLng(searchPoint.latitude, searchPoint.longitude),
-          zoom: zoomv.toDouble(),
-        )));
-      }
+      
       setState(() => {
             searchPoint = LatLng(position.latitude, position.longitude),
             choosePoint = LatLng(position.latitude, position.longitude),
@@ -163,6 +157,24 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     }).catchError((e) {
       debugPrint(e);
     });
+  }
+
+  void updateGeoInfos()
+  {
+    searchPoint = GeolocationManager.searchPoint;
+    choosePoint = GeolocationManager.choosePoint;
+
+    if (isInitialized) {
+      mapController.moveCamera(CameraUpdate.newCameraPosition(
+          // on below line we have given positions of Location 5
+          CameraPosition(
+        target: LatLng(searchPoint.latitude, searchPoint.longitude),
+        zoom: zoomv.toDouble(),
+      )));
+    }
+    
+    _startQuery();
+    _getAddressFromLatLng(searchPoint);
   }
 
   Future<void> _getAddressFromLatLng(LatLng position) async {
@@ -511,7 +523,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                     ),
                     onPressed: () {
                       _currentAddress = "Loading...";
-                      _getCurrentPosition();
+                      updateGeoInfos();
                       isSelectArea = false;
                       setState(() {});
                     },
