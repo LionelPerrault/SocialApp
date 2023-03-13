@@ -10,6 +10,8 @@ import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
+import '../views/profile/model/friends.dart';
+
 class PostController extends ControllerMVC {
   factory PostController([StateMVC? state]) =>
       _this ??= PostController._(state);
@@ -33,6 +35,7 @@ class PostController extends ControllerMVC {
   List unJoindGroups = [];
   List unInterestedEvents = [];
   List<mvc.StateMVC> notifiers;
+
   @override
   Future<bool> initAsync() async {
     //
@@ -1211,22 +1214,41 @@ class PostController extends ControllerMVC {
     await Helper.productsData.doc(productId).update({'productSellState': true});
   }
 
+  var friendUserName;
   savePost(type, value, privacy, {header = ''}) async {
     Map<String, dynamic> postData = {};
-    postData = {
-      'postAdmin': UserManager.userInfo['uid'],
-      'type': type,
-      'value': value,
-      'privacy': privacy,
-      'postTime': FieldValue.serverTimestamp(),
-      'header': header,
-      'timeline': true,
-      'comment': true,
-    };
-    Helper.postCollection.add(postData);
-    setState(
-      () {},
-    );
+    List followers = [];
+
+    Friends friendModel = Friends();
+
+    String friendUserName;
+    friendModel.getFriends(UserManager.userInfo['userName']).then((value1) {
+      print("current username is ${UserManager.userInfo['userName']}");
+      for (var item in friendModel.friends) {
+        friendUserName = item['requester'].toString();
+        if (friendUserName == UserManager.userInfo['userName']) {
+          friendUserName = item['receiver'];
+        }
+        followers.add(friendUserName);
+        print("current friendname is $friendUserName");
+      }
+      postData = {
+        'postAdmin': UserManager.userInfo['uid'],
+        'type': type,
+        'value': value,
+        'privacy': privacy,
+        'postTime': FieldValue.serverTimestamp(),
+        'header': header,
+        'timeline': true,
+        'comment': true,
+        'followers': followers,
+      };
+      Helper.postCollection.add(postData);
+      setState(
+        () {},
+      );
+    });
+
     return true;
   }
 
@@ -1261,8 +1283,7 @@ class PostController extends ControllerMVC {
     var adminInfo;
     var postsBox = [];
     int i = 0;
-
-    do {
+    while (postsBox.length < 10 && i < allPosts.length) {
       if (allPosts[i]['type'] == 'product') {
         if (valueSnapHash[allPosts[i]['value']] == null) {
           var valueSnap =
@@ -1306,7 +1327,7 @@ class PostController extends ControllerMVC {
               allPosts[0]['postTime'].nanoseconds)
           .toDate();
       i++;
-    } while (postsBox.length < 10 && i < allPosts.length);
+    }
 
     postsProfile = postsBox;
 
@@ -1318,42 +1339,33 @@ class PostController extends ControllerMVC {
   getTimelinePost() async {
     latestTime = DateTime.now();
 
-    // if (type == 0 && postsTimeline.isNotEmpty) {
-    //   posts = postsTimeline;
-    //   // setState(() {});
-    //   return true;
-    // }
-    // if (type == 1 && postsProfile.isNotEmpty) {
-    //   posts = postsProfile;
-    //   // setState(() {});
-    //   return true;
-    // }
     var profileSnap, publicSnap, allSnap;
     List allPosts = [];
     profileSnap = await Helper.postCollection
         .orderBy('postTime', descending: true)
         .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
         .limit(10)
-        .get();
+        .get(); //All my feed
 
+    print("username is ${UserManager.userInfo['userName']}");
     publicSnap = await Helper.postCollection
         .where('privacy', isEqualTo: 'Public')
+        .where('followers', arrayContains: UserManager.userInfo['userName'])
         .orderBy('postTime', descending: true)
         .limit(10)
-        .get();
+        .get(); //All post of friends.
 
     allPosts = profileSnap.docs + publicSnap.docs;
     final ids = allPosts.map((e) => e.id).toSet();
     allPosts.retainWhere((x) => ids.remove(x.id));
     allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
-    allPosts.removeRange(10, allPosts.length - 1);
 
     var postData;
     var adminInfo;
     var postsBox = [];
     int i = 0;
 
-    do {
+    while (postsBox.length < 10 && i < allPosts.length) {
       if (allPosts[i]['type'] == 'product') {
         if (valueSnapHash[allPosts[i]['value']] == null) {
           var valueSnap =
@@ -1397,12 +1409,15 @@ class PostController extends ControllerMVC {
               allPosts[0]['postTime'].nanoseconds)
           .toDate();
       i++;
-    } while (postsBox.length < 10 && i < allPosts.length);
+    }
 
     postsTimeline = postsBox;
 
     posts = postsBox;
+    print(posts);
     setState(() {});
+
+    if (posts.length < 10) return false;
     return true;
   }
 
@@ -1453,14 +1468,14 @@ class PostController extends ControllerMVC {
       };
       lastTime = eachPost['time'];
 
-      if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
-          eachPost['privacy'] == 'Public') {
-        posts = [eachPost, ...posts];
-        latestTime = Timestamp(allPosts[0]['postTime'].seconds,
-                allPosts[0]['postTime'].nanoseconds)
-            .toDate();
-        setState(() {});
-      }
+      // if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
+      //     eachPost['privacy'] == 'Public') {
+      posts = [eachPost, ...posts];
+      latestTime = Timestamp(allPosts[0]['postTime'].seconds,
+              allPosts[0]['postTime'].nanoseconds)
+          .toDate();
+      setState(() {});
+      //}
     }
 
     return true;
@@ -1551,6 +1566,7 @@ class PostController extends ControllerMVC {
     publicSnap = await Helper.postCollection
         .where('privacy', isEqualTo: 'Public')
         .where('postTime', isLessThan: lastTime)
+        .where('followers', arrayContains: UserManager.userInfo['userName'])
         .orderBy('postTime', descending: true)
         .limit(10)
         .get();

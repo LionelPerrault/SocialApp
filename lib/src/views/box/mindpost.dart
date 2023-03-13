@@ -314,6 +314,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       return;
     }
     var postPayload;
+
     String header = _controller.text;
     switch (nowPost) {
       case 'Upload Photos':

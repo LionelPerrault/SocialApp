@@ -131,6 +131,9 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     PostController().getProfilePost(con.viewProfileUid).then((value) {
       profilePosts = value;
       loadingFlag = false;
+      if (profilePosts.length < 10) {
+        nextPostFlag = false;
+      }
       setState(() {});
 
       postStream.listen((event) {

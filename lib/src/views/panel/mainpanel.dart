@@ -71,13 +71,16 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     con.posts = [];
     con.getTimelinePost().then((value) {
       setState(() {
+        nextPostFlag = value;
         loadingFlag = false;
       });
       postStream.listen((event) {
         newPostNum = event.docs
             .where((post) =>
                 (post['postAdmin'] == UserManager.userInfo['uid'] ||
-                    post['privacy'] == 'Public') &&
+                    (post['privacy'] == 'Public' &&
+                        post['followers']
+                            .contains(UserManager.userInfo['userName']))) &&
                 (Timestamp(
                         post['postTime'].seconds, post['postTime'].nanoseconds)
                     .toDate()
@@ -182,7 +185,9 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                 )
               : const SizedBox(),
           loadingFlagBottom || loadingFlag || !nextPostFlag
-              ? const SizedBox()
+              ? !nextPostFlag && !loadingFlag
+                  ? const Text("There is no more data to show")
+                  : const SizedBox()
               : ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -196,8 +201,9 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {
                       loadingFlagBottom = true;
                     });
-                    nextPostFlag = await con.loadNextTimelinePosts();
+                    var t = await con.loadNextTimelinePosts();
                     setState(() {
+                      nextPostFlag = t;
                       loadingFlagBottom = false;
                     });
                   },
