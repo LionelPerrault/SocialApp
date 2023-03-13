@@ -838,7 +838,7 @@ class PostController extends ControllerMVC {
       if (addAdmin != null) {
         group['groupAdmin'][i] = {
           ...group['groupAdmin'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
         };
       }
