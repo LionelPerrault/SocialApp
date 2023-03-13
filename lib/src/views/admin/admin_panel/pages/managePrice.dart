@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shnatter/src/controllers/AdminController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
+
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
@@ -44,7 +44,7 @@ class AdminManagePriceState extends mvc.StateMVC<AdminManagePrice> {
       width: SizeConfig(context).screenWidth > 700
           ? SizeConfig(context).screenWidth * 0.75
           : SizeConfig(context).screenWidth,
-      padding: EdgeInsets.only(left: 20, right: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -58,53 +58,102 @@ class AdminManagePriceState extends mvc.StateMVC<AdminManagePrice> {
   }
 
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: Icon(Icons.attach_money_outlined),
-            pagename: 'Manage Prices',
-            button: const {'flag': false},
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.attach_money_outlined),
+          pagename: 'Manage Prices',
+          button: const {'flag': false},
+        ),
+        const Padding(padding: EdgeInsets.only(top: 20)),
+        Column(children: [
+          customInput(
+            title: 'Price for creating a page',
+            onChange: (value) async {
+              adminConfig['priceCreatingPage'] = value;
+            },
+            value: adminConfig['priceCreatingPage'] ?? '',
           ),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Container(
-            child: Column(children: [
-              customInput(
-                title: 'Price for creating a page',
-                onChange: (value) {},
-                value: adminConfig['priceCreatingPage'] ?? '',
-              ),
-              customInput(
-                title: 'Price for creating a product',
-                onChange: (value) {},
-                value: adminConfig['priceCreatingProduct'] ?? '',
-              ),
-              customInput(
-                title: 'Price for creating an event',
-                onChange: (value) {},
-                value: adminConfig['priceCreatingEvent'] ?? '',
-              ),
-              customInput(
-                title: 'Price for creating a group',
-                onChange: (value) {},
-                value: adminConfig['priceCreatingGroup'] ?? '',
-              ),
-              customInput(
-                title: 'Price for sending friend request',
-                onChange: (value) {},
-                value: adminConfig['priceSendingFriendRquest'] ?? '',
-              ),
-              customInput(
-                title: 'Price for accepting friend request',
-                onChange: (value) {},
-                value: adminConfig['priceReceiveFriendRquest'] ?? '',
-              ),
-            ]),
+          customInput(
+            title: 'Price for creating a product',
+            onChange: (value) async {
+              adminConfig['priceCreatingProduct'] = value;
+            },
+            value: adminConfig['priceCreatingProduct'] ?? '',
           ),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          AdminSettingFooter()
-        ],
-      ),
+          customInput(
+            title: 'Price for creating an event',
+            onChange: (value) async {
+              adminConfig['priceCreatingEvent'] = value;
+            },
+            value: adminConfig['priceCreatingEvent'] ?? '',
+          ),
+          customInput(
+            title: 'Price for creating a group',
+            onChange: (value) async {
+              adminConfig['priceCreatingGroup'] = value;
+            },
+            value: adminConfig['priceCreatingGroup'] ?? '',
+          ),
+          customInput(
+            title: 'Price for sending friend request',
+            onChange: (value) async {
+              adminConfig['priceSendingFriendRquest'] = value;
+            },
+            value: adminConfig['priceSendingFriendRquest'] ?? '',
+          ),
+          customInput(
+            title: 'Price for accepting friend request',
+            onChange: (value) async {
+              adminConfig['priceReceiveFriendRquest'] = value;
+            },
+            value: adminConfig['priceReceiveFriendRquest'] ?? '',
+          ),
+        ]),
+        const Padding(padding: EdgeInsets.only(top: 20)),
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Container(
+              height: 65,
+              decoration: const BoxDecoration(
+                border: Border(
+                    top: BorderSide(
+                  color: Color.fromARGB(255, 220, 226, 237),
+                  width: 1,
+                )),
+                color: Color.fromARGB(255, 240, 243, 246),
+                // borderRadius: BorderRadius.all(Radius.circular(3)),
+              ),
+              child: Row(
+                children: [
+                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(3),
+                        backgroundColor: Colors.white,
+                        // elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(120, 50),
+                        maximumSize: const Size(120, 50),
+                      ),
+                      onPressed: () async {
+                        await FirebaseFirestore.instance
+                            .collection(Helper.adminPanel)
+                            .doc(Helper.adminConfig)
+                            .update(adminConfig);
+                        Helper.showToast("Price changed");
+                      },
+                      child: const Text('Save Changes',
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold))),
+                  const Padding(padding: EdgeInsets.only(right: 30))
+                ],
+              )),
+        )
+      ],
     );
   }
 
