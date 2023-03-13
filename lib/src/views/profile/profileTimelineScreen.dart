@@ -354,7 +354,13 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   children: [
                     con.viewProfileUid == UserManager.userInfo['uid']
                         ? MindPost()
-                        : const SizedBox(),
+                          : Container(
+                            width: SizeConfig(context).screenWidth >
+                                    SizeConfig.smallScreenSize
+                                ? 530
+                                : 350,
+                            padding:
+                                const EdgeInsets.only(left: 30, right: 30)),
                     const Padding(padding: EdgeInsets.only(top: 20)),
                     newPostNum <= 0 ||
                             con.viewProfileUid != UserManager.userInfo['uid']
