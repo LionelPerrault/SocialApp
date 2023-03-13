@@ -75,7 +75,8 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
         newPostNum = event.docs
             .where((post) =>
                 (post['postAdmin'] == UserManager.userInfo['uid'] ||
-                    (post['privacy'] == 'Public' &&
+                    ((post['privacy'] == 'Public' ||
+                            post['privacy'] == 'Friends') &&
                         post['followers'].contains(
                             UserManager.userInfo['userName'].toString()))) &&
                 (Timestamp(

@@ -1220,7 +1220,6 @@ class PostController extends ControllerMVC {
     await Helper.productsData.doc(productId).update({'productSellState': true});
   }
 
-  var friendUserName;
   savePost(type, value, privacy, {header = ''}) async {
     Map<String, dynamic> postData = {};
     List followers = [];
@@ -1266,14 +1265,16 @@ class PostController extends ControllerMVC {
 
   getProfilePost(uid) async {
     latestTime = DateTime.now();
-    var profileSnap, publicSnap, allSnap;
+    var profileSnap, publicSnap, allSnap, friendSnap;
     List allPosts = [];
+
     if (UserManager.userInfo['uid'] == uid) {
       profileSnap = await Helper.postCollection
           .orderBy('postTime', descending: true)
           .where('postAdmin', isEqualTo: uid)
           .limit(10)
           .get();
+      allPosts = profileSnap.docs;
     } else {
       profileSnap = await Helper.postCollection
           .orderBy('postTime', descending: true)
@@ -1281,13 +1282,42 @@ class PostController extends ControllerMVC {
           .where('privacy', isEqualTo: 'Public')
           .limit(10)
           .get();
-    }
 
-    allPosts = profileSnap.docs;
+      Friends friendModel = Friends();
+      String friendUserName = '';
+      friendModel.getFriends(UserManager.userInfo['userName']).then((value1) {
+        print("current username is ${UserManager.userInfo['userName']}");
+        for (var item in friendModel.friends) {
+          friendUserName = item['requester'].toString();
+          if (friendUserName == UserManager.userInfo['userName']) {
+            friendUserName = item['receiver'];
+          }
+        }
+      });
+
+      var userinfo = await ProfileController().getUserInfo(uid);
+
+      allPosts = profileSnap.docs;
+      print('profile username is ${userinfo!['userName']}');
+      print('my friend uesrname is $friendUserName');
+      if (friendUserName != '' && userinfo['userName'] == friendUserName) {
+        friendSnap = await Helper.postCollection
+            .orderBy('postTime', descending: true)
+            .where('postAdmin', isEqualTo: uid)
+            .where('privacy', isEqualTo: 'Friends')
+            .limit(10)
+            .get();
+        allPosts = profileSnap.docs + friendSnap.docs;
+        final ids = allPosts.map((e) => e.id).toSet();
+        allPosts.retainWhere((x) => ids.remove(x.id));
+        allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
+      }
+    }
 
     var postData;
     var adminInfo;
     var postsBox = [];
+    postsProfile = [];
     int i = 0;
     while (postsBox.length < 10 && i < allPosts.length) {
       if (allPosts[i]['type'] == 'product') {
@@ -1345,7 +1375,7 @@ class PostController extends ControllerMVC {
   getTimelinePost() async {
     latestTime = DateTime.now();
 
-    var profileSnap, publicSnap, allSnap;
+    var profileSnap, publicSnap, friendSnap, allSnap;
     List allPosts = [];
     profileSnap = await Helper.postCollection
         .orderBy('postTime', descending: true)
@@ -1362,7 +1392,15 @@ class PostController extends ControllerMVC {
         .limit(10)
         .get(); //All post of friends.
 
-    allPosts = profileSnap.docs + publicSnap.docs;
+    friendSnap = await Helper.postCollection
+        .where('privacy', isEqualTo: 'Friends')
+        .where('followers',
+            arrayContains: UserManager.userInfo['userName'].toString())
+        .orderBy('postTime', descending: true)
+        .limit(10)
+        .get(); //All post of friends.
+
+    allPosts = profileSnap.docs + publicSnap.docs + friendSnap.docs;
 
     final ids = allPosts.map((e) => e.id).toSet();
     allPosts.retainWhere((x) => ids.remove(x.id));
@@ -1430,7 +1468,7 @@ class PostController extends ControllerMVC {
   }
 
   addNewPosts(newCount, type) async {
-    var profileSnap, publicSnap, allSnap;
+    var profileSnap, publicSnap, allSnap, friendSnap;
     List allPosts = [];
 
     profileSnap = await Helper.postCollection
@@ -1445,10 +1483,19 @@ class PostController extends ControllerMVC {
         .where('followers',
             arrayContains: UserManager.userInfo['userName'].toString())
         .orderBy('postTime', descending: true)
-        .limit(newCount)
+        .limit(10)
         .get(); //All post of friends.
 
-    allPosts = profileSnap.docs + publicSnap.docs;
+    friendSnap = await Helper.postCollection
+        .where('privacy', isEqualTo: 'Friends')
+        .where('followers',
+            arrayContains: UserManager.userInfo['userName'].toString())
+        .orderBy('postTime', descending: true)
+        .limit(10)
+        .get(); //All post of friends.
+
+    allPosts = profileSnap.docs + publicSnap.docs + friendSnap.docs;
+
     final ids = allPosts.map((e) => e.id).toSet();
     allPosts.retainWhere((x) => ids.remove(x.id));
     allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
@@ -1571,15 +1618,14 @@ class PostController extends ControllerMVC {
       return false;
     }
 
-    //posts = postsProfile;
-
+    postsProfile = posts;
     setState(() {});
 
     return true;
   }
 
   loadNextTimelinePosts() async {
-    var profileSnap, publicSnap, allSnap;
+    var profileSnap, publicSnap, allSnap, friendSnap;
     List allPosts = [];
     profileSnap = await Helper.postCollection
         .orderBy('postTime', descending: true)
@@ -1590,12 +1636,22 @@ class PostController extends ControllerMVC {
 
     publicSnap = await Helper.postCollection
         .where('privacy', isEqualTo: 'Public')
-        .where('postTime', isLessThan: lastTime)
-        .where('followers', arrayContains: UserManager.userInfo['userName'])
+        .where('followers',
+            arrayContains: UserManager.userInfo['userName'].toString())
         .orderBy('postTime', descending: true)
         .limit(10)
-        .get();
-    allPosts = profileSnap.docs + publicSnap.docs;
+        .get(); //All post of friends.
+
+    friendSnap = await Helper.postCollection
+        .where('privacy', isEqualTo: 'Friends')
+        .where('followers',
+            arrayContains: UserManager.userInfo['userName'].toString())
+        .orderBy('postTime', descending: true)
+        .limit(10)
+        .get(); //All post of friends.
+
+    allPosts = profileSnap.docs + publicSnap.docs + friendSnap.docs;
+
     final ids = allPosts.map((e) => e.id).toSet();
     allPosts.retainWhere((x) => ids.remove(x.id));
     allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
