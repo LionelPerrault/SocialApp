@@ -47,8 +47,8 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
     return Container(
       width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
-          : SizeConfig(context).screenWidth,
-      height: 100,
+          : SizeConfig(context).screenWidth - 60,
+      height: 110,
       margin: const EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),

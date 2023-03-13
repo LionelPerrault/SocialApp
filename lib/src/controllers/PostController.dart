@@ -825,10 +825,7 @@ class PostController extends ControllerMVC {
     return realAllGroups;
   }
 
-  //get one group function that using uid of firebase database
   Future<bool> getSelectedGroup(String name) async {
-    // name = name.split('/')[name.split('/').length - 1];
-    // viewGroupName = name;
     var reuturnValue = await Helper.groupsData.doc(name).get();
     var value = reuturnValue.data();
     viewGroupId = name;
@@ -838,22 +835,28 @@ class PostController extends ControllerMVC {
     for (var i = 0; i < group['groupAdmin'].length; i++) {
       var addAdmin =
           await ProfileController().getUserInfo(group['groupAdmin'][i]['uid']);
-      group['groupAdmin'][i] = {
-        ...group['groupAdmin'][i],
-        'userName': addAdmin!['userName'],
-        'avatar': addAdmin['avatar'],
-      };
+      if (addAdmin != null) {
+        group['groupAdmin'][i] = {
+          ...group['groupAdmin'][i],
+          'userName': addAdmin!['userName'],
+          'avatar': addAdmin['avatar'],
+        };
+      }
     }
+    var groupJoined = [];
     for (var i = 0; i < group['groupJoined'].length; i++) {
       var groupUser =
           await ProfileController().getUserInfo(group['groupJoined'][i]['uid']);
-      group['groupJoined'][i] = {
-        ...group['groupJoined'][i],
-        'userName': groupUser!['userName'],
-        'avatar': groupUser['avatar'],
-        'fullName': '${groupUser["firstName"]} ${groupUser["lastName"]}'
-      };
+      if (groupUser != null) {
+        groupJoined.add({
+          ...group['groupJoined'][i],
+          'userName': groupUser['userName'],
+          'avatar': groupUser['avatar'],
+          'fullName': '${groupUser["firstName"]} ${groupUser["lastName"]}'
+        });
+      }
     }
+    group['groupJoined'] = groupJoined;
     setState(() {});
     return true;
   }

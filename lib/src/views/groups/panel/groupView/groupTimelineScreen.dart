@@ -85,59 +85,56 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     );
   }
 
-  @override
   Widget eventInfo() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              con.group['groupAbout'],
-              style: const TextStyle(
-                fontSize: 13,
-              ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text(
+            con.group['groupAbout'],
+            style: const TextStyle(
+              fontSize: 13,
             ),
-          ]),
-          const Divider(
-            thickness: 0.4,
-            color: Colors.black,
           ),
-          groupInfoCell(
-              icon: Icon(
-                con.group['groupPrivacy'] == 'public'
-                    ? Icons.language
-                    : con.group['groupPrivacy'] == 'security'
-                        ? Icons.lock
-                        : Icons.lock_open_rounded,
-                color: Colors.grey,
-              ),
-              text: con.group['groupPrivacy'] == 'public'
-                  ? 'Public Group'
+        ]),
+        const Divider(
+          thickness: 0.4,
+          color: Colors.black,
+        ),
+        groupInfoCell(
+            icon: Icon(
+              con.group['groupPrivacy'] == 'public'
+                  ? Icons.language
                   : con.group['groupPrivacy'] == 'security'
-                      ? 'Security Group'
-                      : 'Closed Group'),
-          groupInfoCell(
-              icon: const Icon(
-                Icons.groups,
-                color: Colors.grey,
-              ),
-              text: '${con.group["groupJoined"].length} members'),
-          groupInfoCell(
-              icon: const Icon(
-                Icons.tag,
-                color: Colors.grey,
-              ),
-              text: 'N/A'),
-          groupInfoCell(
-              icon: const Icon(
-                Icons.maps_ugc,
-                color: Colors.grey,
-              ),
-              text: '${con.group["groupLocation"]}'),
-        ],
-      ),
+                      ? Icons.lock
+                      : Icons.lock_open_rounded,
+              color: Colors.grey,
+            ),
+            text: con.group['groupPrivacy'] == 'public'
+                ? 'Public Group'
+                : con.group['groupPrivacy'] == 'security'
+                    ? 'Security Group'
+                    : 'Closed Group'),
+        groupInfoCell(
+            icon: const Icon(
+              Icons.groups,
+              color: Colors.grey,
+            ),
+            text: '${con.group["groupJoined"].length} members'),
+        groupInfoCell(
+            icon: const Icon(
+              Icons.tag,
+              color: Colors.grey,
+            ),
+            text: 'N/A'),
+        groupInfoCell(
+            icon: const Icon(
+              Icons.maps_ugc,
+              color: Colors.grey,
+            ),
+            text: '${con.group["groupLocation"]}'),
+      ],
     );
   }
 
@@ -176,8 +173,8 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                   ),
                   const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                  Row(children: [
-                    const Text(
+                  Row(children: const [
+                    Text(
                       'See All',
                       style: TextStyle(fontSize: 11),
                     ),
