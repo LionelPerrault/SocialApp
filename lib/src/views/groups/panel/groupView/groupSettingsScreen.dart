@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -254,7 +256,6 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 ))));
   }
 
-  // ignore: non_constant_identifier_names
   Widget GroupSettingsWidget1() {
     return SizedBox(
       width: 600,
@@ -434,387 +435,404 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   }
 
   Widget GroupJoinWidget() {
-    return SizedBox(
-      width: 450,
-      child: Column(
-        children: [
-          headerWidget(const Icon(Icons.person_add_alt), 'Member Requests'),
-          Container(
-            padding: const EdgeInsets.only(right: 30, left: 30),
-            child: const Text('No Requests'),
-          ),
-        ],
-      ),
-    );
+    return Flexible(
+        child: Container(
+            padding: const EdgeInsets.only(right: 15),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(
+                children: [
+                  headerWidget(
+                      const Icon(Icons.person_add_alt), 'Member Requests'),
+                  Container(
+                    padding: const EdgeInsets.only(right: 30, left: 30),
+                    child: const Text('No Requests'),
+                  ),
+                ],
+              ),
+            )));
   }
 
   Widget GroupMembersWidget() {
-    return SizedBox(
-      width: 510,
-      child: Column(
-        children: [
-          headerWidget(const Icon(Icons.groups), 'Members'),
-          Container(
-            padding: const EdgeInsets.only(right: 30, left: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('ADMINS (${con.group["groupAdmin"].length})'),
-                SizedBox(
-                  width: 450,
-                  height: con.group['groupAdmin'].length * 45,
-                  child: ListView.separated(
-                    itemCount: con.group['groupAdmin'].length,
-                    itemBuilder: (context, index) => Material(
-                        child: ListTile(
-                            onTap: () {
-                              print("tap!");
-                            },
-                            hoverColor:
-                                const Color.fromARGB(255, 243, 243, 243),
-                            // tileColor: Colors.white,
-                            enabled: true,
-                            leading: con.group['groupAdmin'][index]['avatar'] ==
-                                    ''
-                                ? CircleAvatar(
-                                    radius: 17,
-                                    child: SvgPicture.network(Helper.avatar))
-                                : CircleAvatar(
-                                    radius: 17,
-                                    backgroundImage: NetworkImage(con
-                                        .group['groupAdmin'][index]['avatar'])),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Text(
-                                        con.group['groupAdmin'][index]
-                                            ['userName'],
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 245, 54, 92),
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: const Size(90, 35),
-                                            maximumSize: const Size(90, 35)),
-                                        onPressed: () {
-                                          () => {};
-                                        },
-                                        child: Row(
-                                          children: const [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 18.0,
-                                            ),
-                                            Text('Remove',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const Padding(
-                                        padding: EdgeInsets.only(left: 10)),
-                                    Container(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 245, 54, 92),
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: const Size(125, 35),
-                                            maximumSize: const Size(125, 35)),
-                                        onPressed: () {
-                                          () => {};
-                                        },
-                                        child: Row(
-                                          children: const [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 18.0,
-                                            ),
-                                            Text('Remove Admin',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ))),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(
-                      height: 1,
-                      endIndent: 10,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(right: 30, left: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('ALL MEMBERS (${con.group["groupJoined"].length})'),
-                SizedBox(
-                  width: 450,
-                  height: con.group['groupJoined'].length * 45,
-                  child: ListView.separated(
-                    itemCount: con.group['groupJoined'].length,
-                    itemBuilder: (context, index) => Material(
-                        child: ListTile(
-                            onTap: () {
-                              print("tap!");
-                            },
-                            hoverColor:
-                                const Color.fromARGB(255, 243, 243, 243),
-                            // tileColor: Colors.white,
-                            enabled: true,
-                            leading: con.group['groupJoined'][index]
-                                        ['avatar'] ==
-                                    ''
-                                ? CircleAvatar(
-                                    radius: 17,
-                                    child: SvgPicture.network(Helper.avatar))
-                                : CircleAvatar(
-                                    radius: 17,
-                                    backgroundImage: NetworkImage(
-                                        con.group['groupJoined'][index]
-                                            ['avatar'])),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Text(
-                                        con.group['groupJoined'][index]
-                                            ['userName'],
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 245, 54, 92),
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: const Size(90, 35),
-                                            maximumSize: const Size(90, 35)),
-                                        onPressed: () {
-                                          () => {};
-                                        },
-                                        child: Row(
-                                          children: const [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 18.0,
-                                            ),
-                                            Text('Remove',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const Padding(
-                                        padding: EdgeInsets.only(left: 10)),
-                                    Container(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 245, 54, 92),
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: const Size(125, 35),
-                                            maximumSize: const Size(125, 35)),
-                                        onPressed: () {
-                                          () => {};
-                                        },
-                                        child: Row(
-                                          children: const [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 18.0,
-                                            ),
-                                            Text('Remove Admin',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ))),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(
-                      height: 1,
-                      endIndent: 10,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget GroupInterestsWidget() {
-    return SizedBox(
-      width: 450,
-      child: Column(
-        children: [
-          headerWidget(const Icon(Icons.heart_broken), 'Interests'),
-          Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            child: InterestsWidget(
-                context: context,
-                data: con.group['groupInterests'],
-                sendUpdate: (value) {
-                  groupInterests = value;
-                  setState(() {});
-                }),
-          ),
-          footerWidget({'groupInterests': groupInterests})
-        ],
-      ),
-    );
-  }
-
-  Widget GroupDeleteWidget() {
-    return SizedBox(
-      width: 450,
-      child: Column(
-        children: [
-          headerWidget(const Icon(Icons.delete), 'Delete'),
-          Container(
-            padding: const EdgeInsets.only(right: 30, left: 30),
-            child: Column(
-              children: [
-                Row(
+    return Flexible(
+        child: Container(
+            padding: const EdgeInsets.only(right: 15),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(children: [
+                headerWidget(const Icon(Icons.groups), 'Members'),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Container(
-                        height: 65,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 252, 124, 95),
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        child: Row(
-                          children: [
-                            const Padding(padding: EdgeInsets.only(left: 30)),
-                            const Icon(
-                              Icons.warning_rounded,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 10)),
-                            const SizedBox(
-                                width: 200,
-                                child: Text(
-                                  'Once you delete your group you will no longer can access it again',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 11),
-                                )),
-                          ],
+                    Text('ADMINS (${con.group["groupAdmin"].length})'),
+                    SizedBox(
+                      height: con.group['groupAdmin'].length * 45,
+                      child: ListView.separated(
+                        itemCount: con.group['groupAdmin'].length,
+                        itemBuilder: (context, index) => Material(
+                            child: ListTile(
+                                onTap: () {},
+                                hoverColor:
+                                    const Color.fromARGB(255, 243, 243, 243),
+                                // tileColor: Colors.white,
+                                enabled: true,
+                                leading: con.group['groupAdmin'][index]
+                                            ['avatar'] ==
+                                        ''
+                                    ? CircleAvatar(
+                                        radius: 17,
+                                        child:
+                                            SvgPicture.network(Helper.avatar))
+                                    : CircleAvatar(
+                                        radius: 17,
+                                        backgroundImage: NetworkImage(
+                                            con.group['groupAdmin'][index]
+                                                ['avatar'])),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          child: Text(
+                                            con.group['groupAdmin'][index]
+                                                ['userName'],
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                        // ElevatedButton(
+                                        //   style: ElevatedButton.styleFrom(
+                                        //       backgroundColor:
+                                        //           const Color.fromARGB(
+                                        //               255, 245, 54, 92),
+                                        //       elevation: 3,
+                                        //       shape: RoundedRectangleBorder(
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(
+                                        //                   2.0)),
+                                        //       minimumSize: const Size(90, 35),
+                                        //       maximumSize: const Size(90, 35)),
+                                        //   onPressed: () {
+                                        //     () => {};
+                                        //   },
+                                        //   child: Row(
+                                        //     children: const [
+                                        //       Icon(
+                                        //         Icons.delete,
+                                        //         color: Colors.white,
+                                        //         size: 18.0,
+                                        //       ),
+                                        //       Text('Remove',
+                                        //           style: TextStyle(
+                                        //               color: Colors.white,
+                                        //               fontSize: 11,
+                                        //               fontWeight:
+                                        //                   FontWeight.bold)),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                        // const Padding(
+                                        //     padding: EdgeInsets.only(left: 10)),
+                                        // ElevatedButton(
+                                        //   style: ElevatedButton.styleFrom(
+                                        //       backgroundColor:
+                                        //           const Color.fromARGB(
+                                        //               255, 245, 54, 92),
+                                        //       elevation: 3,
+                                        //       shape: RoundedRectangleBorder(
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(
+                                        //                   2.0)),
+                                        //       minimumSize: const Size(125, 35),
+                                        //       maximumSize: const Size(125, 35)),
+                                        //   onPressed: () {
+                                        //     () => {};
+                                        //   },
+                                        //   child: Row(
+                                        //     children: const [
+                                        //       Icon(
+                                        //         Icons.delete,
+                                        //         color: Colors.white,
+                                        //         size: 18.0,
+                                        //       ),
+                                        //       Text('Remove Admin',
+                                        //           style: TextStyle(
+                                        //               color: Colors.white,
+                                        //               fontSize: 11,
+                                        //               fontWeight:
+                                        //                   FontWeight.bold)),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                      ],
+                                    )
+                                  ],
+                                ))),
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(
+                          height: 1,
+                          endIndent: 10,
                         ),
                       ),
                     )
                   ],
                 ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
-                Row(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: SizedBox(
-                          width: 145,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(3),
-                                backgroundColor:
-                                    const Color.fromARGB(255, 245, 54, 92),
-                                // elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(3.0)),
-                                minimumSize: const Size(140, 50),
-                                maximumSize: const Size(140, 50),
+                    Text('ALL MEMBERS (${con.group["groupJoined"].length})'),
+                    con.group['groupJoined'].length == 0
+                        ? const SizedBox()
+                        : SizedBox(
+                            height: con.group['groupJoined'].length * 45,
+                            child: ListView.separated(
+                              itemCount: con.group['groupJoined'].length,
+                              itemBuilder: (context, index) => Material(
+                                  child: ListTile(
+                                      onTap: () {},
+                                      hoverColor: const Color.fromARGB(
+                                          255, 243, 243, 243),
+                                      // tileColor: Colors.white,
+                                      enabled: true,
+                                      leading: con.group['groupJoined'][index]
+                                                  ['avatar'] ==
+                                              ''
+                                          ? CircleAvatar(
+                                              radius: 17,
+                                              child: SvgPicture.network(
+                                                  Helper.avatar))
+                                          : CircleAvatar(
+                                              radius: 17,
+                                              backgroundImage: NetworkImage(
+                                                  con.group['groupJoined']
+                                                      [index]['avatar'])),
+                                      title: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 100,
+                                                child: Text(
+                                                  con.group['groupJoined']
+                                                      [index]['userName'],
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        const Color
+                                                                .fromARGB(255,
+                                                            245, 54, 92),
+                                                    elevation: 3,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        2.0)),
+                                                    minimumSize:
+                                                        const Size(90, 35),
+                                                    maximumSize:
+                                                        const Size(90, 35)),
+                                                onPressed: () {
+                                                  () => {};
+                                                },
+                                                child: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      Icons.delete,
+                                                      color: Colors.white,
+                                                      size: 18.0,
+                                                    ),
+                                                    Text('Remove',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 11,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                ),
+                                              ),
+                                              const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 10)),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 245, 54, 92),
+                                                    elevation: 3,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        2.0)),
+                                                    minimumSize:
+                                                        const Size(125, 35),
+                                                    maximumSize:
+                                                        const Size(125, 35)),
+                                                onPressed: () {
+                                                  () => {};
+                                                },
+                                                child: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      Icons.delete,
+                                                      color: Colors.white,
+                                                      size: 18.0,
+                                                    ),
+                                                    Text('Remove Admin',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 11,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ))),
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(
+                                height: 1,
+                                endIndent: 10,
                               ),
-                              onPressed: () {
-                                (() => {});
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.delete),
-                                  Text('Delete Group',
-                                      style: TextStyle(
-                                          fontSize: 11,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold))
-                                ],
-                              ))),
-                    )
+                            ),
+                          )
                   ],
                 ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+              ]),
+            )));
+  }
+
+  Widget GroupInterestsWidget() {
+    return Flexible(
+        child: Container(
+            padding: const EdgeInsets.only(right: 15),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(
+                children: [
+                  headerWidget(const Icon(Icons.heart_broken), 'Interests'),
+                  Container(
+                    margin: const EdgeInsets.only(left: 30, right: 30),
+                    child: InterestsWidget(
+                        context: context,
+                        data: con.group['groupInterests'],
+                        sendUpdate: (value) {
+                          groupInterests = value;
+                          setState(() {});
+                        }),
+                  ),
+                  footerWidget({'groupInterests': groupInterests})
+                ],
+              ),
+            )));
+  }
+
+  Widget GroupDeleteWidget() {
+    return Flexible(
+        child: Container(
+            padding: const EdgeInsets.only(right: 15),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(
+                children: [
+                  headerWidget(const Icon(Icons.delete), 'Delete'),
+                  Container(
+                    padding: const EdgeInsets.only(right: 30, left: 30),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                              height: 60,
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 252, 124, 95),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                              ),
+                              child: Row(
+                                children: const [
+                                  SizedBox(width: 10),
+                                  Icon(
+                                    Icons.warning_rounded,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Flexible(
+                                      child: Text(
+                                    'Once you delete your group you will no longer can access it again',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 11),
+                                  )),
+                                ],
+                              ),
+                            )),
+                          ],
+                        ),
+                        const Padding(padding: EdgeInsets.only(top: 20)),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                  width: 145,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.all(3),
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 245, 54, 92),
+                                        // elevation: 3,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(3.0)),
+                                        minimumSize: const Size(140, 50),
+                                        maximumSize: const Size(140, 50),
+                                      ),
+                                      onPressed: () {
+                                        (() => {});
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: const [
+                                          Icon(Icons.delete),
+                                          Text('Delete Group',
+                                              style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold))
+                                        ],
+                                      ))),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )));
   }
 
   Widget headerWidget(icon, pagename) {

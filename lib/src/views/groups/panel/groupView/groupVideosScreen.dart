@@ -4,6 +4,7 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
+// ignore: must_be_immutable
 class GroupVideosScreen extends StatefulWidget {
   Function onClick;
   GroupVideosScreen({Key? key, required this.onClick})
@@ -31,7 +32,9 @@ class GroupVideosScreenState extends mvc.StateMVC<GroupVideosScreen> {
 
   Widget mainTabs() {
     return Container(
-      width: SizeConfig(context).screenWidth - 60,
+      width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+          ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
+          : SizeConfig(context).screenWidth - 60,
       height: 70,
       margin: const EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
