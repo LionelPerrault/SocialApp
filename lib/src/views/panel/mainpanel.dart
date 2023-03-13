@@ -66,24 +66,28 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
     // con.posts = [];
+
     con.getTimelinePost().then((value) {
       setState(() {
         nextPostFlag = value;
         loadingFlag = false;
       });
+
       postStream.listen((event) {
-        newPostNum = event.docs
-            .where((post) =>
-                (post['postAdmin'] == UserManager.userInfo['uid'] ||
-                    ((post['privacy'] == 'Public' ||
-                            post['privacy'] == 'Friends') &&
-                        post['followers'].contains(
-                            UserManager.userInfo['userName'].toString()))) &&
-                (Timestamp(
-                        post['postTime'].seconds, post['postTime'].nanoseconds)
-                    .toDate()
-                    .isAfter(con.latestTime)))
-            .length;
+        newPostNum = event.docs.where((post) {
+          Map data = post.data() as Map;
+
+          var followers = [];
+          if (data.containsKey("followers")) followers = [...data['followers']];
+          return (post['postAdmin'] == UserManager.userInfo['uid'] ||
+                  ((post['privacy'] == 'Public' ||
+                          post['privacy'] == 'Friends') &&
+                      followers.contains(UserManager.userInfo['userName']))) &&
+              (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
+                  .toDate()
+                  .isAfter(con.latestTime));
+        }).length;
+
         setState(() {});
       });
     });
