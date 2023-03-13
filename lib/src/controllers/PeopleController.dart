@@ -391,6 +391,7 @@ class PeopleController extends ControllerMVC {
       query = query.where('userName', isGreaterThan: search['userName']);
       query = query.where('userName', isLessThan: search['userName'] + 'z');
     }
+
     pageIndex = 1;
     lastData = null;
     userList = [];
@@ -399,5 +400,13 @@ class PeopleController extends ControllerMVC {
     searchQuery = query;
     tabName = 'Discover';
     getDiscoverList(query);
+  }
+
+  resetSearch() {
+    pageIndex = 1;
+    lastData = null;
+    userList = [];
+    isSearch = false;
+    isGetList = false;
   }
 }

@@ -43,7 +43,6 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
                   group['data']['groupAdmin'][0]['uid'] ==
                   UserManager.userInfo['uid']),
               getFlag = false,
-              print(myGroups),
               setState(() {})
             });
   }

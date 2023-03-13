@@ -147,13 +147,33 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                 const Padding(padding: EdgeInsets.only(top: 25)),
                 Container(
                   padding: const EdgeInsets.only(left: 20),
-                  child: Text(
-                    con.isSearch ? 'Search Results' : 'People You May Know',
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13),
-                  ),
+                  child: Row(children: [
+                    Text(
+                      con.isSearch ? 'Search Results' : 'People You May Know',
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13),
+                    ),
+                    con.isSearch
+                        ? InkWell(
+                            onTap: () {
+                              con.resetSearch();
+                              setState(() {});
+                            },
+                            child: IconButton(
+                                onPressed: () {
+                                  con.resetSearch();
+                                  setState(() {});
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: Colors.black,
+                                  size: 20.0,
+                                )),
+                          )
+                        : Container()
+                  ]),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
                 Container(
@@ -373,10 +393,10 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                     onTap: () async {
                       con.pageIndex++;
                       isShowProgressive = true;
-                      if (con.isSearch == true) {
-                        con.isSearch = false;
-                        con.pageIndex = 1;
-                      }
+                      //if (con.isSearch == true) {
+                      //  con.isSearch = false;
+                      //  con.pageIndex = 1;
+                      //}
                       setState(() {});
                       await con.getUserList();
                       isShowProgressive = false;

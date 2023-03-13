@@ -8,10 +8,10 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 import '../../../../widget/admin_list_text.dart';
 
+// ignore: must_be_immutable
 class GroupSettingsScreen extends StatefulWidget {
   Function onClick;
   GroupSettingsScreen(
@@ -96,13 +96,16 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   late PostController con;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          LeftSettingBar(),
-          Expanded(
-            child: groupSettingTab == 'Group Settings'
+    return SizedBox(
+        width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+            ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
+            : SizeConfig(context).screenWidth,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            LeftSettingBar(),
+            groupSettingTab == 'Group Settings'
                 ? GroupSettingsWidget()
                 : groupSettingTab == 'Join Requests'
                     ? GroupJoinWidget()
@@ -111,12 +114,11 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                         : groupSettingTab == 'Interests'
                             ? GroupInterestsWidget()
                             : GroupDeleteWidget(),
-          ),
-        ],
-      ),
-    );
+          ],
+        ));
   }
 
+  // ignore: non_constant_identifier_names
   Widget LeftSettingBar() {
     return Container(
       padding: const EdgeInsets.only(top: 30, right: 20),
@@ -137,7 +139,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                   icon: Icon(
                     e['icon'],
                     color: groupSettingTab == e['text']
-                        ? Color.fromARGB(255, 94, 114, 228)
+                        ? const Color.fromARGB(255, 94, 114, 228)
                         : Colors.grey,
                   ),
                 ),
@@ -149,12 +151,117 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   }
 
   Widget GroupSettingsWidget() {
-    return Container(
+    return Flexible(
+        child: Container(
+            padding: const EdgeInsets.only(right: 15),
+            child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    headerWidget(const Icon(Icons.settings), 'Group Settings'),
+                    customInput(
+                        title: 'Name Your Group',
+                        onChange: (value) async {},
+                        controller: groupNameController),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    customInput(
+                        title: 'Location',
+                        onChange: (value) async {},
+                        controller: groupLocationController),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    customInput(
+                        title: 'Group Username',
+                        onChange: (value) async {},
+                        controller: groupUserNameController),
+                    const Text(
+                      'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    Container(
+                      height: 70,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 250, 250, 250),
+                          border: Border.all(color: Colors.grey)),
+                      child: DropdownButton(
+                        value: privacy,
+                        itemHeight: 70,
+                        items: GroupsDropDown.map((e) => DropdownMenuItem(
+                            value: e['value'],
+                            child: SizedBox(
+                                height: 70,
+                                child: ListTile(
+                                  leading: Icon(e['icon']),
+                                  title: Text(e['title']),
+                                  subtitle: Text(e['subtitle']),
+                                )))).toList(),
+                        onChanged: (value) {
+                          privacy = value;
+                          setState(() {});
+                        },
+                        icon: const Padding(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Icon(Icons.arrow_drop_down)),
+                        iconEnabledColor: Colors.white, //Icon color
+                        style: const TextStyle(
+                          color: Colors.black, //Font color
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        dropdownColor: Colors.white,
+                        underline: Container(), //remove underline
+                        isExpanded: true,
+                        isDense: true,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    customInput(
+                        title: 'About',
+                        onChange: (value) async {},
+                        controller: groupAboutController),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    privacySelect(
+                      'Members Can Publish Posts?',
+                      'Members can publish posts or only group admins',
+                      canPub,
+                      (value) {
+                        canPub = value;
+                        setState(() {});
+                      },
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    privacySelect(
+                      'Post Approval',
+                      'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
+                      approval,
+                      (value) {
+                        approval = value;
+                        setState(() {});
+                      },
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    footerWidget({
+                      'groupName': groupNameController.text,
+                      'groupUserName': groupUserNameController.text,
+                      'groupLocation': groupLocationController.text,
+                      'groupAbout': groupAboutController.text,
+                      'groupPrivacy': privacy,
+                      'groupCanPub': canPub,
+                      'groupApproval': approval,
+                    })
+                  ],
+                ))));
+  }
+
+  // ignore: non_constant_identifier_names
+  Widget GroupSettingsWidget1() {
+    return SizedBox(
       width: 600,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.settings), 'Group Settings'),
-          Container(
+          headerWidget(const Icon(Icons.settings), 'Group Settings'),
+          SizedBox(
             width: 430,
             child: Column(children: [
               const Padding(padding: EdgeInsets.only(top: 15)),
@@ -162,7 +269,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customInput(
                         title: 'Name Your Group',
@@ -176,7 +283,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customInput(
                         title: 'Location',
@@ -190,7 +297,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customInput(
                         title: 'Group Username',
@@ -199,9 +306,9 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                   )
                 ],
               ),
-              Container(
+              const SizedBox(
                 width: 380,
-                child: const Text(
+                child: Text(
                   'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
                   style: TextStyle(fontSize: 12),
                 ),
@@ -221,7 +328,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                         itemHeight: 70,
                         items: GroupsDropDown.map((e) => DropdownMenuItem(
                             value: e['value'],
-                            child: Container(
+                            child: SizedBox(
                                 height: 70,
                                 child: ListTile(
                                   leading: Icon(e['icon']),
@@ -255,7 +362,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customInput(
                         title: 'About',
@@ -327,14 +434,14 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   }
 
   Widget GroupJoinWidget() {
-    return Container(
+    return SizedBox(
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.person_add_alt), 'Member Requests'),
+          headerWidget(const Icon(Icons.person_add_alt), 'Member Requests'),
           Container(
             padding: const EdgeInsets.only(right: 30, left: 30),
-            child: Text('No Requests'),
+            child: const Text('No Requests'),
           ),
         ],
       ),
@@ -342,11 +449,11 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   }
 
   Widget GroupMembersWidget() {
-    return Container(
+    return SizedBox(
       width: 510,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.groups), 'Members'),
+          headerWidget(const Icon(Icons.groups), 'Members'),
           Container(
             padding: const EdgeInsets.only(right: 30, left: 30),
             child: Column(
@@ -382,7 +489,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 100,
                                       child: Text(
                                         con.group['groupAdmin'][index]
@@ -509,7 +616,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 100,
                                       child: Text(
                                         con.group['groupJoined'][index]
@@ -605,11 +712,11 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   }
 
   Widget GroupInterestsWidget() {
-    return Container(
+    return SizedBox(
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.heart_broken), 'Interests'),
+          headerWidget(const Icon(Icons.heart_broken), 'Interests'),
           Container(
             margin: const EdgeInsets.only(left: 30, right: 30),
             child: InterestsWidget(
@@ -627,11 +734,11 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   }
 
   Widget GroupDeleteWidget() {
-    return Container(
+    return SizedBox(
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.delete), 'Delete'),
+          headerWidget(const Icon(Icons.delete), 'Delete'),
           Container(
             padding: const EdgeInsets.only(right: 30, left: 30),
             child: Column(
@@ -648,15 +755,15 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                         child: Row(
                           children: [
                             const Padding(padding: EdgeInsets.only(left: 30)),
-                            Icon(
+                            const Icon(
                               Icons.warning_rounded,
                               color: Colors.white,
                               size: 30,
                             ),
                             const Padding(padding: EdgeInsets.only(left: 10)),
-                            Container(
+                            const SizedBox(
                                 width: 200,
-                                child: const Text(
+                                child: Text(
                                   'Once you delete your group you will no longer can access it again',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 11),
@@ -713,6 +820,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   Widget headerWidget(icon, pagename) {
     return Container(
       height: 65,
+      alignment: Alignment.center,
       decoration: const BoxDecoration(
         border: Border(
             bottom: BorderSide(
@@ -724,11 +832,12 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
       ),
       padding: const EdgeInsets.only(top: 5, left: 15),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           icon,
           const Padding(padding: EdgeInsets.only(left: 10)),
           Text(pagename),
-          const Flexible(fit: FlexFit.tight, child: SizedBox()),
         ],
       ),
     );
@@ -803,22 +912,22 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
               color: Color.fromRGBO(82, 95, 127, 1),
               fontSize: 13,
               fontWeight: FontWeight.w600),
         ),
-        Padding(padding: EdgeInsets.only(top: 2)),
-        Container(
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        SizedBox(
           height: 40,
           child: TextField(
             controller: controller,
             onChanged: onChange,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10, left: 10),
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
               ),
             ),
           ),
@@ -867,7 +976,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -881,7 +990,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
