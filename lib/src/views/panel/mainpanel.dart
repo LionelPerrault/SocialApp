@@ -64,11 +64,8 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     }
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
-    setState(() {
-      loadingFlag = true;
-    });
-
-    con.posts = [];
+    loadingFlag = true;
+    // con.posts = [];
     con.getTimelinePost().then((value) {
       setState(() {
         nextPostFlag = value;
@@ -79,8 +76,8 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
             .where((post) =>
                 (post['postAdmin'] == UserManager.userInfo['uid'] ||
                     (post['privacy'] == 'Public' &&
-                        post['followers']
-                            .contains(UserManager.userInfo['userName']))) &&
+                        post['followers'].contains(
+                            UserManager.userInfo['userName'].toString()))) &&
                 (Timestamp(
                         post['postTime'].seconds, post['postTime'].nanoseconds)
                     .toDate()
@@ -119,7 +116,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {
                       loadingFlag = true;
                     });
-                    await con.addNewPosts(newPostNum);
+                    await con.addNewPosts(newPostNum, 0);
 
                     setState(() {
                       newPostNum = 0;
@@ -155,7 +152,9 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     color: Colors.grey,
                   ),
                 )
-              : SizedBox(
+              : const SizedBox(),
+          con.posts.isNotEmpty
+              ? SizedBox(
                   width: 600,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -174,7 +173,8 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                       )
                     ],
                   ),
-                ),
+                )
+              : const SizedBox(),
           loadingFlagBottom
               ? const SizedBox(
                   width: 50,

@@ -49,7 +49,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   int newPostNum = 0;
   bool nextPostFlag = true;
   late PostController postCon;
-  var profilePosts;
+
   //
   var userInfo = UserManager.userInfo;
   List<Map> mainInfoList = [];
@@ -129,9 +129,9 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     loadingFlag = true;
     //PostController().posts = [];
     PostController().getProfilePost(con.viewProfileUid).then((value) {
-      profilePosts = value;
+      // profilePosts = value;
       loadingFlag = false;
-      if (profilePosts.length < 10) {
+      if (PostController().postsProfile.length < 10) {
         nextPostFlag = false;
       }
       setState(() {});
@@ -207,7 +207,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           setState(() {
                             loadingFlag = true;
                           });
-                          await PostController().addNewPosts(newPostNum);
+                          await PostController().addNewPosts(newPostNum, 1);
 
                           setState(() {
                             newPostNum = 0;
@@ -243,7 +243,9 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           color: Colors.grey,
                         ),
                       )
-                    : SizedBox(
+                    : const SizedBox(),
+                PostController().postsProfile.isNotEmpty
+                    ? SizedBox(
                         width: 600,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -252,7 +254,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           children: [
                             Expanded(
                               child: Column(
-                                children: profilePosts
+                                children: PostController()
+                                    .postsProfile
                                     .map<Widget>((product) => PostCell(
                                           postInfo: product,
                                           routerChange: widget.routerChange,
@@ -262,7 +265,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                             )
                           ],
                         ),
-                      ),
+                      )
+                    : const SizedBox(),
                 loadingFlagBottom
                     ? const SizedBox(
                         width: 50,
@@ -354,7 +358,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   children: [
                     con.viewProfileUid == UserManager.userInfo['uid']
                         ? MindPost()
-                          : Container(
+                        : Container(
                             width: SizeConfig(context).screenWidth >
                                     SizeConfig.smallScreenSize
                                 ? 530
@@ -378,7 +382,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               setState(() {
                                 loadingFlag = true;
                               });
-                              await PostController().addNewPosts(newPostNum);
+                              await PostController().addNewPosts(newPostNum, 1);
 
                               setState(() {
                                 newPostNum = 0;
@@ -417,7 +421,9 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               color: Colors.grey,
                             ),
                           )
-                        : SizedBox(
+                        : const SizedBox(),
+                    PostController().postsProfile.isNotEmpty
+                        ? SizedBox(
                             width: 600,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -426,7 +432,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               children: [
                                 Expanded(
                                   child: Column(
-                                    children: profilePosts
+                                    children: PostController()
+                                        .postsProfile
                                         .map<Widget>((product) => PostCell(
                                               postInfo: product,
                                               routerChange: widget.routerChange,
@@ -436,7 +443,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                                 )
                               ],
                             ),
-                          ),
+                          )
+                        : const SizedBox(),
                     loadingFlagBottom
                         ? const SizedBox(
                             width: 50,

@@ -1353,12 +1353,14 @@ class PostController extends ControllerMVC {
     print("username is ${UserManager.userInfo['userName']}");
     publicSnap = await Helper.postCollection
         .where('privacy', isEqualTo: 'Public')
-        .where('followers', arrayContains: UserManager.userInfo['userName'])
+        .where('followers',
+            arrayContains: UserManager.userInfo['userName'].toString())
         .orderBy('postTime', descending: true)
         .limit(10)
         .get(); //All post of friends.
 
     allPosts = profileSnap.docs + publicSnap.docs;
+
     final ids = allPosts.map((e) => e.id).toSet();
     allPosts.retainWhere((x) => ids.remove(x.id));
     allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
@@ -1424,12 +1426,31 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  addNewPosts(newCount) async {
-    var allSanp = await Helper.postCollection
+  addNewPosts(newCount, type) async {
+    var profileSnap, publicSnap, allSnap;
+    List allPosts = [];
+
+    profileSnap = await Helper.postCollection
+        .orderBy('postTime', descending: true)
+        .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
+        .limit(newCount)
+        .get(); //All my feed
+
+    print("username is ${UserManager.userInfo['userName']}");
+    publicSnap = await Helper.postCollection
+        .where('privacy', isEqualTo: 'Public')
+        .where('followers',
+            arrayContains: UserManager.userInfo['userName'].toString())
         .orderBy('postTime', descending: true)
         .limit(newCount)
-        .get();
-    var allPosts = allSanp.docs;
+        .get(); //All post of friends.
+
+    allPosts = profileSnap.docs + publicSnap.docs;
+    final ids = allPosts.map((e) => e.id).toSet();
+    allPosts.retainWhere((x) => ids.remove(x.id));
+    allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
+    //allPosts.removeRange(newCount, newCount + 1);
+
     var postData;
     var adminInfo;
     for (var i = newCount - 1; i >= 0; i--) {
@@ -1471,16 +1492,14 @@ class PostController extends ControllerMVC {
       };
       lastTime = eachPost['time'];
 
-      // if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
-      //     eachPost['privacy'] == 'Public') {
       posts = [eachPost, ...posts];
       latestTime = Timestamp(allPosts[0]['postTime'].seconds,
               allPosts[0]['postTime'].nanoseconds)
           .toDate();
-      setState(() {});
-      //}
     }
+    if (type == 1) postsProfile = posts;
 
+    setState(() {});
     return true;
   }
 
@@ -1545,7 +1564,7 @@ class PostController extends ControllerMVC {
 
       posts.add(eachPost);
     }
-    if (i == 0) {
+    if (i < 10) {
       return false;
     }
 
@@ -1628,7 +1647,7 @@ class PostController extends ControllerMVC {
 
       postsTimeline.add(eachPost);
     }
-    if (i == 0) {
+    if (i < 10) {
       return false;
     }
 
