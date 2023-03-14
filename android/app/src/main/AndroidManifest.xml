@@ -3,11 +3,15 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:requestLegacyExternalStorage="true"
         android:label="shnatter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDzQxbvX59Lo9QH5N7Z7nVuVm_QB8AivKc"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

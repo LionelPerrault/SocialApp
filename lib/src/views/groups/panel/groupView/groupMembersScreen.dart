@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_unnecessary_containers
+
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +39,9 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       mainTabs(),
-      // tab == 'Members' ? MembersData() : InvitesData()
+      tab == 'Members' ? MembersData() : InvitesData()
     ]);
   }
 
@@ -141,7 +143,6 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
     );
   }
 
-  // ignore: non_constant_identifier_names
   Widget MembersData() {
     List members = con.group['groupJoined'];
     return members.isEmpty
@@ -153,14 +154,17 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
         : Container(
-            child: Row(
-            children: [
-              GridView.count(
+            height: 400,
+            width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+                ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
+                : SizeConfig(context).screenWidth - 60,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: GridView.count(
                 crossAxisCount: SizeConfig(context).screenWidth > 800
                     ? 4
                     : SizeConfig(context).screenWidth > 600
                         ? 3
-                        : SizeConfig(context).screenWidth > 210
+                        : SizeConfig(context).screenWidth > 410
                             ? 2
                             : 1,
                 childAspectRatio: 1 / 1,
@@ -179,10 +183,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                         },
                         picture: user['avatar'] ?? '',
                         header: user['fullName']))
-                    .toList(),
-              ),
-            ],
-          ));
+                    .toList()));
   }
 
   Widget InvitesData() {
@@ -196,38 +197,38 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
         : Container(
-            child: Row(
-            children: [
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: SizeConfig(context).screenWidth > 800
-                      ? 4
-                      : SizeConfig(context).screenWidth > 600
-                          ? 3
-                          : SizeConfig(context).screenWidth > 210
-                              ? 2
-                              : 1,
-                  childAspectRatio: 1 / 1,
-                  padding: const EdgeInsets.all(4.0),
-                  mainAxisSpacing: 4.0,
-                  shrinkWrap: true,
-                  crossAxisSpacing: 4.0,
-                  children: invites
-                      .map((user) => UserCell(
-                          groupTap: () {
-                            ProfileController().updateProfile(user["userName"]);
-                            widget.routerChange({
-                              'router': RouteNames.profile,
-                              'subRouter': user["userName"],
-                            });
-                          },
-                          picture: user['userAvatar'] ?? '',
-                          header: user['fullName']))
-                      .toList(),
-                ),
-              )
-            ],
-          ));
+            height: 400,
+            width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+                ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
+                : SizeConfig(context).screenWidth - 60,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: GridView.count(
+              crossAxisCount: SizeConfig(context).screenWidth > 800
+                  ? 4
+                  : SizeConfig(context).screenWidth > 600
+                      ? 3
+                      : SizeConfig(context).screenWidth > 410
+                          ? 2
+                          : 1,
+              childAspectRatio: 1 / 1,
+              padding: const EdgeInsets.all(4.0),
+              mainAxisSpacing: 4.0,
+              shrinkWrap: true,
+              crossAxisSpacing: 4.0,
+              children: invites
+                  .map((user) => UserCell(
+                      groupTap: () {
+                        ProfileController().updateProfile(user["userName"]);
+                        widget.routerChange({
+                          'router': RouteNames.profile,
+                          'subRouter': user["userName"],
+                        });
+                      },
+                      picture: user['userAvatar'] ?? '',
+                      header: user['fullName']))
+                  .toList(),
+            ),
+          );
   }
 
   Widget UserCell(

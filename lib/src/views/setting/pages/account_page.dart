@@ -51,7 +51,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
               routerChange: widget.routerChange,
               icon: Icon(Icons.settings),
               pagename: 'Account Settings',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
@@ -82,7 +82,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Container(
+                                child: SizedBox(
                                   width: 120,
                                   child: const Text(
                                     'Email Address',
@@ -115,6 +115,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                           width: 300,
                                           height: 30,
                                           child: TextFormField(
+                                            enabled: false,
                                             controller: emailController,
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(
@@ -170,7 +171,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Container(
+                                child: SizedBox(
                                   width: 80,
                                   child: const Text(
                                     'Username',
@@ -205,7 +206,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                             )
                                           : Container(),
                                       Expanded(
-                                          child: Container(
+                                          child: SizedBox(
                                         width: 300,
                                         height: 30,
                                         child: TextFormField(
@@ -270,83 +271,6 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                             indent: 5,
                             endIndent: 20,
                           ),
-                          const Text(
-                            'SECUIRTY CHECK',
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.only(top: 20)),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child:
-                                    Padding(padding: EdgeInsets.only(left: 30)),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  width: 80,
-                                  child: const Text(
-                                    'Current Password',
-                                    style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(244, 82, 95, 127)),
-                                  ),
-                                ),
-                              ),
-                              const Padding(padding: EdgeInsets.only(left: 30)),
-                              Expanded(
-                                  flex: 7,
-                                  child: Container(
-                                    padding: EdgeInsets.only(right: 20),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(7)),
-                                    ),
-                                    child: Row(children: [
-                                      Expanded(
-                                          child: Container(
-                                        width: 350,
-                                        height: 30,
-                                        child: TextFormField(
-                                          controller: passwordController,
-                                          obscureText: true,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 54, 54, 54),
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(0),
-                                            ),
-                                          ),
-                                          style: const TextStyle(fontSize: 14),
-                                          onSaved: (String? value) {
-                                            // This optional block of code can be used to run
-                                            // code when the user saves the form.
-                                          },
-                                          validator: (String? value) {
-                                            return (value != null &&
-                                                    value.contains('@'))
-                                                ? 'Do not use the @ char.'
-                                                : null;
-                                          },
-                                        ),
-                                      )),
-                                    ]),
-                                  ))
-                            ],
-                          ),
                           const Divider(
                             indent: 5,
                             endIndent: 20,
@@ -367,7 +291,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Container(
+                                child: SizedBox(
                                   width: 80,
                                   child: const Text(
                                     'INVITE CODE',
@@ -391,7 +315,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     ),
                                     child: Row(children: [
                                       Expanded(
-                                          child: Container(
+                                          child: SizedBox(
                                         width: 350,
                                         height: 30,
                                         child: TextFormField(
@@ -451,14 +375,12 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ),
                             ),
                             const Padding(padding: EdgeInsets.only(top: 20)),
-                            Container(
-                              child: const Text(
-                                'Email Address',
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(244, 82, 95, 127)),
-                              ),
+                            const Text(
+                              'Email Address',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(244, 82, 95, 127)),
                             ),
                             Container(
                               decoration: BoxDecoration(
@@ -473,9 +395,10 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                   child: Icon(Icons.mail),
                                 ),
                                 Expanded(
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 30,
                                     child: TextFormField(
+                                      enabled: false,
                                       controller: emailController,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -519,16 +442,14 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ),
                             ),
                             const Padding(padding: EdgeInsets.only(top: 20)),
-                            Container(
-                              child: const Text(
-                                'Username',
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(244, 82, 95, 127)),
-                              ),
+                            const Text(
+                              'Username',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(244, 82, 95, 127)),
                             ),
-                            Container(
+                            SizedBox(
                               height: 30,
                               child: TextFormField(
                                 controller: userNameController,
@@ -565,20 +486,11 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               endIndent: 20,
                             ),
                             const Text(
-                              'SECUIRTY CHECK',
+                              'Current Password',
                               style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 20)),
-                            Container(
-                              child: const Text(
-                                'Current Password',
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(244, 82, 95, 127)),
-                              ),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(244, 82, 95, 127)),
                             ),
                             Container(
                               decoration: BoxDecoration(
@@ -587,7 +499,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ),
                               child: Row(children: [
                                 Expanded(
-                                    child: Container(
+                                    child: SizedBox(
                                   height: 30,
                                   child: TextFormField(
                                     controller: passwordController,
@@ -647,7 +559,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ),
                               child: Row(children: [
                                 Expanded(
-                                    child: Container(
+                                    child: SizedBox(
                                   height: 30,
                                   child: TextFormField(
                                     initialValue: userInfo['uid'],
@@ -685,8 +597,10 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
             ),
             SettingFooter(
               onClick: () {
-                con.saveAccountSettings(emailController.text,
-                    userNameController.text, passwordController.text);
+                con.saveAccountSettings(
+                  emailController.text,
+                  userNameController.text,
+                );
               },
               isChange: con.isSettingAction,
             )

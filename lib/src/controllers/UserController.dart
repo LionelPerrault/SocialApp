@@ -829,72 +829,62 @@ class UserController extends ControllerMVC {
     return doc;
   }
 
-  saveAccountSettings(email, userName, password) async {
+  saveAccountSettings(email, userName) async {
     var userManager = UserManager.userInfo;
-    var uuid = '';
+
     isSettingAction = true;
     setState(() {});
     if (!email.contains('@')) {
-      return;
-    }
-    if (password.length < Helper.passwordMinLength) {
-      return;
-    }
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: userManager['email'], password: userManager['password']);
-    await FirebaseAuth.instance.currentUser?.delete();
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      uuid = userCredential.user!.uid;
+      isSettingAction = false;
+      setState(() {});
 
-      var snapshot = await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .doc(UserManager.userInfo['uid'])
-          .get();
-      await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .doc(UserManager.userInfo['uid'])
-          .delete();
-      var user = {};
-      snapshot.data()!.forEach((key, value) {
-        user = {
-          ...user,
-          key: key == 'email'
-              ? email
-              : key == 'password'
-                  ? password
-                  : key == 'userName'
-                      ? userName
-                      : value
-        };
-      });
-      await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .doc(uuid)
-          .set({
-        ...user,
-      });
-      var j = {};
-      user.forEach((key, value) {
-        j = {...j, key.toString(): value.toString()};
-      });
-      await Helper.saveJSONPreference(Helper.userField, {...j, 'uid': uuid});
-      await UserManager.getUserInfo();
-      setState(() {});
+      return;
+    }
+    if (userName == "") {
       isSettingAction = false;
       setState(() {});
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-      } else if (e.code == 'email-already-in-use') {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        uuid = userCredential.user!.uid;
-      } else {}
-      isSettingAction = false;
+
+      return;
+    } else {
+      QuerySnapshot<TokenLogin> querySnapshot1 =
+          await Helper.authdata.where('userName', isEqualTo: userName).get();
+
+      if (querySnapshot1.size > 0) {
+        Helper.showToast(
+            'Sorry, it looks like $userName belongs to an existing account');
+        isSettingAction = false;
+        setState(() {});
+        return false;
+      }
+    }
+
+    try {
+      // final auth = FirebaseAuth.instance;
+      // final user = auth.currentUser;
+      // if (user?.email != email) {
+      //   user?.updateEmail(email).then((_) async {
+      //     await FirebaseFirestore.instance
+      //         .collection(Helper.userField)
+      //         .doc(UserManager.userInfo['uid'])
+      //         .update({'email': email});
+      //   });
+      // }
+      if (UserManager.userInfo['userName'] != userName) {
+        await FirebaseFirestore.instance
+            .collection(Helper.userField)
+            .doc(UserManager.userInfo['uid'])
+            .update({'userName': userName});
+        await UserManager.getUserInfo();
+        Helper.showToast('User name chagned!');
+        isSettingAction = false;
+      } else {
+        isSettingAction = false;
+      }
       setState(() {});
+
+      return;
     } catch (e) {
-      rethrow;
+      return;
     }
   }
 
