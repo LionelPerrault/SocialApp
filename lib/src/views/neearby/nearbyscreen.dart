@@ -144,7 +144,6 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-      
       setState(() => {
             searchPoint = LatLng(position.latitude, position.longitude),
             choosePoint = LatLng(position.latitude, position.longitude),
@@ -159,8 +158,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     });
   }
 
-  void updateGeoInfos()
-  {
+  void updateGeoInfos() {
     searchPoint = GeolocationManager.searchPoint;
     choosePoint = GeolocationManager.choosePoint;
 
@@ -172,7 +170,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         zoom: zoomv.toDouble(),
       )));
     }
-    
+
     _startQuery();
     _getAddressFromLatLng(searchPoint);
   }
@@ -248,14 +246,16 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
           position: LatLng(pos.latitude, pos.longitude),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           infoWindow: InfoWindow(
-              onTap: () async {},
+              onTap: () async {
+                ProfileController().updateProfile(data["userName"]);
+                widget.routerChange({
+                  'router': RouteNames.profile,
+                  'subRouter': data['userName']
+                });
+              },
               title: '${data['firstName']} ${data['lastName']}',
               snippet: ''),
-          onTap: () async {
-            ProfileController().updateProfile(data["userName"]);
-            widget.routerChange(
-                {'router': RouteNames.profile, 'subRouter': data['userName']});
-          });
+          onTap: () async {});
       markers[marker.markerId] = marker;
     }
     setState(() {});
@@ -287,6 +287,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
+                    width: SizeConfig(context).screenWidth - 120,
                     height: 50,
                     child: Text(
                       _currentAddress,
@@ -317,7 +318,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
       child: Stack(children: [
         _currentTabIndex == 1 ? googleMap() : listData(),
         Padding(
-          padding: const EdgeInsets.only(top: 10, left: 80, right: 80),
+          padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
           child: InkWell(
             child: boardPane(),
             onTap: () {
