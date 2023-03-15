@@ -63,10 +63,10 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
       'value': 'inarelationship',
       'title': 'In a relationship',
     },
-    // {
-    //   'value': 'Married',
-    //   'title': 'Married',
-    // },
+    {
+      'value': 'Married',
+      'title': 'Married',
+    },
     {
       'value': 'complicated',
       'title': 'It\'s a complicated',
