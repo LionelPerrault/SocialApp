@@ -12,6 +12,7 @@ import 'package:shnatter/src/views/profile/profilePhotosScreen.dart';
 import 'package:shnatter/src/views/profile/profileTimelineScreen.dart';
 import 'package:shnatter/src/widget/yesNoWidget.dart';
 
+// ignore: must_be_immutable
 class UserProfileScreen extends StatefulWidget {
   UserProfileScreen(
       {Key? key, required this.userName, required this.routerChange})
@@ -37,6 +38,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   void initState() {
     add(widget.con);
     con = controller as ProfileController;
+    con.addNotifyCallBack(this);
     super.initState();
   }
 

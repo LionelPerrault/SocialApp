@@ -561,10 +561,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 Text('Log Out'),
                               ])),
                         ],
-                        onSelected: (Menu item) {
+                        onSelected: (Menu item) async {
                           switch (item) {
                             case Menu.itemProfile:
                               {
+                                
                                 ProfileController().updateProfile(
                                     UserManager.userInfo['userName']);
                                 widget.routerChange({
@@ -870,10 +871,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 Text('Log Out'),
                               ])),
                         ],
-                        onSelected: (Menu item) {
+                        onSelected: (Menu item) async {
                           switch (item) {
                             case Menu.itemProfile:
                               {
+                                await UserManager.getUserInfo();
                                 ProfileController().updateProfile(
                                     UserManager.userInfo['userName']);
                                 widget.routerChange({

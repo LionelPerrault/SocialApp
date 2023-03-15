@@ -387,9 +387,22 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.userField)
         .orderBy('userName')
         .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
+    //if (search['keyword'] != null) {
+    //  query = query.where('userName', isGreaterThan: search['keyword']);
+    //  query = query.where('userName', isLessThan: search['keyword'] + 'z');
+    //}
     if (search['userName'] != null) {
       query = query.where('userName', isGreaterThan: search['userName']);
       query = query.where('userName', isLessThan: search['userName'] + 'z');
+    }
+    if (search['sex'] != null) {
+      query = query.where('sex', isEqualTo: search['sex']);
+    }
+    // if (search['sex'] != null) {
+    //   query = query.where('sex', isEqualTo: search['sex']);
+    // }
+    if (search['relationship'] != null) {
+      query = query.where('relationship', isEqualTo: search['relationship']);
     }
 
     pageIndex = 1;
