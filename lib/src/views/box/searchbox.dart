@@ -34,11 +34,13 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   void initState() {
     add(widget.con);
     con = controller as SearchController;
+    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+      print(widget.searchText);
     if (widget.searchText != '') {
       var total = [];
       var totalUsers = con.users
@@ -53,13 +55,12 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
           .toList();
       var totalGroups = con.groups
           .where((group) => (group['groupName'].contains(widget.searchText) ||
-              group['groupUserName'].contains(widget.searchText)))
+              (group['groupUserName'] != null ? group['groupUserName'].contains(widget.searchText) : false)))
           .toList();
       total = [...totalUsers, ...total];
       total = [...totalEvents, ...total];
       total = [...totalGroups, ...total];
       searchResult = total;
-      print('searchResult$searchResult');
     }
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
@@ -172,6 +173,7 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   }
 
   Widget searchCell(data) {
+    print(data);
     if (data['userName'] != null) {
       return SearchUserCell(
         userInfo: data,
