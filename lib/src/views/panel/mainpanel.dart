@@ -107,7 +107,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          MindPost(),
+          MindPost(showPrivacy: true),
           const Padding(padding: EdgeInsets.only(top: 20)),
           showDayTimeM
               ? DayTimeM(time: time, username: UserManager.userInfo['fullName'])

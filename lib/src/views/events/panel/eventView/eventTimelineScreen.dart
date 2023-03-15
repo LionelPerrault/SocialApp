@@ -96,19 +96,31 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   late PostController con;
   @override
   Widget build(BuildContext context) {
+    var inInterested =
+        con.boolInterested(con.event, UserManager.userInfo['uid']);
+    var inGoing = con.boolGoing(con.event, UserManager.userInfo['uid']);
+    var inInvited = con.boolInvited(con.event, UserManager.userInfo['uid']);
+
+    print("event interested is ${con.event['eventInterested']}");
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 10, left: 10, top: 15),
       child: SizeConfig(context).screenWidth < 800 + 250
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [MindPost(), eventInfo()])
+              children: [MindPost(showPrivacy: false), eventInfo()])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                   Column(children: [
-                    MindPost(),
+                    inInterested ||
+                            inInvited ||
+                            inGoing ||
+                            UserManager.userInfo['uid'] ==
+                                con.event['eventAdmin'][0]['uid']
+                        ? MindPost(showPrivacy: false)
+                        : Container(),
                     newPostNum <= 0
                         ? const SizedBox()
                         : ElevatedButton(
@@ -187,6 +199,63 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                             ),
                           )
                         : const SizedBox(),
+                    loadingFlagBottom
+                        ? const SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey,
+                            ),
+                          )
+                        : const SizedBox(),
+                    loadingFlagBottom || loadingFlag || !nextPostFlag
+                        ? !nextPostFlag && !loadingFlag
+                            ? const Text("There is no more data to show")
+                            : const SizedBox()
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(21.0)),
+                              minimumSize: const Size(240, 42),
+                              maximumSize: const Size(240, 42),
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                loadingFlagBottom = true;
+                              });
+                              var t = await con.getTimelinePost(defaultSlide, 0,
+                                  PostType.event.index, con.viewEventId);
+                              setState(() {
+                                nextPostFlag = t;
+                                loadingFlagBottom = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 11.0)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Load More...',
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 90, 90, 90),
+                                          fontFamily: 'var(--body-font-family)',
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 8.0)),
+                              ],
+                            ),
+                          ),
                   ]),
                   const Flexible(fit: FlexFit.tight, child: SizedBox()),
                   eventInfo(),

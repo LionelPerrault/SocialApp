@@ -201,8 +201,7 @@ class PostController extends ControllerMVC {
         dynamic value = doc[i].data();
         var id = doc[i].id;
         var data = value;
-        var interested =
-            await boolInterested(data, UserManager.userInfo['uid']);
+        var interested = boolInterested(data, UserManager.userInfo['uid']);
         //closed event
         if (data['eventPrivacy'] == 'closed') {
           if (data['eventAdmin'][0]['uid'] == uid && condition == 'manage') {
@@ -212,10 +211,9 @@ class PostController extends ControllerMVC {
         }
         //security event
         else /*if (data['eventPrivacy'] == 'security') */ {
-          var inInterested =
-              await boolInterested(data, UserManager.userInfo['uid']);
-          var inInvited = await boolInvited(data, UserManager.userInfo['uid']);
-          var inGoing = await boolGoing(data, UserManager.userInfo['uid']);
+          var inInterested = boolInterested(data, UserManager.userInfo['uid']);
+          var inInvited = boolInvited(data, UserManager.userInfo['uid']);
+          var inGoing = boolGoing(data, UserManager.userInfo['uid']);
           if (inInterested && condition == 'interested') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
@@ -256,48 +254,59 @@ class PostController extends ControllerMVC {
   Future<bool> getSelectedEvent(String id) async {
     id = id.split('/')[id.split('/').length - 1];
     viewEventId = id;
+    print("viewEventId is $viewEventId");
     await Helper.eventsData.doc(id).get().then((value) async {
       event = value.data();
       viewEventInterested =
           await boolInterested(value, UserManager.userInfo['uid']);
       viewEventGoing = await boolGoing(value, UserManager.userInfo['uid']);
       viewEventInvited = await boolInvited(value, UserManager.userInfo['uid']);
+      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventAdmin'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventAdmin'][i]['uid']);
+        if (addAdmin == null) continue;
         event['eventAdmin'][i] = {
           ...event['eventAdmin'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
+      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventInterested'].length; i++) {
+        print("eventInterested is ${event['eventInterested']}");
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInterested'][i]['uid']);
+        if (addAdmin == null) continue;
+        print("addAdmin is $addAdmin");
         event['eventInterested'][i] = {
           ...event['eventInterested'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
+      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventInvited'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvited'][i]['uid']);
+        if (addAdmin == null) continue;
         event['eventInvited'][i] = {
           ...event['eventInvited'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
+      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventInvites'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvites'][i]['uid']);
+        if (addAdmin == null) continue;
         event['eventInvites'][i] = {
           ...event['eventInvites'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
@@ -417,7 +426,7 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event interested or not
-  Future<bool> boolInterested(var eventData, String uid) async {
+  bool boolInterested(var eventData, String uid) {
     var interested = eventData['eventInterested'];
     if (interested == null) {
       return false;
@@ -458,7 +467,7 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event going or not
-  Future<bool> boolGoing(var eventData, String uid) async {
+  bool boolGoing(var eventData, String uid) {
     var going = eventData['eventGoing'];
     if (going == null) {
       return false;
@@ -500,7 +509,7 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event invited or not
-  Future<bool> boolInvited(var eventData, String uid) async {
+  bool boolInvited(var eventData, String uid) {
     var invited = eventData['eventInvited'];
     if (invited == null) {
       return false;
@@ -1723,7 +1732,7 @@ class PostController extends ControllerMVC {
 
     setState(() {});
 
-    if (postsBox.length < slide) return false;
+    if (slide < 10) return false;
     return true;
   }
 

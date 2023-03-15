@@ -204,7 +204,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                 ),
                 profileCompletion(),
                 con.viewProfileUid == UserManager.userInfo['uid']
-                    ? MindPost()
+                    ? MindPost(showPrivacy: true)
                     : const SizedBox(),
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 newPostNum <= 0 ||
@@ -377,7 +377,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                 Column(
                   children: [
                     con.viewProfileUid == UserManager.userInfo['uid']
-                        ? MindPost()
+                        ? MindPost(showPrivacy: true)
                         : Container(
                             width: SizeConfig(context).screenWidth >
                                     SizeConfig.smallScreenSize
