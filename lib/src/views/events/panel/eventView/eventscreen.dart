@@ -101,10 +101,12 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                           },
                         ),
                         con.eventTab == 'Timeline'
-                            ? EventTimelineScreen(onClick: (value) {
-                                con.eventTab = value;
-                                setState(() {});
-                              })
+                            ? EventTimelineScreen(
+                                onClick: (value) {
+                                  con.eventTab = value;
+                                  setState(() {});
+                                },
+                                routerChange: widget.routerChange)
                             : con.eventTab == 'Photos'
                                 ? EventPhotosScreen(onClick: (value) {
                                     con.eventTab = value;

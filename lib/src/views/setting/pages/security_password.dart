@@ -41,15 +41,15 @@ class SettingSecurityPasswordScreenState
           children: [
             SettingHeader(
               routerChange: widget.routerChange,
-              icon: Icon(
+              icon: const Icon(
                 Icons.security_outlined,
                 color: Color.fromARGB(255, 139, 195, 74),
               ),
               pagename: 'Change Password',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
+            SizedBox(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5 + 40
@@ -94,17 +94,15 @@ class SettingSecurityPasswordScreenState
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Confirm Current Password',
+                              const Text('Confirm Current Password',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 82, 95, 127),
                                       fontSize: 11,
                                       fontWeight: FontWeight.bold)),
-                              Container(
+                              SizedBox(
                                 width: 700,
                                 child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
+                                    validator: (value) async {},
                                     onchange: (value) async {
                                       currentPassword = value;
                                     },
@@ -124,17 +122,15 @@ class SettingSecurityPasswordScreenState
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Your New Password',
+                              const Text('Your New Password',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 82, 95, 127),
                                       fontSize: 11,
                                       fontWeight: FontWeight.bold)),
-                              Container(
+                              SizedBox(
                                 width: 300,
                                 child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
+                                    validator: (value) async {},
                                     onchange: (value) async {
                                       newPassword = value;
                                     },
@@ -149,17 +145,15 @@ class SettingSecurityPasswordScreenState
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Confirm New Password',
+                              const Text('Confirm New Password',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 82, 95, 127),
                                       fontSize: 11,
                                       fontWeight: FontWeight.bold)),
-                              Container(
+                              SizedBox(
                                 width: 300,
                                 child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
+                                    validator: (value) async {},
                                     onchange: (value) async {
                                       confirmPassword = value;
                                     },

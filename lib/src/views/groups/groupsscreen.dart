@@ -41,8 +41,8 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
       margin: const EdgeInsets.only(right: 20),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.all(3),
-            backgroundColor: Color.fromARGB(255, 45, 206, 137),
+            padding: const EdgeInsets.all(3),
+            backgroundColor: const Color.fromARGB(255, 45, 206, 137),
             // elevation: 3,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(3.0)),

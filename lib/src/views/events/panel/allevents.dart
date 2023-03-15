@@ -38,7 +38,7 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   void getEventNow() {
     con.getEvent('all', UserManager.userInfo['uid']).then((value) => {
           realAllEvents = value,
-          print(realAllEvents),
+          print("realAllEvents is =====$realAllEvents"),
           setState(() {}),
         });
   }

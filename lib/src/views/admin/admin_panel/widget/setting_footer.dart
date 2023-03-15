@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shnatter/src/utils/size_config.dart';
-
 // ignore: must_be_immutable
 class AdminSettingFooter extends StatelessWidget {
-  AdminSettingFooter({super.key});
+  const AdminSettingFooter({super.key});
   // Icon icon;
   // String pagename;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(
@@ -29,7 +25,7 @@ class AdminSettingFooter extends StatelessWidget {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(
@@ -40,7 +36,7 @@ class AdminSettingFooter extends StatelessWidget {
                   onPressed: () {
                     (() => {});
                   },
-                  child: Text('Save Changes',
+                  child: const Text('Save Changes',
                       style: TextStyle(
                           fontSize: 11,
                           color: Colors.black,

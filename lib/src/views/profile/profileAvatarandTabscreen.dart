@@ -119,20 +119,19 @@ class ProfileAvatarandTabScreenState extends mvc
               ? Container()
               : Image.network(con.profile_cover, fit: BoxFit.cover),
         ),
-        con.userData['userName'] == UserManager.userInfo['userName']
-            ? Container(
-                alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(left: 50, top: 30),
-                child: GestureDetector(
-                  onTap: () {
-                    uploadImage('profile_cover');
-                  },
-                  child: const Icon(
-                    Icons.photo_camera,
-                    size: 25,
-                  ),
-                ))
-            : Container(),
+        if (UserManager.userInfo['userName'] == con.userData['userName'])
+          Container(
+              alignment: Alignment.topLeft,
+              margin: const EdgeInsets.only(left: 50, top: 30),
+              child: GestureDetector(
+                onTap: () {
+                  uploadImage('profile_cover');
+                },
+                child: const Icon(
+                  Icons.photo_camera,
+                  size: 25,
+                ),
+              )),
         Container(
           width: SizeConfig(context).screenWidth,
           padding: const EdgeInsets.only(left: 30),

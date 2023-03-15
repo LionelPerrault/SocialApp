@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -6,13 +7,29 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 
+import '../../../../widget/postCell.dart';
+
+enum Direction {
+  normal(1),
+  reverse(-1);
+
+  const Direction(this.value);
+
+  final int value;
+}
+
+const int defaultSlide = 10;
+
+enum PostType { timeline, profile, event, normal }
+
 class EventTimelineScreen extends StatefulWidget {
   Function onClick;
-  EventTimelineScreen({Key? key, required this.onClick})
+  EventTimelineScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
-
+  Function routerChange;
   @override
   State createState() => EventTimelineScreenState();
 }
@@ -34,11 +51,46 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature}
   ];
+  bool loadingFlag = false;
+  bool loadingFlagBottom = false;
+  int newPostNum = 0;
+  bool nextPostFlag = true;
+
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+
+    final Stream<QuerySnapshot> postStream =
+        Helper.postCollection.orderBy('postTime').snapshots();
+    loadingFlag = true;
+    PostController().posts = [];
+    con
+        .getTimelinePost(defaultSlide, 1, PostType.event.index, con.viewEventId)
+        .then((value) {
+      // profilePosts = value;
+      loadingFlag = false;
+      if (con.postsEvent.length < 10) {
+        nextPostFlag = false;
+      }
+      setState(() {});
+
+      postStream.listen((event) {
+        newPostNum = event.docs.where((post) {
+          Map data = post.data() as Map;
+          var eventId = "";
+          if (data.containsKey("eventId")) eventId = data['eventId'];
+          print("event id is ====$eventId");
+          return (eventId == con.viewEventId) &&
+              (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
+                  .toDate()
+                  .isAfter(con.latestTime));
+        }).length;
+        print("newPostNum of profile is $newPostNum");
+        setState(() {});
+      });
+    });
   }
 
   late PostController con;
@@ -55,7 +107,87 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  MindPost(),
+                  Column(children: [
+                    MindPost(),
+                    newPostNum <= 0
+                        ? const SizedBox()
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(21.0)),
+                              minimumSize: const Size(240, 42),
+                              maximumSize: const Size(240, 42),
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                loadingFlag = true;
+                              });
+                              await con.getTimelinePost(newPostNum, -1,
+                                  PostType.event.index, con.viewEventId);
+
+                              setState(() {
+                                newPostNum = 0;
+                                loadingFlag = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 11.0)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 90, 90, 90),
+                                          fontFamily: 'var(--body-font-family)',
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 8.0)),
+                              ],
+                            ),
+                          ),
+                    loadingFlag
+                        ? const SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey,
+                            ),
+                          )
+                        : const SizedBox(),
+                    con.postsEvent.isNotEmpty
+                        ? SizedBox(
+                            width: 600,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: con.postsEvent
+                                        .map<Widget>((product) => PostCell(
+                                              postInfo: product,
+                                              routerChange: widget.routerChange,
+                                            ))
+                                        .toList(),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        : const SizedBox(),
+                  ]),
                   const Flexible(fit: FlexFit.tight, child: SizedBox()),
                   eventInfo(),
                   const Padding(padding: EdgeInsets.only(left: 40))

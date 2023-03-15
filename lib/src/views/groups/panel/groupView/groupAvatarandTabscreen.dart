@@ -147,46 +147,47 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
               ? Container()
               : Image.network(con.group['groupCover'], fit: BoxFit.cover),
         ),
-        Container(
-          alignment: Alignment.topLeft,
-          margin: const EdgeInsets.only(left: 50, top: 30),
-          child: kIsWeb
-              ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(4),
-                    backgroundColor: Colors.grey[300],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13)),
-                    minimumSize: const Size(26, 26),
-                    maximumSize: const Size(26, 26),
-                  ),
-                  onPressed: () {
-                    uploadImage('cover');
-                  },
-                  child: const Icon(Icons.photo_camera,
-                      color: Colors.black, size: 16.0),
-                )
-              : PopupMenuButton(
-                  onSelected: (value) {
-                    _onMenuItemSelected(value, 'cover');
-                  },
-                  child: const Icon(Icons.photo_camera,
-                      color: Colors.black, size: 16.0),
-                  itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          value: 1,
-                          child: Text(
-                            'Camera',
+        if (con.group['groupAdmin'][0]['uid'] == UserManager.userInfo['uid'])
+          Container(
+            alignment: Alignment.topLeft,
+            margin: const EdgeInsets.only(left: 50, top: 30),
+            child: kIsWeb
+                ? ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(4),
+                      backgroundColor: Colors.grey[300],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(13)),
+                      minimumSize: const Size(26, 26),
+                      maximumSize: const Size(26, 26),
+                    ),
+                    onPressed: () {
+                      uploadImage('cover');
+                    },
+                    child: const Icon(Icons.photo_camera,
+                        color: Colors.black, size: 16.0),
+                  )
+                : PopupMenuButton(
+                    onSelected: (value) {
+                      _onMenuItemSelected(value, 'cover');
+                    },
+                    child: const Icon(Icons.photo_camera,
+                        color: Colors.black, size: 16.0),
+                    itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            value: 1,
+                            child: Text(
+                              'Camera',
+                            ),
                           ),
-                        ),
-                        const PopupMenuItem(
-                          value: 2,
-                          child: Text(
-                            "Gallery",
-                          ),
-                        )
-                      ]),
-        ),
+                          const PopupMenuItem(
+                            value: 2,
+                            child: Text(
+                              "Gallery",
+                            ),
+                          )
+                        ]),
+          ),
         Container(
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
               ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
@@ -267,51 +268,52 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                 ),
               )
             : const SizedBox(),
-        Container(
-          width: 26,
-          height: 26,
-          margin: const EdgeInsets.only(top: 120, left: 108),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(13),
-            color: Colors.grey[400],
+        if (con.group['groupAdmin'][0]['uid'] == UserManager.userInfo['uid'])
+          Container(
+            width: 26,
+            height: 26,
+            margin: const EdgeInsets.only(top: 120, left: 108),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(13),
+              color: Colors.grey[400],
+            ),
+            child: kIsWeb
+                ? ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(4),
+                      backgroundColor: Colors.grey[300],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(13)),
+                      minimumSize: const Size(26, 26),
+                      maximumSize: const Size(26, 26),
+                    ),
+                    onPressed: () {
+                      uploadImage('avatar');
+                    },
+                    child: const Icon(Icons.camera_enhance_rounded,
+                        color: Colors.black, size: 16.0),
+                  )
+                : PopupMenuButton(
+                    onSelected: (value) {
+                      _onMenuItemSelected(value, 'avatar');
+                    },
+                    child: const Icon(Icons.camera_enhance_rounded,
+                        color: Colors.black, size: 16.0),
+                    itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            value: 1,
+                            child: Text(
+                              'Camera',
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: 2,
+                            child: Text(
+                              "Gallery",
+                            ),
+                          )
+                        ]),
           ),
-          child: kIsWeb
-              ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(4),
-                    backgroundColor: Colors.grey[300],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13)),
-                    minimumSize: const Size(26, 26),
-                    maximumSize: const Size(26, 26),
-                  ),
-                  onPressed: () {
-                    uploadImage('avatar');
-                  },
-                  child: const Icon(Icons.camera_enhance_rounded,
-                      color: Colors.black, size: 16.0),
-                )
-              : PopupMenuButton(
-                  onSelected: (value) {
-                    _onMenuItemSelected(value, 'avatar');
-                  },
-                  child: const Icon(Icons.camera_enhance_rounded,
-                      color: Colors.black, size: 16.0),
-                  itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          value: 1,
-                          child: Text(
-                            'Camera',
-                          ),
-                        ),
-                        const PopupMenuItem(
-                          value: 2,
-                          child: Text(
-                            "Gallery",
-                          ),
-                        )
-                      ]),
-        ),
       ],
     );
   }
