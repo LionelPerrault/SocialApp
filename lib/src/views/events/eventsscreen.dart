@@ -1,33 +1,18 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/events/panel/allevents.dart';
 import 'package:shnatter/src/views/events/panel/goingevents.dart';
 import 'package:shnatter/src/views/events/panel/interestedevents.dart';
 import 'package:shnatter/src/views/events/panel/invitedevents.dart';
 import 'package:shnatter/src/views/events/panel/myevents.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
-import 'package:shnatter/src/views/panel/rightpanel.dart';
-import 'package:shnatter/src/widget/createEventWidget.dart';
-import 'package:shnatter/src/widget/createPageWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
-import '../../widget/mprimary_button.dart';
-import '../../widget/list_text.dart';
 import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/gestures.dart';
-import '../box/notification.dart';
+
+import '../../widget/createEventWidget.dart';
 
 class EventsScreen extends StatefulWidget {
   EventsScreen({Key? key, required this.routerChange})
@@ -64,8 +49,8 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
               },
               child: Padding(
                   padding: SizeConfig(context).screenWidth < 460
-                      ? EdgeInsets.all(2)
-                      : EdgeInsets.all(10),
+                      ? const EdgeInsets.all(2)
+                      : const EdgeInsets.all(10),
                   child: Text(
                     paneName,
                     style: TextStyle(
@@ -75,11 +60,11 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
       eventSubRoute == paneName
           ? Container(
               width: SizeConfig(context).screenWidth < 460 ? 30 : 50,
-              margin: EdgeInsets.only(top: 2),
+              margin: const EdgeInsets.only(top: 2),
               height: 2,
               color: Colors.black,
             )
-          : SizedBox()
+          : const SizedBox()
     ]);
   }
 
@@ -142,7 +127,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         //color: Colors.redAccent,
         child: Column(

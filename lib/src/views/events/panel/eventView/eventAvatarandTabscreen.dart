@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -7,11 +8,9 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
@@ -237,7 +236,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
           child: Row(children: [
             Container(
                 width: 57,
-                height: 70,
+                height: 75,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Colors.white, width: 3),
@@ -304,105 +303,211 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               ],
             ),
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
-            Row(
-              children: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 45, 205, 137),
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2.0)),
-                        minimumSize: const Size(120, 45),
-                        maximumSize: const Size(120, 45)),
-                    onPressed: () {
-                      goingStatus = true;
-                      setState(() {});
-                      con.goingEvent(con.viewEventId).then((value) => {
-                            con
-                                .getSelectedEvent(con.viewEventId)
-                                .then((value) => {
-                                      goingStatus = false,
-                                      setState(() {}),
-                                    }),
-                          });
-                    },
-                    child: goingStatus
-                        ? Container(
-                            width: 10,
-                            height: 10,
-                            child: const CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              con.viewEventGoing
-                                  ? const Icon(
-                                      Icons.edit_calendar,
-                                      color: Colors.white,
-                                      size: 18.0,
-                                    )
-                                  : const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 18.0,
-                                    ),
-                              const Text('Going',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          )),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2.0)),
-                        minimumSize: const Size(120, 45),
-                        maximumSize: const Size(120, 45)),
-                    onPressed: () {
-                      eventInterestedFunc();
-                    },
-                    child: interestedStatus
-                        ? Container(
-                            width: 10,
-                            height: 10,
-                            child: const CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              con.viewEventInterested
-                                  ? const Icon(
-                                      Icons.star,
-                                      color: Colors.black,
-                                      size: 18.0,
-                                    )
-                                  : const Icon(
-                                      Icons.check,
-                                      color: Colors.black,
-                                      size: 18.0,
-                                    ),
-                              const Text('Interested',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          )),
-                const Padding(padding: EdgeInsets.only(left: 30))
-              ],
-            )
+            if (SizeConfig(context).screenWidth > 600)
+              Row(
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 45, 205, 137),
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2.0)),
+                          minimumSize: const Size(120, 45),
+                          maximumSize: const Size(120, 45)),
+                      onPressed: () {
+                        goingStatus = true;
+                        setState(() {});
+                        con.goingEvent(con.viewEventId).then((value) => {
+                              con
+                                  .getSelectedEvent(con.viewEventId)
+                                  .then((value) => {
+                                        goingStatus = false,
+                                        setState(() {}),
+                                      }),
+                            });
+                      },
+                      child: goingStatus
+                          ? const SizedBox(
+                              width: 10,
+                              height: 10,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                con.viewEventGoing
+                                    ? const Icon(
+                                        Icons.edit_calendar,
+                                        color: Colors.white,
+                                        size: 18.0,
+                                      )
+                                    : const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 18.0,
+                                      ),
+                                const Text('Going',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            )),
+                  const Padding(padding: EdgeInsets.only(left: 5)),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2.0)),
+                          minimumSize: const Size(120, 45),
+                          maximumSize: const Size(120, 45)),
+                      onPressed: () {
+                        eventInterestedFunc();
+                      },
+                      child: interestedStatus
+                          ? const SizedBox(
+                              width: 10,
+                              height: 10,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                con.viewEventInterested
+                                    ? const Icon(
+                                        Icons.star,
+                                        color: Colors.black,
+                                        size: 18.0,
+                                      )
+                                    : const Icon(
+                                        Icons.check,
+                                        color: Colors.black,
+                                        size: 18.0,
+                                      ),
+                                const Text('Interested',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            )),
+                  const Padding(padding: EdgeInsets.only(left: 30))
+                ],
+              )
           ]),
         ),
+        if (SizeConfig(context).screenWidth < 600)
+          const SizedBox(
+            height: 10,
+          ),
+        if (SizeConfig(context).screenWidth < 600)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 45, 205, 137),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2.0)),
+                      minimumSize: const Size(120, 45),
+                      maximumSize: const Size(120, 45)),
+                  onPressed: () {
+                    goingStatus = true;
+                    setState(() {});
+                    con.goingEvent(con.viewEventId).then((value) => {
+                          con
+                              .getSelectedEvent(con.viewEventId)
+                              .then((value) => {
+                                    goingStatus = false,
+                                    setState(() {}),
+                                  }),
+                        });
+                  },
+                  child: goingStatus
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            con.viewEventGoing
+                                ? const Icon(
+                                    Icons.edit_calendar,
+                                    color: Colors.white,
+                                    size: 18.0,
+                                  )
+                                : const Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 18.0,
+                                  ),
+                            const Text('Going',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        )),
+              const Padding(padding: EdgeInsets.only(left: 5)),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2.0)),
+                      minimumSize: const Size(120, 45),
+                      maximumSize: const Size(120, 45)),
+                  onPressed: () {
+                    eventInterestedFunc();
+                  },
+                  child: interestedStatus
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            con.viewEventInterested
+                                ? const Icon(
+                                    Icons.star,
+                                    color: Colors.black,
+                                    size: 18.0,
+                                  )
+                                : const Icon(
+                                    Icons.check,
+                                    color: Colors.black,
+                                    size: 18.0,
+                                  ),
+                            const Text('Interested',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        )),
+              const Padding(padding: EdgeInsets.only(left: 5))
+            ],
+          ),
         SingleChildScrollView(
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
@@ -414,7 +519,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                           60
                       : SizeConfig(context).screenWidth - 40,
               margin: const EdgeInsets.only(top: 10, left: 20),
-              height: 70,
+              height: 80,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(3),
@@ -443,7 +548,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                                               Icon(
                                                 e['icon'],
                                                 size: 15,
-                                                color: Color.fromRGBO(
+                                                color: const Color.fromRGBO(
                                                     76, 76, 76, 1),
                                               ),
                                               const Padding(

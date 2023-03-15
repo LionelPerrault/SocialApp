@@ -92,7 +92,7 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                           fontSize: 11,
                           color: Colors.white,
                           fontWeight: FontWeight.bold))
-                  : SizedBox()
+                  : const SizedBox()
             ],
           )),
     );
@@ -107,16 +107,16 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                 groupSubRoute = paneName;
                 setState(() {});
               },
-              child:
-                  Padding(padding: EdgeInsets.all(10), child: Text(paneName)))),
+              child: Padding(
+                  padding: const EdgeInsets.all(10), child: Text(paneName)))),
       groupSubRoute == paneName
           ? Container(
               width: 50,
-              margin: EdgeInsets.only(top: 2),
+              margin: const EdgeInsets.only(top: 2),
               height: 2,
               color: Colors.black,
             )
-          : SizedBox()
+          : const SizedBox()
     ]);
   }
 

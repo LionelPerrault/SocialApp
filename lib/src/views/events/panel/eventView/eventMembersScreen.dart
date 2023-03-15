@@ -10,6 +10,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
+// ignore: must_be_immutable
 class EventMembersScreen extends StatefulWidget {
   Function onClick;
   EventMembersScreen(
@@ -52,7 +53,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
   Widget mainTabs() {
     return Container(
       width: SizeConfig(context).screenWidth,
-      height: 100,
+      height: 110,
       margin: const EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),

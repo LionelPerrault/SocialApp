@@ -190,13 +190,13 @@ class PostController extends ControllerMVC {
     var ae = await Helper.eventsData.get();
     allEvent = ae.docs;
     setState(() {});
-    print(allEvent);
     List<Map> realAllEvents = [];
     await Helper.eventsData.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
+        dynamic value = doc[i].data();
         var id = doc[i].id;
-        var data = doc[i];
+        var data = value;
         var interested =
             await boolInterested(data, UserManager.userInfo['uid']);
         //closed event
@@ -238,7 +238,6 @@ class PostController extends ControllerMVC {
           setState(() {});
         }
       }
-      print('Now you get all events');
     });
 
     return realAllEvents;
@@ -338,7 +337,7 @@ class PostController extends ControllerMVC {
       'eventInterested': [],
       'eventInvited': [],
       'eventInvites': [],
-      'eventPost': false,
+      'eventPost': true,
       'eventPicture': '',
       'eventCanPub': true,
       'eventApproval': true
