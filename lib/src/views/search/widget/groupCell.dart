@@ -70,7 +70,7 @@ class SearchGroupCellState extends mvc.StateMVC<SearchGroupCell> {
                         ..onTap = () {
                           widget.routerChange({
                             'router': RouteNames.groups,
-                            'subRouter': widget.groupInfo['groupUserName']
+                            'subRouter': widget.groupInfo['uid']
                           });
                         })
                 ],

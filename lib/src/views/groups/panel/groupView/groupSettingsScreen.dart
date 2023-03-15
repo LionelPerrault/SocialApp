@@ -30,8 +30,10 @@ class GroupSettingsScreen extends StatefulWidget {
 class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   var userInfo = UserManager.userInfo;
   var groupSettingTab = 'Group Settings';
+  var groupName = '';
+  var groupLocation = '';
+  var groupAbout = '';
   final TextEditingController groupNameController = TextEditingController();
-  final TextEditingController groupUserNameController = TextEditingController();
   final TextEditingController groupLocationController = TextEditingController();
   final TextEditingController groupAboutController = TextEditingController();
   List<Map> list = [
@@ -87,9 +89,11 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
     add(widget.con);
     con = controller as PostController;
     groupNameController.text = con.group['groupName'];
-    groupUserNameController.text = con.group['groupUserName'];
+    groupName = con.group['groupName'];
     groupLocationController.text = con.group['groupLocation'];
+    groupLocation = con.group['groupLocation'];
     groupAboutController.text = con.group['groupAbout'];
+    groupAbout = con.group['groupAbout'];
     privacy = con.group['groupPrivacy'];
     canPub = con.group['groupCanPub'];
     approval = con.group['groupApproval'];
@@ -164,22 +168,30 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     headerWidget(const Icon(Icons.settings), 'Group Settings'),
                     customInput(
                         title: 'Name Your Group',
-                        onChange: (value) async {},
+                        onChange: (value) async {
+                          setState(() {
+                            groupName = value;
+                          });
+                        },
                         controller: groupNameController),
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     customInput(
                         title: 'Location',
-                        onChange: (value) async {},
+                        onChange: (value) async {
+                          setState(() {
+                            groupLocation = value;
+                          });
+                        },
                         controller: groupLocationController),
-                    const Padding(padding: EdgeInsets.only(top: 15)),
-                    customInput(
-                        title: 'Group Username',
-                        onChange: (value) async {},
-                        controller: groupUserNameController),
-                    const Text(
-                      'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
-                      style: TextStyle(fontSize: 12),
-                    ),
+                    // const Padding(padding: EdgeInsets.only(top: 15)),
+                    // customInput(
+                    //     title: 'Group Username',
+                    //     onChange: (value) async {},
+                    //     controller: groupUserNameController),
+                    // const Text(
+                    //   'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
+                    //   style: TextStyle(fontSize: 12),
+                    // ),
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     Container(
                       height: 70,
@@ -220,7 +232,11 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     customInput(
                         title: 'About',
-                        onChange: (value) async {},
+                        onChange: (value) async {
+                          setState(() {
+                            groupAbout = value;
+                          });
+                        },
                         controller: groupAboutController),
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     privacySelect(
@@ -244,10 +260,9 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     footerWidget({
-                      'groupName': groupNameController.text,
-                      'groupUserName': groupUserNameController.text,
-                      'groupLocation': groupLocationController.text,
-                      'groupAbout': groupAboutController.text,
+                      'groupName': groupName,
+                      'groupLocation': groupLocation,
+                      'groupAbout': groupAbout,
                       'groupPrivacy': privacy,
                       'groupCanPub': canPub,
                       'groupApproval': approval,
@@ -292,27 +307,6 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                         controller: groupLocationController),
                   )
                 ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 400,
-                    child: customInput(
-                        title: 'Group Username',
-                        onChange: (value) async {},
-                        controller: groupUserNameController),
-                  )
-                ],
-              ),
-              const SizedBox(
-                width: 380,
-                child: Text(
-                  'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
-                  style: TextStyle(fontSize: 12),
-                ),
               ),
               const Padding(padding: EdgeInsets.only(top: 15)),
               Row(
@@ -422,7 +416,6 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
           ),
           footerWidget({
             'groupName': groupNameController.text,
-            'groupUserName': groupUserNameController.text,
             'groupLocation': groupLocationController.text,
             'groupAbout': groupAboutController.text,
             'groupPrivacy': privacy,
@@ -890,20 +883,31 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
               onPressed: () {
                 footerBtnState = true;
                 setState(() {});
-                print(updateData);
-                con.updateGroupInfo(updateData).then(
-                      (value) => {
-                        footerBtnState = false,
-                        setState(() {}),
-                        if (value != 'doubleName${updateData['groupUserName']}')
-                          {
-                            widget.routerChange({
-                              'router': RouteNames.groups,
-                              'subRouter': value,
-                            }),
-                          }
-                      },
-                    );
+                con.updateGroupInfo({
+                  'groupName': groupNameController.text,
+                  'groupLocation': groupLocationController.text,
+                  'groupAbout': groupAboutController.text,
+                  'groupPrivacy': privacy,
+                  'groupCanPub': canPub,
+                  'groupApproval': approval,
+                }).then(
+                  (value) async {
+                    footerBtnState = false;
+                    await con.updateGroup();
+                    groupNameController.text = con.group['groupName'];
+                    groupLocationController.text = con.group['groupLocation'];
+                    groupAboutController.text = con.group['groupAbout'];
+                    privacy = con.group['groupPrivacy'];
+                    canPub = con.group['groupCanPub'];
+                    approval = con.group['groupApproval'];
+
+                    setState(() {});
+                    widget.routerChange({
+                      'router': RouteNames.groups,
+                      'subRouter': value,
+                    });
+                  },
+                );
               },
               child: footerBtnState
                   ? const SizedBox(

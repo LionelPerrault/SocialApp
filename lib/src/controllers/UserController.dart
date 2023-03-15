@@ -874,7 +874,9 @@ class UserController extends ControllerMVC {
             .collection(Helper.userField)
             .doc(UserManager.userInfo['uid'])
             .update({'userName': userName});
-        await UserManager.getUserInfo();
+        dynamic data = UserManager.userInfo;
+        data['userName'] = userName;
+        await Helper.saveJSONPreference(Helper.userField, {...data});
         Helper.showToast('User name chagned!');
         isSettingAction = false;
       } else {
