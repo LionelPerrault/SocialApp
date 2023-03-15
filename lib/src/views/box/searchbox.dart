@@ -52,14 +52,12 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
           .where((event) => event['eventName'].contains(widget.searchText))
           .toList();
       var totalGroups = con.groups
-          .where((group) => (group['groupName'].contains(widget.searchText) ||
-              group['groupUserName'].contains(widget.searchText)))
+          .where((group) => (group['groupName'].contains(widget.searchText)))
           .toList();
       total = [...totalUsers, ...total];
       total = [...totalEvents, ...total];
       total = [...totalGroups, ...total];
       searchResult = total;
-      print('searchResult$searchResult');
     }
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),

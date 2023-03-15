@@ -948,7 +948,6 @@ class PostController extends ControllerMVC {
 
   //user join in group liked function
   Future<bool> joinedGroup(String groupId) async {
-    print('now you are joined or unjoined this group ${groupId}');
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
     var joined = doc['groupJoined'];
@@ -981,7 +980,6 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = joined.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of joined group');
     if (returnData.length == 0) {
       return false;
     } else {
@@ -990,35 +988,42 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> updateGroupInfo(dynamic groupInfo) async {
-    if (groupInfo['groupUserName'] == null) {
-      var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
-
+    // if (groupInfo['groupUserName'] == null) {
+    FirebaseFirestore.instance
+        .collection(Helper.groupsField)
+        .doc(viewGroupId)
+        .update(groupInfo)
+        .then((value) async {
       await updateGroup();
-      return group['groupUserName'];
-    }
-    if (groupInfo['groupUserName'] == group['groupUserName']) {
-      var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
-      await updateGroup();
-      return group['groupUserName'];
-    } else {
-      QuerySnapshot querySnapshot = await Helper.groupsData.get();
-      var allGroup = querySnapshot.docs;
-      var flag = allGroup.where((eachGroup) =>
-          eachGroup['groupUserName'] == groupInfo['groupUserName']);
-      if (flag.isNotEmpty) {
-        await updateGroup();
-        return 'dobuleName${groupInfo['groupUserName']}';
-      } else {
-        await updateGroup();
-        var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+    });
+    return viewGroupId;
+    // }
+    // if (groupInfo['groupUserName'] == group['groupUserName']) {
+    //   var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+    //   await updateGroup();
+    //   return group['groupUserName'];
+    // } else {
+    //   QuerySnapshot querySnapshot = await Helper.groupsData.get();
+    //   var allGroup = querySnapshot.docs;
+    //   var flag = allGroup.where((eachGroup) =>
+    //       eachGroup['groupUserName'] == groupInfo['groupUserName']);
+    //   if (flag.isNotEmpty) {
+    //     await updateGroup();
+    //     return 'dobuleName${groupInfo['groupUserName']}';
+    //   } else {
+    //     await updateGroup();
+    //     var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
 
-        return groupInfo['groupUserName'];
-      }
-    }
+    //     return groupInfo['groupUserName'];
+    //   }
+    // }
   }
 
   Future<void> updateGroup() async {
-    var doc = await Helper.groupsData.doc(viewGroupId).get();
+    var doc = await FirebaseFirestore.instance
+        .collection(Helper.groupsField)
+        .doc(viewGroupId)
+        .get();
     group = doc.data();
     setState(() {});
   }
