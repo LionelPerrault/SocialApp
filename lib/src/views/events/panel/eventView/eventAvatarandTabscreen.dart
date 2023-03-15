@@ -341,7 +341,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                con.viewEventGoing
+                                !con.viewEventGoing
                                     ? const Icon(
                                         Icons.edit_calendar,
                                         color: Colors.white,
@@ -383,7 +383,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                con.viewEventInterested
+                                !con.viewEventInterested
                                     ? const Icon(
                                         Icons.star,
                                         color: Colors.black,

@@ -176,6 +176,156 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     });
   }
 
+  Widget postColumn() {
+    return Column(
+      children: [
+        con.viewProfileUid == UserManager.userInfo['uid']
+            ? MindPost(showPrivacy: true)
+            : Container(
+                width:
+                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                        ? 530
+                        : 350,
+                padding: const EdgeInsets.only(left: 30, right: 30)),
+        const Padding(padding: EdgeInsets.only(top: 20)),
+        newPostNum <= 0 || con.viewProfileUid != UserManager.userInfo['uid']
+            ? const SizedBox()
+            : ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(21.0)),
+                  minimumSize: const Size(240, 42),
+                  maximumSize: const Size(240, 42),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    loadingFlag = true;
+                  });
+                  await PostController().getTimelinePost(newPostNum, -1,
+                      PostType.profile.index, con.viewProfileUid);
+
+                  setState(() {
+                    newPostNum = 0;
+                    loadingFlag = false;
+                  });
+                },
+                child: Column(
+                  children: [
+                    const Padding(padding: EdgeInsets.only(top: 11.0)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 90, 90, 90),
+                              fontFamily: 'var(--body-font-family)',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 15),
+                        )
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 8.0)),
+                  ],
+                ),
+              ),
+        loadingFlag
+            ? const SizedBox(
+                width: 50,
+                height: 50,
+                child: CircularProgressIndicator(
+                  color: Colors.grey,
+                ),
+              )
+            : const SizedBox(),
+        PostController().postsProfile.isNotEmpty
+            ? SizedBox(
+                width: 600,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: PostController()
+                            .postsProfile
+                            .map<Widget>((product) => PostCell(
+                                  postInfo: product,
+                                  routerChange: widget.routerChange,
+                                ))
+                            .toList(),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            : const SizedBox(),
+        loadingFlagBottom
+            ? const SizedBox(
+                width: 50,
+                height: 50,
+                child: CircularProgressIndicator(
+                  color: Colors.grey,
+                ),
+              )
+            : const SizedBox(),
+        loadingFlagBottom || loadingFlag || !nextPostFlag
+            ? !nextPostFlag
+                ? Text("There is no more data to show")
+                : const SizedBox()
+            : ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(21.0)),
+                  minimumSize: const Size(240, 42),
+                  maximumSize: const Size(240, 42),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    loadingFlagBottom = true;
+                  });
+
+                  nextPostFlag = await PostController().getTimelinePost(
+                      defaultSlide,
+                      0,
+                      PostType.profile.index,
+                      con.viewProfileUid);
+
+                  setState(() {
+                    loadingFlagBottom = false;
+                  });
+                },
+                child: Column(
+                  children: [
+                    const Padding(padding: EdgeInsets.only(top: 11.0)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Load More...',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 90, 90, 90),
+                              fontFamily: 'var(--body-font-family)',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 15),
+                        )
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 8.0)),
+                  ],
+                ),
+              ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     print("conprofileid is ${con.viewProfileUid}");
@@ -184,166 +334,25 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
       child: SizeConfig(context).screenWidth < 800
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Padding(padding: EdgeInsets.only(top: 30)),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: LinearPercentIndicator(
-                    width: MediaQuery.of(context).size.width - 100,
-                    animation: true,
-                    lineHeight: 20.0,
-                    animationDuration: 1000,
-                    percent: percent / 100,
-                    center: Text("Profile Completion  $percent %"),
-                    // ignore: deprecated_member_use
-                    linearStrokeCap: LinearStrokeCap.roundAll,
-                    progressColor: Colors.blueAccent,
-                  ),
+          ? Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              const Padding(padding: EdgeInsets.only(top: 30)),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: LinearPercentIndicator(
+                  width: MediaQuery.of(context).size.width - 100,
+                  animation: true,
+                  lineHeight: 20.0,
+                  animationDuration: 1000,
+                  percent: percent / 100,
+                  center: Text("Profile Completion  $percent %"),
+                  // ignore: deprecated_member_use
+                  linearStrokeCap: LinearStrokeCap.roundAll,
+                  progressColor: Colors.blueAccent,
                 ),
-                profileCompletion(),
-                con.viewProfileUid == UserManager.userInfo['uid']
-                    ? MindPost(showPrivacy: true)
-                    : const SizedBox(),
-                const Padding(padding: EdgeInsets.only(top: 20)),
-                newPostNum <= 0 ||
-                        con.viewProfileUid != UserManager.userInfo['uid']
-                    ? const SizedBox()
-                    : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21.0)),
-                          minimumSize: const Size(240, 42),
-                          maximumSize: const Size(240, 42),
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            loadingFlag = true;
-                          });
-                          await PostController().getTimelinePost(newPostNum, -1,
-                              PostType.profile.index, con.viewProfileUid);
-
-                          setState(() {
-                            newPostNum = 0;
-                            loadingFlag = false;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            const Padding(padding: EdgeInsets.only(top: 11.0)),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
-                                  style: const TextStyle(
-                                      color: Color.fromARGB(255, 90, 90, 90),
-                                      fontFamily: 'var(--body-font-family)',
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 15),
-                                )
-                              ],
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 8.0)),
-                          ],
-                        ),
-                      ),
-                loadingFlag
-                    ? const SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    : const SizedBox(),
-                PostController().postsProfile.isNotEmpty
-                    ? SizedBox(
-                        width: 600,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: PostController()
-                                    .postsProfile
-                                    .map<Widget>((product) => PostCell(
-                                          postInfo: product,
-                                          routerChange: widget.routerChange,
-                                        ))
-                                    .toList(),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                loadingFlagBottom
-                    ? const SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    : const SizedBox(),
-                loadingFlagBottom || loadingFlag || !nextPostFlag
-                    ? !nextPostFlag
-                        ? Text("There is no more data to show")
-                        : const SizedBox()
-                    : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21.0)),
-                          minimumSize: const Size(240, 42),
-                          maximumSize: const Size(240, 42),
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            loadingFlagBottom = true;
-                          });
-
-                          nextPostFlag = await PostController().getTimelinePost(
-                              defaultSlide,
-                              0,
-                              PostType.profile.index,
-                              con.viewProfileUid);
-
-                          setState(() {
-                            loadingFlagBottom = false;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            const Padding(padding: EdgeInsets.only(top: 11.0)),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Load More...',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 90, 90, 90),
-                                      fontFamily: 'var(--body-font-family)',
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 15),
-                                )
-                              ],
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 8.0)),
-                          ],
-                        ),
-                      ),
-              ],
-            )
+              ),
+              profileCompletion(),
+              postColumn(),
+            ])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -374,165 +383,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     ),
                   ],
                 ),
-                Column(
-                  children: [
-                    con.viewProfileUid == UserManager.userInfo['uid']
-                        ? MindPost(showPrivacy: true)
-                        : Container(
-                            width: SizeConfig(context).screenWidth >
-                                    SizeConfig.smallScreenSize
-                                ? 530
-                                : 350,
-                            padding:
-                                const EdgeInsets.only(left: 30, right: 30)),
-                    const Padding(padding: EdgeInsets.only(top: 20)),
-                    newPostNum <= 0 ||
-                            con.viewProfileUid != UserManager.userInfo['uid']
-                        ? const SizedBox()
-                        : ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(21.0)),
-                              minimumSize: const Size(240, 42),
-                              maximumSize: const Size(240, 42),
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                loadingFlag = true;
-                              });
-                              await PostController().getTimelinePost(
-                                  newPostNum,
-                                  -1,
-                                  PostType.profile.index,
-                                  con.viewProfileUid);
-
-                              setState(() {
-                                newPostNum = 0;
-                                loadingFlag = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 11.0)),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
-                                      style: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 90, 90, 90),
-                                          fontFamily: 'var(--body-font-family)',
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 15),
-                                    )
-                                  ],
-                                ),
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 8.0)),
-                              ],
-                            ),
-                          ),
-                    loadingFlag
-                        ? const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : const SizedBox(),
-                    PostController().postsProfile.isNotEmpty
-                        ? SizedBox(
-                            width: 600,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: PostController()
-                                        .postsProfile
-                                        .map<Widget>((product) => PostCell(
-                                              postInfo: product,
-                                              routerChange: widget.routerChange,
-                                            ))
-                                        .toList(),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        : const SizedBox(),
-                    loadingFlagBottom
-                        ? const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : const SizedBox(),
-                    loadingFlagBottom || loadingFlag || !nextPostFlag
-                        ? !nextPostFlag
-                            ? Text("There is no more data to show")
-                            : const SizedBox()
-                        : ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(21.0)),
-                              minimumSize: const Size(240, 42),
-                              maximumSize: const Size(240, 42),
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                loadingFlagBottom = true;
-                              });
-
-                              nextPostFlag = await PostController()
-                                  .getTimelinePost(
-                                      defaultSlide,
-                                      0,
-                                      PostType.profile.index,
-                                      con.viewProfileUid);
-
-                              setState(() {
-                                loadingFlagBottom = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 11.0)),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      'Load More...',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 90, 90, 90),
-                                          fontFamily: 'var(--body-font-family)',
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 15),
-                                    )
-                                  ],
-                                ),
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 8.0)),
-                              ],
-                            ),
-                          ),
-                  ],
-                )
+                postColumn(),
               ],
             ),
     );

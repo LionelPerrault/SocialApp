@@ -93,14 +93,160 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     });
   }
 
-  late PostController con;
-  @override
-  Widget build(BuildContext context) {
+  Widget postColumn() {
     var inInterested =
         con.boolInterested(con.event, UserManager.userInfo['uid']);
     var inGoing = con.boolGoing(con.event, UserManager.userInfo['uid']);
     var inInvited = con.boolInvited(con.event, UserManager.userInfo['uid']);
 
+    return Column(children: [
+      inInterested ||
+              inInvited ||
+              inGoing ||
+              UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']
+          ? MindPost(showPrivacy: false)
+          : Container(
+              width:
+                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                      ? 530
+                      : 350,
+              padding: const EdgeInsets.only(left: 30, right: 30)),
+      const Padding(padding: EdgeInsets.only(top: 20)),
+      newPostNum <= 0
+          ? const SizedBox()
+          : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21.0)),
+                minimumSize: const Size(240, 42),
+                maximumSize: const Size(240, 42),
+              ),
+              onPressed: () async {
+                setState(() {
+                  loadingFlag = true;
+                });
+                await con.getTimelinePost(
+                    newPostNum, -1, PostType.event.index, con.viewEventId);
+
+                setState(() {
+                  newPostNum = 0;
+                  loadingFlag = false;
+                });
+              },
+              child: Column(
+                children: [
+                  const Padding(padding: EdgeInsets.only(top: 11.0)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 90, 90, 90),
+                            fontFamily: 'var(--body-font-family)',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 15),
+                      )
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 8.0)),
+                ],
+              ),
+            ),
+      loadingFlag
+          ? const SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                color: Colors.grey,
+              ),
+            )
+          : const SizedBox(),
+      con.postsEvent.isNotEmpty
+          ? SizedBox(
+              width: 600,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: con.postsEvent
+                          .map<Widget>((product) => PostCell(
+                                postInfo: product,
+                                routerChange: widget.routerChange,
+                              ))
+                          .toList(),
+                    ),
+                  )
+                ],
+              ),
+            )
+          : const SizedBox(),
+      loadingFlagBottom
+          ? const SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                color: Colors.grey,
+              ),
+            )
+          : const SizedBox(),
+      loadingFlagBottom || loadingFlag || !nextPostFlag
+          ? !nextPostFlag && !loadingFlag
+              ? const Text("There is no more data to show")
+              : const SizedBox()
+          : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21.0)),
+                minimumSize: const Size(240, 42),
+                maximumSize: const Size(240, 42),
+              ),
+              onPressed: () async {
+                setState(() {
+                  loadingFlagBottom = true;
+                });
+                var t = await con.getTimelinePost(
+                    defaultSlide, 0, PostType.event.index, con.viewEventId);
+                setState(() {
+                  nextPostFlag = t;
+                  loadingFlagBottom = false;
+                });
+              },
+              child: Column(
+                children: [
+                  const Padding(padding: EdgeInsets.only(top: 11.0)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Load More...',
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 90, 90, 90),
+                            fontFamily: 'var(--body-font-family)',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 15),
+                      )
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 8.0)),
+                ],
+              ),
+            ),
+    ]);
+  }
+
+  late PostController con;
+  @override
+  Widget build(BuildContext context) {
     print("event interested is ${con.event['eventInterested']}");
     return Container(
       alignment: Alignment.topLeft,
@@ -108,155 +254,12 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
       child: SizeConfig(context).screenWidth < 800 + 250
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [MindPost(showPrivacy: false), eventInfo()])
+              children: [postColumn(), eventInfo()])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  Column(children: [
-                    inInterested ||
-                            inInvited ||
-                            inGoing ||
-                            UserManager.userInfo['uid'] ==
-                                con.event['eventAdmin'][0]['uid']
-                        ? MindPost(showPrivacy: false)
-                        : Container(),
-                    newPostNum <= 0
-                        ? const SizedBox()
-                        : ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(21.0)),
-                              minimumSize: const Size(240, 42),
-                              maximumSize: const Size(240, 42),
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                loadingFlag = true;
-                              });
-                              await con.getTimelinePost(newPostNum, -1,
-                                  PostType.event.index, con.viewEventId);
-
-                              setState(() {
-                                newPostNum = 0;
-                                loadingFlag = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 11.0)),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
-                                      style: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 90, 90, 90),
-                                          fontFamily: 'var(--body-font-family)',
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 15),
-                                    )
-                                  ],
-                                ),
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 8.0)),
-                              ],
-                            ),
-                          ),
-                    loadingFlag
-                        ? const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : const SizedBox(),
-                    con.postsEvent.isNotEmpty
-                        ? SizedBox(
-                            width: 600,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: con.postsEvent
-                                        .map<Widget>((product) => PostCell(
-                                              postInfo: product,
-                                              routerChange: widget.routerChange,
-                                            ))
-                                        .toList(),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        : const SizedBox(),
-                    loadingFlagBottom
-                        ? const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : const SizedBox(),
-                    loadingFlagBottom || loadingFlag || !nextPostFlag
-                        ? !nextPostFlag && !loadingFlag
-                            ? const Text("There is no more data to show")
-                            : const SizedBox()
-                        : ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(21.0)),
-                              minimumSize: const Size(240, 42),
-                              maximumSize: const Size(240, 42),
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                loadingFlagBottom = true;
-                              });
-                              var t = await con.getTimelinePost(defaultSlide, 0,
-                                  PostType.event.index, con.viewEventId);
-                              setState(() {
-                                nextPostFlag = t;
-                                loadingFlagBottom = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 11.0)),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Load More...',
-                                      style: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 90, 90, 90),
-                                          fontFamily: 'var(--body-font-family)',
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 15),
-                                    )
-                                  ],
-                                ),
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 8.0)),
-                              ],
-                            ),
-                          ),
-                  ]),
+                  postColumn(),
                   const Flexible(fit: FlexFit.tight, child: SizedBox()),
                   eventInfo(),
                   const Padding(padding: EdgeInsets.only(left: 40))
