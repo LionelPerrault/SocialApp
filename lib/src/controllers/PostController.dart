@@ -193,16 +193,15 @@ class PostController extends ControllerMVC {
     var ae = await Helper.eventsData.get();
     allEvent = ae.docs;
     setState(() {});
-    print(allEvent);
     List<Map> realAllEvents = [];
     await Helper.eventsData.get().then((value) async {
       var doc = value.docs;
       print("length is ${doc.length}");
       for (int i = 0; i < doc.length; i++) {
+        dynamic value = doc[i].data();
         var id = doc[i].id;
-        var data = doc[i];
-        var interested =
-            await boolInterested(data, UserManager.userInfo['uid']);
+        var data = value;
+        var interested = boolInterested(data, UserManager.userInfo['uid']);
         //closed event
         if (data['eventPrivacy'] == 'closed') {
           if (data['eventAdmin'][0]['uid'] == uid && condition == 'manage') {
@@ -212,10 +211,9 @@ class PostController extends ControllerMVC {
         }
         //security event
         else /*if (data['eventPrivacy'] == 'security') */ {
-          var inInterested =
-              await boolInterested(data, UserManager.userInfo['uid']);
-          var inInvited = await boolInvited(data, UserManager.userInfo['uid']);
-          var inGoing = await boolGoing(data, UserManager.userInfo['uid']);
+          var inInterested = boolInterested(data, UserManager.userInfo['uid']);
+          var inInvited = boolInvited(data, UserManager.userInfo['uid']);
+          var inGoing = boolGoing(data, UserManager.userInfo['uid']);
           if (inInterested && condition == 'interested') {
             realAllEvents
                 .add({'data': data, 'id': id, 'interested': interested});
@@ -232,8 +230,12 @@ class PostController extends ControllerMVC {
           } else if (condition == 'all') {
             if (data['eventPrivacy'] == 'public') {
               //&& data['eventPost'] == true) {
-              realAllEvents
-                  .add({'data': data, 'id': id, 'interested': interested});
+              if (!inInterested &&
+                  !inGoing &&
+                  !inInvited &&
+                  uid != data['eventAdmin'][0]['uid'])
+                realAllEvents
+                    .add({'data': data, 'id': id, 'interested': interested});
             }
           } else if (condition == 'unInterested' &&
               !interested &&
@@ -243,7 +245,6 @@ class PostController extends ControllerMVC {
           setState(() {});
         }
       }
-      print('Now you get all events');
     });
 
     return realAllEvents;
@@ -253,48 +254,59 @@ class PostController extends ControllerMVC {
   Future<bool> getSelectedEvent(String id) async {
     id = id.split('/')[id.split('/').length - 1];
     viewEventId = id;
+    print("viewEventId is $viewEventId");
     await Helper.eventsData.doc(id).get().then((value) async {
       event = value.data();
       viewEventInterested =
           await boolInterested(value, UserManager.userInfo['uid']);
       viewEventGoing = await boolGoing(value, UserManager.userInfo['uid']);
       viewEventInvited = await boolInvited(value, UserManager.userInfo['uid']);
+      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventAdmin'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventAdmin'][i]['uid']);
+        if (addAdmin == null) continue;
         event['eventAdmin'][i] = {
           ...event['eventAdmin'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
+      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventInterested'].length; i++) {
+        print("eventInterested is ${event['eventInterested']}");
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInterested'][i]['uid']);
+        if (addAdmin == null) continue;
+        print("addAdmin is $addAdmin");
         event['eventInterested'][i] = {
           ...event['eventInterested'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
+      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventInvited'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvited'][i]['uid']);
+        if (addAdmin == null) continue;
         event['eventInvited'][i] = {
           ...event['eventInvited'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
+      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventInvites'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvites'][i]['uid']);
+        if (addAdmin == null) continue;
         event['eventInvites'][i] = {
           ...event['eventInvites'][i],
-          'userName': addAdmin!['userName'],
+          'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
@@ -343,7 +355,7 @@ class PostController extends ControllerMVC {
       'eventInterested': [],
       'eventInvited': [],
       'eventInvites': [],
-      'eventPost': false,
+      'eventPost': true,
       'eventPicture': '',
       'eventCanPub': true,
       'eventApproval': true
@@ -414,7 +426,7 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event interested or not
-  Future<bool> boolInterested(var eventData, String uid) async {
+  bool boolInterested(var eventData, String uid) {
     var interested = eventData['eventInterested'];
     if (interested == null) {
       return false;
@@ -455,7 +467,7 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event going or not
-  Future<bool> boolGoing(var eventData, String uid) async {
+  bool boolGoing(var eventData, String uid) {
     var going = eventData['eventGoing'];
     if (going == null) {
       return false;
@@ -497,7 +509,7 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in event invited or not
-  Future<bool> boolInvited(var eventData, String uid) async {
+  bool boolInvited(var eventData, String uid) {
     var invited = eventData['eventInvited'];
     if (invited == null) {
       return false;
@@ -936,7 +948,6 @@ class PostController extends ControllerMVC {
 
   //user join in group liked function
   Future<bool> joinedGroup(String groupId) async {
-    print('now you are joined or unjoined this group ${groupId}');
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
     var joined = doc['groupJoined'];
@@ -969,7 +980,6 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = joined.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of joined group');
     if (returnData.length == 0) {
       return false;
     } else {
@@ -978,36 +988,51 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> updateGroupInfo(dynamic groupInfo) async {
-    if (groupInfo['groupUserName'] == null) {
-      var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
-
+    // if (groupInfo['groupUserName'] == null) {
+    FirebaseFirestore.instance
+        .collection(Helper.groupsField)
+        .doc(viewGroupId)
+        .update(groupInfo)
+        .then((value) async {
       await updateGroup();
-      return group['groupUserName'];
-    }
-    if (groupInfo['groupUserName'] == group['groupUserName']) {
-      var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
-      await updateGroup();
-      return group['groupUserName'];
-    } else {
-      QuerySnapshot querySnapshot = await Helper.groupsData.get();
-      var allGroup = querySnapshot.docs;
-      var flag = allGroup.where((eachGroup) =>
-          eachGroup['groupUserName'] == groupInfo['groupUserName']);
-      if (flag.isNotEmpty) {
-        await updateGroup();
-        return 'dobuleName${groupInfo['groupUserName']}';
-      } else {
-        await updateGroup();
-        var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+    });
+    return viewGroupId;
+    // }
+    // if (groupInfo['groupUserName'] == group['groupUserName']) {
+    //   var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
+    //   await updateGroup();
+    //   return group['groupUserName'];
+    // } else {
+    //   QuerySnapshot querySnapshot = await Helper.groupsData.get();
+    //   var allGroup = querySnapshot.docs;
+    //   var flag = allGroup.where((eachGroup) =>
+    //       eachGroup['groupUserName'] == groupInfo['groupUserName']);
+    //   if (flag.isNotEmpty) {
+    //     await updateGroup();
+    //     return 'dobuleName${groupInfo['groupUserName']}';
+    //   } else {
+    //     await updateGroup();
+    //     var result = await Helper.groupsData.doc(viewGroupId).update(groupInfo);
 
-        return groupInfo['groupUserName'];
-      }
-    }
+    //     return groupInfo['groupUserName'];
+    //   }
+    // }
   }
 
   Future<void> updateGroup() async {
-    var doc = await Helper.groupsData.doc(viewGroupId).get();
+    var doc = await FirebaseFirestore.instance
+        .collection(Helper.groupsField)
+        .doc(viewGroupId)
+        .get();
     group = doc.data();
+    setState(() {});
+  }
+
+  Future<void> updateEvent() async {
+    eventTab = 'Timeline';
+
+    var doc = await Helper.eventsData.doc(viewEventId).get();
+    event = doc.data();
     setState(() {});
   }
 
@@ -1712,7 +1737,7 @@ class PostController extends ControllerMVC {
 
     setState(() {});
 
-    if (postsBox.length < slide) return false;
+    if (slide < 10) return false;
     return true;
   }
 

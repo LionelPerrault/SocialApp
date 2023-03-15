@@ -22,4 +22,18 @@ class Photos {
     albums = s;
     print("albums---------------$albums");
   }
+
+  Future<void> getPhotosOfEvent(eventId) async {
+    var snapshot = await Helper.postCollection
+        .where('type', isEqualTo: 'photo')
+        .where('eventId', isEqualTo: eventId)
+        .get();
+    var s = [];
+    s = snapshot.docs.map((doc) => doc.data()['value']).toList();
+
+    photos = flatten(s);
+    print("photos---------------$photos");
+    albums = s;
+    print("albums---------------$albums");
+  }
 }

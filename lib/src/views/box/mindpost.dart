@@ -19,10 +19,12 @@ import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class MindPost extends StatefulWidget {
-  MindPost({Key? key})
+  MindPost({Key? key, required this.showPrivacy})
       : con = PostController(),
         super(key: key);
   final PostController con;
+
+  bool showPrivacy = true;
   @override
   State createState() => MindPostState();
 }
@@ -669,108 +671,115 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     child: SizedBox(
                       width: 100,
                       height: 42,
-                      child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 17, 205, 239),
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(
+                      child: widget.showPrivacy == true
+                          ? DecoratedBox(
+                              decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 17, 205, 239),
-                                width:
-                                    0.1), //bordrder raiuds of dropdown button
-                          ),
-                          child: Padding(
-                              padding: const EdgeInsets.only(top: 7, left: 5),
-                              child: DropdownButton(
-                                value: dropdownValue,
-                                // hint: Container(
-                                //   child: Row(
-                                //     children: [
-                                //       Icon(
-                                //         dropdownValue == 'Public'
-                                //             ? Icons.language
-                                //             : dropdownValue == 'Friends'
-                                //                 ? Icons.groups
-                                //                 : Icons.lock_outline,
-                                //         color: Colors.white,
-                                //       ),
-                                //       const Padding(
-                                //           padding: EdgeInsets.only(left: 5)),
-                                //       Text(
-                                //         dropdownValue,
-                                //         style: const TextStyle(
-                                //           fontSize: 13,
-                                //           color: Colors.white,
-                                //         ),
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
-                                items: [
-                                  DropdownMenuItem(
-                                    value: "Public",
-                                    child: Row(children: const [
-                                      Icon(
-                                        Icons.language,
-                                        color: Colors.black,
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                    color:
+                                        const Color.fromARGB(255, 17, 205, 239),
+                                    width:
+                                        0.1), //bordrder raiuds of dropdown button
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 7, left: 5),
+                                  child: DropdownButton(
+                                    value: dropdownValue,
+                                    // hint: Container(
+                                    //   child: Row(
+                                    //     children: [
+                                    //       Icon(
+                                    //         dropdownValue == 'Public'
+                                    //             ? Icons.language
+                                    //             : dropdownValue == 'Friends'
+                                    //                 ? Icons.groups
+                                    //                 : Icons.lock_outline,
+                                    //         color: Colors.white,
+                                    //       ),
+                                    //       const Padding(
+                                    //           padding: EdgeInsets.only(left: 5)),
+                                    //       Text(
+                                    //         dropdownValue,
+                                    //         style: const TextStyle(
+                                    //           fontSize: 13,
+                                    //           color: Colors.white,
+                                    //         ),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    items: [
+                                      DropdownMenuItem(
+                                        value: "Public",
+                                        child: Row(children: const [
+                                          Icon(
+                                            Icons.language,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Public",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
                                       ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        "Public",
-                                        style: TextStyle(fontSize: 13),
-                                      )
-                                    ]),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Friends",
-                                    child: Row(children: const [
-                                      Icon(
-                                        Icons.groups,
-                                        color: Colors.black,
+                                      DropdownMenuItem(
+                                        value: "Friends",
+                                        child: Row(children: const [
+                                          Icon(
+                                            Icons.groups,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Friends",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
                                       ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        "Friends",
-                                        style: TextStyle(fontSize: 13),
-                                      )
-                                    ]),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Only Me",
-                                    child: Row(children: const [
-                                      Icon(
-                                        Icons.lock_outline,
-                                        color: Colors.black,
+                                      DropdownMenuItem(
+                                        value: "Only Me",
+                                        child: Row(children: const [
+                                          Icon(
+                                            Icons.lock_outline,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Only Me",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
                                       ),
-                                      Padding(
-                                          padding: EdgeInsets.only(left: 5)),
-                                      Text(
-                                        "Only Me",
-                                        style: TextStyle(fontSize: 13),
-                                      )
-                                    ]),
-                                  ),
-                                ],
-                                onChanged: (String? value) {
-                                  //get value when changed
-                                  dropdownValue = value!;
-                                  setState(() {});
-                                },
-                                icon: const Padding(
-                                    padding: EdgeInsets.only(left: 20),
-                                    child: Icon(Icons.arrow_drop_down)),
-                                iconEnabledColor: Colors.white, //Icon color
-                                style: const TextStyle(
-                                  color: Colors.black, //Font color
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                dropdownColor: Colors.white,
-                                underline: Container(), //remove underline
-                                isExpanded: true,
-                                isDense: true,
-                              ))),
+                                    ],
+                                    onChanged: (String? value) {
+                                      //get value when changed
+                                      dropdownValue = value!;
+                                      setState(() {});
+                                    },
+                                    icon: const Padding(
+                                        padding: EdgeInsets.only(left: 20),
+                                        child: Icon(Icons.arrow_drop_down)),
+                                    iconEnabledColor: Colors.white, //Icon color
+                                    style: const TextStyle(
+                                      color: Colors.black, //Font color
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    dropdownColor: Colors.white,
+                                    underline: Container(), //remove underline
+                                    isExpanded: true,
+                                    isDense: true,
+                                  )))
+                          : Container(),
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(left: 10)),

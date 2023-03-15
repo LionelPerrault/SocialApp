@@ -40,7 +40,6 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
 
   @override
   Widget build(BuildContext context) {
-      print(widget.searchText);
     if (widget.searchText != '') {
       var total = [];
       var totalUsers = con.users

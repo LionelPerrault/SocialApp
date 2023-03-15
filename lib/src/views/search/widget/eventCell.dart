@@ -33,11 +33,8 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
     super.initState();
     add(widget.con);
     con = controller as PostController;
-    con
-        .boolInterested(widget.eventInfo, UserManager.userInfo['uid'])
-        .then((value) => {
-              interested = value,
-            });
+    interested =
+        con.boolInterested(widget.eventInfo, UserManager.userInfo['uid']);
   }
 
   @override

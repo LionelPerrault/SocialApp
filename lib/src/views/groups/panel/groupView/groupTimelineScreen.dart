@@ -58,7 +58,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
           ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               con.group['groupAdmin'][0]['userName'] ==
                       UserManager.userInfo['userName']
-                  ? MindPost()
+                  ? MindPost(showPrivacy: false)
                   : Container(),
               Column(
                 children: [
@@ -73,7 +73,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
               children: [
                   con.group['groupAdmin'][0]['userName'] ==
                           UserManager.userInfo['userName']
-                      ? MindPost()
+                      ? MindPost(showPrivacy: false)
                       : Container(),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,

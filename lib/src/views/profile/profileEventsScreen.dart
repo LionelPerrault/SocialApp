@@ -33,7 +33,7 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
   }
 
   void getEventNow() {
-    PostController().getEvent('manage', UserManager.userInfo['uid']).then(
+    PostController().getEvent('manage', con.viewProfileUid).then(
           (value) => {
             myEvents = [...value],
             myEvents.where((event) =>

@@ -69,14 +69,14 @@ class PageTimelineScreenState extends mvc.StateMVC<PageTimelineScreen>
       child: SizeConfig(context).screenWidth < 800
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [pageInfowidget(), MindPost()])
+              children: [pageInfowidget(), MindPost(showPrivacy: true)])
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                   pageInfowidget(),
                   con.page['pageAdmin'][0] == UserManager.userInfo['uid']
-                      ? MindPost()
+                      ? MindPost(showPrivacy: true)
                       : Container()
                 ]),
     );

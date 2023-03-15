@@ -38,6 +38,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
   void initState() {
     add(widget.con);
     con = controller as ProfileController;
+    con.addNotifyCallBack(this);
     super.initState();
   }
 
