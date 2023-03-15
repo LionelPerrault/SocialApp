@@ -1,21 +1,19 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/events/panel/eventView/eventSettingsScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import 'package:shnatter/src/views/panel/leftpanel.dart';
-
 import 'eventAvatarandTabscreen.dart';
 import 'eventMembersScreen.dart';
 import 'eventPhotosScreen.dart';
 import 'eventTimelineScreen.dart';
 import 'eventVideosScreen.dart';
 
+// ignore: must_be_immutable
 class EventEachScreen extends StatefulWidget {
   EventEachScreen({Key? key, required this.docId, required this.routerChange})
       : con = PostController(),
@@ -45,6 +43,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
     add(widget.con);
     con = controller as PostController;
     filecon = FileController();
+    con.addNotifyCallBack(this);
     setState(() {});
     super.initState();
     searchFocusNode = FocusNode();
@@ -59,12 +58,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
   late PostController con;
 
   void getSelectedEvent(id) {
-    con.getSelectedEvent(id).then((value) => {
-          if (value)
-            {
-              print('Successfully get event you want!!!'),
-            }
-        });
+    con.getSelectedEvent(id).then((value) => {if (value) {}});
   }
 
   @override
@@ -95,16 +89,17 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                       children: [
                         EventAvatarandTabScreen(
                           onClick: (value) {
-                            print(value);
                             con.eventTab = value;
                             setState(() {});
                           },
                         ),
                         con.eventTab == 'Timeline'
-                            ? EventTimelineScreen(onClick: (value) {
-                                con.eventTab = value;
-                                setState(() {});
-                              })
+                            ? EventTimelineScreen(
+                                onClick: (value) {
+                                  con.eventTab = value;
+                                  setState(() {});
+                                },
+                                routerChange: widget.routerChange)
                             : con.eventTab == 'Photos'
                                 ? EventPhotosScreen(onClick: (value) {
                                     con.eventTab = value;

@@ -35,16 +35,14 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
   }
 
   void getGroupNow() {
-    PostController()
-        .getGroup('manage', UserManager.userInfo['uid'])
-        .then((value) => {
-              myGroups = [...value],
-              myGroups.where((group) =>
-                  group['data']['groupAdmin'][0]['uid'] ==
-                  UserManager.userInfo['uid']),
-              getFlag = false,
-              setState(() {})
-            });
+    PostController().getGroup('manage', con.viewProfileUid).then((value) => {
+          myGroups = [...value],
+          myGroups.where((group) =>
+              group['data']['groupAdmin'][0]['uid'] ==
+              UserManager.userInfo['uid']),
+          getFlag = false,
+          setState(() {})
+        });
   }
 
   late ProfileController con;

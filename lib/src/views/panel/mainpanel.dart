@@ -22,6 +22,10 @@ class MainPanel extends StatefulWidget {
   State createState() => MainPanelState();
 }
 
+const int defaultSlide = 10;
+
+enum PostType { timeline, profile, event }
+
 class MainPanelState extends mvc.StateMVC<MainPanel> {
   List<Map> subFunctionList = [];
   bool showDayTimeM = true;
@@ -67,7 +71,9 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     loadingFlag = true;
     // con.posts = [];
 
-    con.getTimelinePost().then((value) {
+    con
+        .getTimelinePost(defaultSlide, 1, PostType.timeline.index, '')
+        .then((value) {
       setState(() {
         nextPostFlag = value;
         loadingFlag = false;
@@ -121,7 +127,9 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {
                       loadingFlag = true;
                     });
-                    await con.addNewPosts(newPostNum, 0);
+                    print("view new post");
+                    await con.getTimelinePost(
+                        newPostNum, -1, PostType.timeline.index, '');
 
                     setState(() {
                       newPostNum = 0;
@@ -158,7 +166,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                   ),
                 )
               : const SizedBox(),
-          con.posts.isNotEmpty
+          con.postsTimeline.isNotEmpty
               ? SizedBox(
                   width: 600,
                   child: Row(
@@ -168,7 +176,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     children: [
                       Expanded(
                         child: Column(
-                          children: con.posts
+                          children: con.postsTimeline
                               .map((product) => PostCell(
                                     postInfo: product,
                                     routerChange: widget.routerChange,
@@ -206,7 +214,8 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {
                       loadingFlagBottom = true;
                     });
-                    var t = await con.loadNextTimelinePosts();
+                    var t = await con.getTimelinePost(
+                        defaultSlide, 0, PostType.timeline.index, '');
                     setState(() {
                       nextPostFlag = t;
                       loadingFlagBottom = false;

@@ -5,6 +5,9 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/userModel.dart';
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+
+import 'package:flutter/material.dart';
 
 enum EmailType { emailVerify, googleVerify }
 
@@ -22,6 +25,7 @@ class ProfileController extends ControllerMVC {
   String viewProfileUid = '';
   String tab = 'Timeline';
   double progress;
+  List<mvc.StateMVC> notifiers = [];
   var resData = {};
   var userInfo = {};
   // ignore: prefer_typing_uninitialized_variables
@@ -42,6 +46,22 @@ class ProfileController extends ControllerMVC {
     return true;
   }
 
+  //fix bugs of unknown
+  void addNotifyCallBack(mvc.StateMVC notifi) {
+    notifiers.add(notifi);
+  }
+
+  //fix bugs of unknown
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    for (int i = 0; i < notifiers.length; i++) {
+      mvc.StateMVC notifi = notifiers[i];
+      notifi.setState(() {});
+    }
+  }
+
   updateProfile(userName) {
     tab = 'Timeline';
     var userInfo = UserManager.userInfo;
@@ -50,6 +70,8 @@ class ProfileController extends ControllerMVC {
     if (viewProfileUserName == '') {
       viewProfileUserName = userInfo['userName'];
     }
+    ProfileController().isGetData = true;
+    setState(() {});
     getProfileInfo();
   }
 

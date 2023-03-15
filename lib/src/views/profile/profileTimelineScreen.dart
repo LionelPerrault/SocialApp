@@ -14,6 +14,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 import '../../widget/postCell.dart';
 
+enum Direction {
+  normal(1),
+  reverse(-1);
+
+  const Direction(this.value);
+
+  final int value;
+}
+
+const int defaultSlide = 10;
+
+enum PostType { timeline, profile, event, normal }
+
 class ProfileTimelineScreen extends StatefulWidget {
   Function onClick;
   ProfileTimelineScreen(
@@ -128,7 +141,10 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
     //PostController().posts = [];
-    PostController().getProfilePost(con.viewProfileUid).then((value) {
+    PostController()
+        .getTimelinePost(
+            defaultSlide, 1, PostType.profile.index, con.viewProfileUid)
+        .then((value) {
       // profilePosts = value;
       loadingFlag = false;
       if (PostController().postsProfile.length < 10) {
@@ -207,7 +223,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           setState(() {
                             loadingFlag = true;
                           });
-                          await PostController().addNewPosts(newPostNum, 1);
+                          await PostController().getTimelinePost(newPostNum, -1,
+                              PostType.profile.index, con.viewProfileUid);
 
                           setState(() {
                             newPostNum = 0;
@@ -294,8 +311,11 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                             loadingFlagBottom = true;
                           });
 
-                          nextPostFlag = await PostController()
-                              .loadNextProfilePosts(con.viewProfileUid);
+                          nextPostFlag = await PostController().getTimelinePost(
+                              defaultSlide,
+                              0,
+                              PostType.profile.index,
+                              con.viewProfileUid);
 
                           setState(() {
                             loadingFlagBottom = false;
@@ -382,7 +402,11 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               setState(() {
                                 loadingFlag = true;
                               });
-                              await PostController().addNewPosts(newPostNum, 1);
+                              await PostController().getTimelinePost(
+                                  newPostNum,
+                                  -1,
+                                  PostType.profile.index,
+                                  con.viewProfileUid);
 
                               setState(() {
                                 newPostNum = 0;
@@ -473,7 +497,11 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                               });
 
                               nextPostFlag = await PostController()
-                                  .loadNextProfilePosts(con.viewProfileUid);
+                                  .getTimelinePost(
+                                      defaultSlide,
+                                      0,
+                                      PostType.profile.index,
+                                      con.viewProfileUid);
 
                               setState(() {
                                 loadingFlagBottom = false;

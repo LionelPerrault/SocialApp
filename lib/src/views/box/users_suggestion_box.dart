@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
@@ -136,6 +137,9 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                         color: Colors.black),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
+                                        ProfileController().updateProfile(
+                                            itemData['userName']);
+
                                         widget.routerChange({
                                           'router': RouteNames.profile,
                                           'subRouter': itemData['userName']
