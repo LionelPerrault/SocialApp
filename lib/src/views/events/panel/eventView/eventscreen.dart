@@ -43,6 +43,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
     add(widget.con);
     con = controller as PostController;
     filecon = FileController();
+    con.addNotifyCallBack(this);
     setState(() {});
     super.initState();
     searchFocusNode = FocusNode();

@@ -232,8 +232,12 @@ class PostController extends ControllerMVC {
           } else if (condition == 'all') {
             if (data['eventPrivacy'] == 'public') {
               //&& data['eventPost'] == true) {
-              realAllEvents
-                  .add({'data': data, 'id': id, 'interested': interested});
+              if (!inInterested &&
+                  !inGoing &&
+                  !inInvited &&
+                  uid != data['eventAdmin'][0]['uid'])
+                realAllEvents
+                    .add({'data': data, 'id': id, 'interested': interested});
             }
           } else if (condition == 'unInterested' &&
               !interested &&
@@ -1007,6 +1011,12 @@ class PostController extends ControllerMVC {
   Future<void> updateGroup() async {
     var doc = await Helper.groupsData.doc(viewGroupId).get();
     group = doc.data();
+    setState(() {});
+  }
+
+  Future<void> updateEvent() async {
+    var doc = await Helper.eventsData.doc(viewEventId).get();
+    event = doc.data();
     setState(() {});
   }
 

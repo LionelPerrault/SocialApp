@@ -35,6 +35,7 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
   void initState() {
     add(widget.con);
     con = controller as PostController;
+
     super.initState();
   }
 

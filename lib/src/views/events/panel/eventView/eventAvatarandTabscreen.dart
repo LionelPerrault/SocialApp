@@ -155,46 +155,48 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               ? Container()
               : Image.network(con.event['eventPicture'], fit: BoxFit.cover),
         ),
-        Container(
-          alignment: Alignment.topLeft,
-          margin: const EdgeInsets.only(left: 50, top: 30),
-          child: kIsWeb
-              ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(4),
-                    backgroundColor: Colors.grey[300],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13)),
-                    minimumSize: const Size(26, 26),
-                    maximumSize: const Size(26, 26),
-                  ),
-                  onPressed: () {
-                    uploadImage('profile_cover');
-                  },
-                  child: const Icon(Icons.camera_enhance_rounded,
-                      color: Colors.black, size: 16.0),
-                )
-              : PopupMenuButton(
-                  onSelected: (value) {
-                    _onMenuItemSelected(value, 'profile_cover');
-                  },
-                  child: const Icon(Icons.camera_enhance_rounded,
-                      color: Colors.black, size: 16.0),
-                  itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          value: 1,
-                          child: Text(
-                            'Camera',
-                          ),
+        con.event['eventAdmin'][0]['uid'] == UserManager.userInfo['uid']
+            ? Container(
+                alignment: Alignment.topLeft,
+                margin: const EdgeInsets.only(left: 50, top: 30),
+                child: kIsWeb
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(4),
+                          backgroundColor: Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(13)),
+                          minimumSize: const Size(26, 26),
+                          maximumSize: const Size(26, 26),
                         ),
-                        const PopupMenuItem(
-                          value: 2,
-                          child: Text(
-                            "Gallery",
-                          ),
-                        )
-                      ]),
-        ),
+                        onPressed: () {
+                          uploadImage('profile_cover');
+                        },
+                        child: const Icon(Icons.camera_enhance_rounded,
+                            color: Colors.black, size: 16.0),
+                      )
+                    : PopupMenuButton(
+                        onSelected: (value) {
+                          _onMenuItemSelected(value, 'profile_cover');
+                        },
+                        child: const Icon(Icons.camera_enhance_rounded,
+                            color: Colors.black, size: 16.0),
+                        itemBuilder: (context) => [
+                              const PopupMenuItem(
+                                value: 1,
+                                child: Text(
+                                  'Camera',
+                                ),
+                              ),
+                              const PopupMenuItem(
+                                value: 2,
+                                child: Text(
+                                  "Gallery",
+                                ),
+                              )
+                            ]),
+              )
+            : Container(),
         Container(
             width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
                 ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth

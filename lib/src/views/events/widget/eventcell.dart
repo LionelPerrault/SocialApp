@@ -135,10 +135,12 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
+                                con.updateEvent();
                                 widget.routerChange({
                                   'router': RouteNames.events,
                                   'subRouter': widget.eventData['id'],
                                 });
+                                setState(() {});
                               }),
                       ]),
                     ),
@@ -171,7 +173,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  widget.eventData['interested']
+                                  !widget.eventData['interested']
                                       ? Icon(
                                           Icons.star,
                                           color: Colors.black,
