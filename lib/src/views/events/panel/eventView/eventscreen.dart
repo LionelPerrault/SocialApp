@@ -51,7 +51,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    con = controller as PostController;
+
     getSelectedEvent(widget.docId);
   }
 
