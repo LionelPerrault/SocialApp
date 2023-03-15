@@ -46,27 +46,27 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
   Color color = Color.fromRGBO(230, 236, 245, 1);
   List gender = [
     {'title': 'Any', 'value': 'any'},
-    {'title': 'Male', 'value': 'male'},
-    {'title': 'Female', 'value': 'female'},
-    {'title': 'Other', 'value': 'other'},
+    {'title': 'Male', 'value': 'Male'},
+    {'title': 'Female', 'value': 'Female'},
+    {'title': 'Other', 'value': 'Other'},
   ];
   List relationShip = [
     {'value': 'any', 'title': 'Any'},
-    {'value': 'Single', 'title': 'Single'},
-    {'value': 'In a relationship', 'title': 'In a relationship'},
+    {'value': 'single', 'title': 'Single'},
+    {'value': 'inarelationship', 'title': 'In a relationship'},
     {'value': 'Married', 'title': 'Married'},
-    {'value': "It's complicated", 'title': "It's complicated"},
-    {'value': "Separated", 'title': "Separated"},
-    {'value': "Divorced", 'title': "Divorced"},
-    {'value': "Widowed", 'title': "Widowed"},
+    {'value': "complicated", 'title': "It's complicated"},
+    {'value': "separated", 'title': "Separated"},
+    {'value': "divorced", 'title': "Divorced"},
+    {'value': "widowed", 'title': "Widowed"},
   ];
   List onlineStatus = [
-    {'value': 'Any', 'title': 'any'},
+    {'value': 'any', 'title': 'Any'},
     {'value': 'Online', 'title': 'Online'},
     {'value': 'Offline', 'title': 'Offline'},
   ];
   List religion = [
-    {'value': 'Any', 'title': 'any'},
+    {'value': 'any', 'title': 'Any'},
     {'value': 'Jewish', 'title': 'Jewish'},
     {'value': 'Lizard', 'title': 'Lizard'},
     {'value': 'world', 'title': 'world'},
@@ -111,41 +111,41 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
                 if (value == '') search.remove('userName');
               }),
         ),
+        // Container(
+        //   margin: EdgeInsets.only(top: 65 * 2),
+        //   child: customInput(
+        //       title: 'Hometown',
+        //       controller: hometownController,
+        //       onChange: (value) {
+        //         //search = {'hometown': value};
+        //         geoLocator(
+        //           value,
+        //           'hometown',
+        //         );
+        //       }),
+        // ),
+        // Container(
+        //   margin: EdgeInsets.only(top: 65 * 3),
+        //   child: customInput(
+        //     title: 'Current place',
+        //     controller: currentController,
+        //     onChange: (value) {
+        //       //search = {'current': value};
+        //       geoLocator(value, 'current');
+        //     },
+        //   ),
+        // ),
+        // Container(
+        //   margin: EdgeInsets.only(top: 65 * 2),
+        //   child: customInput(
+        //       title: 'Keyword',
+        //       onChange: (value) {
+        //         search['keyword'] = value;
+        //         if (value == '') search.remove('keyword');
+        //       }),
+        // ),
         Container(
           margin: EdgeInsets.only(top: 65 * 2),
-          child: customInput(
-              title: 'Hometown',
-              controller: hometownController,
-              onChange: (value) {
-                //search = {'hometown': value};
-                geoLocator(
-                  value,
-                  'hometown',
-                );
-              }),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 65 * 3),
-          child: customInput(
-            title: 'Current place',
-            controller: currentController,
-            onChange: (value) {
-              //search = {'current': value};
-              geoLocator(value, 'current');
-            },
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 65 * 4),
-          child: customInput(
-              title: 'Keyword',
-              onChange: (value) {
-                search['keyword'] = value;
-                if (value == '') search.remove('keyword');
-              }),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 65 * 5),
           child: customDropDownButton(
               title: 'Gender',
               item: gender,
@@ -158,7 +158,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               context: context),
         ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 6),
+          margin: EdgeInsets.only(top: 65 * 3),
           child: customDropDownButton(
               title: 'Relationship',
               item: relationShip,
@@ -170,34 +170,34 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               },
               context: context),
         ),
+        // Container(
+        //   margin: EdgeInsets.only(top: 65 * 4),
+        //   child: customDropDownButton(
+        //       title: 'Online Status',
+        //       item: onlineStatus,
+        //       onChange: (value) {
+        //         if (value == 'any')
+        //           search.remove('checkonline');
+        //         else
+        //           search['checkonline'] = value;
+        //       },
+        //       context: context),
+        // ),
+        // Container(
+        //   margin: EdgeInsets.only(top: 65 * 4),
+        //   child: customDropDownButton(
+        //       title: 'Religion',
+        //       item: religion,
+        //       onChange: (value) {
+        //         if (value == 'any')
+        //           search.remove('religion');
+        //         else
+        //           search['religion'] = value;
+        //       },
+        //       context: context),
+        // ),
         Container(
-          margin: EdgeInsets.only(top: 65 * 7),
-          child: customDropDownButton(
-              title: 'Online Status',
-              item: onlineStatus,
-              onChange: (value) {
-                if (value == 'any')
-                  search.remove('checkonline');
-                else
-                  search['checkonline'] = value;
-              },
-              context: context),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 65 * 8),
-          child: customDropDownButton(
-              title: 'Religion',
-              item: religion,
-              onChange: (value) {
-                if (value == 'any')
-                  search.remove('religion');
-                else
-                  search['religion'] = value;
-              },
-              context: context),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 65 * 9),
+          margin: EdgeInsets.only(top: 65 * 4),
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
