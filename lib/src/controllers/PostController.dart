@@ -1015,6 +1015,8 @@ class PostController extends ControllerMVC {
   }
 
   Future<void> updateEvent() async {
+    eventTab = 'Timeline';
+
     var doc = await Helper.eventsData.doc(viewEventId).get();
     event = doc.data();
     setState(() {});
