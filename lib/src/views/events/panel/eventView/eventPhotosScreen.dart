@@ -209,7 +209,7 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
   }
 
   Widget AlbumsData() {
-    return photoModel.photos.isEmpty
+    return photoModel.albums.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
@@ -236,8 +236,8 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
                     mainAxisSpacing: 4.0,
                     shrinkWrap: true,
                     crossAxisSpacing: 4.0,
-                    children: photoModel.photos
-                        .map((photo) => photoCell(photo))
+                    children: photoModel.albums
+                        .map((photo) => albumCell(photo))
                         .toList(),
                   ),
                 ),

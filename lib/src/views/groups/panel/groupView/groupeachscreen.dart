@@ -35,6 +35,8 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
   void initState() {
     add(widget.con);
     con = controller as PostController;
+    con.addNotifyCallBack(this);
+    setState(() {});
     super.initState();
     getSelectedGroup(widget.docId);
   }

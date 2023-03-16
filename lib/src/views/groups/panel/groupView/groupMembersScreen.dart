@@ -145,6 +145,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
 
   Widget MembersData() {
     List members = con.group['groupJoined'];
+    print(members);
     return members.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
@@ -224,7 +225,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                           'subRouter': user["userName"],
                         });
                       },
-                      picture: user['userAvatar'] ?? '',
+                      picture: user['avatar'] ?? '',
                       header: user['fullName']))
                   .toList(),
             ),
@@ -289,9 +290,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                         radius: 78,
                         backgroundColor: Colors.white,
                         child: CircleAvatar(
-                            radius: 75,
-                            backgroundImage:
-                                NetworkImage(con.group['groupPicture'])),
+                            radius: 75, backgroundImage: NetworkImage(picture)),
                       )
                     : CircleAvatar(
                         radius: 78,

@@ -36,4 +36,18 @@ class Photos {
     albums = s;
     print("albums---------------$albums");
   }
+
+  Future<void> getPhotosOfGroup(groupId) async {
+    var snapshot = await Helper.postCollection
+        .where('type', isEqualTo: 'photo')
+        .where('groupId', isEqualTo: groupId)
+        .get();
+    var s = [];
+    s = snapshot.docs.map((doc) => doc.data()['value']).toList();
+
+    photos = flatten(s);
+    print("photos---------------$photos");
+    albums = s;
+    print("albums---------------$albums");
+  }
 }

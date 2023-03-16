@@ -262,7 +262,6 @@ class PostController extends ControllerMVC {
           await boolInterested(value, UserManager.userInfo['uid']);
       viewEventGoing = await boolGoing(value, UserManager.userInfo['uid']);
       viewEventInvited = await boolInvited(value, UserManager.userInfo['uid']);
-      print("viewEventGoing is $viewEventGoing");
       for (var i = 0; i < event['eventAdmin'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventAdmin'][i]['uid']);
@@ -274,7 +273,7 @@ class PostController extends ControllerMVC {
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
-      print("viewEventGoing is $viewEventGoing");
+
       for (var i = 0; i < event['eventInterested'].length; i++) {
         print("eventInterested is ${event['eventInterested']}");
         var addAdmin = await ProfileController()
@@ -288,7 +287,7 @@ class PostController extends ControllerMVC {
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
-      print("viewEventGoing is $viewEventGoing");
+
       for (var i = 0; i < event['eventInvited'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvited'][i]['uid']);
@@ -300,7 +299,7 @@ class PostController extends ControllerMVC {
           'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
         };
       }
-      print("viewEventGoing is $viewEventGoing");
+
       for (var i = 0; i < event['eventInvites'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvites'][i]['uid']);
@@ -822,7 +821,7 @@ class PostController extends ControllerMVC {
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        var joined = boolJoined(data, UserManager.userInfo['uid']);
+        var joined = await boolJoined(data, UserManager.userInfo['uid']);
         if (uid == data['groupAdmin'][0]['uid'] && condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
         } else if (condition == 'all' && uid != data['groupAdmin'][0]['uid']) {
@@ -844,39 +843,46 @@ class PostController extends ControllerMVC {
     return realAllGroups;
   }
 
-  Future<bool> getSelectedGroup(String name) async {
-    var reuturnValue = await Helper.groupsData.doc(name).get();
-    var value = reuturnValue.data();
-    viewGroupId = name;
-    group = value;
-    viewGroupJoined = boolJoined(group, UserManager.userInfo['uid']);
-    setState(() {});
-    for (var i = 0; i < group['groupAdmin'].length; i++) {
-      var addAdmin =
-          await ProfileController().getUserInfo(group['groupAdmin'][i]['uid']);
-      if (addAdmin != null) {
+  Future<bool> getSelectedGroup(String id) async {
+    id = id.split('/')[id.split('/').length - 1];
+    print("id is $id");
+    var reuturnValue;
+
+    await Helper.groupsData.doc(id).get().then((value1) async {
+      reuturnValue = value1;
+      var value = reuturnValue.data();
+      viewGroupId = id;
+      group = value;
+      print("group is $group");
+      viewGroupJoined = boolJoined(group, UserManager.userInfo['uid']);
+      print("viewGroupJoined is $viewGroupJoined");
+      setState(() {});
+      for (var i = 0; i < group['groupAdmin'].length; i++) {
+        var addAdmin = await ProfileController()
+            .getUserInfo(group['groupAdmin'][i]['uid']);
+        if (addAdmin == null) continue;
         group['groupAdmin'][i] = {
           ...group['groupAdmin'][i],
           'userName': addAdmin['userName'],
           'avatar': addAdmin['avatar'],
         };
       }
-    }
-    var groupJoined = [];
-    for (var i = 0; i < group['groupJoined'].length; i++) {
-      var groupUser =
-          await ProfileController().getUserInfo(group['groupJoined'][i]['uid']);
-      if (groupUser != null) {
-        groupJoined.add({
-          ...group['groupJoined'][i],
-          'userName': groupUser['userName'],
-          'avatar': groupUser['avatar'],
-          'fullName': '${groupUser["firstName"]} ${groupUser["lastName"]}'
-        });
+
+      for (var i = 0; i < group['groupJoined'].length; i++) {
+        var groupUser = await ProfileController()
+            .getUserInfo(group['groupJoined'][i]['uid']);
+        if (groupUser != null) {
+          group['groupJoined'][i] = {
+            ...group['groupJoined'][i],
+            'userName': groupUser['userName'],
+            'avatar': groupUser['avatar'],
+            'fullName': '${groupUser["firstName"]} ${groupUser["lastName"]}'
+          };
+        }
       }
-    }
-    group['groupJoined'] = groupJoined;
-    setState(() {});
+
+      setState(() {});
+    });
     return true;
   }
 
@@ -953,7 +959,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
     var joined = doc['groupJoined'];
-    var respon = boolJoined(doc, UserManager.userInfo['uid']);
+    var respon = await boolJoined(doc, UserManager.userInfo['uid']);
     if (respon) {
       joined.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
@@ -961,6 +967,7 @@ class PostController extends ControllerMVC {
           .doc(groupId)
           .update({'groupJoined': joined});
       Helper.showToast('Leaved group');
+      setState(() {});
       return true;
     } else {
       joined.add({
@@ -971,6 +978,7 @@ class PostController extends ControllerMVC {
           .doc(groupId)
           .update({'groupJoined': joined});
       Helper.showToast('Joined group');
+      setState(() {});
       return true;
     }
   }
@@ -978,6 +986,7 @@ class PostController extends ControllerMVC {
   //bool of user already in group interested or not
   bool boolJoined(var groupData, String uid) {
     var joined = groupData['groupJoined'];
+    print("joind is $joined ");
     if (joined == null) {
       return false;
     }
@@ -1750,16 +1759,16 @@ class PostController extends ControllerMVC {
     }
     if (type == PostType.profile.index) {
       postsProfile = postsBox;
-      print("postsProfile ------------$postsTimeline");
+      print("postsProfile ------------$postsProfile");
     } else if (type == PostType.timeline.index) {
       postsTimeline = postsBox;
       print("postsTimeline ------------$postsTimeline");
     } else if (type == PostType.event.index) {
-      print("postsEvent ------------$postsTimeline");
+      print("postsEvent ------------$postsEvent");
       postsEvent = postsBox;
     } else if (type == PostType.group.index) {
       postsGroup = postsBox;
-      print("other ------------$postsTimeline");
+      print("postsGroup ------------$postsGroup");
     }
 
     //posts = postsBox;
