@@ -60,6 +60,21 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     });
   }
 
+  bool isMyFriend() {
+    //profile selected is my friend?
+    String friendUserName;
+    for (var item in friendModel.friends) {
+      friendUserName = item['requester'].toString();
+      if (friendUserName == UserManager.userInfo['userName']) {
+        return true;
+      }
+      if (item['receiver'] == UserManager.userInfo['userName']) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     // friendModel.getFriends(profileCon.viewProfileUserName).then((value) {
@@ -70,7 +85,9 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
             const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
         child: Column(children: [
           mainTabs(),
-          friendsData()
+          isMyFriend()
+              ? friendsData()
+              : Text("You can see the friends data only if you are friends."),
           //: tab == 'Follows'
           //    ? followsData()
           //    : followingsData()

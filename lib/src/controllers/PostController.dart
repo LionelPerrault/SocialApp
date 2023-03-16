@@ -1537,24 +1537,31 @@ class PostController extends ControllerMVC {
 
           Friends friendModel = Friends();
           String friendUserName = '';
-          friendModel
-              .getFriends(UserManager.userInfo['userName'])
-              .then((value1) {
-            print("current username is ${UserManager.userInfo['userName']}");
-            for (var item in friendModel.friends) {
-              friendUserName = item['requester'].toString();
-              if (friendUserName == UserManager.userInfo['userName']) {
-                friendUserName = item['receiver'];
-              }
-            }
-          });
-
           var userinfo = await ProfileController().getUserInfo(uid);
 
+          var friendflag = false;
+
+          //profile selected is my friend?
+
           allPosts = profileSnap.docs;
-          print('profile username is ${userinfo!['userName']}');
-          print('my friend uesrname is $friendUserName');
-          if (friendUserName != '' && userinfo['userName'] == friendUserName) {
+          friendModel.friends =
+              await friendModel.getFriends(userinfo!['userName']);
+
+          for (var item in friendModel.friends) {
+            friendUserName = item['requester'].toString();
+
+            if (friendUserName == UserManager.userInfo['userName']) {
+              friendflag = true;
+              break;
+            }
+            if (item['receiver'].toString() ==
+                UserManager.userInfo['userName']) {
+              friendflag = true;
+              break;
+            }
+          }
+
+          if (friendflag) {
             friendSnap = await Helper.postCollection
                 .orderBy('postTime', descending: true)
                 .where('postAdmin', isEqualTo: uid)

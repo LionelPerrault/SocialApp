@@ -5,7 +5,7 @@ class Friends {
   Friends() {}
   var friends = [];
   // get my  friends in collection
-  Future<void> getFriends(name) async {
+  Future<List> getFriends(name) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendCollection)
         .where('state', isEqualTo: 1)
@@ -14,5 +14,6 @@ class Friends {
     var s = [];
     s = snapshot.docs.map((doc) => doc.data()).toList();
     friends = s;
+    return friends;
   }
 }
