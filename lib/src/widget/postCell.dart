@@ -324,6 +324,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget total() {
+    if (!widget.postInfo.containsKey('type')) {
+      return const SizedBox();
+    }
     switch (widget.postInfo['type']) {
       case 'photo':
         return picturePostCell();
@@ -871,6 +874,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget sharePostCell() {
+    print("share =============${widget.sharedPost}");
     return Row(
       children: [
         Expanded(
@@ -947,7 +951,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                       }),
                                             TextSpan(
                                                 text:
-                                                    ' shared ${widget.postInfo['data']['adminInfo']['firstName']} ${widget.postInfo['data']['adminInfo']['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' ? widget.postInfo['data']['type'] : 'Post'}',
+                                                    ' shared ${widget.postInfo['data']!['adminInfo']!['firstName']} ${widget.postInfo['data']!['adminInfo']!['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' ? widget.postInfo['data']['type'] : 'Post'}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
@@ -1109,11 +1113,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                               ),
                               overflow: TextOverflow.clip,
                             ),
-                      PostCell(
-                        postInfo: widget.sharedPost,
-                        routerChange: widget.routerChange,
-                        isSharedContent: true,
-                      ),
+                      widget.sharedPost.containsKey("type")
+                          ? PostCell(
+                              postInfo: widget.sharedPost,
+                              routerChange: widget.routerChange,
+                              isSharedContent: true,
+                            )
+                          : SizedBox(),
                     ],
                   ),
                 ),
