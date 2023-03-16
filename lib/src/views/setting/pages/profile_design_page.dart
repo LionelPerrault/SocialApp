@@ -1,19 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/daytimeM.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'dart:io' show File, Platform;
 import 'package:path/path.dart' as PPath;
@@ -27,14 +22,13 @@ class SettingDesignScreen extends StatefulWidget {
   State createState() => SettingDesignScreenState();
 }
 
-// ignore: must_be_immutable
 class SettingDesignScreenState extends State<SettingDesignScreen> {
   var setting_profile = {};
   double progress = 0;
+  XFile? selectedImageFile;
   String profileImage = UserManager.userInfo['profileImage'] ?? '';
   @override
   Widget build(BuildContext context) {
-    print(progress);
     return Container(
         padding: const EdgeInsets.only(top: 20, left: 30),
         child: Column(
@@ -43,15 +37,15 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
           children: [
             SettingHeader(
               routerChange: widget.routerChange,
-              icon: Icon(
+              icon: const Icon(
                 Icons.brush,
                 color: Color.fromARGB(255, 43, 83, 164),
               ),
               pagename: 'Design',
               // ignore: prefer_const_literals_to_create_immutables
               button: {
-                'buttoncolor': Color.fromARGB(255, 17, 205, 239),
-                'icon': Icon(Icons.person),
+                'buttoncolor': const Color.fromARGB(255, 17, 205, 239),
+                'icon': const Icon(Icons.person),
                 'text': 'View Profile',
                 'flag': true
               },
@@ -63,13 +57,13 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
                         ? SizeConfig(context).screenWidth * 0.5 + 40
                         : SizeConfig(context).screenWidth * 0.9 - 30,
                 height: 80,
-                padding: EdgeInsets.only(left: 50),
+                padding: const EdgeInsets.only(left: 50),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Profile Background'),
-                    Padding(padding: EdgeInsets.only(left: 15)),
+                    const Text('Profile Background'),
+                    const Padding(padding: EdgeInsets.only(left: 15)),
                     Stack(
                       children: [
                         Container(
@@ -80,8 +74,8 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
                                     fit: BoxFit.cover,
                                   ),
                                   color: const Color.fromRGBO(240, 240, 240, 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(3)))
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(3)))
                               : const BoxDecoration(
                                   color: Color.fromRGBO(240, 240, 240, 1),
                                   borderRadius:
@@ -92,8 +86,8 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: InkWell(
-                            onTap: () {
-                              uploadImage();
+                            onTap: () async {
+                              selectedImageFile = await chooseImage();
                             },
                             child: Container(
                                 margin:
@@ -127,11 +121,51 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
                     )
                   ],
                 )),
-            SettingFooter(
-              onClick: () {},
-            )
+            footer()
           ],
         ));
+  }
+
+  Widget footer() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20, top: 20),
+      child: Container(
+          height: 65,
+          decoration: const BoxDecoration(
+            border: Border(
+                top: BorderSide(
+              color: Color.fromARGB(255, 220, 226, 237),
+              width: 1,
+            )),
+            color: Color.fromARGB(255, 240, 243, 246),
+            // borderRadius: BorderRadius.all(Radius.circular(3)),
+          ),
+          padding: const EdgeInsets.only(top: 5, left: 15),
+          child: Row(
+            children: [
+              const Flexible(fit: FlexFit.tight, child: SizedBox()),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(3),
+                    backgroundColor: Colors.white,
+                    // elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0)),
+                    minimumSize: const Size(120, 50),
+                    maximumSize: const Size(120, 50),
+                  ),
+                  onPressed: () {
+                    uploadFile(selectedImageFile);
+                  },
+                  child: const Text('Save Changes',
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold))),
+              const Padding(padding: EdgeInsets.only(right: 30))
+            ],
+          )),
+    );
   }
 
   Widget input({label, onchange, obscureText = false, validator}) {
@@ -169,7 +203,9 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
       //  print('Permission not granted. Try Again with permission access');
       //}
     }
-    return pickedFile!;
+    profileImage = pickedFile!.path;
+    setState(() {});
+    return pickedFile;
   }
 
   uploadFile(XFile? pickedFile) async {
@@ -181,7 +217,7 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        _reference = _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = _reference.putData(
@@ -191,7 +227,7 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        _reference = _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = _reference.putFile(file);
@@ -213,9 +249,6 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
         profileImage = downloadUrl;
         progress = 0;
         setState(() {});
-        //await _reference.getDownloadURL().then((value) {
-        //  uploadedPhotoUrl = value;
-        //});
       });
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
         switch (taskSnapshot.state) {
@@ -223,20 +256,16 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
             progress = 100.0 *
                 (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
             setState(() {});
-            print("Upload is $progress% complete.");
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
             // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
             // Handle successful uploads on complete
             // ...
             //  var downloadUrl = await _reference.getDownloadURL();
