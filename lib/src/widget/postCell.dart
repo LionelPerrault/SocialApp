@@ -265,7 +265,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   @override
   Widget build(BuildContext context) {
     //return Text("test");
-
+    con.formatDate(widget.postInfo['time']).then((value) {
+      postTime = value;
+    });
     if (!widget.isSharedContent) {
       privacy = privacyMenuItem
           .where((element) => element['label'] == widget.postInfo['privacy'])

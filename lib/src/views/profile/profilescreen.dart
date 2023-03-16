@@ -67,105 +67,114 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    if (con.isGetData) {
-      profileImage = con.userData['profileImage'] ?? '';
-      if (con.userData['paywall'][UserManager.userInfo['uid']] == null ||
-          con.userData['paywall'][UserManager.userInfo['uid']] == '0' ||
-          con.userData['userName'] == UserManager.userInfo['userName']) {
-        isProfileView = true;
+    if (con.viewProfileFullName != "UserNotExits!~") {
+      if (con.isGetData) {
+        profileImage = con.userData['profileImage'] ?? '';
+        if (con.userData['paywall'][UserManager.userInfo['uid']] == null ||
+            con.userData['paywall'][UserManager.userInfo['uid']] == '0' ||
+            con.userData['userName'] == UserManager.userInfo['userName']) {
+          isProfileView = true;
+        }
       }
     }
-    return Expanded(
-      child: SingleChildScrollView(
-        child: !con.isGetData
-            ? Container()
-            : !isProfileView
-                ? YesNoWidget(
-                    yesFunc: () {
-                      payForViewProfile();
-                    },
-                    noFunc: () {
-                      widget.routerChange({
-                        'router': RouteNames.homePage,
-                      });
-                    },
-                    header: 'Pay for View Profile',
-                    text:
-                        'This user set paywall price is ${con.userData['paywall'][UserManager.userInfo['uid']]}',
-                    progress: isPayProgressive,
-                  )
-                : Container(
-                    decoration: profileImage != ''
-                        ? BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(profileImage),
-                                fit: BoxFit.cover))
-                        : const BoxDecoration(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ProfileAvatarandTabScreen(
-                          onClick: (value) {
-                            con.tab = value;
-                            setState(() {});
+    return (con.viewProfileFullName == "UserNotExits!~")
+        ? Expanded(
+            child: Center(child: Text("This user doesn't exists!!")),
+          )
+        : Expanded(
+            child: SingleChildScrollView(
+              child: !con.isGetData
+                  ? Container()
+                  : !isProfileView
+                      ? YesNoWidget(
+                          yesFunc: () {
+                            payForViewProfile();
                           },
-                          routerChange: (_) {
-                            widget.routerChange(_);
+                          noFunc: () {
+                            widget.routerChange({
+                              'router': RouteNames.homePage,
+                            });
                           },
-                        ),
-                        con.tab == 'Timeline' && con.isGetData
-                            ? ProfileTimelineScreen(
+                          header: 'Pay for View Profile',
+                          text:
+                              'This user set paywall price is ${con.userData['paywall'][UserManager.userInfo['uid']]}',
+                          progress: isPayProgressive,
+                        )
+                      : Container(
+                          decoration: profileImage != ''
+                              ? BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(profileImage),
+                                      fit: BoxFit.cover))
+                              : const BoxDecoration(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ProfileAvatarandTabScreen(
                                 onClick: (value) {
                                   con.tab = value;
                                   setState(() {});
                                 },
-                                userName: widget.userName,
-                                routerChange: widget.routerChange,
-                              )
-                            : con.tab == 'Friends'
-                                ? ProfileFriendScreen(
-                                    profileName: widget.userName,
-                                    onClick: (value) {
-                                      con.tab = value;
-                                      setState(() {});
-                                    },
-                                    routerChangeProile: (val) {
-                                      widget.routerChange(val);
-                                    })
-                                : con.tab == 'Photos'
-                                    ? ProfilePhotosScreen(onClick: (value) {
+                                routerChange: (_) {
+                                  widget.routerChange(_);
+                                },
+                              ),
+                              con.tab == 'Timeline' && con.isGetData
+                                  ? ProfileTimelineScreen(
+                                      onClick: (value) {
                                         con.tab = value;
                                         setState(() {});
-                                      })
-                                    // : con.tab == 'Videos'
-                                    //     ? ProfileVideosScreen(onClick: (value) {
-                                    //         con.tab = value;
-                                    //         setState(() {});
-                                    //       })
-                                    // : con.tab == 'Likes'
-                                    //     ? ProfileLikesScreen(
-                                    //         onClick: (value) {
-                                    //           con.tab = value;
-                                    //           setState(() {});
-                                    //         },
-                                    //         routerChange: widget.routerChange,
-                                    //       )
-                                    : con.tab == 'Groups'
-                                        ? ProfileGroupsScreen(
-                                            onClick: (value) {
+                                      },
+                                      userName: widget.userName,
+                                      routerChange: widget.routerChange,
+                                    )
+                                  : con.tab == 'Friends'
+                                      ? ProfileFriendScreen(
+                                          profileName: widget.userName,
+                                          onClick: (value) {
+                                            con.tab = value;
+                                            setState(() {});
+                                          },
+                                          routerChangeProile: (val) {
+                                            widget.routerChange(val);
+                                          })
+                                      : con.tab == 'Photos'
+                                          ? ProfilePhotosScreen(
+                                              onClick: (value) {
                                               con.tab = value;
                                               setState(() {});
-                                            },
-                                            routerChange: widget.routerChange,
-                                          )
-                                        : ProfileEventsScreen(
-                                            routerChange: widget.routerChange)
-                        // ProfileFriendScreen(),
-                      ],
-                    ),
-                  ),
-      ),
-    );
+                                            })
+                                          // : con.tab == 'Videos'
+                                          //     ? ProfileVideosScreen(onClick: (value) {
+                                          //         con.tab = value;
+                                          //         setState(() {});
+                                          //       })
+                                          // : con.tab == 'Likes'
+                                          //     ? ProfileLikesScreen(
+                                          //         onClick: (value) {
+                                          //           con.tab = value;
+                                          //           setState(() {});
+                                          //         },
+                                          //         routerChange: widget.routerChange,
+                                          //       )
+                                          : con.tab == 'Groups'
+                                              ? ProfileGroupsScreen(
+                                                  onClick: (value) {
+                                                    con.tab = value;
+                                                    setState(() {});
+                                                  },
+                                                  routerChange:
+                                                      widget.routerChange,
+                                                )
+                                              : ProfileEventsScreen(
+                                                  routerChange:
+                                                      widget.routerChange)
+                              // ProfileFriendScreen(),
+                            ],
+                          ),
+                        ),
+            ),
+          );
   }
 }

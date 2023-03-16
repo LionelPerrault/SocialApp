@@ -1,8 +1,18 @@
 const functions = require('firebase-functions');
 const admin = require("firebase-admin");
+const nodemailer = require('nodemailer');
 const axios = require('axios');
 const cors = require('cors')({origin: true});
 admin.initializeApp();
+var transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+      user: 'kalininviktor848@gmail.com',
+      pass: '123456789'
+  }
+});
 
 exports.offlineRequest = functions.https.onRequest(async (req,res) => {
   cors(req, res, async () => {
@@ -25,6 +35,30 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
     res.send('ok')
   })
 })
+
+exports.sendEmail =  functions.firestore.document('groups/{groupId}').onCreate((snap, context) => {
+
+  const mailOptions = {
+      from: `kalininviktor848@gmail.com`,
+      to: 'jeremycalvin90@gmail.com',
+      subject: 'contact form message',
+      html: `<h1>Order Confirmation</h1>
+                          <p>
+                             <b>Email: </b><br>
+                          </p>`
+  };
+
+
+  return transporter.sendMail(mailOptions, (error, data) => {
+      if (error) {
+        functions.logger.log('error send email**********************************')
+        functions.logger.log(error)
+          return
+      }
+      functions.logger.log("Sent!***********************************")
+  });
+});  
+
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {

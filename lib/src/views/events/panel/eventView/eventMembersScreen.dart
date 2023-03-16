@@ -259,7 +259,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                               'subRouter': user["userName"],
                             });
                           },
-                          picture: user['userAvatar'] ?? '',
+                          picture: user['avatar'] ?? '',
                           header: user['fullName']))
                       .toList(),
                 ),
@@ -304,7 +304,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                               'subRouter': user["userName"],
                             });
                           },
-                          picture: user['userAvatar'] ?? '',
+                          picture: user['avatar'] ?? '',
                           header: user['fullName']))
                       .toList(),
                 ),
@@ -349,7 +349,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                               'subRouter': user["userName"],
                             });
                           },
-                          picture: user['userAvatar'] ?? '',
+                          picture: user['avatar'] ?? '',
                           header: user['fullName']))
                       .toList(),
                 ),
@@ -394,7 +394,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                               'subRouter': user["userName"],
                             });
                           },
-                          picture: user['userAvatar'] ?? '',
+                          picture: user['avatar'] ?? '',
                           header: user['fullName']))
                       .toList(),
                 ),
@@ -461,9 +461,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                         radius: 78,
                         backgroundColor: Colors.white,
                         child: CircleAvatar(
-                            radius: 75,
-                            backgroundImage:
-                                NetworkImage(con.group['groupPicture'])),
+                            radius: 75, backgroundImage: NetworkImage(picture)),
                       )
                     : CircleAvatar(
                         radius: 78,

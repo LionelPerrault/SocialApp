@@ -4,6 +4,8 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
+import '../../../profile/model/photos.dart';
+
 class EventPhotosScreen extends StatefulWidget {
   Function onClick;
   EventPhotosScreen({Key? key, required this.onClick})
@@ -18,11 +20,15 @@ class EventPhotosScreen extends StatefulWidget {
 class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
+  Photos photoModel = Photos();
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    photoModel.getPhotosOfEvent(con.viewEventId).then((value) {
+      setState(() {});
+    });
   }
 
   late PostController con;
@@ -113,7 +119,7 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
   }
 
   Widget PhotosData() {
-    return userInfo['photos'] == null
+    return photoModel.photos.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
@@ -121,18 +127,122 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container();
+        : Container(
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: GridView.count(
+                    crossAxisCount: SizeConfig(context).screenWidth > 800
+                        ? 6
+                        : SizeConfig(context).screenWidth > 600
+                            ? 4
+                            : SizeConfig(context).screenWidth > 210
+                                ? 3
+                                : 2,
+                    childAspectRatio: 3 / 3,
+                    padding: const EdgeInsets.only(top: 30),
+                    mainAxisSpacing: 4.0,
+                    shrinkWrap: true,
+                    crossAxisSpacing: 4.0,
+                    children: photoModel.photos
+                        .map((photo) => photoCell(photo))
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+
+  Widget albumCell(value) {
+    print("value---------$value");
+    return Container(
+      alignment: Alignment.center,
+      width: 200,
+      height: 110,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Container(
+            alignment: Alignment.topCenter,
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(value[0]['url']),
+                  fit: BoxFit.cover,
+                ),
+                color: Color.fromARGB(255, 150, 99, 99),
+                border: Border.all(color: Colors.grey)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget photoCell(value) {
+    print("value---------$value");
+    return Container(
+      alignment: Alignment.center,
+      width: 200,
+      height: 110,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Container(
+            alignment: Alignment.topCenter,
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(value['url']),
+                  fit: BoxFit.cover,
+                ),
+                color: Color.fromARGB(255, 150, 99, 99),
+                border: Border.all(color: Colors.grey)),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget AlbumsData() {
-    return userInfo['albums'] == null
+    return photoModel.photos.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
-            child: Text('${con.event['eventName']} doesn`t have albums',
+            child: Text('${con.event['eventName']} doesn`t have photos',
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container();
+        : Container(
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: GridView.count(
+                    crossAxisCount: SizeConfig(context).screenWidth > 800
+                        ? 6
+                        : SizeConfig(context).screenWidth > 600
+                            ? 4
+                            : SizeConfig(context).screenWidth > 210
+                                ? 3
+                                : 2,
+                    childAspectRatio: 3 / 3,
+                    padding: const EdgeInsets.only(top: 30),
+                    mainAxisSpacing: 4.0,
+                    shrinkWrap: true,
+                    crossAxisSpacing: 4.0,
+                    children: photoModel.photos
+                        .map((photo) => photoCell(photo))
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 }
