@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -6,17 +7,22 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 
+import '../../../../widget/postCell.dart';
+
 // ignore: must_be_immutable
 class GroupTimelineScreen extends StatefulWidget {
   Function onClick;
-  GroupTimelineScreen({Key? key, required this.onClick})
+  GroupTimelineScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
-
+  Function routerChange;
   @override
   State createState() => GroupTimelineScreenState();
 }
+
+const int defaultSlide = 10;
 
 class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     with SingleTickerProviderStateMixin {
@@ -28,7 +34,12 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   late AnimationController _drawerSlideController;
   var subUrl = '';
   double width = 0;
+  bool loadingFlag = false;
+  bool loadingFlagBottom = false;
+  int newPostNum = 0;
+  bool nextPostFlag = true;
   double itemWidth = 0;
+
   List<Map> sampleData = [
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
     {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
@@ -43,6 +54,181 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    final Stream<QuerySnapshot> postStream =
+        Helper.postCollection.orderBy('postTime').snapshots();
+    loadingFlag = true;
+    PostController().posts = [];
+    con
+        .getTimelinePost(defaultSlide, 1, PostType.group.index, con.viewGroupId)
+        .then((value) {
+      // profilePosts = value;
+      loadingFlag = false;
+      if (con.postsGroup.length < 10) {
+        nextPostFlag = false;
+      }
+      setState(() {});
+
+      postStream.listen((group) {
+        newPostNum = group.docs.where((post) {
+          Map data = post.data() as Map;
+          var groupId = "";
+          if (data.containsKey("groupId")) groupId = data['groupId'];
+          print("groupId is ====$groupId");
+          return (groupId == con.viewGroupId) &&
+              (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
+                  .toDate()
+                  .isAfter(con.latestTime));
+        }).length;
+        print("newPostNum of profile is $newPostNum");
+        setState(() {});
+      });
+    });
+  }
+
+  Widget postColumn() {
+    var inJoined = con.boolJoined(con.group, UserManager.userInfo['uid']);
+
+    return Column(children: [
+      inJoined ||
+              UserManager.userInfo['uid'] == con.group['groupAdmin'][0]['uid']
+          ? MindPost(showPrivacy: false)
+          : Container(
+              width:
+                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                      ? 530
+                      : 350,
+              padding: const EdgeInsets.only(left: 30, right: 30)),
+      const Padding(padding: EdgeInsets.only(top: 20)),
+      newPostNum <= 0
+          ? const SizedBox()
+          : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21.0)),
+                minimumSize: const Size(240, 42),
+                maximumSize: const Size(240, 42),
+              ),
+              onPressed: () async {
+                setState(() {
+                  loadingFlag = true;
+                });
+                await con.getTimelinePost(
+                    newPostNum, -1, PostType.group.index, con.viewGroupId);
+
+                setState(() {
+                  newPostNum = 0;
+                  loadingFlag = false;
+                });
+              },
+              child: Column(
+                children: [
+                  const Padding(padding: EdgeInsets.only(top: 11.0)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 90, 90, 90),
+                            fontFamily: 'var(--body-font-family)',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 15),
+                      )
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 8.0)),
+                ],
+              ),
+            ),
+      loadingFlag
+          ? const SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                color: Colors.grey,
+              ),
+            )
+          : const SizedBox(),
+      con.postsGroup.isNotEmpty
+          ? SizedBox(
+              width: 600,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: con.postsGroup
+                          .map<Widget>((post) => PostCell(
+                                postInfo: post,
+                                routerChange: widget.routerChange,
+                              ))
+                          .toList(),
+                    ),
+                  )
+                ],
+              ),
+            )
+          : const SizedBox(),
+      loadingFlagBottom
+          ? const SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                color: Colors.grey,
+              ),
+            )
+          : const SizedBox(),
+      loadingFlagBottom || loadingFlag || !nextPostFlag
+          ? !nextPostFlag && !loadingFlag
+              ? const Text("There is no more data to show")
+              : const SizedBox()
+          : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21.0)),
+                minimumSize: const Size(240, 42),
+                maximumSize: const Size(240, 42),
+              ),
+              onPressed: () async {
+                setState(() {
+                  loadingFlagBottom = true;
+                });
+                var t = await con.getTimelinePost(
+                    defaultSlide, 0, PostType.group.index, con.viewGroupId);
+                setState(() {
+                  nextPostFlag = t;
+                  loadingFlagBottom = false;
+                });
+              },
+              child: Column(
+                children: [
+                  const Padding(padding: EdgeInsets.only(top: 11.0)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Load More...',
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 90, 90, 90),
+                            fontFamily: 'var(--body-font-family)',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 15),
+                      )
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 8.0)),
+                ],
+              ),
+            ),
+    ]);
   }
 
   late PostController con;
@@ -56,10 +242,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
           : SizeConfig(context).screenWidth,
       child: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              con.group['groupAdmin'][0]['userName'] ==
-                      UserManager.userInfo['userName']
-                  ? MindPost(showPrivacy: false)
-                  : Container(),
+              postColumn(),
               Column(
                 children: [
                   eventInfo(),
@@ -71,10 +254,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  con.group['groupAdmin'][0]['userName'] ==
-                          UserManager.userInfo['userName']
-                      ? MindPost(showPrivacy: false)
-                      : Container(),
+                  postColumn(),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

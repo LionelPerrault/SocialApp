@@ -35,11 +35,7 @@ class SearchGroupCellState extends mvc.StateMVC<SearchGroupCell> {
     super.initState();
     add(widget.con);
     con = controller as PostController;
-    con
-        .boolJoined(widget.groupInfo, UserManager.userInfo['uid'])
-        .then((value) => {
-              joined = value,
-            });
+    joined = con.boolJoined(widget.groupInfo, UserManager.userInfo['uid']);
   }
 
   @override

@@ -93,10 +93,12 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
                                   },
                                 ),
                                 con.groupTab == 'Timeline'
-                                    ? GroupTimelineScreen(onClick: (value) {
-                                        con.groupTab = value;
-                                        setState(() {});
-                                      })
+                                    ? GroupTimelineScreen(
+                                        onClick: (value) {
+                                          con.groupTab = value;
+                                          setState(() {});
+                                        },
+                                        routerChange: widget.routerChange)
                                     : con.groupTab == 'Photos'
                                         ? GroupPhotosScreen(onClick: (value) {
                                             con.groupTab = value;

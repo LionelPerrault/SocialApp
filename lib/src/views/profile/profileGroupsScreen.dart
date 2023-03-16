@@ -8,6 +8,7 @@ import 'package:shnatter/src/views/groups/widget/groupcell.dart';
 import '../../helpers/helper.dart';
 import '../../utils/size_config.dart';
 import '../../controllers/ProfileController.dart';
+import 'model/friends.dart';
 
 // ignore: must_be_immutable
 class ProfileGroupsScreen extends StatefulWidget {
@@ -26,11 +27,15 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
   var userInfo = UserManager.userInfo;
   var myGroups = [];
   bool getFlag = true;
+  Friends friendModel = Friends();
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
+    friendModel.getFriends(con.viewProfileUserName).then((value) {
+      setState(() {});
+    });
     getGroupNow();
   }
 
@@ -45,10 +50,30 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
         });
   }
 
+  bool isMyFriend() {
+    //profile selected is my friend?
+    String friendUserName;
+    for (var item in friendModel.friends) {
+      friendUserName = item['requester'].toString();
+      if (friendUserName == UserManager.userInfo['userName']) {
+        return true;
+      }
+      if (item['receiver'] == UserManager.userInfo['userName']) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   late ProfileController con;
   @override
   Widget build(BuildContext context) {
-    return Column(children: [mainTabs(), likesData()]);
+    return Column(children: [
+      mainTabs(),
+      isMyFriend() || con.viewProfileUid == UserManager.userInfo['uid']
+          ? likesData()
+          : Text("You can see the friends data only if you are friends.")
+    ]);
   }
 
   Widget mainTabs() {

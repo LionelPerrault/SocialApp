@@ -12,7 +12,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import '../views/profile/model/friends.dart';
 
-enum PostType { timeline, profile, event }
+enum PostType { timeline, profile, event, group }
 
 class PostController extends ControllerMVC {
   factory PostController([StateMVC? state]) =>
@@ -29,6 +29,7 @@ class PostController extends ControllerMVC {
   var postsTimeline = [];
   var postsProfile = [];
   var postsEvent = [];
+  var postsGroup = [];
   var replyLikes = {};
   var replyLikesCount = {};
   Map likes = {};
@@ -821,12 +822,13 @@ class PostController extends ControllerMVC {
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        var joined = await boolJoined(data, UserManager.userInfo['uid']);
+        var joined = boolJoined(data, UserManager.userInfo['uid']);
         if (uid == data['groupAdmin'][0]['uid'] && condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
         } else if (condition == 'all' && uid != data['groupAdmin'][0]['uid']) {
           if (data['groupPost']) {
-            realAllGroups.add({'data': data, 'id': id, 'joined': joined});
+            if (!joined && uid != data['groupAdmin'][0]['uid'])
+              realAllGroups.add({'data': data, 'id': id, 'joined': joined});
           }
         } else if (condition == 'joined' && joined) {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
@@ -847,7 +849,7 @@ class PostController extends ControllerMVC {
     var value = reuturnValue.data();
     viewGroupId = name;
     group = value;
-    viewGroupJoined = await boolJoined(group, UserManager.userInfo['uid']);
+    viewGroupJoined = boolJoined(group, UserManager.userInfo['uid']);
     setState(() {});
     for (var i = 0; i < group['groupAdmin'].length; i++) {
       var addAdmin =
@@ -951,7 +953,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
     var joined = doc['groupJoined'];
-    var respon = await boolJoined(doc, UserManager.userInfo['uid']);
+    var respon = boolJoined(doc, UserManager.userInfo['uid']);
     if (respon) {
       joined.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
@@ -974,7 +976,7 @@ class PostController extends ControllerMVC {
   }
 
   //bool of user already in group interested or not
-  Future<bool> boolJoined(var groupData, String uid) async {
+  bool boolJoined(var groupData, String uid) {
     var joined = groupData['groupJoined'];
     if (joined == null) {
       return false;
@@ -1277,7 +1279,8 @@ class PostController extends ControllerMVC {
         'timeline': true,
         'comment': true,
         'followers': followers,
-        'eventId': PostController().viewEventId
+        'eventId': PostController().viewEventId,
+        'groupId': PostController().viewGroupId,
       };
       Helper.postCollection.add(postData);
       setState(
@@ -1464,7 +1467,7 @@ class PostController extends ControllerMVC {
   }
 
   getTimelinePost(slide, direction, type, uid) async {
-    var profileSnap, publicSnap, friendSnap, allSnap, eventSnap;
+    var profileSnap, publicSnap, friendSnap, allSnap, eventSnap, groupSnap;
     List allPosts = [];
     latestTime = DateTime.now();
     if (type == PostType.profile.index) {
@@ -1646,6 +1649,22 @@ class PostController extends ControllerMVC {
             .get();
       }
       allPosts = eventSnap.docs;
+    } else if (type == PostType.group.index) {
+      if (direction == 0) {
+        groupSnap = await Helper.postCollection
+            .orderBy('postTime', descending: true)
+            .where('postTime', isLessThan: lastTime)
+            .where('groupId', isEqualTo: uid)
+            .limit(slide)
+            .get();
+      } else {
+        groupSnap = await Helper.postCollection
+            .orderBy('postTime', descending: true)
+            .where('groupId', isEqualTo: uid)
+            .limit(slide)
+            .get();
+      }
+      allPosts = groupSnap.docs;
     }
 
     var postData;
@@ -1660,7 +1679,9 @@ class PostController extends ControllerMVC {
         postsBox = postsTimeline;
       } else if (type == PostType.event.index) {
         postsBox = postsEvent;
-      } else {}
+      } else if (type == PostType.group.index) {
+        postsBox = postsGroup;
+      }
     }
     print("allPosts.length is ${allPosts.length}");
     print("postsBox.length is ${postsBox.length}");
@@ -1736,7 +1757,8 @@ class PostController extends ControllerMVC {
     } else if (type == PostType.event.index) {
       print("postsEvent ------------$postsTimeline");
       postsEvent = postsBox;
-    } else {
+    } else if (type == PostType.group.index) {
+      postsGroup = postsBox;
       print("other ------------$postsTimeline");
     }
 
@@ -1747,258 +1769,6 @@ class PostController extends ControllerMVC {
     if (slide < 10) return false;
     return true;
   }
-
-  // addNewPosts(newCount, type) async {
-  //   var profileSnap, publicSnap, allSnap, friendSnap;
-  //   List allPosts = [];
-
-  //   profileSnap = await Helper.postCollection
-  //       .orderBy('postTime', descending: true)
-  //       .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
-  //       .limit(newCount)
-  //       .get(); //All my feed
-
-  //   print("username is ${UserManager.userInfo['userName']}");
-  //   publicSnap = await Helper.postCollection
-  //       .where('privacy', isEqualTo: 'Public')
-  //       .where('followers',
-  //           arrayContains: UserManager.userInfo['userName'].toString())
-  //       .orderBy('postTime', descending: true)
-  //       .limit(10)
-  //       .get(); //All post of friends.
-
-  //   friendSnap = await Helper.postCollection
-  //       .where('privacy', isEqualTo: 'Friends')
-  //       .where('followers',
-  //           arrayContains: UserManager.userInfo['userName'].toString())
-  //       .orderBy('postTime', descending: true)
-  //       .limit(10)
-  //       .get(); //All post of friends.
-
-  //   allPosts = profileSnap.docs + publicSnap.docs + friendSnap.docs;
-
-  //   final ids = allPosts.map((e) => e.id).toSet();
-  //   allPosts.retainWhere((x) => ids.remove(x.id));
-  //   allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
-  //   //allPosts.removeRange(newCount, newCount + 1);
-
-  //   var postData;
-  //   var adminInfo;
-  //   for (var i = newCount - 1; i >= 0; i--) {
-  //     if (allPosts[i]['type'] == 'product') {
-  //       if (valueSnapHash[allPosts[i]['value']] == null) {
-  //         var valueSnap =
-  //             await Helper.productsData.doc(allPosts[i]['value']).get();
-  //         valueSnapHash[allPosts[i]['value']] = valueSnap;
-  //       }
-
-  //       postData = valueSnapHash[allPosts[i]['value']].data();
-  //     } else {
-  //       postData = allPosts[i]['value'];
-  //     }
-
-  //     if (adminSnapHash[allPosts[i]['postAdmin']] == null) {
-  //       var adminSnap =
-  //           await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
-  //       if (adminSnap.data() == null) {
-  //         i++;
-  //         continue;
-  //       }
-  //       adminSnapHash[allPosts[i]['postAdmin']] = adminSnap;
-  //     }
-
-  //     adminInfo = adminSnapHash[allPosts[i]['postAdmin']].data();
-
-  //     var eachPost = {
-  //       'id': allPosts[i].id,
-  //       'data': postData,
-  //       'type': allPosts[i]['type'],
-  //       'adminInfo': adminInfo,
-  //       'time': allPosts[i]['postTime'],
-  //       'adminUid': adminSnapHash[allPosts[i]['postAdmin']].id,
-  //       'privacy': allPosts[i]['privacy'],
-  //       'header': allPosts[i]['header'],
-  //       'timeline': allPosts[i]['timeline'],
-  //       'comment': allPosts[i]['comment']
-  //     };
-  //     lastTime = eachPost['time'];
-
-  //     posts = [eachPost, ...posts];
-  //     latestTime = Timestamp(allPosts[0]['postTime'].seconds,
-  //             allPosts[0]['postTime'].nanoseconds)
-  //         .toDate();
-  //   }
-  //   if (type == 1) postsProfile = posts;
-
-  //   setState(() {});
-  //   return true;
-  // }
-
-  // loadNextProfilePosts(uid) async {
-  //   var profileSnap, publicSnap, allSnap;
-  //   List allPosts = [];
-  //   profileSnap = await Helper.postCollection
-  //       .orderBy('postTime', descending: true)
-  //       .where('postAdmin', isEqualTo: uid)
-  //       .where('postTime', isLessThan: lastTime)
-  //       .limit(10)
-  //       .get();
-
-  //   allPosts = profileSnap.docs;
-
-  //   var postData;
-  //   var adminInfo;
-  //   int i = 0;
-  //   int newitemindex = 0;
-  //   while (i < 10 && i < allPosts.length) {
-  //     if (allPosts[i]['type'] == 'product') {
-  //       if (valueSnapHash[allPosts[i]['value']] == null) {
-  //         var valueSnap =
-  //             await Helper.productsData.doc(allPosts[i]['value']).get();
-  //         valueSnapHash[allPosts[i]['value']] = valueSnap;
-  //       }
-
-  //       postData = valueSnapHash[allPosts[i]['value']].data();
-  //     } else {
-  //       postData = allPosts[i]['value'];
-  //     }
-
-  //     if (adminSnapHash[allPosts[i]['postAdmin']] == null) {
-  //       var adminSnap =
-  //           await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
-  //       if (adminSnap.data() == null) {
-  //         i++;
-  //         continue;
-  //       }
-  //       adminSnapHash[allPosts[i]['postAdmin']] = adminSnap;
-  //     }
-
-  //     adminInfo = adminSnapHash[allPosts[i]['postAdmin']].data();
-
-  //     var eachPost = {
-  //       'id': allPosts[i].id,
-  //       'data': postData,
-  //       'type': allPosts[i]['type'],
-  //       'adminInfo': adminInfo,
-  //       'time': allPosts[i]['postTime'],
-  //       'adminUid': adminSnapHash[allPosts[i]['postAdmin']].id,
-  //       'privacy': allPosts[i]['privacy'],
-  //       'header': allPosts[i]['header'],
-  //       'timeline': allPosts[i]['timeline'],
-  //       'comment': allPosts[i]['comment']
-  //     };
-
-  //     print("allPosts[i]----$i -- ${allPosts[i]['header']}");
-  //     lastTime = allPosts[i]['postTime'];
-
-  //     i++;
-
-  //     posts.add(eachPost);
-  //   }
-  //   if (i < 10) {
-  //     return false;
-  //   }
-
-  //   postsProfile = posts;
-  //   setState(() {});
-
-  //   return true;
-  // }
-
-  // loadNextTimelinePosts() async {
-  //   var profileSnap, publicSnap, allSnap, friendSnap;
-  //   List allPosts = [];
-  //   profileSnap = await Helper.postCollection
-  //       .orderBy('postTime', descending: true)
-  //       .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
-  //       .where('postTime', isLessThan: lastTime)
-  //       .limit(10)
-  //       .get();
-
-  //   publicSnap = await Helper.postCollection
-  //       .where('privacy', isEqualTo: 'Public')
-  //       .where('followers',
-  //           arrayContains: UserManager.userInfo['userName'].toString())
-  //       .where('postTime', isLessThan: lastTime)
-  //       .orderBy('postTime', descending: true)
-  //       .limit(10)
-  //       .get(); //All post of friends.
-
-  //   friendSnap = await Helper.postCollection
-  //       .where('privacy', isEqualTo: 'Friends')
-  //       .where('followers',
-  //           arrayContains: UserManager.userInfo['userName'].toString())
-  //       .where('postTime', isLessThan: lastTime)
-  //       .orderBy('postTime', descending: true)
-  //       .limit(10)
-  //       .get(); //All post of friends.
-
-  //   allPosts = profileSnap.docs + publicSnap.docs + friendSnap.docs;
-
-  //   final ids = allPosts.map((e) => e.id).toSet();
-  //   allPosts.retainWhere((x) => ids.remove(x.id));
-  //   allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
-  //   // allPosts.removeRange(10, allPosts.length - 1);
-
-  //   var postData;
-  //   var adminInfo;
-  //   int i = 0;
-  //   int newitemindex = 0;
-  //   while (i < 10 && i < allPosts.length) {
-  //     if (allPosts[i]['type'] == 'product') {
-  //       if (valueSnapHash[allPosts[i]['value']] == null) {
-  //         var valueSnap =
-  //             await Helper.productsData.doc(allPosts[i]['value']).get();
-  //         valueSnapHash[allPosts[i]['value']] = valueSnap;
-  //       }
-
-  //       postData = valueSnapHash[allPosts[i]['value']].data();
-  //     } else {
-  //       postData = allPosts[i]['value'];
-  //     }
-
-  //     if (adminSnapHash[allPosts[i]['postAdmin']] == null) {
-  //       var adminSnap =
-  //           await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
-  //       if (adminSnap.data() == null) {
-  //         i++;
-  //         continue;
-  //       }
-  //       adminSnapHash[allPosts[i]['postAdmin']] = adminSnap;
-  //     }
-
-  //     adminInfo = adminSnapHash[allPosts[i]['postAdmin']].data();
-
-  //     var eachPost = {
-  //       'id': allPosts[i].id,
-  //       'data': postData,
-  //       'type': allPosts[i]['type'],
-  //       'adminInfo': adminInfo,
-  //       'time': allPosts[i]['postTime'],
-  //       'adminUid': adminSnapHash[allPosts[i]['postAdmin']].id,
-  //       'privacy': allPosts[i]['privacy'],
-  //       'header': allPosts[i]['header'],
-  //       'timeline': allPosts[i]['timeline'],
-  //       'comment': allPosts[i]['comment']
-  //     };
-
-  //     print("allPosts[i]----$i -- ${allPosts[i]['header']}");
-  //     lastTime = allPosts[i]['postTime'];
-
-  //     i++;
-
-  //     postsTimeline.add(eachPost);
-  //   }
-  //   if (i < 10) {
-  //     return false;
-  //   }
-
-  //   posts = postsTimeline;
-
-  //   setState(() {});
-
-  //   return true;
-  // }
 
   updatePostInfo(uid, value) async {
     await Helper.postCollection.doc(uid).update(value);

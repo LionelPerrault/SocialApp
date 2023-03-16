@@ -38,7 +38,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   List<Map> mainTabList = [
     {'title': 'Timeline', 'icon': Icons.tab},
     {'title': 'Photos', 'icon': Icons.photo},
-    {'title': 'Videos', 'icon': Icons.video_call},
+    // {'title': 'Videos', 'icon': Icons.video_call},
     {'title': 'Members', 'icon': Icons.groups},
   ];
   var interestedStatus = false;
