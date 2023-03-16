@@ -79,7 +79,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Feelings/Activity',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Femoji.svg?alt=media&token=d8ff786b-c7e0-4922-a260-0627bacab851',
-      'mindFunc': () {
+      'mindFunc': (option) {
         feelingReady();
       }
     },
@@ -87,7 +87,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Check In',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738',
-      'mindFunc': () {
+      'mindFunc': (option) {
         checkIn();
       }
     },
@@ -119,7 +119,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Create Poll',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fpoll.svg?alt=media&token=9a0f6f31-3685-42ce-9a2b-f18a512d3829',
-      'mindFunc': () {
+      'mindFunc': (option) {
         createPoll();
       }
     },
