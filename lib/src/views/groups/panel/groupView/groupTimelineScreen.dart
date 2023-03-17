@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -58,7 +60,27 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     con = controller as PostController;
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
-    friendModel.getFriends(UserManager.userInfo['userName']).then((value) {
+    friendModel
+        .getFriends(UserManager.userInfo['userName'])
+        .then((value) async {
+      for (var index = 0; index < friendModel.friends.length; index++) {
+        var friendUserName = friendModel.friends[index]['requester'].toString();
+        if (friendUserName == UserManager.userInfo['userName'])
+          friendUserName = friendModel.friends[index]['receiver'].toString();
+
+        var snapshot = await FirebaseFirestore.instance
+            .collection('user')
+            .where('userName', isEqualTo: friendUserName)
+            .get();
+        String userid = snapshot.docs[0].id.toString();
+        print("id is $userid");
+
+        if (con.boolJoined(con.group, userid)) {
+          friendModel.friends.removeAt(index);
+          print("getuserid is $index");
+          index--;
+        }
+      }
       setState(() {});
     });
     loadingFlag = true;
@@ -239,6 +261,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   late PostController con;
   @override
   Widget build(BuildContext context) {
+    var inJoined = con.boolJoined(con.group, UserManager.userInfo['uid']);
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 10, left: 10, top: 15),
@@ -252,7 +275,8 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                 children: [
                   eventInfo(),
                   UserManager.userInfo['uid'] ==
-                          con.event['eventAdmin'][0]['uid']
+                              con.group['groupAdmin'][0]['uid'] ||
+                          inJoined
                       ? friendInvites()
                       : const SizedBox(),
                 ],
@@ -269,7 +293,8 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                     children: [
                       eventInfo(),
                       UserManager.userInfo['uid'] ==
-                              con.group['groupAdmin'][0]['uid']
+                                  con.group['groupAdmin'][0]['uid'] ||
+                              inJoined
                           ? friendInvites()
                           : const SizedBox(),
                     ],
@@ -390,79 +415,90 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                     //size: Size(100,100),
                     child: ListView.separated(
                       itemCount: friendModel.friends.length,
-                      itemBuilder: (context, index) => Material(
-                          child: ListTile(
-                              onTap: () {
-                                print("tap!");
-                              },
-                              hoverColor:
-                                  const Color.fromARGB(255, 243, 243, 243),
-                              // tileColor: Colors.white,
-                              enabled: true,
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  Helper.avatar,
-                                ),
-                              ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 80,
-                                        child: Text(
+                      itemBuilder: (context, index) {
+                        var friendUserName =
+                            friendModel.friends[index]['requester'].toString();
+                        if (friendUserName == UserManager.userInfo['userName'])
+                          friendUserName =
+                              friendModel.friends[index]['receiver'].toString();
+
+                        return Material(
+                            child: ListTile(
+                                onTap: () {
+                                  print("tap!");
+                                },
+                                hoverColor:
+                                    const Color.fromARGB(255, 243, 243, 243),
+                                // tileColor: Colors.white,
+                                enabled: true,
+                                leading: friendModel.friends[index]
+                                            [friendUserName]['avatar'] !=
+                                        ''
+                                    ? CircleAvatar(
+                                        backgroundImage: NetworkImage(
                                           friendModel.friends[index]
-                                                      ['requester'] ==
-                                                  UserManager
-                                                      .userInfo['userName']
-                                              ? friendModel.friends[index]
-                                                  ['receiver']
-                                              : friendModel.friends[index]
-                                                  ['requester'],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11),
+                                              [friendUserName]['avatar'],
                                         ),
+                                      )
+                                    : CircleAvatar(
+                                        child:
+                                            SvgPicture.network(Helper.avatar),
                                       ),
-                                      Container(
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color.fromARGB(
-                                                          255, 33, 37, 41),
-                                                  elevation: 3,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              2.0)),
-                                                  minimumSize:
-                                                      const Size(65, 30),
-                                                  maximumSize:
-                                                      const Size(65, 30)),
-                                              onPressed: () {
-                                                () => {};
-                                              },
-                                              child: Row(
-                                                children: const [
-                                                  Icon(
-                                                    Icons
-                                                        .person_add_alt_rounded,
-                                                    color: Colors.white,
-                                                    size: 15.0,
-                                                  ),
-                                                  Text('Add',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ],
-                                              ))),
-                                    ],
-                                  )
-                                ],
-                              ))),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 80,
+                                          child: Text(
+                                            friendModel.friends[index]
+                                                [friendUserName]['name'],
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11),
+                                          ),
+                                        ),
+                                        Container(
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 33, 37, 41),
+                                                    elevation: 3,
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(2.0)),
+                                                    minimumSize:
+                                                        const Size(65, 30),
+                                                    maximumSize:
+                                                        const Size(65, 30)),
+                                                onPressed: () {
+                                                  () => {};
+                                                },
+                                                child: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      Icons
+                                                          .person_add_alt_rounded,
+                                                      color: Colors.white,
+                                                      size: 15.0,
+                                                    ),
+                                                    Text('Add',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                ))),
+                                      ],
+                                    )
+                                  ],
+                                )));
+                      },
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
                         height: 1,
