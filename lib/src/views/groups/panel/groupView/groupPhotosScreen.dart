@@ -130,84 +130,41 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: SizeConfig(context).screenWidth > 800
-                        ? 5
-                        : SizeConfig(context).screenWidth > 600
-                            ? 3
-                            : SizeConfig(context).screenWidth > 210
-                                ? 3
-                                : 2,
-                    childAspectRatio: 3 / 3,
-                    padding: const EdgeInsets.only(top: 30),
-                    mainAxisSpacing: 4.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 4.0,
-                    children: photoModel.photos
-                        .map((photo) => photoCell(photo))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
+        : Row(
+            children:
+                photoModel.photos.map((photo) => photoCell(photo)).toList(),
           );
   }
 
   Widget photoCell(value) {
     print("value---------$value");
     return Container(
-      alignment: Alignment.center,
+      alignment: Alignment.topCenter,
       width: 200,
-      height: 110,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            alignment: Alignment.topCenter,
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(value['url']),
-                  fit: BoxFit.cover,
-                ),
-                color: Color.fromARGB(255, 150, 99, 99),
-                border: Border.all(color: Colors.grey)),
+      height: 200,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(value['url']),
+            fit: BoxFit.cover,
           ),
-        ],
-      ),
+          color: Color.fromARGB(255, 150, 99, 99),
+          border: Border.all(color: Colors.grey)),
     );
   }
 
   Widget albumCell(value) {
     print("value---------$value");
     return Container(
-      alignment: Alignment.center,
+      alignment: Alignment.topCenter,
       width: 200,
-      height: 110,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            alignment: Alignment.topCenter,
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(value[0]['url']),
-                  fit: BoxFit.cover,
-                ),
-                color: Color.fromARGB(255, 150, 99, 99),
-                border: Border.all(color: Colors.grey)),
+      height: 200,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(value[0]['url']),
+            fit: BoxFit.cover,
           ),
-        ],
-      ),
+          color: Color.fromARGB(255, 150, 99, 99),
+          border: Border.all(color: Colors.grey)),
     );
   }
 
@@ -220,32 +177,9 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: SizeConfig(context).screenWidth > 800
-                        ? 6
-                        : SizeConfig(context).screenWidth > 600
-                            ? 4
-                            : SizeConfig(context).screenWidth > 210
-                                ? 3
-                                : 2,
-                    childAspectRatio: 3 / 3,
-                    padding: const EdgeInsets.only(top: 30),
-                    mainAxisSpacing: 4.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 4.0,
-                    children: photoModel.albums
-                        .map((photo) => albumCell(photo))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
+        : Row(
+            children:
+                photoModel.albums.map((photo) => albumCell(photo)).toList(),
           );
   }
 }

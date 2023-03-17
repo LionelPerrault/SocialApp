@@ -31,6 +31,7 @@ class PostController extends ControllerMVC {
   var postsEvent = [];
   var postsGroup = [];
   var replyLikes = {};
+  var where = PostType.timeline.index;
   var replyLikesCount = {};
   Map likes = {};
   Map comments = {};
@@ -1288,8 +1289,10 @@ class PostController extends ControllerMVC {
         'timeline': true,
         'comment': true,
         'followers': followers,
-        'eventId': PostController().viewEventId,
-        'groupId': PostController().viewGroupId,
+        'eventId':
+            where == PostType.event.index ? PostController().viewEventId : '',
+        'groupId':
+            where == PostType.group.index ? PostController().viewGroupId : '',
       };
       Helper.postCollection.add(postData);
       setState(
@@ -1476,6 +1479,7 @@ class PostController extends ControllerMVC {
   }
 
   getTimelinePost(slide, direction, type, uid) async {
+    where = type;
     var profileSnap, publicSnap, friendSnap, allSnap, eventSnap, groupSnap;
     List allPosts = [];
     latestTime = DateTime.now();

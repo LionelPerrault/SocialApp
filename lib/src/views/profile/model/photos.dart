@@ -43,7 +43,7 @@ class Photos {
         .where('groupId', isEqualTo: groupId)
         .get();
     var s = [];
-    s = snapshot.docs.map((doc) => doc.data()['value']).toList();
+    s = await snapshot.docs.map((doc) => doc.data()['value']).toList();
 
     photos = flatten(s);
     print("photos---------------$photos");
