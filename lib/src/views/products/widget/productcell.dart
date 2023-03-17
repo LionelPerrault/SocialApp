@@ -83,6 +83,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
 
   Future<void> getData() async {
     if (!mounted) return;
+    // widget.data['type'] = 'product';
+
     product = widget.data['data'];
     productAdmin = widget.data['adminInfo'];
     productId = widget.data['id'];
@@ -309,7 +311,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                               children: <TextSpan>[
                                                 TextSpan(
                                                     text:
-                                                        '${productAdmin['firstName']} ${productAdmin['lastName']}',
+                                                        '${productAdmin['firstName']!} ${productAdmin['lastName']!}',
                                                     style: const TextStyle(
                                                         color: Colors.black,
                                                         fontWeight:
@@ -324,7 +326,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                             ProfileController()
                                                                 .updateProfile(
                                                                     productAdmin[
-                                                                        'userName']);
+                                                                        'userName']!);
                                                             widget
                                                                 .routerChange({
                                                               'router':
@@ -332,7 +334,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                                       .profile,
                                                               'subRouter':
                                                                   productAdmin[
-                                                                      'userName'],
+                                                                      'userName']!,
                                                             });
                                                           })
                                               ]),

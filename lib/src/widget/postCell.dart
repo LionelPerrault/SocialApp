@@ -99,7 +99,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
       setState(() {});
     });
-    headerCon.text = widget.postInfo['header'];
+    headerCon.text = widget.postInfo['header'] ?? '';
 
     if (widget.postInfo['type'] == 'poll') {
       if (widget.postInfo['data']['optionUp'][UserManager.userInfo['uid']] !=
@@ -326,9 +326,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget total() {
-    if (!widget.postInfo.containsKey('type')) {
-      return const SizedBox();
-    }
     switch (widget.postInfo['type']) {
       case 'photo':
         return picturePostCell();
@@ -900,7 +897,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo']['avatar'] != ''
+                          widget.postInfo['adminInfo']!['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
                                   widget.postInfo['adminInfo']['avatar'],
@@ -929,7 +926,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               children: <TextSpan>[
                                             TextSpan(
                                                 text:
-                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                    '${widget.postInfo['adminInfo']!['firstName']!} ${widget.postInfo['adminInfo']!['lastName']!}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
@@ -940,15 +937,15 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                         ProfileController()
                                                             .updateProfile(widget
                                                                         .postInfo[
-                                                                    'adminInfo']
-                                                                ['userName']);
+                                                                    'adminInfo']![
+                                                                'userName']!);
                                                         widget.routerChange({
                                                           'router': RouteNames
                                                               .profile,
                                                           'subRouter': widget
                                                                       .postInfo[
-                                                                  'adminInfo']
-                                                              ['userName'],
+                                                                  'adminInfo']![
+                                                              'userName']!,
                                                         });
                                                       }),
                                             TextSpan(
@@ -1115,13 +1112,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                               ),
                               overflow: TextOverflow.clip,
                             ),
-                      widget.sharedPost.containsKey("type")
-                          ? PostCell(
-                              postInfo: widget.sharedPost,
-                              routerChange: widget.routerChange,
-                              isSharedContent: true,
-                            )
-                          : SizedBox(),
+                      PostCell(
+                        postInfo: widget.sharedPost,
+                        routerChange: widget.routerChange,
+                        isSharedContent: true,
+                      ),
                     ],
                   ),
                 ),
