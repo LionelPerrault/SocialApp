@@ -405,79 +405,83 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                     //size: Size(100,100),
                     child: ListView.separated(
                       itemCount: friendModel.friends.length,
-                      itemBuilder: (context, index) => Material(
-                          child: ListTile(
-                              onTap: () {
-                                print("tap!");
-                              },
-                              hoverColor:
-                                  const Color.fromARGB(255, 243, 243, 243),
-                              // tileColor: Colors.white,
-                              enabled: true,
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  Helper.avatar,
+                      itemBuilder: (context, index) {
+                        var friendUserName =
+                            friendModel.friends[index]['requester'].toString();
+                        if (friendUserName == UserManager.userInfo['userName'])
+                          friendUserName =
+                              friendModel.friends[index]['receiver'].toString();
+
+                        return Material(
+                            child: ListTile(
+                                onTap: () {
+                                  print("tap!");
+                                },
+                                hoverColor:
+                                    const Color.fromARGB(255, 243, 243, 243),
+                                // tileColor: Colors.white,
+                                enabled: true,
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    friendModel.friends[index][friendUserName]
+                                        ['avatar'],
+                                  ),
                                 ),
-                              ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 80,
-                                        child: Text(
-                                          friendModel.friends[index]
-                                                      ['requester'] ==
-                                                  UserManager
-                                                      .userInfo['userName']
-                                              ? friendModel.friends[index]
-                                                  ['receiver']
-                                              : friendModel.friends[index]
-                                                  ['requester'],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 80,
+                                          child: Text(
+                                            friendModel.friends[index]
+                                                [friendUserName]['name'],
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11),
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color.fromARGB(
-                                                          255, 33, 37, 41),
-                                                  elevation: 3,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              2.0)),
-                                                  minimumSize:
-                                                      const Size(65, 30),
-                                                  maximumSize:
-                                                      const Size(65, 30)),
-                                              onPressed: () {
-                                                () => {};
-                                              },
-                                              child: Row(
-                                                children: const [
-                                                  Icon(
-                                                    Icons
-                                                        .person_add_alt_rounded,
-                                                    color: Colors.white,
-                                                    size: 15.0,
-                                                  ),
-                                                  Text('Add',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ],
-                                              ))),
-                                    ],
-                                  )
-                                ],
-                              ))),
+                                        Container(
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 33, 37, 41),
+                                                    elevation: 3,
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(2.0)),
+                                                    minimumSize:
+                                                        const Size(65, 30),
+                                                    maximumSize:
+                                                        const Size(65, 30)),
+                                                onPressed: () {
+                                                  () => {};
+                                                },
+                                                child: Row(
+                                                  children: const [
+                                                    Icon(
+                                                      Icons
+                                                          .person_add_alt_rounded,
+                                                      color: Colors.white,
+                                                      size: 15.0,
+                                                    ),
+                                                    Text('Add',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                ))),
+                                      ],
+                                    )
+                                  ],
+                                )));
+                      },
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
                         height: 1,
