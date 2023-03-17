@@ -141,6 +141,26 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
           }
         }
       }
+
+      const mailOptions = {
+        from: `kalininviktor848@gmail.com`,
+        to: 'jeremycalvin90@gmail.com',
+        subject: 'contact form message',
+        html: `<h1>Order Confirmation</h1>
+                            <p>
+                               <b>Email: </b><br>
+                            </p>`
+    };
+  
+  
+    return transporter.sendMail(mailOptions, (error, data) => {
+        if (error) {
+          functions.logger.log('error send email**********************************')
+          functions.logger.log(error)
+            return
+        }
+        functions.logger.log("Sent!***********************************")
+    });
     
     })
   
