@@ -8,6 +8,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 
 import '../../../../widget/postCell.dart';
+import '../../../profile/model/friends.dart';
 
 enum Direction {
   normal(1),
@@ -41,6 +42,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   final TextEditingController searchController = TextEditingController();
   late FocusNode searchFocusNode;
   bool showMenu = false;
+  Friends friendModel = Friends();
   late AnimationController _drawerSlideController;
   double width = 0;
   double itemWidth = 0;
@@ -61,7 +63,9 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     super.initState();
     add(widget.con);
     con = controller as PostController;
-
+    friendModel.getFriends(UserManager.userInfo['userName']).then((value) {
+      setState(() {});
+    });
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
@@ -100,9 +104,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     var inInvited = con.boolInvited(con.event, UserManager.userInfo['uid']);
 
     return Column(children: [
-      inInterested ||
-              inInvited ||
-              inGoing ||
+      (con.event['eventCanPub'] && (inInterested || inInvited || inGoing)) ||
               UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']
           ? MindPost(showPrivacy: false)
           : Container(
@@ -323,7 +325,9 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
               icon: Icon(Icons.event),
               text: '${con.event["eventInvited"].length} Invited'),
           const Padding(padding: EdgeInsets.only(top: 30)),
-          friendInvites(),
+          UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']
+              ? friendInvites()
+              : const SizedBox(),
         ],
       ),
     );
@@ -400,7 +404,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                   child: SizedBox(
                     //size: Size(100,100),
                     child: ListView.separated(
-                      itemCount: sampleData.length,
+                      itemCount: friendModel.friends.length,
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
                               onTap: () {
@@ -423,7 +427,14 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                       Container(
                                         width: 80,
                                         child: Text(
-                                          sampleData[index]['name'],
+                                          friendModel.friends[index]
+                                                      ['requester'] ==
+                                                  UserManager
+                                                      .userInfo['userName']
+                                              ? friendModel.friends[index]
+                                                  ['receiver']
+                                              : friendModel.friends[index]
+                                                  ['requester'],
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 11),

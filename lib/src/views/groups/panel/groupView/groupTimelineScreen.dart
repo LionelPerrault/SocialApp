@@ -8,6 +8,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 
 import '../../../../widget/postCell.dart';
+import '../../../profile/model/friends.dart';
 
 // ignore: must_be_immutable
 class GroupTimelineScreen extends StatefulWidget {
@@ -33,6 +34,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   bool showMenu = false;
   late AnimationController _drawerSlideController;
   var subUrl = '';
+  Friends friendModel = Friends();
   double width = 0;
   bool loadingFlag = false;
   bool loadingFlagBottom = false;
@@ -56,6 +58,9 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     con = controller as PostController;
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
+    friendModel.getFriends(UserManager.userInfo['userName']).then((value) {
+      setState(() {});
+    });
     loadingFlag = true;
     PostController().posts = [];
     con
@@ -89,7 +94,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     var inJoined = con.boolJoined(con.group, UserManager.userInfo['uid']);
 
     return Column(children: [
-      inJoined ||
+      (con.group['groupCanPub'] && inJoined) ||
               UserManager.userInfo['uid'] == con.group['groupAdmin'][0]['uid']
           ? MindPost(showPrivacy: false)
           : Container(
@@ -246,7 +251,10 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
               Column(
                 children: [
                   eventInfo(),
-                  friendInvites(),
+                  UserManager.userInfo['uid'] ==
+                          con.event['eventAdmin'][0]['uid']
+                      ? friendInvites()
+                      : const SizedBox(),
                 ],
               )
             ])
@@ -258,7 +266,13 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [eventInfo(), friendInvites()],
+                    children: [
+                      eventInfo(),
+                      UserManager.userInfo['uid'] ==
+                              con.group['groupAdmin'][0]['uid']
+                          ? friendInvites()
+                          : const SizedBox(),
+                    ],
                     // children: [eventInfo()],
                   )
                 ]),
@@ -375,7 +389,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                   child: SizedBox(
                     //size: Size(100,100),
                     child: ListView.separated(
-                      itemCount: sampleData.length,
+                      itemCount: friendModel.friends.length,
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
                               onTap: () {
@@ -398,7 +412,14 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                       Container(
                                         width: 80,
                                         child: Text(
-                                          sampleData[index]['name'],
+                                          friendModel.friends[index]
+                                                      ['requester'] ==
+                                                  UserManager
+                                                      .userInfo['userName']
+                                              ? friendModel.friends[index]
+                                                  ['receiver']
+                                              : friendModel.friends[index]
+                                                  ['requester'],
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 11),

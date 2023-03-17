@@ -131,6 +131,8 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
         : Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children:
                 photoModel.photos.map((photo) => photoCell(photo)).toList(),
           );
@@ -178,6 +180,8 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
         : Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children:
                 photoModel.albums.map((photo) => albumCell(photo)).toList(),
           );

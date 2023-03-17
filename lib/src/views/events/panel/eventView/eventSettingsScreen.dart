@@ -387,12 +387,10 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                           'Members can publish posts or only group admins',
                           canPub,
                           (value) {
-                            setState(
-                              () {
-                                canPub = value;
-                                eventInfo['eventCanPub'] = value;
-                              },
-                            );
+                            setState(() {
+                              canPub = value;
+                              eventInfo['eventCanPub'] = value;
+                            });
                           },
                         ),
                       ),
