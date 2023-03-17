@@ -13,6 +13,7 @@ import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 import '../../widget/postCell.dart';
+import 'model/friends.dart';
 
 enum Direction {
   normal(1),
@@ -53,6 +54,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   bool showSearch = false;
   late FocusNode searchFocusNode;
   bool showMenu = false;
+  Friends friendModel = Friends();
   // ignore: unused_field
   late AnimationController _drawerSlideController;
   double width = 0;
@@ -74,7 +76,11 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
-
+    friendModel
+        .getFriends(ProfileController().viewProfileUserName)
+        .then((value) {
+      setState(() {});
+    });
     //postCon = controller as PostController;
     userName = widget.userName;
     if (userName == '') {
@@ -326,6 +332,21 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     );
   }
 
+  bool isMyFriend() {
+    //profile selected is my friend?
+    String friendUserName;
+    for (var item in friendModel.friends) {
+      friendUserName = item['requester'].toString();
+      if (friendUserName == UserManager.userInfo['userName']) {
+        return true;
+      }
+      if (item['receiver'] == UserManager.userInfo['userName']) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     print("conprofileid is ${con.viewProfileUid}");
@@ -334,58 +355,68 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
       child: SizeConfig(context).screenWidth < 800
-          ? Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              const Padding(padding: EdgeInsets.only(top: 30)),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width - 100,
-                  animation: true,
-                  lineHeight: 20.0,
-                  animationDuration: 1000,
-                  percent: percent / 100,
-                  center: Text("Profile Completion  $percent %"),
-                  // ignore: deprecated_member_use
-                  linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: Colors.blueAccent,
-                ),
-              ),
-              profileCompletion(),
-              postColumn(),
-            ])
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
+          ? isMyFriend() ||
+                  ProfileController().viewProfileUid ==
+                      UserManager.userInfo['uid']
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Padding(padding: EdgeInsets.only(top: 30)),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: LinearPercentIndicator(
-                        width: MediaQuery.of(context).size.width / 6,
-                        animation: true,
-                        lineHeight: 20.0,
-                        animationDuration: 1000,
-                        percent: percent / 100,
-                        center: Text("Profile Completion  $percent%"),
-                        // ignore: deprecated_member_use
-                        linearStrokeCap: LinearStrokeCap.roundAll,
-                        progressColor: Colors.blueAccent,
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width - 100,
+                          animation: true,
+                          lineHeight: 20.0,
+                          animationDuration: 1000,
+                          percent: percent / 100,
+                          center: Text("Profile Completion  $percent %"),
+                          // ignore: deprecated_member_use
+                          linearStrokeCap: LinearStrokeCap.roundAll,
+                          progressColor: Colors.blueAccent,
+                        ),
                       ),
+                      profileCompletion(),
+                      postColumn(),
+                    ])
+              : Text("You can see the friends data only if you are friends.")
+          : isMyFriend() ||
+                  ProfileController().viewProfileUid ==
+                      UserManager.userInfo['uid']
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        const Padding(padding: EdgeInsets.only(top: 30)),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: LinearPercentIndicator(
+                            width: MediaQuery.of(context).size.width / 6,
+                            animation: true,
+                            lineHeight: 20.0,
+                            animationDuration: 1000,
+                            percent: percent / 100,
+                            center: Text("Profile Completion  $percent%"),
+                            // ignore: deprecated_member_use
+                            linearStrokeCap: LinearStrokeCap.roundAll,
+                            progressColor: Colors.blueAccent,
+                          ),
+                        ),
+                        Container(
+                          height: (SizeConfig(context).screenHeight -
+                                  SizeConfig.navbarHeight) /
+                              2,
+                          padding: const EdgeInsets.only(bottom: 60),
+                          child: profileCompletion(),
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: (SizeConfig(context).screenHeight -
-                              SizeConfig.navbarHeight) /
-                          2,
-                      padding: const EdgeInsets.only(bottom: 60),
-                      child: profileCompletion(),
-                    ),
+                    postColumn()
                   ],
-                ),
-                postColumn(),
-              ],
-            ),
+                )
+              : Text("You can see the friends data only if you are friends."),
     );
   }
 

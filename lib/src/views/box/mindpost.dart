@@ -25,6 +25,7 @@ class MindPost extends StatefulWidget {
   final PostController con;
 
   bool showPrivacy = true;
+
   @override
   State createState() => MindPostState();
 }

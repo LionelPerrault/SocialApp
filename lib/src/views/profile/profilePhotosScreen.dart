@@ -13,6 +13,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 import 'package:shnatter/src/views/profile/model/photos.dart';
 
+import 'model/friends.dart';
+
 class ProfilePhotosScreen extends StatefulWidget {
   Function onClick;
   ProfilePhotosScreen({Key? key, required this.onClick})
@@ -28,22 +30,55 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
   Photos photoModel = Photos();
+  Friends friendModel = Friends();
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
+    friendModel
+        .getFriends(ProfileController().viewProfileUserName)
+        .then((value) {
+      setState(() {});
+    });
     photoModel.getPhotos(con.viewProfileUid).then((value) {
       setState(() {});
     });
+  }
+
+  bool isMyFriend() {
+    //profile selected is my friend?
+    String friendUserName;
+    for (var item in friendModel.friends) {
+      friendUserName = item['requester'].toString();
+      if (friendUserName == UserManager.userInfo['userName']) {
+        return true;
+      }
+      if (item['receiver'] == UserManager.userInfo['userName']) {
+        return true;
+      }
+    }
+    return false;
   }
 
   late ProfileController con;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [mainTabs(), tab == 'Photos' ? PhotosData() : AlbumsData()]);
+    return Column(children: [
+      mainTabs(),
+      tab == 'Photos'
+          ? isMyFriend() ||
+                  ProfileController().viewProfileUid ==
+                      UserManager.userInfo['uid']
+              ? PhotosData()
+              : Text("You can see the friends data only if you are friends.")
+          : isMyFriend() ||
+                  ProfileController().viewProfileUid ==
+                      UserManager.userInfo['uid']
+              ? AlbumsData()
+              : Text("You can see the friends data only if you are friends.")
+    ]);
   }
 
   Widget mainTabs() {

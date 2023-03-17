@@ -4,6 +4,8 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
+import '../../../profile/model/photos.dart';
+
 // ignore: must_be_immutable
 class GroupPhotosScreen extends StatefulWidget {
   Function onClick;
@@ -19,11 +21,15 @@ class GroupPhotosScreen extends StatefulWidget {
 class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
+  Photos photoModel = Photos();
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    photoModel.getPhotosOfGroup(con.viewGroupId).then((value) {
+      setState(() {});
+    });
   }
 
   late PostController con;
@@ -116,7 +122,7 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
   }
 
   Widget PhotosData() {
-    return con.group['groupPhotos'].isEmpty
+    return photoModel.photos.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
@@ -124,11 +130,46 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container();
+        : Row(
+            children:
+                photoModel.photos.map((photo) => photoCell(photo)).toList(),
+          );
+  }
+
+  Widget photoCell(value) {
+    print("value---------$value");
+    return Container(
+      alignment: Alignment.topCenter,
+      width: 200,
+      height: 200,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(value['url']),
+            fit: BoxFit.cover,
+          ),
+          color: Color.fromARGB(255, 150, 99, 99),
+          border: Border.all(color: Colors.grey)),
+    );
+  }
+
+  Widget albumCell(value) {
+    print("value---------$value");
+    return Container(
+      alignment: Alignment.topCenter,
+      width: 200,
+      height: 200,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(value[0]['url']),
+            fit: BoxFit.cover,
+          ),
+          color: Color.fromARGB(255, 150, 99, 99),
+          border: Border.all(color: Colors.grey)),
+    );
   }
 
   Widget AlbumsData() {
-    return con.group['groupAlbums'].isEmpty
+    return photoModel.albums.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
@@ -136,6 +177,9 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container();
+        : Row(
+            children:
+                photoModel.albums.map((photo) => albumCell(photo)).toList(),
+          );
   }
 }

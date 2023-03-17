@@ -8,6 +8,7 @@ import 'package:shnatter/src/views/events/widget/eventcell.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
+import 'model/friends.dart';
 
 class ProfileEventsScreen extends StatefulWidget {
   ProfileEventsScreen({Key? key, required this.routerChange})
@@ -24,12 +25,31 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
   var userInfo = UserManager.userInfo;
   bool getFlag = true;
   List<Map> myEvents = [];
+  Friends friendModel = Friends();
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
     getEventNow();
+    friendModel.getFriends(con.viewProfileUserName).then((value) {
+      setState(() {});
+    });
+  }
+
+  bool isMyFriend() {
+    //profile selected is my friend?
+    String friendUserName;
+    for (var item in friendModel.friends) {
+      friendUserName = item['requester'].toString();
+      if (friendUserName == UserManager.userInfo['userName']) {
+        return true;
+      }
+      if (item['receiver'] == UserManager.userInfo['userName']) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void getEventNow() {
@@ -48,7 +68,12 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [mainTabs(), likesData()]);
+    return Column(children: [
+      mainTabs(),
+      isMyFriend() || con.viewProfileUid == UserManager.userInfo['uid']
+          ? likesData()
+          : Text("You can see the friends data only if you are friends.")
+    ]);
   }
 
   Widget mainTabs() {

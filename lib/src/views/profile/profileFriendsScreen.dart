@@ -85,7 +85,9 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
             const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
         child: Column(children: [
           mainTabs(),
-          isMyFriend()
+          isMyFriend() ||
+                  ProfileController().viewProfileUid ==
+                      UserManager.userInfo['uid']
               ? friendsData()
               : Text("You can see the friends data only if you are friends."),
           //: tab == 'Follows'

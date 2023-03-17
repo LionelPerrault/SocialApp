@@ -38,10 +38,10 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   List<Map> mainTabList = [
     {'title': 'Timeline', 'icon': Icons.tab},
     {'title': 'Photos', 'icon': Icons.photo},
-    {'title': 'Videos', 'icon': Icons.video_call},
+    // {'title': 'Videos', 'icon': Icons.video_call},
     {'title': 'Members', 'icon': Icons.groups},
   ];
-  var interestedStatus = false;
+
   var joinStatus = false;
   var selectedGroup = {};
   bool payLoading = false;
@@ -66,7 +66,10 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
       joinStatus = true;
       setState(() {});
       await con.joinedGroup(con.viewGroupId).then((value) {
-        con.getSelectedGroup(con.viewGroupName);
+        print("con.viewgroupid is ${con.viewGroupId}");
+        con.getSelectedGroup(con.viewGroupId);
+        joinStatus = false;
+        setState(() {});
       });
       joinStatus = false;
       setState(() {});
@@ -96,7 +99,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                             setState(() {}),
                             await con.joinedGroup(con.viewGroupId).then(
                               (value) {
-                                con.getSelectedGroup(con.viewGroupName);
+                                con.getSelectedGroup(con.viewGroupId);
                               },
                             ),
                             joinStatus = false,
@@ -373,7 +376,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              con.viewGroupJoined
+                              !con.viewGroupJoined
                                   ? const Icon(
                                       Icons.edit_calendar,
                                       color: Colors.white,
