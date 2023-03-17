@@ -83,7 +83,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
 
   Future<void> getData() async {
     if (!mounted) return;
-    // widget.data['type'] = 'product';
+    widget.data['type'] = 'product';
 
     product = widget.data['data'];
     productAdmin = widget.data['adminInfo'];
