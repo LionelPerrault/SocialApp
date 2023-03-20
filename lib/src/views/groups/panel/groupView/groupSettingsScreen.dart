@@ -12,6 +12,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
 
 import '../../../../widget/admin_list_text.dart';
+import '../../../../widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
 class GroupSettingsScreen extends StatefulWidget {
@@ -33,6 +34,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   var groupName = '';
   var groupLocation = '';
   var groupAbout = '';
+  var loadingFlag = false;
   final TextEditingController groupNameController = TextEditingController();
   final TextEditingController groupLocationController = TextEditingController();
   final TextEditingController groupAboutController = TextEditingController();
@@ -637,9 +639,31 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                                         const Size(90, 35),
                                                     maximumSize:
                                                         const Size(90, 35)),
-                                                onPressed: () {
-                                                  () => {};
-                                                },
+                                                onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          AlertDialog(
+                                                    title: const SizedBox(),
+                                                    content: AlertYesNoWidget(
+                                                        yesFunc: () {
+                                                          Navigator.of(context)
+                                                              .pop(true);
+                                                          con.group[
+                                                                  'groupJoined']
+                                                              .removeAt(index);
+                                                          setState(() {});
+                                                        },
+                                                        noFunc: () {
+                                                          Navigator.of(context)
+                                                              .pop(true);
+                                                        },
+                                                        header: 'Delete Member',
+                                                        text:
+                                                            'Are you sure you want to delete this member? ',
+                                                        progress: loadingFlag),
+                                                  ),
+                                                ),
                                                 child: Row(
                                                   children: const [
                                                     Icon(
@@ -660,42 +684,42 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                               const Padding(
                                                   padding: EdgeInsets.only(
                                                       left: 10)),
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 245, 54, 92),
-                                                    elevation: 3,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        2.0)),
-                                                    minimumSize:
-                                                        const Size(125, 35),
-                                                    maximumSize:
-                                                        const Size(125, 35)),
-                                                onPressed: () {
-                                                  () => {};
-                                                },
-                                                child: Row(
-                                                  children: const [
-                                                    Icon(
-                                                      Icons.delete,
-                                                      color: Colors.white,
-                                                      size: 18.0,
-                                                    ),
-                                                    Text('Remove Admin',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 11,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                ),
-                                              ),
+                                              // ElevatedButton(
+                                              //   style: ElevatedButton.styleFrom(
+                                              //       backgroundColor:
+                                              //           const Color.fromARGB(
+                                              //               255, 245, 54, 92),
+                                              //       elevation: 3,
+                                              //       shape:
+                                              //           RoundedRectangleBorder(
+                                              //               borderRadius:
+                                              //                   BorderRadius
+                                              //                       .circular(
+                                              //                           2.0)),
+                                              //       minimumSize:
+                                              //           const Size(125, 35),
+                                              //       maximumSize:
+                                              //           const Size(125, 35)),
+                                              //   onPressed: () {
+                                              //     () => {};
+                                              //   },
+                                              //   child: Row(
+                                              //     children: const [
+                                              //       Icon(
+                                              //         Icons.delete,
+                                              //         color: Colors.white,
+                                              //         size: 18.0,
+                                              //       ),
+                                              //       Text('Remove Admin',
+                                              //           style: TextStyle(
+                                              //               color: Colors.white,
+                                              //               fontSize: 11,
+                                              //               fontWeight:
+                                              //                   FontWeight
+                                              //                       .bold)),
+                                              //     ],
+                                              //   ),
+                                              // ),
                                             ],
                                           )
                                         ],
@@ -800,9 +824,40 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                         minimumSize: const Size(140, 50),
                                         maximumSize: const Size(140, 50),
                                       ),
-                                      onPressed: () {
-                                        (() => {});
-                                      },
+                                      onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AlertDialog(
+                                              title: const SizedBox(),
+                                              content: AlertYesNoWidget(
+                                                  yesFunc: () {
+                                                    setState(() {
+                                                      loadingFlag = true;
+                                                    });
+
+                                                    con.deletePostOfGroup();
+                                                    con.deleteGroup();
+
+                                                    setState(() {
+                                                      loadingFlag = false;
+                                                    });
+                                                    Navigator.of(context)
+                                                        .pop(true);
+                                                    widget.routerChange({
+                                                      'router':
+                                                          RouteNames.groups,
+                                                    });
+                                                  },
+                                                  noFunc: () {
+                                                    Navigator.of(context)
+                                                        .pop(true);
+                                                  },
+                                                  header: 'Delete Group',
+                                                  text:
+                                                      'Are you sure you want to delete this group? All posts in group will be deleted!',
+                                                  progress: loadingFlag),
+                                            ),
+                                          ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,

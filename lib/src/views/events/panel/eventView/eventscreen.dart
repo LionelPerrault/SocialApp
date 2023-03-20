@@ -121,9 +121,12 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                                         : con.eventTab == 'Settings'
                                             ? EventSettingsScreen(
                                                 onClick: (value) {
-                                                con.eventTab = value;
-                                                setState(() {});
-                                              })
+                                                  con.eventTab = value;
+                                                  setState(() {});
+                                                },
+                                                routerChange:
+                                                    widget.routerChange,
+                                              )
                                             : const SizedBox()
                         // EventFriendScreen(),
                       ]),

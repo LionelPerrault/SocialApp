@@ -9,14 +9,18 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
+import '../../../../routes/route_names.dart';
 import '../../../../widget/admin_list_text.dart';
+import '../../../../widget/alertYesNoWidget.dart';
 
 class EventSettingsScreen extends StatefulWidget {
   Function onClick;
-  EventSettingsScreen({Key? key, required this.onClick})
+  EventSettingsScreen(
+      {Key? key, required this.onClick, required this.routerChange})
       : con = PostController(),
         super(key: key);
   final PostController con;
+  Function routerChange;
   @override
   State createState() => EventSettingsScreenState();
 }
@@ -34,6 +38,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   var eventInterests;
   var userInfo = UserManager.userInfo;
   var eventSettingTab = 'Event Settings';
+  var loadingFlag = false;
   Map<String, dynamic> eventInfo = {};
   List<Map> list = [
     {
@@ -511,15 +516,43 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                 minimumSize: const Size(140, 50),
                                 maximumSize: const Size(140, 50),
                               ),
-                              onPressed: () {
-                                (() => {});
-                              },
+                              onPressed: () => showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      title: const SizedBox(),
+                                      content: AlertYesNoWidget(
+                                          yesFunc: () {
+                                            setState(() {
+                                              loadingFlag = true;
+                                            });
+
+                                            con.deletePostOfEvent();
+                                            con.deleteEvent();
+
+                                            setState(() {
+                                              loadingFlag = false;
+                                            });
+                                            Navigator.of(context).pop(true);
+                                            widget.routerChange({
+                                              'router': RouteNames.events,
+                                            });
+                                          },
+                                          noFunc: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                          header: 'Delete Post',
+                                          text:
+                                              'Are you sure you want to delete this event? All posts in event will be deleted!',
+                                          progress: loadingFlag),
+                                    ),
+                                  ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: const [
                                   Icon(Icons.delete),
-                                  Text('Delete My Account',
+                                  Text('Delete Event',
                                       style: TextStyle(
                                           fontSize: 11,
                                           color: Colors.white,

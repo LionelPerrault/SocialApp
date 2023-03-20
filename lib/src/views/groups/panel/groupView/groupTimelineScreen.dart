@@ -78,10 +78,10 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
         if (con.boolJoined(con.group, userid)) {
           friendModel.friends.removeAt(index);
           print("getuserid is $index");
+          setState(() {});
           index--;
         }
       }
-      setState(() {});
     });
     loadingFlag = true;
     PostController().posts = [];

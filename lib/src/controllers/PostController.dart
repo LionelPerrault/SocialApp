@@ -537,6 +537,39 @@ class PostController extends ControllerMVC {
     return true;
   }
 
+  Future<bool> deletePostOfEvent() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.postField)
+        .where('eventId', isEqualTo: viewEventId)
+        .get()
+        .then((snapshot) {
+      for (var i = 0; i < snapshot.docs.length; i++) {
+        snapshot.docs[i].reference.delete();
+      }
+    });
+    return true;
+  }
+
+  Future<bool> deleteGroup() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.groupsField)
+        .doc(viewGroupId)
+        .delete();
+    return true;
+  }
+
+  Future<bool> deletePostOfGroup() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.postField)
+        .where('groupId', isEqualTo: viewGroupId)
+        .get()
+        .then((snapshot) {
+      for (var i = 0; i < snapshot.docs.length; i++) {
+        snapshot.docs[i].reference.delete();
+      }
+    });
+    return true;
+  }
   ////////////////////functions that make comment to event/////////////////////////////
 
   ///////////////////////////end events functions //////////////////////////////////////////////////
@@ -1606,7 +1639,7 @@ class PostController extends ControllerMVC {
       print("postsGroup ------------$postsGroup");
     }
 
-    //posts = postsBox;
+    posts = postsBox;
 
     setState(() {});
 
