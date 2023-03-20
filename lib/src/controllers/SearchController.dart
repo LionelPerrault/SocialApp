@@ -1,9 +1,11 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:convert';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/userModel.dart';
 
@@ -24,28 +26,41 @@ class SearchController extends ControllerMVC {
   updateSearchText(searchParam) {
     searchText = searchParam;
     setState(() {});
-    getUsers();
+    getUsers(searchText);
     getEvents();
     getGroups();
   }
 
-  getUsers() async {
-    var snapShots = await Helper.userCollection.orderBy('userName').get();
-    List box = [];
-
-    for (var doc in snapShots.docs) {
-      String name = doc.data()["userName"];
-      String firstName = doc.data()["firstName"];
-      String lastName = doc.data()["lastName"];
-      
-      if ((name + firstName + lastName).contains(searchText)) {
-        box.add({...doc.data(), 'uid': doc.id,});
-      }
+  getUsers(searchText) async {
+    if (searchText != null) {
+      http.post(
+        Uri.parse('https://us-central1-shnatter-a69cd.cloudfunctions.net/getusersbyname'),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(<String, dynamic>{"data": searchText}),
+      );
     }
-
-    users = box;
-    setState(() {});
   }
+
+  // getUsers() async {
+  //   var snapShots = await Helper.userCollection.orderBy('userName').get();
+  //   List box = [];
+
+  //   for (var doc in snapShots.docs) {
+  //     String name = doc.data()["userName"];
+  //     String firstName = doc.data()["firstName"];
+  //     String lastName = doc.data()["lastName"];
+      
+  //     if ((name + firstName + lastName).contains(searchText)) {
+  //       box.add({...doc.data(), 'uid': doc.id,});
+  //     }
+  //   }
+
+  //   users = box;
+  //   setState(() {});
+  // }
 
   getPosts() async {
     var allSanp = await Helper.postCollection.orderBy('postTime', descending: true).get();
@@ -112,7 +127,7 @@ class SearchController extends ControllerMVC {
   }
 
   getAllSearchResult() async {
-    await getUsers();
+    await getUsers(searchText);
     await getEvents();
     await getGroups();
   }
