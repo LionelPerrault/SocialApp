@@ -232,6 +232,9 @@ class ProfileAvatarandTabScreenState extends mvc
                           maximumSize: const Size(26, 26),
                         ),
                         onPressed: () {
+                          print("avatar changing");
+                          //firestore composite index added.
+                          //firestore storage rule edited.
                           uploadImage('avatar');
                         },
                         child: const Icon(Icons.camera_enhance_rounded,

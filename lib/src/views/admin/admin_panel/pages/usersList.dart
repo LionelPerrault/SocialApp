@@ -10,6 +10,8 @@ import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart'
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
+import '../../../../controllers/PeopleController.dart';
+
 // ignore: must_be_immutable
 class AdminUserList extends StatefulWidget {
   AdminUserList({super.key});
@@ -21,7 +23,7 @@ class AdminUserList extends StatefulWidget {
 class AdminUserListState extends mvc.StateMVC<AdminUserList> {
   /// You can manipulate the grid dynamically at runtime by passing this through the [onLoaded] callback.
   late final PlutoGridStateManager stateManager;
-  List<Employee> employees = <Employee>[];
+  List employees = [];
   late EmployeeDataSource employeeDataSource;
 
   @override
@@ -93,10 +95,12 @@ class AdminUserListState extends mvc.StateMVC<AdminUserList> {
     );
   }
 
-  List<Employee> getEmployeeData() {
+  List getEmployeeData() {
+    PeopleController().getUserList();
+    // return PeopleController().userList;
     return [
       Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+          10005, 'AAAA', 'Developer', '15000', '1005', 'Martin', 'Developer'),
       Employee(
           10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
       Employee(
@@ -632,7 +636,7 @@ class Employee {
 /// is used to map the employee data to the datagrid widget.
 class EmployeeDataSource extends DataGridSource {
   /// Creates the employee data source class with required details.
-  EmployeeDataSource({required List<Employee> employeeData}) {
+  EmployeeDataSource({required List employeeData}) {
     _employeeData = employeeData
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(columnName: 'id', value: e.id),

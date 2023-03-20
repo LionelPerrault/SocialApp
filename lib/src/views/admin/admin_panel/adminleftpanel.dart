@@ -22,7 +22,7 @@ class AdminLeftPanel extends StatelessWidget {
                       color: Color.fromARGB(255, 150, 150, 150), fontSize: 10)),
             ]),
             ListText(
-                onTap: () => {},
+                onTap: () => {onClick('')},
                 label: 'Dashboard',
                 icon: const Icon(Icons.dashboard)),
             // ExpansionTileTheme(

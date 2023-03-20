@@ -74,7 +74,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
       'icon': Icons.lock_open_rounded
     },
     {
-      'value': 'secret',
+      'value': 'security',
       'title': 'Secret Group',
       'subtitle': 'Only members can find the group and see posts.',
       'icon': Icons.lock_outline_rounded
