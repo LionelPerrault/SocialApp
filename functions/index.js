@@ -36,15 +36,38 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
   })
 })
 
-exports.sendEmail =  functions.firestore.document('groups/{groupId}').onCreate((snap, context) => {
-
+exports.sendEmailToSeller =  functions.firestore.document('transaction/{transactionId}').onCreate(async (snapshot) => {
+  
   const mailOptions = {
       from: `kalininviktor848@gmail.com`,
-      to: 'jeremycalvin90@gmail.com',
-      subject: 'contact form message',
-      html: `<h1>Order Confirmation</h1>
+      to: snapshot.data().seller.email,
+      subject: 'Product Sell',
+      html: `<h1>${snapshot.data().buyer.userName} bought your product!</h1>
                           <p>
-                             <b>Email: </b><br>
+                             <b>Email: </b>${snapshot.data().buyer.email}<br>
+                          </p>`
+  };
+
+
+  return transporter.sendMail(mailOptions, (error, data) => {
+      if (error) {
+        functions.logger.log('error send email**********************************')
+        functions.logger.log(error)
+          return
+      }
+      functions.logger.log("Sent!***********************************")
+  });
+});  
+
+exports.sendEmailToBuyer =  functions.firestore.document('transaction/{transactionId}').onCreate(async (snapshot) => {
+  
+  const mailOptions = {
+      from: `kalininviktor848@gmail.com`,
+      to: snapshot.data().buyer.email,
+      subject: 'Product Sell',
+      html: `<h1>You purchased product of ${snapshot.data().seller.userName} </h1>
+                          <p>
+                             <b>Email: </b>${snapshot.data().seller.email}<br>
                           </p>`
   };
 

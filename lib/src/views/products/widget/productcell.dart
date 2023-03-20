@@ -119,7 +119,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                               .collection("transaction")
                               .add({
                             'seller': {
-                              'userName': eventAdminInfo!['userName'],
+                              'userName': eventAdminInfo['userName'],
                               'email': eventAdminInfo['email'],
                               'avatar': eventAdminInfo['avatar'],
                             },
