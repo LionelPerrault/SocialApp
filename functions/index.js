@@ -5,9 +5,7 @@ const axios = require('axios');
 const cors = require('cors')({origin: true});
 admin.initializeApp();
 var transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+  service: 'Gmail',
   auth: {
       user: 'kalininviktor848@gmail.com',
       pass: '123456789'
@@ -40,9 +38,9 @@ exports.sendEmailToSeller =  functions.firestore.document('transaction/{transact
   
   const mailOptions = {
       from: `kalininviktor848@gmail.com`,
-      to: snapshot.data().seller.email,
+      to: 'jeremycalvin90@gmail.com',
       subject: 'Product Sell',
-      html: `<h1>${snapshot.data().buyer.userName} bought your product!</h1>
+      html: `<h1> bought your product!</h1>
                           <p>
                              <b>Email: </b>${snapshot.data().buyer.email}<br>
                           </p>`
@@ -59,28 +57,28 @@ exports.sendEmailToSeller =  functions.firestore.document('transaction/{transact
   });
 });  
 
-exports.sendEmailToBuyer =  functions.firestore.document('transaction/{transactionId}').onCreate(async (snapshot) => {
+// exports.sendEmailToBuyer =  functions.firestore.document('transaction/{transactionId}').onCreate(async (snapshot) => {
   
-  const mailOptions = {
-      from: `kalininviktor848@gmail.com`,
-      to: snapshot.data().buyer.email,
-      subject: 'Product Sell',
-      html: `<h1>You purchased product of ${snapshot.data().seller.userName} </h1>
-                          <p>
-                             <b>Email: </b>${snapshot.data().seller.email}<br>
-                          </p>`
-  };
+//   const mailOptions = {
+//       from: `kalininviktor848@gmail.com`,
+//       to: snapshot.data().buyer.email,
+//       subject: 'Product Sell',
+//       html: `<h1>You purchased product of ${snapshot.data().seller.userName} </h1>
+//                           <p>
+//                              <b>Email: </b>${snapshot.data().seller.email}<br>
+//                           </p>`
+//   };
 
 
-  return transporter.sendMail(mailOptions, (error, data) => {
-      if (error) {
-        functions.logger.log('error send email**********************************')
-        functions.logger.log(error)
-          return
-      }
-      functions.logger.log("Sent!***********************************")
-  });
-});  
+//   return transporter.sendMail(mailOptions, (error, data) => {
+//       if (error) {
+//         functions.logger.log('error send email**********************************')
+//         functions.logger.log(error)
+//           return
+//       }
+//       functions.logger.log("Sent!***********************************")
+//   });
+// });  
 
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
@@ -165,25 +163,6 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
         }
       }
 
-      const mailOptions = {
-        from: `kalininviktor848@gmail.com`,
-        to: 'jeremycalvin90@gmail.com',
-        subject: 'contact form message',
-        html: `<h1>Order Confirmation</h1>
-                            <p>
-                               <b>Email: </b><br>
-                            </p>`
-    };
-  
-  
-    return transporter.sendMail(mailOptions, (error, data) => {
-        if (error) {
-          functions.logger.log('error send email**********************************')
-          functions.logger.log(error)
-            return
-        }
-        functions.logger.log("Sent!***********************************")
-    });
     
     })
   
