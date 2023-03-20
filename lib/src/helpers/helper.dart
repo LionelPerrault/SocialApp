@@ -42,6 +42,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.notificationField);
   static var postCollection =
       FirebaseFirestore.instance.collection(Helper.postField);
+  static var transactionCollection =
+      FirebaseFirestore.instance.collection(Helper.transactionField);
   static var systemAvatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsystem_avatar.svg?alt=media&token=1b903903-95d8-4826-808d-ddbde4ac55c3';
   static var avatar =
@@ -65,6 +67,7 @@ class Helper {
   static var productsField = 'products';
   static var notificationField = 'notifications';
   static var postField = 'posts';
+  static var transactionField = 'transaction';
   static var interestsField = 'interests';
   static var friendCollection = 'friends';
   static var pages = 'staticContent';
