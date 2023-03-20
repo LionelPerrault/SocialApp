@@ -34,33 +34,24 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   void initState() {
     add(widget.con);
     con = controller as SearchController;
-    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    SearchController().updateSearchText(widget.searchText);
+
     if (widget.searchText != '') {
-      var total = [];
-      var totalUsers = con.users
-          .where((user) =>
-              (user['userName'] != UserManager.userInfo['userName'] &&
-                  (user['userName'].contains(widget.searchText) ||
-                      '${user['firstName']} ${user['lastName']}'
-                          .contains(widget.searchText))))
-          .toList();
-      var totalEvents = con.events
-          .where((event) => event['eventName'].contains(widget.searchText))
-          .toList();
-      var totalGroups = con.groups
-          .where((group) => (group['groupName'].contains(widget.searchText) ||
-              (group['groupUserName'] != null ? group['groupUserName'].contains(widget.searchText) : false)))
-          .toList();
+      List total = [];
+      List totalUsers = con.users;
+      List totalEvents = con.events;
+      List totalGroups = con.groups;
       total = [...totalUsers, ...total];
       total = [...totalEvents, ...total];
       total = [...totalGroups, ...total];
       searchResult = total;
     }
+    
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Column(
@@ -172,7 +163,6 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   }
 
   Widget searchCell(data) {
-    print(data);
     if (data['userName'] != null) {
       return SearchUserCell(
         userInfo: data,

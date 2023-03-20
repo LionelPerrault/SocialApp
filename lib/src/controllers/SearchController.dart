@@ -19,38 +19,48 @@ class SearchController extends ControllerMVC {
   List posts = [];
   List events = [];
   List groups = [];
+  String searchText = '';
+
+  updateSearchText(searchParam) {
+    searchText = searchParam;
+    setState(() {});
+    getUsers();
+    getEvents();
+    getGroups();
+  }
 
   getUsers() async {
     var snapShots = await Helper.userCollection.orderBy('userName').get();
-    var usersDocs = snapShots.docs;
-    var box = [];
-    for (var i = 0; i < usersDocs.length; i++) {
-      box.add({
-        ...usersDocs[i].data(),
-        'uid': usersDocs[i].id,
-      });
+    List box = [];
+
+    for (var doc in snapShots.docs) {
+      String name = doc.data()["userName"];
+      String firstName = doc.data()["firstName"];
+      String lastName = doc.data()["lastName"];
+      
+      if ((name + firstName + lastName).contains(searchText)) {
+        box.add({...doc.data(), 'uid': doc.id,});
+      }
     }
+
     users = box;
     setState(() {});
   }
 
   getPosts() async {
-    var allSanp =
-        await Helper.postCollection.orderBy('postTime', descending: true).get();
+    var allSanp = await Helper.postCollection.orderBy('postTime', descending: true).get();
     var allPosts = allSanp.docs;
     var postData;
     var adminInfo;
     var postsBox = [];
     for (var i = 0; i < allPosts.length; i++) {
       if (allPosts[i]['type'] == 'product') {
-        var valueSnap =
-            await Helper.productsData.doc(allPosts[i]['value']).get();
+        var valueSnap = await Helper.productsData.doc(allPosts[i]['value']).get();
         postData = valueSnap.data();
       } else {
         postData = allPosts[i]['value'];
       }
-      var adminSnap =
-          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+      var adminSnap = await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
       adminInfo = adminSnap.data();
       var eachPost = {
         'id': allPosts[i].id,
@@ -75,28 +85,28 @@ class SearchController extends ControllerMVC {
 
   getEvents() async {
     var snapShots = await Helper.eventsData.get();
-    var eventsDocs = snapShots.docs;
-    var box = [];
-    for (var i = 0; i < eventsDocs.length; i++) {
-      box.add({
-        ...eventsDocs[i].data(),
-        'uid': eventsDocs[i].id,
-      });
+    List box = [];
+
+    for (var doc in snapShots.docs) {      
+      if (doc.data()["eventName"].contains(searchText)) {
+        box.add({...doc.data(), 'uid': doc.id,});
+      }
     }
+
     events = box;
     setState(() {});
   }
 
   getGroups() async {
     var snapShots = await Helper.groupsData.get();
-    var groupsDocs = snapShots.docs;
-    var box = [];
-    for (var i = 0; i < groupsDocs.length; i++) {
-      box.add({
-        ...groupsDocs[i].data(),
-        'uid': groupsDocs[i].id,
-      });
+    List box = [];
+
+    for (var doc in snapShots.docs) {
+      if (doc.data()["groupName"].contains(searchText)) {
+        box.add({...doc.data(), 'uid': doc.id,});
+      }
     }
+
     groups = box;
     setState(() {});
   }
