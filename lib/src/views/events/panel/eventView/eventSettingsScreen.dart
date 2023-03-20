@@ -404,33 +404,34 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 15)),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: privacySelect(
-                          'Post Approval',
-                          'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
-                          approval,
-                          (value) {
-                            setState(() {
-                              approval = value;
-                              eventInfo['eventApproval'] = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Row(
+              //       children: [
+              //         Expanded(
+              //           flex: 1,
+              //           child: privacySelect(
+              //             'Post Approval',
+              //             'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
+              //             approval,
+              //             (value) {
+              //               setState(() {
+              //                 approval = value;
+              //                 eventInfo['eventApproval'] = value;
+              //               });
+              //             },
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
             ]),
           ),
-          footerWidget(eventInfo)
+          footerWidget(eventInfo),
+          const Padding(padding: EdgeInsets.only(top: 50)),
         ],
       ),
     );

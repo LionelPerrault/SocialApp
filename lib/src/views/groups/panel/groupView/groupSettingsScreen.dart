@@ -251,16 +251,16 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                       },
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15)),
-                    privacySelect(
-                      'Post Approval',
-                      'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
-                      approval,
-                      (value) {
-                        approval = value;
-                        setState(() {});
-                      },
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 15)),
+                    // privacySelect(
+                    //   'Post Approval',
+                    //   'All posts must be approved by a group admin(Note: Disable it will approve any pending posts)',
+                    //   approval,
+                    //   (value) {
+                    //     approval = value;
+                    //     setState(() {});
+                    //   },
+                    // ),
+                    // const Padding(padding: EdgeInsets.only(top: 15)),
                     footerWidget({
                       'groupName': groupName,
                       'groupLocation': groupLocation,
@@ -268,7 +268,8 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                       'groupPrivacy': privacy,
                       'groupCanPub': canPub,
                       'groupApproval': approval,
-                    })
+                    }),
+                    const Padding(padding: EdgeInsets.only(top: 50)),
                   ],
                 ))));
   }
