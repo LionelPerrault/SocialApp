@@ -239,3 +239,48 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
     return res.redirect('https://shnatter-a69cd.web.app/');
   })
 })
+
+exports.offlineRequest = functions.https.onRequest(async (req,res) => {
+  cors(req, res, async () => {
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    var userName = req.body.userName
+    var snapshot = await admin.firestore().collection('onlineStatus').where('userName','==',userName).get()
+    if(snapshot.docs.length == 0){
+      await admin.firestore().collection('onlineStatus').add({
+        'userName':userName,
+        'status':0
+      })
+    }
+    else{
+      await admin.firestore().collection('onlineStatus').doc(snapshot.docs[0].id).update({
+        'status':0
+      })
+    }
+
+    res.send('ok')
+  })
+})
+
+exports.getusersbyname = functions.https.onRequest(async (req,res) => {
+  cors(req, res, async () => {
+    res.set("Access-Control-Allow-Origin", "*"); // you can also whitelist a specific domain like "http://127.0.0.1:4000"
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    print(req.body);
+    // var snapshot = await admin.firestore().collection('onlineStatus').where('userName','==',userName).get()
+    // if(snapshot.docs.length == 0){
+    //   await admin.firestore().collection('onlineStatus').add({
+    //     'userName':userName,
+    //     'status':0
+    //   })
+    // }
+    // else{
+    //   await admin.firestore().collection('onlineStatus').doc(snapshot.docs[0].id).update({
+    //     'status':0
+    //   })
+    // }
+    // console.log('asdf', 'asdfasdfwer234235');
+    // res.send('ok')
+    res.send(ok);
+  })
+})
