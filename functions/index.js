@@ -7,8 +7,8 @@ admin.initializeApp();
 var transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-      user: 'kalininviktor848@gmail.com',
-      pass: '123456789'
+      user: 'smartdev924@gmail.com',
+      pass: 'nopassword!@#'
   }
 });
 
@@ -37,7 +37,7 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 exports.sendEmailToSeller =  functions.firestore.document('transaction/{transactionId}').onCreate(async (snapshot) => {
   
   const mailOptions = {
-      from: `kalininviktor848@gmail.com`,
+      from: `smartdev924@gmail.com`,
       to: 'jeremycalvin90@gmail.com',
       subject: 'Product Sell',
       html: `<h1> bought your product!</h1>
