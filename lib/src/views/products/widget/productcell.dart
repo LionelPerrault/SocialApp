@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
@@ -106,6 +107,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             yesFunc: () async {
               payLoading = true;
               setState(() {});
+
               await UserController()
                   .payShnToken(eventAdminInfo!['paymail'].toString(),
                       product['productPrice'], 'Pay for buy product')
@@ -113,6 +115,21 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                     (value) async => {
                       if (value = true)
                         {
+                          await FirebaseFirestore.instance
+                              .collection("transaction")
+                              .add({
+                            'seller': {
+                              'userName': eventAdminInfo['userName'],
+                              'email': eventAdminInfo['email'],
+                              'avatar': eventAdminInfo['avatar'],
+                            },
+                            'buyer': {
+                              'userName': UserManager.userInfo['userName'],
+                              'email': UserManager.userInfo['email'],
+                              'avatar': UserManager.userInfo['avatar'],
+                            },
+                            'product': product
+                          }),
                           payLoading = false,
                           setState(() {}),
                           Navigator.of(context).pop(true),
@@ -134,7 +151,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                     },
                   );
             },
-            noFunc: () {
+            noFunc: () async {
               Navigator.of(context).pop(true);
             },
             header: 'Pay Token',
@@ -736,7 +753,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                         borderRadius:
                                             BorderRadius.circular(3.0)),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     buyProduct();
                                   },
                                   child: Row(
