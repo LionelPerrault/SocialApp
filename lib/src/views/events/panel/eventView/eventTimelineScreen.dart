@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
@@ -421,12 +422,19 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                     const Color.fromARGB(255, 243, 243, 243),
                                 // tileColor: Colors.white,
                                 enabled: true,
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    friendModel.friends[index][friendUserName]
-                                        ['avatar'],
-                                  ),
-                                ),
+                                leading: friendModel.friends[index]
+                                            [friendUserName]['avatar'] !=
+                                        ''
+                                    ? CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                          friendModel.friends[index]
+                                              [friendUserName]['avatar'],
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        child:
+                                            SvgPicture.network(Helper.avatar),
+                                      ),
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
