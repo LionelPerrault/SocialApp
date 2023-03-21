@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace, avoid_unnecessary_containers
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -56,6 +58,8 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   ];
   bool loadingFlag = false;
   bool loadingFlagBottom = false;
+  bool invitingFriend = false;
+  int selectedUserIndex = -1;
   int newPostNum = 0;
   bool nextPostFlag = true;
 
@@ -64,9 +68,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     super.initState();
     add(widget.con);
     con = controller as PostController;
-    friendModel.getFriends(UserManager.userInfo['userName']).then((value) {
-      setState(() {});
-    });
+    getFriends();
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
@@ -95,6 +97,31 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
         print("newPostNum of profile is $newPostNum");
         setState(() {});
       });
+    });
+  }
+
+  Future<void> getFriends() async {
+    friendModel
+        .getFriends(UserManager.userInfo['userName'])
+        .then((value) async {
+      for (var index = 0; index < friendModel.friends.length; index++) {
+        var friendUserName = friendModel.friends[index]['requester'].toString();
+        if (friendUserName == UserManager.userInfo['userName']) {
+          friendUserName = friendModel.friends[index]['receiver'].toString();
+        }
+
+        var snapshot = await FirebaseFirestore.instance
+            .collection('user')
+            .where('userName', isEqualTo: friendUserName)
+            .get();
+        String userid = snapshot.docs[0].id.toString();
+
+        if (con.boolInvited(con.event, userid)) {
+          friendModel.friends.removeAt(index);
+          setState(() {});
+          index--;
+        }
+      }
     });
   }
 
@@ -229,10 +256,10 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
+                    children: const [
                       Text(
                         'Load More...',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Color.fromARGB(255, 90, 90, 90),
                             fontFamily: 'var(--body-font-family)',
                             fontWeight: FontWeight.w900,
@@ -384,10 +411,15 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                   ),
                   const Flexible(fit: FlexFit.tight, child: SizedBox()),
                   Row(children: [
-                    const Text(
-                      'See All',
-                      style: TextStyle(fontSize: 11),
-                    ),
+                    InkWell(
+                        onTap: () {
+                          con.eventTab = 'Members';
+                          con.setState(() {});
+                        },
+                        child: const Text(
+                          'See All',
+                          style: TextStyle(fontSize: 11),
+                        )),
                   ])
                 ],
               ),
@@ -465,26 +497,91 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                                         const Size(65, 30),
                                                     maximumSize:
                                                         const Size(65, 30)),
-                                                onPressed: () {
-                                                  () => {};
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    invitingFriend = true;
+                                                    selectedUserIndex = index;
+                                                  });
+                                                  var querySnapshot =
+                                                      await Helper.eventsData
+                                                          .doc(con.viewEventId)
+                                                          .get();
+
+                                                  var doc = querySnapshot;
+                                                  var joined =
+                                                      doc['eventInvited'];
+
+                                                  var friendUserName =
+                                                      friendModel.friends[index]
+                                                              ['requester']
+                                                          .toString();
+                                                  if (friendUserName ==
+                                                      UserManager
+                                                          .userInfo['userName'])
+                                                    friendUserName = friendModel
+                                                        .friends[index]
+                                                            ['receiver']
+                                                        .toString();
+                                                  print(friendUserName);
+
+                                                  var snapshot =
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection('user')
+                                                          .where('userName',
+                                                              isEqualTo:
+                                                                  friendUserName)
+                                                          .get();
+
+                                                  String userid = snapshot
+                                                      .docs[0].id
+                                                      .toString();
+
+                                                  joined.add({'uid': userid});
+
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection(
+                                                          Helper.eventsField)
+                                                      .doc(con.viewEventId)
+                                                      .update({
+                                                    'eventInvited': joined
+                                                  });
+                                                  await con.updateEvent();
+                                                  await getFriends();
+                                                  setState(() {
+                                                    invitingFriend = false;
+                                                  });
                                                 },
-                                                child: Row(
-                                                  children: const [
-                                                    Icon(
-                                                      Icons
-                                                          .person_add_alt_rounded,
-                                                      color: Colors.white,
-                                                      size: 15.0,
-                                                    ),
-                                                    Text('Add',
-                                                        style: TextStyle(
+                                                child: invitingFriend &&
+                                                        selectedUserIndex ==
+                                                            index
+                                                    ? const SizedBox(
+                                                        width: 10,
+                                                        height: 10,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: Colors.grey,
+                                                        ),
+                                                      )
+                                                    : Row(
+                                                        children: const [
+                                                          Icon(
+                                                            Icons
+                                                                .person_add_alt_rounded,
                                                             color: Colors.white,
-                                                            fontSize: 10,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                ))),
+                                                            size: 15.0,
+                                                          ),
+                                                          Text('Add',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                        ],
+                                                      ))),
                                       ],
                                     )
                                   ],

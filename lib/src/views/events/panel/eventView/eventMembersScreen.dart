@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,6 +10,7 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/profile/model/friends.dart';
 
 // ignore: must_be_immutable
 class EventMembersScreen extends StatefulWidget {
@@ -27,11 +29,43 @@ class EventMembersScreen extends StatefulWidget {
 class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Going';
+  List invites = [];
+  Friends friendModel = Friends();
+
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    friendModel
+        .getFriends(UserManager.userInfo['userName'])
+        .then((value) async {
+      for (var index = 0; index < friendModel.friends.length; index++) {
+        var friendUserName = friendModel.friends[index]['requester'].toString();
+        if (friendUserName == UserManager.userInfo['userName']) {
+          friendUserName = friendModel.friends[index]['receiver'].toString();
+        }
+
+        var snapshot = await FirebaseFirestore.instance
+            .collection('user')
+            .where('userName', isEqualTo: friendUserName)
+            .get();
+        String userid = snapshot.docs[0].id.toString();
+        var data = snapshot.docs[0].data();
+        if (con.boolInvited(con.event, userid)) {
+          friendModel.friends.removeAt(index);
+          setState(() {});
+          index--;
+        } else {
+          invites.add({
+            'userName': friendUserName,
+            'avatar': data['avatar'],
+            'fullName': data['firstName'] + data['lastName']
+          });
+          setState(() {});
+        }
+      }
+    });
   }
 
   late PostController con;
@@ -205,7 +239,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                           ),
                           badges.Badge(
                             badgeContent: Text(
-                              '${con.event["eventInvites"].length}',
+                              '${invites.length}',
                               style: TextStyle(color: Colors.white),
                             ),
                             badgeStyle: badges.BadgeStyle(
@@ -359,7 +393,6 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
   }
 
   Widget InvitesData() {
-    List invites = con.event['eventInvited'];
     return invites.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
