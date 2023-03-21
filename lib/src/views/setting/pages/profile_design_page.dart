@@ -85,19 +85,47 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
                         ),
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
-                          child: InkWell(
-                            onTap: () async {
-                              selectedImageFile = await chooseImage();
-                            },
-                            child: Container(
-                                margin:
-                                    const EdgeInsets.only(top: 50, left: 50),
-                                child: const Icon(
-                                  Icons.photo_camera,
-                                  size: 25,
-                                  color: Colors.black87,
-                                )),
-                          ),
+                          child: kIsWeb
+                              ? InkWell(
+                                  onTap: () async {
+                                    selectedImageFile = await chooseImage(0);
+                                  },
+                                  child: Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 50, left: 50),
+                                      child: const Icon(
+                                        Icons.photo_camera,
+                                        size: 25,
+                                        color: Colors.black87,
+                                      )),
+                                )
+                              : PopupMenuButton(
+                                  onSelected: (value) async {
+                                    selectedImageFile =
+                                        await chooseImage(value);
+                                  },
+                                  child: Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 50, left: 50),
+                                      child: const Icon(
+                                        Icons.photo_camera,
+                                        size: 25,
+                                        color: Colors.black87,
+                                      )),
+                                  itemBuilder: (context) => [
+                                        const PopupMenuItem(
+                                          value: 1,
+                                          child: Text(
+                                            'Camera',
+                                          ),
+                                        ),
+                                        const PopupMenuItem(
+                                          value: 2,
+                                          child: Text(
+                                            "Gallery",
+                                          ),
+                                        )
+                                      ]),
                         ),
                         progress != 0
                             ? Container(
@@ -157,11 +185,16 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
                   onPressed: () {
                     uploadFile(selectedImageFile);
                   },
-                  child: const Text('Save Changes',
-                      style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold))),
+                  child: progress != 0
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator())
+                      : const Text('Save Changes',
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold))),
               const Padding(padding: EdgeInsets.only(right: 30))
             ],
           )),
@@ -183,29 +216,34 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
     );
   }
 
-  Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
-    XFile? pickedFile;
-    if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-    } else {
-      //Check Permissions
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
+  Future<XFile> chooseImage(int value) async {
+    final imagePicker = ImagePicker();
 
-      //if (permissionStatus.isGranted) {
-      pickedFile = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-      //} else {
-      //  print('Permission not granted. Try Again with permission access');
-      //}
+    if (value == 1 && !kIsWeb) {
+      XFile? pickedFile;
+      if (kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      } else {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      }
+      return pickedFile!;
+    } else {
+      XFile? pickedFile;
+      if (kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      } else {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      }
+      return pickedFile!;
     }
-    profileImage = pickedFile!.path;
-    setState(() {});
-    return pickedFile;
   }
 
   uploadFile(XFile? pickedFile) async {
@@ -275,10 +313,5 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
     } catch (e) {
       // print("Exception $e");
     }
-  }
-
-  uploadImage() async {
-    XFile? pickedFile = await chooseImage();
-    uploadFile(pickedFile);
   }
 }
