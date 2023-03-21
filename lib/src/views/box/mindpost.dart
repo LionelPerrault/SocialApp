@@ -386,6 +386,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       setState(() {
         postLoading = false;
         popupShowing = false;
+        _controller.text = '';
       });
     });
   }

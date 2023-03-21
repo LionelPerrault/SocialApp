@@ -461,32 +461,32 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
           children: mainInfoList
               .map((e) => Container(
                   padding: const EdgeInsets.only(top: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        e['add'] ? Icons.check : Icons.add,
-                        size: 15,
-                      ),
-                      const Padding(padding: EdgeInsets.only(left: 5)),
-                      e['add']
-                          ? Text(e['title'],
-                              style: const TextStyle(
-                                  decoration: TextDecoration.lineThrough))
-                          : GestureDetector(
-                              child: Text(
+                  child: GestureDetector(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          e['add'] ? Icons.check : Icons.add,
+                          size: 15,
+                        ),
+                        const Padding(padding: EdgeInsets.only(left: 5)),
+                        e['add']
+                            ? Text(e['title'],
+                                style: const TextStyle(
+                                    decoration: TextDecoration.lineThrough))
+                            : Text(
                                 e['title'],
                               ),
-                              onTap: () {
-                                e['route'] != null
-                                    ? widget.routerChange({
-                                        'router': RouteNames.settings,
-                                        'subRouter': e['route'],
-                                      })
-                                    : () {};
-                              },
-                            )
-                    ],
+                      ],
+                    ),
+                    onTap: () {
+                      e['route'] != null && !e['add']
+                          ? widget.routerChange({
+                              'router': RouteNames.settings,
+                              'subRouter': e['route'],
+                            })
+                          : () {};
+                    },
                   )))
               .toList(),
         ));
