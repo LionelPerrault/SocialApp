@@ -102,7 +102,10 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 20, left: 0),
+      padding: const EdgeInsets.only(
+        top: 20,
+        left: 0,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,7 +115,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
           showDayTimeM
               ? DayTimeM(time: time, username: UserManager.userInfo['fullName'])
               : Container(),
-          const Padding(padding: EdgeInsets.only(top: 30)),
+          const Padding(padding: EdgeInsets.only(bottom: 30)),
           newPostNum <= 0
               ? const SizedBox()
               : ElevatedButton(
@@ -243,6 +246,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     ],
                   ),
                 ),
+          const Padding(padding: EdgeInsets.only(top: 18.0)),
         ],
       ),
     );

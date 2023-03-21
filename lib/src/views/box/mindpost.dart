@@ -385,6 +385,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       postAudio = '';
       setState(() {
         postLoading = false;
+        popupShowing = false;
       });
     });
   }
@@ -395,10 +396,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
           ? 530
           : 350,
-      padding: const EdgeInsets.only(left: 30, right: 30),
+      padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
       child: Column(
         children: [
-          const Padding(padding: EdgeInsets.only(top: 15)),
           Container(
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 250, 250, 250),
@@ -422,7 +422,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                 ),
                 Expanded(
                     child: Container(
-                  padding: const EdgeInsets.only(top: 10, bottom: 0, right: 4),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
                   child: TextField(
                     controller: _controller,
                     // cursorColor: Colors.white,

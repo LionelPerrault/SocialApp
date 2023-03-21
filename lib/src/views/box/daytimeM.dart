@@ -55,7 +55,7 @@ class DayTimeM extends StatelessWidget {
             )),
             // borderRadius: BorderRadius.circular(12),
           ),
-          height: 70,
+          height: 92,
           child: Row(children: [
             const Padding(padding: EdgeInsets.only(left: 20)),
             SizedBox(
