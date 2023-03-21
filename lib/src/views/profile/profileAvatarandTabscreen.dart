@@ -39,13 +39,13 @@ class ProfileAvatarandTabScreenState extends mvc
   double coverProgress = 0;
   String avatar = '';
   List<Map> mainTabList = [
-    {'title': 'Timeline', 'icon': Icons.tab},
-    {'title': 'Friends', 'icon': Icons.group_sharp},
+    {'title': 'Timeline', 'icon': Icons.timeline},
+    {'title': 'Friends', 'icon': Icons.people},
     {'title': 'Photos', 'icon': Icons.photo},
     // {'title': 'Videos', 'icon': Icons.video_call},
     // {'title': 'Likes', 'icon': Icons.flag},
-    {'title': 'Groups', 'icon': Icons.group_sharp},
-    {'title': 'Events', 'icon': Icons.gif_box},
+    {'title': 'Groups', 'icon': Icons.groups},
+    {'title': 'Events', 'icon': Icons.event},
   ];
   bool setPaywallProgress = false;
   String paywallPrice = '';

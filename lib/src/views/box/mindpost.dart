@@ -398,6 +398,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       padding: const EdgeInsets.only(left: 30, right: 30),
       child: Column(
         children: [
+          const Padding(padding: EdgeInsets.only(top: 15)),
           Container(
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 250, 250, 250),
@@ -659,6 +660,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     )
                     .toList(),
               ),
+              const Padding(padding: EdgeInsets.only(top: 15)),
               Row(
                 children: [
                   //  const Flexible(fit: FlexFit.tight, child: SizedBox()),
