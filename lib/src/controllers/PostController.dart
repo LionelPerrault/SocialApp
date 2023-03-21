@@ -879,7 +879,6 @@ class PostController extends ControllerMVC {
 
   Future<bool> getSelectedGroup(String id) async {
     id = id.split('/')[id.split('/').length - 1];
-    print("id is $id");
     var reuturnValue;
 
     await Helper.groupsData.doc(id).get().then((value1) async {
@@ -887,9 +886,7 @@ class PostController extends ControllerMVC {
       var value = reuturnValue.data();
       viewGroupId = id;
       group = value;
-      print("group is $group");
       viewGroupJoined = boolJoined(group, UserManager.userInfo['uid']);
-      print("viewGroupJoined is $viewGroupJoined");
       setState(() {});
       for (var i = 0; i < group['groupAdmin'].length; i++) {
         var addAdmin = await ProfileController()
@@ -993,7 +990,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
     var joined = doc['groupJoined'];
-    var respon = await boolJoined(doc, UserManager.userInfo['uid']);
+    var respon = boolJoined(doc, UserManager.userInfo['uid']);
     if (respon) {
       joined.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
@@ -1020,7 +1017,6 @@ class PostController extends ControllerMVC {
   //bool of user already in group interested or not
   bool boolJoined(var groupData, String uid) {
     var joined = groupData['groupJoined'];
-    print("joind is $joined ");
     if (joined == null) {
       return false;
     }
