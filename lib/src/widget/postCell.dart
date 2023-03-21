@@ -916,7 +916,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       width: SizeConfig(context).screenWidth <
                                               600
                                           ? SizeConfig(context).screenWidth -
-                                              150
+                                              180
                                           : 450, // 1st set height
                                       child: RichText(
                                           text: TextSpan(
@@ -926,7 +926,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               children: <TextSpan>[
                                             TextSpan(
                                                 text:
-                                                    '${widget.postInfo['adminInfo']!['firstName']!} ${widget.postInfo['adminInfo']!['lastName']!}',
+                                                    '${widget.postInfo['adminInfo']!['firstName']!} ${widget.postInfo['adminInfo']!['lastName']!} ',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
@@ -950,7 +950,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                       }),
                                             TextSpan(
                                                 text:
-                                                    ' shared ${widget.postInfo['data']!['adminInfo']!['firstName']} ${widget.postInfo['data']!['adminInfo']!['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' || widget.postInfo['data']['type'] == 'product' ? widget.postInfo['data']['type'] : 'Post'}',
+                                                    'shared ${widget.postInfo['data']!['adminInfo']!['firstName']} ${widget.postInfo['data']!['adminInfo']!['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' || widget.postInfo['data']['type'] == 'product' ? widget.postInfo['data']['type'] : 'Post'}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,

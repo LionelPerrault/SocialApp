@@ -609,7 +609,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         height: 30,
         width: SizeConfig(context).screenWidth > 600
             ? 500
-            : SizeConfig(context).screenWidth - 88,
+            : SizeConfig(context).screenWidth - 148,
         decoration: BoxDecoration(
             border: Border.all(
                 color: const Color.fromRGBO(220, 220, 220, 1), width: 1),
@@ -620,7 +620,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               height: 30,
               width: SizeConfig(context).screenWidth > 600
                   ? 350
-                  : SizeConfig(context).screenWidth - 205,
+                  : SizeConfig(context).screenWidth - 225,
               child: TextField(
                 //  controller: commentController,
                 cursorWidth: 1,

@@ -333,7 +333,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                         color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontSize: 16,
+                                                        fontSize: 15,
                                                         overflow: TextOverflow
                                                             .ellipsis),
                                                     recognizer:
@@ -362,7 +362,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                       600
                                                   ? SizeConfig(context)
                                                           .screenWidth -
-                                                      240
+                                                      340
                                                   : 350,
                                           child: Text(
                                             ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
@@ -536,7 +536,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       const Text(
                                         'Offer',
                                         style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       const Padding(
@@ -573,13 +573,13 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           ),
                                           Padding(
                                               padding:
-                                                  EdgeInsets.only(left: 5)),
+                                                  EdgeInsets.only(left: 1)),
                                           Text(
                                             'Condition',
                                             style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 15,
                                                 fontWeight: FontWeight.bold),
-                                            overflow: TextOverflow.ellipsis,
+                                            overflow: TextOverflow.fade,
                                           ),
                                         ],
                                       ),
@@ -621,7 +621,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           Text(
                                             'Price',
                                             style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -664,7 +664,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           Text(
                                             'Status',
                                             style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
