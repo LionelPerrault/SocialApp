@@ -243,9 +243,9 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Load More...',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Color.fromARGB(255, 90, 90, 90),
                             fontFamily: 'var(--body-font-family)',
                             fontWeight: FontWeight.w900,
@@ -394,11 +394,16 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                   ),
                   const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                  Row(children: const [
-                    Text(
-                      'See All',
-                      style: TextStyle(fontSize: 11),
-                    ),
+                  Row(children: [
+                    InkWell(
+                        onTap: () {
+                          con.groupTab = 'Members';
+                          con.setState(() {});
+                        },
+                        child: const Text(
+                          'See All',
+                          style: TextStyle(fontSize: 11),
+                        )),
                   ])
                 ],
               ),
