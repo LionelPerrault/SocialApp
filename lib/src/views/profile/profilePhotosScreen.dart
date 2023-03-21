@@ -65,31 +65,34 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      mainTabs(),
-      tab == 'Photos'
-          ? isMyFriend() ||
-                  ProfileController().viewProfileUid ==
-                      UserManager.userInfo['uid']
-              ? PhotosData()
-              : Text("You can see the friends data only if you are friends.")
-          : isMyFriend() ||
-                  ProfileController().viewProfileUid ==
-                      UserManager.userInfo['uid']
-              ? AlbumsData()
-              : Text("You can see the friends data only if you are friends.")
-    ]);
+    return Container(
+      padding: const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
+      child: Column(children: [
+        mainTabs(),
+        tab == 'Photos'
+            ? isMyFriend() ||
+                    ProfileController().viewProfileUid ==
+                        UserManager.userInfo['uid']
+                ? PhotosData()
+                : Text("You can see the friends data only if you are friends.")
+            : isMyFriend() ||
+                    ProfileController().viewProfileUid ==
+                        UserManager.userInfo['uid']
+                ? AlbumsData()
+                : Text("You can see the friends data only if you are friends.")
+      ]),
+    );
   }
 
   Widget mainTabs() {
     return Container(
       width: SizeConfig(context).screenWidth,
       height: 100,
-      margin: const EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),
         borderRadius: BorderRadius.circular(3),
       ),
+      margin: const EdgeInsets.only(left: 10),
       alignment: Alignment.topLeft,
       child: Column(
         children: [

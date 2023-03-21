@@ -379,7 +379,19 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                       profileCompletion(),
                       postColumn(),
                     ])
-              : Text("You can see the friends data only if you are friends.")
+              : Container(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Padding(padding: const EdgeInsets.only(top: 115)),
+                      Text(
+                        "You can see the friends Timeline only if you are friends.",
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(padding: const EdgeInsets.only(top: 30)),
+                    ],
+                  ),
+                )
           : isMyFriend() ||
                   ProfileController().viewProfileUid ==
                       UserManager.userInfo['uid']
@@ -416,7 +428,19 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     postColumn()
                   ],
                 )
-              : Text("You can see the friends data only if you are friends."),
+              : Container(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Padding(padding: const EdgeInsets.only(top: 115)),
+                      Text(
+                        "You can see the friends data only if you are friends.",
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(padding: const EdgeInsets.only(top: 30)),
+                    ],
+                  ),
+                ),
     );
   }
 

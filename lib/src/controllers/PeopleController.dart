@@ -167,6 +167,19 @@ class PeopleController extends ControllerMVC {
     setState(() {});
   }
 
+  getAllUserList() async {
+    if (isLocked) return;
+    isLocked = true;
+    //await getReceiveRequests(userInfo['userName']);
+    var query = FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .orderBy('userName');
+
+    await getDiscoverList(query);
+    isLocked = false;
+    setState(() {});
+  }
+
   requestFriendDirectlyMap(Map mapData) async {
     var receiver = mapData['userName'];
     var fullName = '${mapData['firstName']} ${mapData['lastName']}';
