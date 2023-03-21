@@ -112,6 +112,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
           showDayTimeM
               ? DayTimeM(time: time, username: UserManager.userInfo['fullName'])
               : Container(),
+          const Padding(padding: EdgeInsets.only(top: 30)),
           newPostNum <= 0
               ? const SizedBox()
               : ElevatedButton(

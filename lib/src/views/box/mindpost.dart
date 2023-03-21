@@ -51,7 +51,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   String pollQuestion = '';
   List<String> pollOption = [];
   bool emojiShowing = false;
-
+  bool popupShowing = false;
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -403,17 +403,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 250, 250, 250),
               borderRadius: BorderRadius.circular(2),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromARGB(255, 230, 230, 230),
-                  blurRadius: 0.1,
-                  spreadRadius: 0.1,
-                  offset: Offset(
-                    -1,
-                    1,
-                  ),
-                )
-              ],
+              boxShadow: const [],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -432,11 +422,17 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                 ),
                 Expanded(
                     child: Container(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
+                  padding: const EdgeInsets.only(top: 10, bottom: 0, right: 4),
                   child: TextField(
                     controller: _controller,
                     // cursorColor: Colors.white,
                     focusNode: _focus,
+                    onTap: () {
+                      print("tapped popupshowing");
+                      setState(() {
+                        popupShowing = !popupShowing;
+                      });
+                    },
                     style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
                     decoration: const InputDecoration(
                       hoverColor: Color.fromARGB(255, 250, 250, 250),
@@ -449,7 +445,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     ),
                   ),
                 )),
-                InkWell(
+                Offstage(
+                  offstage: !popupShowing,
+                  child: InkWell(
                     onTap: () {
                       //checkOption(label);
                       setState(() {
@@ -457,12 +455,18 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       });
                     },
                     child: Container(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: const Icon(Icons.emoji_emotions_outlined),
-                    )),
+                      padding: const EdgeInsets.only(top: 25),
+                      child: const Icon(
+                        Icons.emoji_emotions_outlined,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
+          Divider(color: Color.fromARGB(99, 83, 79, 79), thickness: 0.4),
           Offstage(
             offstage: !emojiShowing,
             child: SizedBox(
@@ -505,321 +509,328 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                 )),
           ),
           const Padding(padding: EdgeInsets.only(top: 15)),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AnimatedContainer(
-                duration: Duration(milliseconds: 500),
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: postPhoto
-                              .map(((e) => postPhotoWidget(e['url'], e['id'])))
-                              .toList(),
+          Offstage(
+            offstage: !popupShowing,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  child: Column(
+                    children: [
+                      SingleChildScrollView(
+                        controller: _scrollController,
+                        scrollDirection: Axis.horizontal,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: postPhoto
+                                .map(
+                                    ((e) => postPhotoWidget(e['url'], e['id'])))
+                                .toList(),
+                          ),
                         ),
                       ),
-                    ),
-                    SingleChildScrollView(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      child: nowPost != 'Upload Audio'
-                          ? const SizedBox()
-                          : Container(
-                              alignment: Alignment.centerLeft,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  (uploadAudioProgress != 0 &&
-                                          uploadAudioProgress != 100)
-                                      ? Container(
-                                          width: 90,
-                                          height: 90,
-                                          margin: const EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(13),
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              AnimatedContainer(
-                                                duration: const Duration(
-                                                    milliseconds: 500),
-                                                margin: const EdgeInsets.only(
-                                                    top: 78, left: 10),
-                                                width: 130,
-                                                padding: EdgeInsets.only(
-                                                    right: 130 -
-                                                        (130 *
-                                                            uploadAudioProgress /
-                                                            100)),
-                                                child:
-                                                    const LinearProgressIndicator(
-                                                  color: Colors.blue,
-                                                  value: 10,
-                                                  semanticsLabel:
-                                                      'Linear progress indicator',
+                      SingleChildScrollView(
+                        controller: _scrollController,
+                        scrollDirection: Axis.horizontal,
+                        child: nowPost != 'Upload Audio'
+                            ? const SizedBox()
+                            : Container(
+                                alignment: Alignment.centerLeft,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    (uploadAudioProgress != 0 &&
+                                            uploadAudioProgress != 100)
+                                        ? Container(
+                                            width: 90,
+                                            height: 90,
+                                            margin: const EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(13),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                AnimatedContainer(
+                                                  duration: const Duration(
+                                                      milliseconds: 500),
+                                                  margin: const EdgeInsets.only(
+                                                      top: 78, left: 10),
+                                                  width: 130,
+                                                  padding: EdgeInsets.only(
+                                                      right: 130 -
+                                                          (130 *
+                                                              uploadAudioProgress /
+                                                              100)),
+                                                  child:
+                                                      const LinearProgressIndicator(
+                                                    color: Colors.blue,
+                                                    value: 10,
+                                                    semanticsLabel:
+                                                        'Linear progress indicator',
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : postLoading || postAudio == ''
-                                          ? const SizedBox()
-                                          : Container(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                // crossAxisAlignment:
-                                                //     CrossAxisAlignment.start,
-                                                children: [
-                                                  SvgPicture.network(
-                                                    'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
-                                                    width: 20,
-                                                  ),
-                                                  const Text(
-                                                    'Audio uploaded successfully',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  IconButton(
-                                                    icon: const Icon(
-                                                        Icons.close,
-                                                        color: Colors.black,
-                                                        size: 13.0),
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20),
-                                                    tooltip: 'Delete',
-                                                    onPressed: () {
-                                                      postAudio = '';
-                                                      postLoading = false;
-                                                      nowPost = '';
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                ],
+                                              ],
+                                            ),
+                                          )
+                                        : postLoading || postAudio == ''
+                                            ? const SizedBox()
+                                            : Container(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  // crossAxisAlignment:
+                                                  //     CrossAxisAlignment.start,
+                                                  children: [
+                                                    SvgPicture.network(
+                                                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
+                                                      width: 20,
+                                                    ),
+                                                    const Text(
+                                                      'Audio uploaded successfully',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    IconButton(
+                                                      icon: const Icon(
+                                                          Icons.close,
+                                                          color: Colors.black,
+                                                          size: 13.0),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20),
+                                                      tooltip: 'Delete',
+                                                      onPressed: () {
+                                                        postAudio = '';
+                                                        postLoading = false;
+                                                        nowPost = '';
+                                                        setState(() {});
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                  ],
+                                ),
                               ),
-                            ),
-                    ),
-                    nowPost == 'Feelings/Activity'
-                        ? feelingActivityWidget()
-                        : nowPost == 'Check In'
-                            ? checkInWidget()
-                            : nowPost == 'Create Poll'
-                                ? createPollWidget()
-                                : const SizedBox(),
-                    const Padding(padding: EdgeInsets.only(top: 5)),
-                    nowPost == ''
-                        ? const SizedBox()
-                        : const Divider(
-                            thickness: 0.1,
-                            color: Colors.black45,
-                            height: 1,
-                          ),
-                  ],
-                ),
-              ),
-              GridView.count(
-                crossAxisCount:
-                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                        ? 2
-                        : 1,
-                childAspectRatio:
-                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                        ? 240 / 45
-                        : 240 / 39,
-                padding: const EdgeInsets.all(4.0),
-                mainAxisSpacing: 4.0,
-                shrinkWrap: true,
-                crossAxisSpacing: 4.0,
-                children: mindPostCase
-                    .map(
-                      (mind) => MindSlice(
-                        mindFunc: mind['mindFunc'],
-                        label: mind['title'],
-                        image: mind['image'],
-                        disabled: nowPost == ''
-                            ? false
-                            : nowPost == mind['title']
-                                ? false
-                                : true,
                       ),
-                    )
-                    .toList(),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Row(
-                children: [
-                  //  const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                  SizedBox(
-                    width: SizeConfig(context).screenWidth >
-                            SizeConfig.smallScreenSize
-                        ? 530 / 4.5
-                        : 350 / 4.5,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      width: 100,
-                      height: 42,
-                      child: widget.showPrivacy == true
-                          ? DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 17, 205, 239),
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                    color:
-                                        const Color.fromARGB(255, 17, 205, 239),
-                                    width:
-                                        0.1), //bordrder raiuds of dropdown button
-                              ),
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 7, left: 5),
-                                  child: DropdownButton(
-                                    value: dropdownValue,
-                                    // hint: Container(
-                                    //   child: Row(
-                                    //     children: [
-                                    //       Icon(
-                                    //         dropdownValue == 'Public'
-                                    //             ? Icons.language
-                                    //             : dropdownValue == 'Friends'
-                                    //                 ? Icons.groups
-                                    //                 : Icons.lock_outline,
-                                    //         color: Colors.white,
-                                    //       ),
-                                    //       const Padding(
-                                    //           padding: EdgeInsets.only(left: 5)),
-                                    //       Text(
-                                    //         dropdownValue,
-                                    //         style: const TextStyle(
-                                    //           fontSize: 13,
-                                    //           color: Colors.white,
-                                    //         ),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: "Public",
-                                        child: Row(children: const [
-                                          Icon(
-                                            Icons.language,
-                                            color: Colors.black,
-                                          ),
-                                          Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 5)),
-                                          Text(
-                                            "Public",
-                                            style: TextStyle(fontSize: 13),
-                                          )
-                                        ]),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: "Friends",
-                                        child: Row(children: const [
-                                          Icon(
-                                            Icons.groups,
-                                            color: Colors.black,
-                                          ),
-                                          Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 5)),
-                                          Text(
-                                            "Friends",
-                                            style: TextStyle(fontSize: 13),
-                                          )
-                                        ]),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: "Only Me",
-                                        child: Row(children: const [
-                                          Icon(
-                                            Icons.lock_outline,
-                                            color: Colors.black,
-                                          ),
-                                          Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 5)),
-                                          Text(
-                                            "Only Me",
-                                            style: TextStyle(fontSize: 13),
-                                          )
-                                        ]),
-                                      ),
-                                    ],
-                                    onChanged: (String? value) {
-                                      //get value when changed
-                                      dropdownValue = value!;
-                                      setState(() {});
-                                    },
-                                    icon: const Padding(
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Icon(Icons.arrow_drop_down)),
-                                    iconEnabledColor: Colors.white, //Icon color
-                                    style: const TextStyle(
-                                      color: Colors.black, //Font color
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    dropdownColor: Colors.white,
-                                    underline: Container(), //remove underline
-                                    isExpanded: true,
-                                    isDense: true,
-                                  )))
-                          : Container(),
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 10)),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
-                      minimumSize: const Size(85, 45),
-                      maximumSize: const Size(85, 45),
-                    ),
-                    onPressed: () {
-                      postLoading ||
-                              (postAudio == '' && nowPost == 'Upload Audio') ||
-                              (postPhoto == '' && nowPost == 'Upload Photos')
-                          ? () {}
-                          : post();
-                    },
-                    child: (postLoading)
-                        ? Container(
-                            width: 40,
-                            height: 40,
-                            alignment: Alignment.center,
-                            child: const CircularProgressIndicator(
-                              backgroundColor: Colors.transparent,
+                      nowPost == 'Feelings/Activity'
+                          ? feelingActivityWidget()
+                          : nowPost == 'Check In'
+                              ? checkInWidget()
+                              : nowPost == 'Create Poll'
+                                  ? createPollWidget()
+                                  : const SizedBox(),
+                      const Padding(padding: EdgeInsets.only(top: 5)),
+                      nowPost == ''
+                          ? const SizedBox()
+                          : const Divider(
+                              thickness: 0.1,
+                              color: Colors.black45,
+                              height: 1,
                             ),
-                          )
-                        : const Text('Post',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w900)),
-                  )
-                ],
-              )
-            ],
+                    ],
+                  ),
+                ),
+                GridView.count(
+                  crossAxisCount: SizeConfig(context).screenWidth >
+                          SizeConfig.smallScreenSize
+                      ? 2
+                      : 1,
+                  childAspectRatio: SizeConfig(context).screenWidth >
+                          SizeConfig.smallScreenSize
+                      ? 240 / 45
+                      : 240 / 39,
+                  padding: const EdgeInsets.all(4.0),
+                  mainAxisSpacing: 4.0,
+                  shrinkWrap: true,
+                  crossAxisSpacing: 4.0,
+                  children: mindPostCase
+                      .map(
+                        (mind) => MindSlice(
+                          mindFunc: mind['mindFunc'],
+                          label: mind['title'],
+                          image: mind['image'],
+                          disabled: nowPost == ''
+                              ? false
+                              : nowPost == mind['title']
+                                  ? false
+                                  : true,
+                        ),
+                      )
+                      .toList(),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Row(
+                  children: [
+                    //  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    SizedBox(
+                      width: SizeConfig(context).screenWidth >
+                              SizeConfig.smallScreenSize
+                          ? 530 / 4.5
+                          : 350 / 4.5,
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        width: 100,
+                        height: 42,
+                        child: widget.showPrivacy == true
+                            ? DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 17, 205, 239),
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                      color: const Color.fromARGB(
+                                          255, 17, 205, 239),
+                                      width:
+                                          0.1), //bordrder raiuds of dropdown button
+                                ),
+                                child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(top: 7, left: 5),
+                                    child: DropdownButton(
+                                      value: dropdownValue,
+                                      // hint: Container(
+                                      //   child: Row(
+                                      //     children: [
+                                      //       Icon(
+                                      //         dropdownValue == 'Public'
+                                      //             ? Icons.language
+                                      //             : dropdownValue == 'Friends'
+                                      //                 ? Icons.groups
+                                      //                 : Icons.lock_outline,
+                                      //         color: Colors.white,
+                                      //       ),
+                                      //       const Padding(
+                                      //           padding: EdgeInsets.only(left: 5)),
+                                      //       Text(
+                                      //         dropdownValue,
+                                      //         style: const TextStyle(
+                                      //           fontSize: 13,
+                                      //           color: Colors.white,
+                                      //         ),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      items: [
+                                        DropdownMenuItem(
+                                          value: "Public",
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.language,
+                                              color: Colors.black,
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5)),
+                                            Text(
+                                              "Public",
+                                              style: TextStyle(fontSize: 13),
+                                            )
+                                          ]),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Friends",
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.groups,
+                                              color: Colors.black,
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5)),
+                                            Text(
+                                              "Friends",
+                                              style: TextStyle(fontSize: 13),
+                                            )
+                                          ]),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Only Me",
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.lock_outline,
+                                              color: Colors.black,
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5)),
+                                            Text(
+                                              "Only Me",
+                                              style: TextStyle(fontSize: 13),
+                                            )
+                                          ]),
+                                        ),
+                                      ],
+                                      onChanged: (String? value) {
+                                        //get value when changed
+                                        dropdownValue = value!;
+                                        setState(() {});
+                                      },
+                                      icon: const Padding(
+                                          padding: EdgeInsets.only(left: 20),
+                                          child: Icon(Icons.arrow_drop_down)),
+                                      iconEnabledColor:
+                                          Colors.white, //Icon color
+                                      style: const TextStyle(
+                                        color: Colors.black, //Font color
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      dropdownColor: Colors.white,
+                                      underline: Container(), //remove underline
+                                      isExpanded: true,
+                                      isDense: true,
+                                    )))
+                            : Container(),
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.0)),
+                        minimumSize: const Size(85, 45),
+                        maximumSize: const Size(85, 45),
+                      ),
+                      onPressed: () {
+                        postLoading ||
+                                (postAudio == '' &&
+                                    nowPost == 'Upload Audio') ||
+                                (postPhoto == '' && nowPost == 'Upload Photos')
+                            ? () {}
+                            : post();
+                      },
+                      child: (postLoading)
+                          ? Container(
+                              width: 40,
+                              height: 40,
+                              alignment: Alignment.center,
+                              child: const CircularProgressIndicator(
+                                backgroundColor: Colors.transparent,
+                              ),
+                            )
+                          : const Text('Post',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w900)),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ],
       ),
