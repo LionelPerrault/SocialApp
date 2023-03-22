@@ -198,27 +198,23 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                   ],
                 ),
               ),
-              // Container(
-              //   alignment: Alignment.topCenter,
-              //   width: 120,
-              //   height: 120,
-              //   padding: const EdgeInsets.all(2),
-              //   decoration: BoxDecoration(
-              //       color: Color.fromARGB(255, 150, 99, 99),
-              //       borderRadius: BorderRadius.circular(60),
-              //       border: Border.all(color: Colors.grey)),
-              //   child: SvgPicture.network(Helper.groupImage),
-              // ),
-              CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                    radius: 75,
-                    backgroundImage: NetworkImage(
-                        widget.groupData['data']['groupPicture'] == ''
-                            ? Helper.groupImage
-                            : widget.groupData['data']['groupPicture'])),
-              )
+              GestureDetector(
+                  onTap: () {
+                    widget.routerChange({
+                      'router': RouteNames.groups,
+                      'subRouter': widget.groupData['id'],
+                    });
+                  },
+                  child: CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                        radius: 75,
+                        backgroundImage: NetworkImage(
+                            widget.groupData['data']['groupPicture'] == ''
+                                ? Helper.groupImage
+                                : widget.groupData['data']['groupPicture'])),
+                  ))
             ],
           ),
         )

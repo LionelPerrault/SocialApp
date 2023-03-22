@@ -43,11 +43,20 @@ class SearchGroupCellState extends mvc.StateMVC<SearchGroupCell> {
     return Material(
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 10, right: 10),
-        leading: CircleAvatar(
-            radius: 17,
-            backgroundImage: NetworkImage(widget.groupInfo['groupPicture'] == ''
-                ? Helper.groupImage
-                : widget.groupInfo['groupPicture'])),
+        leading: GestureDetector(
+          child: CircleAvatar(
+              radius: 17,
+              backgroundImage: NetworkImage(
+                  widget.groupInfo['groupPicture'] == ''
+                      ? Helper.groupImage
+                      : widget.groupInfo['groupPicture'])),
+          onTap: () {
+            widget.routerChange({
+              'router': RouteNames.groups,
+              'subRouter': widget.groupInfo['uid']
+            });
+          },
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

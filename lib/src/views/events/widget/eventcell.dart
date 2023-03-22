@@ -207,16 +207,25 @@ class EventCellState extends mvc.StateMVC<EventCell> {
               //   child: SvgPicture.network(
               //       widget.picture == '' ? Helper.eventImage : widget.picture),
               // ),
-              CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                    radius: 75,
-                    backgroundImage: NetworkImage(
-                        widget.eventData['data']['eventPicture'] == ''
-                            ? Helper.eventImage
-                            : widget.eventData['data']['eventPicture'])),
-              )
+              GestureDetector(
+                  child: CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.white,
+                      child: GestureDetector(
+                        onTap: () {
+                          widget.routerChange({
+                            'router': RouteNames.events,
+                            'subRouter': widget.eventData['id'],
+                          });
+                        },
+                        child: CircleAvatar(
+                            radius: 75,
+                            backgroundImage: NetworkImage(
+                                widget.eventData['data']['eventPicture'] == ''
+                                    ? Helper.eventImage
+                                    : widget.eventData['data']
+                                        ['eventPicture'])),
+                      )))
             ],
           ),
         )
