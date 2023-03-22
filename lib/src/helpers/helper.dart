@@ -34,6 +34,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.groupsField);
   static var productsData =
       FirebaseFirestore.instance.collection(Helper.productsField);
+  static var realEstatesData =
+      FirebaseFirestore.instance.collection(Helper.realEstatesField);
   static var postLikeComment =
       FirebaseFirestore.instance.collection(Helper.postLikeCommentField);
   static var allInterests =
@@ -68,6 +70,7 @@ class Helper {
   static var groupsField = 'groups';
   static var invitationsField = 'invitations';
   static var productsField = 'products';
+  static var realEstatesField = 'realestate';
   static var notificationField = 'notifications';
   static var postField = 'posts';
   static var transactionField = 'transaction';

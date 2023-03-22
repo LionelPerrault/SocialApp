@@ -1157,6 +1157,72 @@ class PostController extends ControllerMVC {
     };
   }
 
+  Future<Map> createRealEstate(
+      context, Map<String, dynamic> realEstateData) async {
+    if (realEstateData['realEstateName'].isEmpty ||
+        realEstateData['realEstatePrice'].isEmpty ||
+        realEstateData['realEstateLocation'].isEmpty) {
+      return {
+        'msg': 'Please add your real-estate name, price, and location',
+        'result': false,
+      };
+    }
+    realEstateData = {
+      ...realEstateData,
+      'realEstateAdmin': {
+        'uid': UserManager.userInfo['uid'],
+      },
+      'realEstateDate': FieldValue.serverTimestamp(),
+      'realEstatePost': false,
+      'realEstateMarkAsSold': false,
+      'realEstateTimeline': true,
+      'realEstateOnOffCommenting': true,
+      'realEstatePrivacy': 'Public'
+    };
+    Map<String, dynamic> postData = {};
+    Map<String, dynamic> notificationData;
+    String id = '';
+    try {
+      DocumentReference result = await FirebaseFirestore.instance
+          .collection(Helper.realEstatesField)
+          .add(realEstateData);
+      postData = {
+        'postAdmin': UserManager.userInfo['uid'],
+        'type': 'real-estate',
+        'value': result.id,
+        'privacy': 'Public',
+        'postTime': FieldValue.serverTimestamp(),
+        'header': realEstateData['realEstateName'],
+        'timeline': true,
+        'comment': true,
+      };
+      await Helper.postCollection.add(postData);
+      notificationData = {
+        'postType': 'realEstates',
+        'postId': result.id,
+        'postAdminId': UserManager.userInfo['uid'],
+        'notifyTime': DateTime.now().toString(),
+        'tsNT': DateTime.now().millisecondsSinceEpoch,
+        'userList': [],
+        'timeStamp': FieldValue.serverTimestamp(),
+      };
+      await saveNotifications(notificationData);
+      id = result.id;
+    } catch (e) {
+      return {
+        'msg': 'Error creating real estate',
+        'result': false,
+        'error': e.toString(),
+      };
+    }
+
+    return {
+      'msg': 'Successfully created',
+      'result': true,
+      'value': id,
+    };
+  }
+
   Future<Map> editProduct(
       context, uid, Map<String, dynamic> productData) async {
     if (productData['productName'] == null ||
@@ -1191,12 +1257,71 @@ class PostController extends ControllerMVC {
     };
   }
 
+  Future<Map> editRealEstate(
+      context, uid, Map<String, dynamic> realEstateData) async {
+    if (realEstateData['realEstateName'] == null ||
+        realEstateData['realEstateName'] == '') {
+      return {
+        'msg': 'Please add your real estate name',
+        'result': false,
+      };
+    } else if (realEstateData['realEstatePrice'] == null ||
+        realEstateData['realEstatePrice'] == '') {
+      return {
+        'msg': 'Please add your real estate price',
+        'result': false,
+      };
+    } else if (realEstateData['realEstateCategory'] == null ||
+        realEstateData['realEstateCategory'] == '') {
+      return {
+        'msg': 'Please add your real estate category',
+        'result': false,
+      };
+    }
+
+    Map<String, dynamic> notificationData;
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(uid)
+        .update(realEstateData);
+    return {
+      'msg': 'Successfully edited',
+      'result': true,
+      'value': uid,
+    };
+  }
+
   List<Map> allProduct = [];
 
   //get all product function
   Future<void> getProduct() async {
     allProduct = [];
     await Helper.productsData
+        .orderBy('productDate', descending: true)
+        .get()
+        .then((value) async {
+      var doc = value.docs;
+      for (int i = 0; i < doc.length; i++) {
+        var id = doc[i].id;
+        var data = doc[i];
+        var adminInfo =
+            await ProfileController().getUserInfo(data['productAdmin']['uid']);
+        if (adminInfo != null) {
+          allProduct
+              .add({'data': data.data(), 'id': id, 'adminInfo': adminInfo});
+        }
+        setState(() {});
+      }
+      print('Now you get all products');
+    });
+  }
+
+  List<Map> allRealEstate = [];
+
+  //get all product function
+  Future<void> getRealEstate() async {
+    allRealEstate = [];
+    await Helper.realEstatesData
         .orderBy('productDate', descending: true)
         .get()
         .then((value) async {
@@ -1230,7 +1355,25 @@ class PostController extends ControllerMVC {
         await ProfileController().getUserInfo(product['productAdmin']['uid']);
     productAdmin = adminInfo;
     setState(() {});
-    print('This product was posted by ${product['productAdmin']}');
+    print('This product was posted by ${product['realEstateAdmin']}');
+    return true;
+  }
+
+  var viewRealEstateId;
+  var realEstate;
+  var realEstateAdmin;
+  //get one page function that using uid of firebase database
+  Future<bool> getSelectedRealEstate(String name) async {
+    name = name.split('/')[name.split('/').length - 1];
+    viewRealEstateId = name;
+    var reuturnValue = await Helper.realEstatesData.doc(viewRealEstateId).get();
+    var value = reuturnValue.data();
+    realEstate = value;
+    var adminInfo = await ProfileController()
+        .getUserInfo(realEstate['realEstateAdmin']['uid']);
+    realEstateAdmin = adminInfo;
+    setState(() {});
+    print('This product was posted by ${realEstate['realEstateAdmin']}');
     return true;
   }
 
@@ -1267,6 +1410,39 @@ class PostController extends ControllerMVC {
     });
   }
 
+  Future<void> realEstateMarkAsSold(String realEstateUid, bool value) async {
+    print(realEstateUid);
+    print(value);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .update({'realEstateMarkAsSold': value}).then((e) async {
+      getRealEstate();
+    });
+  }
+
+  Future<void> realEstateSavePost(String realEstateUid, bool value) async {
+    print(realEstateUid);
+    print(value);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .update({'realEstatePost': value}).then((e) async {
+      getRealEstate();
+    });
+  }
+
+  Future<void> realEstateDelete(String realEstateUid) async {
+    print(realEstateUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .delete()
+        .then((e) async {
+      getRealEstate();
+    });
+  }
+
   Future<void> productHideFromTimeline(String productUid, bool value) async {
     print(productUid);
     await FirebaseFirestore.instance
@@ -1289,6 +1465,34 @@ class PostController extends ControllerMVC {
 
   changeProductSellState(productId) async {
     await Helper.productsData.doc(productId).update({'productSellState': true});
+  }
+
+  Future<void> realEstateHideFromTimeline(
+      String realEstateUid, bool value) async {
+    print(realEstateUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .update({'realEstateTimeline': value}).then((e) async {
+      getRealEstate();
+    });
+  }
+
+  Future<void> realEstateTurnOffCommenting(
+      String realEstateUid, bool value) async {
+    print(realEstateUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .update({'realEstateOnOffCommenting': value}).then((e) async {
+      getRealEstate();
+    });
+  }
+
+  changeRealEstateSellState(realEstateId) async {
+    await Helper.realEstatesData
+        .doc(realEstateId)
+        .update({'realEstateSellState': true});
   }
 
   savePost(type, value, privacy, {header = ''}) async {

@@ -31,8 +31,8 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
   late PostController con;
   var userInfo = UserManager.userInfo;
   var roundFlag = true;
-  var allProducts = [];
-  var products = [];
+  var allRealEstates = [];
+  var realEstates = [];
   int count = 0;
   @override
   void initState() {
@@ -40,19 +40,19 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
     con = controller as PostController;
 
     super.initState();
-    getProductNow();
+    getRealEstateNow();
     if (con.allProduct == []) {
       roundFlag = false;
     }
   }
 
-  void getProductNow() {
+  void getRealEstateNow() {
     roundFlag = true;
     setState(() {});
-    con.getProduct().then(
+    con.getRealEstate().then(
           (value) => {
             roundFlag = false,
-            allProducts = con.allProduct,
+            allRealEstates = con.allRealEstate,
             setState(() {}),
           },
         );
@@ -61,33 +61,31 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
   @override
   Widget build(BuildContext context) {
     if (widget.productCategory != 'All') {
-      allProducts = con.allProduct
-          .where((element) =>
-              element['data']['productCategory'] == widget.productCategory)
-          .toList();
+      allRealEstates = con.allRealEstate.toList();
     } else {
-      allProducts = con.allProduct;
+      allRealEstates = con.allRealEstate;
     }
     switch (widget.arrayOption) {
       case 'Latest':
-        allProducts.sort((a, b) => con
-            .changeTimeType(d: b['data']['productDate'], type: false)
-            .compareTo(
-                con.changeTimeType(d: a['data']['productDate'], type: false)));
+        allRealEstates.sort((a, b) => con
+            .changeTimeType(d: b['data']['realEstateDate'], type: false)
+            .compareTo(con.changeTimeType(
+                d: a['data']['realEstateDate'], type: false)));
         break;
       case 'Price High':
-        allProducts.sort((a, b) => int.parse(a['data']['productPrice'])
-            .compareTo(int.parse(b['data']['productPrice'])));
+        allRealEstates.sort((a, b) => int.parse(a['data']['realEstatePrice'])
+            .compareTo(int.parse(b['data']['realEstatePrice'])));
         break;
       case 'Price Low':
-        allProducts.sort((a, b) => int.parse(b['data']['productPrice'])
-            .compareTo(int.parse(a['data']['productPrice'])));
+        allRealEstates.sort((a, b) => int.parse(b['data']['realEstatePrice'])
+            .compareTo(int.parse(a['data']['realEstatePrice'])));
         break;
       default:
     }
-    allProducts = allProducts
+    allRealEstates = allRealEstates
         .where((product) =>
-            product['data']['productName'].contains(widget.searchValue) == true)
+            product['data']['realEstateName'].contains(widget.searchValue) ==
+            true)
         .toList();
     return SizedBox(
       width: SizeConfig(context).screenWidth < 800
@@ -102,9 +100,9 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: allProducts
-                        .map((product) => RealEstateCell(
-                              data: product,
+                    children: allRealEstates
+                        .map((realEstate) => RealEstateCell(
+                              data: realEstate,
                               routerChange: widget.routerChange,
                             ))
                         .toList())
@@ -117,9 +115,9 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
                     shrinkWrap: true,
                     crossAxisSpacing: 10.0,
                     primary: false,
-                    children: allProducts
-                        .map((product) => RealEstateCell(
-                              data: product,
+                    children: allRealEstates
+                        .map((realEstate) => RealEstateCell(
+                              data: realEstate,
                               routerChange: widget.routerChange,
                             ))
                         .toList()),
