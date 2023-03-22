@@ -1821,9 +1821,9 @@ class PostController extends ControllerMVC {
       lastTime = latestTime = DateTime.now();
     } else {
       lastTime = allPosts[slide - 1]['postTime'];
-      latestTime = Timestamp(allPosts[0]['postTime'].seconds,
-              allPosts[0]['postTime'].nanoseconds)
-          .toDate();
+      // latestTime = Timestamp(allPosts[0]['postTime'].seconds,
+      //         allPosts[0]['postTime'].nanoseconds)
+      //     .toDate();
     }
     if (type == PostType.profile.index) {
       postsProfile = postsBox;
