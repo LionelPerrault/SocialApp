@@ -182,6 +182,18 @@ class MainLeftPanel extends StatelessWidget {
           ListText(
             onTap: () => {
               routerFunction({
+                'router': RouteNames.realEstate,
+              })
+            },
+            label: 'Real estate',
+            image: SvgPicture.network(
+              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=cd9adfd0-3db3-4d46-a5fa-7ce8f99016bf',
+              width: 21,
+            ),
+          ),
+          ListText(
+            onTap: () => {
+              routerFunction({
                 'router': RouteNames.nearby,
               })
             },
