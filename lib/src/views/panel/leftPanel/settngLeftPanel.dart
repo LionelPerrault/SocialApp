@@ -129,18 +129,18 @@ class SettingsLeftPanel extends StatelessWidget {
                                     },
                                 label: 'Interests',
                                 image: const SizedBox())),
-                        Container(
-                            width: 220,
-                            child: ListText(
-                                onTap: () => {
-                                      routerFunction({
-                                        'router': RouteNames.settings,
-                                        'subRouter':
-                                            RouteNames.settings_profile_design,
-                                      })
-                                    },
-                                label: 'Design',
-                                image: const SizedBox())),
+                        // Container(
+                        //     width: 220,
+                        //     child: ListText(
+                        //         onTap: () => {
+                        //               routerFunction({
+                        //                 'router': RouteNames.settings,
+                        //                 'subRouter':
+                        //                     RouteNames.settings_profile_design,
+                        //               })
+                        //             },
+                        //         label: 'Design',
+                        //         image: const SizedBox())),
                       ],
                     )
                   ],
