@@ -533,8 +533,12 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         },
                         () async {
                           if (comment != '') {
-                            await con.saveComment(
-                                widget.postInfo['id'], comment, 'text');
+                            await con
+                                .saveComment(
+                                    widget.postInfo['id'], comment, 'text')
+                                .then((value1) {
+                              commentController.text = '';
+                            });
 
                             setState(() {});
                           }
@@ -622,7 +626,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   ? 350
                   : SizeConfig(context).screenWidth - 225,
               child: TextField(
-                //  controller: commentController,
+                controller: commentController,
                 cursorWidth: 1,
                 onChanged: (value) {
                   onChange(value);
