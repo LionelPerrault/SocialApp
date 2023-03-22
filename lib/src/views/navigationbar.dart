@@ -130,7 +130,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       for (var i = 0; i < allNotifi.length; i++) {
         // ignore: unused_local_variable
         tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
-        setState(() {});
         if (usercheckTime == null) {
           usercheckTime = 0;
           setState(() {});
@@ -146,16 +145,20 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 .doc(allNotifi[i]['postAdminId'])
                 .get()
                 .then((userV) async => {
-                      addData = {
-                        'uid': allNotifi[i].id,
-                        'avatar': userV.data()!['avatar'],
-                        'userName': userV.data()!['userName'],
-                        'text': Helper
-                            .notificationText[allNotifi[i]['postType']]['text'],
-                        'date':
-                            await postCon.formatDate(allNotifi[i]['timeStamp']),
-                      },
-                      changeData.add(addData),
+                      if (userV.data() != null)
+                        {
+                          addData = {
+                            'uid': allNotifi[i].id,
+                            'avatar': userV.data()!['avatar'],
+                            'userName': userV.data()!['userName'],
+                            'text': Helper
+                                    .notificationText[allNotifi[i]['postType']]
+                                ['text'],
+                            'date': await postCon
+                                .formatDate(allNotifi[i]['timeStamp']),
+                          },
+                          changeData.add(addData),
+                        }
                     });
           }
           if (postType == 'requestFriend' &&
@@ -165,16 +168,21 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 .doc(allNotifi[i]['postAdminId'])
                 .get()
                 .then((userV) => {
-                      addData = {
-                        // ...allNotifi[i],
-                        'uid': allNotifi[i].id,
-                        'avatar': Helper.systemAvatar,
-                        'userName': Helper
-                            .notificationName[allNotifi[i]['postType']]['name'],
-                        'text': Helper
-                            .notificationText[allNotifi[i]['postType']]['text'],
-                      },
-                      changeData.add(addData),
+                      if (userV.data() != null)
+                        {
+                          addData = {
+                            // ...allNotifi[i],
+                            'uid': allNotifi[i].id,
+                            'avatar': Helper.systemAvatar,
+                            'userName': Helper
+                                    .notificationName[allNotifi[i]['postType']]
+                                ['name'],
+                            'text': Helper
+                                    .notificationText[allNotifi[i]['postType']]
+                                ['text'],
+                          },
+                          changeData.add(addData),
+                        }
                     });
           }
         }

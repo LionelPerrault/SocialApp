@@ -162,7 +162,9 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                         TextButton(
                             child: const Text('Show All',
                                 style: TextStyle(fontSize: 11)),
-                            onPressed: () {}),
+                            onPressed: () async {
+                              await postCon.checkNotify();
+                            }),
                       ],
                     ))
             ],

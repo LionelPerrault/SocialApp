@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:otp/otp.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -207,10 +208,40 @@ class UserController extends ControllerMVC {
     return password;
   }
 
+  changeTimeType({var d, bool type = false}) {
+    var time = DateTime.parse(d.toDate().toString());
+    var formattedTime =
+        DateFormat('yyyy-MM-dd kk:mm:ss.SSS').format(time).toString();
+    if (type) {
+      return formattedTime;
+    } else {
+      return DateTime.parse(formattedTime).millisecondsSinceEpoch;
+    }
+  }
+
+  getNowTime() async {
+    await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.timeNow)
+        .update({
+      'time': FieldValue.serverTimestamp(),
+    });
+    var snapShot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.timeNow)
+        .get();
+    var nowTime = snapShot.data()!['time'];
+    return nowTime;
+  }
+
   Future<void> registerUserInfo() async {
     setState(() {});
     var uuid = await sendEmailVeryfication();
     signUpUserInfo.removeWhere((key, value) => key == 'password');
+    var serverTime = await PostController().getNowTime();
+    var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
+    var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
+    var difference = localTimeStamp - serverTimeStamp;
     await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(uuid)
@@ -218,6 +249,7 @@ class UserController extends ControllerMVC {
       ...signUpUserInfo,
       'paymail': paymail,
       'isEnableTwoFactor': '',
+      'checkNotifyTime': serverTimeStamp,
       'avatar': '',
       'isEmailVerify': false,
       'walletAddress': walletAddress,
@@ -226,10 +258,7 @@ class UserController extends ControllerMVC {
       'paywall': {},
       'isStarted': false,
     });
-    var serverTime = await PostController().getNowTime();
-    var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
-    var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
-    var difference = localTimeStamp - serverTimeStamp;
+
     await Helper.saveJSONPreference(Helper.userField, {
       ...signUpUserInfo,
       'paywall': {},
