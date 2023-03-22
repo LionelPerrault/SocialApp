@@ -25,93 +25,11 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   bool isSound = false;
 
   late PostController postCon;
-  var realNotification = [];
   @override
   void initState() {
     add(widget.con);
     postCon = controller as PostController;
-    // var userCheckTime = DateTime.now().millisecondsSinceEpoch;
-    checkNotify();
-    final Stream<QuerySnapshot> streamContent =
-        Helper.notifiCollection.snapshots();
-    streamContent.listen((event) async {
-      var notiSnap = await Helper.notifiCollection
-          .orderBy('timeStamp', descending: true)
-          .get();
-      var allNotifi = notiSnap.docs;
-      var userSnap = await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .doc(UserManager.userInfo['uid'])
-          .get();
-      // ignore: unused_local_variable
-      var userInfo = userSnap.data();
-      var changeData = [];
-      for (var i = 0; i < allNotifi.length; i++) {
-        var adminUid = allNotifi[i]['postAdminId'];
-        var postType = allNotifi[i]['postType'];
-        var viewFlag = true;
-        setState(() {});
-        for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
-          if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
-            viewFlag = false;
-          }
-        }
-        setState(() {});
-        postCon.allNotification = [];
-        if (viewFlag) {
-          var addData;
-          if (adminUid != UserManager.userInfo['uid'] &&
-              postType != 'requestFriend') {
-            await FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) async => {
-                      addData = {
-                        ...allNotifi[i].data(),
-                        'uid': allNotifi[i].id,
-                        'avatar': userV.data()!['avatar'],
-                        'userName': userV.data()!['userName'],
-                        'text': Helper
-                            .notificationText[allNotifi[i]['postType']]['text'],
-                        'date':
-                            await postCon.formatDate(allNotifi[i]['timeStamp']),
-                      },
-                      changeData.add(addData),
-                    });
-          }
-          if (postType == 'requestFriend' &&
-              adminUid == UserManager.userInfo['uid']) {
-            await FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) async => {
-                      addData = {
-                        'uid': allNotifi[i].id,
-                        'avatar': '',
-                        'userName': Helper
-                            .notificationName[allNotifi[i]['postType']]['name'],
-                        'text': Helper
-                            .notificationText[allNotifi[i]['postType']]['text'],
-                        'date':
-                            await postCon.formatDate(allNotifi[i]['timeStamp']),
-                      },
-                      changeData.add(addData),
-                    });
-          }
-        }
-      }
-      postCon.allNotification = changeData;
-      // print('123notification content ------${postCon.allNotification}');
-
-      setState(() {});
-    });
     super.initState();
-  }
-
-  void checkNotify() async {
-    return await postCon.checkNotify();
   }
 
   @override
