@@ -361,22 +361,32 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                      const Padding(padding: EdgeInsets.only(top: 30)),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: LinearPercentIndicator(
-                          width: MediaQuery.of(context).size.width - 100,
-                          animation: true,
-                          lineHeight: 20.0,
-                          animationDuration: 1000,
-                          percent: percent / 100,
-                          center: Text("Profile Completion  $percent %"),
-                          // ignore: deprecated_member_use
-                          linearStrokeCap: LinearStrokeCap.roundAll,
-                          progressColor: Colors.blueAccent,
-                        ),
-                      ),
-                      profileCompletion(),
+                      ProfileController().viewProfileUid ==
+                              UserManager.userInfo['uid']
+                          ? Column(
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 30)),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: LinearPercentIndicator(
+                                    width:
+                                        MediaQuery.of(context).size.width - 100,
+                                    animation: true,
+                                    lineHeight: 20.0,
+                                    animationDuration: 1000,
+                                    percent: percent / 100,
+                                    center:
+                                        Text("Profile Completion  $percent %"),
+                                    // ignore: deprecated_member_use
+                                    linearStrokeCap: LinearStrokeCap.roundAll,
+                                    progressColor: Colors.blueAccent,
+                                  ),
+                                ),
+                                profileCompletion(),
+                              ],
+                            )
+                          : const SizedBox(),
                       postColumn(),
                     ])
               : Container(
@@ -396,33 +406,41 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   ProfileController().viewProfileUid ==
                       UserManager.userInfo['uid']
               ? Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       children: [
-                        const Padding(padding: EdgeInsets.only(top: 30)),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: LinearPercentIndicator(
-                            width: MediaQuery.of(context).size.width / 6,
-                            animation: true,
-                            lineHeight: 20.0,
-                            animationDuration: 1000,
-                            percent: percent / 100,
-                            center: Text("Profile Completion  $percent%"),
-                            // ignore: deprecated_member_use
-                            linearStrokeCap: LinearStrokeCap.roundAll,
-                            progressColor: Colors.blueAccent,
-                          ),
-                        ),
-                        Container(
-                          height: (SizeConfig(context).screenHeight -
-                                  SizeConfig.navbarHeight) /
-                              2,
-                          padding: const EdgeInsets.only(bottom: 60),
-                          child: profileCompletion(),
-                        ),
+                        ProfileController().viewProfileUid ==
+                                UserManager.userInfo['uid']
+                            ? Column(children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 30)),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: LinearPercentIndicator(
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
+                                    animation: true,
+                                    lineHeight: 20.0,
+                                    animationDuration: 1000,
+                                    percent: percent / 100,
+                                    center:
+                                        Text("Profile Completion  $percent%"),
+                                    // ignore: deprecated_member_use
+                                    linearStrokeCap: LinearStrokeCap.roundAll,
+                                    progressColor: Colors.blueAccent,
+                                  ),
+                                ),
+                                Container(
+                                  height: (SizeConfig(context).screenHeight -
+                                          SizeConfig.navbarHeight) /
+                                      2,
+                                  padding: const EdgeInsets.only(bottom: 60),
+                                  child: profileCompletion(),
+                                ),
+                              ])
+                            : const SizedBox(),
                       ],
                     ),
                     postColumn()
