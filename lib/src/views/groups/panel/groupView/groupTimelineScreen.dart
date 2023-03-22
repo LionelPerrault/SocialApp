@@ -190,13 +190,16 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Column(
-                      children: con.postsGroup
-                          .map<Widget>((post) => PostCell(
-                                postInfo: post,
-                                routerChange: widget.routerChange,
-                              ))
-                          .toList(),
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: con.postsGroup.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PostCell(
+                          postInfo: con.postsGroup[index],
+                          routerChange: widget.routerChange,
+                        );
+                      },
                     ),
                   )
                 ],

@@ -170,28 +170,30 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                   ),
                 )
               : const SizedBox(),
-          con.postsTimeline.isNotEmpty
-              ? SizedBox(
-                  width: 600,
-                  child: Row(
+          SizedBox(
+            width: 600,
+            child: con.postsTimeline.isEmpty
+                ? const SizedBox() // Return an empty SizedBox widget when the list is empty
+                : Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Column(
-                          children: con.postsTimeline
-                              .map((product) => PostCell(
-                                    postInfo: product,
-                                    routerChange: widget.routerChange,
-                                  ))
-                              .toList(),
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: con.postsTimeline.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return PostCell(
+                              postInfo: con.postsTimeline[index],
+                              routerChange: widget.routerChange,
+                            );
+                          },
                         ),
                       )
                     ],
                   ),
-                )
-              : const SizedBox(),
+          ),
           loadingFlagBottom
               ? const SizedBox(
                   width: 50,

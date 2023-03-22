@@ -256,14 +256,16 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: Column(
-                        children: PostController()
-                            .postsProfile
-                            .map<Widget>((product) => PostCell(
-                                  postInfo: product,
-                                  routerChange: widget.routerChange,
-                                ))
-                            .toList(),
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: PostController().postsProfile.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return PostCell(
+                            postInfo: PostController().postsProfile[index],
+                            routerChange: widget.routerChange,
+                          );
+                        },
                       ),
                     )
                   ],

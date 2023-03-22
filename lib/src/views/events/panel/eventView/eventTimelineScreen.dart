@@ -204,13 +204,16 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Column(
-                      children: con.postsEvent
-                          .map<Widget>((product) => PostCell(
-                                postInfo: product,
-                                routerChange: widget.routerChange,
-                              ))
-                          .toList(),
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: con.postsEvent.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PostCell(
+                          postInfo: con.postsEvent[index],
+                          routerChange: widget.routerChange,
+                        );
+                      },
                     ),
                   )
                 ],
