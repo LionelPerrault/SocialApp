@@ -446,7 +446,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                     Visibility(
                                       visible: !widget.isSharedContent,
                                       child: Container(
-                                        padding: EdgeInsets.only(right: 9.0),
+                                        padding: EdgeInsets.only(right: 20.0),
                                         child: PopupMenuButton(
                                           onSelected: (value) {
                                             popUpFunction(value);

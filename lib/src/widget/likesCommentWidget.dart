@@ -237,19 +237,20 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           '${likesvalue == null || likesvalue.length == 0 ? '' : likesvalue.length}'),
                       const Flexible(fit: FlexFit.tight, child: SizedBox()),
                       const Icon(
-                        FontAwesomeIcons.comment,
+                        FontAwesomeIcons.solidComment,
+                        color: Colors.grey,
                         size: 13,
                       ),
                       const Padding(padding: EdgeInsets.only(left: 5)),
                       InkWell(
                           onTap: () async {
-                            isComment = false;
+                            isComment = !isComment;
                             setState(() {});
                           },
                           child: Text(
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff909090),
+                                color: Colors.grey,
                               ),
                               '${allComment != null ? allComment.length : 0} comments')),
                       const Padding(padding: EdgeInsets.only(right: 15)),
@@ -259,7 +260,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 Container(
                   margin: const EdgeInsets.only(top: 40),
                   child: const Divider(
-                      color: Color.fromARGB(99, 83, 79, 79), thickness: 0.1),
+                      color: Color.fromARGB(69, 83, 79, 79), thickness: 0.1),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 50),
@@ -316,6 +317,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                       myLike['value'] == null
                                           ? const Icon(
                                               FontAwesomeIcons.thumbsUp,
+                                              color: Color(0xff505050),
                                               size: 15,
                                             )
                                           : Image.network(
@@ -330,7 +332,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           color: myLike['value'] == null
-                                              ? Colors.black
+                                              ? const Color(0xff505050)
                                               : likesColor[myLike['value']],
                                         ),
                                       ),
@@ -382,6 +384,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                       children: [
                                         Icon(
                                           FontAwesomeIcons.message,
+                                          color: Color(0xff505050),
                                           size: 15,
                                         ),
                                         Padding(
@@ -389,6 +392,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                         Text(
                                           'Comment',
                                           style: TextStyle(
+                                              color: const Color(0xff505050),
                                               fontWeight: FontWeight.w700),
                                         )
                                       ],
@@ -422,13 +426,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                               Icon(
                                                 FontAwesomeIcons.share,
                                                 size: 15,
-                                                color: Color.fromARGB(
-                                                    255, 0, 0, 0),
+                                                color: Color(0xff505050),
                                               ),
                                               Text(
                                                 'Share',
                                                 style: TextStyle(
-                                                    color: Colors.black,
+                                                    color:
+                                                        const Color(0xff505050),
                                                     fontSize: 15,
                                                     fontStyle:
                                                         FontStyle.normal),
@@ -464,13 +468,15 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                 children: const [
                                   Icon(
                                     FontAwesomeIcons.share,
+                                    color: Color(0xff505050),
                                     size: 15,
                                   ),
                                   Padding(padding: EdgeInsets.only(left: 5)),
                                   Text(
                                     'Share',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    style: TextStyle(
+                                        color: Color(0xff505050),
+                                        fontWeight: FontWeight.w700),
                                   )
                                 ],
                               ),
