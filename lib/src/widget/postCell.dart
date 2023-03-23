@@ -94,11 +94,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
     con = controller as PostController;
     //con.addNotifyCallBack(this);
-    con.formatDate(widget.postInfo['time']).then((value) {
-      postTime = value;
 
-      setState(() {});
-    });
     headerCon.text = widget.postInfo['header'] ?? '';
 
     if (widget.postInfo['type'] == 'poll') {
@@ -264,10 +260,13 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.postInfo.containsKey('time')) {
+      postTime = con.timeAgo(widget.postInfo['time']);
+    } else {
+      postTime = '';
+    }
     //return Text("test");
-    con.formatDate(widget.postInfo['time']).then((value) {
-      postTime = value;
-    });
+    //postTime = con.timeAgo2(widget.postInfo['time']);
     if (!widget.isSharedContent) {
       privacy = privacyMenuItem
           .where((element) => element['label'] == widget.postInfo['privacy'])
@@ -313,6 +312,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         ];
       }
     }
+
     return widget.postInfo['timeline'] == false
         ? DottedBorder(
             borderType: BorderType.RRect,

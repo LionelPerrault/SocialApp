@@ -89,11 +89,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     product = widget.data['data'];
     productAdmin = widget.data['adminInfo'];
     productId = widget.data['id'];
-    con.formatDate(product['productDate']).then((value) {
-      postTime = value;
-
-      setState(() {});
-    });
+    postTime = con.timeAgo(product['productDate']);
+    setState(() {});
   }
 
   buyProduct() async {

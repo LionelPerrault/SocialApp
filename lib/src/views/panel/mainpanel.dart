@@ -51,15 +51,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    _scrollController.addListener(() {
-      double maxScroll = _scrollController.position.maxScrollExtent;
-      double currentScroll = _scrollController.position.pixels;
-      if (maxScroll - currentScroll <= 10) {
-        setState(() {
-          postsFlag = true;
-        });
-      }
-    });
+
     super.initState();
     if (nowTime.hour > 12) {
       time = 1;
