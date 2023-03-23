@@ -265,12 +265,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     } else {
       postTime = '';
     }
-    //return Text("test");
-    //postTime = con.timeAgo2(widget.postInfo['time']);
+
+    privacy = privacyMenuItem
+        .where((element) => element['label'] == widget.postInfo['privacy'])
+        .toList()[0];
     if (!widget.isSharedContent) {
-      privacy = privacyMenuItem
-          .where((element) => element['label'] == widget.postInfo['privacy'])
-          .toList()[0];
       if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
         //  privacyMenuItem = [];
         popupMenuItem = [
@@ -446,13 +445,12 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                     Visibility(
                                       visible: !widget.isSharedContent,
                                       child: Container(
-                                        padding: EdgeInsets.only(right: 20.0),
                                         child: PopupMenuButton(
                                           onSelected: (value) {
                                             popUpFunction(value);
                                           },
                                           child: const Icon(
-                                            Icons.arrow_drop_down,
+                                            Icons.expand_more,
                                             size: 18,
                                           ),
                                           itemBuilder: (BuildContext bc) {
@@ -690,41 +688,46 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                             children: [
                               Row(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router':
-                                                        RouteNames.profile,
-                                                    'subRouter':
-                                                        widget.postInfo[
-                                                                'adminInfo']
-                                                            ['userName'],
-                                                  });
-                                                })
-                                        ]),
+                                  SizedBox(
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 150
+                                        : 450,
+                                    child: RichText(
+                                      text: TextSpan(
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 10),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                                text:
+                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        widget.routerChange({
+                                                          'router': RouteNames
+                                                              .profile,
+                                                          'subRouter': widget
+                                                                      .postInfo[
+                                                                  'adminInfo']
+                                                              ['userName'],
+                                                        });
+                                                      })
+                                          ]),
+                                    ),
                                   ),
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
-                                      padding: EdgeInsets.only(right: 9.0),
                                       child: PopupMenuButton(
                                         onSelected: (value) {
                                           popUpFunction(value);
                                         },
                                         child: const Icon(
-                                          Icons.arrow_drop_down,
+                                          Icons.expand_more,
                                           size: 18,
                                         ),
                                         itemBuilder: (BuildContext bc) {
@@ -975,13 +978,12 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
-                                      padding: EdgeInsets.only(right: 9.0),
                                       child: PopupMenuButton(
                                         onSelected: (value) {
                                           popUpFunction(value);
                                         },
                                         child: const Icon(
-                                          Icons.arrow_drop_down,
+                                          Icons.expand_more,
                                           size: 18,
                                         ),
                                         itemBuilder: (BuildContext bc) {
@@ -1236,13 +1238,12 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
-                                      padding: EdgeInsets.only(right: 9.0),
                                       child: PopupMenuButton(
                                         onSelected: (value) {
                                           popUpFunction(value);
                                         },
                                         child: const Icon(
-                                          Icons.arrow_drop_down,
+                                          Icons.expand_more,
                                           size: 18,
                                         ),
                                         itemBuilder: (BuildContext bc) {
@@ -1497,13 +1498,12 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
-                                      padding: EdgeInsets.only(right: 9.0),
                                       child: PopupMenuButton(
                                         onSelected: (value) {
                                           popUpFunction(value);
                                         },
                                         child: const Icon(
-                                          Icons.arrow_drop_down,
+                                          Icons.expand_more,
                                           size: 18,
                                         ),
                                         itemBuilder: (BuildContext bc) {
@@ -1709,46 +1709,54 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                             children: [
                               Row(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      style: const TextStyle(
-                                          color: Colors.grey, fontSize: 10),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text:
-                                              '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              ProfileController().updateProfile(
-                                                  widget.postInfo['adminInfo']
-                                                      ['userName']);
-                                              widget.routerChange(
-                                                {
-                                                  'router': RouteNames.profile,
-                                                  'subRouter': widget
-                                                          .postInfo['adminInfo']
-                                                      ['userName'],
-                                                },
-                                              );
-                                            },
-                                        ),
-                                      ],
+                                  SizedBox(
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 150
+                                        : 450, // 1st set height
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                                '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                ProfileController()
+                                                    .updateProfile(
+                                                        widget.postInfo[
+                                                                'adminInfo']
+                                                            ['userName']);
+                                                widget.routerChange(
+                                                  {
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        widget.postInfo[
+                                                                'adminInfo']
+                                                            ['userName'],
+                                                  },
+                                                );
+                                              },
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
-                                      padding: EdgeInsets.only(right: 9.0),
                                       child: PopupMenuButton(
                                         onSelected: (value) {
                                           popUpFunction(value);
                                         },
                                         child: const Icon(
-                                          Icons.arrow_drop_down,
+                                          Icons.expand_more,
                                           size: 18,
                                         ),
                                         itemBuilder: (BuildContext bc) {
@@ -2005,13 +2013,12 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                   Visibility(
                                     visible: !widget.isSharedContent,
                                     child: Container(
-                                      padding: EdgeInsets.only(right: 9.0),
                                       child: PopupMenuButton(
                                         onSelected: (value) {
                                           popUpFunction(value);
                                         },
                                         child: const Icon(
-                                          Icons.arrow_drop_down,
+                                          Icons.expand_more,
                                           size: 18,
                                         ),
                                         itemBuilder: (BuildContext bc) {
