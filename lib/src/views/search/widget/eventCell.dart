@@ -42,11 +42,19 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
     return Material(
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 10, right: 10),
-        leading: CircleAvatar(
-            radius: 17,
-            backgroundImage: NetworkImage(widget.eventInfo['eventPicture'] == ''
-                ? Helper.eventImage
-                : widget.eventInfo['eventPicture'])),
+        leading: GestureDetector(
+            onTap: () {
+              widget.routerChange({
+                'router': RouteNames.events,
+                'subRouter': widget.eventInfo['uid']
+              });
+            },
+            child: CircleAvatar(
+                radius: 17,
+                backgroundImage: NetworkImage(
+                    widget.eventInfo['eventPicture'] == ''
+                        ? Helper.eventImage
+                        : widget.eventInfo['eventPicture']))),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -120,20 +120,17 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
           .get();
-      // print('userSnap----------: ${userSnap.data()}');
+
       var userInfo = userSnap.data();
 
       var changeData = [];
+      var usercheckTime = userInfo!['checkNotifyTime'];
+
       var tsNT;
       for (var i = 0; i < allNotifi.length; i++) {
         // ignore: unused_local_variable
         tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
-        // print('timestamp notification time: $tsNT');
-        var usercheckTime = userInfo!['checkNotifyTime'];
         setState(() {});
-        // print('userCheckTime------ ${userInfo['checkNotifyTime']}');
-
-        // var tsNT = allNotifi[i]['tsNT'];
         if (usercheckTime == null) {
           usercheckTime = 0;
           setState(() {});
@@ -141,18 +138,22 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
         if (tsNT > usercheckTime) {
-          var addData;
+          var addData = {};
           if (adminUid != UserManager.userInfo['uid'] &&
               postType != 'requestFriend') {
-            // userInfo['checkNotifyTime'];
-            usercheckTime;
             await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
                 .get()
-                .then((userV) => {
+                .then((userV) async => {
                       addData = {
                         'uid': allNotifi[i].id,
+                        'avatar': userV.data()!['avatar'],
+                        'userName': userV.data()!['userName'],
+                        'text': Helper
+                            .notificationText[allNotifi[i]['postType']]['text'],
+                        'date':
+                            await postCon.formatDate(allNotifi[i]['timeStamp']),
                       },
                       changeData.add(addData),
                     });
@@ -179,84 +180,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         }
       }
       postCon.realNotifi = changeData;
-      setState(() {});
-    });
-
-    final Stream<QuerySnapshot> streamContent =
-        Helper.notifiCollection.snapshots();
-    streamContent.listen((event) async {
-      var notiSnap = await Helper.notifiCollection
-          .orderBy('timeStamp', descending: true)
-          .get();
-      var allNotifi = notiSnap.docs;
-      var userSnap = await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .doc(UserManager.userInfo['uid'])
-          .get();
-      // ignore: unused_local_variable
-      var userInfo = userSnap.data();
-      var changeData = [];
-      for (var i = 0; i < allNotifi.length; i++) {
-        var adminUid = allNotifi[i]['postAdminId'];
-        var postType = allNotifi[i]['postType'];
-        var viewFlag = true;
-        setState(() {});
-
-        for (var j = 0; j < allNotifi[i]['userList'].length; j++) {
-          if (allNotifi[i]['userList'][j] == UserManager.userInfo['uid']) {
-            viewFlag = false;
-          }
-        }
-        setState(() {});
-        postCon.allNotification = [];
-        if (viewFlag) {
-          var addData;
-          if (adminUid != UserManager.userInfo['uid'] &&
-              postType != 'requestFriend') {
-            await FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) async => {
-                      addData = {
-                        ...allNotifi[i].data(),
-                        'uid': allNotifi[i].id,
-                        'avatar': userV.data()!['avatar'],
-                        'userName': userV.data()!['userName'],
-                        'text': Helper
-                            .notificationText[allNotifi[i]['postType']]['text'],
-                        'date':
-                            await postCon.formatDate(allNotifi[i]['timeStamp']),
-                      },
-                      changeData.add(addData),
-                    });
-          }
-          if (postType == 'requestFriend' &&
-              adminUid == UserManager.userInfo['uid']) {
-            await FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) async => {
-                      addData = {
-                        'uid': allNotifi[i].id,
-                        'avatar': '',
-                        'userName': Helper
-                            .notificationName[allNotifi[i]['postType']]['name'],
-                        'text': Helper
-                            .notificationText[allNotifi[i]['postType']]['text'],
-                        'date':
-                            await postCon.formatDate(allNotifi[i]['timeStamp']),
-                      },
-                      changeData.add(addData),
-                    });
-          }
-        }
-      }
       postCon.allNotification = changeData;
 
       setState(() {});
-      // print('notification content ------${postCon.allNotification}');
     });
 
     SearchController().getAllSearchResult();
@@ -565,7 +491,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           switch (item) {
                             case Menu.itemProfile:
                               {
-                                
                                 ProfileController().updateProfile(
                                     UserManager.userInfo['userName']);
                                 widget.routerChange({
