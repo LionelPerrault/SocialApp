@@ -932,13 +932,16 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(padding: EdgeInsets.only(left: 30)),
-                      Text(
-                        activity == '' ? 'What are you doing?' : activity,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color.fromARGB(255, 111, 111, 111),
-                          fontWeight: FontWeight.bold,
+                      const Padding(padding: EdgeInsets.only(left: 15)),
+                      Expanded(
+                        child: Text(
+                          activity == '' ? 'What are you doing?' : activity,
+                          style: const TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 111, 111, 111),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
