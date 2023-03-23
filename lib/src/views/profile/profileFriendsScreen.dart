@@ -89,7 +89,8 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                   ProfileController().viewProfileUid ==
                       UserManager.userInfo['uid']
               ? friendsData()
-              : Text("You can see the friends data only if you are friends."),
+              : const Text(
+                  "You can see the friends data only if you are friends."),
           //: tab == 'Follows'
           //    ? followsData()
           //    : followingsData()
@@ -124,7 +125,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                 ],
               )),
           Container(
-            margin: EdgeInsets.only(top: 15),
+            margin: const EdgeInsets.only(top: 15),
             child: Row(children: [
               MouseRegion(
                 cursor: SystemMouseCursors.click,
@@ -139,7 +140,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                     height: 40,
                     color: tab == 'Friends'
                         ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
+                        : const Color.fromRGBO(240, 240, 240, 1),
                     child: const Text(
                       'Friends',
                       style: TextStyle(fontSize: 15, color: Colors.black),
@@ -327,7 +328,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     var friendAvatar = value[friendUserName]['avatar'];
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 10),
+      margin: const EdgeInsets.only(left: 10),
       width: 200,
       height: 100,
       child: Stack(
@@ -335,8 +336,8 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
         children: [
           Container(
             width: 200,
-            margin: EdgeInsets.only(top: 60),
-            padding: EdgeInsets.only(top: 70),
+            margin: const EdgeInsets.only(top: 60),
+            padding: const EdgeInsets.only(top: 70),
             decoration: BoxDecoration(
               color: Colors.grey[350],
               borderRadius: BorderRadius.circular(5),
@@ -357,20 +358,26 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
               ],
             ),
           ),
-          Container(
-            alignment: Alignment.topCenter,
-            width: 120,
-            height: 120,
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                      friendAvatar != '' ? friendAvatar : Helper.avatar),
-                  fit: BoxFit.cover,
-                ),
-                color: Color.fromARGB(255, 150, 99, 99),
-                borderRadius: BorderRadius.circular(60),
-                border: Border.all(color: Colors.grey)),
+          GestureDetector(
+            child: Container(
+              alignment: Alignment.topCenter,
+              width: 120,
+              height: 120,
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        friendAvatar != '' ? friendAvatar : Helper.avatar),
+                    fit: BoxFit.cover,
+                  ),
+                  color: const Color.fromARGB(255, 150, 99, 99),
+                  borderRadius: BorderRadius.circular(60),
+                  border: Border.all(color: Colors.grey)),
+            ),
+            onTap: () {
+              widget.routerChangeProile(
+                  {'router': RouteNames.profile, 'subRouter': friendUserName});
+            },
           ),
         ],
       ),
