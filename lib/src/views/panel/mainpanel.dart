@@ -46,7 +46,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   bool hasMore = true; // flag for more posts available or not
 
   var showTenCountPosts = [];
-  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     add(widget.con);
@@ -173,6 +173,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                       Expanded(
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: con.postsTimeline.length,
                           itemBuilder: (BuildContext context, int index) {

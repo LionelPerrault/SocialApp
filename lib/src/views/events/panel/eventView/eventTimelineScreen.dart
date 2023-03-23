@@ -206,6 +206,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                   Expanded(
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: con.postsEvent.length,
                       itemBuilder: (BuildContext context, int index) {

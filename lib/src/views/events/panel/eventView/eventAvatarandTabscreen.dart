@@ -141,7 +141,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     return Stack(
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 30, right: 30),
+          margin: const EdgeInsets.only(left: 0, right: 0),
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
               ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
               : SizeConfig(context).screenWidth,

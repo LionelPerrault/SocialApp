@@ -107,9 +107,8 @@ class ProfileAvatarandTabScreenState extends mvc
     return Stack(
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 30, right: 30),
           width: SizeConfig(context).screenWidth,
-          height: SizeConfig(context).screenHeight * 0.5,
+          height: SizeConfig(context).screenHeight * 0.45,
           decoration: con.profile_cover == ''
               ? const BoxDecoration(
                   color: Color.fromRGBO(66, 66, 66, 1),

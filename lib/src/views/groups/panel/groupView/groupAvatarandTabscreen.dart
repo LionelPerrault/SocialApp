@@ -136,10 +136,10 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
         Container(
           margin: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
               ? const EdgeInsets.only(left: 0, right: 0)
-              : const EdgeInsets.only(left: 30, right: 30),
+              : const EdgeInsets.only(left: 0, right: 0),
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-              ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
-              : SizeConfig(context).screenWidth - 60,
+              ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
+              : SizeConfig(context).screenWidth, //- 60,
           height: SizeConfig(context).screenHeight * 0.5,
           decoration: con.group['groupCover'] == ''
               ? const BoxDecoration(

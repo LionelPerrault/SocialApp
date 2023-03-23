@@ -258,6 +258,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: PostController().postsProfile.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -355,7 +356,6 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     print("userprofileid is ${UserManager.userInfo['uid']}");
     return Container(
       alignment: Alignment.topLeft,
-      padding: const EdgeInsets.only(right: 30, left: 30, top: 15),
       child: SizeConfig(context).screenWidth < 800
           ? isMyFriend() ||
                   ProfileController().viewProfileUid ==

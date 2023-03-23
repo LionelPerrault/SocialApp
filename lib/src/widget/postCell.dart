@@ -934,7 +934,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       width: SizeConfig(context).screenWidth <
                                               600
                                           ? SizeConfig(context).screenWidth -
-                                              180
+                                              150
                                           : 450, // 1st set height
                                       child: RichText(
                                           text: TextSpan(

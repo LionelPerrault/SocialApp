@@ -232,7 +232,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 Row(
                   children: [
                     Container(
-                        padding: const EdgeInsets.only(right: 0, left: 10),
+                        padding: const EdgeInsets.only(right: 0, left: 0),
                         child: ElevatedButton(
                             onPressed: () {
                               widget.drawClicked();
@@ -255,7 +255,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 ),
                 Row(children: [
                   Container(
-                      padding: const EdgeInsets.only(right: 20),
+                      padding: const EdgeInsets.only(right: 12),
                       child: ElevatedButton(
                         onPressed: () {
                           widget.routerChange({

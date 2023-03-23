@@ -192,6 +192,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                   Expanded(
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: con.postsGroup.length,
                       itemBuilder: (BuildContext context, int index) {
