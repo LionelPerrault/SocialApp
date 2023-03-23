@@ -57,6 +57,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   @override
   void dispose() {
     _controller.dispose();
+
     super.dispose();
   }
 
@@ -266,6 +267,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
+    // _focus.addListener(() {
+    //   if (!_focus.hasFocus) {
+    //     popupShowing = false;
+    //   } else {
+    //     popupShowing = true;
+    //   }
+    // });
     super.initState();
   }
 
@@ -431,7 +439,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     onTap: () {
                       print("tapped popupshowing");
                       setState(() {
-                        popupShowing = !popupShowing;
+                        if (nowPost != '')
+                          popupShowing = true;
+                        else
+                          popupShowing = !popupShowing;
                       });
                     },
                     style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
