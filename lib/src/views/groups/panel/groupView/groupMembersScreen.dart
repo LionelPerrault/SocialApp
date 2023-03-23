@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, avoid_unnecessary_containers
 
 import 'package:badges/badges.dart' as badges;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,7 +12,9 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/profile/model/friends.dart';
 
+// ignore: must_be_immutable
 class GroupMembersScreen extends StatefulWidget {
   Function onClick;
   GroupMembersScreen(
@@ -28,14 +31,44 @@ class GroupMembersScreen extends StatefulWidget {
 class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Members';
+  List invites = [];
+  late PostController con;
+  Friends friendModel = Friends();
+
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
-  }
+    friendModel
+        .getFriends(UserManager.userInfo['userName'])
+        .then((value) async {
+      for (var index = 0; index < friendModel.friends.length; index++) {
+        var friendUserName = friendModel.friends[index]['requester'].toString();
+        if (friendUserName == UserManager.userInfo['userName']) {
+          friendUserName = friendModel.friends[index]['receiver'].toString();
+        }
 
-  late PostController con;
+        var snapshot = await FirebaseFirestore.instance
+            .collection('user')
+            .where('userName', isEqualTo: friendUserName)
+            .get();
+        String userid = snapshot.docs[0].id.toString();
+        var data = snapshot.docs[0].data();
+        if (con.boolJoined(con.group, userid)) {
+          friendModel.friends.removeAt(index);
+          setState(() {});
+          index--;
+        } else {
+          invites.add({
+            'userName': friendUserName,
+            'avatar': data['avatar'],
+            'fullName': data['firstName'] + data['lastName']
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,11 +160,20 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                           : const Color.fromRGBO(240, 240, 240, 1),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Invites',
                             style: TextStyle(fontSize: 15, color: Colors.black),
                           ),
+                          badges.Badge(
+                            badgeContent: Text(
+                              '${invites.length}',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            badgeStyle: const badges.BadgeStyle(
+                              badgeColor: Color.fromARGB(255, 23, 162, 184),
+                            ),
+                          )
                         ],
                       )),
                 ),
@@ -145,12 +187,11 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
 
   Widget MembersData() {
     List members = con.group['groupJoined'];
-    print(members);
     return members.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
-            child: Text('${con.group['groupName']} doesn`t have photos',
+            child: Text('${con.group['groupName']} doesn`t have members',
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
@@ -188,12 +229,11 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
   }
 
   Widget InvitesData() {
-    List invites = [];
     return invites.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
-            child: Text('${con.group['groupName']} doesn`t have albums',
+            child: Text('${con.group['groupName']} doesn`t have invite members',
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )

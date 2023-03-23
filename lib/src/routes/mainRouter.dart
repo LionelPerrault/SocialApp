@@ -16,6 +16,8 @@ import 'package:shnatter/src/views/profile/profilescreen.dart';
 import 'package:shnatter/src/views/search/searchScreen.dart';
 import 'package:shnatter/src/views/setting/settingsMain.dart';
 
+import '../views/realEstate/realEstateScreen.dart';
+
 class MainRouter {
   MainRouter(String mainRouterValue);
   static mainRouter(mainRouterValue, routerChange) {
@@ -69,6 +71,8 @@ class MainRouter {
         }
       case RouteNames.market:
         return MarketPlaceScreen(routerChange: routerChange);
+      case RouteNames.realEstate:
+        return RealEstateScreen(routerChange: routerChange);
       case RouteNames.search:
         return SearchScreen(routerChange: routerChange);
     }

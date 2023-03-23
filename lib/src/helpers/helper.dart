@@ -34,6 +34,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.groupsField);
   static var productsData =
       FirebaseFirestore.instance.collection(Helper.productsField);
+  static var realEstatesData =
+      FirebaseFirestore.instance.collection(Helper.realEstatesField);
   static var postLikeComment =
       FirebaseFirestore.instance.collection(Helper.postLikeCommentField);
   static var allInterests =
@@ -44,6 +46,8 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.postField);
   static var transactionCollection =
       FirebaseFirestore.instance.collection(Helper.transactionField);
+  static var invitationsCollection =
+      FirebaseFirestore.instance.collection(Helper.invitationsField);
   static var systemAvatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsystem_avatar.svg?alt=media&token=1b903903-95d8-4826-808d-ddbde4ac55c3';
   static var avatar =
@@ -64,7 +68,9 @@ class Helper {
   static var eventsField = 'events';
   static var pagesField = 'pages';
   static var groupsField = 'groups';
+  static var invitationsField = 'invitations';
   static var productsField = 'products';
+  static var realEstatesField = 'realestate';
   static var notificationField = 'notifications';
   static var postField = 'posts';
   static var transactionField = 'transaction';

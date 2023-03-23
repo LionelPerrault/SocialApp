@@ -1,9 +1,10 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, sized_box_for_whitespace, avoid_unnecessary_containers
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -37,6 +38,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   late AnimationController _drawerSlideController;
   var subUrl = '';
   Friends friendModel = Friends();
+  bool invitingFriend = false;
   double width = 0;
   bool loadingFlag = false;
   bool loadingFlagBottom = false;
@@ -60,29 +62,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     con = controller as PostController;
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
-    friendModel
-        .getFriends(UserManager.userInfo['userName'])
-        .then((value) async {
-      for (var index = 0; index < friendModel.friends.length; index++) {
-        var friendUserName = friendModel.friends[index]['requester'].toString();
-        if (friendUserName == UserManager.userInfo['userName'])
-          friendUserName = friendModel.friends[index]['receiver'].toString();
-
-        var snapshot = await FirebaseFirestore.instance
-            .collection('user')
-            .where('userName', isEqualTo: friendUserName)
-            .get();
-        String userid = snapshot.docs[0].id.toString();
-        print("id is $userid");
-
-        if (con.boolJoined(con.group, userid)) {
-          friendModel.friends.removeAt(index);
-          print("getuserid is $index");
-          setState(() {});
-          index--;
-        }
-      }
-    });
+    getFriends();
     loadingFlag = true;
     PostController().posts = [];
     con
@@ -100,15 +80,37 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
           Map data = post.data() as Map;
           var groupId = "";
           if (data.containsKey("groupId")) groupId = data['groupId'];
-          print("groupId is ====$groupId");
           return (groupId == con.viewGroupId) &&
               (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
                   .toDate()
                   .isAfter(con.latestTime));
         }).length;
-        print("newPostNum of profile is $newPostNum");
         setState(() {});
       });
+    });
+  }
+
+  Future<void> getFriends() async {
+    friendModel
+        .getFriends(UserManager.userInfo['userName'])
+        .then((value) async {
+      for (var index = 0; index < friendModel.friends.length; index++) {
+        var friendUserName = friendModel.friends[index]['requester'].toString();
+        if (friendUserName == UserManager.userInfo['userName'])
+          friendUserName = friendModel.friends[index]['receiver'].toString();
+
+        var snapshot = await FirebaseFirestore.instance
+            .collection('user')
+            .where('userName', isEqualTo: friendUserName)
+            .get();
+        String userid = snapshot.docs[0].id.toString();
+
+        if (con.boolJoined(con.group, userid)) {
+          friendModel.friends.removeAt(index);
+          setState(() {});
+          index--;
+        }
+      }
     });
   }
 
@@ -188,13 +190,16 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Column(
-                      children: con.postsGroup
-                          .map<Widget>((post) => PostCell(
-                                postInfo: post,
-                                routerChange: widget.routerChange,
-                              ))
-                          .toList(),
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: con.postsGroup.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PostCell(
+                          postInfo: con.postsGroup[index],
+                          routerChange: widget.routerChange,
+                        );
+                      },
                     ),
                   )
                 ],
@@ -241,9 +246,9 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Load More...',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Color.fromARGB(255, 90, 90, 90),
                             fontFamily: 'var(--body-font-family)',
                             fontWeight: FontWeight.w900,
@@ -392,11 +397,16 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                   ),
                   const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                  Row(children: const [
-                    Text(
-                      'See All',
-                      style: TextStyle(fontSize: 11),
-                    ),
+                  Row(children: [
+                    InkWell(
+                        onTap: () {
+                          con.groupTab = 'Members';
+                          con.setState(() {});
+                        },
+                        child: const Text(
+                          'See All',
+                          style: TextStyle(fontSize: 11),
+                        )),
                   ])
                 ],
               ),
@@ -418,15 +428,14 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                       itemBuilder: (context, index) {
                         var friendUserName =
                             friendModel.friends[index]['requester'].toString();
-                        if (friendUserName == UserManager.userInfo['userName'])
+                        if (friendUserName ==
+                            UserManager.userInfo['userName']) {
                           friendUserName =
                               friendModel.friends[index]['receiver'].toString();
-
+                        }
                         return Material(
                             child: ListTile(
-                                onTap: () {
-                                  print("tap!");
-                                },
+                                onTap: () {},
                                 hoverColor:
                                     const Color.fromARGB(255, 243, 243, 243),
                                 // tileColor: Colors.white,
@@ -474,26 +483,85 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                         const Size(65, 30),
                                                     maximumSize:
                                                         const Size(65, 30)),
-                                                onPressed: () {
-                                                  () => {};
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    invitingFriend = true;
+                                                  });
+                                                  var querySnapshot =
+                                                      await Helper.groupsData
+                                                          .doc(con.viewGroupId)
+                                                          .get();
+
+                                                  var doc = querySnapshot;
+                                                  var joined =
+                                                      doc['groupJoined'];
+
+                                                  var friendUserName =
+                                                      friendModel.friends[index]
+                                                              ['requester']
+                                                          .toString();
+                                                  if (friendUserName ==
+                                                      UserManager
+                                                          .userInfo['userName'])
+                                                    friendUserName = friendModel
+                                                        .friends[index]
+                                                            ['receiver']
+                                                        .toString();
+
+                                                  var snapshot =
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection('user')
+                                                          .where('userName',
+                                                              isEqualTo:
+                                                                  friendUserName)
+                                                          .get();
+                                                  String userid = snapshot
+                                                      .docs[0].id
+                                                      .toString();
+
+                                                  joined.add({'uid': userid});
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection(
+                                                          Helper.groupsField)
+                                                      .doc(con.viewGroupId)
+                                                      .update({
+                                                    'groupJoined': joined
+                                                  });
+                                                  await con.updateGroup();
+                                                  await getFriends();
+                                                  setState(() {
+                                                    invitingFriend = false;
+                                                  });
                                                 },
-                                                child: Row(
-                                                  children: const [
-                                                    Icon(
-                                                      Icons
-                                                          .person_add_alt_rounded,
-                                                      color: Colors.white,
-                                                      size: 15.0,
-                                                    ),
-                                                    Text('Add',
-                                                        style: TextStyle(
+                                                child: invitingFriend
+                                                    ? const SizedBox(
+                                                        width: 10,
+                                                        height: 10,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: Colors.grey,
+                                                        ),
+                                                      )
+                                                    : Row(
+                                                        children: const [
+                                                          Icon(
+                                                            Icons
+                                                                .person_add_alt_rounded,
                                                             color: Colors.white,
-                                                            fontSize: 10,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                ))),
+                                                            size: 15.0,
+                                                          ),
+                                                          Text('Add',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                        ],
+                                                      ))),
                                       ],
                                     )
                                   ],

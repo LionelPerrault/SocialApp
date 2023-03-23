@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/views/events/panel/eventView/eventTimelineScreen.dart';
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -61,6 +62,31 @@ class PostController extends ControllerMVC {
     for (int i = 0; i < notifiers.length; i++) {
       mvc.StateMVC notifi = notifiers[i];
       notifi.setState(() {});
+    }
+  }
+
+  String timeAgo(Timestamp timestamp) {
+    if (timestamp == null) {
+      return "unknown";
+    }
+    DateTime now = DateTime.now();
+
+    DateTime time = timestamp.toDate();
+
+    Duration difference = now.difference(time);
+    int days = difference.inDays;
+    int hours = difference.inHours;
+
+    int minutes = difference.inMinutes.remainder(60);
+
+    if (days > 0) {
+      return "$days day${days > 1 ? 's' : ''} ago";
+    } else if (hours > 0) {
+      return "$hours hour${hours > 1 ? 's' : ''} ago";
+    } else if (minutes > 0) {
+      return "$minutes minute${minutes > 1 ? 's' : ''} ago";
+    } else {
+      return "Just Now";
     }
   }
 
@@ -879,7 +905,6 @@ class PostController extends ControllerMVC {
 
   Future<bool> getSelectedGroup(String id) async {
     id = id.split('/')[id.split('/').length - 1];
-    print("id is $id");
     var reuturnValue;
 
     await Helper.groupsData.doc(id).get().then((value1) async {
@@ -887,9 +912,7 @@ class PostController extends ControllerMVC {
       var value = reuturnValue.data();
       viewGroupId = id;
       group = value;
-      print("group is $group");
       viewGroupJoined = boolJoined(group, UserManager.userInfo['uid']);
-      print("viewGroupJoined is $viewGroupJoined");
       setState(() {});
       for (var i = 0; i < group['groupAdmin'].length; i++) {
         var addAdmin = await ProfileController()
@@ -993,7 +1016,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.groupsData.doc(groupId).get();
     var doc = querySnapshot;
     var joined = doc['groupJoined'];
-    var respon = await boolJoined(doc, UserManager.userInfo['uid']);
+    var respon = boolJoined(doc, UserManager.userInfo['uid']);
     if (respon) {
       joined.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
@@ -1020,7 +1043,6 @@ class PostController extends ControllerMVC {
   //bool of user already in group interested or not
   bool boolJoined(var groupData, String uid) {
     var joined = groupData['groupJoined'];
-    print("joind is $joined ");
     if (joined == null) {
       return false;
     }
@@ -1161,6 +1183,72 @@ class PostController extends ControllerMVC {
     };
   }
 
+  Future<Map> createRealEstate(
+      context, Map<String, dynamic> realEstateData) async {
+    if (realEstateData['realEstateName'].isEmpty ||
+        realEstateData['realEstatePrice'].isEmpty ||
+        realEstateData['realEstateLocation'].isEmpty) {
+      return {
+        'msg': 'Please add your real-estate name, price, and location',
+        'result': false,
+      };
+    }
+    realEstateData = {
+      ...realEstateData,
+      'realEstateAdmin': {
+        'uid': UserManager.userInfo['uid'],
+      },
+      'realEstateDate': FieldValue.serverTimestamp(),
+      'realEstatePost': false,
+      'realEstateMarkAsSold': false,
+      'realEstateTimeline': true,
+      'realEstateOnOffCommenting': true,
+      'realEstatePrivacy': 'Public'
+    };
+    Map<String, dynamic> postData = {};
+    Map<String, dynamic> notificationData;
+    String id = '';
+    try {
+      DocumentReference result = await FirebaseFirestore.instance
+          .collection(Helper.realEstatesField)
+          .add(realEstateData);
+      postData = {
+        'postAdmin': UserManager.userInfo['uid'],
+        'type': 'real-estate',
+        'value': result.id,
+        'privacy': 'Public',
+        'postTime': FieldValue.serverTimestamp(),
+        'header': realEstateData['realEstateName'],
+        'timeline': true,
+        'comment': true,
+      };
+      await Helper.postCollection.add(postData);
+      notificationData = {
+        'postType': 'realEstates',
+        'postId': result.id,
+        'postAdminId': UserManager.userInfo['uid'],
+        'notifyTime': DateTime.now().toString(),
+        'tsNT': DateTime.now().millisecondsSinceEpoch,
+        'userList': [],
+        'timeStamp': FieldValue.serverTimestamp(),
+      };
+      await saveNotifications(notificationData);
+      id = result.id;
+    } catch (e) {
+      return {
+        'msg': 'Error creating real estate',
+        'result': false,
+        'error': e.toString(),
+      };
+    }
+
+    return {
+      'msg': 'Successfully created',
+      'result': true,
+      'value': id,
+    };
+  }
+
   Future<Map> editProduct(
       context, uid, Map<String, dynamic> productData) async {
     if (productData['productName'] == null ||
@@ -1195,12 +1283,71 @@ class PostController extends ControllerMVC {
     };
   }
 
+  Future<Map> editRealEstate(
+      context, uid, Map<String, dynamic> realEstateData) async {
+    if (realEstateData['realEstateName'] == null ||
+        realEstateData['realEstateName'] == '') {
+      return {
+        'msg': 'Please add your real estate name',
+        'result': false,
+      };
+    } else if (realEstateData['realEstatePrice'] == null ||
+        realEstateData['realEstatePrice'] == '') {
+      return {
+        'msg': 'Please add your real estate price',
+        'result': false,
+      };
+    } else if (realEstateData['realEstateCategory'] == null ||
+        realEstateData['realEstateCategory'] == '') {
+      return {
+        'msg': 'Please add your real estate category',
+        'result': false,
+      };
+    }
+
+    Map<String, dynamic> notificationData;
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(uid)
+        .update(realEstateData);
+    return {
+      'msg': 'Successfully edited',
+      'result': true,
+      'value': uid,
+    };
+  }
+
   List<Map> allProduct = [];
 
   //get all product function
   Future<void> getProduct() async {
     allProduct = [];
     await Helper.productsData
+        .orderBy('productDate', descending: true)
+        .get()
+        .then((value) async {
+      var doc = value.docs;
+      for (int i = 0; i < doc.length; i++) {
+        var id = doc[i].id;
+        var data = doc[i];
+        var adminInfo =
+            await ProfileController().getUserInfo(data['productAdmin']['uid']);
+        if (adminInfo != null) {
+          allProduct
+              .add({'data': data.data(), 'id': id, 'adminInfo': adminInfo});
+        }
+        setState(() {});
+      }
+      print('Now you get all products');
+    });
+  }
+
+  List<Map> allRealEstate = [];
+
+  //get all product function
+  Future<void> getRealEstate() async {
+    allRealEstate = [];
+    await Helper.realEstatesData
         .orderBy('productDate', descending: true)
         .get()
         .then((value) async {
@@ -1234,7 +1381,25 @@ class PostController extends ControllerMVC {
         await ProfileController().getUserInfo(product['productAdmin']['uid']);
     productAdmin = adminInfo;
     setState(() {});
-    print('This product was posted by ${product['productAdmin']}');
+    print('This product was posted by ${product['realEstateAdmin']}');
+    return true;
+  }
+
+  var viewRealEstateId;
+  var realEstate;
+  var realEstateAdmin;
+  //get one page function that using uid of firebase database
+  Future<bool> getSelectedRealEstate(String name) async {
+    name = name.split('/')[name.split('/').length - 1];
+    viewRealEstateId = name;
+    var reuturnValue = await Helper.realEstatesData.doc(viewRealEstateId).get();
+    var value = reuturnValue.data();
+    realEstate = value;
+    var adminInfo = await ProfileController()
+        .getUserInfo(realEstate['realEstateAdmin']['uid']);
+    realEstateAdmin = adminInfo;
+    setState(() {});
+    print('This product was posted by ${realEstate['realEstateAdmin']}');
     return true;
   }
 
@@ -1271,6 +1436,39 @@ class PostController extends ControllerMVC {
     });
   }
 
+  Future<void> realEstateMarkAsSold(String realEstateUid, bool value) async {
+    print(realEstateUid);
+    print(value);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .update({'realEstateMarkAsSold': value}).then((e) async {
+      getRealEstate();
+    });
+  }
+
+  Future<void> realEstateSavePost(String realEstateUid, bool value) async {
+    print(realEstateUid);
+    print(value);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .update({'realEstatePost': value}).then((e) async {
+      getRealEstate();
+    });
+  }
+
+  Future<void> realEstateDelete(String realEstateUid) async {
+    print(realEstateUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .delete()
+        .then((e) async {
+      getRealEstate();
+    });
+  }
+
   Future<void> productHideFromTimeline(String productUid, bool value) async {
     print(productUid);
     await FirebaseFirestore.instance
@@ -1295,23 +1493,54 @@ class PostController extends ControllerMVC {
     await Helper.productsData.doc(productId).update({'productSellState': true});
   }
 
+  Future<void> realEstateHideFromTimeline(
+      String realEstateUid, bool value) async {
+    print(realEstateUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .update({'realEstateTimeline': value}).then((e) async {
+      getRealEstate();
+    });
+  }
+
+  Future<void> realEstateTurnOffCommenting(
+      String realEstateUid, bool value) async {
+    print(realEstateUid);
+    await FirebaseFirestore.instance
+        .collection(Helper.realEstatesField)
+        .doc(realEstateUid)
+        .update({'realEstateOnOffCommenting': value}).then((e) async {
+      getRealEstate();
+    });
+  }
+
+  changeRealEstateSellState(realEstateId) async {
+    await Helper.realEstatesData
+        .doc(realEstateId)
+        .update({'realEstateSellState': true});
+  }
+
   savePost(type, value, privacy, {header = ''}) async {
     Map<String, dynamic> postData = {};
     List followers = [];
 
     Friends friendModel = Friends();
 
-    String friendUserName;
-    friendModel.getFriends(UserManager.userInfo['userName']).then((value1) {
-      print("current username is ${UserManager.userInfo['userName']}");
-      for (var item in friendModel.friends) {
-        friendUserName = item['requester'].toString();
-        if (friendUserName == UserManager.userInfo['userName']) {
-          friendUserName = item['receiver'];
+    try {
+      if (privacy == 'Public' || privacy == 'Friends') {
+        List friends =
+            await friendModel.getFriends(UserManager.userInfo['userName']);
+
+        for (var item in friends) {
+          String friendUserName = item['requester'].toString();
+          if (friendUserName == UserManager.userInfo['userName']) {
+            friendUserName = item['receiver'];
+          }
+          followers.add(friendUserName);
         }
-        followers.add(friendUserName);
-        print("current friendname is $friendUserName");
       }
+      followers.add(UserManager.userInfo['userName']);
       postData = {
         'postAdmin': UserManager.userInfo['uid'],
         'type': type,
@@ -1331,7 +1560,9 @@ class PostController extends ControllerMVC {
       setState(
         () {},
       );
-    });
+    } catch (e) {
+      print(e);
+    }
 
     return true;
   }
@@ -1344,208 +1575,33 @@ class PostController extends ControllerMVC {
 
   getTimelinePost(slide, direction, type, uid) async {
     where = type;
-    var profileSnap, publicSnap, friendSnap, allSnap, eventSnap, groupSnap;
+    var profileSnap, friendSnap;
     List allPosts = [];
     latestTime = DateTime.now();
-    if (type == PostType.profile.index) {
-      if (direction == 0) {
-        if (UserManager.userInfo['uid'] == uid) {
-          profileSnap = await Helper.postCollection
-              .orderBy('postTime', descending: true)
-              .where('postTime', isLessThan: lastTime)
-              .where('postAdmin', isEqualTo: uid)
-              .limit(slide)
-              .get();
-          allPosts = profileSnap.docs;
-        } else {
-          profileSnap = await Helper.postCollection
-              .orderBy('postTime', descending: true)
-              .where('postTime', isLessThan: lastTime)
-              .where('postAdmin', isEqualTo: uid)
-              .where('privacy', isEqualTo: 'Public')
-              .limit(slide)
-              .get();
+    Query<Map<String, dynamic>> baseQuery =
+        Helper.postCollection.orderBy('postTime', descending: true);
 
-          Friends friendModel = Friends();
-          String friendUserName = '';
-          friendModel
-              .getFriends(UserManager.userInfo['userName'])
-              .then((value1) {
-            print("current username is ${UserManager.userInfo['userName']}");
-            for (var item in friendModel.friends) {
-              friendUserName = item['requester'].toString();
-              if (friendUserName == UserManager.userInfo['userName']) {
-                friendUserName = item['receiver'];
-              }
-            }
-          });
-
-          var userinfo = await ProfileController().getUserInfo(uid);
-
-          allPosts = profileSnap.docs;
-          print('profile username is ${userinfo!['userName']}');
-          print('my friend uesrname is $friendUserName');
-          if (friendUserName != '' && userinfo['userName'] == friendUserName) {
-            friendSnap = await Helper.postCollection
-                .orderBy('postTime', descending: true)
-                .where('postTime', isLessThan: lastTime)
-                .where('postAdmin', isEqualTo: uid)
-                .where('privacy', isEqualTo: 'Friends')
-                .limit(10)
-                .get();
-            allPosts = profileSnap.docs + friendSnap.docs;
-            final ids = allPosts.map((e) => e.id).toSet();
-            allPosts.retainWhere((x) => ids.remove(x.id));
-            allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
-          }
-        }
-      } else {
-        if (UserManager.userInfo['uid'] == uid) {
-          profileSnap = await Helper.postCollection
-              .orderBy('postTime', descending: true)
-              .where('postAdmin', isEqualTo: uid)
-              .limit(slide)
-              .get();
-          allPosts = profileSnap.docs;
-        } else {
-          profileSnap = await Helper.postCollection
-              .orderBy('postTime', descending: true)
-              .where('postAdmin', isEqualTo: uid)
-              .where('privacy', isEqualTo: 'Public')
-              .limit(slide)
-              .get();
-
-          Friends friendModel = Friends();
-          String friendUserName = '';
-          var userinfo = await ProfileController().getUserInfo(uid);
-
-          var friendflag = false;
-
-          //profile selected is my friend?
-
-          allPosts = profileSnap.docs;
-          friendModel.friends =
-              await friendModel.getFriends(userinfo!['userName']);
-
-          for (var item in friendModel.friends) {
-            friendUserName = item['requester'].toString();
-
-            if (friendUserName == UserManager.userInfo['userName']) {
-              friendflag = true;
-              break;
-            }
-            if (item['receiver'].toString() ==
-                UserManager.userInfo['userName']) {
-              friendflag = true;
-              break;
-            }
-          }
-
-          if (friendflag) {
-            friendSnap = await Helper.postCollection
-                .orderBy('postTime', descending: true)
-                .where('postAdmin', isEqualTo: uid)
-                .where('privacy', isEqualTo: 'Friends')
-                .limit(slide)
-                .get();
-            allPosts = profileSnap.docs + friendSnap.docs;
-            final ids = allPosts.map((e) => e.id).toSet();
-            allPosts.retainWhere((x) => ids.remove(x.id));
-            allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
-          }
-        }
+    if (type == PostType.timeline.index) {
+      baseQuery = baseQuery.where('followers',
+          arrayContains: UserManager.userInfo['userName'].toString());
+      print(baseQuery);
+    } else if (type == PostType.profile.index) {
+      baseQuery = baseQuery.where('postAdmin', isEqualTo: uid);
+      if (UserManager.userInfo['uid'] != uid) {
+        baseQuery = baseQuery.where('privacy', whereIn: ['Public', 'Friends']);
       }
-    } else if (type == PostType.timeline.index) {
-      if (direction == 0) {
-        //next post
-        profileSnap = await Helper.postCollection
-            .orderBy('postTime', descending: true)
-            .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
-            .where('postTime', isLessThan: lastTime)
-            .limit(slide)
-            .get(); //All my feed
-
-        publicSnap = await Helper.postCollection
-            .where('privacy', isEqualTo: 'Public')
-            .where('followers',
-                arrayContains: UserManager.userInfo['userName'].toString())
-            .where('postTime', isLessThan: lastTime)
-            .orderBy('postTime', descending: true)
-            .limit(slide)
-            .get(); //All post of friends.
-
-        friendSnap = await Helper.postCollection
-            .where('privacy', isEqualTo: 'Friends')
-            .where('followers',
-                arrayContains: UserManager.userInfo['userName'].toString())
-            .where('postTime', isLessThan: lastTime)
-            .orderBy('postTime', descending: true)
-            .limit(slide)
-            .get(); //All post of friends.
-      } else {
-        profileSnap = await Helper.postCollection
-            .orderBy('postTime', descending: true)
-            .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
-            .limit(slide)
-            .get(); //All my feed
-
-        publicSnap = await Helper.postCollection
-            .where('privacy', isEqualTo: 'Public')
-            .where('followers',
-                arrayContains: UserManager.userInfo['userName'].toString())
-            .orderBy('postTime', descending: true)
-            .limit(slide)
-            .get(); //All post of friends.
-
-        friendSnap = await Helper.postCollection
-            .where('privacy', isEqualTo: 'Friends')
-            .where('followers',
-                arrayContains: UserManager.userInfo['userName'].toString())
-            .orderBy('postTime', descending: true)
-            .limit(slide)
-            .get(); //All post of friends.
-      }
-      allPosts = profileSnap.docs + publicSnap.docs + friendSnap.docs;
-      final ids = allPosts.map((e) => e.id).toSet();
-      allPosts.retainWhere((x) => ids.remove(x.id));
-
-      allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
     } else if (type == PostType.event.index) {
-      if (direction == 0) {
-        eventSnap = await Helper.postCollection
-            .orderBy('postTime', descending: true)
-            .where('postTime', isLessThan: lastTime)
-            .where('eventId', isEqualTo: uid)
-            .limit(slide)
-            .get();
-      } else {
-        eventSnap = await Helper.postCollection
-            .orderBy('postTime', descending: true)
-            .where('eventId', isEqualTo: uid)
-            .limit(slide)
-            .get();
-      }
-      allPosts = eventSnap.docs;
+      baseQuery = baseQuery.where('eventId', isEqualTo: uid);
     } else if (type == PostType.group.index) {
-      if (direction == 0) {
-        groupSnap = await Helper.postCollection
-            .orderBy('postTime', descending: true)
-            .where('postTime', isLessThan: lastTime)
-            .where('groupId', isEqualTo: uid)
-            .limit(slide)
-            .get();
-      } else {
-        groupSnap = await Helper.postCollection
-            .orderBy('postTime', descending: true)
-            .where('groupId', isEqualTo: uid)
-            .limit(slide)
-            .get();
-      }
-      allPosts = groupSnap.docs;
+      baseQuery = baseQuery.where('groupId', isEqualTo: uid);
     }
+    if (direction == 0) {
+      baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+    }
+    profileSnap = await baseQuery.limit(slide).get();
 
-    var postData;
-    var adminInfo;
+    allPosts = profileSnap.docs;
+
     var postsBox = [];
     int i = 0;
 
@@ -1560,91 +1616,70 @@ class PostController extends ControllerMVC {
         postsBox = postsGroup;
       }
     }
-    print("allPosts.length is ${allPosts.length}");
-    print("postsBox.length is ${postsBox.length}");
-    print("slide is ${slide}");
+
     int index = 0;
-    if (allPosts.length < slide) slide = allPosts.length;
+    slide = allPosts.length < slide ? allPosts.length : slide;
     while (i < slide) {
       if (direction == -1) {
         index = slide - 1 - i;
       } else {
         index = i;
       }
-      if (allPosts[index]['type'] == 'product') {
-        if (valueSnapHash[allPosts[index]['value']] == null) {
-          var valueSnap =
-              await Helper.productsData.doc(allPosts[index]['value']).get();
-          valueSnapHash[allPosts[index]['value']] = valueSnap;
-        }
-
-        postData = valueSnapHash[allPosts[index]['value']].data();
+      var currentPost = allPosts[index];
+      var postData;
+      if (currentPost['type'] == 'product') {
+        var valueSnap =
+            await Helper.productsData.doc(currentPost['value']).get();
+        postData = valueSnap.data();
       } else {
-        postData = allPosts[index]['value'];
+        postData = currentPost['value'];
       }
 
-      if (adminSnapHash[allPosts[index]['postAdmin']] == null) {
-        var adminSnap =
-            await Helper.userCollection.doc(allPosts[index]['postAdmin']).get();
-        if (adminSnap.data() == null) {
-          i++;
-          continue;
-        }
-        adminSnapHash[allPosts[index]['postAdmin']] = adminSnap;
-      }
+      var adminSnap =
+          await Helper.userCollection.doc(currentPost['postAdmin']).get();
 
-      adminInfo = adminSnapHash[allPosts[index]['postAdmin']].data();
+      var adminInfo = adminSnap.data();
 
       var eachPost = {
-        'id': allPosts[index].id,
+        'id': currentPost.id,
         'data': postData,
-        'type': allPosts[index]['type'],
+        'type': currentPost['type'],
         'adminInfo': adminInfo,
-        'time': allPosts[index]['postTime'],
-        'adminUid': adminSnapHash[allPosts[index]['postAdmin']].id,
-        'privacy': allPosts[index]['privacy'],
-        'header': allPosts[index]['header'],
-        'timeline': allPosts[index]['timeline'],
-        'comment': allPosts[index]['comment']
+        'time': currentPost['postTime'],
+        'adminUid': adminSnap.id,
+        'privacy': currentPost['privacy'],
+        'header': currentPost['header'],
+        'timeline': currentPost['timeline'],
+        'comment': currentPost['comment'],
       };
 
-      print("direction is -----------$direction, slide is -------$slide");
       if (direction == -1) {
         postsBox = [eachPost, ...postsBox];
       } else {
         postsBox.add(eachPost);
       }
-
       i++;
     }
     if (slide == 0) {
       lastTime = latestTime = DateTime.now();
     } else {
       lastTime = allPosts[slide - 1]['postTime'];
-      latestTime = Timestamp(allPosts[0]['postTime'].seconds,
-              allPosts[0]['postTime'].nanoseconds)
-          .toDate();
     }
     if (type == PostType.profile.index) {
       postsProfile = postsBox;
-      print("postsProfile ------------$postsProfile");
     } else if (type == PostType.timeline.index) {
       postsTimeline = postsBox;
-      print("postsTimeline ------------$postsTimeline");
     } else if (type == PostType.event.index) {
-      print("postsEvent ------------$postsEvent");
       postsEvent = postsBox;
     } else if (type == PostType.group.index) {
       postsGroup = postsBox;
-      print("postsGroup ------------$postsGroup");
     }
 
     posts = postsBox;
 
     setState(() {});
 
-    if (slide < 10) return false;
-    return true;
+    return slide >= defaultSlide;
   }
 
   updatePostInfo(uid, value) async {
@@ -2027,6 +2062,7 @@ class PostController extends ControllerMVC {
           .doc(UserManager.userInfo['uid'])
           .update({'checkNotifyTime': serverTimeStamp});
       realNotifi = [];
+      allNotification = [];
       setState(() {});
     } catch (e) {
       print(e);

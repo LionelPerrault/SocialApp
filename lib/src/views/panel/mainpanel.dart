@@ -51,15 +51,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   void initState() {
     add(widget.con);
     con = controller as PostController;
-    _scrollController.addListener(() {
-      double maxScroll = _scrollController.position.maxScrollExtent;
-      double currentScroll = _scrollController.position.pixels;
-      if (maxScroll - currentScroll <= 10) {
-        setState(() {
-          postsFlag = true;
-        });
-      }
-    });
+
     super.initState();
     if (nowTime.hour > 12) {
       time = 1;
@@ -102,7 +94,10 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 20, left: 0),
+      padding: const EdgeInsets.only(
+        top: 20,
+        left: 0,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,6 +107,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
           showDayTimeM
               ? DayTimeM(time: time, username: UserManager.userInfo['fullName'])
               : Container(),
+          const Padding(padding: EdgeInsets.only(bottom: 30)),
           newPostNum <= 0
               ? const SizedBox()
               : ElevatedButton(
@@ -166,28 +162,30 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                   ),
                 )
               : const SizedBox(),
-          con.postsTimeline.isNotEmpty
-              ? SizedBox(
-                  width: 600,
-                  child: Row(
+          SizedBox(
+            width: 600,
+            child: con.postsTimeline.isEmpty
+                ? const SizedBox() // Return an empty SizedBox widget when the list is empty
+                : Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Column(
-                          children: con.postsTimeline
-                              .map((product) => PostCell(
-                                    postInfo: product,
-                                    routerChange: widget.routerChange,
-                                  ))
-                              .toList(),
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: con.postsTimeline.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return PostCell(
+                              postInfo: con.postsTimeline[index],
+                              routerChange: widget.routerChange,
+                            );
+                          },
                         ),
                       )
                     ],
                   ),
-                )
-              : const SizedBox(),
+          ),
           loadingFlagBottom
               ? const SizedBox(
                   width: 50,
@@ -242,6 +240,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     ],
                   ),
                 ),
+          const Padding(padding: EdgeInsets.only(top: 18.0)),
         ],
       ),
     );

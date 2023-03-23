@@ -29,8 +29,16 @@ class AdminUserListState extends mvc.StateMVC<AdminUserList> {
   @override
   void initState() {
     super.initState();
-    employees = getEmployeeData();
+    employees = PeopleController().userList;
     employeeDataSource = EmployeeDataSource(employeeData: employees);
+    getEmployeeData().then((value) {
+      employees = value;
+
+      print("em");
+      print(employees);
+      employeeDataSource = EmployeeDataSource(employeeData: employees);
+      setState(() {});
+    });
   }
 
   bool check1 = false;
@@ -95,51 +103,34 @@ class AdminUserListState extends mvc.StateMVC<AdminUserList> {
     );
   }
 
-  List getEmployeeData() {
-    PeopleController().getUserList();
-    // return PeopleController().userList;
-    return [
-      Employee(
-          10005, 'AAAA', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-      Employee(
-          10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
-    ];
+  Future<List> getEmployeeData() async {
+    await PeopleController().getAllUserList().then((val) {
+      print(PeopleController().userList);
+    });
+
+    return PeopleController().userList;
+    // return [
+    //   Employee(
+    //       10005, 'AAAA', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+    //   Employee(
+    //       10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+    //   Employee(
+    //       10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+    //   Employee(
+    //       10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+    //   Employee(
+    //       10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+    //   Employee(
+    //       10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+    //   Employee(
+    //       10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+    //   Employee(
+    //       10005, 'Martin', 'Developer', '15000', '1005', 'Martin', 'Developer'),
+    // ];
   }
 
   List<GridColumn> _getColumns() {
     return <GridColumn>[
-      GridColumn(
-          columnName: 'ID',
-          columnWidthMode: ColumnWidthMode.lastColumnFill,
-          label: Container(
-              padding: const EdgeInsets.all(8),
-              alignment: Alignment.centerRight,
-              child: const Text(
-                'ID',
-                overflow: TextOverflow.ellipsis,
-              ))),
-      GridColumn(
-          columnName: 'Name',
-          columnWidthMode: ColumnWidthMode.lastColumnFill,
-          label: Container(
-              padding: const EdgeInsets.all(8),
-              alignment: Alignment.centerRight,
-              child: const Text(
-                'Name',
-                overflow: TextOverflow.ellipsis,
-              ))),
       GridColumn(
           columnName: 'Username',
           columnWidthMode: ColumnWidthMode.lastColumnFill,
@@ -151,45 +142,15 @@ class AdminUserListState extends mvc.StateMVC<AdminUserList> {
                 overflow: TextOverflow.ellipsis,
               ))),
       GridColumn(
-          columnName: 'Joined',
+          columnName: 'email',
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           label: Container(
               padding: const EdgeInsets.all(8),
               alignment: Alignment.centerRight,
               child: const Text(
-                'Joined',
+                'Email',
                 overflow: TextOverflow.ellipsis,
               ))),
-      GridColumn(
-          columnName: 'Activated',
-          columnWidthMode: ColumnWidthMode.lastColumnFill,
-          label: Container(
-              padding: const EdgeInsets.all(8),
-              alignment: Alignment.centerRight,
-              child: const Text(
-                'Activated',
-                overflow: TextOverflow.ellipsis,
-              ))),
-      GridColumn(
-          columnName: 'Balance',
-          columnWidthMode: ColumnWidthMode.lastColumnFill,
-          label: Container(
-              padding: const EdgeInsets.all(8),
-              alignment: Alignment.centerRight,
-              child: const Text(
-                'Balance',
-                overflow: TextOverflow.ellipsis,
-              ))),
-      GridColumn(
-          columnName: 'Actions',
-          columnWidthMode: ColumnWidthMode.lastColumnFill,
-          label: Container(
-              padding: const EdgeInsets.all(8),
-              alignment: Alignment.centerRight,
-              child: const Text(
-                'Actions',
-                overflow: TextOverflow.ellipsis,
-              )))
     ];
   }
 
@@ -607,7 +568,7 @@ class AdminUserListState extends mvc.StateMVC<AdminUserList> {
 
 class Employee {
   /// Creates the employee class with required details.
-  Employee(this.id, this.name, this.username, this.joined, this.activated,
+  Employee(this.id, this.name, this.userName, this.joined, this.activated,
       this.balance, this.actions);
 
   /// Id of an employee.
@@ -617,7 +578,7 @@ class Employee {
   final String name;
 
   /// username of an employee.
-  final String username;
+  final String userName;
 
   /// joined of an employee.
   final String joined;
@@ -639,7 +600,6 @@ class EmployeeDataSource extends DataGridSource {
   EmployeeDataSource({required List employeeData}) {
     _employeeData = employeeData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<int>(columnName: 'id', value: e.id),
               DataGridCell<Widget>(
                   columnName: 'name',
                   value: Row(
@@ -653,62 +613,63 @@ class EmployeeDataSource extends DataGridSource {
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 5),
-                        child: Text(e.name),
+                        child: Text(e.userName),
                       )
                     ],
                   )),
-              DataGridCell(columnName: 'username', value: e.username),
-              DataGridCell<String>(columnName: 'joined', value: e.joined),
-              DataGridCell<Widget>(
-                  columnName: 'activated',
-                  value: badges.Badge(
-                    badgeStyle: badges.BadgeStyle(
-                      shape: badges.BadgeShape.square,
-                      badgeColor: Colors.red,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    badgeContent: Text('No'.toString(),
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 13)),
-                  )),
-              DataGridCell<Widget>(
-                  columnName: 'balance',
-                  value: badges.Badge(
-                    badgeStyle: badges.BadgeStyle(
-                      shape: badges.BadgeShape.square,
-                      badgeColor: Colors.teal,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    badgeContent: Text(0.toString(),
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 13)),
-                  )),
-              DataGridCell<Widget>(
-                  columnName: 'actions',
-                  value: Row(children: [
-                    Container(
-                        margin: EdgeInsets.only(left: (5)),
-                        width: 30,
-                        child: IconButton(
-                            onPressed: () {},
-                            iconSize: 20,
-                            icon: Icon(Icons.replay_5_outlined))),
-                    Container(
-                        margin: EdgeInsets.only(left: (5)),
-                        width: 30,
-                        child: IconButton(
-                            onPressed: () {},
-                            iconSize: 20,
-                            icon: Icon(Icons.edit))),
-                    Container(
-                        margin: EdgeInsets.only(left: (5)),
-                        width: 30,
-                        child: IconButton(
-                            onPressed: () {},
-                            iconSize: 20,
-                            color: Colors.red,
-                            icon: Icon(Icons.delete)))
-                  ])),
+              DataGridCell(columnName: 'email', value: e.email),
+
+              // DataGridCell<String>(columnName: 'joined', value: e.joined),
+              // DataGridCell<Widget>(
+              //     columnName: 'activated',
+              //     value: badges.Badge(
+              //       badgeStyle: badges.BadgeStyle(
+              //         shape: badges.BadgeShape.square,
+              //         badgeColor: Colors.red,
+              //         borderRadius: BorderRadius.circular(16),
+              //       ),
+              //       badgeContent: Text('No'.toString(),
+              //           style:
+              //               const TextStyle(color: Colors.white, fontSize: 13)),
+              //     )),
+              // DataGridCell<Widget>(
+              //     columnName: 'balance',
+              //     value: badges.Badge(
+              //       badgeStyle: badges.BadgeStyle(
+              //         shape: badges.BadgeShape.square,
+              //         badgeColor: Colors.teal,
+              //         borderRadius: BorderRadius.circular(16),
+              //       ),
+              //       badgeContent: Text(0.toString(),
+              //           style:
+              //               const TextStyle(color: Colors.white, fontSize: 13)),
+              //     )),
+              // DataGridCell<Widget>(
+              //     columnName: 'actions',
+              //     value: Row(children: [
+              //       Container(
+              //           margin: EdgeInsets.only(left: (5)),
+              //           width: 30,
+              //           child: IconButton(
+              //               onPressed: () {},
+              //               iconSize: 20,
+              //               icon: Icon(Icons.replay_5_outlined))),
+              //       Container(
+              //           margin: EdgeInsets.only(left: (5)),
+              //           width: 30,
+              //           child: IconButton(
+              //               onPressed: () {},
+              //               iconSize: 20,
+              //               icon: Icon(Icons.edit))),
+              //       Container(
+              //           margin: EdgeInsets.only(left: (5)),
+              //           width: 30,
+              //           child: IconButton(
+              //               onPressed: () {},
+              //               iconSize: 20,
+              //               color: Colors.red,
+              //               icon: Icon(Icons.delete)))
+              //     ])),
             ]))
         .toList();
   }

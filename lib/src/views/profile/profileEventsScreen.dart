@@ -68,23 +68,26 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      mainTabs(),
-      isMyFriend() || con.viewProfileUid == UserManager.userInfo['uid']
-          ? likesData()
-          : Text("You can see the friends data only if you are friends.")
-    ]);
+    return Container(
+      padding: const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
+      child: Column(children: [
+        mainTabs(),
+        isMyFriend() || con.viewProfileUid == UserManager.userInfo['uid']
+            ? likesData()
+            : Text("You can see the friends data only if you are friends.")
+      ]),
+    );
   }
 
   Widget mainTabs() {
     return Container(
       width: SizeConfig(context).screenWidth,
-      height: 70,
-      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: 100,
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),
         borderRadius: BorderRadius.circular(3),
       ),
+      margin: const EdgeInsets.only(left: 10),
       alignment: Alignment.topLeft,
       child: Column(
         children: [
