@@ -158,7 +158,7 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
                             ? 4
                             : screenWidth > 600
                                 ? 3
-                                : screenWidth > 450
+                                : screenWidth > 210
                                     ? 2
                                     : 1,
                         childAspectRatio: 2 / 3,
