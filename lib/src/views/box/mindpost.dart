@@ -467,7 +467,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               ],
             ),
           ),
-          Divider(color: Color.fromARGB(99, 83, 79, 79), thickness: 0.4),
+          Divider(color: Color.fromARGB(99, 83, 79, 79), thickness: 0.3),
           Offstage(
             offstage: !emojiShowing,
             child: SizedBox(

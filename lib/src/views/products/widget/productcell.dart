@@ -442,35 +442,30 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                     Row(
                                       children: [
                                         RichText(
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 10),
-                                              children: <TextSpan>[
-                                                TextSpan(
-                                                    text: postTime,
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 10,
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () {
-                                                            widget
-                                                                .routerChange({
-                                                              'router':
-                                                                  RouteNames
-                                                                      .products,
-                                                              'subRouter':
-                                                                  productId,
-                                                            });
-                                                          })
-                                              ]),
+                                          text: TextSpan(children: <TextSpan>[
+                                            TextSpan(
+                                                text: postTime,
+                                                style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 10,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        widget.routerChange({
+                                                          'router': RouteNames
+                                                              .products,
+                                                          'subRouter':
+                                                              productId,
+                                                        });
+                                                      })
+                                          ]),
                                         ),
                                         const Text(' - '),
                                         const Icon(
                                           Icons.language,
+                                          color: Colors.grey,
                                           size: 12,
                                         )
                                       ],

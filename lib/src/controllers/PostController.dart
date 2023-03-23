@@ -1637,9 +1637,7 @@ class PostController extends ControllerMVC {
 
       var adminSnap =
           await Helper.userCollection.doc(currentPost['postAdmin']).get();
-      if (adminSnap.data() == null) {
-        continue;
-      }
+
       var adminInfo = adminSnap.data();
 
       var eachPost = {

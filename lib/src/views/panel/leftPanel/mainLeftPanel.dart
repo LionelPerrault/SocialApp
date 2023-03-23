@@ -187,7 +187,7 @@ class MainLeftPanel extends StatelessWidget {
             },
             label: 'Real estate',
             image: SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=cd9adfd0-3db3-4d46-a5fa-7ce8f99016bf',
+              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Freal_estate.svg?alt=media&token=70d45887-6f23-456d-8396-d38287ae8d9e',
               width: 21,
             ),
           ),

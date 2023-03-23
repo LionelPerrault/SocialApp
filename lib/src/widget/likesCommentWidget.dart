@@ -199,7 +199,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
             child: Stack(
               children: [
                 Container(
@@ -239,7 +238,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       const Flexible(fit: FlexFit.tight, child: SizedBox()),
                       const Icon(
                         FontAwesomeIcons.comment,
-                        size: 15,
+                        size: 13,
                       ),
                       const Padding(padding: EdgeInsets.only(left: 5)),
                       InkWell(
@@ -248,9 +247,19 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             setState(() {});
                           },
                           child: Text(
-                              '${allComment != null ? allComment.length : 0} comments'))
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xff909090),
+                              ),
+                              '${allComment != null ? allComment.length : 0} comments')),
+                      const Padding(padding: EdgeInsets.only(right: 15)),
                     ],
                   ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 40),
+                  child: const Divider(
+                      color: Color.fromARGB(99, 83, 79, 79), thickness: 0.1),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 50),

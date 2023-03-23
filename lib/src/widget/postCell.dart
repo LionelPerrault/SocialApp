@@ -375,239 +375,258 @@ class PostCellState extends mvc.StateMVC<PostCell> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          widget.postInfo['adminInfo']['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  widget.postInfo['adminInfo']['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
-                          const Padding(padding: EdgeInsets.only(left: 10)),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                      width: SizeConfig(context).screenWidth <
-                                              600
-                                          ? SizeConfig(context).screenWidth -
-                                              150
-                                          : 450, // 1st set height
-                                      child: RichText(
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 10),
-                                              children: <TextSpan>[
-                                            TextSpan(
-                                                text:
-                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Row(
+                          children: [
+                            widget.postInfo['adminInfo']['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                    widget.postInfo['adminInfo']['avatar'],
+                                  ))
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                            const Padding(padding: EdgeInsets.only(left: 10)),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                        width: SizeConfig(context).screenWidth <
+                                                600
+                                            ? SizeConfig(context).screenWidth -
+                                                150
+                                            : 450, // 1st set height
+                                        child: RichText(
+                                            text: TextSpan(
                                                 style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15),
+                                                    color: Colors.grey,
+                                                    fontSize: 10),
+                                                children: <TextSpan>[
+                                              TextSpan(
+                                                  text:
+                                                      '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 15),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          ProfileController()
+                                                              .updateProfile(widget
+                                                                          .postInfo[
+                                                                      'adminInfo']
+                                                                  ['userName']);
+                                                          widget.routerChange({
+                                                            'router': RouteNames
+                                                                .profile,
+                                                            'subRouter': widget
+                                                                        .postInfo[
+                                                                    'adminInfo']
+                                                                ['userName'],
+                                                          });
+                                                        }),
+                                              TextSpan(
+                                                  text:
+                                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      overflow: TextOverflow
+                                                          .ellipsis))
+                                            ]))),
+                                    Visibility(
+                                      visible: !widget.isSharedContent,
+                                      child: Container(
+                                        padding: EdgeInsets.only(right: 9.0),
+                                        child: PopupMenuButton(
+                                          onSelected: (value) {
+                                            popUpFunction(value);
+                                          },
+                                          child: const Icon(
+                                            Icons.arrow_drop_down,
+                                            size: 18,
+                                          ),
+                                          itemBuilder: (BuildContext bc) {
+                                            return popupMenuItem
+                                                .map(
+                                                  (e) => PopupMenuItem(
+                                                    value: e['value'],
+                                                    child: Row(
+                                                      children: [
+                                                        const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 5.0)),
+                                                        Icon(e['icon']),
+                                                        const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left:
+                                                                        12.0)),
+                                                        Text(
+                                                          e['value'] ==
+                                                                  'timeline'
+                                                              ? widget.postInfo[
+                                                                      'timeline']
+                                                                  ? e['label']
+                                                                  : e['labelE']
+                                                              : e['value'] ==
+                                                                      'comment'
+                                                                  ? widget.postInfo[
+                                                                          'comment']
+                                                                      ? e['label']
+                                                                      : e['labelE']
+                                                                  : e['label'],
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          90,
+                                                                          90,
+                                                                          90),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                  fontSize: 12),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList();
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Padding(padding: EdgeInsets.only(top: 3)),
+                                Row(
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 10),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                                // text: Helper.formatDate(
+                                                //     widget.postInfo['time']),
+                                                text: postTime,
+                                                style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 10),
                                                 recognizer:
                                                     TapGestureRecognizer()
                                                       ..onTap = () {
-                                                        ProfileController()
-                                                            .updateProfile(widget
-                                                                        .postInfo[
-                                                                    'adminInfo']
-                                                                ['userName']);
                                                         widget.routerChange({
-                                                          'router': RouteNames
-                                                              .profile,
+                                                          'router':
+                                                              RouteNames.posts,
                                                           'subRouter': widget
-                                                                      .postInfo[
-                                                                  'adminInfo']
-                                                              ['userName'],
+                                                              .postInfo['id'],
                                                         });
-                                                      }),
-                                            TextSpan(
-                                                text:
-                                                    ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
-                                                style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14,
-                                                    overflow:
-                                                        TextOverflow.ellipsis))
-                                          ]))),
-                                  Visibility(
-                                    visible: !widget.isSharedContent,
-                                    child: Container(
-                                      padding: EdgeInsets.only(right: 9.0),
-                                      child: PopupMenuButton(
-                                        onSelected: (value) {
-                                          popUpFunction(value);
-                                        },
-                                        child: const Icon(
-                                          Icons.arrow_drop_down,
-                                          size: 18,
-                                        ),
-                                        itemBuilder: (BuildContext bc) {
-                                          return popupMenuItem
-                                              .map(
-                                                (e) => PopupMenuItem(
-                                                  value: e['value'],
-                                                  child: Row(
-                                                    children: [
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5.0)),
-                                                      Icon(e['icon']),
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 12.0)),
-                                                      Text(
-                                                        e['value'] == 'timeline'
-                                                            ? widget.postInfo[
-                                                                    'timeline']
-                                                                ? e['label']
-                                                                : e['labelE']
-                                                            : e['value'] ==
-                                                                    'comment'
-                                                                ? widget.postInfo[
-                                                                        'comment']
-                                                                    ? e['label']
-                                                                    : e['labelE']
-                                                                : e['label'],
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    90,
-                                                                    90,
-                                                                    90),
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            fontSize: 12),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                              .toList();
-                                        },
-                                      ),
+                                                      })
+                                          ]),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const Padding(padding: EdgeInsets.only(top: 3)),
-                              Row(
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              // text: Helper.formatDate(
-                                              //     widget.postInfo['time']),
-                                              text: postTime,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 10),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router': RouteNames.posts,
-                                                    'subRouter':
-                                                        widget.postInfo['id'],
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  const Text(' - '),
-                                  IgnorePointer(
-                                      ignoring: (widget.postInfo['adminUid'] !=
-                                          UserManager.userInfo['uid']),
-                                      child: PopupMenuButton(
-                                        onSelected: (value) {
-                                          privacy = value;
-                                          setState(() {});
-                                          upDatePostInfo(
-                                              {'privacy': value['label']});
-                                        },
-                                        child: Icon(
-                                          privacy['icon'],
-                                          size: 18,
-                                        ),
-                                        itemBuilder: (BuildContext bc) {
-                                          return privacyMenuItem
-                                              .map(
-                                                (e) => PopupMenuItem(
-                                                  value: {
-                                                    'label': e['label'],
-                                                    'icon': e['icon'],
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5.0)),
-                                                      Icon(e['icon']),
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 12.0)),
-                                                      Text(
-                                                        e['label'],
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    90,
-                                                                    90,
-                                                                    90),
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            fontSize: 12),
-                                                      )
-                                                    ],
+                                    const Text(' - '),
+                                    IgnorePointer(
+                                        ignoring:
+                                            (widget.postInfo['adminUid'] !=
+                                                UserManager.userInfo['uid']),
+                                        child: PopupMenuButton(
+                                          onSelected: (value) {
+                                            privacy = value;
+                                            setState(() {});
+                                            upDatePostInfo(
+                                                {'privacy': value['label']});
+                                          },
+                                          child: Icon(
+                                            privacy['icon'],
+                                            color: Colors.grey,
+                                            size: 18,
+                                          ),
+                                          itemBuilder: (BuildContext bc) {
+                                            return privacyMenuItem
+                                                .map(
+                                                  (e) => PopupMenuItem(
+                                                    value: {
+                                                      'label': e['label'],
+                                                      'icon': e['icon'],
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 5.0)),
+                                                        Icon(e['icon']),
+                                                        const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left:
+                                                                        12.0)),
+                                                        Text(
+                                                          e['label'],
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          90,
+                                                                          90,
+                                                                          90),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                  fontSize: 12),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              )
-                                              .toList();
-                                        },
-                                      )),
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
+                                                )
+                                                .toList();
+                                          },
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                       const Padding(padding: EdgeInsets.only(top: 20)),
-                      editShow
-                          ? editPost()
-                          : Text(
-                              widget.postInfo['header'],
-                              style: const TextStyle(
-                                fontSize: 20,
-                              ),
-                              overflow: TextOverflow.clip,
-                            ),
-                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: editShow
+                            ? editPost()
+                            : widget.postInfo['header'].isNotEmpty
+                                ? Text(
+                                    widget.postInfo['header'],
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                    overflow: TextOverflow.clip,
+                                  )
+                                : const SizedBox(),
+                      ),
                       Row(
                         children: [
                           for (var item in widget.postInfo['data'])
                             Expanded(
                               child: Container(
-                                height: 250,
+                                height: 350,
+                                color: Color(0xfff5f5f5),
                                 child: Image.network(item['url'],
-                                    fit: BoxFit.cover),
+                                    fit: BoxFit.fitHeight),
                               ),
                             )
                         ],
@@ -615,7 +634,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     ],
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 30)),
                 Visibility(
                   visible: !widget.isSharedContent,
                   child: LikesCommentScreen(
@@ -764,26 +782,22 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                               Row(
                                 children: [
                                   RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              // text: Helper.formatDate(
-                                              //     widget.postInfo['time']),
-                                              text: postTime,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 10),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router': RouteNames.posts,
-                                                    'subRouter':
-                                                        widget.postInfo['id'],
-                                                  });
-                                                })
-                                        ]),
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                          // text: Helper.formatDate(
+                                          //     widget.postInfo['time']),
+                                          text: postTime,
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 10),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              widget.routerChange({
+                                                'router': RouteNames.posts,
+                                                'subRouter':
+                                                    widget.postInfo['id'],
+                                              });
+                                            })
+                                    ]),
                                   ),
                                   const Text(' - '),
                                   IgnorePointer(
@@ -798,6 +812,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       },
                                       child: Icon(
                                         privacy['icon'],
+                                        color: Colors.grey,
                                         size: 18,
                                       ),
                                       itemBuilder: (BuildContext bc) {
@@ -1024,26 +1039,22 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                               Row(
                                 children: [
                                   RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              // text: Helper.formatDate(
-                                              //     widget.postInfo['time']),
-                                              text: postTime,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 10),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router': RouteNames.posts,
-                                                    'subRouter':
-                                                        widget.postInfo['id'],
-                                                  });
-                                                })
-                                        ]),
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                          // text: Helper.formatDate(
+                                          //     widget.postInfo['time']),
+                                          text: postTime,
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 10),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              widget.routerChange({
+                                                'router': RouteNames.posts,
+                                                'subRouter':
+                                                    widget.postInfo['id'],
+                                              });
+                                            })
+                                    ]),
                                   ),
                                   const Text(' - '),
                                   IgnorePointer(
@@ -1058,6 +1069,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       },
                                       child: Icon(
                                         privacy['icon'],
+                                        color: Colors.grey,
                                         size: 18,
                                       ),
                                       itemBuilder: (BuildContext bc) {
@@ -1288,26 +1300,22 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                               Row(
                                 children: [
                                   RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              // text: Helper.formatDate(
-                                              //     widget.postInfo['time']),
-                                              text: postTime,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 10),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router': RouteNames.posts,
-                                                    'subRouter':
-                                                        widget.postInfo['id'],
-                                                  });
-                                                })
-                                        ]),
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                          // text: Helper.formatDate(
+                                          //     widget.postInfo['time']),
+                                          text: postTime,
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 10),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              widget.routerChange({
+                                                'router': RouteNames.posts,
+                                                'subRouter':
+                                                    widget.postInfo['id'],
+                                              });
+                                            })
+                                    ]),
                                   ),
                                   const Text(' - '),
                                   IgnorePointer(
@@ -1322,6 +1330,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       },
                                       child: Icon(
                                         privacy['icon'],
+                                        color: Colors.grey,
                                         size: 18,
                                       ),
                                       itemBuilder: (BuildContext bc) {
@@ -1561,7 +1570,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               //     widget.postInfo['time']),
                                               text: postTime,
                                               style: const TextStyle(
-                                                  color: Colors.black,
+                                                  color: Colors.grey,
                                                   fontSize: 10),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
@@ -1586,6 +1595,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       },
                                       child: Icon(
                                         privacy['icon'],
+                                        color: Colors.grey,
                                         size: 18,
                                       ),
                                       itemBuilder: (BuildContext bc) {
@@ -1796,28 +1806,25 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                               Row(
                                 children: [
                                   RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text: postTime,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 10),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router': RouteNames.posts,
-                                                    'subRouter':
-                                                        widget.postInfo['id'],
-                                                  });
-                                                })
-                                        ]),
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                          text: postTime,
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 10),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              widget.routerChange({
+                                                'router': RouteNames.posts,
+                                                'subRouter':
+                                                    widget.postInfo['id'],
+                                              });
+                                            })
+                                    ]),
                                   ),
                                   const Text(' - '),
                                   const Icon(
                                     Icons.location_on,
+                                    color: Colors.grey,
                                     size: 12,
                                   ),
                                   Text(
@@ -2071,7 +2078,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               //     widget.postInfo['time']),
                                               text: postTime,
                                               style: const TextStyle(
-                                                  color: Colors.black,
+                                                  color: Colors.grey,
                                                   fontSize: 10),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
@@ -2096,6 +2103,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                       },
                                       child: Icon(
                                         privacy['icon'],
+                                        color: Colors.grey,
                                         size: 18,
                                       ),
                                       itemBuilder: (BuildContext bc) {
