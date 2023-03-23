@@ -125,17 +125,20 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  postCon.allNotification[index]['userName'],
+                                  postCon.allNotification[index]['userName'] ??
+                                      "",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10),
                                 ),
-                                Text(postCon.allNotification[index]['text'],
+                                Text(
+                                    postCon.allNotification[index]['text'] ??
+                                        "",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 10)),
                                 Text(
-                                  postCon.allNotification[index]['date'],
+                                  postCon.allNotification[index]['date'] ?? "",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.normal,
                                       fontSize: 8),

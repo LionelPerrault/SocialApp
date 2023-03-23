@@ -2062,6 +2062,7 @@ class PostController extends ControllerMVC {
           .doc(UserManager.userInfo['uid'])
           .update({'checkNotifyTime': serverTimeStamp});
       realNotifi = [];
+      allNotification = [];
       setState(() {});
     } catch (e) {
       print(e);

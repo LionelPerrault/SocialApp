@@ -136,6 +136,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
+        var exist = allNotifi[i]['userList']
+            .firstWhere((data) => data == UserManager.userInfo['uid']);
         if (tsNT > usercheckTime) {
           var addData = {};
           if (adminUid != UserManager.userInfo['uid'] &&
