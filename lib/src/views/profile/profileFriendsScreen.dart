@@ -370,13 +370,15 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                         friendAvatar != '' ? friendAvatar : Helper.avatar),
                     fit: BoxFit.cover,
                   ),
-                  color: const Color.fromARGB(255, 150, 99, 99),
+                  color: Color.fromARGB(255, 192, 124, 124),
                   borderRadius: BorderRadius.circular(60),
                   border: Border.all(color: Colors.grey)),
             ),
             onTap: () {
-              widget.routerChangeProile(
+              ProfileController().updateProfile(friendUserName);
+              () => widget.routerChangeProile(
                   {'router': RouteNames.profile, 'subRouter': friendUserName});
+              setState(() {});
             },
           ),
         ],
