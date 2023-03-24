@@ -119,18 +119,42 @@ class ProfileAvatarandTabScreenState extends mvc
               : Image.network(con.profile_cover, fit: BoxFit.cover),
         ),
         if (UserManager.userInfo['userName'] == con.userData['userName'])
-          Container(
-              alignment: Alignment.topLeft,
-              margin: const EdgeInsets.only(left: 50, top: 30),
-              child: GestureDetector(
-                onTap: () {
-                  uploadImage('profile_cover');
-                },
-                child: const Icon(
-                  Icons.photo_camera,
-                  size: 25,
-                ),
-              )),
+          kIsWeb
+              ? Container(
+                  alignment: Alignment.topLeft,
+                  margin: const EdgeInsets.only(left: 50, top: 30),
+                  child: GestureDetector(
+                    onTap: () {
+                      uploadImage('profile_cover');
+                    },
+                    child: const Icon(
+                      Icons.photo_camera,
+                      size: 25,
+                    ),
+                  ))
+              : Container(
+                  alignment: Alignment.topLeft,
+                  margin: const EdgeInsets.only(left: 50, top: 30),
+                  child: PopupMenuButton(
+                      onSelected: (value) {
+                        _onMenuItemSelected(value, 'profile_cover');
+                      },
+                      child: const Icon(Icons.camera_enhance_rounded,
+                          color: Colors.black, size: 16.0),
+                      itemBuilder: (context) => [
+                            const PopupMenuItem(
+                              value: 1,
+                              child: Text(
+                                'Camera',
+                              ),
+                            ),
+                            const PopupMenuItem(
+                              value: 2,
+                              child: Text(
+                                "Gallery",
+                              ),
+                            )
+                          ])),
         Container(
           width: SizeConfig(context).screenWidth,
           padding: const EdgeInsets.only(left: 30),
