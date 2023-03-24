@@ -969,10 +969,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                               Text(
                                 e['label'],
                                 style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
                                     color: Color.fromARGB(255, 90, 90, 90),
                                     fontFamily: 'var(--body-font-family)',
                                     fontWeight: FontWeight.w900,
-                                    fontSize: 15),
+                                    fontSize: 14),
                               )
                             ],
                           ),
@@ -1004,16 +1005,17 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Padding(
-                                      padding: EdgeInsets.only(left: 30)),
+                                      padding: EdgeInsets.only(left: 0)),
                                   Text(
                                     subActivity == ''
                                         ? 'How are you feeling?'
                                         : subActivity,
                                     style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
                                       fontSize: 14,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -1042,12 +1044,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                           Text(
                                             e['label'],
                                             style: const TextStyle(
+                                                overflow: TextOverflow.ellipsis,
                                                 color: Color.fromARGB(
                                                     255, 90, 90, 90),
                                                 fontFamily:
                                                     'var(--body-font-family)',
                                                 fontWeight: FontWeight.w900,
-                                                fontSize: 15),
+                                                fontSize: 14),
                                           )
                                         ],
                                       ),
@@ -1067,7 +1070,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                             decoration: InputDecoration(
                               hintText: subActivityLabel,
                               hintStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
+                                  fontWeight: FontWeight.bold, fontSize: 14),
                               contentPadding:
                                   const EdgeInsets.only(top: 10, left: 10),
                               border: const OutlineInputBorder(
