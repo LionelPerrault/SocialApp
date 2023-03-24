@@ -1635,10 +1635,17 @@ class PostController extends ControllerMVC {
         postData = currentPost['value'];
       }
 
-      var adminSnap =
-          await Helper.userCollection.doc(currentPost['postAdmin']).get();
+      var adminInfo;
+      if (UserManager.userInfo['uid'] == currentPost['postAdmin']) {
+        adminInfo = UserManager.userInfo;
+      } else {
+        adminInfo =
+            await ProfileController().getUserInfo(currentPost['postAdmin']);
+      }
+      // var adminSnap =
+      //     await Helper.userCollection.doc(currentPost['postAdmin']).get();
 
-      var adminInfo = adminSnap.data();
+      // var adminInfo = adminSnap.data();
 
       var eachPost = {
         'id': currentPost.id,
@@ -1646,7 +1653,7 @@ class PostController extends ControllerMVC {
         'type': currentPost['type'],
         'adminInfo': adminInfo,
         'time': currentPost['postTime'],
-        'adminUid': adminSnap.id,
+        'adminUid': currentPost['postAdmin'],
         'privacy': currentPost['privacy'],
         'header': currentPost['header'],
         'timeline': currentPost['timeline'],
@@ -1728,7 +1735,7 @@ class PostController extends ControllerMVC {
       'type': postData['type'],
       'adminInfo': adminInfo,
       'time': postData['postTime'],
-      'adminUid': adminSnap.id,
+      'adminUid': postData['postAdmin'],
       'privacy': postData['privacy'],
       'header': postData['header'],
       'timeline': postData['timeline'],

@@ -83,7 +83,9 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
   }
 
   Future<void> getData() async {
-    if (!mounted) return;
+    // if (!mounted) return;
+
+    print("widget.data ============${widget.data}");
     widget.data['type'] = 'realestate';
 
     realEstate = widget.data['data'];
@@ -276,6 +278,11 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
   }
 
   Widget realEstateWidget() {
+    print("estateadmin =======$realEstateAdmin");
+    print("widget.data====== ${widget.data}");
+    print(
+        "widget.data['data']['realestateadmin'['uid'] ====== ${widget.data["data"]["realEstateAdmin"]["uid"]}");
+    print("estate ======$realEstate");
     return Row(
       children: [
         Expanded(

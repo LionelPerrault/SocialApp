@@ -15,6 +15,8 @@ import 'package:shnatter/src/widget/audioPlayer.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
+import '../views/realEstate/widget/realEstateCell.dart';
+
 class PostCell extends StatefulWidget {
   PostCell({
     super.key,
@@ -266,9 +268,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       postTime = '';
     }
 
-    privacy = privacyMenuItem
-        .where((element) => element['label'] == widget.postInfo['privacy'])
-        .toList()[0];
+    if (widget.postInfo.containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) => element['label'] == widget.postInfo['privacy'])
+          .toList()[0];
+    } else if (widget.postInfo['data'].containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) =>
+              element['label'] == widget.postInfo['data']['privacy'])
+          .toList()[0];
+    } else {
+      privacy = privacyMenuItem[0];
+    }
+
     if (!widget.isSharedContent) {
       if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
         //  privacyMenuItem = [];
@@ -325,6 +337,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget total() {
+    print("post[type] = ===${widget.postInfo['type']}");
     switch (widget.postInfo['type']) {
       case 'photo':
         return picturePostCell();
@@ -338,6 +351,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         return audioPostCell();
       case 'product':
         return ProductCell(
+            data: widget.postInfo,
+            isShared: widget.isSharedContent,
+            routerChange: widget.routerChange);
+      case 'realestate':
+        return RealEstateCell(
             data: widget.postInfo,
             isShared: widget.isSharedContent,
             routerChange: widget.routerChange);
@@ -892,6 +910,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
   Widget sharePostCell() {
     print("share =============${widget.sharedPost}");
+    print("pstInfo =============${widget.postInfo}");
     return Row(
       children: [
         Expanded(
@@ -968,7 +987,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                       }),
                                             TextSpan(
                                                 text:
-                                                    'shared ${widget.postInfo['data']!['adminInfo']!['firstName']} ${widget.postInfo['data']!['adminInfo']!['lastName']} \'s ${widget.postInfo['data']['type'] == 'photo' || widget.postInfo['data']['type'] == 'audio' || widget.postInfo['data']['type'] == 'poll' || widget.postInfo['data']['type'] == 'product' ? widget.postInfo['data']['type'] : 'Post'}',
+                                                    'shared ${widget.sharedPost!['adminInfo']!['firstName']} ${widget.sharedPost!['adminInfo']!['lastName']} \'s ${widget.sharedPost['type'] == 'photo' || widget.sharedPost['type'] == 'audio' || widget.sharedPost['type'] == 'poll' || widget.sharedPost['type'] == 'product' || widget.sharedPost['type'] == 'realestate' ? widget.sharedPost['type'] : 'Post'}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
