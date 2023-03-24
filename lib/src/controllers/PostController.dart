@@ -1584,24 +1584,43 @@ class PostController extends ControllerMVC {
     if (type == PostType.timeline.index) {
       baseQuery = baseQuery.where('followers',
           arrayContains: UserManager.userInfo['userName'].toString());
-      print(baseQuery);
-    } else if (type == PostType.profile.index) {
-      baseQuery = baseQuery.where('postAdmin', isEqualTo: uid);
-      if (UserManager.userInfo['uid'] != uid) {
-        baseQuery = baseQuery.where('privacy', whereIn: ['Public', 'Friends']);
+      baseQuery = baseQuery.where('privacy', whereIn: ['Public', 'Friends']);
+      if (direction == 0) {
+        baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
       }
-    } else if (type == PostType.event.index) {
-      baseQuery = baseQuery.where('eventId', isEqualTo: uid);
-    } else if (type == PostType.group.index) {
-      baseQuery = baseQuery.where('groupId', isEqualTo: uid);
-    }
-    if (direction == 0) {
-      baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
-    }
-    profileSnap = await baseQuery.limit(slide).get();
+      friendSnap = await baseQuery.limit(slide).get();
 
-    allPosts = profileSnap.docs;
+      Query<Map<String, dynamic>> profileQuery =
+          Helper.postCollection.orderBy('postTime', descending: true);
 
+      profileQuery = profileQuery
+          .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
+          .where('privacy', isEqualTo: 'Only Me');
+      if (direction == 0) {
+        profileQuery = profileQuery.where('postTime', isLessThan: lastTime);
+      }
+      profileSnap = await profileQuery.limit(slide).get();
+      allPosts = friendSnap.docs + profileSnap.docs;
+      allPosts.sort((b, a) => a['postTime'].compareTo(b['postTime']));
+    } else {
+      if (type == PostType.profile.index) {
+        baseQuery = baseQuery.where('postAdmin', isEqualTo: uid);
+        if (UserManager.userInfo['uid'] != uid) {
+          baseQuery =
+              baseQuery.where('privacy', whereIn: ['Public', 'Friends']);
+        }
+      } else if (type == PostType.event.index) {
+        baseQuery = baseQuery.where('eventId', isEqualTo: uid);
+      } else if (type == PostType.group.index) {
+        baseQuery = baseQuery.where('groupId', isEqualTo: uid);
+      }
+      if (direction == 0) {
+        baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+      }
+      profileSnap = await baseQuery.limit(slide).get();
+
+      allPosts = profileSnap.docs;
+    }
     var postsBox = [];
     int i = 0;
 

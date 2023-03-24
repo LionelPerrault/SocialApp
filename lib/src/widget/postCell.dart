@@ -49,7 +49,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       'label': 'Only Me',
     },
   ];
-  Map privacy = {};
 
   List<Map> popupMenuItem = [
     {
@@ -268,19 +267,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       postTime = '';
     }
 
-    if (widget.postInfo.containsKey('privacy')) {
-      privacy = privacyMenuItem
-          .where((element) => element['label'] == widget.postInfo['privacy'])
-          .toList()[0];
-    } else if (widget.postInfo['data'].containsKey('privacy')) {
-      privacy = privacyMenuItem
-          .where((element) =>
-              element['label'] == widget.postInfo['data']['privacy'])
-          .toList()[0];
-    } else {
-      privacy = privacyMenuItem[0];
-    }
-
     if (!widget.isSharedContent) {
       if (widget.postInfo['adminUid'] != UserManager.userInfo['uid']) {
         //  privacyMenuItem = [];
@@ -375,6 +361,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget picturePostCell() {
+    Map privacy = {};
+    if (widget.postInfo.containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) => element['label'] == widget.postInfo['privacy'])
+          .toList()[0];
+    } else if (widget.postInfo['data'].containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) =>
+              element['label'] == widget.postInfo['data']['privacy'])
+          .toList()[0];
+    } else {
+      privacy = privacyMenuItem[0];
+    }
     return Row(
       children: [
         Expanded(
@@ -560,10 +559,21 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                 UserManager.userInfo['uid']),
                                         child: PopupMenuButton(
                                           onSelected: (value) {
-                                            privacy = value;
-                                            setState(() {});
                                             upDatePostInfo(
                                                 {'privacy': value['label']});
+
+                                            if (widget.postInfo
+                                                .containsKey('privacy')) {
+                                              widget.postInfo['privacy'] =
+                                                  value['label'];
+                                            } else if (widget.postInfo['data']
+                                                .containsKey('privacy')) {
+                                              widget.postInfo['data']
+                                                  ['privacy'] = value['label'];
+                                            }
+                                            setState(() {
+                                              privacy = value;
+                                            });
                                           },
                                           child: Icon(
                                             privacy['icon'],
@@ -668,6 +678,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget normalPostCell() {
+    Map privacy = {};
+    if (widget.postInfo.containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) => element['label'] == widget.postInfo['privacy'])
+          .toList()[0];
+    } else if (widget.postInfo['data'].containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) =>
+              element['label'] == widget.postInfo['data']['privacy'])
+          .toList()[0];
+    } else {
+      privacy = privacyMenuItem[0];
+    }
     return Row(
       children: [
         Expanded(
@@ -826,10 +849,20 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         UserManager.userInfo['uid']),
                                     child: PopupMenuButton(
                                       onSelected: (value) {
-                                        privacy = value;
-                                        setState(() {});
                                         upDatePostInfo(
                                             {'privacy': value['label']});
+                                        if (widget.postInfo
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['privacy'] =
+                                              value['label'];
+                                        } else if (widget.postInfo['data']
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['data']['privacy'] =
+                                              value['label'];
+                                        }
+                                        setState(() {
+                                          privacy = value;
+                                        });
                                       },
                                       child: Icon(
                                         privacy['icon'],
@@ -911,6 +944,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   Widget sharePostCell() {
     print("share =============${widget.sharedPost}");
     print("pstInfo =============${widget.postInfo}");
+    Map privacy = {};
+    if (widget.postInfo.containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) => element['label'] == widget.postInfo['privacy'])
+          .toList()[0];
+    } else if (widget.postInfo['data'].containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) =>
+              element['label'] == widget.postInfo['data']['privacy'])
+          .toList()[0];
+    } else {
+      privacy = privacyMenuItem[0];
+    }
     return Row(
       children: [
         Expanded(
@@ -1083,10 +1129,20 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         UserManager.userInfo['uid']),
                                     child: PopupMenuButton(
                                       onSelected: (value) {
-                                        privacy = value;
-                                        setState(() {});
                                         upDatePostInfo(
                                             {'privacy': value['label']});
+                                        if (widget.postInfo
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['privacy'] =
+                                              value['label'];
+                                        } else if (widget.postInfo['data']
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['data']['privacy'] =
+                                              value['label'];
+                                        }
+                                        setState(() {
+                                          privacy = value;
+                                        });
                                       },
                                       child: Icon(
                                         privacy['icon'],
@@ -1172,6 +1228,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget audioPostCell() {
+    Map privacy = {};
+    if (widget.postInfo.containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) => element['label'] == widget.postInfo['privacy'])
+          .toList()[0];
+    } else if (widget.postInfo['data'].containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) =>
+              element['label'] == widget.postInfo['data']['privacy'])
+          .toList()[0];
+    } else {
+      privacy = privacyMenuItem[0];
+    }
     return Row(
       children: [
         Expanded(
@@ -1343,10 +1412,20 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         UserManager.userInfo['uid']),
                                     child: PopupMenuButton(
                                       onSelected: (value) {
-                                        privacy = value;
-                                        setState(() {});
                                         upDatePostInfo(
                                             {'privacy': value['label']});
+                                        if (widget.postInfo
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['privacy'] =
+                                              value['label'];
+                                        } else if (widget.postInfo['data']
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['data']['privacy'] =
+                                              value['label'];
+                                        }
+                                        setState(() {
+                                          privacy = value;
+                                        });
                                       },
                                       child: Icon(
                                         privacy['icon'],
@@ -1431,6 +1510,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget feelingPostCell() {
+    Map privacy = {};
+    if (widget.postInfo.containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) => element['label'] == widget.postInfo['privacy'])
+          .toList()[0];
+    } else if (widget.postInfo['data'].containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) =>
+              element['label'] == widget.postInfo['data']['privacy'])
+          .toList()[0];
+    } else {
+      privacy = privacyMenuItem[0];
+    }
     return Row(
       children: [
         Expanded(
@@ -1607,10 +1699,20 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         UserManager.userInfo['uid']),
                                     child: PopupMenuButton(
                                       onSelected: (value) {
-                                        privacy = value;
-                                        setState(() {});
                                         upDatePostInfo(
                                             {'privacy': value['label']});
+                                        if (widget.postInfo
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['privacy'] =
+                                              value['label'];
+                                        } else if (widget.postInfo['data']
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['data']['privacy'] =
+                                              value['label'];
+                                        }
+                                        setState(() {
+                                          privacy = value;
+                                        });
                                       },
                                       child: Icon(
                                         privacy['icon'],
@@ -1690,6 +1792,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget checkInPostCell() {
+    Map privacy = {};
+    if (widget.postInfo.containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) => element['label'] == widget.postInfo['privacy'])
+          .toList()[0];
+    } else if (widget.postInfo['data'].containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) =>
+              element['label'] == widget.postInfo['data']['privacy'])
+          .toList()[0];
+    } else {
+      privacy = privacyMenuItem[0];
+    }
     return Row(
       children: [
         Expanded(
@@ -1865,10 +1980,20 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         UserManager.userInfo['uid']),
                                     child: PopupMenuButton(
                                       onSelected: (value) {
-                                        privacy = value;
-                                        setState(() {});
                                         upDatePostInfo(
                                             {'privacy': value['label']});
+                                        if (widget.postInfo
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['privacy'] =
+                                              value['label'];
+                                        } else if (widget.postInfo['data']
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['data']['privacy'] =
+                                              value['label'];
+                                        }
+                                        setState(() {
+                                          privacy = value;
+                                        });
                                       },
                                       child: Icon(
                                         privacy['icon'],
@@ -1947,6 +2072,19 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget pollPostCell() {
+    Map privacy = {};
+    if (widget.postInfo.containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) => element['label'] == widget.postInfo['privacy'])
+          .toList()[0];
+    } else if (widget.postInfo['data'].containsKey('privacy')) {
+      privacy = privacyMenuItem
+          .where((element) =>
+              element['label'] == widget.postInfo['data']['privacy'])
+          .toList()[0];
+    } else {
+      privacy = privacyMenuItem[0];
+    }
     return Row(
       children: [
         Expanded(
@@ -2122,10 +2260,20 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         UserManager.userInfo['uid']),
                                     child: PopupMenuButton(
                                       onSelected: (value) {
-                                        privacy = value;
-                                        setState(() {});
                                         upDatePostInfo(
                                             {'privacy': value['label']});
+                                        if (widget.postInfo
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['privacy'] =
+                                              value['label'];
+                                        } else if (widget.postInfo['data']
+                                            .containsKey('privacy')) {
+                                          widget.postInfo['data']['privacy'] =
+                                              value['label'];
+                                        }
+                                        setState(() {
+                                          privacy = value;
+                                        });
                                       },
                                       child: Icon(
                                         privacy['icon'],
