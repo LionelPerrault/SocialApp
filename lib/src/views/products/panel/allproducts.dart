@@ -47,33 +47,7 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
           : 600,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: roundFlag
-                ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsets.only(
-                          top: SizeConfig(context).screenHeight * 2 / 5),
-                      child: const CircularProgressIndicator(
-                        color: Colors.grey,
-                      ),
-                    )
-                  ])
-                : Column(
-                    children: con.allProduct
-                        .where((product) =>
-                            product['data']['productAdmin']['uid'] ==
-                            UserManager.userInfo['uid'])
-                        .map((product) => ProductCell(
-                              data: product,
-                              routerChange: widget.routerChange,
-                            ))
-                        .toList(),
-                  ),
-          ),
-        ],
+        children: <Widget>[],
       ),
     );
   }

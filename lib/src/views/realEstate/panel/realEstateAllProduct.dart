@@ -6,20 +6,21 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../../controllers/PostController.dart';
+import '../widget/marketCell2.dart';
 import '../widget/realEstateCell.dart';
 
 // ignore: must_be_immutable
 class RealEstateAllProduct extends StatefulWidget {
   RealEstateAllProduct({
     Key? key,
-    required this.productCategory,
+    required this.realEstateCategory,
     required this.arrayOption,
     required this.searchValue,
     required this.routerChange,
   })  : con = PostController(),
         super(key: key);
   late PostController con;
-  String productCategory;
+  String realEstateCategory;
   String arrayOption;
   String searchValue;
   Function routerChange;
@@ -41,7 +42,7 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
 
     super.initState();
     getRealEstateNow();
-    if (con.allProduct == []) {
+    if (con.allRealEstate == []) {
       roundFlag = false;
     }
   }
@@ -60,11 +61,8 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.productCategory != 'All') {
-      allRealEstates = con.allRealEstate.toList();
-    } else {
-      allRealEstates = con.allRealEstate;
-    }
+    allRealEstates = con.allRealEstate;
+
     switch (widget.arrayOption) {
       case 'Latest':
         allRealEstates.sort((a, b) => con
@@ -83,8 +81,8 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
       default:
     }
     allRealEstates = allRealEstates
-        .where((product) =>
-            product['data']['realEstateName'].contains(widget.searchValue) ==
+        .where((realEstate) =>
+            realEstate['data']['realEstateName'].contains(widget.searchValue) ==
             true)
         .toList();
     return SizedBox(
@@ -101,7 +99,7 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: allRealEstates
-                        .map((realEstate) => RealEstateCell(
+                        .map((realEstate) => MarketCell2(
                               data: realEstate,
                               routerChange: widget.routerChange,
                             ))
@@ -116,7 +114,7 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
                     crossAxisSpacing: 10.0,
                     primary: false,
                     children: allRealEstates
-                        .map((realEstate) => RealEstateCell(
+                        .map((realEstate) => MarketCell2(
                               data: realEstate,
                               routerChange: widget.routerChange,
                             ))

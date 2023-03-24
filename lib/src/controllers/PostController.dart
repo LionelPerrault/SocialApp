@@ -1348,22 +1348,22 @@ class PostController extends ControllerMVC {
   Future<void> getRealEstate() async {
     allRealEstate = [];
     await Helper.realEstatesData
-        .orderBy('productDate', descending: true)
+        .orderBy('realEstateDate', descending: true)
         .get()
         .then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        var adminInfo =
-            await ProfileController().getUserInfo(data['productAdmin']['uid']);
+        var adminInfo = await ProfileController()
+            .getUserInfo(data['realEstateAdmin']['uid']);
         if (adminInfo != null) {
-          allProduct
+          allRealEstate
               .add({'data': data.data(), 'id': id, 'adminInfo': adminInfo});
         }
         setState(() {});
       }
-      print('Now you get all products');
+      print('Now you get all real estates');
     });
   }
 
@@ -1399,7 +1399,7 @@ class PostController extends ControllerMVC {
         .getUserInfo(realEstate['realEstateAdmin']['uid']);
     realEstateAdmin = adminInfo;
     setState(() {});
-    print('This product was posted by ${realEstate['realEstateAdmin']}');
+    print('This real estate was posted by ${realEstate['realEstateAdmin']}');
     return true;
   }
 
@@ -1690,6 +1690,10 @@ class PostController extends ControllerMVC {
     await Helper.productsData.doc(uid).update(value);
   }
 
+  updateRealEstateInfo(uid, value) async {
+    await Helper.realEstatesData.doc(uid).update(value);
+  }
+
   deletePost(uid) async {
     Helper.postCollection.doc(uid).delete();
   }
@@ -1702,6 +1706,11 @@ class PostController extends ControllerMVC {
 
   deleteProduct(uid) async {
     await Helper.productsData.doc(uid).delete();
+    posts.removeWhere((item) => item['id'] == uid);
+  }
+
+  deleteRealEstate(uid) async {
+    await Helper.realEstatesData.doc(uid).delete();
     posts.removeWhere((item) => item['id'] == uid);
   }
 

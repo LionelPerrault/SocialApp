@@ -5,6 +5,7 @@ import 'package:shnatter/src/views/realEstate/panel/realEstateAllProduct.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
+import '../../widget/createRealEstateWidget.dart';
 
 // ignore: must_be_immutable
 class RealEstateScreen extends StatefulWidget {
@@ -81,7 +82,7 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                           ),
                           const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           Container(
-                            width: 160,
+                            width: 110,
                             alignment: Alignment.center,
                             margin: const EdgeInsets.only(right: 20),
                             child: PopupMenuButton(
@@ -161,7 +162,73 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                                 ];
                               },
                             ),
-                          )
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(3),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 33, 37, 41),
+                              // elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0.0)),
+                              minimumSize: Size(120, 50),
+                              maximumSize: Size(120, 50),
+                            ),
+                            onPressed: () {
+                              (showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                          title: Row(
+                                            children: const [
+                                              Icon(
+                                                Icons
+                                                    .production_quantity_limits_sharp,
+                                                color: Color.fromARGB(
+                                                    255, 33, 150, 243),
+                                              ),
+                                              Text(
+                                                'Add New Real Estate',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontStyle:
+                                                        FontStyle.italic),
+                                              ),
+                                            ],
+                                          ),
+                                          content: CreateRealEstateModal(
+                                            context: context,
+                                            routerChange: widget.routerChange,
+                                          ))));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.real_estate_agent_outlined,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 4)),
+                                SizeConfig(context).screenWidth >
+                                        SizeConfig.smallScreenSize
+                                    ? const Text('Add New',
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold))
+                                    : const Text('Add New',
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold))
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -181,7 +248,7 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 RealEstateAllProduct(
-                  productCategory: category,
+                  realEstateCategory: category,
                   arrayOption: arrayOption,
                   searchValue: searchValue,
                   routerChange: widget.routerChange,

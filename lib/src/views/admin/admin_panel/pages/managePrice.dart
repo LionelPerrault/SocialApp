@@ -82,6 +82,13 @@ class AdminManagePriceState extends mvc.StateMVC<AdminManagePrice> {
             value: adminConfig['priceCreatingProduct'] ?? '',
           ),
           customInput(
+            title: 'Price for creating a real estate',
+            onChange: (value) async {
+              adminConfig['priceCreatingRealEstate'] = value;
+            },
+            value: adminConfig['priceCreatingRealEstate'] ?? '',
+          ),
+          customInput(
             title: 'Price for creating an event',
             onChange: (value) async {
               adminConfig['priceCreatingEvent'] = value;

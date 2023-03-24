@@ -16,6 +16,7 @@ import 'package:shnatter/src/views/profile/profilescreen.dart';
 import 'package:shnatter/src/views/search/searchScreen.dart';
 import 'package:shnatter/src/views/setting/settingsMain.dart';
 
+import '../views/realEstate/panel/realEstateView/realestatescreen.dart';
 import '../views/realEstate/realEstateScreen.dart';
 
 class MainRouter {
@@ -52,6 +53,14 @@ class MainRouter {
               docId: mainRouterValue['subRouter'], routerChange: routerChange);
         } else {
           return ProductsScreen(routerChange: routerChange);
+        }
+      case RouteNames.estates:
+        if (mainRouterValue['subRouter'] != null &&
+            mainRouterValue['subRouter'] != '') {
+          return RealEstateEachScreen(
+              docId: mainRouterValue['subRouter'], routerChange: routerChange);
+        } else {
+          return RealEstateScreen(routerChange: routerChange);
         }
       case RouteNames.posts:
         if (mainRouterValue['subRouter'] != null &&
