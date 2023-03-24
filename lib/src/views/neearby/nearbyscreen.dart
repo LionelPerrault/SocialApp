@@ -312,7 +312,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
         child: SizedBox(
       height: SizeConfig(context).screenHeight - 80,
       child: Stack(children: [
@@ -643,6 +643,11 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
       )
     };
     return GoogleMap(
+      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+        Factory<OneSequenceGestureRecognizer>(
+          () => EagerGestureRecognizer(),
+        ),
+      },
       mapType: MapType.normal,
       initialCameraPosition: searchPoint != null
           ? CameraPosition(
