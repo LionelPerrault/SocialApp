@@ -1,13 +1,19 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/widget/list_text.dart';
+import 'package:path/path.dart' as PPath;
 import '../../controllers/PostController.dart';
 import '../../helpers/helper.dart';
 import '../../utils/size_config.dart';
@@ -40,6 +46,7 @@ class ProfileTimelineScreen extends StatefulWidget {
         super(key: key);
   final ProfileController con;
   late PostController postCon = PostController();
+
   String userName = '';
   Function routerChange;
   @override
@@ -49,6 +56,9 @@ class ProfileTimelineScreen extends StatefulWidget {
 class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  double avatarProgress = 0;
+  double coverProgress = 0;
+  var userCon = UserController();
   // ignore: unused_field
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
@@ -181,6 +191,125 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       itemWidth = width / 7.5;
       setState(() {});
     });
+  }
+
+  Future<void> _onMenuItemSelected(int value, type) async {
+    XFile? pickedFile = await chooseImage(value);
+
+    uploadFile(pickedFile, type);
+  }
+
+  Future<XFile> chooseImage(int value) async {
+    final imagePicker = ImagePicker();
+
+    if (value == 1 && !kIsWeb) {
+      XFile? pickedFile;
+      if (kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      } else {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.camera,
+        );
+      }
+      return pickedFile!;
+    } else {
+      XFile? pickedFile;
+      if (kIsWeb) {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      } else {
+        pickedFile = await imagePicker.pickImage(
+          source: ImageSource.gallery,
+        );
+      }
+      return pickedFile!;
+    }
+  }
+
+  uploadFile(XFile? pickedFile, type) async {
+    final _firebaseStorage = FirebaseStorage.instance;
+    var uploadTask;
+    Reference _reference;
+    try {
+      if (kIsWeb) {
+        //print("read bytes");
+        Uint8List bytes = await pickedFile!.readAsBytes();
+        //print(bytes);
+        _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        uploadTask = _reference.putData(
+          bytes,
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
+      } else {
+        var file = File(pickedFile!.path);
+        //write a code for android or ios
+        _reference = await _firebaseStorage
+            .ref()
+            .child('images/${PPath.basename(pickedFile.path)}');
+        uploadTask = _reference.putFile(file);
+      }
+
+      uploadTask.whenComplete(() async {
+        var downloadUrl = await _reference.getDownloadURL();
+        if (type == 'profile_cover') {
+          FirebaseFirestore.instance
+              .collection(Helper.userField)
+              .doc(UserManager.userInfo['uid'])
+              .update({'profile_cover': downloadUrl}).then((e) async {
+            con.profile_cover = downloadUrl;
+            await Helper.saveJSONPreference(
+                Helper.userField, {...userInfo, 'profile_cover': downloadUrl});
+            setState(() {});
+          });
+        } else {
+          userCon.userAvatar = downloadUrl;
+          await userCon.changeAvatar();
+          setState(() {});
+        }
+      });
+      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            if (type == 'avatar') {
+              avatarProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+            } else {
+              coverProgress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              setState(() {});
+            }
+
+            break;
+          case TaskState.paused:
+            break;
+          case TaskState.canceled:
+            break;
+          case TaskState.error:
+            // Handle unsuccessful uploads
+            break;
+          case TaskState.success:
+            coverProgress = 0;
+            setState(() {});
+            // Handle successful uploads on complete
+            // ...
+            //  var downloadUrl = await _reference.getDownloadURL();
+            break;
+        }
+      });
+    } catch (e) {
+      // print("Exception $e");
+    }
+  }
+
+  uploadImage(type) async {
+    XFile? pickedFile = await chooseImage(2);
+    uploadFile(pickedFile, type);
   }
 
   Widget postColumn() {
@@ -353,8 +482,6 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("conprofileid is ${con.viewProfileUid}");
-    print("userprofileid is ${UserManager.userInfo['uid']}");
     return Container(
       alignment: Alignment.topLeft,
       child: SizeConfig(context).screenWidth < 800
@@ -449,16 +576,16 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     postColumn()
                   ],
                 )
-              : Container(
+              : SizedBox(
                   width: double.infinity,
                   child: Column(
-                    children: [
-                      Padding(padding: const EdgeInsets.only(top: 115)),
+                    children: const [
+                      Padding(padding: EdgeInsets.only(top: 115)),
                       Text(
                         "You can see the friends data only if you are friends.",
                         textAlign: TextAlign.center,
                       ),
-                      Padding(padding: const EdgeInsets.only(top: 30)),
+                      Padding(padding: EdgeInsets.only(top: 30)),
                     ],
                   ),
                 ),
@@ -491,7 +618,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           size: 15,
                         ),
                         const Padding(padding: EdgeInsets.only(left: 5)),
-                        e['add']
+                        e['add'] == true
                             ? Text(e['title'],
                                 style: const TextStyle(
                                     decoration: TextDecoration.lineThrough))
@@ -501,12 +628,19 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                       ],
                     ),
                     onTap: () {
-                      e['route'] != null && !e['add']
-                          ? widget.routerChange({
-                              'router': RouteNames.settings,
-                              'subRouter': e['route'],
-                            })
-                          : () {};
+                      if (e['route'] != null && !e['add']) {
+                        widget.routerChange({
+                          'router': RouteNames.settings,
+                          'subRouter': e['route'],
+                        });
+                      }
+
+                      if (e['title'] == 'Add your profile picture') {
+                        uploadImage('avatar');
+                      }
+                      if (e['title'] == 'Add your profile cover') {
+                        uploadImage('profile_cover');
+                      }
                     },
                   )))
               .toList(),
