@@ -1642,10 +1642,6 @@ class PostController extends ControllerMVC {
         adminInfo =
             await ProfileController().getUserInfo(currentPost['postAdmin']);
       }
-      // var adminSnap =
-      //     await Helper.userCollection.doc(currentPost['postAdmin']).get();
-
-      // var adminInfo = adminSnap.data();
 
       var eachPost = {
         'id': currentPost.id,

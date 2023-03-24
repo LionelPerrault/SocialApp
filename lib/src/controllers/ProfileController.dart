@@ -28,6 +28,7 @@ class ProfileController extends ControllerMVC {
   List<mvc.StateMVC> notifiers = [];
   var resData = {};
   var userInfo = {};
+  Map cachedData = {};
   // ignore: prefer_typing_uninitialized_variables
   var responseData;
   Map<String, dynamic> userData = {};
@@ -107,11 +108,15 @@ class ProfileController extends ControllerMVC {
 
   //get user user info using uid
   Future<Map<String, dynamic>?> getUserInfo(uid) async {
+    if (cachedData.containsKey(uid)) {
+      return cachedData[uid];
+    }
     var getShot = await FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(uid)
         .get();
     var getUser = getShot.data();
+    cachedData[uid] = getUser;
     return getUser;
   }
 }
