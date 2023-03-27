@@ -223,8 +223,8 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
 })
 
 exports.offlineRequest = functions.https.onRequest(async (req,res) => {
-  // cors(req, res, async () => {
-  //   res.set("Access-Control-Allow-Origin", "*");
+  cors(req, res, async () => {
+    res.set("Access-Control-Allow-Origin", "*");
     res.set("Access-Control-Allow-Headers", "Content-Type");
     var userName = req.body.userName
     var snapshot = await admin.firestore().collection('onlineStatus').where('userName','==',userName).get()
@@ -241,7 +241,7 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
     }
 
     res.send('ok')
-  // })
+  })
 })
 
 exports.getusersbyname = functions.https.onRequest(async (req,res) => {
