@@ -41,14 +41,42 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
 
   @override
   Widget build(BuildContext context) {
+    // return Container(
+    //   width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
+    //       ? SizeConfig(context).screenWidth
+    //       : SizeConfig(context).screenWidth - 200,
+    //   height: SizeConfig(context).screenHeight - 120,
+    //   decoration: BoxDecoration(
+    //     color: Colors.black,
+    //     image: DecorationImage(
+    //       image: NetworkImage(widget.docId),
+    //       fit: BoxFit.contain,
+    //     ),
+    //   ),
+    // );
+
     return Container(
+      color: Colors.black,
       width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth
-          : SizeConfig(context).screenWidth - 220,
-      height: SizeConfig(context).screenHeight - 100,
-      child: Image.network(
-        widget.docId,
-        fit: BoxFit.fitWidth,
+          : SizeConfig(context).screenWidth - 200,
+      height: SizeConfig(context).screenHeight - 120,
+      alignment: Alignment.center,
+      child: Container(
+        color: Colors.black,
+        child: Center(
+          child: FittedBox(
+            fit: BoxFit.none,
+            child: LimitedBox(
+              maxWidth:
+                  SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
+                      ? SizeConfig(context).screenWidth
+                      : SizeConfig(context).screenWidth - 200,
+              maxHeight: SizeConfig(context).screenHeight - 120,
+              child: Image.network(widget.docId),
+            ),
+          ),
+        ),
       ),
     );
   }
