@@ -63,14 +63,14 @@ class MainRouter {
         } else {
           return RealEstateScreen(routerChange: routerChange);
         }
-      case RouteNames.photos:
-        if (mainRouterValue['subRouter'] != null &&
-            mainRouterValue['subRouter'] != '') {
-          return PhotoEachScreen(
-              docId: mainRouterValue['subRouter'], routerChange: routerChange);
-        } else {
-          return HomeScreen(routerChange: routerChange);
-        }
+      // case RouteNames.photos:
+      //   if (mainRouterValue['subRouter'] != null &&
+      //       mainRouterValue['subRouter'] != '') {
+      //     return PhotoEachScreen(
+      //         docId: mainRouterValue['subRouter'], routerChange: routerChange);
+      //   } else {
+      //     return HomeScreen(routerChange: routerChange);
+      //   }
       case RouteNames.posts:
         if (mainRouterValue['subRouter'] != null &&
             mainRouterValue['subRouter'] != '') {

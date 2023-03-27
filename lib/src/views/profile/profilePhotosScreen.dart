@@ -14,6 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 import 'package:shnatter/src/views/profile/model/photos.dart';
 
+import '../photoView/photoscreen.dart';
 import 'model/friends.dart';
 
 class ProfilePhotosScreen extends StatefulWidget {
@@ -36,6 +37,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
   Photos photoModel = Photos();
+  Map _focusedIndices = {};
   Friends friendModel = Friends();
   @override
   void initState() {
@@ -47,8 +49,12 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
         .then((value) {
       setState(() {});
     });
+
     photoModel.getPhotos(con.viewProfileUid).then((value) {
       setState(() {});
+      for (int i = 0; i < photoModel.photos.length; i++) {
+        _focusedIndices[i] = false;
+      }
     });
   }
 
@@ -200,13 +206,121 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                     shrinkWrap: true,
                     crossAxisSpacing: 4.0,
                     children: photoModel.photos
-                        .map((photo) => photoCell(photo))
+                        .map((photo) =>
+                            photoCell(photo, photoModel.photos.indexOf(photo)))
                         .toList(),
                   ),
                 ),
               ],
             ),
           );
+  }
+
+  Widget photoCell(value, index) {
+    print("value---------$value");
+    print("index---------$index");
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+      ),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Container(
+            alignment: Alignment.topCenter,
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(value['url']),
+                fit: BoxFit.cover,
+              ),
+              color: Color.fromARGB(255, 150, 99, 99),
+              border: Border.all(color: Colors.transparent),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PhotoEachScreen(
+                    docId: value['url'],
+                  ),
+                ),
+              );
+            },
+          ),
+          Positioned(
+            top: 5,
+            right: 5,
+            child: InkWell(
+              onTap: () {
+                // Add code to delete photo here
+              },
+              onHover: (hoverd) {
+                print("$index is selected to $hoverd");
+                setState(() {
+                  _focusedIndices[index] = hoverd;
+                });
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 400),
+                // decoration: BoxDecoration(
+                //   color: _focusedIndices[index] ? Colors.black : Colors.grey,
+                //   borderRadius: BorderRadius.circular(12.0),
+                // ),
+                child: Stack(
+                  children: [
+                    Icon(
+                      Icons.clear_outlined,
+                      size: 24,
+                      color: _focusedIndices[index]
+                          ? Colors.white
+                          : Colors.white54,
+                    ),
+                    Icon(
+                      Icons.clear_outlined,
+                      size: 23,
+                      weight: 700,
+                      color: _focusedIndices[index]
+                          ? Colors.black
+                          : Colors.black54,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget albumCell(value) {
+    print("value---------$value");
+    return Container(
+      alignment: Alignment.center,
+      width: 200,
+      height: 110,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Container(
+            alignment: Alignment.topCenter,
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(value[0]['url']),
+                  fit: BoxFit.cover,
+                ),
+                color: Color.fromARGB(255, 150, 99, 99),
+                border: Border.all(color: Colors.grey)),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget AlbumsData() {
@@ -247,65 +361,5 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
               ],
             ),
           );
-  }
-
-  Widget photoCell(value) {
-    print("value---------$value");
-    return Container(
-      alignment: Alignment.center,
-      width: 200,
-      height: 110,
-      child: ElevatedButton(
-        onPressed: () {
-          widget.routerChange({
-            'router': RouteNames.photos,
-            'subRouter': value['url'],
-          });
-        },
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Container(
-              alignment: Alignment.topCenter,
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(value['url']),
-                    fit: BoxFit.cover,
-                  ),
-                  color: Color.fromARGB(255, 150, 99, 99),
-                  border: Border.all(color: Colors.grey)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget albumCell(value) {
-    print("value---------$value");
-    return Container(
-      alignment: Alignment.center,
-      width: 200,
-      height: 110,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            alignment: Alignment.topCenter,
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(value[0]['url']),
-                  fit: BoxFit.cover,
-                ),
-                color: Color.fromARGB(255, 150, 99, 99),
-                border: Border.all(color: Colors.grey)),
-          ),
-        ],
-      ),
-    );
   }
 }
