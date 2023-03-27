@@ -8,6 +8,7 @@ import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import '../../controllers/HomeController.dart';
+import '../../routes/route_names.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
@@ -17,11 +18,16 @@ import 'model/friends.dart';
 
 class ProfilePhotosScreen extends StatefulWidget {
   Function onClick;
-  ProfilePhotosScreen({Key? key, required this.onClick})
+  ProfilePhotosScreen(
+      {Key? key,
+      required this.onClick,
+      // required this.data,
+      required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
-
+  // var data;
+  Function routerChange;
   @override
   State createState() => ProfilePhotosScreenState();
 }
@@ -111,53 +117,53 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                   )
                 ],
               )),
-          Container(
-            margin: EdgeInsets.only(top: 15),
-            child: Row(children: [
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Photos';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Photos'
-                        ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Photos',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Albums';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Albums'
-                        ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Albums',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-          )
+          // Container(
+          //   margin: EdgeInsets.only(top: 15),
+          //   child: Row(children: [
+          //     MouseRegion(
+          //       cursor: SystemMouseCursors.click,
+          //       child: GestureDetector(
+          //         onTap: () {
+          //           tab = 'Photos';
+          //           setState(() {});
+          //         },
+          //         child: Container(
+          //           alignment: Alignment.center,
+          //           width: 100,
+          //           height: 40,
+          //           color: tab == 'Photos'
+          //               ? Colors.white
+          //               : Color.fromRGBO(240, 240, 240, 1),
+          //           child: const Text(
+          //             'Photos',
+          //             style: TextStyle(fontSize: 15, color: Colors.black),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     // MouseRegion(
+          //     //   cursor: SystemMouseCursors.click,
+          //     //   child: GestureDetector(
+          //     //     onTap: () {
+          //     //       tab = 'Albums';
+          //     //       setState(() {});
+          //     //     },
+          //     //     child: Container(
+          //     //       alignment: Alignment.center,
+          //     //       width: 100,
+          //     //       height: 40,
+          //     //       color: tab == 'Albums'
+          //     //           ? Colors.white
+          //     //           : Color.fromRGBO(240, 240, 240, 1),
+          //     //       child: const Text(
+          //     //         'Albums',
+          //     //         style: TextStyle(fontSize: 15, color: Colors.black),
+          //     //       ),
+          //     //     ),
+          //     //   ),
+          //     // ),
+          //   ]),
+          // )
         ],
       ),
     );
@@ -249,22 +255,30 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
       alignment: Alignment.center,
       width: 200,
       height: 110,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            alignment: Alignment.topCenter,
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(value['url']),
-                  fit: BoxFit.cover,
-                ),
-                color: Color.fromARGB(255, 150, 99, 99),
-                border: Border.all(color: Colors.grey)),
-          ),
-        ],
+      child: ElevatedButton(
+        onPressed: () {
+          widget.routerChange({
+            'router': RouteNames.photos,
+            'subRouter': value['url'],
+          });
+        },
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Container(
+              alignment: Alignment.topCenter,
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(value['url']),
+                    fit: BoxFit.cover,
+                  ),
+                  color: Color.fromARGB(255, 150, 99, 99),
+                  border: Border.all(color: Colors.grey)),
+            ),
+          ],
+        ),
       ),
     );
   }

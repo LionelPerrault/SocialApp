@@ -46,7 +46,6 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
 
   @override
   void initState() {
-
     GeolocationManager.startGeoTimer();
 
     add(widget.con);
@@ -165,7 +164,9 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizeConfig(context).screenWidth <
-                                    SizeConfig.mediumScreenSize
+                                        SizeConfig.mediumScreenSize ||
+                                    mainRouterValue['router'] ==
+                                        'RouteNames.photos'
                                 ? const SizedBox()
                                 : LeftPanel(
                                     routerFunction: routerChange,
