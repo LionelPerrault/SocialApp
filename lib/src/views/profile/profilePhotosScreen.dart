@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 import 'package:shnatter/src/views/profile/model/photos.dart';
 
+import '../../widget/alertYesNoWidget.dart';
 import '../photoView/photoscreen.dart';
 import 'model/friends.dart';
 
@@ -39,6 +41,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   Photos photoModel = Photos();
   Map _focusedIndices = {};
   Friends friendModel = Friends();
+  bool deleteLoading = false;
   @override
   void initState() {
     super.initState();
@@ -251,47 +254,81 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
               );
             },
           ),
-          Positioned(
-            top: 5,
-            right: 5,
-            child: InkWell(
-              onTap: () {
-                // Add code to delete photo here
-              },
-              onHover: (hoverd) {
-                print("$index is selected to $hoverd");
-                setState(() {
-                  _focusedIndices[index] = hoverd;
-                });
-              },
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 400),
-                // decoration: BoxDecoration(
-                //   color: _focusedIndices[index] ? Colors.black : Colors.grey,
-                //   borderRadius: BorderRadius.circular(12.0),
-                // ),
-                child: Stack(
-                  children: [
-                    Icon(
-                      Icons.clear_outlined,
-                      size: 24,
-                      color: _focusedIndices[index]
-                          ? Colors.white
-                          : Colors.white54,
+          ProfileController().viewProfileUid == UserManager.userInfo['uid']
+              ? Positioned(
+                  top: 5,
+                  right: 5,
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const SizedBox(),
+                          content: AlertYesNoWidget(
+                              yesFunc: () {
+                                bool _isDeleting = false;
+                                Navigator.of(context).pop(
+                                    true); // call Navigator outside of the previous block.
+                                setState(() {
+                                  deleteLoading = true;
+                                });
+                                photoModel.photos.removeAt(index);
+
+                                PostController().deletePhoto(value);
+                                PostController()
+                                    .deletePhotoFromTimeline(value['url']);
+
+                                setState(() {
+                                  deleteLoading = false;
+                                  _isDeleting =
+                                      true; // set flag when both operations have completed successfully
+                                });
+                              },
+                              noFunc: () {
+                                Navigator.of(context).pop(true);
+                              },
+                              header: 'Remove Photo',
+                              text:
+                                  'Do you want to remove photo? it will delete the post of this photo.',
+                              progress: deleteLoading),
+                        ),
+                      );
+                    },
+                    onHover: (hoverd) {
+                      print("$index is selected to $hoverd");
+                      setState(() {
+                        _focusedIndices[index] = hoverd;
+                      });
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 400),
+                      // decoration: BoxDecoration(
+                      //   color: _focusedIndices[index] ? Colors.black : Colors.grey,
+                      //   borderRadius: BorderRadius.circular(12.0),
+                      // ),
+                      child: Stack(
+                        children: [
+                          Icon(
+                            Icons.clear_outlined,
+                            size: 24,
+                            color: _focusedIndices[index]
+                                ? Colors.white
+                                : Colors.white54,
+                          ),
+                          Icon(
+                            Icons.clear_outlined,
+                            size: 23,
+                            weight: 700,
+                            color: _focusedIndices[index]
+                                ? Colors.black
+                                : Colors.black54,
+                          ),
+                        ],
+                      ),
                     ),
-                    Icon(
-                      Icons.clear_outlined,
-                      size: 23,
-                      weight: 700,
-                      color: _focusedIndices[index]
-                          ? Colors.black
-                          : Colors.black54,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  ),
+                )
+              : const SizedBox(),
         ],
       ),
     );

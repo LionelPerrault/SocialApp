@@ -1726,6 +1726,44 @@ class PostController extends ControllerMVC {
     setState(() {});
   }
 
+  deletePhoto(Map value) async {
+    FirebaseFirestore.instance
+        .collection(Helper.postField)
+        .where('value', arrayContains: value)
+        .get()
+        .then((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        print("field value is ${doc['value']}");
+        print("url is {$value['url']}");
+        List<dynamic> updatedValue =
+            doc['value'].where((elem) => elem['url'] != value['url']).toList();
+        if (updatedValue.isEmpty) {
+          doc.reference.delete();
+        } else {
+          doc.reference.update({'value': updatedValue});
+        }
+      }
+    });
+  }
+
+  deletePhotoFromTimeline(Map value) {
+    posts.removeWhere((item) {
+      if (item['value'].contains(value)) {
+        List<dynamic> updatedValue =
+            item['value'].where((elem) => elem['url'] != value['url']).toList();
+        if (updatedValue.isEmpty) {
+          posts.removeAt(item.index);
+        } else {
+          posts[item.index] = updatedValue;
+        }
+        return true;
+      }
+      return false;
+    });
+
+    setState(() {});
+  }
+
   deleteProduct(uid) async {
     await Helper.productsData.doc(uid).delete();
     posts.removeWhere((item) => item['id'] == uid);
