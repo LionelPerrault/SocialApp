@@ -163,10 +163,13 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                            child: const Text('Show All',
+                            child: const Text('All Read',
                                 style: TextStyle(fontSize: 11)),
                             onPressed: () async {
                               await postCon.checkNotify();
+                              postCon.allNotification = [];
+                              postCon.realNotifi = [];
+                              postCon.setState(() {});
                             }),
                       ],
                     ))

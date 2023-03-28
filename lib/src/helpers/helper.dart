@@ -116,7 +116,8 @@ class Helper {
     'pages': {'text': 'added page'},
     'groups': {'text': 'added group'},
     'events': {'text': 'added event'},
-    'requestFriend': {'text': 'Friend request sent'}
+    'requestFriend': {'text': 'Friend request sent'},
+    'realEstates': {'text': 'Real Estates created'}
   };
 
   static Map notificationName = {
