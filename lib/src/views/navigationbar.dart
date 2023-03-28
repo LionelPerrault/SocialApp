@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
+import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
@@ -15,6 +16,7 @@ import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
+import 'package:shnatter/src/views/box/mobile_messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
 import 'package:shnatter/src/views/box/notification.dart';
 import '../helpers/helper.dart';
@@ -61,6 +63,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   var userInfo = UserManager.userInfo;
   bool onHover = false;
   var chatCon = ChatController();
+  var messageCon = MessageController();
   var peopleCon = PeopleController();
   late PostController postCon;
   var badgeCount = [];
@@ -106,6 +109,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         }
         chatCon.notifyCount = count;
         chatCon.newMessage = message;
+        messageCon.notifyCount = count;
+        messageCon.newMessage = message;
         setState(
           () {},
         );
@@ -358,12 +363,19 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
                       controller: _navController,
-                      menuBuilder: () => ShnatterMessage(
-                        routerChange: widget.routerChange,
-                        hideNavBox: () {
-                          _navController.hideMenu();
-                        },
-                      ),
+                      menuBuilder: () => SizeConfig(context).screenWidth < 700
+                          ? ShnatterMobileMessage(
+                              routerChange: widget.routerChange,
+                              hideNavBox: () {
+                                _navController.hideMenu();
+                              },
+                            )
+                          : ShnatterMessage(
+                              routerChange: widget.routerChange,
+                              hideNavBox: () {
+                                _navController.hideMenu();
+                              },
+                            ),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
                       child: Row(

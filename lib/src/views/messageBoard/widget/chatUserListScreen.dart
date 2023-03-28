@@ -109,11 +109,11 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                     : Colors.white,
                 onTap: () {
                   con.avatar = t[chatUserName]['avatar'];
-                  widget.onBack('message-list');
                   con.chattingUser = chatUserName;
                   con.chatUserFullName = chatUserFullName;
                   con.docId = docId;
                   con.setState(() {});
+                  widget.onBack('message-list');
                 },
                 // hoverColor: Color.fromRGBO(240, 240, 240, 1),
                 leading: Container(
