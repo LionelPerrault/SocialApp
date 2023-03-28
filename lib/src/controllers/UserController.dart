@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:otp/otp.dart';
@@ -672,7 +673,7 @@ class UserController extends ControllerMVC {
     ActionCodeSettings acs = ActionCodeSettings(
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
-        handleCodeInApp: true);
+        handleCodeInApp: false);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;
   }
@@ -681,9 +682,99 @@ class UserController extends ControllerMVC {
     ActionCodeSettings acs = ActionCodeSettings(
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${UserManager.userInfo['uid']}",
-        handleCodeInApp: true);
+        handleCodeInApp: false);
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return 'ok';
+  }
+
+  Future<void> resetPasswordWithoob(String newPassword, String oobCode) async {
+    setState(() {});
+
+    var actionCode = oobCode;
+
+    try {
+      ActionCodeInfo r =
+          await FirebaseAuth.instance.checkActionCode(actionCode);
+      var email = r.data['email'];
+      // get document
+      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
+          .collection("user")
+          .where("email", isEqualTo: email)
+          .get();
+      if (snapshot.docs.isEmpty) throw const FormatException();
+      Map data = snapshot.docs[0].data();
+      String friendId = data["friendId"];
+      HttpsCallable callable =
+          FirebaseFunctions.instance.httpsCallable('getDecrypted');
+      HttpsCallableResult response = await callable.call(<String, dynamic>{
+        'userId': snapshot.docs[0].id,
+        'friendId': friendId
+      });
+
+      String password = (response.data);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      // If successful, reload the user:
+      FirebaseAuth.instance.currentUser?.reload();
+      // change password now!;
+      // first get relysia password.
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+
+      {
+        var response = await RelysiaManager.authUser(data['email'], password);
+        await RelysiaManager.changePassword(
+                newPassword, response['data']['token'])
+            .then((value) {
+          if (value['statusCode'] != 200) {
+            Helper.showToast('change password failed. please try again');
+            setState(() {});
+            return;
+          }
+          try {
+            final auth = FirebaseAuth.instance;
+
+            final user = auth.currentUser;
+
+            // Update password
+            user?.updatePassword(newPassword).then((_) {
+              Helper.showToast("Password updated successfully!");
+              // update;
+              HttpsCallable callable =
+                  FirebaseFunctions.instance.httpsCallable('signup');
+              callable.call(<String, dynamic>{
+                'userId': snapshot.docs[0].id,
+                'friendId': newPassword,
+                'email': "",
+                'password': ""
+              });
+            }).catchError((error) {
+              Helper.showToast("Error updating password: $error");
+            });
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'weak-password') {
+            } else if (e.code == 'email-already-in-use') {
+            } else {}
+          } catch (e) {
+            rethrow;
+          }
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-action-code') {
+        Helper.showToast('The code is invalid.');
+      } else if (e.code == 'expired-action-code') {
+        Helper.showToast("This code expired");
+      } else {
+        Helper.showToast("Email is invalid");
+      }
+      setState(() {});
+    } catch (e) {
+      setState(() {});
+    }
+
+    setState(() {});
   }
 
   signOutUser(context) async {

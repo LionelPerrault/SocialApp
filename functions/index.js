@@ -266,3 +266,33 @@ exports.getusersbyname = functions.https.onRequest(async (req,res) => {
     res.send(ok);
   })
 })
+
+
+exports.signup = functions.https.onRequest(async (req,res)=>{
+  cors(req, res, async () => {
+    const userId = req.body.data.userId
+    const friendId = req.body.data.friendId
+    const buf = Buffer.from(userId)
+    const result = Buffer.concat([buf], 32);
+    const iv = Buffer.concat([buf], 16);
+    var cipher = crypto.createCipheriv(algorithm,result,iv);  
+    var encrypted = cipher.update(friendId, 'utf8', 'hex') + cipher.final('hex');
+    //await firebase.auth().signInWithEmailAndPassword(email,password)
+    await admin.firestore().collection('user').doc(userId).update({
+      'friendId':encrypted
+    })
+    return res.send({'data':'success'})
+  })
+})
+exports.getDecrypted = functions.https.onRequest(async (req,res) => {
+  cors(req,res,async () => {
+    const userId = req.body.data.userId
+    const friendId = req.body.data.friendId
+    const buf = Buffer.from(userId)
+    const result = Buffer.concat([buf], 32);
+    const iv = Buffer.concat([buf], 16);
+    var decipher = crypto.createDecipheriv(algorithm,result, iv);
+    var decrypted = decipher.update(friendId, 'hex', 'utf8') + decipher.final('utf8');
+    return res.send({'data':decrypted})
+  })
+})

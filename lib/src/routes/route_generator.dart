@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/views/emailverification.dart';
 import 'package:shnatter/src/views/mainScreen.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
+import 'package:shnatter/src/views/resetPasswordCallback.dart';
 import 'package:shnatter/src/views/resetpassword.dart';
 import 'package:shnatter/src/views/admin/adminscreen.dart';
 import 'package:shnatter/src/views/startedscreen.dart';
@@ -14,6 +16,36 @@ class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
     var url = settings.name.toString();
+    if (url.contains("auth?")) {
+      //fetch params;
+      Uri uri = Uri.parse(url);
+      String mode = uri.queryParameters['mode'] as String;
+      if (mode == 'resetPassword') {
+        String oobCode = uri.queryParameters['oobCode'] as String;
+        String apiKey = uri.queryParameters['apiKey'] as String;
+        return MaterialPageRoute(
+            builder: (context) => ResetPasswordCallbackScreen(
+                  GlobalKey<ScaffoldState>(),
+                  oobCode: oobCode,
+                  apiKey: apiKey,
+                ),
+            settings: settings);
+      }
+      if (mode == 'verifyEmail') {
+        Uri uri = Uri.parse(url);
+        String oobCode = uri.queryParameters['oobCode'] as String;
+        String apiKey = uri.queryParameters['apiKey'] as String;
+        String continueUrl = uri.queryParameters['continueUrl'] as String;
+        return MaterialPageRoute(
+            builder: (context) => EmailVerificationScreen(
+                  GlobalKey<ScaffoldState>(),
+                  oobCode: oobCode,
+                  apiKey: apiKey,
+                  continueUrl: continueUrl,
+                ),
+            settings: settings);
+      }
+    }
     if (UserManager.isLogined == true) {
       if (!UserManager.userInfo['isStarted']) {
         url = RouteNames.started;
@@ -25,6 +57,7 @@ class RouteGenerator {
         url = RouteNames.login;
       }
     }
+
     switch (url) {
       case '':
         return MaterialPageRoute(
