@@ -110,13 +110,13 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
       children: [
         Container(
           alignment: Alignment.center,
-          width: SizeConfig(context).screenWidth > 600 ? 200 : 180,
-          height: 280,
+          width: 288,
+          height: 216,
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
               Container(
-                width: 200,
+                width: 260,
                 margin: const EdgeInsets.only(top: 60),
                 padding: const EdgeInsets.only(top: 70),
                 decoration: BoxDecoration(
@@ -147,7 +147,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                       '${widget.groupData['data']['groupJoined'].length} Members',
                       style: const TextStyle(color: Colors.black, fontSize: 13),
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    const Padding(padding: EdgeInsets.only(top: 5)),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
@@ -194,7 +194,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
                                           fontWeight: FontWeight.bold)),
                                 ],
                               )),
-                    const Padding(padding: EdgeInsets.only(top: 30))
+                    const Padding(padding: EdgeInsets.only(top: 5))
                   ],
                 ),
               ),

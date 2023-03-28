@@ -12,6 +12,8 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
+import '../../../utils/size_config.dart';
+
 // ignore: must_be_immutable
 class EventCell extends StatefulWidget {
   EventCell({
@@ -110,13 +112,13 @@ class EventCellState extends mvc.StateMVC<EventCell> {
       children: [
         Container(
           alignment: Alignment.center,
-          width: 200,
-          height: 250,
+          width: 288,
+          height: 216,
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
               Container(
-                width: 200,
+                width: 260,
                 margin: EdgeInsets.only(top: 60),
                 padding: EdgeInsets.only(top: 70),
                 decoration: BoxDecoration(
@@ -131,7 +133,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                             text: widget.eventData['data']['eventName'],
                             style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 13,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
@@ -149,7 +151,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                       '${widget.eventData['data']['eventInterested'].length} Interested',
                       style: const TextStyle(color: Colors.black, fontSize: 13),
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    const Padding(padding: EdgeInsets.only(top: 5)),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
@@ -191,7 +193,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                           fontWeight: FontWeight.bold)),
                                 ],
                               )),
-                    Padding(padding: EdgeInsets.only(top: 30))
+                    const Padding(padding: EdgeInsets.only(top: 5))
                   ],
                 ),
               ),
