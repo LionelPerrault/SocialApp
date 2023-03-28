@@ -112,7 +112,10 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
   }
 
   Widget likesData() {
-    var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    var screenWidth =
+        SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+            ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
+            : SizeConfig(context).screenWidth;
     return getFlag
         ? Container(
             width: 30,
@@ -146,43 +149,43 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
                                 color: Color.fromRGBO(108, 117, 125, 1)),
                           ))
                     ]))
-            : Container(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Expanded(
-                      child: GridView.count(
-                        crossAxisCount: screenWidth > 800
-                            ? 4
-                            : screenWidth > 600
-                                ? 3
-                                : screenWidth > 210
-                                    ? 2
-                                    : 1,
-                        childAspectRatio: 2 / 3,
-                        padding: const EdgeInsets.all(4.0),
-                        mainAxisSpacing: 2.0,
-                        shrinkWrap: true,
-                        crossAxisSpacing: 2.0,
-                        children: myEvents
-                            .map(
-                              (event) => EventCell(
-                                routerChange: widget.routerChange,
-                                eventData: event,
-                                buttonFun: () {
-                                  PostController()
-                                      .interestedEvent(event['id'])
-                                      .then((value) {
-                                    getEventNow();
-                                  });
-                                },
-                              ),
-                            )
-                            .toList(),
-                      ),
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: GridView.count(
+                      crossAxisCount: screenWidth > 1200
+                          ? 4
+                          : screenWidth > 900
+                              ? 3
+                              : screenWidth > 650
+                                  ? 2
+                                  : 1,
+                      childAspectRatio: screenWidth > 650 || screenWidth < 450
+                          ? 4 / 3
+                          : 4 / 2,
+                      padding: const EdgeInsets.only(top: 30),
+                      mainAxisSpacing: 24.0,
+                      shrinkWrap: true,
+                      crossAxisSpacing: 20.0,
+                      children: myEvents
+                          .map(
+                            (event) => EventCell(
+                              routerChange: widget.routerChange,
+                              eventData: event,
+                              buttonFun: () {
+                                PostController()
+                                    .interestedEvent(event['id'])
+                                    .then((value) {
+                                  getEventNow();
+                                });
+                              },
+                            ),
+                          )
+                          .toList(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
   }
 }

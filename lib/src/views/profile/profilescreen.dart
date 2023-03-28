@@ -142,9 +142,11 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
                                       : con.tab == 'Photos'
                                           ? ProfilePhotosScreen(
                                               onClick: (value) {
-                                              con.tab = value;
-                                              setState(() {});
-                                            })
+                                                con.tab = value;
+                                                setState(() {});
+                                              },
+                                              routerChange: widget.routerChange,
+                                            )
                                           // : con.tab == 'Videos'
                                           //     ? ProfileVideosScreen(onClick: (value) {
                                           //         con.tab = value;

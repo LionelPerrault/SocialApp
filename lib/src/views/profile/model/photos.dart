@@ -13,6 +13,7 @@ class Photos {
     var snapshot = await Helper.postCollection
         .where('type', isEqualTo: 'photo')
         .where('postAdmin', isEqualTo: uid)
+        .orderBy('postTime', descending: true)
         .get();
     var s = [];
     s = snapshot.docs.map((doc) => doc.data()['value']).toList();
@@ -27,6 +28,7 @@ class Photos {
     var snapshot = await Helper.postCollection
         .where('type', isEqualTo: 'photo')
         .where('eventId', isEqualTo: eventId)
+        .orderBy('postTime', descending: true)
         .get();
     var s = [];
     s = snapshot.docs.map((doc) => doc.data()['value']).toList();
@@ -41,6 +43,7 @@ class Photos {
     var snapshot = await Helper.postCollection
         .where('type', isEqualTo: 'photo')
         .where('groupId', isEqualTo: groupId)
+        .orderBy('postTime', descending: true)
         .get();
     var s = [];
     s = await snapshot.docs.map((doc) => doc.data()['value']).toList();

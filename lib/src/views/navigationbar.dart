@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ChatController.dart';
+import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
@@ -15,6 +16,7 @@ import 'package:shnatter/src/utils/colors.dart';
 import 'package:shnatter/src/utils/svg.dart';
 import 'package:shnatter/src/views/box/friendrequestbox.dart';
 import 'package:shnatter/src/views/box/messagesbox.dart';
+import 'package:shnatter/src/views/box/mobile_messagesbox.dart';
 import 'package:shnatter/src/views/box/postsnavbox.dart';
 import 'package:shnatter/src/views/box/notification.dart';
 import '../helpers/helper.dart';
@@ -61,6 +63,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   var userInfo = UserManager.userInfo;
   bool onHover = false;
   var chatCon = ChatController();
+  var messageCon = MessageController();
   var peopleCon = PeopleController();
   late PostController postCon;
   var badgeCount = [];
@@ -106,6 +109,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         }
         chatCon.notifyCount = count;
         chatCon.newMessage = message;
+        messageCon.notifyCount = count;
+        messageCon.newMessage = message;
         setState(
           () {},
         );
@@ -136,57 +141,52 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
-        var exist = allNotifi[i]['userList']
-            .firstWhere((data) => data == UserManager.userInfo['uid']);
+
         if (tsNT > usercheckTime) {
           var addData = {};
           if (adminUid != UserManager.userInfo['uid'] &&
               postType != 'requestFriend') {
-            await FirebaseFirestore.instance
+            dynamic userV = await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) async => {
-                      if (userV.data() != null)
-                        {
-                          addData = {
-                            'uid': allNotifi[i].id,
-                            'avatar': userV.data()!['avatar'],
-                            'userName': userV.data()!['userName'],
-                            'text': Helper
-                                    .notificationText[allNotifi[i]['postType']]
-                                ['text'],
-                            'date': await postCon
-                                .formatDate(allNotifi[i]['timeStamp']),
-                          },
-                          changeData.add(addData),
-                        }
-                    });
+                .get();
+            dynamic data = userV.data();
+            var type = allNotifi[i]['postType'];
+            var text = Helper.notificationText[type.toString()]['text'];
+            var date = await postCon.formatDate(allNotifi[i]['timeStamp']);
+            if (data != null) {
+              addData = {
+                'uid': allNotifi[i].id,
+                'avatar': data['avatar'],
+                'userName': userV.data()!['userName'],
+                'text': text,
+                'date': date,
+              };
+              changeData.add(addData);
+            }
           }
           if (postType == 'requestFriend' &&
               adminUid == UserManager.userInfo['uid']) {
-            await FirebaseFirestore.instance
+            dynamic userV = await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) => {
-                      if (userV.data() != null)
-                        {
-                          addData = {
-                            // ...allNotifi[i],
-                            'uid': allNotifi[i].id,
-                            'avatar': Helper.systemAvatar,
-                            'userName': Helper
-                                    .notificationName[allNotifi[i]['postType']]
-                                ['name'],
-                            'text': Helper
-                                    .notificationText[allNotifi[i]['postType']]
-                                ['text'],
-                          },
-                          changeData.add(addData),
-                        }
-                    });
+                .get();
+            dynamic data = userV.data();
+            var type = allNotifi[i]['postType'];
+            var text = Helper.notificationText[type.toString()]['text'];
+            if (data != null) {
+              addData = {
+                // ...allNotifi[i],
+                'uid': allNotifi[i].id,
+                'avatar': Helper.systemAvatar,
+                'userName': Helper.notificationName[allNotifi[i]['postType']]
+                    ['name'],
+                'text': text,
+              };
+              changeData.add(addData);
+            }
           }
+          ;
         }
       }
       postCon.realNotifi = changeData;
@@ -358,12 +358,19 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
                       controller: _navController,
-                      menuBuilder: () => ShnatterMessage(
-                        routerChange: widget.routerChange,
-                        hideNavBox: () {
-                          _navController.hideMenu();
-                        },
-                      ),
+                      menuBuilder: () => SizeConfig(context).screenWidth < 700
+                          ? ShnatterMobileMessage(
+                              routerChange: widget.routerChange,
+                              hideNavBox: () {
+                                _navController.hideMenu();
+                              },
+                            )
+                          : ShnatterMessage(
+                              routerChange: widget.routerChange,
+                              hideNavBox: () {
+                                _navController.hideMenu();
+                              },
+                            ),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
                       child: Row(

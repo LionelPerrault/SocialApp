@@ -16,6 +16,7 @@ import 'package:shnatter/src/views/profile/profilescreen.dart';
 import 'package:shnatter/src/views/search/searchScreen.dart';
 import 'package:shnatter/src/views/setting/settingsMain.dart';
 
+import '../views/photoView/photoscreen.dart';
 import '../views/realEstate/panel/realEstateView/realestatescreen.dart';
 import '../views/realEstate/realEstateScreen.dart';
 
@@ -62,6 +63,14 @@ class MainRouter {
         } else {
           return RealEstateScreen(routerChange: routerChange);
         }
+      // case RouteNames.photos:
+      //   if (mainRouterValue['subRouter'] != null &&
+      //       mainRouterValue['subRouter'] != '') {
+      //     return PhotoEachScreen(
+      //         docId: mainRouterValue['subRouter'], routerChange: routerChange);
+      //   } else {
+      //     return HomeScreen(routerChange: routerChange);
+      //   }
       case RouteNames.posts:
         if (mainRouterValue['subRouter'] != null &&
             mainRouterValue['subRouter'] != '') {

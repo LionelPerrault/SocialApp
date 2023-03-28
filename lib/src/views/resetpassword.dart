@@ -107,8 +107,11 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                         Padding(padding: EdgeInsets.only(top: 10)),
                         Text(
                             'Enter the email address you signed up with and we\'ll email you a reset link',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14)),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            )),
                       ],
                     ),
                   ),
@@ -231,44 +234,43 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
           const Padding(
             padding: EdgeInsets.only(top: 60.0),
           ),
-          SizedBox(
-              width: 1100,
-              height: 90,
-              child: Container(
-                margin:
-                    const EdgeInsets.only(right: 170, bottom: 20, left: 170),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          Container(
+            constraints: BoxConstraints(minWidth: 200, maxWidth: 1100),
+            margin: const EdgeInsets.only(
+              bottom: 20,
+            ),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: Row(
+              children: [
+                const Padding(padding: EdgeInsets.only(left: 10)),
+                text('@ 2023 Shnatter', const Color.fromRGBO(150, 150, 150, 1),
+                    11),
+                const Padding(padding: EdgeInsets.only(left: 20)),
+                Image.network(
+                  'https://test-file.shnatter.com/uploads/flags/en_us.png',
+                  width: 11,
                 ),
-                child: Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.only(left: 10)),
-                    text('@ 2023 Shnatter',
-                        const Color.fromRGBO(150, 150, 150, 1), 11),
-                    const Padding(padding: EdgeInsets.only(left: 20)),
-                    Image.network(
-                      'https://test-file.shnatter.com/uploads/flags/en_us.png',
-                      width: 11,
-                    ),
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                text('English', const Color.fromRGBO(150, 150, 150, 1), 11),
+                Flexible(fit: FlexFit.tight, child: SizedBox()),
+                Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  child: Row(children: [
+                    text('About', Colors.grey, 11),
                     const Padding(padding: EdgeInsets.only(left: 5)),
-                    text('English', const Color.fromRGBO(150, 150, 150, 1), 11),
-                    Flexible(fit: FlexFit.tight, child: SizedBox()),
-                    Container(
-                      margin: const EdgeInsets.only(right: 20),
-                      child: Row(children: [
-                        text('About', Colors.grey, 11),
-                        const Padding(padding: EdgeInsets.only(left: 5)),
-                        text('Terms', Colors.grey, 11),
-                        const Padding(padding: EdgeInsets.only(left: 5)),
-                        text('Contact Us', Colors.grey, 11),
-                        const Padding(padding: EdgeInsets.only(left: 5)),
-                        text('Directory', Colors.grey, 11),
-                      ]),
-                    )
-                  ],
-                ),
-              ))
+                    text('Terms', Colors.grey, 11),
+                    const Padding(padding: EdgeInsets.only(left: 5)),
+                    text('Contact Us', Colors.grey, 11),
+                    const Padding(padding: EdgeInsets.only(left: 5)),
+                    text('Directory', Colors.grey, 11),
+                  ]),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

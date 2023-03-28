@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
@@ -8,20 +9,28 @@ import 'package:shnatter/src/views/box/searchbox.dart';
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import '../../controllers/HomeController.dart';
+import '../../routes/route_names.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
 import 'package:shnatter/src/views/profile/model/photos.dart';
 
+import '../../widget/alertYesNoWidget.dart';
+import '../photoView/photoscreen.dart';
 import 'model/friends.dart';
 
 class ProfilePhotosScreen extends StatefulWidget {
   Function onClick;
-  ProfilePhotosScreen({Key? key, required this.onClick})
+  ProfilePhotosScreen(
+      {Key? key,
+      required this.onClick,
+      // required this.data,
+      required this.routerChange})
       : con = ProfileController(),
         super(key: key);
   final ProfileController con;
-
+  // var data;
+  Function routerChange;
   @override
   State createState() => ProfilePhotosScreenState();
 }
@@ -30,7 +39,9 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
   Photos photoModel = Photos();
+  Map _focusedIndices = {};
   Friends friendModel = Friends();
+  bool deleteLoading = false;
   @override
   void initState() {
     super.initState();
@@ -41,8 +52,12 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
         .then((value) {
       setState(() {});
     });
+
     photoModel.getPhotos(con.viewProfileUid).then((value) {
       setState(() {});
+      for (int i = 0; i < photoModel.photos.length; i++) {
+        _focusedIndices[i] = false;
+      }
     });
   }
 
@@ -111,53 +126,53 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                   )
                 ],
               )),
-          Container(
-            margin: EdgeInsets.only(top: 15),
-            child: Row(children: [
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Photos';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Photos'
-                        ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Photos',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Albums';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Albums'
-                        ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Albums',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-          )
+          // Container(
+          //   margin: EdgeInsets.only(top: 15),
+          //   child: Row(children: [
+          //     MouseRegion(
+          //       cursor: SystemMouseCursors.click,
+          //       child: GestureDetector(
+          //         onTap: () {
+          //           tab = 'Photos';
+          //           setState(() {});
+          //         },
+          //         child: Container(
+          //           alignment: Alignment.center,
+          //           width: 100,
+          //           height: 40,
+          //           color: tab == 'Photos'
+          //               ? Colors.white
+          //               : Color.fromRGBO(240, 240, 240, 1),
+          //           child: const Text(
+          //             'Photos',
+          //             style: TextStyle(fontSize: 15, color: Colors.black),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     // MouseRegion(
+          //     //   cursor: SystemMouseCursors.click,
+          //     //   child: GestureDetector(
+          //     //     onTap: () {
+          //     //       tab = 'Albums';
+          //     //       setState(() {});
+          //     //     },
+          //     //     child: Container(
+          //     //       alignment: Alignment.center,
+          //     //       width: 100,
+          //     //       height: 40,
+          //     //       color: tab == 'Albums'
+          //     //           ? Colors.white
+          //     //           : Color.fromRGBO(240, 240, 240, 1),
+          //     //       child: const Text(
+          //     //         'Albums',
+          //     //         style: TextStyle(fontSize: 15, color: Colors.black),
+          //     //       ),
+          //     //     ),
+          //     //   ),
+          //     // ),
+          //   ]),
+          // )
         ],
       ),
     );
@@ -194,13 +209,155 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                     shrinkWrap: true,
                     crossAxisSpacing: 4.0,
                     children: photoModel.photos
-                        .map((photo) => photoCell(photo))
+                        .map((photo) =>
+                            photoCell(photo, photoModel.photos.indexOf(photo)))
                         .toList(),
                   ),
                 ),
               ],
             ),
           );
+  }
+
+  Widget photoCell(value, index) {
+    print("value---------$value");
+    print("index---------$index");
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+      ),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Container(
+            alignment: Alignment.topCenter,
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(value['url']),
+                fit: BoxFit.cover,
+              ),
+              color: Color.fromARGB(255, 150, 99, 99),
+              border: Border.all(color: Colors.transparent),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PhotoEachScreen(
+                    docId: value['url'],
+                  ),
+                ),
+              );
+            },
+          ),
+          ProfileController().viewProfileUid == UserManager.userInfo['uid']
+              ? Positioned(
+                  top: 5,
+                  right: 5,
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const SizedBox(),
+                          content: AlertYesNoWidget(
+                              yesFunc: () {
+                                bool _isDeleting = false;
+                                Navigator.of(context).pop(
+                                    true); // call Navigator outside of the previous block.
+                                setState(() {
+                                  deleteLoading = true;
+                                });
+                                photoModel.photos.removeAt(index);
+
+                                PostController().deletePhoto(value);
+                                PostController()
+                                    .deletePhotoFromTimeline(value['url']);
+
+                                setState(() {
+                                  deleteLoading = false;
+                                  _isDeleting =
+                                      true; // set flag when both operations have completed successfully
+                                });
+                              },
+                              noFunc: () {
+                                Navigator.of(context).pop(true);
+                              },
+                              header: 'Remove Photo',
+                              text:
+                                  'Do you want to remove photo? it will delete the post of this photo.',
+                              progress: deleteLoading),
+                        ),
+                      );
+                    },
+                    onHover: (hoverd) {
+                      print("$index is selected to $hoverd");
+                      setState(() {
+                        _focusedIndices[index] = hoverd;
+                      });
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 400),
+                      // decoration: BoxDecoration(
+                      //   color: _focusedIndices[index] ? Colors.black : Colors.grey,
+                      //   borderRadius: BorderRadius.circular(12.0),
+                      // ),
+                      child: Stack(
+                        children: [
+                          Icon(
+                            Icons.clear_outlined,
+                            size: 24,
+                            color: _focusedIndices[index]
+                                ? Colors.white
+                                : Colors.white54,
+                          ),
+                          Icon(
+                            Icons.clear_outlined,
+                            size: 23,
+                            weight: 700,
+                            color: _focusedIndices[index]
+                                ? Colors.black
+                                : Colors.black54,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
+        ],
+      ),
+    );
+  }
+
+  Widget albumCell(value) {
+    print("value---------$value");
+    return Container(
+      alignment: Alignment.center,
+      width: 200,
+      height: 110,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Container(
+            alignment: Alignment.topCenter,
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(value[0]['url']),
+                  fit: BoxFit.cover,
+                ),
+                color: Color.fromARGB(255, 150, 99, 99),
+                border: Border.all(color: Colors.grey)),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget AlbumsData() {
@@ -241,57 +398,5 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
               ],
             ),
           );
-  }
-
-  Widget photoCell(value) {
-    print("value---------$value");
-    return Container(
-      alignment: Alignment.center,
-      width: 200,
-      height: 110,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            alignment: Alignment.topCenter,
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(value['url']),
-                  fit: BoxFit.cover,
-                ),
-                color: Color.fromARGB(255, 150, 99, 99),
-                border: Border.all(color: Colors.grey)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget albumCell(value) {
-    print("value---------$value");
-    return Container(
-      alignment: Alignment.center,
-      width: 200,
-      height: 110,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            alignment: Alignment.topCenter,
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(value[0]['url']),
-                  fit: BoxFit.cover,
-                ),
-                color: Color.fromARGB(255, 150, 99, 99),
-                border: Border.all(color: Colors.grey)),
-          ),
-        ],
-      ),
-    );
   }
 }

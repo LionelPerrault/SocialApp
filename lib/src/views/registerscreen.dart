@@ -222,6 +222,10 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                       recognizer:
                                                           TapGestureRecognizer()
                                                             ..onTap = () {
+                                                              con.failRegister =
+                                                                  '';
+                                                              con.setState(
+                                                                  () {});
                                                               Navigator
                                                                   .pushReplacementNamed(
                                                                       context,
@@ -683,6 +687,10 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                                   TapGestureRecognizer()
                                                                     ..onTap =
                                                                         () {
+                                                                      con.failRegister =
+                                                                          '';
+                                                                      con.setState(
+                                                                          () {});
                                                                       Navigator.pushReplacementNamed(
                                                                           context,
                                                                           RouteNames

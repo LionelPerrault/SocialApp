@@ -203,6 +203,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                                   fontSize: 12),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
+                                                  con.failLogin = '';
+                                                  setState(() {});
                                                   Navigator
                                                       .pushReplacementNamed(
                                                           context,

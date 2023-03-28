@@ -43,6 +43,7 @@ class RouteNames {
   //product routes
   static const products = "/products";
 
+  //real estate routes
   static const estates = "/estates";
 
   //near by
@@ -50,6 +51,8 @@ class RouteNames {
 
   //posts routes
   static const posts = '/posts';
+
+  static const photos = "/photos";
 
   static const people = '/people';
   static const market = '/market';
