@@ -3,6 +3,9 @@ const admin = require("firebase-admin");
 const nodemailer = require('nodemailer');
 const axios = require('axios');
 const cors = require('cors')({origin: true});
+const crypto = require('crypto');
+const algorithm = 'aes256';
+
 admin.initializeApp();
 var transporter = nodemailer.createTransport({
   service: 'Gmail',

