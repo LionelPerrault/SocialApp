@@ -141,57 +141,52 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         }
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
-        var exist = allNotifi[i]['userList']
-            .firstWhere((data) => data == UserManager.userInfo['uid']);
+
         if (tsNT > usercheckTime) {
           var addData = {};
           if (adminUid != UserManager.userInfo['uid'] &&
               postType != 'requestFriend') {
-            await FirebaseFirestore.instance
+            dynamic userV = await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) async => {
-                      if (userV.data() != null)
-                        {
-                          addData = {
-                            'uid': allNotifi[i].id,
-                            'avatar': userV.data()!['avatar'],
-                            'userName': userV.data()!['userName'],
-                            'text': Helper
-                                    .notificationText[allNotifi[i]['postType']]
-                                ['text'],
-                            'date': await postCon
-                                .formatDate(allNotifi[i]['timeStamp']),
-                          },
-                          changeData.add(addData),
-                        }
-                    });
+                .get();
+            dynamic data = userV.data();
+            var type = allNotifi[i]['postType'];
+            var text = Helper.notificationText[type.toString()]['text'];
+            var date = await postCon.formatDate(allNotifi[i]['timeStamp']);
+            if (data != null) {
+              addData = {
+                'uid': allNotifi[i].id,
+                'avatar': data['avatar'],
+                'userName': userV.data()!['userName'],
+                'text': text,
+                'date': date,
+              };
+              changeData.add(addData);
+            }
           }
           if (postType == 'requestFriend' &&
               adminUid == UserManager.userInfo['uid']) {
-            await FirebaseFirestore.instance
+            dynamic userV = await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
-                .get()
-                .then((userV) => {
-                      if (userV.data() != null)
-                        {
-                          addData = {
-                            // ...allNotifi[i],
-                            'uid': allNotifi[i].id,
-                            'avatar': Helper.systemAvatar,
-                            'userName': Helper
-                                    .notificationName[allNotifi[i]['postType']]
-                                ['name'],
-                            'text': Helper
-                                    .notificationText[allNotifi[i]['postType']]
-                                ['text'],
-                          },
-                          changeData.add(addData),
-                        }
-                    });
+                .get();
+            dynamic data = userV.data();
+            var type = allNotifi[i]['postType'];
+            var text = Helper.notificationText[type.toString()]['text'];
+            if (data != null) {
+              addData = {
+                // ...allNotifi[i],
+                'uid': allNotifi[i].id,
+                'avatar': Helper.systemAvatar,
+                'userName': Helper.notificationName[allNotifi[i]['postType']]
+                    ['name'],
+                'text': text,
+              };
+              changeData.add(addData);
+            }
           }
+          ;
         }
       }
       postCon.realNotifi = changeData;
