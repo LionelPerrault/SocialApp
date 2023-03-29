@@ -75,6 +75,10 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                     cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white),
                     onChanged: (value) {
+                      // searchValue = value;
+                      // super.setState(() {});
+                    },
+                    onSubmitted: (value) {
                       searchValue = value;
                       super.setState(() {});
                     },

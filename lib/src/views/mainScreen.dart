@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/SearchController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/GeolocationManager.dart';
@@ -56,6 +57,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
     () async {
       var user = FirebaseAuth.instance.currentUser!;
       EmailVerified.setVerified(user.emailVerified);
+      SearchController().getPosts();
     }();
 
     triggerEmailVerify();

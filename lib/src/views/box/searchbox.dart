@@ -40,9 +40,10 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   @override
   Widget build(BuildContext context) {
     SearchController().updateSearchText(widget.searchText);
-
+    con.getEvents(widget.searchText);
+    con.getGroups(widget.searchText);
     if (widget.searchText != '') {
-      searchResult = [
+      con.users = [
         ...con.usersByFirstName,
         ...con.usersByFirstNameCaps,
         ...con.usersByLastName,
@@ -50,10 +51,10 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
         ...con.usersByWholeName,
         ...con.usersByWholeNameCaps,
       ];
-      searchResult = [
-        ...{...searchResult}
+      con.users = [
+        ...{...con.users}
       ];
-      searchResult = [...searchResult, ...con.events, ...con.groups];
+      searchResult = [...con.users, ...con.events, ...con.groups];
     } else {
       searchResult = [];
     }

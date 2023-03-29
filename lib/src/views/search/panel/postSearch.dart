@@ -33,62 +33,76 @@ class PostSearchState extends mvc.StateMVC<PostSearch> {
   @override
   Widget build(BuildContext context) {
     if (widget.searchValue != '') {
+      print("searchCon.posts is ${searchCon.posts}");
       resultPosts = searchCon.posts
           .where((post) => (post['header'].contains(widget.searchValue)))
           .toList();
+
+      // resultPosts = searchCon.posts;
+      setState(() {});
+    } else {
+      resultPosts = [];
     }
-    return resultPosts.isEmpty
-        ? Container(
-            padding: const EdgeInsets.only(top: 40),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.network(Helper.emptySVG, width: 90),
-                Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(top: 10),
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  width: 140,
-                  decoration: const BoxDecoration(
-                      color: Color.fromRGBO(240, 240, 240, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: const Text(
-                    'No data to show',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(108, 117, 125, 1)),
-                  ),
-                ),
-              ],
+    return searchCon.posts.isEmpty
+        ? SizedBox(
+            width: 10,
+            height: 10,
+            child: const CircularProgressIndicator(
+              color: Colors.grey,
             ),
           )
-        : Container(
-            width: SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight -
-                SizeConfig.navbarHeight -
-                150 -
-                (UserManager.userInfo['isVerify'] ? 0 : 50),
-            child: SingleChildScrollView(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        for (int i = 0; i < resultPosts.length; i++)
-                          PostCell(
-                            postInfo: resultPosts[i],
-                            routerChange: widget.routerChange,
-                          )
-                      ],
+        : resultPosts.isEmpty
+            ? Container(
+                padding: const EdgeInsets.only(top: 40),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.network(Helper.emptySVG, width: 90),
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      width: 140,
+                      decoration: const BoxDecoration(
+                          color: Color.fromRGBO(240, 240, 240, 1),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: const Text(
+                        'No data to show',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(108, 117, 125, 1)),
+                      ),
                     ),
+                  ],
+                ),
+              )
+            : Container(
+                width: SizeConfig(context).screenWidth,
+                height: SizeConfig(context).screenHeight -
+                    SizeConfig.navbarHeight -
+                    150 -
+                    (UserManager.userInfo['isVerify'] ? 0 : 50),
+                child: SingleChildScrollView(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            for (int i = 0; i < resultPosts.length; i++)
+                              PostCell(
+                                postInfo: resultPosts[i],
+                                routerChange: widget.routerChange,
+                              )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          );
+                ),
+              );
   }
 }

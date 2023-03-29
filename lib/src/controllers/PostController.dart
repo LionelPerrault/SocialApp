@@ -47,6 +47,7 @@ class PostController extends ControllerMVC {
     //
     Helper.eventsData =
         FirebaseFirestore.instance.collection(Helper.eventsField);
+
     return true;
   }
 

@@ -36,11 +36,18 @@ class GroupSearchState extends mvc.StateMVC<GroupSearch> {
 
   @override
   Widget build(BuildContext context) {
+    print("group search ---- ${widget.searchValue}");
     if (widget.searchValue != '') {
-      resultGroup = searchCon.groups
-          .where((group) => (group['groupName'].contains(widget.searchValue)))
-          .toList();
+      searchCon.getGroups(widget.searchValue);
+
+      resultGroup = searchCon.groups;
+    } else {
+      resultGroup = [];
     }
+    // resultGroup = searchCon.groups
+    //     .where((group) => (group['groupName'].contains(widget.searchValue)))
+    //     .toList();
+
     return resultGroup.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),

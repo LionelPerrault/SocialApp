@@ -27,7 +27,7 @@ class SearchController extends ControllerMVC {
   List posts = [];
   List events = [];
   List groups = [];
-  String searchText = '';
+//  String searchText = '';
 
   List<String> splitBySpace(String str) {
     if (str.isEmpty) {
@@ -51,20 +51,18 @@ class SearchController extends ControllerMVC {
   }
 
   updateSearchText(searchParam) {
-    searchText = searchParam;
+    //  searchText = searchParam;
     setState(() {});
-    if (hasSpace(searchText)) {
-      List name = splitBySpace(searchText);
+    if (hasSpace(searchParam)) {
+      List name = splitBySpace(searchParam);
       getUsersByWholeName(name);
       getUsersByWholeNameCaps(name);
     } else {
-      getUsersByFirstName(searchText);
-      getUsersByFirstNameCaps(searchText);
-      getUsersByLastName(searchText);
-      getUsersByLastNameCaps(searchText);
+      getUsersByFirstName(searchParam);
+      getUsersByFirstNameCaps(searchParam);
+      getUsersByLastName(searchParam);
+      getUsersByLastNameCaps(searchParam);
     }
-    getEvents();
-    getGroups();
   }
 
   getUsersByWholeName(name) async {
@@ -254,9 +252,11 @@ class SearchController extends ControllerMVC {
     }
     posts = postsBox;
     setState(() {});
+    print("posts is ----- $posts");
+    return posts;
   }
 
-  getEvents() async {
+  getEvents(searchText) async {
     //var snapShots = await Helper.eventsData.get();
 
     if (searchText != '') {
@@ -285,7 +285,7 @@ class SearchController extends ControllerMVC {
     }
   }
 
-  getGroups() async {
+  getGroups(searchText) async {
     if (searchText != '') {
       var snapShots = await FirebaseFirestore.instance
           .collection(Helper.groupsField)
@@ -307,6 +307,7 @@ class SearchController extends ControllerMVC {
   }
 
   getAllSearchResult() async {
+    await getPosts();
     // await getUsersByFirstName(searchText);
     // await getUsersByLastName(searchText);
     // await getEvents();

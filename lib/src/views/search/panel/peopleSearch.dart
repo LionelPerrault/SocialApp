@@ -35,11 +35,29 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
   @override
   Widget build(BuildContext context) {
     if (widget.searchValue != '') {
-      resultUsers = searchCon.usersByFirstName
-          .where((user) => (user['userName'].contains(widget.searchValue) ||
-              '${user['firstName']} ${user['lastName']}'
-                  .contains(widget.searchValue)))
-          .toList();
+      SearchController().updateSearchText(widget.searchValue);
+
+      if (widget.searchValue != '') {
+        searchCon.users = [
+          ...searchCon.usersByFirstName,
+          ...searchCon.usersByFirstNameCaps,
+          ...searchCon.usersByLastName,
+          ...searchCon.usersByLastNameCaps,
+          ...searchCon.usersByWholeName,
+          ...searchCon.usersByWholeNameCaps,
+        ];
+        searchCon.users = [
+          ...{...searchCon.users}
+        ];
+      } else {
+        searchCon.users = [];
+      }
+      resultUsers = searchCon.users;
+      // resultUsers = searchCon.users
+      //     .where((user) => (user['userName'].contains(widget.searchValue) ||
+      //         '${user['firstName']} ${user['lastName']}'
+      //             .contains(widget.searchValue)))
+      //     .toList();
     }
     return resultUsers.isEmpty
         ? Container(

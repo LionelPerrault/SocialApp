@@ -37,9 +37,16 @@ class EventSearchState extends mvc.StateMVC<EventSearch> {
   @override
   Widget build(BuildContext context) {
     if (widget.searchValue != '') {
-      resultEvent = searchCon.events
-          .where((event) => (event['eventName'].contains(widget.searchValue)))
-          .toList();
+      // resultEvent = searchCon.events
+      //     .where((event) => (event['eventName'].contains(widget.searchValue)))
+      //     .toList();
+      if (widget.searchValue != '') {
+        searchCon.getEvents(widget.searchValue);
+
+        resultEvent = searchCon.events;
+      } else {
+        resultEvent = [];
+      }
     }
     return resultEvent.isEmpty
         ? Container(
