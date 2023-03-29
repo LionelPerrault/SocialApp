@@ -44,10 +44,16 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
     if (widget.searchText != '') {
       searchResult = [
         ...con.usersByFirstName,
+        ...con.usersByFirstNameCaps,
         ...con.usersByLastName,
-        ...con.events,
-        ...con.groups,
+        ...con.usersByLastNameCaps,
+        ...con.usersByWholeName,
+        ...con.usersByWholeNameCaps,
       ];
+      searchResult = [
+        ...{...searchResult}
+      ];
+      searchResult = [...searchResult, ...con.events, ...con.groups];
     } else {
       searchResult = [];
     }
