@@ -49,10 +49,11 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
   void initState() {
     add(widget.con);
     searchCon = controller as SearchController;
-    searchCon.getUsers('');
-    searchCon.getPosts();
-    searchCon.getEvents();
-    searchCon.getGroups();
+    // searchCon.getUsersByFirstName('');
+    // searchCon.getUsersByLastName('');
+    // searchCon.getPosts();
+    // searchCon.getEvents();
+    // searchCon.getGroups();
     super.initState();
   }
 
