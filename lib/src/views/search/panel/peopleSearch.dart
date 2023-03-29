@@ -35,7 +35,7 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
   @override
   Widget build(BuildContext context) {
     if (widget.searchValue != '') {
-      resultUsers = searchCon.users
+      resultUsers = searchCon.usersByFirstName
           .where((user) => (user['userName'].contains(widget.searchValue) ||
               '${user['firstName']} ${user['lastName']}'
                   .contains(widget.searchValue)))

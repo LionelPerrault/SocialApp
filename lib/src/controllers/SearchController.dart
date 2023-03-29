@@ -18,6 +18,8 @@ class SearchController extends ControllerMVC {
   static SearchController? _this;
 
   List users = [];
+  List usersByFirstName = [];
+  List usersByLastName = [];
   List posts = [];
   List events = [];
   List groups = [];
@@ -26,56 +28,70 @@ class SearchController extends ControllerMVC {
   updateSearchText(searchParam) {
     searchText = searchParam;
     setState(() {});
-    getUsers(searchText);
+    getUsersByFirstName(searchText);
+    getUsersByLastName(searchText);
     getEvents();
     getGroups();
   }
 
-  getUsers(searchText) async {
-    if (searchText != null) {
-      http.post(
-        Uri.parse('https://us-central1-shnatter-a69cd.cloudfunctions.net/getusersbyname'),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode(<String, dynamic>{"data": searchText}),
-      );
+  getUsersByFirstName(searchText) async {
+    List box = [];
+
+    var snapShots = await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('firstName', isGreaterThanOrEqualTo: searchText)
+        .where('firstName', isLessThan: searchText + 'z')
+        .get();
+
+    for (var doc in snapShots.docs) {
+      box.add({
+        ...doc.data(),
+        'uid': doc.id,
+      });
     }
+
+    usersByFirstName = box;
+
+    setState(() {});
   }
 
-  // getUsers() async {
-  //   var snapShots = await Helper.userCollection.orderBy('userName').get();
-  //   List box = [];
+  getUsersByLastName(searchText) async {
+    List box = [];
 
-  //   for (var doc in snapShots.docs) {
-  //     String name = doc.data()["userName"];
-  //     String firstName = doc.data()["firstName"];
-  //     String lastName = doc.data()["lastName"];
-      
-  //     if ((name + firstName + lastName).contains(searchText)) {
-  //       box.add({...doc.data(), 'uid': doc.id,});
-  //     }
-  //   }
+    var snapShots = await FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('lastName', isGreaterThanOrEqualTo: searchText)
+        .where('lastName', isLessThan: searchText + 'z')
+        .get();
 
-  //   users = box;
-  //   setState(() {});
-  // }
+    for (var doc in snapShots.docs) {
+      box.add({
+        ...doc.data(),
+        'uid': doc.id,
+      });
+    }
+    usersByLastName = box;
+
+    setState(() {});
+  }
 
   getPosts() async {
-    var allSanp = await Helper.postCollection.orderBy('postTime', descending: true).get();
+    var allSanp =
+        await Helper.postCollection.orderBy('postTime', descending: true).get();
     var allPosts = allSanp.docs;
     var postData;
     var adminInfo;
     var postsBox = [];
     for (var i = 0; i < allPosts.length; i++) {
       if (allPosts[i]['type'] == 'product') {
-        var valueSnap = await Helper.productsData.doc(allPosts[i]['value']).get();
+        var valueSnap =
+            await Helper.productsData.doc(allPosts[i]['value']).get();
         postData = valueSnap.data();
       } else {
         postData = allPosts[i]['value'];
       }
-      var adminSnap = await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+      var adminSnap =
+          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
       adminInfo = adminSnap.data();
       var eachPost = {
         'id': allPosts[i].id,
@@ -99,36 +115,59 @@ class SearchController extends ControllerMVC {
   }
 
   getEvents() async {
-    var snapShots = await Helper.eventsData.get();
-    List box = [];
+    //var snapShots = await Helper.eventsData.get();
 
-    for (var doc in snapShots.docs) {      
-      if (doc.data()["eventName"].contains(searchText)) {
-        box.add({...doc.data(), 'uid': doc.id,});
+    if (searchText != '') {
+      var snapShots = await FirebaseFirestore.instance
+          .collection(Helper.eventsField)
+          .where('eventName', isGreaterThanOrEqualTo: searchText)
+          .where('eventName', isLessThan: '${searchText}z')
+          .get();
+      List box = [];
+
+      for (var doc in snapShots.docs) {
+        box.add({
+          ...doc.data(),
+          'uid': doc.id,
+        });
+        // if (doc.data()["eventName"].contains(searchText)) {
+        //   box.add({
+        //     ...doc.data(),
+        //     'uid': doc.id,
+        //   });
+        // }
       }
-    }
 
-    events = box;
-    setState(() {});
+      events = box;
+      setState(() {});
+    }
   }
 
   getGroups() async {
-    var snapShots = await Helper.groupsData.get();
-    List box = [];
+    if (searchText != '') {
+      var snapShots = await FirebaseFirestore.instance
+          .collection(Helper.groupsField)
+          .where('groupName', isGreaterThanOrEqualTo: searchText)
+          .where('groupName', isLessThan: '${searchText}z')
+          .get();
+      List box = [];
 
-    for (var doc in snapShots.docs) {
-      if (doc.data()["groupName"].contains(searchText)) {
-        box.add({...doc.data(), 'uid': doc.id,});
+      for (var doc in snapShots.docs) {
+        box.add({
+          ...doc.data(),
+          'uid': doc.id,
+        });
       }
-    }
 
-    groups = box;
-    setState(() {});
+      groups = box;
+      setState(() {});
+    }
   }
 
   getAllSearchResult() async {
-    await getUsers(searchText);
-    await getEvents();
-    await getGroups();
+    // await getUsersByFirstName(searchText);
+    // await getUsersByLastName(searchText);
+    // await getEvents();
+    // await getGroups();
   }
 }

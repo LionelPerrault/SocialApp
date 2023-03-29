@@ -42,16 +42,16 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
     SearchController().updateSearchText(widget.searchText);
 
     if (widget.searchText != '') {
-      List total = [];
-      List totalUsers = con.users;
-      List totalEvents = con.events;
-      List totalGroups = con.groups;
-      total = [...totalUsers, ...total];
-      total = [...totalEvents, ...total];
-      total = [...totalGroups, ...total];
-      searchResult = total;
+      searchResult = [
+        ...con.usersByFirstName,
+        ...con.usersByLastName,
+        ...con.events,
+        ...con.groups,
+      ];
+    } else {
+      searchResult = [];
     }
-    
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Column(
