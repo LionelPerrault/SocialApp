@@ -643,12 +643,6 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                       ),
                     ],
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  const Divider(
-                    thickness: 0.1,
-                    color: Colors.black,
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
                 ],
               ),
             ),
@@ -656,60 +650,54 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
           Container(
             width: 400,
             margin: const EdgeInsets.only(right: 20, bottom: 10),
-            child: Row(
+            child: Column(
               children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    shadowColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    minimumSize: const Size(100, 50),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  child: const Text('Cancel',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold)),
+                const Divider(
+                  thickness: 0.1,
+                  color: Colors.black,
                 ),
-                const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shadowColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    minimumSize: const Size(100, 50),
-                  ),
-                  onPressed: () {
-                    footerBtnState = true;
-                    setState(() {});
-                    if (widget.editData['id'] == '') {
-                      getTokenBudget();
-                    } else {
-                      postCon
-                          .editRealEstate(
-                              context, widget.editData['id'], realEstateInfo)
-                          .then((value) => {Helper.showToast(value['msg'])});
-                      Navigator.of(context).pop(true);
-                    }
-                  },
-                  child: footerBtnState
-                      ? const SizedBox(
-                          width: 10,
-                          height: 10.0,
-                          child: CircularProgressIndicator(
-                            color: Colors.grey,
-                          ),
-                        )
-                      : const Text('Publish',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                )
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                Row(
+                  children: [
+                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shadowColor: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(100, 50),
+                      ),
+                      onPressed: () {
+                        footerBtnState = true;
+                        setState(() {});
+                        if (widget.editData['id'] == '') {
+                          getTokenBudget();
+                        } else {
+                          postCon
+                              .editRealEstate(context, widget.editData['id'],
+                                  realEstateInfo)
+                              .then(
+                                  (value) => {Helper.showToast(value['msg'])});
+                          Navigator.of(context).pop(true);
+                        }
+                      },
+                      child: footerBtnState
+                          ? const SizedBox(
+                              width: 10,
+                              height: 10.0,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : const Text('Publish',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                    )
+                  ],
+                ),
               ],
             ),
           ),

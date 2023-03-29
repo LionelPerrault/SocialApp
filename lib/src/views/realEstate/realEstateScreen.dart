@@ -167,7 +167,7 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.all(3),
                               backgroundColor:
-                                  const Color.fromARGB(255, 33, 37, 41),
+                                  const Color.fromARGB(255, 45, 206, 137),
                               // elevation: 3,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0.0)),
