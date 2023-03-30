@@ -110,11 +110,8 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       height: UserManager.userInfo['isVerify'] == false ||
               UserManager.userInfo['isVerify'].toString().toLowerCase() ==
                   'null'
-          ? (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 30)
-          : (SizeConfig(context).screenHeight -
-              SizeConfig.navbarHeight -
-              verifyAlertToastHeight -
-              30),
+          ? (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 60)
+          : (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 20),
       child: SingleChildScrollView(
         child: widget.chatUser.isEmpty
             ? Column(
@@ -142,9 +139,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                           ? Padding(
                               padding: EdgeInsets.only(
                                   top: UserManager.userInfo['isVerify']
-                                      ? SizeConfig(context).screenHeight - 250
+                                      ? SizeConfig(context).screenHeight - 260
                                       : SizeConfig(context).screenHeight -
-                                          250 -
+                                          260 -
                                           verifyAlertToastHeight),
                               child: WriteMessageScreen(
                                 type: 'new',
@@ -165,6 +162,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                 setState(() {});
                               },
                             ),
+                  SizedBox(
+                    height: 10,
+                  )
                 ],
               )
             : isCheckingChatHistory
@@ -175,9 +175,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                         ? Padding(
                             padding: EdgeInsets.only(
                                 top: UserManager.userInfo['isVerify']
-                                    ? SizeConfig(context).screenHeight - 250
+                                    ? SizeConfig(context).screenHeight - 260
                                     : SizeConfig(context).screenHeight -
-                                        250 -
+                                        260 -
                                         verifyAlertToastHeight),
                             child: WriteMessageScreen(
                               type: 'new',
@@ -198,6 +198,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                               setState(() {});
                             },
                           ),
+                    SizedBox(
+                      height: 10,
+                    )
                   ]),
       ),
     );
