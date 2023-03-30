@@ -67,7 +67,7 @@ class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
                 Icons.school,
                 color: Color.fromARGB(255, 43, 83, 164),
               ),
-              pagename: 'Education',
+              pagename: 'Interests',
               button: const {
                 'buttoncolor': Color.fromARGB(255, 17, 205, 239),
                 'icon': Icon(Icons.person),
