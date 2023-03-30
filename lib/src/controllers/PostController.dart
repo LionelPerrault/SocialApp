@@ -2131,6 +2131,9 @@ class PostController extends ControllerMVC {
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
           .update({'checkNotifyTime': serverTimeStamp});
+      await Helper.saveJSONPreference(
+          Helper.userField, {...UserManager.userInfo});
+      await UserManager.getUserInfo();
       realNotifi = [];
       allNotification = [];
       setState(() {});

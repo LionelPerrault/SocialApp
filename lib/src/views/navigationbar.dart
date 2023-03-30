@@ -129,16 +129,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       var userInfo = userSnap.data();
 
       var changeData = [];
-      var usercheckTime = userInfo!['checkNotifyTime'];
+
+      var usercheckTime = 0;
+      if (userInfo == null) return;
+      if (userInfo['checkNotifyTime'] != null) {
+        usercheckTime = userInfo['checkNotifyTime'];
+      }
 
       var tsNT;
       for (var i = 0; i < allNotifi.length; i++) {
         // ignore: unused_local_variable
-        tsNT = allNotifi[i]['timeStamp'].toDate().millisecondsSinceEpoch;
-        if (usercheckTime == null) {
-          usercheckTime = 0;
-          setState(() {});
-        }
+        tsNT = allNotifi[i]['tsNT'];
+
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
 
@@ -186,7 +188,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
               changeData.add(addData);
             }
           }
-          ;
         }
       }
       postCon.realNotifi = changeData;
