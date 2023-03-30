@@ -1626,7 +1626,7 @@ class PostController extends ControllerMVC {
 
       allPosts = profileSnap.docs;
     }
-    lastData = allPosts[allPosts.length - 1];
+
     var postsBox = [];
     int i = 0;
 
@@ -1644,6 +1644,7 @@ class PostController extends ControllerMVC {
 
     int index = 0;
     slide = allPosts.length < slide ? allPosts.length : slide;
+
     while (i < slide) {
       if (direction == -1) {
         index = slide - 1 - i;
@@ -1687,6 +1688,10 @@ class PostController extends ControllerMVC {
         postsBox.add(eachPost);
       }
       i++;
+    }
+
+    if (direction == 1 || direction == 0) {
+      lastData = allPosts[slide - 1];
     }
     // if (slide == 0) {
     //   lastTime = latestTime = DateTime.now();
