@@ -181,14 +181,26 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   Widget PhotosData() {
     return photoModel.photos.isEmpty
         ? Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            height: SizeConfig(context).screenHeight * 0.2,
-            color: Colors.white,
+            padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
-            child: Text('${userInfo['fullName']} doesn`t have photos',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SvgPicture.network(Helper.emptySVG, width: 90),
+              Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  width: 140,
+                  decoration: const BoxDecoration(
+                      color: Color.fromRGBO(240, 240, 240, 1),
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: const Text(
+                    'No data to show',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(108, 117, 125, 1)),
+                  ))
+            ]))
         : Container(
             margin: const EdgeInsets.only(left: 30, right: 30),
             child: Row(

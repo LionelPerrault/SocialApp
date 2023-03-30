@@ -402,7 +402,29 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                   ],
                 ),
               )
-            : const SizedBox(),
+            : Container(
+                padding: const EdgeInsets.only(top: 40),
+                alignment: Alignment.center,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.network(Helper.emptySVG, width: 90),
+                      Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          width: 140,
+                          decoration: const BoxDecoration(
+                              color: Color.fromRGBO(240, 240, 240, 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: const Text(
+                            'No data to show',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(108, 117, 125, 1)),
+                          ))
+                    ])),
         loadingFlagBottom
             ? const SizedBox(
                 width: 50,
@@ -413,7 +435,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
               )
             : const SizedBox(),
         loadingFlagBottom || loadingFlag || !nextPostFlag
-            ? !nextPostFlag
+            ? !nextPostFlag && PostController().postsProfile.isNotEmpty
                 ? Text("There is no more data to show")
                 : const SizedBox()
             : ElevatedButton(
