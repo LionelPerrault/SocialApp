@@ -209,7 +209,11 @@ class SettingSecurityPasswordScreenState
 
     if (currentPassword == userInfo['password']) {
       if (newPassword == confirmPassword) {
-        con.changePassword(userInfo['email'], newPassword);
+        if (newPassword.length < 8) {
+          Helper.showToast("Password shoule be at least 8 characters");
+        } else {
+          con.changePassword(userInfo['email'], newPassword);
+        }
       } else {
         Helper.showToast("Password mismatching. Please check again!");
       }
