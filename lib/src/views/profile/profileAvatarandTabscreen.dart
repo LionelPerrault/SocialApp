@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
@@ -255,7 +256,6 @@ class ProfileAvatarandTabScreenState extends mvc
                           maximumSize: const Size(26, 26),
                         ),
                         onPressed: () {
-                          print("avatar changing");
                           //firestore composite index added.
                           //firestore storage rule edited.
                           uploadImage('avatar');
@@ -746,6 +746,12 @@ class ProfileAvatarandTabScreenState extends mvc
 
       uploadTask.whenComplete(() async {
         var downloadUrl = await _reference.getDownloadURL();
+        await PostController().savePost(
+            'photo',
+            [
+              {'id': 0, 'url': downloadUrl}
+            ],
+            'Public');
         if (type == 'profile_cover') {
           FirebaseFirestore.instance
               .collection(Helper.userField)
