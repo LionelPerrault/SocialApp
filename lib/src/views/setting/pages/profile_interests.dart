@@ -8,6 +8,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
+import 'package:shnatter/src/widget/interests.dart';
 
 class SettingInterestsScreen extends StatefulWidget {
   late UserController usercon;
@@ -19,44 +20,21 @@ class SettingInterestsScreen extends StatefulWidget {
   State createState() => SettingInterestsScreenState();
 }
 
-// ignore: must_be_immutable
 class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
-  var setting_profile = {};
   late UserController usercon;
-  var interestsCheck = [];
-  List subCategory = [];
   var userInfo = UserManager.userInfo;
 
   @override
   void initState() {
     add(widget.usercon);
     usercon = controller as UserController;
-    setting_profile['interests'] = [];
-    usercon.getAllInterests().then((allInterests) => {
-          for (int i = 0; i < allInterests.length; i++)
-            {
-              subCategory.add(allInterests[i]),
-              if (userInfo['interests']
-                  .where((data) => data == i)
-                  .toList()
-                  .isNotEmpty)
-                {
-                  interestsCheck.add(
-                      {'title': allInterests[i]['title'], 'interested': true}),
-                }
-              else
-                {
-                  interestsCheck.add(
-                      {'title': allInterests[i]['title'], 'interested': false}),
-                }
-            },
-          setState(() {})
-        });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    Map settingProfile = {};
     return Container(
         padding: const EdgeInsets.only(top: 20, left: 30),
         child: Column(
@@ -81,106 +59,24 @@ class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5 + 40
                       : SizeConfig(context).screenWidth * 0.9 - 30,
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  Column(children: [
-                    const Divider(
-                      thickness: 0.1,
-                      color: Colors.black,
-                    ),
-                    Row(
-                      children: const [
-                        Padding(padding: EdgeInsets.only(left: 10)),
-                        Text(
-                          'Title',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        Flexible(fit: FlexFit.tight, child: SizedBox()),
-                        Text(
-                          'Check',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: 30))
-                      ],
-                    ),
-                    const Divider(
-                      thickness: 0.1,
-                      color: Colors.black,
-                    )
-                  ]),
-                  SizedBox(
-                    height: 300,
-                    child: ListView.builder(
-                        itemCount: subCategory.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(children: [
-                            Row(
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.only(left: 10)),
-                                Text(
-                                  subCategory[index]['title'],
-                                  style: const TextStyle(
-                                      fontSize: 11, color: Colors.black),
-                                ),
-                                const Flexible(
-                                    fit: FlexFit.tight, child: SizedBox()),
-                                Transform.scale(
-                                    scale: 0.7,
-                                    child: Checkbox(
-                                      fillColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.black),
-                                      checkColor: Colors.blue,
-                                      activeColor:
-                                          const Color.fromRGBO(0, 123, 255, 1),
-                                      value: interestsCheck[index]
-                                          ['interested'],
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                  5.0))), // Rounded Checkbox
-                                      onChanged: (value) {
-                                        setState(() {
-                                          interestsCheck[index]['interested'] =
-                                              !interestsCheck[index]
-                                                  ['interested'];
-                                        });
-                                        if (interestsCheck[index]
-                                            ['interested']) {
-                                          setting_profile['interests']
-                                              .add(index);
-                                        }
-                                        setState(() {});
-                                      },
-                                    )),
-                                const Padding(
-                                    padding: EdgeInsets.only(left: 30))
-                              ],
-                            ),
-                            const Divider(
-                              thickness: 0.1,
-                              color: Colors.black,
-                            )
-                          ]);
-                        }),
-                  )
-                ]),
+              child: SizedBox(
+                width: 400,
+                child: InterestsWidget(
+                  context: context,
+                  data: UserManager.userInfo['interests'],
+                  sendUpdate: (value) {
+                    settingProfile['interests'] = value;
+                  },
+                ),
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            footer()
+            footer(settingProfile)
           ],
         ));
   }
 
-  Widget footer() {
+  Widget footer(updatedData) {
     return Padding(
       padding: const EdgeInsets.only(right: 20, top: 20),
       child: Container(
@@ -213,14 +109,7 @@ class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
                         : const Size(120, 50),
                   ),
                   onPressed: () {
-                    var data = {};
-                    data['interests'] = [];
-                    for (int i = 0; i < interestsCheck.length; i++) {
-                      if (interestsCheck[i]['interested']) {
-                        data['interests'].add(i);
-                      }
-                    }
-                    usercon.profileChange(data);
+                    usercon.profileChange(updatedData);
                   },
                   child: usercon.isProfileChange
                       ? Row(
@@ -248,21 +137,6 @@ class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
               const Padding(padding: EdgeInsets.only(right: 30))
             ],
           )),
-    );
-  }
-
-  Widget input({label, onchange, obscureText = false, validator}) {
-    return SizedBox(
-      height: 28,
-      child: StartedInput(
-        validator: (val) async {
-          validator(val);
-        },
-        obscureText: obscureText,
-        onChange: (val) async {
-          onchange(val);
-        },
-      ),
     );
   }
 }
