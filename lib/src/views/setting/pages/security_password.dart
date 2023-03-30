@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
@@ -193,10 +194,27 @@ class SettingSecurityPasswordScreenState
   }
 
   void saveAccountSettings() {
+    if (currentPassword == "") {
+      Helper.showToast("Please input current password!");
+      return;
+    }
+    if (newPassword == "") {
+      Helper.showToast("Please input new password");
+      return;
+    }
+    if (confirmPassword == "") {
+      Helper.showToast("Please input confirm password");
+      return;
+    }
+
     if (currentPassword == userInfo['password']) {
       if (newPassword == confirmPassword) {
         con.changePassword(userInfo['email'], newPassword);
+      } else {
+        Helper.showToast("Password mismatching. Please check again!");
       }
+    } else {
+      Helper.showToast("You inputed wrong current password.");
     }
   }
 }
