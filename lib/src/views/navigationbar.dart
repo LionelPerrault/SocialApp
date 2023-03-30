@@ -134,6 +134,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       if (userInfo == null) return;
       if (userInfo['checkNotifyTime'] != null) {
         usercheckTime = userInfo['checkNotifyTime'];
+      } else {
+        return;
       }
 
       var tsNT;
