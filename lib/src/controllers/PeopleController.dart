@@ -162,7 +162,9 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.userField)
         .orderBy('userName')
         .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
+
     await getDiscoverList(isSearch ? searchQuery : query);
+
     isLocked = false;
     setState(() {});
   }

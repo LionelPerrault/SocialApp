@@ -1568,7 +1568,8 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  var lastTime;
+  // var lastTime;
+  var lastData;
   var latestTime;
 
   Map adminSnapHash = {};
@@ -1587,7 +1588,8 @@ class PostController extends ControllerMVC {
           arrayContains: UserManager.userInfo['userName'].toString());
       baseQuery = baseQuery.where('privacy', whereIn: ['Public', 'Friends']);
       if (direction == 0) {
-        baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+        // baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+        baseQuery = baseQuery.startAfterDocument(lastData);
       }
       friendSnap = await baseQuery.limit(slide).get();
 
@@ -1598,7 +1600,8 @@ class PostController extends ControllerMVC {
           .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
           .where('privacy', isEqualTo: 'Only Me');
       if (direction == 0) {
-        profileQuery = profileQuery.where('postTime', isLessThan: lastTime);
+        //  profileQuery = profileQuery.where('postTime', isLessThan: lastTime);
+        profileQuery = profileQuery.startAfterDocument(lastData);
       }
       profileSnap = await profileQuery.limit(slide).get();
       allPosts = friendSnap.docs + profileSnap.docs;
@@ -1616,12 +1619,14 @@ class PostController extends ControllerMVC {
         baseQuery = baseQuery.where('groupId', isEqualTo: uid);
       }
       if (direction == 0) {
-        baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+        //baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+        baseQuery = baseQuery.startAfterDocument(lastData);
       }
       profileSnap = await baseQuery.limit(slide).get();
 
       allPosts = profileSnap.docs;
     }
+    lastData = allPosts[allPosts.length - 1];
     var postsBox = [];
     int i = 0;
 
@@ -1683,11 +1688,11 @@ class PostController extends ControllerMVC {
       }
       i++;
     }
-    if (slide == 0) {
-      lastTime = latestTime = DateTime.now();
-    } else {
-      lastTime = allPosts[slide - 1]['postTime'];
-    }
+    // if (slide == 0) {
+    //   lastTime = latestTime = DateTime.now();
+    // } else {
+    //   lastTime = allPosts[slide - 1]['postTime'];
+    // }
     if (type == PostType.profile.index) {
       postsProfile = postsBox;
     } else if (type == PostType.timeline.index) {
