@@ -2134,8 +2134,7 @@ class PostController extends ControllerMVC {
       await Helper.saveJSONPreference(
           Helper.userField, {...UserManager.userInfo});
       await UserManager.getUserInfo();
-      realNotifi = [];
-      allNotification = [];
+
       setState(() {});
     } catch (e) {
       print(e);
