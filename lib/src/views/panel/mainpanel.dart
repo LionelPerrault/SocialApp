@@ -60,7 +60,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     }
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
-    loadingFlag = true;
+    postStream.docs loadingFlag = true;
     // con.posts = [];
 
     con
