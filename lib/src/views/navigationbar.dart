@@ -406,7 +406,15 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      menuBuilder: () => ShnatterNotification(),
+                      menuBuilder: () => ShnatterNotification(
+                        seeAll: () {
+                          _navController.hideMenu();
+
+                          widget.routerChange({
+                            'router': RouteNames.notifications,
+                          });
+                        },
+                      ),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
                       child: Row(
@@ -749,7 +757,15 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      menuBuilder: () => ShnatterNotification(),
+                      menuBuilder: () => ShnatterNotification(
+                        seeAll: () {
+                          _navController.hideMenu();
+
+                          widget.routerChange({
+                            'router': RouteNames.notifications,
+                          });
+                        },
+                      ),
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
                       child: Row(
