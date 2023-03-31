@@ -59,6 +59,7 @@ class RouteNames {
   static const messages = '/messages';
   static const realEstate = '/realestate';
   static const search = '/search';
+  static const notifications = '/notifications';
 
   //admin routes
   static const adp = '/adminpanel';

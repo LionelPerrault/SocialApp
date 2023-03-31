@@ -6,16 +6,21 @@ import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 
 // ignore: must_be_immutable
 class ShnatterNotification extends StatefulWidget {
-  ShnatterNotification({Key? key})
-      : con = PostController(),
+  ShnatterNotification({
+    Key? key,
+    required this.seeAll,
+  })  : con = PostController(),
         super(key: key);
   late PostController con;
+  Function seeAll;
+
   @override
   State createState() => ShnatterNotificationState();
 }
@@ -29,7 +34,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   void initState() {
     add(widget.con);
     postCon = controller as PostController;
-    postCon.checkNotify();
+    // postCon.checkNotify();
     super.initState();
   }
 
@@ -156,24 +161,20 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                       ),
               ),
               const Divider(height: 1, indent: 0),
-              if (postCon.allNotification.isNotEmpty)
-                Container(
-                    color: const Color.fromARGB(255, 130, 163, 255),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                            child: const Text('All Read',
-                                style: TextStyle(fontSize: 11)),
-                            onPressed: () async {
-                              await postCon.checkNotify();
-                              postCon.allNotification = [];
-                              postCon.realNotifi = [];
-                              postCon.setState(() {});
-                            }),
-                      ],
-                    ))
+              Container(
+                  color: const Color.fromARGB(255, 130, 163, 255),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          child: const Text('See All',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () async {
+                            widget.seeAll();
+                          }),
+                    ],
+                  ))
             ],
           )),
     );
