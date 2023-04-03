@@ -664,7 +664,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 onTap: () async {
                   print("onclick ");
                   onClick();
-                  setState(() {});
+                  setState(() {
+                    emojiShowing = false;
+                  });
                 },
                 child: const Icon(
                   Icons.send,
