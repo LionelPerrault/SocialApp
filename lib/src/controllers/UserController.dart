@@ -633,11 +633,12 @@ class UserController extends ControllerMVC {
                             isSendLoginedInfo = false,
                             isLogined = true,
                             Helper.connectOnlineDatabase(),
-                            Navigator.pushReplacementNamed(
+                            Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 isStarted
                                     ? RouteNames.homePage
-                                    : RouteNames.started),
+                                    : RouteNames.started,
+                                (Route<dynamic> route) => false),
                             setState(() {})
                           }
                       }),
