@@ -1755,6 +1755,16 @@ class PostController extends ControllerMVC {
         }
       }
     });
+
+    FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('avatar', isEqualTo: value['url'])
+        .get()
+        .then((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        doc.reference.update({'avatar': ""});
+      }
+    });
   }
 
   deletePhotoFromTimeline(Map value) {
