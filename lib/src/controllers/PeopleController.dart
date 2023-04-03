@@ -40,80 +40,84 @@ enum EmailType { statusFriendRequestSent, statusFriendsNow }
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-Future<List<DocumentSnapshot>> findSimilarUsers(String myUserId) async {
+Future<List> findSimilarUsers(String myUserId) async {
   // Get my user document from Firebase
+  print(myUserId);
+
   final DocumentSnapshot myUserDoc =
-      await firestore.collection('users').doc(myUserId).get();
-  final List<dynamic> myInterestIds = myUserDoc.get('interests') ?? [];
-
+      await firestore.collection(Helper.userField).doc(myUserId).get();
+  final List<dynamic> myInterestIds = myUserDoc['interests'];
+  print(myInterestIds);
   // Get all other user documents from Firebase
-  final QuerySnapshot allUsersQuery = await firestore.collection('users').get();
+  final QuerySnapshot allUsersQuery =
+      await firestore.collection(Helper.userField).get();
+  print(allUsersQuery);
   final List<DocumentSnapshot> allUsersDocs = allUsersQuery.docs;
-
+  print(allUsersDocs.length);
   // Calculate similarity scores for each user and store them in a map
   final Map<String, int> similarityScores = {};
+  List<String> potentialMatches = [];
   for (final DocumentSnapshot userDoc in allUsersDocs) {
     final String userId = userDoc.id;
+    final String userName = userDoc['userName'];
     if (userId == myUserId) {
       continue; // Skip my own user document
     }
 
-    final List<dynamic> userInterestIds = userDoc.get('interests') ?? [];
-    int score = 0;
+    print("userId is $userId");
+
+    if (!(userDoc.data() as Map<String, dynamic>).containsKey('interests')) {
+      continue;
+    }
+    final List<dynamic> userInterestIds = userDoc['interests'];
+    print("userInterestIds is $userInterestIds");
+    int count = 0;
     for (final dynamic myInterestId in myInterestIds) {
-      final Map<String, dynamic>? myInterest = await _getInterestById(
-          myInterestId); // Helper method to get interest Map by ID
-      if (myInterest == null) {
-        continue; // Skip invalid interests
-      }
+      if (myInterestId == null) continue;
+      // final QueryDocumentSnapshot<Map<String, dynamic>> myInterest =
+      //     await _getInterestById(
+      //         myInterestId); // Helper method to get interest Map by ID
+      // if (myInterest == null) {
+      //   continue; // Skip invalid interests
+      // }
 
-      for (final dynamic userInterestId in userInterestIds) {
-        final Map<String, dynamic>? userInterest = await _getInterestById(
-            userInterestId); // Helper method to get interest Map by ID
-        if (userInterest == null) {
-          continue; // Skip invalid interests
-        }
-
-        if (myInterest['id'] == userInterest['id']) {
-          if (myInterest['parentId'] == userInterest['parentId'] &&
-              myInterest['parentId'] != '0') {
-            score += 50;
-          } else if (myInterest['parentId'] == userInterest['parentId'] &&
-              myInterest['parentId'] == '0') {
-            score += 30;
-          }
-        } else if (myInterest['parentId'] == userInterest['parentId']) {
-          if (myInterest['parentId'] != '0') {
-            score += 30;
-          }
-        }
+      // print("myInterest is $myInterest");
+      if (userInterestIds.contains(myInterestId)) {
+        print("friend suggested userId is $userId");
+        count++;
       }
     }
-
-    similarityScores[userId] = score;
+    if (count > 0) {
+      potentialMatches.add(userName);
+      print(potentialMatches);
+    }
   }
 
-  // Sort user documents by descending similarity score
-  final List<DocumentSnapshot> similarUsersDocs = allUsersDocs
-      .where((userDoc) => similarityScores[userDoc.id]! > 0)
-      .toList();
-  similarUsersDocs.sort(
-      (a, b) => similarityScores[b.id]!.compareTo(similarityScores[a.id]!));
+  // // Sort user documents by descending similarity score
+  // final List<DocumentSnapshot> similarUsersDocs = allUsersDocs
+  //     .where((userDoc) => similarityScores[userDoc.id]! > 0)
+  //     .toList();
+  // similarUsersDocs.sort(
+  //     (a, b) => similarityScores[b.id]!.compareTo(similarityScores[a.id]!));
 
-  return similarUsersDocs;
+  // print("similarUserDocs----$similarUsersDocs");
+  return potentialMatches;
 }
 
-Future<Map<String, dynamic>?> _getInterestById(dynamic interestId) async {
-  final DocumentSnapshot interestDoc =
-      await firestore.collection('interests').doc(interestId).get();
-
-  final Map<String, dynamic> interest =
-      interestDoc.data() as Map<String, String>;
-  if (interest.containsKey('id') && interest.containsKey('parentId')) {
-    return interest;
-  } else {
-    return {};
+Future<QueryDocumentSnapshot<Map<String, dynamic>>> _getInterestById(
+    dynamic interestId) async {
+  print("myinterest id is $interestId");
+  final QuerySnapshot<Map<String, dynamic>> interestDoc = await firestore
+      .collection(Helper.interestsField)
+      .where('id', isEqualTo: interestId.toString())
+      .get();
+  print("interestDoc id is $interestDoc");
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> interest = interestDoc.docs;
+  var returnvalue = null;
+  if (interest.isNotEmpty) {
+    returnvalue = interest[0];
   }
+  return returnvalue;
 }
 
 class PeopleController extends ControllerMVC {
@@ -236,6 +240,7 @@ class PeopleController extends ControllerMVC {
     if (isLocked) return;
     isLocked = true;
     //await getReceiveRequests(userInfo['userName']);
+
     var query = FirebaseFirestore.instance
         .collection(Helper.userField)
         .orderBy('userName')
@@ -247,6 +252,10 @@ class PeopleController extends ControllerMVC {
     setState(() {});
   }
 
+  getFriendSubstituteList() async {
+    List friendids = await findSimilarUsers(UserManager.userInfo['uid']);
+  }
+
   getAllUserList() async {
     if (isLocked) return;
     isLocked = true;
@@ -255,8 +264,8 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.userField)
         .orderBy('userName')
         .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
-    print(findSimilarUsers(UserManager.userInfo['uid']));
-    await getDiscoverList(query);
+
+    //await getDiscoverList(query);
     isLocked = false;
     setState(() {});
   }
@@ -368,7 +377,15 @@ class PeopleController extends ControllerMVC {
             return m['users'][userName] == true;
           });
           if (value.isEmpty) {
+            Map data = elem.data() as Map;
+
+            //  if (friendids.contains(data['userName'])) {
+            //    userList = [elem.data(), ...userList];
+            //    print("datausername is ${data['userName']}");
+            //    setState(() {});
+            //  } else {
             userList.add(elem.data());
+            //   }
           }
         }
         lastData = newDocumentList[newDocumentList.length - 1];

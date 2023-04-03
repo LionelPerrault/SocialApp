@@ -32,6 +32,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
     super.initState();
 
     print("call======================================== suggest");
+    //con.getFriendSuggestList();
     con.getUserList();
   }
 

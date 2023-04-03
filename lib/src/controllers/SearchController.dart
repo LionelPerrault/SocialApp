@@ -252,7 +252,7 @@ class SearchController extends ControllerMVC {
     }
     posts = postsBox;
     setState(() {});
-    print("posts is ----- $posts");
+
     return posts;
   }
 

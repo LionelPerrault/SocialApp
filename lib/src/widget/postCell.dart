@@ -323,7 +323,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget total() {
-    print("post[type] = ===${widget.postInfo['type']}");
     switch (widget.postInfo['type']) {
       case 'photo':
         return picturePostCell();

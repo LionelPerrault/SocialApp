@@ -460,7 +460,7 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = interested.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of interested event');
+
     if (returnData.length == 0) {
       return false;
     } else {
@@ -501,7 +501,7 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = going.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of going event');
+
     if (returnData.length == 0) {
       return false;
     } else {
@@ -543,7 +543,7 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = invited.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of invited event');
+
     if (returnData.length == 0) {
       return false;
     } else {
@@ -790,7 +790,7 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = liked.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of liked page');
+
     if (returnData.length == 0) {
       return false;
     } else {
