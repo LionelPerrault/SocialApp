@@ -13,12 +13,13 @@ import 'package:shnatter/src/views/search/widget/groupCell.dart';
 import '../../../controllers/SearchController.dart';
 
 class GroupSearch extends StatefulWidget {
-  GroupSearch({Key? key, required this.routerChange, required this.searchValue})
+  GroupSearch(
+      {Key? key, required this.routerChange, required this.searchResult})
       : con = SearchController(),
         super(key: key);
   late SearchController con;
   Function routerChange;
-  String searchValue;
+  List searchResult;
 
   State createState() => GroupSearchState();
 }
@@ -26,7 +27,7 @@ class GroupSearch extends StatefulWidget {
 class GroupSearchState extends mvc.StateMVC<GroupSearch> {
   late SearchController searchCon;
   var userInfo = UserManager.userInfo;
-  var resultGroup = [];
+
   @override
   void initState() {
     add(widget.con);
@@ -36,19 +37,7 @@ class GroupSearchState extends mvc.StateMVC<GroupSearch> {
 
   @override
   Widget build(BuildContext context) {
-    print("group search ---- ${widget.searchValue}");
-    if (widget.searchValue != '') {
-      searchCon.getGroups(widget.searchValue);
-
-      resultGroup = searchCon.groups;
-    } else {
-      resultGroup = [];
-    }
-    // resultGroup = searchCon.groups
-    //     .where((group) => (group['groupName'].contains(widget.searchValue)))
-    //     .toList();
-
-    return resultGroup.isEmpty
+    return widget.searchResult.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
@@ -85,9 +74,9 @@ class GroupSearchState extends mvc.StateMVC<GroupSearch> {
                       150 -
                       (UserManager.userInfo['isVerify'] ? 0 : 50),
                   child: ListView.separated(
-                    itemCount: resultGroup.length,
+                    itemCount: widget.searchResult.length,
                     itemBuilder: (context, index) => SearchGroupCell(
-                      groupInfo: resultGroup[index],
+                      groupInfo: widget.searchResult[index],
                       routerChange: widget.routerChange,
                     ),
                     separatorBuilder: (BuildContext context, int index) =>

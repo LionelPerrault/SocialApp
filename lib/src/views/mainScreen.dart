@@ -39,7 +39,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   bool isEmailVerify = true;
   late AnimationController _drawerSlideController;
   String searchText = '';
-
+  List searchResult = [];
   Map mainRouterValue = {
     'router': RouteNames.homePage,
   };
@@ -69,6 +69,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
 
     searchController.addListener(() {
       searchText = searchController.text;
+
       setState(() {});
     });
   }
@@ -260,6 +261,43 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                 width: SizeConfig(context).screenWidth * 0.4,
                                 child: TextField(
                                   focusNode: searchFocusNode,
+                                  onChanged: (value) async {
+                                    searchText = value;
+                                    print("searchText is $searchText");
+                                    await SearchController()
+                                        .updateSearchText(value);
+                                    await SearchController()
+                                        .getEvents(searchText);
+                                    await SearchController()
+                                        .getGroups(searchText);
+                                    if (value != '') {
+                                      SearchController().users = [
+                                        ...SearchController().usersByFirstName,
+                                        ...SearchController()
+                                            .usersByFirstNameCaps,
+                                        ...SearchController().usersByLastName,
+                                        ...SearchController()
+                                            .usersByLastNameCaps,
+                                        ...SearchController().usersByWholeName,
+                                        ...SearchController()
+                                            .usersByWholeNameCaps,
+                                      ];
+                                      print(
+                                          "searchText is ${SearchController().users}");
+                                      SearchController().users = [
+                                        ...{...SearchController().users}
+                                      ];
+                                      searchResult = [
+                                        ...SearchController().users,
+                                        ...SearchController().events,
+                                        ...SearchController().groups
+                                      ];
+                                      print("searchResult is $searchResult");
+                                    } else {
+                                      searchResult = [];
+                                    }
+                                    setState(() {});
+                                  },
                                   controller: searchController,
                                   cursorColor: Colors.white,
                                   style: const TextStyle(color: Colors.white),
@@ -290,6 +328,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                               });
                             },
                             searchText: searchText,
+                            searchResult: searchResult,
                           )
                         ],
                       ),

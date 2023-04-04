@@ -25,6 +25,10 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
   //route variable
   String searchPageRoute = 'People';
   String searchValue = '';
+  List searchResultUsers = [];
+  List searchResultEvents = [];
+  List searchResultGroups = [];
+
   late SearchController searchCon;
   List tabInfo = [
     {
@@ -74,12 +78,68 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                   child: TextField(
                     cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white),
-                    onChanged: (value) {
+                    onChanged: (value) async {
                       // searchValue = value;
+
+                      // await SearchController().updateSearchText(value);
+                      // await SearchController().getEvents(searchValue);
+                      // await SearchController().getGroups(searchValue);
+                      // if (value != '') {
+                      //   SearchController().users = [
+                      //     ...SearchController().usersByFirstName,
+                      //     ...SearchController().usersByFirstNameCaps,
+                      //     ...SearchController().usersByLastName,
+                      //     ...SearchController().usersByLastNameCaps,
+                      //     ...SearchController().usersByWholeName,
+                      //     ...SearchController().usersByWholeNameCaps,
+                      //   ];
+                      //   print("searchText is ${SearchController().users}");
+                      //   SearchController().users = [
+                      //     ...{...SearchController().users}
+                      //   ];
+
+                      //   searchResultUsers = [...SearchController().users];
+                      //   searchResultEvents = [...SearchController().events];
+                      //   searchResultGroups = [...SearchController().groups];
+                      // } else {
+                      //   searchResultUsers = [];
+
+                      //   searchResultEvents = [];
+                      //   searchResultGroups = [];
+                      // }
+
                       // super.setState(() {});
                     },
-                    onSubmitted: (value) {
+                    onSubmitted: (value) async {
                       searchValue = value;
+
+                      await SearchController().updateSearchText(value);
+                      await SearchController().getEvents(searchValue);
+                      await SearchController().getGroups(searchValue);
+                      if (value != '') {
+                        SearchController().users = [
+                          ...SearchController().usersByFirstName,
+                          ...SearchController().usersByFirstNameCaps,
+                          ...SearchController().usersByLastName,
+                          ...SearchController().usersByLastNameCaps,
+                          ...SearchController().usersByWholeName,
+                          ...SearchController().usersByWholeNameCaps,
+                        ];
+                        print("searchText is ${SearchController().users}");
+                        SearchController().users = [
+                          ...{...SearchController().users}
+                        ];
+
+                        searchResultUsers = [...SearchController().users];
+                        searchResultEvents = [...SearchController().events];
+                        searchResultGroups = [...SearchController().groups];
+                      } else {
+                        searchResultUsers = [];
+
+                        searchResultEvents = [];
+                        searchResultGroups = [];
+                      }
+
                       super.setState(() {});
                     },
                     decoration: const InputDecoration(
@@ -161,7 +221,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
       case 'People':
         return PeopleSearch(
           routerChange: widget.routerChange,
-          searchValue: searchValue,
+          searchResult: searchResultUsers,
         );
       case 'Post':
         return PostSearch(
@@ -171,12 +231,12 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
       case 'Group':
         return GroupSearch(
           routerChange: widget.routerChange,
-          searchValue: searchValue,
+          searchResult: searchResultGroups,
         );
       case 'Event':
         return EventSearch(
           routerChange: widget.routerChange,
-          searchValue: searchValue,
+          searchResult: searchResultEvents,
         );
       default:
         return Container();
