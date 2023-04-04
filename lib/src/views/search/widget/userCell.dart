@@ -87,8 +87,9 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
           onPressed: () async {
             var e = widget.userInfo;
             if (!e.containsKey('state')) {
-              e['state'] = -1;
-              setState(() {});
+              setState(() {
+                widget.userInfo['state'] = 0;
+              });
               await PeopleController()
                   .requestFriendDirectlyMap(widget.userInfo);
               setState(() {});
@@ -124,8 +125,7 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                     color: Colors.white,
                   ),
                 )
-              : !widget.userInfo.containsKey("state") ||
-                      widget.userInfo['state'] == -1
+              : widget.userInfo.containsKey("state")
                   ? Row(
                       children: const [
                         Icon(
@@ -140,7 +140,8 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                                 fontWeight: FontWeight.w900)),
                       ],
                     )
-                  : widget.userInfo['state'] == 0
+                  : widget.userInfo['state'] == 0 ||
+                          widget.userInfo['state'] == -1
                       ? Row(
                           children: const [
                             Icon(

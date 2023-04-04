@@ -335,6 +335,70 @@ class PeopleController extends ControllerMVC {
     setState(() {});
   }
 
+  // getDiscoverList(Query<Map<String, dynamic>> query) async {
+  //   try {
+  //     int pagination = pageIndex;
+  //     if (userList.length > pagination * 5) {
+  //       isLocked = false;
+  //       return;
+  //     }
+  //     isGetList = false;
+
+  //     //if (userList.length > 0) lastData = userList[userList.length - 1];
+
+  //     while (userList.length <= pagination * 5) {
+  //       var snapshot = null;
+  //       if (lastData == null)
+  //         snapshot = await query.limit(20).get();
+  //       else
+  //         snapshot = await query.startAfterDocument(lastData).limit(20).get();
+  //       // get friends list and make hash;
+  //       var snapshotFriend = await FirebaseFirestore.instance
+  //           .collection(Helper.friendCollection)
+  //           .where('users.' + UserManager.userInfo['userName'], isEqualTo: true)
+  //           //.where('state', isEqualTo: 1)
+  //           .get();
+  //       List friends = snapshotFriend.docs.map((doc) {
+  //         Map data = doc.data() as Map;
+  //         data['id'] = doc.id;
+  //         return data;
+  //       }).toList();
+
+  //       List<DocumentSnapshot> newDocumentList = snapshot.docs;
+  //       for (var elem in newDocumentList) {
+  //         //check if it is already friends now.
+  //         Map data = elem.data() as Map;
+  //         var userName = '';
+  //         try {
+  //           userName = data['userName'];
+  //         } catch (e) {}
+  //         Iterable value = friends.where((element) {
+  //           Map m = element as Map;
+  //           return m['users'][userName] == true;
+  //         });
+  //         if (value.isEmpty) {
+  //           Map data = elem.data() as Map;
+
+  //           //  if (friendids.contains(data['userName'])) {
+  //           //    userList = [elem.data(), ...userList];
+  //           //    print("datausername is ${data['userName']}");
+  //           //    setState(() {});
+  //           //  } else {
+  //           userList.add(elem.data());
+  //           //   }
+  //         }
+  //       }
+  //       lastData = newDocumentList[newDocumentList.length - 1];
+  //     }
+  //     isGetList = true;
+  //     setState(() {});
+  //   } catch (exception) {
+  //     isGetList = true;
+  //     isLocked = false;
+  //     setState(() {});
+  //   }
+  // }
+
   getDiscoverList(Query<Map<String, dynamic>> query) async {
     try {
       int pagination = pageIndex;
@@ -348,46 +412,34 @@ class PeopleController extends ControllerMVC {
 
       while (userList.length <= pagination * 5) {
         var snapshot = null;
-        if (lastData == null)
+        if (lastData == null) {
           snapshot = await query.limit(20).get();
-        else
+        } else {
           snapshot = await query.startAfterDocument(lastData).limit(20).get();
-        // get friends list and make hash;
-        var snapshotFriend = await FirebaseFirestore.instance
+        }
+
+        QuerySnapshot snapshotFriend = await FirebaseFirestore.instance
             .collection(Helper.friendCollection)
-            .where('users.' + UserManager.userInfo['userName'], isEqualTo: true)
-            //.where('state', isEqualTo: 1)
+            .where('users.${UserManager.userInfo['userName']}', isEqualTo: true)
             .get();
-        List friends = snapshotFriend.docs.map((doc) {
-          Map data = doc.data() as Map;
-          data['id'] = doc.id;
-          return data;
-        }).toList();
+
+        // Convert friends list into a set for O(1) lookup time.
+        Set<String> friendSet = Set.from(snapshotFriend.docs.map((doc) {
+          Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+          return data != null ? data['userName'] : null;
+        }).where((value) => value != null));
 
         List<DocumentSnapshot> newDocumentList = snapshot.docs;
         for (var elem in newDocumentList) {
-          //check if it is already friends now.
           Map data = elem.data() as Map;
-          var userName = '';
-          try {
-            userName = data['userName'];
-          } catch (e) {}
-          Iterable value = friends.where((element) {
-            Map m = element as Map;
-            return m['users'][userName] == true;
-          });
-          if (value.isEmpty) {
-            Map data = elem.data() as Map;
+          var userName = data['userName'] ?? '';
 
-            //  if (friendids.contains(data['userName'])) {
-            //    userList = [elem.data(), ...userList];
-            //    print("datausername is ${data['userName']}");
-            //    setState(() {});
-            //  } else {
-            userList.add(elem.data());
-            //   }
+          if (!friendSet.contains(userName)) {
+            userList.add(data);
           }
         }
+
+        // Set the lastData variable to the last user in the user list.
         lastData = newDocumentList[newDocumentList.length - 1];
       }
       isGetList = true;
