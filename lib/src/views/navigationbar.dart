@@ -406,6 +406,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
+                      controller: _navController,
                       menuBuilder: () {
                         return ShnatterNotification(
                           seeAll: () {
@@ -759,6 +760,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                       padding: const EdgeInsets.all(9.0),
                       child: CustomPopupMenu(
+                        controller: _navController,
                         menuBuilder: () => ShnatterNotification(
                           seeAll: () {
                             _navController.hideMenu();
