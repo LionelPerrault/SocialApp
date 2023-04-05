@@ -347,7 +347,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           Helper.showToast('Please fill all field');
           return;
         }
-        postCase = 'feeling';
+        //  postCase = 'feeling';
         postPayload['photo'] = postPhoto;
         if (activity != '' && subActivity != '') {
           postPayload['feeling'] = {
