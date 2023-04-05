@@ -386,7 +386,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         verbSentence = '$verbSentence & ';
       }
       verbSentence =
-          '$verbSentence added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}';
+          '$verbSentence added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data']['photo'].length} photo${widget.postInfo['data']['photo'].length == 1 ? '' : 's'}';
     }
 
     return Row(

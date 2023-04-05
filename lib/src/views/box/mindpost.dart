@@ -334,8 +334,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'photo';
-        postPayload[postCase] = postPhoto;
-
+        postPayload['photo'] = postPhoto;
+        if (activity != '' && subActivity != '') {
+          postPayload['feeling'] = {
+            'action': activity,
+            'subAction': subActivity,
+          };
+        }
         break;
       case 'Feelings/Activity':
         if (activity == '' || subActivity == '') {
@@ -343,10 +348,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'feeling';
-        postPayload[postCase] = {
-          'action': activity,
-          'subAction': subActivity,
-        };
+        postPayload['photo'] = postPhoto;
+        if (activity != '' && subActivity != '') {
+          postPayload['feeling'] = {
+            'action': activity,
+            'subAction': subActivity,
+          };
+        }
         break;
       case 'Check In':
         if (checkLocation == '') {

@@ -71,7 +71,10 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
         loadingFlag = false;
       });
 
-      postStream.listen((event) {
+     
+    });
+
+     postStream.listen((event) {
         newPostNum = event.docs.where((post) {
           Map data = post.data() as Map;
 
@@ -88,7 +91,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
 
         setState(() {});
       });
-    });
   }
 
   @override

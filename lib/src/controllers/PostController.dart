@@ -1558,6 +1558,7 @@ class PostController extends ControllerMVC {
             where == PostType.group.index ? PostController().viewGroupId : '',
       };
       Helper.postCollection.add(postData);
+
       setState(
         () {},
       );
@@ -1691,8 +1692,16 @@ class PostController extends ControllerMVC {
     }
 
     if (direction == 1 || direction == 0) {
-      lastData = allPosts[slide - 1];
+      if (slide > 0) {
+        lastData = allPosts[slide - 1];
+      }
     }
+    if (slide != 0) {
+      latestTime = Timestamp(allPosts[0]['postTime'].seconds,
+              allPosts[0]['postTime'].nanoseconds)
+          .toDate();
+    }
+
     // if (slide == 0) {
     //   lastTime = latestTime = DateTime.now();
     // } else {
