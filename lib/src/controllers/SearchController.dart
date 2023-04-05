@@ -77,10 +77,12 @@ class SearchController extends ControllerMVC {
         .get();
 
     for (var doc in snapShots.docs) {
-      box.add({
-        ...doc.data(),
-        'uid': doc.id,
-      });
+      if (doc.data()['userName'] != UserManager.userInfo['userName']) {
+        box.add({
+          ...doc.data(),
+          'uid': doc.id,
+        });
+      }
     }
 
     usersByWholeName = box;
@@ -113,10 +115,12 @@ class SearchController extends ControllerMVC {
         .get();
 
     for (var doc in snapShots.docs) {
-      box.add({
-        ...doc.data(),
-        'uid': doc.id,
-      });
+      if (doc.data()['userName'] != UserManager.userInfo['userName']) {
+        box.add({
+          ...doc.data(),
+          'uid': doc.id,
+        });
+      }
     }
 
     usersByWholeNameCaps = box;
@@ -134,10 +138,12 @@ class SearchController extends ControllerMVC {
         .get();
 
     for (var doc in snapShots.docs) {
-      box.add({
-        ...doc.data(),
-        'uid': doc.id,
-      });
+      if (doc.data()['userName'] != UserManager.userInfo['userName']) {
+        box.add({
+          ...doc.data(),
+          'uid': doc.id,
+        });
+      }
     }
 
     usersByFirstName = box;
@@ -159,10 +165,12 @@ class SearchController extends ControllerMVC {
         .get();
 
     for (var doc in snapShots.docs) {
-      box.add({
-        ...doc.data(),
-        'uid': doc.id,
-      });
+      if (doc.data()['userName'] != UserManager.userInfo['userName']) {
+        box.add({
+          ...doc.data(),
+          'uid': doc.id,
+        });
+      }
     }
 
     usersByFirstNameCaps = box;
@@ -184,10 +192,12 @@ class SearchController extends ControllerMVC {
         .get();
 
     for (var doc in snapShots.docs) {
-      box.add({
-        ...doc.data(),
-        'uid': doc.id,
-      });
+      if (doc.data()['userName'] != UserManager.userInfo['userName']) {
+        box.add({
+          ...doc.data(),
+          'uid': doc.id,
+        });
+      }
     }
 
     usersByLastNameCaps = box;
@@ -205,10 +215,12 @@ class SearchController extends ControllerMVC {
         .get();
 
     for (var doc in snapShots.docs) {
-      box.add({
-        ...doc.data(),
-        'uid': doc.id,
-      });
+      if (doc.data()['userName'] != UserManager.userInfo['userName']) {
+        box.add({
+          ...doc.data(),
+          'uid': doc.id,
+        });
+      }
     }
     usersByLastName = box;
 
