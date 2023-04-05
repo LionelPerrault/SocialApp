@@ -406,15 +406,17 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      menuBuilder: () => ShnatterNotification(
-                        seeAll: () {
-                          _navController.hideMenu();
+                      menuBuilder: () {
+                        return ShnatterNotification(
+                          seeAll: () {
+                            _navController.hideMenu();
 
-                          widget.routerChange({
-                            'router': RouteNames.notifications,
-                          });
-                        },
-                      ),
+                            widget.routerChange({
+                              'router': RouteNames.notifications,
+                            });
+                          },
+                        );
+                      },
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
                       child: Row(
@@ -755,48 +757,47 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(9.0),
-                    child: CustomPopupMenu(
-                      menuBuilder: () => ShnatterNotification(
-                        seeAll: () {
-                          _navController.hideMenu();
+                      padding: const EdgeInsets.all(9.0),
+                      child: CustomPopupMenu(
+                        menuBuilder: () => ShnatterNotification(
+                          seeAll: () {
+                            _navController.hideMenu();
 
-                          widget.routerChange({
-                            'router': RouteNames.notifications,
-                          });
-                        },
-                      ),
-                      pressType: PressType.singleClick,
-                      verticalMargin: -10,
-                      child: Row(
-                        children: [
-                          badges.Badge(
-                            showBadge:
-                                postCon.realNotifi.isEmpty ? false : true,
-                            badgeStyle: badges.BadgeStyle(
-                              badgeColor: Colors.deepPurple,
-                              borderRadius: BorderRadius.circular(8),
+                            widget.routerChange({
+                              'router': RouteNames.notifications,
+                            });
+                          },
+                        ),
+                        pressType: PressType.singleClick,
+                        verticalMargin: -10,
+                        child: Row(
+                          children: [
+                            badges.Badge(
+                              showBadge:
+                                  postCon.realNotifi.isEmpty ? false : true,
+                              badgeStyle: badges.BadgeStyle(
+                                badgeColor: Colors.deepPurple,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              position: badges.BadgePosition.topEnd(top: -11),
+                              badgeContent: Text(
+                                  postCon.realNotifi.length.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13)),
+                              child: SvgPicture.network(
+                                placeholderBuilder: (context) => const Icon(
+                                    Icons.logo_dev,
+                                    size: 30,
+                                    color: Color.fromARGB(255, 201, 61, 61)),
+                                SVGPath.notification,
+                                color: Colors.white,
+                                width: 20,
+                                height: 20,
+                              ),
                             ),
-                            position: badges.BadgePosition.topEnd(top: -11),
-                            badgeContent: Text(
-                                postCon.realNotifi.length.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 13)),
-                            child: SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Color.fromARGB(255, 201, 61, 61)),
-                              SVGPath.notification,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                          ],
+                        ),
+                      )),
                   Container(
                       padding: const EdgeInsets.all(9.0),
                       child: PopupMenuButton(

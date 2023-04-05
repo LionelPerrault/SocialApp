@@ -2136,11 +2136,11 @@ class PostController extends ControllerMVC {
 
   checkNotification(notiUid, userUid) async {
     var notiSnap = await Helper.notifiCollection.doc(notiUid).get();
-    var allNotifi = notiSnap.data();
-    allNotifi!['userList'].add(userUid);
+    var allNot = notiSnap.data();
+    allNot!['userList'].add(userUid);
     await Helper.notifiCollection
         .doc(notiUid)
-        .update({'userList': allNotifi['userList']});
+        .update({'userList': allNot['userList']});
   }
 
   Future checkNotify() async {
@@ -2154,7 +2154,7 @@ class PostController extends ControllerMVC {
       await Helper.saveJSONPreference(
           Helper.userField, {...UserManager.userInfo});
       await UserManager.getUserInfo();
-
+      realNotifi = [];
       setState(() {});
     } catch (e) {
       print(e);

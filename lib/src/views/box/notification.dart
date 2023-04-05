@@ -34,8 +34,14 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   void initState() {
     add(widget.con);
     postCon = controller as PostController;
-    // postCon.checkNotify();
     super.initState();
+    checkNotify();
+  }
+
+  Future<void> checkNotify() async {
+    postCon.realNotifi = [];
+    postCon.setState(() {});
+    await postCon.checkNotify();
   }
 
   @override
