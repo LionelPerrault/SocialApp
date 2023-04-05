@@ -327,7 +327,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       case 'photo':
         return picturePostCell();
       case 'feeling':
-        return feelingPostCell();
+        return picturePostCell();
       case 'checkIn':
         return checkInPostCell();
       case 'poll':
@@ -373,12 +373,28 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     } else {
       privacy = privacyMenuItem[0];
     }
+
+    var verbSentence = '';
+
+    if (widget.postInfo['data']?.containsKey('feeling')) {
+      verbSentence =
+          ' is ${widget.postInfo['data']['feeling']['action']} ${widget.postInfo['data']['feeling']['subAction']}';
+    }
+
+    if (widget.postInfo['data']?.containsKey('photo')) {
+      if (verbSentence != '') {
+        verbSentence = '$verbSentence & ';
+      }
+      verbSentence =
+          '$verbSentence added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}';
+    }
+
     return Row(
       children: [
         Expanded(
           child: Container(
             margin: const EdgeInsets.only(top: 30, bottom: 30),
-            width: 600,
+            width: widget.isSharedContent ? 400 : 600,
             padding: const EdgeInsets.only(top: 20),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -389,275 +405,263 @@ class PostCellState extends mvc.StateMVC<PostCell> {
             ),
             child: Column(
               children: [
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Row(
-                          children: [
-                            widget.postInfo['adminInfo']['avatar'] != ''
-                                ? CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                    widget.postInfo['adminInfo']['avatar'],
-                                  ))
-                                : CircleAvatar(
-                                    child: SvgPicture.network(Helper.avatar),
-                                  ),
-                            const Padding(padding: EdgeInsets.only(left: 10)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                        width: SizeConfig(context).screenWidth <
-                                                600
-                                            ? SizeConfig(context).screenWidth -
-                                                150
-                                            : 450, // 1st set height
-                                        child: RichText(
-                                            text: TextSpan(
-                                                style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 10),
-                                                children: <TextSpan>[
-                                              TextSpan(
-                                                  text:
-                                                      '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
-                                                  style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 15),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          ProfileController()
-                                                              .updateProfile(widget
-                                                                          .postInfo[
-                                                                      'adminInfo']
-                                                                  ['userName']);
-                                                          widget.routerChange({
-                                                            'router': RouteNames
-                                                                .profile,
-                                                            'subRouter': widget
-                                                                        .postInfo[
-                                                                    'adminInfo']
-                                                                ['userName'],
-                                                          });
-                                                        }),
-                                              TextSpan(
-                                                  text:
-                                                      ' added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data'].length} photo${widget.postInfo['data'].length == 1 ? '' : 's'}',
-                                                  style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                      overflow: TextOverflow
-                                                          .ellipsis))
-                                            ]))),
-                                    Visibility(
-                                      visible: !widget.isSharedContent,
-                                      child: Container(
-                                        child: PopupMenuButton(
-                                          onSelected: (value) {
-                                            popUpFunction(value);
-                                          },
-                                          child: const Icon(
-                                            Icons.expand_more,
-                                            size: 18,
-                                          ),
-                                          itemBuilder: (BuildContext bc) {
-                                            return popupMenuItem
-                                                .map(
-                                                  (e) => PopupMenuItem(
-                                                    value: e['value'],
-                                                    child: Row(
-                                                      children: [
-                                                        const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 5.0)),
-                                                        Icon(e['icon']),
-                                                        const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left:
-                                                                        12.0)),
-                                                        Text(
-                                                          e['value'] ==
-                                                                  'timeline'
-                                                              ? widget.postInfo[
-                                                                      'timeline']
-                                                                  ? e['label']
-                                                                  : e['labelE']
-                                                              : e['value'] ==
-                                                                      'comment'
-                                                                  ? widget.postInfo[
-                                                                          'comment']
-                                                                      ? e['label']
-                                                                      : e['labelE']
-                                                                  : e['label'],
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900,
-                                                                  fontSize: 12),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                )
-                                                .toList();
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: Row(
+                        children: [
+                          widget.postInfo['adminInfo']['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  widget.postInfo['adminInfo']['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
                                 ),
-                                const Padding(padding: EdgeInsets.only(top: 3)),
-                                Row(
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                          style: const TextStyle(
-                                              color: Colors.grey, fontSize: 10),
-                                          children: <TextSpan>[
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                      width: SizeConfig(context).screenWidth <
+                                              600
+                                          ? SizeConfig(context).screenWidth -
+                                              150
+                                          : 450, // 1st set height
+                                      child: RichText(
+                                          text: TextSpan(
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              children: <TextSpan>[
                                             TextSpan(
-                                                // text: Helper.formatDate(
-                                                //     widget.postInfo['time']),
-                                                text: postTime,
+                                                text:
+                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
                                                 style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 10),
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
                                                 recognizer:
                                                     TapGestureRecognizer()
                                                       ..onTap = () {
+                                                        ProfileController()
+                                                            .updateProfile(widget
+                                                                        .postInfo[
+                                                                    'adminInfo']
+                                                                ['userName']);
                                                         widget.routerChange({
-                                                          'router':
-                                                              RouteNames.posts,
+                                                          'router': RouteNames
+                                                              .profile,
                                                           'subRouter': widget
-                                                              .postInfo['id'],
+                                                                      .postInfo[
+                                                                  'adminInfo']
+                                                              ['userName'],
                                                         });
-                                                      })
-                                          ]),
-                                    ),
-                                    const Text(' - '),
-                                    IgnorePointer(
-                                        ignoring:
-                                            (widget.postInfo['adminUid'] !=
-                                                UserManager.userInfo['uid']),
-                                        child: PopupMenuButton(
-                                          onSelected: (value) {
-                                            upDatePostInfo(
-                                                {'privacy': value['label']});
-
-                                            if (widget.postInfo
-                                                .containsKey('privacy')) {
-                                              widget.postInfo['privacy'] =
-                                                  value['label'];
-                                            } else if (widget.postInfo['data']
-                                                .containsKey('privacy')) {
-                                              widget.postInfo['data']
-                                                  ['privacy'] = value['label'];
-                                            }
-                                            setState(() {
-                                              privacy = value;
-                                            });
-                                          },
-                                          child: Icon(
-                                            privacy['icon'],
-                                            color: Colors.grey,
-                                            size: 18,
-                                          ),
-                                          itemBuilder: (BuildContext bc) {
-                                            return privacyMenuItem
-                                                .map(
-                                                  (e) => PopupMenuItem(
-                                                    value: {
-                                                      'label': e['label'],
-                                                      'icon': e['icon'],
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 5.0)),
-                                                        Icon(e['icon']),
-                                                        const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left:
-                                                                        12.0)),
-                                                        Text(
-                                                          e['label'],
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900,
-                                                                  fontSize: 12),
-                                                        )
-                                                      ],
-                                                    ),
+                                                      }),
+                                            TextSpan(
+                                                text: verbSentence,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
+                                          ]))),
+                                  Visibility(
+                                    visible: !widget.isSharedContent,
+                                    child: Container(
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.expand_more,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? widget.postInfo[
+                                                                    'timeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? widget.postInfo[
+                                                                        'comment']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
                                                   ),
-                                                )
-                                                .toList();
-                                          },
-                                        )),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: editShow
-                            ? editPost()
-                            : widget.postInfo['header'].isNotEmpty
-                                ? Text(
-                                    widget.postInfo['header'],
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                                                ),
+                                              )
+                                              .toList();
+                                        },
+                                      ),
                                     ),
-                                    overflow: TextOverflow.clip,
-                                  )
-                                : const SizedBox(),
-                      ),
-                      Row(
-                        children: [
-                          for (var item in widget.postInfo['data'])
-                            Expanded(
-                              child: Container(
-                                height: 350,
-                                color: Color(0xfff5f5f5),
-                                child: Image.network(item['url'],
-                                    fit: BoxFit.fitHeight),
+                                  ),
+                                ],
                               ),
-                            )
+                              const Padding(padding: EdgeInsets.only(top: 3)),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              // text: Helper.formatDate(
+                                              //     widget.postInfo['time']),
+                                              text: postTime,
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  widget.routerChange({
+                                                    'router': RouteNames.posts,
+                                                    'subRouter':
+                                                        widget.postInfo['id'],
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  const Text(' - '),
+                                  IgnorePointer(
+                                      ignoring: (widget.postInfo['adminUid'] !=
+                                          UserManager.userInfo['uid']),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          upDatePostInfo(
+                                              {'privacy': value['label']});
+
+                                          if (widget.postInfo
+                                              .containsKey('privacy')) {
+                                            widget.postInfo['privacy'] =
+                                                value['label'];
+                                          } else if (widget.postInfo['data']
+                                              .containsKey('privacy')) {
+                                            widget.postInfo['data']['privacy'] =
+                                                value['label'];
+                                          }
+                                          setState(() {
+                                            privacy = value;
+                                          });
+                                        },
+                                        child: Icon(
+                                          privacy['icon'],
+                                          color: Colors.grey,
+                                          size: 18,
+                                        ),
+                                        itemBuilder: (BuildContext bc) {
+                                          return privacyMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: {
+                                                    'label': e['label'],
+                                                    'icon': e['icon'],
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                              .toList();
+                                        },
+                                      )),
+                                ],
+                              ),
+                            ],
+                          )
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: editShow
+                          ? editPost()
+                          : widget.postInfo['header'].isNotEmpty
+                              ? Text(
+                                  widget.postInfo['header'],
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                  overflow: TextOverflow.clip,
+                                )
+                              : const SizedBox(),
+                    ),
+                    widget.postInfo['data'].containsKey('photo')
+                        ? Row(
+                            children: [
+                              for (var item in widget.postInfo['data']['photo'])
+                                Expanded(
+                                  child: Container(
+                                    height: 350,
+                                    color: const Color(0xfff5f5f5),
+                                    child: Image.network(item['url'],
+                                        fit: BoxFit.fitHeight),
+                                  ),
+                                )
+                            ],
+                          )
+                        : const SizedBox(),
+                  ],
                 ),
                 Visibility(
                   visible: !widget.isSharedContent,
@@ -1508,287 +1512,290 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     );
   }
 
-  Widget feelingPostCell() {
-    Map privacy = {};
-    if (widget.postInfo.containsKey('privacy')) {
-      privacy = privacyMenuItem
-          .where((element) => element['label'] == widget.postInfo['privacy'])
-          .toList()[0];
-    } else if (widget.postInfo['data'].containsKey('privacy')) {
-      privacy = privacyMenuItem
-          .where((element) =>
-              element['label'] == widget.postInfo['data']['privacy'])
-          .toList()[0];
-    } else {
-      privacy = privacyMenuItem[0];
-    }
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            margin: const EdgeInsets.only(top: 30, bottom: 30),
-            width: widget.isSharedContent ? 400 : 600,
-            padding: const EdgeInsets.only(top: 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: widget.isSharedContent
-                  ? Border.all(color: Colors.blueAccent)
-                  : Border.all(color: Colors.white),
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          widget.postInfo['adminInfo']['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  widget.postInfo['adminInfo']['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
-                          const Padding(padding: EdgeInsets.only(left: 10)),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                      width: SizeConfig(context).screenWidth <
-                                              600
-                                          ? SizeConfig(context).screenWidth -
-                                              150
-                                          : 450, // 1st set height
-                                      child: RichText(
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 10),
-                                              children: <TextSpan>[
-                                            TextSpan(
-                                                text:
-                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
-                                                style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        ProfileController()
-                                                            .updateProfile(widget
-                                                                        .postInfo[
-                                                                    'adminInfo']
-                                                                ['userName']);
-                                                        widget.routerChange({
-                                                          'router': RouteNames
-                                                              .profile,
-                                                          'subRouter': widget
-                                                                      .postInfo[
-                                                                  'adminInfo']
-                                                              ['userName'],
-                                                        });
-                                                      }),
-                                            TextSpan(
-                                                text:
-                                                    ' is ${widget.postInfo['data']['action']} ${widget.postInfo['data']['subAction']}',
-                                                style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14,
-                                                    overflow:
-                                                        TextOverflow.ellipsis))
-                                          ]))),
-                                  Visibility(
-                                    visible: !widget.isSharedContent,
-                                    child: Container(
-                                      child: PopupMenuButton(
-                                        onSelected: (value) {
-                                          popUpFunction(value);
-                                        },
-                                        child: const Icon(
-                                          Icons.expand_more,
-                                          size: 18,
-                                        ),
-                                        itemBuilder: (BuildContext bc) {
-                                          return popupMenuItem
-                                              .map(
-                                                (e) => PopupMenuItem(
-                                                  value: e['value'],
-                                                  child: Row(
-                                                    children: [
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5.0)),
-                                                      Icon(e['icon']),
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 12.0)),
-                                                      Text(
-                                                        e['value'] == 'timeline'
-                                                            ? widget.postInfo[
-                                                                    'timeline']
-                                                                ? e['label']
-                                                                : e['labelE']
-                                                            : e['value'] ==
-                                                                    'comment'
-                                                                ? widget.postInfo[
-                                                                        'comment']
-                                                                    ? e['label']
-                                                                    : e['labelE']
-                                                                : e['label'],
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    90,
-                                                                    90,
-                                                                    90),
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            fontSize: 12),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                              .toList();
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Padding(padding: EdgeInsets.only(top: 3)),
-                              Row(
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              // text: Helper.formatDate(
-                                              //     widget.postInfo['time']),
-                                              text: postTime,
-                                              style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 10),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  widget.routerChange({
-                                                    'router': RouteNames.posts,
-                                                    'subRouter':
-                                                        widget.postInfo['id'],
-                                                  });
-                                                })
-                                        ]),
-                                  ),
-                                  const Text(' - '),
-                                  IgnorePointer(
-                                    ignoring: (widget.postInfo['adminUid'] !=
-                                        UserManager.userInfo['uid']),
-                                    child: PopupMenuButton(
-                                      onSelected: (value) {
-                                        upDatePostInfo(
-                                            {'privacy': value['label']});
-                                        if (widget.postInfo
-                                            .containsKey('privacy')) {
-                                          widget.postInfo['privacy'] =
-                                              value['label'];
-                                        } else if (widget.postInfo['data']
-                                            .containsKey('privacy')) {
-                                          widget.postInfo['data']['privacy'] =
-                                              value['label'];
-                                        }
-                                        setState(() {
-                                          privacy = value;
-                                        });
-                                      },
-                                      child: Icon(
-                                        privacy['icon'],
-                                        color: Colors.grey,
-                                        size: 18,
-                                      ),
-                                      itemBuilder: (BuildContext bc) {
-                                        return privacyMenuItem
-                                            .map(
-                                              (e) => PopupMenuItem(
-                                                value: {
-                                                  'label': e['label'],
-                                                  'icon': e['icon'],
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 5.0)),
-                                                    Icon(e['icon']),
-                                                    const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 12.0)),
-                                                    Text(
-                                                      e['label'],
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255, 90, 90, 90),
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 12),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                            .toList();
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
-                      editShow
-                          ? editPost()
-                          : Text(
-                              widget.postInfo['header'],
-                              style: const TextStyle(
-                                fontSize: 20,
-                              ),
-                              overflow: TextOverflow.clip,
-                            ),
-                    ],
-                  ),
-                ),
-                Visibility(
-                  visible: !widget.isSharedContent,
-                  child: LikesCommentScreen(
-                    postInfo: widget.postInfo,
-                    commentFlag: widget.postInfo['comment'],
-                    routerChange: widget.routerChange,
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 10)),
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
+  // Widget feelingPostCell() {
+  //   Map privacy = {};
+  //   if (widget.postInfo.containsKey('privacy')) {
+  //     privacy = privacyMenuItem
+  //         .where((element) => element['label'] == widget.postInfo['privacy'])
+  //         .toList()[0];
+  //   } else if (widget.postInfo['data'].containsKey('privacy')) {
+  //     privacy = privacyMenuItem
+  //         .where((element) =>
+  //             element['label'] == widget.postInfo['data']['privacy'])
+  //         .toList()[0];
+  //   } else {
+  //     privacy = privacyMenuItem[0];
+  //   }
+  //   return Row(
+  //     children: [
+  //       Expanded(
+  //         child: Container(
+  //           margin: const EdgeInsets.only(top: 30, bottom: 30),
+  //           width: widget.isSharedContent ? 400 : 600,
+  //           padding: const EdgeInsets.only(top: 20),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             border: widget.isSharedContent
+  //                 ? Border.all(color: Colors.blueAccent)
+  //                 : Border.all(color: Colors.white),
+  //             borderRadius: BorderRadius.all(Radius.circular(5.0)),
+  //           ),
+  //           child: Column(
+  //             children: [
+  //               Container(
+  //                 padding: EdgeInsets.only(left: 20, right: 20),
+  //                 child: Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Row(
+  //                       children: [
+  //                         widget.postInfo['adminInfo']['avatar'] != ''
+  //                             ? CircleAvatar(
+  //                                 backgroundImage: NetworkImage(
+  //                                 widget.postInfo['adminInfo']['avatar'],
+  //                               ))
+  //                             : CircleAvatar(
+  //                                 child: SvgPicture.network(Helper.avatar),
+  //                               ),
+  //                         const Padding(padding: EdgeInsets.only(left: 10)),
+  //                         Column(
+  //                           mainAxisAlignment: MainAxisAlignment.start,
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                           children: [
+  //                             Row(
+  //                               children: [
+  //                                 SizedBox(
+  //                                     width: SizeConfig(context).screenWidth <
+  //                                             600
+  //                                         ? SizeConfig(context).screenWidth -
+  //                                             150
+  //                                         : 450, // 1st set height
+  //                                     child: RichText(
+  //                                         text: TextSpan(
+  //                                             style: const TextStyle(
+  //                                                 color: Colors.grey,
+  //                                                 fontSize: 10),
+  //                                             children: <TextSpan>[
+  //                                           TextSpan(
+  //                                               text:
+  //                                                   '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+  //                                               style: const TextStyle(
+  //                                                   color: Colors.black,
+  //                                                   fontWeight: FontWeight.bold,
+  //                                                   fontSize: 15),
+  //                                               recognizer:
+  //                                                   TapGestureRecognizer()
+  //                                                     ..onTap = () {
+  //                                                       ProfileController()
+  //                                                           .updateProfile(widget
+  //                                                                       .postInfo[
+  //                                                                   'adminInfo']
+  //                                                               ['userName']);
+  //                                                       widget.routerChange({
+  //                                                         'router': RouteNames
+  //                                                             .profile,
+  //                                                         'subRouter': widget
+  //                                                                     .postInfo[
+  //                                                                 'adminInfo']
+  //                                                             ['userName'],
+  //                                                       });
+  //                                                     }),
+  //                                           TextSpan(
+  //                                               text: widget.postInfo['data']!
+  //                                                       .hasContainKey(
+  //                                                           'feeling')
+  //                                                   ? ' is ${widget.postInfo['data']['feeling']['action']} ${widget.postInfo['data']['feeling']['subAction']}'
+  //                                                   : '',
+  //                                               style: const TextStyle(
+  //                                                   color: Colors.black,
+  //                                                   fontSize: 14,
+  //                                                   overflow:
+  //                                                       TextOverflow.ellipsis))
+  //                                         ]))),
+  //                                 Visibility(
+  //                                   visible: !widget.isSharedContent,
+  //                                   child: Container(
+  //                                     child: PopupMenuButton(
+  //                                       onSelected: (value) {
+  //                                         popUpFunction(value);
+  //                                       },
+  //                                       child: const Icon(
+  //                                         Icons.expand_more,
+  //                                         size: 18,
+  //                                       ),
+  //                                       itemBuilder: (BuildContext bc) {
+  //                                         return popupMenuItem
+  //                                             .map(
+  //                                               (e) => PopupMenuItem(
+  //                                                 value: e['value'],
+  //                                                 child: Row(
+  //                                                   children: [
+  //                                                     const Padding(
+  //                                                         padding:
+  //                                                             EdgeInsets.only(
+  //                                                                 left: 5.0)),
+  //                                                     Icon(e['icon']),
+  //                                                     const Padding(
+  //                                                         padding:
+  //                                                             EdgeInsets.only(
+  //                                                                 left: 12.0)),
+  //                                                     Text(
+  //                                                       e['value'] == 'timeline'
+  //                                                           ? widget.postInfo[
+  //                                                                   'timeline']
+  //                                                               ? e['label']
+  //                                                               : e['labelE']
+  //                                                           : e['value'] ==
+  //                                                                   'comment'
+  //                                                               ? widget.postInfo[
+  //                                                                       'comment']
+  //                                                                   ? e['label']
+  //                                                                   : e['labelE']
+  //                                                               : e['label'],
+  //                                                       style: const TextStyle(
+  //                                                           color:
+  //                                                               Color.fromARGB(
+  //                                                                   255,
+  //                                                                   90,
+  //                                                                   90,
+  //                                                                   90),
+  //                                                           fontWeight:
+  //                                                               FontWeight.w900,
+  //                                                           fontSize: 12),
+  //                                                     )
+  //                                                   ],
+  //                                                 ),
+  //                                               ),
+  //                                             )
+  //                                             .toList();
+  //                                       },
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                             const Padding(padding: EdgeInsets.only(top: 3)),
+  //                             Row(
+  //                               children: [
+  //                                 RichText(
+  //                                   text: TextSpan(
+  //                                       style: const TextStyle(
+  //                                           color: Colors.grey, fontSize: 10),
+  //                                       children: <TextSpan>[
+  //                                         TextSpan(
+  //                                             // text: Helper.formatDate(
+  //                                             //     widget.postInfo['time']),
+  //                                             text: postTime,
+  //                                             style: const TextStyle(
+  //                                                 color: Colors.grey,
+  //                                                 fontSize: 10),
+  //                                             recognizer: TapGestureRecognizer()
+  //                                               ..onTap = () {
+  //                                                 widget.routerChange({
+  //                                                   'router': RouteNames.posts,
+  //                                                   'subRouter':
+  //                                                       widget.postInfo['id'],
+  //                                                 });
+  //                                               })
+  //                                       ]),
+  //                                 ),
+  //                                 const Text(' - '),
+  //                                 IgnorePointer(
+  //                                   ignoring: (widget.postInfo['adminUid'] !=
+  //                                       UserManager.userInfo['uid']),
+  //                                   child: PopupMenuButton(
+  //                                     onSelected: (value) {
+  //                                       upDatePostInfo(
+  //                                           {'privacy': value['label']});
+  //                                       if (widget.postInfo
+  //                                           .containsKey('privacy')) {
+  //                                         widget.postInfo['privacy'] =
+  //                                             value['label'];
+  //                                       } else if (widget.postInfo['data']
+  //                                           .containsKey('privacy')) {
+  //                                         widget.postInfo['data']['privacy'] =
+  //                                             value['label'];
+  //                                       }
+  //                                       setState(() {
+  //                                         privacy = value;
+  //                                       });
+  //                                     },
+  //                                     child: Icon(
+  //                                       privacy['icon'],
+  //                                       color: Colors.grey,
+  //                                       size: 18,
+  //                                     ),
+  //                                     itemBuilder: (BuildContext bc) {
+  //                                       return privacyMenuItem
+  //                                           .map(
+  //                                             (e) => PopupMenuItem(
+  //                                               value: {
+  //                                                 'label': e['label'],
+  //                                                 'icon': e['icon'],
+  //                                               },
+  //                                               child: Row(
+  //                                                 children: [
+  //                                                   const Padding(
+  //                                                       padding:
+  //                                                           EdgeInsets.only(
+  //                                                               left: 5.0)),
+  //                                                   Icon(e['icon']),
+  //                                                   const Padding(
+  //                                                       padding:
+  //                                                           EdgeInsets.only(
+  //                                                               left: 12.0)),
+  //                                                   Text(
+  //                                                     e['label'],
+  //                                                     style: const TextStyle(
+  //                                                         color: Color.fromARGB(
+  //                                                             255, 90, 90, 90),
+  //                                                         fontWeight:
+  //                                                             FontWeight.w900,
+  //                                                         fontSize: 12),
+  //                                                   )
+  //                                                 ],
+  //                                               ),
+  //                                             ),
+  //                                           )
+  //                                           .toList();
+  //                                     },
+  //                                   ),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           ],
+  //                         )
+  //                       ],
+  //                     ),
+  //                     const Padding(padding: EdgeInsets.only(top: 20)),
+  //                     editShow
+  //                         ? editPost()
+  //                         : Text(
+  //                             widget.postInfo['header'],
+  //                             style: const TextStyle(
+  //                               fontSize: 20,
+  //                             ),
+  //                             overflow: TextOverflow.clip,
+  //                           ),
+  //                   ],
+  //                 ),
+  //               ),
+  //               Visibility(
+  //                 visible: !widget.isSharedContent,
+  //                 child: LikesCommentScreen(
+  //                   postInfo: widget.postInfo,
+  //                   commentFlag: widget.postInfo['comment'],
+  //                   routerChange: widget.routerChange,
+  //                 ),
+  //               ),
+  //               const Padding(padding: EdgeInsets.only(top: 10)),
+  //             ],
+  //           ),
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
 
   Widget checkInPostCell() {
     Map privacy = {};

@@ -324,7 +324,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     if (nowPost == '' && _controller.text == '') {
       return;
     }
-    var postPayload;
+    Map postPayload = {};
 
     String header = _controller.text;
     switch (nowPost) {
@@ -334,7 +334,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'photo';
-        postPayload = postPhoto;
+        postPayload[postCase] = postPhoto;
+
         break;
       case 'Feelings/Activity':
         if (activity == '' || subActivity == '') {
@@ -342,7 +343,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'feeling';
-        postPayload = {
+        postPayload[postCase] = {
           'action': activity,
           'subAction': subActivity,
         };
@@ -353,7 +354,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'checkIn';
-        postPayload = checkLocation;
+        postPayload[postCase] = checkLocation;
         break;
       case 'Create Poll':
         List<String> optionValue = [];
@@ -369,7 +370,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'poll';
-        postPayload = {
+        postPayload[postCase] = {
           'option': optionValue,
           'optionUp': {},
         };
@@ -377,11 +378,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         break;
       case 'Upload Audio':
         postCase = 'audio';
-        postPayload = postAudio;
+        postPayload[postCase] = postAudio;
         break;
       default:
         postCase = 'normal';
-        postPayload = null;
+        postPayload = {};
     }
     postLoading = true;
 
@@ -674,7 +675,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                               ? false
                               : nowPost == mind['title']
                                   ? false
-                                  : true,
+                                  : false,
                         ),
                       )
                       .toList(),
