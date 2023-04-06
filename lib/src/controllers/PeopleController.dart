@@ -1,24 +1,15 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import '../../firebase_options.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
-import '../models/chatModel.dart';
-import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
 
 import '../models/sendBadgeModel.dart';
-import '../models/userModel.dart';
 
 enum EmailType { statusFriendRequestSent, statusFriendsNow }
 /*firebase data base structure looks like this.

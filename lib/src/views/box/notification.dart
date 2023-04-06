@@ -39,8 +39,8 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
   }
 
   Future<void> checkNotify() async {
-    postCon.realNotifi = [];
-    postCon.setState(() {});
+    // postCon.realNotifi = [];
+    // postCon.setState(() {});
     await postCon.checkNotify();
   }
 
