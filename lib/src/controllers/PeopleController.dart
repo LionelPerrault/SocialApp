@@ -485,6 +485,9 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.friendCollection)
         .doc(id)
         .update({'state': 1});
+    sendBadge.decreaseBadge();
+
+    setState(() {});
   }
 
   rejectFriend(id) async {

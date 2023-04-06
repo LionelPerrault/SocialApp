@@ -82,6 +82,7 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                 e.value['state'] = -1;
                                 setState(() {});
                                 await con.confirmFriend(e.value['id']);
+
                                 e.value['state'] = 1;
                                 widget.onClick();
                                 setState(() {});
@@ -161,27 +162,27 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                           ])
                         : ElevatedButton(
                             onPressed: () async {
-                              if (e.value['state'] == 1) {
-                                e.value['state'] = -3;
-                                setState(() {});
-                                await con.rejectFriend(e.value['id']);
-                                e.value['state'] = 2;
-                                widget.onClick();
-                                setState(() {});
-                              } else {
-                                if (e.value['state'] == 2) {
-                                  e.value['state'] = -3;
-                                  setState(() {});
-                                  var requester = e.value['requester'];
-                                  var name = e.value[requester]['name'];
-                                  var avatar = e.value[requester]['avatar'];
-                                  e.value['id'] = await con.requestFriendAsData(
-                                      requester, name, avatar);
-                                  e.value['state'] = 0;
-                                  widget.onClick();
-                                  setState(() {});
-                                }
-                              }
+                              // if (e.value['state'] == 1) {
+                              //   e.value['state'] = -3;
+                              //   setState(() {});
+                              //   await con.rejectFriend(e.value['id']);
+                              //   e.value['state'] = 2;
+                              //   widget.onClick();
+                              //   setState(() {});
+                              // } else {
+                              //   if (e.value['state'] == 2) {
+                              //     e.value['state'] = -3;
+                              //     setState(() {});
+                              //     var requester = e.value['requester'];
+                              //     var name = e.value[requester]['name'];
+                              //     var avatar = e.value[requester]['avatar'];
+                              //     e.value['id'] = await con.requestFriendAsData(
+                              //         requester, name, avatar);
+                              //     e.value['state'] = 0;
+                              //     widget.onClick();
+                              //     setState(() {});
+                              //   }
+                              // }
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: e.value['state'] == 1
@@ -230,7 +231,7 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                                   color: Colors.white,
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w900))
-                                          : const Text('Add',
+                                          : const Text('Rejected',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 11,
