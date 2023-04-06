@@ -362,6 +362,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'checkIn';
+        //  postPayload[postCase] = checkLocation;
         postPayload[postCase] = checkLocation;
         break;
       case 'Create Poll':
@@ -378,7 +379,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'poll';
-        postPayload[postCase] = {
+        postPayload = {
           'option': optionValue,
           'optionUp': {},
         };

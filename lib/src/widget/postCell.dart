@@ -1490,7 +1490,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Container(
                         child: AudioPlayerWidget(
-                            audioURL: widget.postInfo['data']),
+                            audioURL: widget.postInfo['data']['audio']),
                       )
                     ],
                   ),
@@ -1976,7 +1976,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                     size: 12,
                                   ),
                                   Text(
-                                    widget.postInfo['data'],
+                                    widget.postInfo['data']['checkIn'],
                                     style: const TextStyle(
                                         color: Colors.black, fontSize: 10),
                                   ),
