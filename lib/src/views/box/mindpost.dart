@@ -347,7 +347,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           Helper.showToast('Please fill all field');
           return;
         }
-        //  postCase = 'feeling';
+        postCase = 'feeling';
         postPayload['photo'] = postPhoto;
         if (activity != '' && subActivity != '') {
           postPayload['feeling'] = {
@@ -682,9 +682,14 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                           image: mind['image'],
                           disabled: nowPost == ''
                               ? false
-                              : nowPost == mind['title']
+                              : nowPost == mind['title'] ||
+                                      (nowPost == 'Upload Photos' &&
+                                          mind['title'] ==
+                                              'Feelings/Activity') ||
+                                      (mind['title'] == 'Upload Photos' &&
+                                          nowPost == 'Feelings/Activity')
                                   ? false
-                                  : false,
+                                  : true,
                         ),
                       )
                       .toList(),

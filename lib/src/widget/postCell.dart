@@ -381,7 +381,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
           ' is ${widget.postInfo['data']['feeling']['action']} ${widget.postInfo['data']['feeling']['subAction']}';
     }
 
-    if (widget.postInfo['data']?.containsKey('photo')) {
+    if (widget.postInfo['data']?.containsKey('photo') &&
+        widget.postInfo['data']['photo'].isNotEmpty) {
       if (verbSentence != '') {
         verbSentence = '$verbSentence & ';
       }
@@ -1523,7 +1524,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   //         .where((element) =>
   //             element['label'] == widget.postInfo['data']['privacy'])
   //         .toList()[0];
-  //   } else {
+  //   } else {s
   //     privacy = privacyMenuItem[0];
   //   }
   //   return Row(
