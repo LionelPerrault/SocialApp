@@ -806,6 +806,7 @@ class UserController extends ControllerMVC {
 
   signOutUser(context) async {
     UserManager.isLogined = false;
+    print('logoutingg now......******........');
     Helper.makeOffline();
     FirebaseAuth.instance.signOut();
     UserManager.userInfo = {};

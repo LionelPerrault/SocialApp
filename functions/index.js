@@ -228,6 +228,7 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
 exports.offlineRequest = functions.https.onRequest(async (req,res) => {
   cors(req, res, async () => {
     res.set("Access-Control-Allow-Origin", "*");
+    res.set('Access-Control-Allow-Methods', 'GET, DELETE, HEAD, OPTIONS,  POST');
     res.set("Access-Control-Allow-Headers", "Content-Type");
     var userName = req.body.userName
     var snapshot = await admin.firestore().collection('onlineStatus').where('userName','==',userName).get()
