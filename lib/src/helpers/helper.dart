@@ -242,7 +242,6 @@ class Helper {
       http.post(
         Uri.parse(
             'https://us-central1-shnatter-a69cd.cloudfunctions.net/offlineRequest'),
-        headers: {'Content-Type': 'application/json'},
         body: jsonEncode(<String, dynamic>{"data": data}),
       );
     }
