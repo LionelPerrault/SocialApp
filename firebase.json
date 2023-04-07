@@ -5,6 +5,17 @@
   },
   "hosting": {
     "public": "public",
+    "headers": [
+      {
+        "source": "/offlineRequest",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
