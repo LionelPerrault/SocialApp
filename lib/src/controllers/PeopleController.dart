@@ -46,17 +46,18 @@ Future<List> findSimilarUsers(String myUserId) async {
 
   final DocumentSnapshot myUserDoc =
       await firestore.collection(Helper.userField).doc(myUserId).get();
+
   final List<dynamic> myInterestIds = myUserDoc['interests'];
-  print(myInterestIds);
+
   // Get all other user documents from Firebase
   final QuerySnapshot allUsersQuery =
       await firestore.collection(Helper.userField).get();
-  print(allUsersQuery);
+
   final List<DocumentSnapshot> allUsersDocs = allUsersQuery.docs;
-  print(allUsersDocs.length);
+
   // Calculate similarity scores for each user and store them in a map
   final Map<String, int> similarityScores = {};
-  List<String> potentialMatches = [];
+  List<Map> potentialMatches = [];
   for (final DocumentSnapshot userDoc in allUsersDocs) {
     final String userId = userDoc.id;
     final String userName = userDoc['userName'];
@@ -87,11 +88,10 @@ Future<List> findSimilarUsers(String myUserId) async {
         count++;
       }
     }
-    if (count > 0) {
-      potentialMatches.add(userName);
-      print(potentialMatches);
-    }
+
+    potentialMatches.add({'doc': userDoc, 'count': count});
   }
+  potentialMatches.sort((a, b) => b['count'] - a['count']);
 
   // // Sort user documents by descending similarity score
   // final List<DocumentSnapshot> similarUsersDocs = allUsersDocs
@@ -401,47 +401,64 @@ class PeopleController extends ControllerMVC {
 
   getDiscoverList(Query<Map<String, dynamic>> query) async {
     try {
-      int pagination = pageIndex;
-      if (userList.length > pagination * 5) {
-        isLocked = false;
-        return;
-      }
-      isGetList = false;
+      // int pagination = pageIndex;
+      // if (userList.length > pagination * 5) {
+      //   isLocked = false;
+      //   return;
+      // }
+      // isGetList = false;
 
       //if (userList.length > 0) lastData = userList[userList.length - 1];
 
-      while (userList.length <= pagination * 5) {
-        var snapshot = null;
-        if (lastData == null) {
-          snapshot = await query.limit(20).get();
-        } else {
-          snapshot = await query.startAfterDocument(lastData).limit(20).get();
-        }
+      // while (userList.length <= pagination * 5) {
+      // var snapshot = null;
+      // if (lastData == null) {
+      //   snapshot = await query.limit(20).get();
+      // } else {
+      //   snapshot = await query.startAfterDocument(lastData).limit(20).get();
+      // }
 
-        QuerySnapshot snapshotFriend = await FirebaseFirestore.instance
-            .collection(Helper.friendCollection)
-            .where('users.${UserManager.userInfo['userName']}', isEqualTo: true)
-            .get();
+      print("this is ");
+      QuerySnapshot snapshotFriend = await FirebaseFirestore.instance
+          .collection(Helper.friendCollection)
+          .where('users.${UserManager.userInfo['userName']}', isEqualTo: true)
+          .get();
+      print("username is ${UserManager.userInfo['userName']}");
+      List friends = snapshotFriend.docs.map((doc) {
+        Map data = doc.data() as Map;
+        data['id'] = doc.id;
+        return data;
+      }).toList();
 
-        // Convert friends list into a set for O(1) lookup time.
-        Set<String> friendSet = Set.from(snapshotFriend.docs.map((doc) {
-          Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
-          return data != null ? data['userName'] : null;
-        }).where((value) => value != null));
+      //List<DocumentSnapshot> newDocumentList = snapshot.docs;
 
-        List<DocumentSnapshot> newDocumentList = snapshot.docs;
-        for (var elem in newDocumentList) {
-          Map data = elem.data() as Map;
-          var userName = data['userName'] ?? '';
-
-          if (!friendSet.contains(userName)) {
-            userList.add(data);
-          }
-        }
-
-        // Set the lastData variable to the last user in the user list.
-        lastData = newDocumentList[newDocumentList.length - 1];
+      List maplist = await findSimilarUsers(UserManager.userInfo['uid']);
+      print("maplist is $maplist");
+      List newDocumentList = [];
+      for (var elem in maplist) {
+        newDocumentList.add(elem['doc']);
       }
+
+      print("newDocumentList is $newDocumentList");
+      for (var elem in newDocumentList) {
+        Map data = elem.data() as Map;
+        var userName = '';
+        try {
+          userName = data['userName'];
+        } catch (e) {}
+        Iterable value = friends.where((element) {
+          Map m = element as Map;
+          return m['users'][userName] == true;
+        });
+        if (value.isEmpty) {
+          userList.add(data);
+        }
+      }
+
+      print("userList is $userList");
+      // Set the lastData variable to the last user in the user list.
+      lastData = newDocumentList[newDocumentList.length - 1];
+      //  }
       isGetList = true;
       setState(() {});
     } catch (exception) {

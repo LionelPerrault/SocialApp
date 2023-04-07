@@ -26,11 +26,12 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
   //
   bool isSound = true;
   var con = PeopleController();
+
   var isFirst = false;
   @override
   void initState() {
     super.initState();
-
+    con.addNotifyCallBack(this);
     print("call======================================== suggest");
     //con.getFriendSuggestList();
     con.getUserList();
