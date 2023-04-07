@@ -194,13 +194,13 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                 minimumSize:
                                     (e.value as Map).containsKey('state') &&
                                             e.value['state'] == -3
-                                        ? const Size(50, 35)
-                                        : const Size(80, 35),
+                                        ? const Size(60, 35)
+                                        : const Size(90, 35),
                                 maximumSize:
                                     (e.value as Map).containsKey('state') &&
                                             e.value['state'] == -3
-                                        ? const Size(50, 35)
-                                        : const Size(80, 35)),
+                                        ? const Size(60, 35)
+                                        : const Size(90, 35)),
                             child: (e.value as Map).containsKey('state') &&
                                     (e.value['state'] == -3 ||
                                         e.value['state'] == -1 ||
