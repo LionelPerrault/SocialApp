@@ -226,10 +226,10 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
 })
 
 exports.offlineRequest = functions.https.onRequest(async (req,res) => {
-  cors(req, res, async () => {
-    // res.set("Access-Control-Allow-Origin", "*");
-    // res.set("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE");
-    // res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  // cors(req, res, async () => {
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE");
+    res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     var userName = req.body.userName
     var snapshot = await admin.firestore().collection('onlineStatus').where('userName','==',userName).get()
     if(snapshot.docs.length == 0){
@@ -245,7 +245,7 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
     }
 
     res.send('ok')
-  })
+  // })
 })
 
 exports.signup = functions.https.onRequest(async (req,res)=>{
