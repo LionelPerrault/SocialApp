@@ -29,7 +29,7 @@ class NotificationsPageState extends mvc.StateMVC<NotificationsPage> {
   void initState() {
     add(widget.con);
     postCon = controller as PostController;
-    postCon.checkNotify();
+    // postCon.checkNotify();
     super.initState();
   }
 
