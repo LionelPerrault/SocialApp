@@ -14,12 +14,14 @@ class ShnatterSearchBox extends StatefulWidget {
     required this.routerChange,
     required this.hideSearch,
     required this.searchText,
+    required this.searchResult,
   })  : con = SearchController(),
         super(key: key);
 
   Function routerChange;
   Function hideSearch;
   String searchText;
+  List searchResult = [];
   final SearchController con;
   @override
   State createState() => ShnatterSearchBoxState();
@@ -28,7 +30,7 @@ class ShnatterSearchBox extends StatefulWidget {
 class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   //
   bool isSound = false;
-  List searchResult = [];
+  // List searchResult = [];
   late SearchController con;
   @override
   void initState() {
@@ -39,26 +41,6 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
 
   @override
   Widget build(BuildContext context) {
-    SearchController().updateSearchText(widget.searchText);
-    con.getEvents(widget.searchText);
-    con.getGroups(widget.searchText);
-    if (widget.searchText != '') {
-      con.users = [
-        ...con.usersByFirstName,
-        ...con.usersByFirstNameCaps,
-        ...con.usersByLastName,
-        ...con.usersByLastNameCaps,
-        ...con.usersByWholeName,
-        ...con.usersByWholeNameCaps,
-      ];
-      con.users = [
-        ...{...con.users}
-      ];
-      searchResult = [...con.users, ...con.events, ...con.groups];
-    } else {
-      searchResult = [];
-    }
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),
       child: Column(
@@ -92,7 +74,7 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                   endIndent: 10,
                 ),
                 const Divider(height: 1, indent: 0),
-                searchResult.isEmpty
+                widget.searchResult.isEmpty
                     ? Container(
                         alignment: Alignment.center,
                         child: Column(
@@ -126,9 +108,9 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                                   150 -
                                   (UserManager.userInfo['isVerify'] ? 0 : 50),
                               child: ListView.separated(
-                                itemCount: searchResult.length,
+                                itemCount: widget.searchResult.length,
                                 itemBuilder: (context, index) =>
-                                    searchCell(searchResult[index]),
+                                    searchCell(widget.searchResult[index]),
                                 separatorBuilder:
                                     (BuildContext context, int index) =>
                                         const Divider(

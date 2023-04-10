@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, annotate_overrides
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/SearchController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -11,13 +13,13 @@ import 'package:shnatter/src/views/search/widget/userCell.dart';
 
 class PeopleSearch extends StatefulWidget {
   PeopleSearch(
-      {Key? key, required this.routerChange, required this.searchValue})
+      {Key? key, required this.routerChange, required this.searchResult})
       : con = SearchController(),
         super(key: key);
   late SearchController con;
-  String searchValue;
-  Function routerChange;
 
+  Function routerChange;
+  List searchResult;
   State createState() => PeopleSearchState();
 }
 
@@ -28,38 +30,40 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
   @override
   void initState() {
     add(widget.con);
+
     searchCon = controller as SearchController;
     super.initState();
+
+    // QuerySnapshot snapshotFriend = await FirebaseFirestore.instance
+    //     .collection(Helper.friendCollection)
+    //     .where('users.${UserManager.userInfo['userName']}', isEqualTo: true)
+    //     .get();
+
+    // // Convert friends list into a set for O(1) lookup time.
+    // Set<String> friendSet = Set.from(snapshotFriend.docs.map((doc) {
+    //   Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+    //   return data != null ? data['userName'] : null;
+    // }).where((value) => value != null));
+
+    ///List<DocumentSnapshot> newDocumentList = snapshot.docs;
+    // for (var elem in searchCon.users) {
+    //   Map data = elem.data() as Map;
+    //   var userName = data['userName'] ?? '';
+
+    //   if (!PeopleController().userList.contains(userName)) {
+    //     userList.add(data);
+    //   }
+    // }
+    // resultUsers = searchCon.users
+    //     .where((user) => (user['userName'].contains(widget.searchValue) ||
+    //         '${user['firstName']} ${user['lastName']}'
+    //             .contains(widget.searchValue)))
+    //     .toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.searchValue != '') {
-      SearchController().updateSearchText(widget.searchValue);
-
-      if (widget.searchValue != '') {
-        searchCon.users = [
-          ...searchCon.usersByFirstName,
-          ...searchCon.usersByFirstNameCaps,
-          ...searchCon.usersByLastName,
-          ...searchCon.usersByLastNameCaps,
-          ...searchCon.usersByWholeName,
-          ...searchCon.usersByWholeNameCaps,
-        ];
-        searchCon.users = [
-          ...{...searchCon.users}
-        ];
-      } else {
-        searchCon.users = [];
-      }
-      resultUsers = searchCon.users;
-      // resultUsers = searchCon.users
-      //     .where((user) => (user['userName'].contains(widget.searchValue) ||
-      //         '${user['firstName']} ${user['lastName']}'
-      //             .contains(widget.searchValue)))
-      //     .toList();
-    }
-    return resultUsers.isEmpty
+    return widget.searchResult.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
@@ -96,9 +100,9 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
                       150 -
                       (UserManager.userInfo['isVerify'] ? 0 : 50),
                   child: ListView.separated(
-                    itemCount: resultUsers.length,
+                    itemCount: widget.searchResult.length,
                     itemBuilder: (context, index) => SearchUserCell(
-                      userInfo: resultUsers[index],
+                      userInfo: widget.searchResult[index],
                       routerChange: widget.routerChange,
                     ),
                     separatorBuilder: (BuildContext context, int index) =>

@@ -13,12 +13,13 @@ import 'package:shnatter/src/views/search/widget/eventCell.dart';
 import '../../../controllers/SearchController.dart';
 
 class EventSearch extends StatefulWidget {
-  EventSearch({Key? key, required this.routerChange, required this.searchValue})
+  EventSearch(
+      {Key? key, required this.routerChange, required this.searchResult})
       : con = SearchController(),
         super(key: key);
   late SearchController con;
   Function routerChange;
-  String searchValue;
+  List searchResult;
 
   State createState() => EventSearchState();
 }
@@ -26,7 +27,7 @@ class EventSearch extends StatefulWidget {
 class EventSearchState extends mvc.StateMVC<EventSearch> {
   late SearchController searchCon;
   var userInfo = UserManager.userInfo;
-  var resultEvent = [];
+
   @override
   void initState() {
     add(widget.con);
@@ -36,19 +37,7 @@ class EventSearchState extends mvc.StateMVC<EventSearch> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.searchValue != '') {
-      // resultEvent = searchCon.events
-      //     .where((event) => (event['eventName'].contains(widget.searchValue)))
-      //     .toList();
-      if (widget.searchValue != '') {
-        searchCon.getEvents(widget.searchValue);
-
-        resultEvent = searchCon.events;
-      } else {
-        resultEvent = [];
-      }
-    }
-    return resultEvent.isEmpty
+    return widget.searchResult.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
@@ -85,9 +74,9 @@ class EventSearchState extends mvc.StateMVC<EventSearch> {
                       150 -
                       (UserManager.userInfo['isVerify'] ? 0 : 50),
                   child: ListView.separated(
-                    itemCount: resultEvent.length,
+                    itemCount: widget.searchResult.length,
                     itemBuilder: (context, index) => SearchEventCell(
-                      eventInfo: resultEvent[index],
+                      eventInfo: widget.searchResult[index],
                       routerChange: widget.routerChange,
                     ),
                     separatorBuilder: (BuildContext context, int index) =>

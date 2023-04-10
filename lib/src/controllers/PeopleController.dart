@@ -1,24 +1,15 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import '../../firebase_options.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
-import '../models/chatModel.dart';
-import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
 
 import '../models/sendBadgeModel.dart';
-import '../models/userModel.dart';
 
 enum EmailType { statusFriendRequestSent, statusFriendsNow }
 /*firebase data base structure looks like this.
@@ -37,6 +28,88 @@ enum EmailType { statusFriendRequestSent, statusFriendsNow }
 	'users': [ user1id, user2id] // used for search
 }
 */
+
+final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+Future<List> findSimilarUsers(String myUserId) async {
+  // Get my user document from Firebase
+  print(myUserId);
+
+  final DocumentSnapshot myUserDoc =
+      await firestore.collection(Helper.userField).doc(myUserId).get();
+
+  final List<dynamic> myInterestIds = myUserDoc['interests'];
+
+  // Get all other user documents from Firebase
+  final QuerySnapshot allUsersQuery =
+      await firestore.collection(Helper.userField).get();
+
+  final List<DocumentSnapshot> allUsersDocs = allUsersQuery.docs;
+
+  // Calculate similarity scores for each user and store them in a map
+  final Map<String, int> similarityScores = {};
+  List<Map> potentialMatches = [];
+  for (final DocumentSnapshot userDoc in allUsersDocs) {
+    final String userId = userDoc.id;
+    final String userName = userDoc['userName'];
+    if (userId == myUserId) {
+      continue; // Skip my own user document
+    }
+
+    print("userId is $userId");
+
+    if (!(userDoc.data() as Map<String, dynamic>).containsKey('interests')) {
+      continue;
+    }
+    final List<dynamic> userInterestIds = userDoc['interests'];
+    print("userInterestIds is $userInterestIds");
+    int count = 0;
+    for (final dynamic myInterestId in myInterestIds) {
+      if (myInterestId == null) continue;
+      // final QueryDocumentSnapshot<Map<String, dynamic>> myInterest =
+      //     await _getInterestById(
+      //         myInterestId); // Helper method to get interest Map by ID
+      // if (myInterest == null) {
+      //   continue; // Skip invalid interests
+      // }
+
+      // print("myInterest is $myInterest");
+      if (userInterestIds.contains(myInterestId)) {
+        print("friend suggested userId is $userId");
+        count++;
+      }
+    }
+
+    potentialMatches.add({'doc': userDoc, 'count': count});
+  }
+  potentialMatches.sort((a, b) => b['count'] - a['count']);
+
+  // // Sort user documents by descending similarity score
+  // final List<DocumentSnapshot> similarUsersDocs = allUsersDocs
+  //     .where((userDoc) => similarityScores[userDoc.id]! > 0)
+  //     .toList();
+  // similarUsersDocs.sort(
+  //     (a, b) => similarityScores[b.id]!.compareTo(similarityScores[a.id]!));
+
+  // print("similarUserDocs----$similarUsersDocs");
+  return potentialMatches;
+}
+
+Future<QueryDocumentSnapshot<Map<String, dynamic>>> _getInterestById(
+    dynamic interestId) async {
+  print("myinterest id is $interestId");
+  final QuerySnapshot<Map<String, dynamic>> interestDoc = await firestore
+      .collection(Helper.interestsField)
+      .where('id', isEqualTo: interestId.toString())
+      .get();
+  print("interestDoc id is $interestDoc");
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> interest = interestDoc.docs;
+  var returnvalue = null;
+  if (interest.isNotEmpty) {
+    returnvalue = interest[0];
+  }
+  return returnvalue;
+}
 
 class PeopleController extends ControllerMVC {
   factory PeopleController([StateMVC? state]) =>
@@ -158,13 +231,20 @@ class PeopleController extends ControllerMVC {
     if (isLocked) return;
     isLocked = true;
     //await getReceiveRequests(userInfo['userName']);
+
     var query = FirebaseFirestore.instance
         .collection(Helper.userField)
         .orderBy('userName')
         .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
-    await getDiscoverList(isSearch ? searchQuery : query);
+
+    await getSuggestList(isSearch ? searchQuery : query);
+
     isLocked = false;
     setState(() {});
+  }
+
+  getFriendSubstituteList() async {
+    List friendids = await findSimilarUsers(UserManager.userInfo['uid']);
   }
 
   getAllUserList() async {
@@ -173,9 +253,10 @@ class PeopleController extends ControllerMVC {
     //await getReceiveRequests(userInfo['userName']);
     var query = FirebaseFirestore.instance
         .collection(Helper.userField)
-        .orderBy('userName');
+        .orderBy('userName')
+        .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
 
-    await getDiscoverList(query);
+    //await getDiscoverList(query);
     isLocked = false;
     setState(() {});
   }
@@ -287,11 +368,85 @@ class PeopleController extends ControllerMVC {
             return m['users'][userName] == true;
           });
           if (value.isEmpty) {
+            Map data = elem.data() as Map;
+
+            //  if (friendids.contains(data['userName'])) {
+            //    userList = [elem.data(), ...userList];
+            //    print("datausername is ${data['userName']}");
+            //    setState(() {});
+            //  } else {
             userList.add(elem.data());
+            //   }
           }
         }
         lastData = newDocumentList[newDocumentList.length - 1];
       }
+      isGetList = true;
+      setState(() {});
+    } catch (exception) {
+      isGetList = true;
+      isLocked = false;
+      setState(() {});
+    }
+  }
+
+  getSuggestList(Query<Map<String, dynamic>> query) async {
+    try {
+      // int pagination = pageIndex;
+      // if (userList.length > pagination * 5) {
+      //   isLocked = false;
+      //   return;
+      // }
+      // isGetList = false;
+
+      //if (userList.length > 0) lastData = userList[userList.length - 1];
+
+      // while (userList.length <= pagination * 5) {
+      // var snapshot = null;
+      // if (lastData == null) {
+      //   snapshot = await query.limit(20).get();
+      // } else {
+      //   snapshot = await query.startAfterDocument(lastData).limit(20).get();
+      // }
+
+      QuerySnapshot snapshotFriend = await FirebaseFirestore.instance
+          .collection(Helper.friendCollection)
+          .where('users.${UserManager.userInfo['userName']}', isEqualTo: true)
+          .get();
+
+      List friends = snapshotFriend.docs.map((doc) {
+        Map data = doc.data() as Map;
+        data['id'] = doc.id;
+        return data;
+      }).toList();
+
+      //List<DocumentSnapshot> newDocumentList = snapshot.docs;
+
+      List maplist = await findSimilarUsers(UserManager.userInfo['uid']);
+
+      List newDocumentList = [];
+      for (var elem in maplist) {
+        newDocumentList.add(elem['doc']);
+      }
+
+      for (var elem in newDocumentList) {
+        Map data = elem.data() as Map;
+        var userName = '';
+        try {
+          userName = data['userName'];
+        } catch (e) {}
+        Iterable value = friends.where((element) {
+          Map m = element as Map;
+          return m['users'][userName] == true;
+        });
+        if (value.isEmpty) {
+          userList.add(data);
+        }
+      }
+
+      // Set the lastData variable to the last user in the user list.
+      lastData = newDocumentList[newDocumentList.length - 1];
+      //  }
       isGetList = true;
       setState(() {});
     } catch (exception) {
@@ -344,6 +499,9 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.friendCollection)
         .doc(id)
         .update({'state': 1});
+    sendBadge.decreaseBadge();
+
+    setState(() {});
   }
 
   rejectFriend(id) async {

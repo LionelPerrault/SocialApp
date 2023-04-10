@@ -1,0 +1,10 @@
+diff a/lib/src/views/panel/mainpanel.dart b/lib/src/views/panel/mainpanel.dart	(rejected hunks)
+@@ -60,7 +60,7 @@
+     }
+     final Stream<QuerySnapshot> postStream =
+         Helper.postCollection.orderBy('postTime').snapshots();
+-    loadingFlag = true;
++    postStream.docs loadingFlag = true;
+     // con.posts = [];
+ 
+     con

@@ -238,16 +238,27 @@ class Helper {
   static makeOffline() async {
     var userInfo = UserManager.userInfo;
     if (userInfo['userName'] != null) {
-      var data = {"userName": userInfo['userName']};
-      http.post(
-        Uri.parse(
-            'https://us-central1-shnatter-a69cd.cloudfunctions.net/offlineRequest'),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode(<String, dynamic>{"data": data}),
-      );
+      var snapshot = await FirebaseFirestore.instance
+          .collection(onlineStatusField)
+          .where('userName', isEqualTo: UserManager.userInfo['userName'])
+          .get();
+      if (snapshot.docs.isEmpty) {
+        await FirebaseFirestore.instance
+            .collection(onlineStatusField)
+            .add({'userName': UserManager.userInfo['userName'], 'status': 0});
+      } else {
+        await FirebaseFirestore.instance
+            .collection(onlineStatusField)
+            .doc(snapshot.docs[0].id)
+            .update({'status': 0});
+      }
+
+      //   var data = {"userName": userInfo['userName']};
+      //   http.post(
+      //     Uri.parse(
+      //         'https://us-central1-shnatter-a69cd.cloudfunctions.net/offlineRequest'),
+      //     body: jsonEncode(<String, dynamic>{"data": data}),
+      //   );
     }
   }
 

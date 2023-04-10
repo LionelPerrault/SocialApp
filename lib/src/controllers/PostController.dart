@@ -8,7 +8,6 @@ import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/events/panel/eventView/eventTimelineScreen.dart';
 import '../helpers/helper.dart';
-import '../routes/route_names.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import '../views/profile/model/friends.dart';
@@ -460,7 +459,7 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = interested.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of interested event');
+
     if (returnData.length == 0) {
       return false;
     } else {
@@ -501,7 +500,7 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = going.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of going event');
+
     if (returnData.length == 0) {
       return false;
     } else {
@@ -543,7 +542,7 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = invited.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of invited event');
+
     if (returnData.length == 0) {
       return false;
     } else {
@@ -790,7 +789,7 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = liked.where((eachUser) => eachUser['uid'] == uid);
-    print('you get bool of liked page');
+
     if (returnData.length == 0) {
       return false;
     } else {
@@ -1558,6 +1557,7 @@ class PostController extends ControllerMVC {
             where == PostType.group.index ? PostController().viewGroupId : '',
       };
       Helper.postCollection.add(postData);
+
       setState(
         () {},
       );
@@ -1568,7 +1568,8 @@ class PostController extends ControllerMVC {
     return true;
   }
 
-  var lastTime;
+  // var lastTime;
+  var lastData;
   var latestTime;
 
   Map adminSnapHash = {};
@@ -1587,7 +1588,8 @@ class PostController extends ControllerMVC {
           arrayContains: UserManager.userInfo['userName'].toString());
       baseQuery = baseQuery.where('privacy', whereIn: ['Public', 'Friends']);
       if (direction == 0) {
-        baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+        // baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+        baseQuery = baseQuery.startAfterDocument(lastData);
       }
       friendSnap = await baseQuery.limit(slide).get();
 
@@ -1598,7 +1600,8 @@ class PostController extends ControllerMVC {
           .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
           .where('privacy', isEqualTo: 'Only Me');
       if (direction == 0) {
-        profileQuery = profileQuery.where('postTime', isLessThan: lastTime);
+        //  profileQuery = profileQuery.where('postTime', isLessThan: lastTime);
+        profileQuery = profileQuery.startAfterDocument(lastData);
       }
       profileSnap = await profileQuery.limit(slide).get();
       allPosts = friendSnap.docs + profileSnap.docs;
@@ -1616,12 +1619,14 @@ class PostController extends ControllerMVC {
         baseQuery = baseQuery.where('groupId', isEqualTo: uid);
       }
       if (direction == 0) {
-        baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+        //baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
+        baseQuery = baseQuery.startAfterDocument(lastData);
       }
       profileSnap = await baseQuery.limit(slide).get();
 
       allPosts = profileSnap.docs;
     }
+
     var postsBox = [];
     int i = 0;
 
@@ -1639,6 +1644,7 @@ class PostController extends ControllerMVC {
 
     int index = 0;
     slide = allPosts.length < slide ? allPosts.length : slide;
+
     while (i < slide) {
       if (direction == -1) {
         index = slide - 1 - i;
@@ -1683,11 +1689,23 @@ class PostController extends ControllerMVC {
       }
       i++;
     }
-    if (slide == 0) {
-      lastTime = latestTime = DateTime.now();
-    } else {
-      lastTime = allPosts[slide - 1]['postTime'];
+
+    if (direction == 1 || direction == 0) {
+      if (slide > 0) {
+        lastData = allPosts[slide - 1];
+      }
     }
+    if (slide != 0) {
+      latestTime = Timestamp(allPosts[0]['postTime'].seconds,
+              allPosts[0]['postTime'].nanoseconds)
+          .toDate();
+    }
+
+    // if (slide == 0) {
+    //   lastTime = latestTime = DateTime.now();
+    // } else {
+    //   lastTime = allPosts[slide - 1]['postTime'];
+    // }
     if (type == PostType.profile.index) {
       postsProfile = postsBox;
     } else if (type == PostType.timeline.index) {
@@ -1743,6 +1761,16 @@ class PostController extends ControllerMVC {
         } else {
           doc.reference.update({'value': updatedValue});
         }
+      }
+    });
+
+    FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('avatar', isEqualTo: value['url'])
+        .get()
+        .then((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        doc.reference.update({'avatar': ""});
       }
     });
   }
@@ -2116,15 +2144,17 @@ class PostController extends ControllerMVC {
 
   checkNotification(notiUid, userUid) async {
     var notiSnap = await Helper.notifiCollection.doc(notiUid).get();
-    var allNotifi = notiSnap.data();
-    allNotifi!['userList'].add(userUid);
+    var allNot = notiSnap.data();
+    allNot!['userList'].add(userUid);
     await Helper.notifiCollection
         .doc(notiUid)
-        .update({'userList': allNotifi['userList']});
+        .update({'userList': allNot['userList']});
   }
 
   Future checkNotify() async {
     try {
+      realNotifi = [];
+      print("removed realNotifi empty");
       var serverTime = await getNowTime();
       var serverTimeStamp = await changeTimeType(d: serverTime);
       await FirebaseFirestore.instance

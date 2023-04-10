@@ -227,8 +227,6 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
 
 exports.offlineRequest = functions.https.onRequest(async (req,res) => {
   cors(req, res, async () => {
-    res.set("Access-Control-Allow-Origin", "*");
-    res.set("Access-Control-Allow-Headers", "Content-Type");
     var userName = req.body.userName
     var snapshot = await admin.firestore().collection('onlineStatus').where('userName','==',userName).get()
     if(snapshot.docs.length == 0){
@@ -249,13 +247,13 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.signup = functions.https.onRequest(async (req,res)=>{
   cors(req, res, async () => {
-    admin.firestore().collection('mail').add({
-      to: 'smartdev924@gmail.com',
-      message: {
-        subject: 'Hello from Firebase!',
-        html: 'This is an <code>HTML</code> email body.',
-      },
-    })
+    // admin.firestore().collection('mail').add({
+    //   to: 'smartdev924@gmail.com',
+    //   message: {
+    //     subject: 'Hello from Firebase!',
+    //     html: 'This is an <code>HTML</code> email body.',
+    //   },
+    // })
     const userId = req.body.data.userId
     const friendId = req.body.data.friendId
     const buf = Buffer.from(userId)

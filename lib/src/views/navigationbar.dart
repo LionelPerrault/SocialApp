@@ -67,6 +67,12 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   var peopleCon = PeopleController();
   late PostController postCon;
   var badgeCount = [];
+  final CustomPopupMenuController _navControllerNotify =
+      CustomPopupMenuController();
+  final CustomPopupMenuController _navControllerMessage =
+      CustomPopupMenuController();
+  final CustomPopupMenuController _navControllerFriend =
+      CustomPopupMenuController();
   final CustomPopupMenuController _navController = CustomPopupMenuController();
   String userAvatar = '';
   //
@@ -77,6 +83,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     searchCon = widget.searchController;
     searchFocusNode = FocusNode();
     userAvatar = UserManager.userInfo['avatar'];
+    postCon.addNotifyCallBack(this);
     searchFocusNode.addListener(() {
       widget.textChange(searchCon.text);
       widget.onSearchBarFocus();
@@ -316,6 +323,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
+                      controller: _navControllerFriend,
                       menuBuilder: () => ShnatterFriendRequest(
                         onClick: () {
                           setState(() {});
@@ -360,18 +368,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      controller: _navController,
+                      controller: _navControllerMessage,
                       menuBuilder: () => SizeConfig(context).screenWidth < 700
                           ? ShnatterMobileMessage(
                               routerChange: widget.routerChange,
                               hideNavBox: () {
-                                _navController.hideMenu();
+                                _navControllerMessage.hideMenu();
                               },
                             )
                           : ShnatterMessage(
                               routerChange: widget.routerChange,
                               hideNavBox: () {
-                                _navController.hideMenu();
+                                _navControllerMessage.hideMenu();
                               },
                             ),
                       pressType: PressType.singleClick,
@@ -406,7 +414,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      menuBuilder: () => ShnatterNotification(),
+                      controller: _navControllerNotify,
+                      menuBuilder: () {
+                        return ShnatterNotification(
+                          seeAll: () {
+                            _navControllerNotify.hideMenu();
+
+                            widget.routerChange({
+                              'router': RouteNames.notifications,
+                            });
+                          },
+                        );
+                      },
                       pressType: PressType.singleClick,
                       verticalMargin: -10,
                       child: Row(
@@ -662,6 +681,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
+                      controller: _navControllerFriend,
                       menuBuilder: () => ShnatterFriendRequest(
                         onClick: () {
                           setState(() {});
@@ -706,10 +726,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
+                      controller: _navControllerMessage,
                       menuBuilder: () => ShnatterMessage(
                         routerChange: widget.routerChange,
                         hideNavBox: () {
-                          _navController.hideMenu();
+                          _navControllerMessage.hideMenu();
                         },
                       ),
                       pressType: PressType.singleClick,
@@ -747,40 +768,48 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(9.0),
-                    child: CustomPopupMenu(
-                      menuBuilder: () => ShnatterNotification(),
-                      pressType: PressType.singleClick,
-                      verticalMargin: -10,
-                      child: Row(
-                        children: [
-                          badges.Badge(
-                            showBadge:
-                                postCon.realNotifi.isEmpty ? false : true,
-                            badgeStyle: badges.BadgeStyle(
-                              badgeColor: Colors.deepPurple,
-                              borderRadius: BorderRadius.circular(8),
+                      padding: const EdgeInsets.all(9.0),
+                      child: CustomPopupMenu(
+                        controller: _navControllerNotify,
+                        menuBuilder: () => ShnatterNotification(
+                          seeAll: () {
+                            _navControllerNotify.hideMenu();
+
+                            widget.routerChange({
+                              'router': RouteNames.notifications,
+                            });
+                          },
+                        ),
+                        pressType: PressType.singleClick,
+                        verticalMargin: -10,
+                        child: Row(
+                          children: [
+                            badges.Badge(
+                              showBadge:
+                                  postCon.realNotifi.isEmpty ? false : true,
+                              badgeStyle: badges.BadgeStyle(
+                                badgeColor: Colors.deepPurple,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              position: badges.BadgePosition.topEnd(top: -11),
+                              badgeContent: Text(
+                                  postCon.realNotifi.length.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 13)),
+                              child: SvgPicture.network(
+                                placeholderBuilder: (context) => const Icon(
+                                    Icons.logo_dev,
+                                    size: 30,
+                                    color: Color.fromARGB(255, 201, 61, 61)),
+                                SVGPath.notification,
+                                color: Colors.white,
+                                width: 20,
+                                height: 20,
+                              ),
                             ),
-                            position: badges.BadgePosition.topEnd(top: -11),
-                            badgeContent: Text(
-                                postCon.realNotifi.length.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 13)),
-                            child: SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Color.fromARGB(255, 201, 61, 61)),
-                              SVGPath.notification,
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                          ],
+                        ),
+                      )),
                   Container(
                       padding: const EdgeInsets.all(9.0),
                       child: PopupMenuButton(

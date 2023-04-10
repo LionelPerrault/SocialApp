@@ -324,7 +324,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     if (nowPost == '' && _controller.text == '') {
       return;
     }
-    var postPayload;
+    Map postPayload = {};
 
     String header = _controller.text;
     switch (nowPost) {
@@ -334,7 +334,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'photo';
-        postPayload = postPhoto;
+        postPayload['photo'] = postPhoto;
+        if (activity != '' && subActivity != '') {
+          postPayload['feeling'] = {
+            'action': activity,
+            'subAction': subActivity,
+          };
+        }
         break;
       case 'Feelings/Activity':
         if (activity == '' || subActivity == '') {
@@ -342,10 +348,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'feeling';
-        postPayload = {
-          'action': activity,
-          'subAction': subActivity,
-        };
+        postPayload['photo'] = postPhoto;
+        if (activity != '' && subActivity != '') {
+          postPayload['feeling'] = {
+            'action': activity,
+            'subAction': subActivity,
+          };
+        }
         break;
       case 'Check In':
         if (checkLocation == '') {
@@ -353,7 +362,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           return;
         }
         postCase = 'checkIn';
-        postPayload = checkLocation;
+        //  postPayload[postCase] = checkLocation;
+        postPayload[postCase] = checkLocation;
         break;
       case 'Create Poll':
         List<String> optionValue = [];
@@ -377,11 +387,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         break;
       case 'Upload Audio':
         postCase = 'audio';
-        postPayload = postAudio;
+        postPayload[postCase] = postAudio;
         break;
       default:
         postCase = 'normal';
-        postPayload = null;
+        postPayload = {};
     }
     postLoading = true;
 
@@ -672,7 +682,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                           image: mind['image'],
                           disabled: nowPost == ''
                               ? false
-                              : nowPost == mind['title']
+                              : nowPost == mind['title'] ||
+                                      (nowPost == 'Upload Photos' &&
+                                          mind['title'] ==
+                                              'Feelings/Activity') ||
+                                      (mind['title'] == 'Upload Photos' &&
+                                          nowPost == 'Feelings/Activity')
                                   ? false
                                   : true,
                         ),

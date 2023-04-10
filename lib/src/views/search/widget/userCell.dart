@@ -88,7 +88,9 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
             var e = widget.userInfo;
             if (!e.containsKey('state')) {
               e['state'] = -1;
-              setState(() {});
+              setState(() {
+                // widget.userInfo['state'] = 0;
+              });
               await PeopleController()
                   .requestFriendDirectlyMap(widget.userInfo);
               setState(() {});

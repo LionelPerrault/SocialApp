@@ -664,12 +664,14 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 onTap: () async {
                   print("onclick ");
                   onClick();
-                  setState(() {});
+                  setState(() {
+                    emojiShowing = false;
+                  });
                 },
                 child: const Icon(
                   Icons.send,
                   size: 20,
-                  color: Colors.grey,
+                  color: Colors.lightBlue,
                 ),
               ),
             ),
@@ -710,7 +712,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 },
                 child: const Icon(
                   Icons.emoji_emotions,
-                  color: Colors.grey,
+                  color: Colors.yellow,
                   size: 20,
                 ),
               ),

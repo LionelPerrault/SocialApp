@@ -8,6 +8,7 @@ import 'package:shnatter/src/views/homescreen.dart';
 import 'package:shnatter/src/views/marketPlace/marketPlaceScreen.dart';
 import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
 import 'package:shnatter/src/views/neearby/nearbyscreen.dart';
+import 'package:shnatter/src/views/notification/notifications_screen.dart';
 import 'package:shnatter/src/views/people/peoplescreen.dart';
 import 'package:shnatter/src/views/postView/postscreen.dart';
 import 'package:shnatter/src/views/products/panel/productView/productscreen.dart';
@@ -93,6 +94,8 @@ class MainRouter {
         return RealEstateScreen(routerChange: routerChange);
       case RouteNames.search:
         return SearchScreen(routerChange: routerChange);
+      case RouteNames.notifications:
+        return NotificationsScreen();
     }
   }
 }

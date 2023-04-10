@@ -355,7 +355,11 @@ class UserController extends ControllerMVC {
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-
+    var snapshot = await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc(Helper.backPaymail)
+        .get();
+    var backPaymail = snapshot.data()!['address'];
     await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
       (res) async => {
         if (res['success'] == true)
@@ -374,7 +378,14 @@ class UserController extends ControllerMVC {
                             if (trdata[i]['from'] ==
                                 allUser[j].data()['paymail'])
                               {
-                                sender = allUser[j].data()['userName'],
+                                if (allUser[j].data()['paymail'] == backPaymail)
+                                  {
+                                    sender = "Treasury",
+                                  }
+                                else
+                                  {
+                                    sender = allUser[j].data()['userName'],
+                                  }
                               },
                             if (trdata[i]['to'] ==
                                 allUser[j].data()['walletAddress'])
@@ -633,11 +644,12 @@ class UserController extends ControllerMVC {
                             isSendLoginedInfo = false,
                             isLogined = true,
                             Helper.connectOnlineDatabase(),
-                            Navigator.pushReplacementNamed(
+                            Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 isStarted
                                     ? RouteNames.homePage
-                                    : RouteNames.started),
+                                    : RouteNames.started,
+                                (Route<dynamic> route) => false),
                             setState(() {})
                           }
                       }),
@@ -794,7 +806,8 @@ class UserController extends ControllerMVC {
 
   signOutUser(context) async {
     UserManager.isLogined = false;
-    Helper.makeOffline();
+    print('logoutingg now......******........');
+    await Helper.makeOffline();
     FirebaseAuth.instance.signOut();
     UserManager.userInfo = {};
     setState(() {});
