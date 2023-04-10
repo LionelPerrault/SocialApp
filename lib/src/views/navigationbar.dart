@@ -83,6 +83,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     searchCon = widget.searchController;
     searchFocusNode = FocusNode();
     userAvatar = UserManager.userInfo['avatar'];
+    postCon.addNotifyCallBack(this);
     searchFocusNode.addListener(() {
       widget.textChange(searchCon.text);
       widget.onSearchBarFocus();

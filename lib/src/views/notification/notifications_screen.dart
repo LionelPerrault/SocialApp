@@ -106,7 +106,7 @@ class NotificationsScreenState extends mvc.StateMVC<NotificationsScreen> {
                   height: SizeConfig(context).screenHeight - 100,
                   //size: Size(100,100),
                   child: notifications.isEmpty
-                      ? const Center(child: Text("No  notificatins."))
+                      ? const Center(child: Text("No notifications."))
                       : ListView.separated(
                           itemCount: notifications.length,
                           shrinkWrap: true,

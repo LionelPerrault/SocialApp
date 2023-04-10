@@ -103,7 +103,7 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 height: postCon.allNotification.isEmpty ? 100 : 300,
                 //size: Size(100,100),
                 child: postCon.allNotification.isEmpty
-                    ? const Center(child: Text("No new notificatins."))
+                    ? const Center(child: Text("No new notifications."))
                     : ListView.separated(
                         itemCount: postCon.allNotification.length,
                         itemBuilder: (context, index) => Material(

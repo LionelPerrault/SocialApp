@@ -409,12 +409,11 @@ class PeopleController extends ControllerMVC {
       //   snapshot = await query.startAfterDocument(lastData).limit(20).get();
       // }
 
-      print("this is ");
       QuerySnapshot snapshotFriend = await FirebaseFirestore.instance
           .collection(Helper.friendCollection)
           .where('users.${UserManager.userInfo['userName']}', isEqualTo: true)
           .get();
-      print("username is ${UserManager.userInfo['userName']}");
+
       List friends = snapshotFriend.docs.map((doc) {
         Map data = doc.data() as Map;
         data['id'] = doc.id;
@@ -424,13 +423,12 @@ class PeopleController extends ControllerMVC {
       //List<DocumentSnapshot> newDocumentList = snapshot.docs;
 
       List maplist = await findSimilarUsers(UserManager.userInfo['uid']);
-      print("maplist is $maplist");
+
       List newDocumentList = [];
       for (var elem in maplist) {
         newDocumentList.add(elem['doc']);
       }
 
-      print("newDocumentList is $newDocumentList");
       for (var elem in newDocumentList) {
         Map data = elem.data() as Map;
         var userName = '';
@@ -446,7 +444,6 @@ class PeopleController extends ControllerMVC {
         }
       }
 
-      print("userList is $userList");
       // Set the lastData variable to the last user in the user list.
       lastData = newDocumentList[newDocumentList.length - 1];
       //  }
