@@ -67,6 +67,12 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   var peopleCon = PeopleController();
   late PostController postCon;
   var badgeCount = [];
+  final CustomPopupMenuController _navControllerNotify =
+      CustomPopupMenuController();
+  final CustomPopupMenuController _navControllerMessage =
+      CustomPopupMenuController();
+  final CustomPopupMenuController _navControllerFriend =
+      CustomPopupMenuController();
   final CustomPopupMenuController _navController = CustomPopupMenuController();
   String userAvatar = '';
   //
@@ -316,6 +322,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
+                      controller: _navControllerFriend,
                       menuBuilder: () => ShnatterFriendRequest(
                         onClick: () {
                           setState(() {});
@@ -360,18 +367,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      controller: _navController,
+                      controller: _navControllerMessage,
                       menuBuilder: () => SizeConfig(context).screenWidth < 700
                           ? ShnatterMobileMessage(
                               routerChange: widget.routerChange,
                               hideNavBox: () {
-                                _navController.hideMenu();
+                                _navControllerMessage.hideMenu();
                               },
                             )
                           : ShnatterMessage(
                               routerChange: widget.routerChange,
                               hideNavBox: () {
-                                _navController.hideMenu();
+                                _navControllerMessage.hideMenu();
                               },
                             ),
                       pressType: PressType.singleClick,
@@ -406,11 +413,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
-                      controller: _navController,
+                      controller: _navControllerNotify,
                       menuBuilder: () {
                         return ShnatterNotification(
                           seeAll: () {
-                            _navController.hideMenu();
+                            _navControllerNotify.hideMenu();
 
                             widget.routerChange({
                               'router': RouteNames.notifications,
@@ -673,6 +680,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.only(right: 9.0),
                     child: CustomPopupMenu(
+                      controller: _navControllerFriend,
                       menuBuilder: () => ShnatterFriendRequest(
                         onClick: () {
                           setState(() {});
@@ -717,10 +725,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                     padding: const EdgeInsets.all(9.0),
                     child: CustomPopupMenu(
+                      controller: _navControllerMessage,
                       menuBuilder: () => ShnatterMessage(
                         routerChange: widget.routerChange,
                         hideNavBox: () {
-                          _navController.hideMenu();
+                          _navControllerMessage.hideMenu();
                         },
                       ),
                       pressType: PressType.singleClick,
@@ -760,10 +769,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   Container(
                       padding: const EdgeInsets.all(9.0),
                       child: CustomPopupMenu(
-                        controller: _navController,
+                        controller: _navControllerNotify,
                         menuBuilder: () => ShnatterNotification(
                           seeAll: () {
-                            _navController.hideMenu();
+                            _navControllerNotify.hideMenu();
 
                             widget.routerChange({
                               'router': RouteNames.notifications,
