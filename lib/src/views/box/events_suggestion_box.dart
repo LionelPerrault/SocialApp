@@ -92,7 +92,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
               ),
               AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
-                  height: isSound ? con.unInterestedEvents.length * 60 : 0,
+                  height: isSound ? con.unInterestedEvents.length * 65 : 0,
                   curve: Curves.fastOutSlowIn,
                   child: SizedBox(
                     //size: Size(100,100),
