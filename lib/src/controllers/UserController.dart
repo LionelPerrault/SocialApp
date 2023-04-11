@@ -87,7 +87,7 @@ class UserController extends ControllerMVC {
     for (int i = 0; i < 13; i++) {
       code = code + createRandNumber();
     }
-    return "relysia$code@shnatter.com";
+    return "relysia$code@shnatter.app";
   }
 
   Future<bool> validate(cont, info) async {

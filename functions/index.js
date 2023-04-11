@@ -160,7 +160,7 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
     const shnToken = 'aceaa115dc98a05876e6e13453538fdeb4ab8ee4-SHNA1-TEST';
     const adminEmail = 'kalininviktor848@gmail.com';
     const adminPassword = '123456789';
-    const adminPaymail = '4410@shnatter.com';
+    const adminPaymail = '4410@shnatter.app';
     const uuid = req.query.uid;
     const snapshot = await admin.firestore().collection('user').doc(`${uuid}`).get();
     const payMail = snapshot.data().paymail;
