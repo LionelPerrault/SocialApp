@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
+import 'package:shnatter/src/widget/interests.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:path/path.dart' as PPath;
 
@@ -207,9 +208,9 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                           ))
                     ],
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 50)),
                   Container(
                     padding: const EdgeInsets.only(left: 15, right: 15),
+                    margin: const EdgeInsets.only(bottom: 20, top: 20),
                     width: 760,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -1585,233 +1586,19 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: const [
-                                                    Text('INTERESTS',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 11)),
-                                                    Flexible(
-                                                        fit: FlexFit.tight,
-                                                        child: SizedBox()),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 30),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(children: [
-                                                  Column(
-                                                    children: [
-                                                      Container(
-                                                        width: 750,
-                                                        decoration: BoxDecoration(
-                                                            color: const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                250,
-                                                                250,
-                                                                250),
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey)),
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 20),
-                                                        child: DropdownButton(
-                                                          value: interests,
-                                                          items: category
-                                                              .map((inte) =>
-                                                                  DropdownMenuItem(
-                                                                    value: inte[
-                                                                        'title'],
-                                                                    child: Text(inte['title'] ==
-                                                                            'none'
-                                                                        ? "Select Interests"
-                                                                        : inte[
-                                                                            'title']),
-                                                                  ))
-                                                              .toList(),
-                                                          onChanged:
-                                                              (dynamic? value) {
-                                                            //get value when changed
-                                                            interests = value!;
-                                                            for (var i = 0;
-                                                                i <
-                                                                    interestsCheck
-                                                                        .length;
-                                                                i++) {
-                                                              if (interestsCheck[
-                                                                          i][
-                                                                      'parentId'] ==
-                                                                  interests) {
-                                                                interestsCheck[
-                                                                            i][
-                                                                        'interested'] =
-                                                                    true;
-                                                              }
-                                                            }
-                                                            setState(() {});
-                                                          },
-                                                          style:
-                                                              const TextStyle(
-                                                                  //te
-                                                                  color: Colors
-                                                                      .black, //Font color
-                                                                  fontSize:
-                                                                      12 //font size on dropdown button
-                                                                  ),
-
-                                                          dropdownColor:
-                                                              Colors.white,
-                                                          underline:
-                                                              Container(), //remove underline
-                                                          isExpanded: true,
-                                                          isDense: true,
-                                                        ),
-                                                      ),
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  bottom: 10))
-                                                    ],
-                                                  ),
-                                                ]),
-                                              ],
-                                            )),
+                                          child: InterestsWidget(
+                                            context: context,
+                                            header: true,
+                                            data: UserManager
+                                                .userInfo['interests'],
+                                            sendUpdate: (value) {
+                                              saveData['interests'] = value;
+                                            },
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     //all interests
-                                    // ignore: avoid_unnecessary_containers
-                                    Container(
-                                      child: SingleChildScrollView(
-                                        child: Column(children: [
-                                          Column(children: [
-                                            const Divider(
-                                              thickness: 0.1,
-                                              color: Colors.black,
-                                            ),
-                                            Row(
-                                              children: const [
-                                                Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10)),
-                                                Text(
-                                                  'Title',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black),
-                                                ),
-                                                Flexible(
-                                                    fit: FlexFit.tight,
-                                                    child: SizedBox()),
-                                                Text(
-                                                  'Check',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black),
-                                                ),
-                                                Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 30))
-                                              ],
-                                            ),
-                                            const Divider(
-                                              thickness: 0.1,
-                                              color: Colors.black,
-                                            )
-                                          ]),
-                                          Container(
-                                            height: 300,
-                                            child: ListView.builder(
-                                                itemCount: subCategory.length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  return Column(children: [
-                                                    Row(
-                                                      children: [
-                                                        const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 10)),
-                                                        Text(
-                                                          subCategory[index]
-                                                              ['title'],
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 11,
-                                                                  color: Colors
-                                                                      .black),
-                                                        ),
-                                                        const Flexible(
-                                                            fit: FlexFit.tight,
-                                                            child: SizedBox()),
-                                                        Transform.scale(
-                                                            scale: 0.7,
-                                                            child: Checkbox(
-                                                              fillColor:
-                                                                  MaterialStateProperty.all<
-                                                                          Color>(
-                                                                      Colors
-                                                                          .black),
-                                                              checkColor:
-                                                                  Colors.blue,
-                                                              activeColor:
-                                                                  const Color
-                                                                          .fromRGBO(
-                                                                      0,
-                                                                      123,
-                                                                      255,
-                                                                      1),
-                                                              value: interestsCheck[
-                                                                      index][
-                                                                  'interested'],
-                                                              shape: const RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              5.0))), // Rounded Checkbox
-                                                              onChanged:
-                                                                  (value) {
-                                                                setState(() {
-                                                                  interestsCheck[
-                                                                          index]
-                                                                      [
-                                                                      'interested'] = !interestsCheck[
-                                                                          index]
-                                                                      [
-                                                                      'interested'];
-                                                                });
-                                                              },
-                                                            )),
-                                                        const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 30))
-                                                      ],
-                                                    ),
-                                                    const Divider(
-                                                      thickness: 0.1,
-                                                      color: Colors.black,
-                                                    )
-                                                  ]);
-                                                }),
-                                          )
-                                        ]),
-                                      ),
-                                    ),
                                     const Padding(
                                         padding: EdgeInsets.only(top: 20)),
                                     //save button
@@ -1834,17 +1621,6 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                             onPressed: () async {
                                               isShowProgressive = true;
                                               setState(() {});
-                                              saveData['interests'] = [];
-                                              for (int i = 0;
-                                                  i < interestsCheck.length;
-                                                  i++) {
-                                                if (interestsCheck[i]
-                                                        ['interested'] ==
-                                                    true) {
-                                                  saveData['interests'].add(
-                                                      interestsCheck[i]['id']);
-                                                }
-                                              }
                                               await userCon.saveProfile({
                                                 ...saveData,
                                                 'isStarted': true

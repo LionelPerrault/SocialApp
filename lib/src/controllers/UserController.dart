@@ -238,7 +238,7 @@ class UserController extends ControllerMVC {
   Future<void> registerUserInfo() async {
     setState(() {});
     var uuid = await sendEmailVeryfication();
-    signUpUserInfo.removeWhere((key, value) => key == 'password');
+    signUpUserInfo.removeWhere((key, value) => (key == 'password'||key == 'confirmPassword'));
     var serverTime = await PostController().getNowTime();
     var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
     var localTimeStamp = DateTime.now().millisecondsSinceEpoch;

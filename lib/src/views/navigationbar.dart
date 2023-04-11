@@ -244,7 +244,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 Row(
                   children: [
                     Container(
-                        padding: const EdgeInsets.only(right: 0, left: 0),
+                        padding: const EdgeInsets.only(right: 0, left: 15),
                         child: ElevatedButton(
                             onPressed: () {
                               widget.drawClicked();

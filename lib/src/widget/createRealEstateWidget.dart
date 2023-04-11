@@ -643,23 +643,42 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                       ),
                     ],
                   ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  const Divider(
+                    thickness: 0.1,
+                    color: Colors.black,
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
                 ],
               ),
             ),
           ),
           Container(
             width: 400,
-            margin: const EdgeInsets.only(right: 20, bottom: 10),
+            margin: const EdgeInsets.only(right: 20, bottom: 10, top: 15),
             child: Column(
               children: [
-                const Divider(
-                  thickness: 0.1,
-                  color: Colors.black,
-                ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
                 Row(
                   children: [
                     const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[300],
+                        shadowColor: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(100, 50),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text('Cancel',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
