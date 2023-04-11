@@ -745,6 +745,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
             margin: const EdgeInsets.only(right: 20, bottom: 10),
             child: Row(
               children: [
+                const Flexible(fit: FlexFit.tight, child: SizedBox()),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[300],
@@ -761,7 +762,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
-                const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                const Padding(padding: EdgeInsets.only(left: 10)),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

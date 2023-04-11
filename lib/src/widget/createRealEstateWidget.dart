@@ -643,6 +643,12 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                       ),
                     ],
                   ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  const Divider(
+                    thickness: 0.1,
+                    color: Colors.black,
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
                 ],
               ),
             ),
@@ -652,13 +658,9 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
             margin: const EdgeInsets.only(right: 20, bottom: 10),
             child: Column(
               children: [
-                const Divider(
-                  thickness: 0.1,
-                  color: Colors.black,
-                ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
                 Row(
                   children: [
+                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[300],
@@ -676,7 +678,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
-                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
