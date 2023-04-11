@@ -659,6 +659,23 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 Row(
                   children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[300],
+                        shadowColor: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(100, 50),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text('Cancel',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
+                    ),
                     const Flexible(fit: FlexFit.tight, child: SizedBox()),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
