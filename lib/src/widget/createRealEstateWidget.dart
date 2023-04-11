@@ -643,6 +643,12 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                       ),
                     ],
                   ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  const Divider(
+                    thickness: 0.1,
+                    color: Colors.black,
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
                 ],
               ),
             ),
@@ -652,29 +658,25 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
             margin: const EdgeInsets.only(right: 20, bottom: 10),
             child: Column(
               children: [
-                const Divider(
-                  thickness: 0.1,
-                  color: Colors.black,
-                ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
                 Row(
                   children: [
                     const Flexible(fit: FlexFit.tight, child: SizedBox()),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[400],
-                        shadowColor: Colors.grey[400],
+                        backgroundColor: Colors.grey[300],
+                        shadowColor: Colors.white,
                         elevation: 3,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(3.0)),
                         minimumSize: const Size(100, 50),
                       ),
                       onPressed: () {
-                        Navigator.of(widget.context).pop(true);
+                        Navigator.of(context).pop(true);
                       },
                       child: const Text('Cancel',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold)),
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 10)),
                     ElevatedButton(

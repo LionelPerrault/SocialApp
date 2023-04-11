@@ -19,6 +19,9 @@ jobs:
     - run: flutter pub get
     - run: flutter config --enable-web
     - run: flutter build web
+    - name: Copy well-know to build
+      run: |
+        cp -r .well-known build/web
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@master
       with:
