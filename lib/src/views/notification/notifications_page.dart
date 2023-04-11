@@ -29,7 +29,7 @@ class NotificationsPageState extends mvc.StateMVC<NotificationsPage> {
   void initState() {
     add(widget.con);
     postCon = controller as PostController;
-    postCon.checkNotify();
+    // postCon.checkNotify();
     super.initState();
   }
 
@@ -92,7 +92,7 @@ class NotificationsPageState extends mvc.StateMVC<NotificationsPage> {
                 height: postCon.allNotification.isEmpty ? 100 : 300,
                 //size: Size(100,100),
                 child: postCon.allNotification.isEmpty
-                    ? const Center(child: Text("No new notificatins."))
+                    ? const Center(child: Text("No new notifications."))
                     : ListView.separated(
                         itemCount: postCon.allNotification.length,
                         itemBuilder: (context, index) => Material(
@@ -170,6 +170,7 @@ class NotificationsPageState extends mvc.StateMVC<NotificationsPage> {
                               await postCon.checkNotify();
                               postCon.allNotification = [];
                               postCon.realNotifi = [];
+                              print("removed realNotifi empty in noti page");
                               postCon.setState(() {});
                             }),
                       ],

@@ -95,12 +95,12 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                   minimumSize:
                                       (e.value as Map).containsKey('state') &&
                                               e.value['state'] == -1
-                                          ? const Size(70, 35)
+                                          ? const Size(80, 35)
                                           : const Size(80, 35),
                                   maximumSize:
                                       (e.value as Map).containsKey('state') &&
                                               e.value['state'] == -1
-                                          ? const Size(70, 35)
+                                          ? const Size(80, 35)
                                           : const Size(80, 35)),
                               child: (e.value as Map).containsKey('state') &&
                                       e.value['state'] == -1
@@ -137,12 +137,12 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                   minimumSize:
                                       (e.value as Map).containsKey('state') &&
                                               e.value['state'] == -2
-                                          ? const Size(70, 35)
+                                          ? const Size(80, 35)
                                           : const Size(80, 35),
                                   maximumSize:
                                       (e.value as Map).containsKey('state') &&
                                               e.value['state'] == -2
-                                          ? const Size(70, 35)
+                                          ? const Size(80, 35)
                                           : const Size(80, 35)),
                               child: (e.value as Map).containsKey('state') &&
                                       e.value['state'] == -2

@@ -2153,6 +2153,8 @@ class PostController extends ControllerMVC {
 
   Future checkNotify() async {
     try {
+      realNotifi = [];
+      print("removed realNotifi empty");
       var serverTime = await getNowTime();
       var serverTimeStamp = await changeTimeType(d: serverTime);
       await FirebaseFirestore.instance
@@ -2162,7 +2164,7 @@ class PostController extends ControllerMVC {
       await Helper.saveJSONPreference(
           Helper.userField, {...UserManager.userInfo});
       await UserManager.getUserInfo();
-      realNotifi = [];
+
       setState(() {});
     } catch (e) {
       print(e);
