@@ -1586,112 +1586,11 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: const [
-                                                    Text('INTERESTS',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 11)),
-                                                    Flexible(
-                                                        fit: FlexFit.tight,
-                                                        child: SizedBox()),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 30),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(children: [
-                                                  Column(
-                                                    children: [
-                                                      Container(
-                                                        width: 750,
-                                                        decoration: BoxDecoration(
-                                                            color: const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                250,
-                                                                250,
-                                                                250),
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey)),
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 20),
-                                                        child: DropdownButton(
-                                                          value: interests,
-                                                          items: category
-                                                              .map((inte) =>
-                                                                  DropdownMenuItem(
-                                                                    value: inte[
-                                                                        'title'],
-                                                                    child: Text(inte['title'] ==
-                                                                            'none'
-                                                                        ? "Select Interests"
-                                                                        : inte[
-                                                                            'title']),
-                                                                  ))
-                                                              .toList(),
-                                                          onChanged:
-                                                              (dynamic? value) {
-                                                            //get value when changed
-                                                            interests = value!;
-                                                            for (var i = 0;
-                                                                i <
-                                                                    interestsCheck
-                                                                        .length;
-                                                                i++) {
-                                                              if (interestsCheck[
-                                                                          i][
-                                                                      'parentId'] ==
-                                                                  interests) {
-                                                                saveData['interests'].add(i);
-                                                              }
-                                                            }
-                                                            setState(() {});
-                                                          },
-                                                          style:
-                                                              const TextStyle(
-                                                                  //te
-                                                                  color: Colors
-                                                                      .black, //Font color
-                                                                  fontSize:
-                                                                      12 //font size on dropdown button
-                                                                  ),
-
-                                                          dropdownColor:
-                                                              Colors.white,
-                                                          underline:
-                                                              Container(), //remove underline
-                                                          isExpanded: true,
-                                                          isDense: true,
-                                                        ),
-                                                      ),
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  bottom: 10))
-                                                    ],
-                                                  ),
-                                                ]),
-                                              ],
-                                            )),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
                                           child: InterestsWidget(
                                             context: context,
-                                            data: UserManager.userInfo['interests'],
+                                            header: true,
+                                            data: UserManager
+                                                .userInfo['interests'],
                                             sendUpdate: (value) {
                                               saveData['interests'] = value;
                                             },

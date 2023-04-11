@@ -10,8 +10,13 @@ class InterestsWidget extends StatefulWidget {
   Function sendUpdate;
   var data;
   late PostController Postcon;
+  bool header;
   InterestsWidget(
-      {Key? key, required this.context, required this.sendUpdate, this.data})
+      {Key? key,
+      required this.context,
+      required this.sendUpdate,
+      this.data,
+      this.header = false})
       : Postcon = PostController(),
         super(key: key);
   @override
@@ -145,6 +150,67 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
         //   ],
         // ),
         //all interests
+        widget.header
+            ? Row(
+                children: const [
+                  Text('INTERESTS',
+                      style: TextStyle(color: Colors.black, fontSize: 11)),
+                  Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  Padding(
+                    padding: EdgeInsets.only(top: 30),
+                  ),
+                ],
+              )
+            : const SizedBox(),
+        widget.header
+            ? Column(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        width: 750,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 250, 250, 250),
+                            border: Border.all(color: Colors.grey)),
+                        padding: const EdgeInsets.only(left: 20),
+                        child: DropdownButton(
+                          value: interests,
+                          items: category
+                              .map((inte) => DropdownMenuItem(
+                                    value: inte['title'],
+                                    child: Text(inte['title'] == 'none'
+                                        ? "Select Interests"
+                                        : inte['title']),
+                                  ))
+                              .toList(),
+                          onChanged: (dynamic? value) {
+                            //get value when changed
+                            interests = value!;
+                            for (var i = 0; i < subCategory.length; i++) {
+                              if (category[subCategory[i]['id']]['title'] ==
+                                  interests) {
+                                interestsCheck[i]['interested'] == true;
+                              }
+                            }
+                            setState(() {});
+                          },
+                          style: const TextStyle(
+                              //te
+                              color: Colors.black, //Font color
+                              fontSize: 12 //font size on dropdown button
+                              ),
+                          dropdownColor: Colors.white,
+                          underline: Container(), //remove underline
+                          isExpanded: true,
+                          isDense: true,
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(bottom: 10))
+                    ],
+                  ),
+                ],
+              )
+            : const SizedBox(),
         Container(
           child: SingleChildScrollView(
             child: Column(children: [
