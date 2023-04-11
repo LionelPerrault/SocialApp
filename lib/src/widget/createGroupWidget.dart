@@ -158,7 +158,14 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
     final request =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
     try {
-      final response = await http.get(Uri.parse(request));
+      final response = await http.get(
+        Uri.parse(request),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      );
 
       if (response.statusCode == 200) {
         final result = json.decode(response.body);
