@@ -47,5 +47,17 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app uses your photos to allow you to share them with friends and family. We will never sell or share your photos without your permission.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app uses your microphone to allow you to record audio messages. We will never sell or share your recordings without your permission.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app uses your camera to allow you to take photos. We will never sell or share your photos without your permission.</string>
+	<key>aps-environment</key>
+	<string>development</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app uses your location to help you find persons near you.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app uses your location to provide you with real-time updates of person near you. We will never sell or share your location data without your permission.</string>
 </dict>
 </plist>
