@@ -183,16 +183,9 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                                         : inte['title']),
                                   ))
                               .toList(),
-                          onChanged: (dynamic? value) {
+                          onChanged: (dynamic value) {
                             //get value when changed
-                            interests = value!;
-                            for (var i = 0; i < subCategory.length; i++) {
-                              if (category[subCategory[i]['id']]['title'] ==
-                                  interests) {
-                                interestsCheck[i]['interested'] == true;
-                              }
-                            }
-                            setState(() {});
+                            handleOnchange(value);
                           },
                           style: const TextStyle(
                               //te
@@ -311,5 +304,27 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
         ),
       ],
     );
+  }
+
+  handleOnchange(value){
+    interests = value!;
+    for (var i = 0; i < subCategory.length; i++) {
+      if (category[int.parse(subCategory[i]['parentId'])]['title'] ==
+          interests||subCategory[i]['title']==interests) {
+        interestsCheck[i]['interested'] = true;
+      }
+    }
+    setState(() {});
+    saveData = [];
+      for (int i = 0;
+          i < interestsCheck.length;
+          i++) {
+        if (interestsCheck[i]['interested'] ==
+            true) {
+          saveData.add(interestsCheck[i]['id']);
+          setState(() {});
+        }
+      }
+    widget.sendUpdate(saveData);
   }
 }
