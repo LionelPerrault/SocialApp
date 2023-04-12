@@ -1619,8 +1619,6 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               maximumSize: const Size(110, 40),
                                             ),
                                             onPressed: () async {
-                                              print(saveData);
-                                              return;
                                               isShowProgressive = true;
                                               setState(() {});
                                               await userCon.saveProfile({

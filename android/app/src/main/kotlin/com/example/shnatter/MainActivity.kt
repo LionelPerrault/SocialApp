@@ -1,4 +1,4 @@
-package com.example.shnatter
+package com.shnatter
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -87,7 +87,7 @@ class UserController extends ControllerMVC {
     for (int i = 0; i < 13; i++) {
       code = code + createRandNumber();
     }
-    return "relysia$code@shnatter.com";
+    return "relysia$code@shnatter.app";
   }
 
   Future<bool> validate(cont, info) async {
@@ -238,7 +238,7 @@ class UserController extends ControllerMVC {
   Future<void> registerUserInfo() async {
     setState(() {});
     var uuid = await sendEmailVeryfication();
-    signUpUserInfo.removeWhere((key, value) => key == 'password');
+    signUpUserInfo.removeWhere((key, value) => (key == 'password'||key == 'confirmPassword'));
     var serverTime = await PostController().getNowTime();
     var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
     var localTimeStamp = DateTime.now().millisecondsSinceEpoch;

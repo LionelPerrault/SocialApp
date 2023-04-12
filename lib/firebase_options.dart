@@ -56,7 +56,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC-RqSJmu411enQssXc1vlyZyh-FVyJYUs',
-    appId: '1:444281700591:android:a55a5c768f8abcd6379b1a',
+    appId: '1:444281700591:android:b19909a8e52d4326379b1a',
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
     databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
@@ -65,23 +65,25 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB1WUKwEBIyE9yHdfHAcGl2RE93CxIuo3o',
-    appId: '1:444281700591:ios:81f6abe04b42f719379b1a',
+    appId: '1:444281700591:ios:2e9a4778d4815cd7379b1a',
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
     databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
-    iosClientId: '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
-    iosBundleId: 'com.example.shnatter',
+    androidClientId: '444281700591-6ukhfh3sooalvf974ngltp7o9kjohbu4.apps.googleusercontent.com',
+    iosClientId: '444281700591-l3lm336r9gmqg1ki57gkrfsgnu3en0dn.apps.googleusercontent.com',
+    iosBundleId: 'com.shnatter',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyB1WUKwEBIyE9yHdfHAcGl2RE93CxIuo3o',
-    appId: '1:444281700591:ios:81f6abe04b42f719379b1a',
+    appId: '1:444281700591:ios:2e9a4778d4815cd7379b1a',
     messagingSenderId: '444281700591',
     projectId: 'shnatter-a69cd',
     databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
-    iosClientId: '444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com',
-    iosBundleId: 'com.example.shnatter',
+    androidClientId: '444281700591-6ukhfh3sooalvf974ngltp7o9kjohbu4.apps.googleusercontent.com',
+    iosClientId: '444281700591-l3lm336r9gmqg1ki57gkrfsgnu3en0dn.apps.googleusercontent.com',
+    iosBundleId: 'com.shnatter',
   );
 }

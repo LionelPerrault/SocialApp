@@ -655,7 +655,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
           ),
           Container(
             width: 400,
-            margin: const EdgeInsets.only(right: 20, bottom: 10),
+            margin: const EdgeInsets.only(right: 20, bottom: 10, top: 15),
             child: Column(
               children: [
                 Row(
