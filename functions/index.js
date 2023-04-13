@@ -279,3 +279,24 @@ exports.getDecrypted = functions.https.onRequest(async (req,res) => {
     return res.send({'data':decrypted})
   })
 })
+
+exports.getLocationAutoList = functions.https.onRequest(async (req,res) => {
+  cors(req,res,async () => {
+    const locationKey = req.body.data.locationKey
+    const apiKey = req.body.data.apiKey
+    const sessionToken = req.body.data.sessionToken
+    const url =
+    'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+locationKey +' &types=address&language=en&key='+apiKey +'&sessiontoken=$' + sessionToken;
+    await axios({
+      method: 'get', //you can set what request you want to be
+      url: url,
+      headers: {
+        'content-type': 'application/json',
+      }
+    })
+    .then((res) => {
+      console.log(res);
+    });
+
+  })
+})
