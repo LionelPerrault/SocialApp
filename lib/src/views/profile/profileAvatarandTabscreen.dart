@@ -747,11 +747,13 @@ class ProfileAvatarandTabScreenState extends mvc
       uploadTask.whenComplete(() async {
         var downloadUrl = await _reference.getDownloadURL();
         await PostController().savePost(
-            'photo',
+            'normal',
             [
               {'id': 0, 'url': downloadUrl}
             ],
-            'Public');
+            'Public',
+            header:
+                '${UserManager.userInfo['fullName']} changed ${type == 'profile_cover' ? 'Profile Cover' : 'Avatar'}');
         if (type == 'profile_cover') {
           FirebaseFirestore.instance
               .collection(Helper.userField)
