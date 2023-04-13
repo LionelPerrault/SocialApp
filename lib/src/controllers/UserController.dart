@@ -43,6 +43,7 @@ class UserController extends ControllerMVC {
   bool isStarted = false;
   bool isVerify = false;
   bool isSendResetPassword = false;
+  bool isSendResetPasswordLoading = false;
   bool isLogined = false;
   bool isEnableTwoFactor = false;
 
@@ -238,7 +239,8 @@ class UserController extends ControllerMVC {
   Future<void> registerUserInfo() async {
     setState(() {});
     var uuid = await sendEmailVeryfication();
-    signUpUserInfo.removeWhere((key, value) => (key == 'password'||key == 'confirmPassword'));
+    signUpUserInfo.removeWhere(
+        (key, value) => (key == 'password' || key == 'confirmPassword'));
     var serverTime = await PostController().getNowTime();
     var serverTimeStamp = await PostController().changeTimeType(d: serverTime);
     var localTimeStamp = DateTime.now().millisecondsSinceEpoch;
@@ -457,25 +459,27 @@ class UserController extends ControllerMVC {
   void getWalletFromPref(context) async {}
 
   Future<void> resetPassword({required String email}) async {
+    isSendResetPasswordLoading = true;
+    setState(() {});
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       isSendResetPassword = true;
-      setState(() {});
+      isEmailExist = '';
       Helper.showToast('Email is sent');
     } on FirebaseAuthException catch (e) {
       print(e.code);
       if (e.code == 'invalid-email') {
         isEmailExist = 'Not email type';
-        setState(() {});
       } else if (e.code == 'user-not-found') {
         isEmailExist = 'That email is not exist in database now';
-        setState(() {});
       } else if (e.code == 'network-request-failed') {
         isEmailExist = 'No access the net';
-        setState(() {});
+      } else if (e.code == 'missing-email') {
+        isEmailExist = 'Please enter email';
       }
-      setState(() {});
     }
+    isSendResetPasswordLoading = false;
+    setState(() {});
   }
 
   Future<bool> loginWithEmail(context, em, pass, isRememberme) async {
