@@ -7,36 +7,31 @@ const crypto = require('crypto');
 const algorithm = 'aes256';
 
 admin.initializeApp();
-var transporter = nodemailer.createTransport({
-  service: 'Gmail',
-  auth: {
-      user: 'smartdev924@gmail.com',
-      pass: 'nopassword!@#'
-  }
-});
 
 
 
 exports.sendEmailToSeller =  functions.firestore.document('transaction/{transactionId}').onCreate(async (snapshot) => {
   
-  const mailOptions = {
-      from: `smartdev924@gmail.com`,
-      to: 'jeremycalvin90@gmail.com',
-      subject: 'Product Sell',
-      html: `<h1> bought your product!</h1>
-                          <p>
-                             <b>Email: </b>${snapshot.data().buyer.email}<br>
-                          </p>`
-  };
+  admin.firestore().collection('mail').add({
+    to: 'smartdev924@gmail.com',
+    message: {
+      subject: 'Shnatter',
+      html: `<h2> You purchased product!</h2>
+      <p>
+         <b>Email: </b>${snapshot.data().buyer.email}<br>
+      </p>`,
+    },
+  });
 
-
-  return transporter.sendMail(mailOptions, (error, data) => {
-      if (error) {
-        functions.logger.log('error send email**********************************')
-        functions.logger.log(error)
-          return
-      }
-      functions.logger.log("Sent!***********************************")
+  admin.firestore().collection('mail').add({
+    to: 'smartdev924@gmail.com',
+    message: {
+      subject: 'Shnatter',
+      html: `<h2>Your product purchased by user!</h2>
+      <p>
+         <b>Email: </b>${snapshot.data().seller.email}<br>
+      </p>`,
+    },
   });
 });  
 
@@ -66,6 +61,16 @@ exports.sendEmailToSeller =  functions.firestore.document('transaction/{transact
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
+    admin.firestore().collection('mail').add({
+      to: 'smartdev924@gmail.com',
+      message: {
+        subject: 'Shnatter',
+        html: `<h2> You purchased product!</h2>
+        <p>
+           <b>Email: </b>${snapshot.data().buyer.email}<br>
+        </p>`,
+      },
+    });
     const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
     if (snapshot.data().postType == 'requestFriend') {
       const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
@@ -247,13 +252,7 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.signup = functions.https.onRequest(async (req,res)=>{
   cors(req, res, async () => {
-    admin.firestore().collection('mail').add({
-      to: 'smartdev924@gmail.com',
-      message: {
-        subject: 'Hello from Firebase!',
-        html: 'This is an <code>HTML</code> email body.',
-      },
-    })
+   
     const userId = req.body.data.userId
     const friendId = req.body.data.friendId
     const buf = Buffer.from(userId)
