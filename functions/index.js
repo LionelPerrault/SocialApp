@@ -18,7 +18,7 @@ exports.sendEmailToSeller =  functions.firestore.document('transaction/{transact
       subject: 'Shnatter',
       html: `<h2> You purchased product!</h2>
       <p>
-         <b>Email: </b>${snapshot.data().buyer.email}<br>
+         sdfjsldfjsldf
       </p>`,
     },
   });
@@ -116,7 +116,7 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
   
   exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}/content/{contentId}').onCreate(
     async (snapshot) => {
-      admin.firestore().collection('mail').add({
+      await admin.firestore().collection('mail').add({
         to: 'smartdev924@gmail.com',
         message: {
           subject: 'Shnatter',
