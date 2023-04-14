@@ -61,16 +61,7 @@ exports.sendEmailToSeller =  functions.firestore.document('transaction/{transact
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
-    admin.firestore().collection('mail').add({
-      to: 'smartdev924@gmail.com',
-      message: {
-        subject: 'Shnatter',
-        html: `<h2> You purchased product!</h2>
-        <p>
-           <b>Email: </b>${snapshot.data().buyer.email}<br>
-        </p>`,
-      },
-    });
+   
     const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
     if (snapshot.data().postType == 'requestFriend') {
       const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
@@ -125,6 +116,16 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
   
   exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}/content/{contentId}').onCreate(
     async (snapshot) => {
+      admin.firestore().collection('mail').add({
+        to: 'smartdev924@gmail.com',
+        message: {
+          subject: 'Shnatter',
+          html: `<h2> You purchased product!</h2>
+          <p>
+             <b>Email: </b>${snapshot.data().buyer.email}<br>
+          </p>`,
+        },
+      });
     
       const senderSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().sender).get()
       const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
