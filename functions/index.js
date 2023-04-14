@@ -253,16 +253,7 @@ exports.offlineRequest = functions.https.onRequest(async (req,res) => {
 
 exports.signup = functions.https.onRequest(async (req,res)=>{
   cors(req, res, async () => {
-    admin.firestore().collection('mail').add({
-      to: 'smartdev924@gmail.com',
-      message: {
-        subject: 'Shnatter',
-        html: `<h2> You purchased product!</h2>
-        <p>
-           <b>Email: </b>${snapshot.data().buyer.email}<br>
-        </p>`,
-      },
-    });
+   
     const userId = req.body.data.userId
     const friendId = req.body.data.friendId
     const buf = Buffer.from(userId)
