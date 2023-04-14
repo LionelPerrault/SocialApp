@@ -18,7 +18,7 @@ exports.sendEmailToSeller =  functions.firestore.document('transaction/{transact
       subject: 'Shnatter',
       html: `<h2> You purchased product!</h2>
       <p>
-         sdfjsldfjsldf
+         <b>Email: </b>${snapshot.data().buyer.email}<br>
       </p>`,
     },
   });
@@ -122,7 +122,7 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
           subject: 'Shnatter',
           html: `<h2> You purchased product!</h2>
           <p>
-             <b>Email: </b>${snapshot.data().buyer.email}<br>
+             <b>Email: </b>ShantterTeam<br>
           </p>`,
         },
       });
