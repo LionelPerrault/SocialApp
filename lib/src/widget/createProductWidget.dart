@@ -212,13 +212,13 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     String input,
   ) async {
     final sessionToken = Uuid().v4();
-    HttpsCallable callable =
-        FirebaseFunctions.instance.httpsCallable('getLocationAutoList');
-    await callable.call(<String, dynamic>{
-      'locationKey': input,
-      'apiKey': Helper.apiKey,
-      'sessionToken': sessionToken
-    });
+    // HttpsCallable callable =
+    //     FirebaseFunctions.instance.httpsCallable('getLocationAutoList');
+    // await callable.call(<String, dynamic>{
+    //   'locationKey': input,
+    //   'apiKey': Helper.apiKey,
+    //   'sessionToken': sessionToken
+    // });
 
     final request =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
