@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -211,6 +212,13 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     String input,
   ) async {
     final sessionToken = Uuid().v4();
+    // HttpsCallable callable =
+    //     FirebaseFunctions.instance.httpsCallable('getLocationAutoList');
+    // await callable.call(<String, dynamic>{
+    //   'locationKey': input,
+    //   'apiKey': Helper.apiKey,
+    //   'sessionToken': sessionToken
+    // });
 
     final request =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';

@@ -61,16 +61,7 @@ exports.sendEmailToSeller =  functions.firestore.document('transaction/{transact
 
 exports.sendNotifications = functions.firestore.document('notifications/{notificationId}').onCreate(
   async (snapshot) => {
-    admin.firestore().collection('mail').add({
-      to: 'smartdev924@gmail.com',
-      message: {
-        subject: 'Shnatter',
-        html: `<h2> You purchased product!</h2>
-        <p>
-           <b>Email: </b>${snapshot.data().buyer.email}<br>
-        </p>`,
-      },
-    });
+   
     const senderSnapShot = await admin.firestore().collection('user').doc(`${snapshot.data().postAdminId}`).get();
     if (snapshot.data().postType == 'requestFriend') {
       const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
@@ -125,6 +116,17 @@ exports.sendNotifications = functions.firestore.document('notifications/{notific
   
   exports.sendNewMessageNotifications = functions.firestore.document('messages/{messageId}/content/{contentId}').onCreate(
     async (snapshot) => {
+      // await admin.firestore().collection('mail').add({
+      //   to: 'smartdev924@gmail.com',
+      //   message: {
+      //     subject: 'Shnatter',
+      //     html: `<h2> You purchased product!</h2>
+      //     <p>
+      //        <b>Email: </b>ShantterTeam<br>
+      //     </p>`,
+      //   },
+      // });
+    
       const senderSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().sender).get()
       const receiverSnapShot = await admin.firestore().collection('user').where('userName','==',snapshot.data().receiver).get()
 
@@ -277,5 +279,26 @@ exports.getDecrypted = functions.https.onRequest(async (req,res) => {
     var decipher = crypto.createDecipheriv(algorithm,result, iv);
     var decrypted = decipher.update(friendId, 'hex', 'utf8') + decipher.final('utf8');
     return res.send({'data':decrypted})
+  })
+})
+
+exports.getLocationAutoList = functions.https.onRequest(async (req,res) => {
+  cors(req,res,async () => {
+    const locationKey = req.body.data.locationKey
+    const apiKey = req.body.data.apiKey
+    const sessionToken = req.body.data.sessionToken
+    const url =
+    'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+locationKey +' &types=address&language=en&key='+apiKey +'&sessiontoken=$' + sessionToken;
+    await axios({
+      method: 'get', //you can set what request you want to be
+      url: url,
+      headers: {
+        'content-type': 'application/json',
+      }
+    })
+    .then((res) => {
+      console.log(res);
+    });
+
   })
 })

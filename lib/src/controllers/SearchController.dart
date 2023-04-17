@@ -53,8 +53,15 @@ class SearchController extends ControllerMVC {
   updateSearchText(searchParam) {
     //  searchText = searchParam;
     setState(() {});
+    usersByFirstName = [];
+    usersByLastName = [];
+    usersByFirstNameCaps = [];
+    usersByLastNameCaps = [];
+    usersByWholeName = [];
+    usersByWholeNameCaps = [];
     if (hasSpace(searchParam)) {
       List name = splitBySpace(searchParam);
+
       getUsersByWholeName(name);
       getUsersByWholeNameCaps(name);
     } else {
@@ -70,8 +77,7 @@ class SearchController extends ControllerMVC {
 
     var snapShots = await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .where('firstName', isGreaterThanOrEqualTo: name[0])
-        .where('firstName', isLessThan: name[0] + 'z')
+        .where('firstName', isEqualTo: name[0])
         .where('lastName', isGreaterThanOrEqualTo: name[1])
         .where('lastName', isLessThan: name[1] + 'z')
         .get();
@@ -108,8 +114,7 @@ class SearchController extends ControllerMVC {
     if (firstCaps == secondCaps && firstCaps == true) return;
     var snapShots = await FirebaseFirestore.instance
         .collection(Helper.userField)
-        .where('firstName', isGreaterThanOrEqualTo: searchTextCaps1)
-        .where('firstName', isLessThan: '${searchTextCaps1}z')
+        .where('firstName', isEqualTo: searchTextCaps1)
         .where('lastName', isGreaterThanOrEqualTo: searchTextCaps2)
         .where('lastName', isLessThan: '${searchTextCaps2}z')
         .get();

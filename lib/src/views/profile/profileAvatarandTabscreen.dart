@@ -745,13 +745,14 @@ class ProfileAvatarandTabScreenState extends mvc
       }
 
       uploadTask.whenComplete(() async {
+        Map postPayload = {};
+
         var downloadUrl = await _reference.getDownloadURL();
-        await PostController().savePost(
-            'normal',
-            [
-              {'id': 0, 'url': downloadUrl}
-            ],
-            'Public',
+        var postPhoto = [];
+        postPhoto.add({'id': 0, 'url': downloadUrl});
+        postPayload['photo'] = postPhoto;
+
+        await PostController().savePost('photo', postPayload, 'Public',
             header:
                 '${UserManager.userInfo['fullName']} changed ${type == 'profile_cover' ? 'Profile Cover' : 'Avatar'}');
         if (type == 'profile_cover') {
