@@ -368,10 +368,11 @@ class SettingShnatterTokenScreenState
     } else if (difference.inDays < 31) {
       trDate = '${difference.inDays}days ago';
     } else if (difference.inDays >= 31) {
-      trDate = '${(difference.inDays / 30 as String).split('.')[0]}days ago';
+      trDate =
+          '${(difference.inDays / 30).toString().split('.')[0]} months ago';
     }
     return Text(
-      trDate,
+      trDate.toString(),
       style: const TextStyle(color: Colors.grey, fontSize: 11),
     );
   }
@@ -475,7 +476,8 @@ class SettingShnatterTokenScreenState
                                                 color: Colors.grey,
                                                 fontSize: 12),
                                           ),
-                                          formatDate(data['sendtime']),
+                                          formatDate(
+                                              data['sendtime'].toString()),
                                         ],
                                       ),
                                       Flexible(
