@@ -111,11 +111,14 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                         color: Colors.black,
                                       ),
                                     )
-                                  : const Text('Confirm',
+                                  : const Text(
+                                      'Confirm',
                                       style: TextStyle(
                                           color: Colors.black,
+                                          overflow: TextOverflow.ellipsis,
                                           fontSize: 11,
-                                          fontWeight: FontWeight.w900)),
+                                          fontWeight: FontWeight.w900),
+                                    ),
                             ),
                             const Padding(padding: EdgeInsets.only(left: 5)),
                             ElevatedButton(
