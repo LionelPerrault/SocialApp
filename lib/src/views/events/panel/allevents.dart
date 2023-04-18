@@ -71,11 +71,9 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
               crossAxisCount: screenWidth > 800
                   ? 4
                   : screenWidth > 600
-                      ? 3
-                      : screenWidth > 210
-                          ? 2
-                          : 1,
-              childAspectRatio: 2 / 3,
+                      ? 2
+                      : 1,
+              // childAspectRatio: 2 / 3,
               padding: const EdgeInsets.all(4.0),
               mainAxisSpacing: 4.0,
               shrinkWrap: true,
