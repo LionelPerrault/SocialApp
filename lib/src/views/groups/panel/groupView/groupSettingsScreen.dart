@@ -463,7 +463,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                   children: [
                     Text('ADMINS (${con.group["groupAdmin"].length})'),
                     SizedBox(
-                      height: con.group['groupAdmin'].length * 45,
+                      height: con.group['groupAdmin'].length * 45.0,
                       child: ListView.separated(
                         itemCount: con.group['groupAdmin'].length,
                         itemBuilder: (context, index) => Material(
@@ -584,7 +584,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     con.group['groupJoined'].length == 0
                         ? const SizedBox()
                         : SizedBox(
-                            height: con.group['groupJoined'].length * 45,
+                            height: con.group['groupJoined'].length * 45.0,
                             child: ListView.separated(
                               itemCount: con.group['groupJoined'].length,
                               itemBuilder: (context, index) => Material(
