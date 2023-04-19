@@ -1748,18 +1748,26 @@ class PostController extends ControllerMVC {
   deletePhoto(Map value) async {
     FirebaseFirestore.instance
         .collection(Helper.postField)
-        .where('value', arrayContains: value)
+        .where('value.photo', arrayContains: value)
         .get()
         .then((querySnapshot) {
       for (var doc in querySnapshot.docs) {
         print("field value is ${doc['value']}");
-        print("url is {$value['url']}");
-        List<dynamic> updatedValue =
-            doc['value'].where((elem) => elem['url'] != value['url']).toList();
+        print("url is ${value['url']}");
+        List<dynamic> updatedValue = doc['value']['photo']
+            .where((elem) => elem['url'] != value['url'])
+            .toList();
         if (updatedValue.isEmpty) {
           doc.reference.delete();
         } else {
-          doc.reference.update({'value': updatedValue});
+          //  doc['value']['photo'].update(updatedValue);
+          Map data = {};
+          if (doc['value'].containsKey('feeling')) {
+            data['feeling'] = doc['value']['feeling'];
+          }
+          data['photo'] = updatedValue;
+          print('data is $data');
+          doc.reference.update({'value': data});
         }
       }
     });
