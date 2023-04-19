@@ -55,9 +55,9 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
                 routerChange: widget.routerChange,
                 eventData: event,
                 buttonFun: () {
-                  con.interestedEvent(event['id']).then((value) {
-                    getEventNow();
-                  });
+                  // con.interestedEvent(event['id']).then((value) {
+                  getEventNow();
+                  // });
                 },
               ),
             )
