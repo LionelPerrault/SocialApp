@@ -260,6 +260,7 @@ class UserController extends ControllerMVC {
       'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
+      'nearbyOptOut': false
     });
 
     await Helper.saveJSONPreference(Helper.userField, {
