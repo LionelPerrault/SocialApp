@@ -69,53 +69,53 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
                   )
                 ],
               )),
-          Container(
-            margin: const EdgeInsets.only(top: 22),
-            child: Row(children: [
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Photos';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Photos'
-                        ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Photos',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Albums';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Albums'
-                        ? Colors.white
-                        : Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Albums',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-          )
+          // Container(
+          //   margin: const EdgeInsets.only(top: 22),
+          //   child: Row(children: [
+          //     MouseRegion(
+          //       cursor: SystemMouseCursors.click,
+          //       child: GestureDetector(
+          //         onTap: () {
+          //           tab = 'Photos';
+          //           setState(() {});
+          //         },
+          //         child: Container(
+          //           alignment: Alignment.center,
+          //           width: 100,
+          //           height: 40,
+          //           color: tab == 'Photos'
+          //               ? Colors.white
+          //               : Color.fromRGBO(240, 240, 240, 1),
+          //           child: const Text(
+          //             'Photos',
+          //             style: TextStyle(fontSize: 15, color: Colors.black),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     MouseRegion(
+          //       cursor: SystemMouseCursors.click,
+          //       child: GestureDetector(
+          //         onTap: () {
+          //           tab = 'Albums';
+          //           setState(() {});
+          //         },
+          //         child: Container(
+          //           alignment: Alignment.center,
+          //           width: 100,
+          //           height: 40,
+          //           color: tab == 'Albums'
+          //               ? Colors.white
+          //               : Color.fromRGBO(240, 240, 240, 1),
+          //           child: const Text(
+          //             'Albums',
+          //             style: TextStyle(fontSize: 15, color: Colors.black),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ]),
+          // )
         ],
       ),
     );

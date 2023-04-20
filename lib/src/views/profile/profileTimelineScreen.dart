@@ -163,6 +163,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
             defaultSlide, 1, PostType.profile.index, con.viewProfileUid)
         .then((value) {
       // profilePosts = value;
+      newPostNum = 0;
       loadingFlag = false;
       if (PostController().postsProfile.length < 10) {
         nextPostFlag = false;
@@ -176,7 +177,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                 (Timestamp(
                         post['postTime'].seconds, post['postTime'].nanoseconds)
                     .toDate()
-                    .isAfter(PostController().latestTime)))
+                    .isAfter(
+                        PostController().postsProfile[0]['time'].toDate())))
             .length;
         print("newPostNum of profile is $newPostNum");
         setState(() {});
