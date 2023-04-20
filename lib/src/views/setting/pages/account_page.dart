@@ -26,6 +26,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
   var user_email = '';
   var user_name = '';
   var password = '';
+  bool nearByOptOut = false;
   var userInfo = UserManager.userInfo;
   TextEditingController emailController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
@@ -35,6 +36,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
   void initState() {
     emailController.text = userInfo['email'];
     userNameController.text = userInfo['userName'];
+    nearByOptOut = userInfo['nearbyOptOut'];
     // passwordController.text = userInfo['password'];
     add(widget.con);
     con = controller as UserController;
@@ -271,10 +273,6 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                             indent: 5,
                             endIndent: 20,
                           ),
-                          const Divider(
-                            indent: 5,
-                            endIndent: 20,
-                          ),
                           const Text(
                             'SHARE MY CODE',
                             style: TextStyle(
@@ -356,6 +354,65 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                             Icons.copy,
                                             color: Colors.grey,
                                           ))
+                                    ]),
+                                  ))
+                            ],
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 20)),
+                          const Divider(
+                            indent: 5,
+                            endIndent: 20,
+                          ),
+                          const Text(
+                            'NearBy Opt Out',
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 20)),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child:
+                                    Padding(padding: EdgeInsets.only(left: 30)),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: SizedBox(
+                                  width: 80,
+                                  child: const Text(
+                                    'Enable Opt Out',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color:
+                                            Color.fromARGB(244, 82, 95, 127)),
+                                  ),
+                                ),
+                              ),
+                              const Padding(padding: EdgeInsets.only(left: 30)),
+                              Expanded(
+                                  flex: 7,
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 20),
+                                    width: 350,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(7)),
+                                    ),
+                                    child: Row(children: [
+                                      Switch(
+                                        // This bool value toggles the switch.
+                                        value: nearByOptOut,
+                                        activeColor: Colors.blue,
+                                        onChanged: (bool value) {
+                                          // This is called when the user toggles the switch.
+                                          setState(() {
+                                            nearByOptOut = value;
+                                          });
+                                        },
+                                      ),
                                     ]),
                                   ))
                             ],
@@ -592,15 +649,53 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ]),
                             ),
                             const Padding(padding: EdgeInsets.only(top: 20)),
+                            Divider(
+                              indent: 5,
+                              endIndent: 20,
+                            ),
+                            const Text(
+                              'NearBy Opt Out',
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 20)),
+                            Container(
+                              child: const Text(
+                                'Enable Opt Out',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(244, 82, 95, 127)),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(7)),
+                              ),
+                              child: Row(children: [
+                                Switch(
+                                  // This bool value toggles the switch.
+                                  value: nearByOptOut,
+                                  activeColor: Colors.blue,
+                                  onChanged: (bool value) {
+                                    // This is called when the user toggles the switch.
+                                    setState(() {
+                                      nearByOptOut = value;
+                                    });
+                                  },
+                                ),
+                              ]),
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 20)),
                           ]),
                     ),
             ),
             SettingFooter(
               onClick: () {
-                con.saveAccountSettings(
-                  emailController.text,
-                  userNameController.text,
-                );
+                con.saveAccountSettings(emailController.text,
+                    userNameController.text, nearByOptOut);
               },
               isChange: con.isSettingAction,
             )

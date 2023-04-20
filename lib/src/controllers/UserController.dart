@@ -982,7 +982,7 @@ class UserController extends ControllerMVC {
     return doc;
   }
 
-  saveAccountSettings(email, userName) async {
+  saveAccountSettings(email, userName, nearByOptOut) async {
     var userManager = UserManager.userInfo;
 
     isSettingAction = true;
@@ -998,17 +998,6 @@ class UserController extends ControllerMVC {
       setState(() {});
 
       return;
-    } else {
-      QuerySnapshot<TokenLogin> querySnapshot1 =
-          await Helper.authdata.where('userName', isEqualTo: userName).get();
-
-      if (querySnapshot1.size > 0) {
-        Helper.showToast(
-            'Sorry, it looks like $userName belongs to an existing account');
-        isSettingAction = false;
-        setState(() {});
-        return false;
-      }
     }
 
     try {
@@ -1026,13 +1015,22 @@ class UserController extends ControllerMVC {
         await FirebaseFirestore.instance
             .collection(Helper.userField)
             .doc(UserManager.userInfo['uid'])
-            .update({'userName': userName});
+            .update({'userName': userName, 'nearbyOptOut': nearByOptOut});
         dynamic data = UserManager.userInfo;
         data['userName'] = userName;
+        data['nearbyOptOut'] = nearByOptOut;
         await Helper.saveJSONPreference(Helper.userField, {...data});
-        Helper.showToast('User name chagned!');
+        Helper.showToast('updated settings!');
         isSettingAction = false;
       } else {
+        await FirebaseFirestore.instance
+            .collection(Helper.userField)
+            .doc(UserManager.userInfo['uid'])
+            .update({'nearbyOptOut': nearByOptOut});
+        dynamic data = UserManager.userInfo;
+        data['nearbyOptOut'] = nearByOptOut;
+        await Helper.saveJSONPreference(Helper.userField, {...data});
+        Helper.showToast('updated settigns!');
         isSettingAction = false;
       }
       setState(() {});
