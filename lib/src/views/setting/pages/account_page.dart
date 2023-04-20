@@ -649,6 +649,46 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ]),
                             ),
                             const Padding(padding: EdgeInsets.only(top: 20)),
+                            Divider(
+                              indent: 5,
+                              endIndent: 20,
+                            ),
+                            const Text(
+                              'NearBy Opt Out',
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 20)),
+                            Container(
+                              child: const Text(
+                                'Enable Opt Out',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(244, 82, 95, 127)),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(7)),
+                              ),
+                              child: Row(children: [
+                                Switch(
+                                  // This bool value toggles the switch.
+                                  value: nearByOptOut,
+                                  activeColor: Colors.blue,
+                                  onChanged: (bool value) {
+                                    // This is called when the user toggles the switch.
+                                    setState(() {
+                                      nearByOptOut = value;
+                                    });
+                                  },
+                                ),
+                              ]),
+                            ),
+                            const Padding(padding: EdgeInsets.only(top: 20)),
                           ]),
                     ),
             ),
