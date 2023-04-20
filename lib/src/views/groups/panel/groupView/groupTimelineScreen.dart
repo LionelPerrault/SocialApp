@@ -70,6 +70,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
         .then((value) {
       // profilePosts = value;
       loadingFlag = false;
+      newPostNum = 0;
       if (con.postsGroup.length < 10) {
         nextPostFlag = false;
       }
@@ -83,7 +84,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
           return (groupId == con.viewGroupId) &&
               (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
                   .toDate()
-                  .isAfter(con.latestTime));
+                  .isAfter(con.postsGroup[0]['time'].toDate()));
         }).length;
         setState(() {});
       });

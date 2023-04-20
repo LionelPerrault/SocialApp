@@ -69,28 +69,28 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
       setState(() {
         nextPostFlag = value;
         loadingFlag = false;
+        newPostNum = 0;
       });
-
-     
     });
 
-     postStream.listen((event) {
-        newPostNum = event.docs.where((post) {
-          Map data = post.data() as Map;
+    postStream.listen((event) {
+      newPostNum = event.docs.where((post) {
+        Map data = post.data() as Map;
 
-          var followers = [];
-          if (data.containsKey("followers")) followers = [...data['followers']];
-          return (post['postAdmin'] == UserManager.userInfo['uid'] ||
-                  ((post['privacy'] == 'Public' ||
-                          post['privacy'] == 'Friends') &&
-                      followers.contains(UserManager.userInfo['userName']))) &&
-              (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
-                  .toDate()
-                  .isAfter(con.latestTime));
-        }).length;
+        var followers = [];
+        if (data.containsKey("followers")) followers = [...data['followers']];
+        print("latesttime is ${con.postsTimeline[0]['time']}");
+        return (post['postAdmin'] == UserManager.userInfo['uid'] ||
+                ((post['privacy'] == 'Public' ||
+                        post['privacy'] == 'Friends') &&
+                    followers.contains(UserManager.userInfo['userName']))) &&
+            (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
+                .toDate()
+                .isAfter(con.postsTimeline[0]['time'].toDate()));
+      }).length;
 
-        setState(() {});
-      });
+      setState(() {});
+    });
   }
 
   @override

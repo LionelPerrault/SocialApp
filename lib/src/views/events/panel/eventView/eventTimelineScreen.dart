@@ -78,6 +78,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
         .then((value) {
       // profilePosts = value;
       loadingFlag = false;
+      newPostNum = 0;
       if (con.postsEvent.length < 10) {
         nextPostFlag = false;
       }
@@ -92,7 +93,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
           return (eventId == con.viewEventId) &&
               (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
                   .toDate()
-                  .isAfter(con.latestTime));
+                  .isAfter(con.postsEvent[0]['time'].toDate()));
         }).length;
         print("newPostNum of profile is $newPostNum");
         setState(() {});

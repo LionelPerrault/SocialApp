@@ -238,25 +238,28 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     clientData = [];
     for (var document in documentList) {
       Map data = document.data() as Map;
-      clientData.add({...data, 'id': document.id});
-      GeoPoint pos = data['position']['geopoint'] as GeoPoint;
+      if (data['nearbyOptOut'] == false) {
+        clientData.add({...data, 'id': document.id});
+        GeoPoint pos = data['position']['geopoint'] as GeoPoint;
 
-      var marker = Marker(
-          markerId: MarkerId(document.id),
-          position: LatLng(pos.latitude, pos.longitude),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          infoWindow: InfoWindow(
-              onTap: () async {
-                ProfileController().updateProfile(data["userName"]);
-                widget.routerChange({
-                  'router': RouteNames.profile,
-                  'subRouter': data['userName']
-                });
-              },
-              title: '${data['firstName']} ${data['lastName']}',
-              snippet: ''),
-          onTap: () async {});
-      markers[marker.markerId] = marker;
+        var marker = Marker(
+            markerId: MarkerId(document.id),
+            position: LatLng(pos.latitude, pos.longitude),
+            icon:
+                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+            infoWindow: InfoWindow(
+                onTap: () async {
+                  ProfileController().updateProfile(data["userName"]);
+                  widget.routerChange({
+                    'router': RouteNames.profile,
+                    'subRouter': data['userName']
+                  });
+                },
+                title: '${data['firstName']} ${data['lastName']}',
+                snippet: ''),
+            onTap: () async {});
+        markers[marker.markerId] = marker;
+      }
     }
     setState(() {});
   }
