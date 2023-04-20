@@ -167,6 +167,24 @@ class ResetPasswordCallbackScreenState
                                           setState(() {});
                                         }
                                       })),
+                              RichText(
+                                text: TextSpan(
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 15),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Go to login Screen',
+                                      style: const TextStyle(
+                                          color: Colors.grey, fontSize: 15),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.pushReplacementNamed(
+                                              context, RouteNames.login);
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
                               const Padding(
                                 padding: EdgeInsets.only(top: 5),
                               ),
