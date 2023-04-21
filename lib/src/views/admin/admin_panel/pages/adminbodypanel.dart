@@ -27,7 +27,7 @@ class AdminMainPanelState extends mvc.StateMVC<AdminMainPanel> {
   Widget build(BuildContext context) {
     return SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
         ? Container(
-            margin: EdgeInsets.only(top: 0, left: 60, right: 60),
+            margin: const EdgeInsets.only(top: 0, left: 60, right: 60),
             alignment: Alignment.center,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

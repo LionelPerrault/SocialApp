@@ -44,7 +44,10 @@ class AdminController extends ControllerMVC {
     backupPaymail = backup['address'];
   }
 
+  bool adminTotalPage = false;
   getBodyData() async {
+    adminTotalPage = true;
+    setState(() {});
     await beforeFunction();
 
     QuerySnapshot usersSnap = await Helper.userCollection.get();
@@ -54,12 +57,14 @@ class AdminController extends ControllerMVC {
         .collection(Helper.onlineStatusField)
         .where('status', isEqualTo: 1)
         .get();
-    getTreasure();
+    await getTreasure();
     usersNum = usersSnap.docs.length;
     postsNum = eventsSnap.docs.length + groupsSnap.docs.length;
     eventsNum = eventsSnap.docs.length;
     groupsNum = groupsSnap.docs.length;
     onlineUsers = onlineUsersSnap.docs.length;
+
+    adminTotalPage = false;
     setState(() {});
   }
 
@@ -199,5 +204,38 @@ class AdminController extends ControllerMVC {
       },
     );
     return transactionData;
+  }
+
+  List usersList = [];
+  getUsers() async {
+    var onlineStatus =
+        await Helper.userCollection.orderBy('userName', descending: true).get();
+    usersList = onlineStatus.docs;
+    setState(() {});
+  }
+
+  List adminsList = [];
+  getAdmins() async {
+    var onlineStatus =
+        await Helper.userCollection.where('admin', isEqualTo: 'admin').get();
+    adminsList = onlineStatus.docs;
+    setState(() {});
+  }
+
+  List onlineUsersList = [];
+  getOnlineUsers() async {
+    var onlineStatus = await FirebaseFirestore.instance
+        .collection(Helper.onlineStatusField)
+        .where('status', isEqualTo: 1)
+        .get();
+    List userList = [];
+    for (var i = 0; i < onlineStatus.docs.length; i++) {
+      var statusUser = await Helper.userCollection
+          .where('userName', isEqualTo: onlineStatus.docs[i]['userName'])
+          .get();
+      if (statusUser.docs.isNotEmpty) userList.add(statusUser.docs[0]);
+    }
+    onlineUsersList = userList;
+    setState(() {});
   }
 }
