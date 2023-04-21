@@ -61,6 +61,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   bool invitingFriend = false;
   int selectedUserIndex = -1;
   int newPostNum = 0;
+  int currentIndex = 0;
   bool nextPostFlag = true;
 
   @override
@@ -506,6 +507,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                                   setState(() {
                                                     invitingFriend = true;
                                                     selectedUserIndex = index;
+                                                    currentIndex = index;
                                                   });
                                                   var querySnapshot =
                                                       await Helper.eventsData
@@ -554,6 +556,24 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                                   });
                                                   await con.updateEvent();
                                                   await getFriends();
+                                                  var notificationData = {
+                                                    'postType': 'requestFriend',
+                                                    'postId': userid,
+                                                    'postAdminId': UserManager
+                                                        .userInfo['uid'],
+                                                    'notifyTime': DateTime.now()
+                                                        .toString(),
+                                                    'tsNT': DateTime.now()
+                                                        .millisecondsSinceEpoch,
+                                                    'userList': [],
+                                                    'timeStamp': FieldValue
+                                                        .serverTimestamp(),
+                                                  };
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection(Helper
+                                                          .notificationField)
+                                                      .add(notificationData);
                                                   setState(() {
                                                     invitingFriend = false;
                                                   });

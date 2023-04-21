@@ -43,6 +43,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   bool loadingFlag = false;
   bool loadingFlagBottom = false;
   int newPostNum = 0;
+  int currentIndex = 0;
   bool nextPostFlag = true;
   double itemWidth = 0;
 
@@ -487,7 +488,9 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                         const Size(65, 30)),
                                                 onPressed: () async {
                                                   setState(() {
-                                                    invitingFriend = true;
+                                                    currentIndex = index;
+                                                    if (currentIndex == index)
+                                                      invitingFriend = true;
                                                   });
                                                   var querySnapshot =
                                                       await Helper.groupsData
@@ -533,11 +536,30 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                   });
                                                   await con.updateGroup();
                                                   await getFriends();
+                                                  var notificationData = {
+                                                    'postType': 'requestFriend',
+                                                    'postId': userid,
+                                                    'postAdminId': UserManager
+                                                        .userInfo['uid'],
+                                                    'notifyTime': DateTime.now()
+                                                        .toString(),
+                                                    'tsNT': DateTime.now()
+                                                        .millisecondsSinceEpoch,
+                                                    'userList': [],
+                                                    'timeStamp': FieldValue
+                                                        .serverTimestamp(),
+                                                  };
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection(Helper
+                                                          .notificationField)
+                                                      .add(notificationData);
                                                   setState(() {
                                                     invitingFriend = false;
                                                   });
                                                 },
-                                                child: invitingFriend
+                                                child: invitingFriend &&
+                                                        currentIndex == index
                                                     ? const SizedBox(
                                                         width: 10,
                                                         height: 10,
