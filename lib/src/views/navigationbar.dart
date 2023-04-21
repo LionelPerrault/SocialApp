@@ -510,12 +510,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             child:
                                 GestureDetector(child: const Text('Privacy')),
                           ),
-                          const PopupMenuDivider(),
-                          PopupMenuItem<Menu>(
-                            value: Menu.itemAdminPanel,
-                            child: GestureDetector(
-                                child: const Text('AdminPanel')),
-                          ),
+                          UserManager.userInfo['admin'] == 'admin'
+                              ? const PopupMenuDivider()
+                              : const PopupMenuDivider(height: 0),
+                          UserManager.userInfo['admin'] == 'admin'
+                              ? PopupMenuItem<Menu>(
+                                  value: Menu.itemAdminPanel,
+                                  child: GestureDetector(
+                                      child: const Text('AdminPanel')),
+                                )
+                              : const PopupMenuItem<Menu>(
+                                  child: SizedBox(),
+                                ),
                           const PopupMenuDivider(),
                           PopupMenuItem<Menu>(
                               onTap: () => {onLogOut()},

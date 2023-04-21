@@ -198,21 +198,21 @@ class AdminLeftPanel extends StatelessWidget {
                               label: 'List Users',
                               icon: const Icon(null)),
                           ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/admins')},
                               label: 'List Admins',
                               icon: const Icon(null)),
+                          // ListText(
+                          //     onTap: () => {},
+                          //     label: 'List Moderators',
+                          //     icon: const Icon(null)),
                           ListText(
-                              onTap: () => {},
-                              label: 'List Moderators',
-                              icon: const Icon(null)),
-                          ListText(
-                              onTap: () => {},
+                              onTap: () => {onClick('/onlines')},
                               label: 'List online',
                               icon: const Icon(null)),
-                          ListText(
-                              onTap: () => {},
-                              label: 'List Banned',
-                              icon: const Icon(null)),
+                          // ListText(
+                          //     onTap: () => {},
+                          //     label: 'List Banned',
+                          //     icon: const Icon(null)),
                         ],
                       )
                     ],

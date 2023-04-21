@@ -1,10 +1,12 @@
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/adminsList.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/countries.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/currencies.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/design.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/genders.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/languages.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/managePrice.dart';
+import 'package:shnatter/src/views/admin/admin_panel/pages/onlinesList.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAccountpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAnalyticspanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsChatpanel.dart';
@@ -18,16 +20,10 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsUploadpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsPostpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSMSpanel.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSecuritypanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/shnatter_tokens.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/themes.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/usersList.dart';
-
-
- 
-import '../views/admin/admin_panel/pages/settingsSystempanel.dart';
-
 import 'package:shnatter/src/views/admin/admin_panel/pages/listForums.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/listThreads.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/listReplies.dart';
@@ -87,9 +83,11 @@ class AdminRouter {
       case '/countries':
         return AdminCountries();
       case '/users':
-        return AdminUserList();
-
-
+        return AdminUsersList();
+      case '/admins':
+        return AdminAdminsList();
+      case '/onlines':
+        return AdminOnlinesList();
 
       case '/forums/listForums':
         return AdminListForums();
@@ -100,7 +98,7 @@ class AdminRouter {
       case '/movies/listMovies':
         return AdminListMovies();
       case '/movies/listGenres':
-        return AdminListGenres();  
+        return AdminListGenres();
       case '/games':
         return AdminGames();
     }

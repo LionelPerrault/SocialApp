@@ -8,23 +8,23 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
-class AdminUsersList extends StatefulWidget {
-  AdminUsersList({Key? key})
+class AdminAdminsList extends StatefulWidget {
+  AdminAdminsList({Key? key})
       : con = AdminController(),
         super(key: key);
   final AdminController con;
 
   @override
-  State createState() => AdminUsersListState();
+  State createState() => AdminAdminsListState();
 }
 
-class AdminUsersListState extends mvc.StateMVC<AdminUsersList> {
+class AdminAdminsListState extends mvc.StateMVC<AdminAdminsList> {
   late AdminController con;
   @override
   void initState() {
     add(widget.con);
     con = controller as AdminController;
-    con.getUsers();
+    con.getAdmins();
     super.initState();
   }
 
@@ -56,7 +56,7 @@ class AdminUsersListState extends mvc.StateMVC<AdminUsersList> {
         children: [
           AdminSettingHeader(
             icon: const Icon(Icons.groups),
-            pagename: 'List Users',
+            pagename: 'List Admins',
             button: const {
               'flag': false,
             },
@@ -69,9 +69,9 @@ class AdminUsersListState extends mvc.StateMVC<AdminUsersList> {
             height: 400,
             child: ListView.separated(
               padding: const EdgeInsets.all(8),
-              itemCount: con.usersList.length,
+              itemCount: con.adminsList.length,
               itemBuilder: (BuildContext context, int index) {
-                return listCell(con.usersList[index]);
+                return listCell(con.onlineUsersList[index]);
               },
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(),

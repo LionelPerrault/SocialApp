@@ -43,17 +43,18 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
     );
   }
 
+  bool isShowMenu = false;
   void clickMenu() {
-    //setState(() {
-    //  showMenu = !showMenu;
-    //});
     //Scaffold.of(context).openDrawer();
     //print("showmenu is {$showMenu}");
     if (_isDrawerOpen() || _isDrawerOpening()) {
+      isShowMenu = false;
       _drawerSlideController.reverse();
     } else {
+      isShowMenu = true;
       _drawerSlideController.forward();
     }
+    setState(() {});
   }
 
   @override
@@ -98,6 +99,16 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                         //MainPanel(),
                       ]),
                 )),
+            if (isShowMenu)
+              GestureDetector(
+                  onTap: () {
+                    clickMenu();
+                  },
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: SizeConfig.navbarHeight),
+                    child: Container(color: Color.fromARGB(41, 0, 0, 0)),
+                  )),
             AnimatedBuilder(
                 animation: _drawerSlideController,
                 builder: (context, child) {
@@ -127,6 +138,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                                         child: AdminLeftPanel(
                                           onClick: (value) {
                                             adminAllRouter = value;
+                                            clickMenu();
                                             print(value);
                                             setState(() {});
                                           },
