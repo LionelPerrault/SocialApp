@@ -45,10 +45,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                 autofocus: true,
                 disableLengthCheck: true,
                 invalidNumberMessage: 'Invalid Phone Number!',
-                textAlignVertical: TextAlignVertical.center,
-                style: const TextStyle(
-                  fontSize: 18,
-                ),
+                textAlignVertical: TextAlignVertical.bottom,
+                style: const TextStyle(fontSize: 18, fontFamily: "Hind"),
                 onChanged: (phone) => phoneNumber = phone.completeNumber,
                 initialCountryCode: 'US',
                 flagsButtonPadding: const EdgeInsets.only(right: 10),
