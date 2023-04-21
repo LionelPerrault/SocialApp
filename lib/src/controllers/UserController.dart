@@ -103,7 +103,7 @@ class UserController extends ControllerMVC {
       'password',
     ];
     for (var i = 0; i < validation.length; i++) {
-      if (info[validation[i]] == null) {
+      if (info[validation[i]] == null || info[validation[i]] == "") {
         fill = false;
         break;
       }

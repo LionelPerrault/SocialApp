@@ -30,6 +30,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   bool check1 = false;
   bool check2 = false;
   bool allInputed = false;
+  bool inviteValidation = false;
   var registerStep = Menu.invite;
   String inviteCode = '';
   String phoneNumber = '';
@@ -59,7 +60,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
       RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   Future<void> checkAllForms() async {
-    if (!check1 || !check2) {
+    if (!check2) {
       allInputed = false;
     } else {
       allInputed = await con.validate(context, signUpUserInfo);
@@ -155,6 +156,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                 inviteCode = value;
                                                 signUpUserInfo['invitecode'] =
                                                     value;
+                                                inviteValidation =
+                                                    await con.inviteCodecheck(
+                                                        inviteCode);
                                                 setState(() {});
                                               }),
                                           const Padding(
@@ -164,7 +168,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                             padding:
                                                 const EdgeInsets.only(top: 10),
                                             child: MyPrimaryButton(
-                                              color: allInputed
+                                              color: inviteValidation
                                                   ? const Color.fromARGB(
                                                       255, 103, 181, 245)
                                                   : Colors.white,
