@@ -97,6 +97,7 @@ dependencies:
   geolocator: ^9.0.2
   geocoding: ^2.0.4
   geoflutterfire2: ^2.3.14
+  flutter_launcher_icons: ^0.13.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -112,13 +113,19 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
 flutter:
   generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-    
+
   #assets:
   #   - assets/images/
   #   - assets/images/svg/
