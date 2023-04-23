@@ -34,7 +34,11 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: resetPasswordModal());
+    return Scaffold(
+      body: SafeArea(
+        child: resetPasswordModal(),
+      ),
+    );
   }
 
   Widget resetPasswordModal() {
