@@ -634,7 +634,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                       con.isSendRegisterInfo,
                                                   buttonName: "Sign up",
                                                   onPressed: () async {
-                                                    if (!check1 || !check2) {
+                                                    if (!check2) {
                                                       con.failRegister =
                                                           'You must read and agree to our terms and privacy policy';
                                                       con.setState(() {});
