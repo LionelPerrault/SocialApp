@@ -11,6 +11,7 @@ import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/GeolocationManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import '../../firebase_options.dart';
 import '../helpers/helper.dart';
 import '../managers/relysia_manager.dart';
 import '../models/userModel.dart';
@@ -705,7 +706,8 @@ class UserController extends ControllerMVC {
     ActionCodeSettings acs = ActionCodeSettings(
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
-        handleCodeInApp: false);
+        handleCodeInApp: false, iOSBundleId: DefaultFirebaseOptions.currentPlatform.iosBundleId);
+        
     await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return uuid;
   }
