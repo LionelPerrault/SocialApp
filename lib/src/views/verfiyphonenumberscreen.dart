@@ -177,7 +177,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                             // ),
                             SizedBox(height: 50),
                             Text(
-                              'Listening for OTP',
+                              'Waiting for code received by sms',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 18,
