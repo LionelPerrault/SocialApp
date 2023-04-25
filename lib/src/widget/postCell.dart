@@ -386,10 +386,22 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       if (verbSentence != '') {
         verbSentence = '$verbSentence & ';
       }
+      var whereWord = '';
+      print("event id is ${widget.postInfo['eventId']}");
+      if (widget.postInfo['eventId'] != null) {
+        // if (widget.postInfo['eventId'].isNotEmpty) {
+        whereWord = ' at Event';
+        //  }
+      }
+      if (widget.postInfo.containsKey('groupId')) {
+        if (widget.postInfo['groupId'].isNotEmpty) {
+          whereWord = ' at Group';
+        }
+      }
       verbSentence =
           '$verbSentence added ${widget.postInfo['data'].length == 1 ? 'a' : widget.postInfo['data']['photo'].length} photo${widget.postInfo['data']['photo'].length == 1 ? '' : 's'}';
+      verbSentence = '$verbSentence$whereWord';
     }
-
     return Row(
       children: [
         Expanded(
@@ -696,6 +708,24 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     } else {
       privacy = privacyMenuItem[0];
     }
+
+    var verbSentence = '';
+    var whereWord = '';
+    print("event id is ${widget.postInfo['eventId']}");
+    if (widget.postInfo['eventId'] != null) {
+      if (widget.postInfo['eventId'].isNotEmpty) {
+        whereWord = ' at Event';
+      }
+    }
+    if (widget.postInfo['groupId'] != null) {
+      if (widget.postInfo['groupId'].isNotEmpty) {
+        whereWord = ' at Group';
+      }
+    }
+    verbSentence = ' wrote';
+
+    verbSentence = '$verbSentence$whereWord';
+
     return Row(
       children: [
         Expanded(
@@ -768,7 +798,14 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                                                   'adminInfo']
                                                               ['userName'],
                                                         });
-                                                      })
+                                                      }),
+                                            TextSpan(
+                                                text: verbSentence,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis))
                                           ]),
                                     ),
                                   ),
