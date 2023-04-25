@@ -15,11 +15,13 @@ import 'package:shnatter/src/helpers/helper.dart';
 class ShnatterNotification extends StatefulWidget {
   ShnatterNotification({
     Key? key,
-    required this.seeAll,
+    required this.hideMenu,
+    required this.routerChange,
   })  : con = PostController(),
         super(key: key);
   late PostController con;
-  Function seeAll;
+  Function hideMenu;
+  Function routerChange;
 
   @override
   State createState() => ShnatterNotificationState();
@@ -109,6 +111,12 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                         itemBuilder: (context, index) => Material(
                           child: ListTile(
                             onTap: () async {
+                              if (postCon.allNotification[index]['redirect'] !=
+                                  null) {
+                                widget.routerChange(
+                                    postCon.allNotification[index]['redirect']);
+                                widget.hideMenu();
+                              }
                               await postCon.checkNotification(
                                   postCon.allNotification[index]['uid'],
                                   UserManager.userInfo['uid']);
@@ -177,7 +185,10 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                           child: const Text('See All',
                               style: TextStyle(fontSize: 11)),
                           onPressed: () async {
-                            widget.seeAll();
+                            widget.routerChange({
+                              'router': RouteNames.notifications,
+                            });
+                            widget.hideMenu();
                           }),
                     ],
                   ))
