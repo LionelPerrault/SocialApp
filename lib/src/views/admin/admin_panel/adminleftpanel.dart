@@ -193,22 +193,28 @@ class AdminLeftPanel extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ListText(
-                              onTap: () => {onClick('/users')},
-                              label: 'List Users',
-                              icon: const Icon(null)),
-                          ListText(
-                              onTap: () => {onClick('/admins')},
-                              label: 'List Admins',
-                              icon: const Icon(null)),
+                          SizedBox(
+                              width: 200,
+                              child: ListText(
+                                  onTap: () => {onClick('/users')},
+                                  label: 'List Users',
+                                  icon: const Icon(null))),
+                          SizedBox(
+                              width: 200,
+                              child: ListText(
+                                  onTap: () => {onClick('/admins')},
+                                  label: 'List Admins',
+                                  icon: const Icon(null))),
                           // ListText(
                           //     onTap: () => {},
                           //     label: 'List Moderators',
                           //     icon: const Icon(null)),
-                          ListText(
-                              onTap: () => {onClick('/onlines')},
-                              label: 'List online',
-                              icon: const Icon(null)),
+                          SizedBox(
+                              width: 200,
+                              child: ListText(
+                                  onTap: () => {onClick('/onlines')},
+                                  label: 'List online',
+                                  icon: const Icon(null))),
                           // ListText(
                           //     onTap: () => {},
                           //     label: 'List Banned',
