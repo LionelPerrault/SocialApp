@@ -156,7 +156,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         if (tsNT > usercheckTime) {
           var addData = {};
           if (adminUid != UserManager.userInfo['uid'] &&
-              postType != 'requestFriend') {
+              postType != 'requestFriend' &&
+              postType != 'inviteGroup') {
             dynamic userV = await FirebaseFirestore.instance
                 .collection(Helper.userField)
                 .doc(allNotifi[i]['postAdminId'])
@@ -197,11 +198,41 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
               changeData.add(addData);
             }
           }
+          if (postType == 'inviteGroup' &&
+              adminUid != UserManager.userInfo['uid']) {
+            dynamic userV = await FirebaseFirestore.instance
+                .collection(Helper.userField)
+                .doc(allNotifi[i]['postAdminId'])
+                .get();
+            dynamic data = userV.data();
+            dynamic groupV = await FirebaseFirestore.instance
+                .collection(Helper.groupsField)
+                .doc(allNotifi[i]['postId'])
+                .get();
+            dynamic groupData = groupV.data();
+            var type = allNotifi[i]['postType'];
+            var text = Helper.notificationText[type.toString()]['text'];
+            print('$groupData this is invitegroupdata');
+            if (data != null && groupData != null) {
+              addData = {
+                // ...allNotifi[i],
+                'uid': allNotifi[i].id,
+                'avatar': data['avatar'],
+                'userName': data['userName'],
+                'text': '${groupData['groupName']} $text',
+                'redirect': {
+                  'router': RouteNames.groups,
+                  'subRouter': allNotifi[i]['postId'],
+                }
+              };
+              changeData.add(addData);
+            }
+          }
         }
       }
       postCon.realNotifi = changeData;
       postCon.allNotification = changeData;
-
+      print(changeData);
       setState(() {});
     });
 
@@ -417,13 +448,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       controller: _navControllerNotify,
                       menuBuilder: () {
                         return ShnatterNotification(
-                          seeAll: () {
+                          hideMenu: () {
                             _navControllerNotify.hideMenu();
-
-                            widget.routerChange({
-                              'router': RouteNames.notifications,
-                            });
                           },
+                          routerChange: widget.routerChange,
                         );
                       },
                       pressType: PressType.singleClick,
@@ -778,13 +806,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       child: CustomPopupMenu(
                         controller: _navControllerNotify,
                         menuBuilder: () => ShnatterNotification(
-                          seeAll: () {
+                          hideMenu: () {
                             _navControllerNotify.hideMenu();
-
-                            widget.routerChange({
-                              'router': RouteNames.notifications,
-                            });
                           },
+                          routerChange: widget.routerChange,
                         ),
                         pressType: PressType.singleClick,
                         verticalMargin: -10,

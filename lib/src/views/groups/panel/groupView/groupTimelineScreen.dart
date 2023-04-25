@@ -47,13 +47,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   bool nextPostFlag = true;
   double itemWidth = 0;
 
-  List<Map> sampleData = [
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature},
-    {'avatarImg': '', 'name': 'Adetola', 'icon': Icons.nature}
-  ];
   get kprimaryColor => null;
   //
   @override
@@ -248,8 +241,8 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
+                    children: const [
+                      Text(
                         'Load More...',
                         style: TextStyle(
                             color: Color.fromARGB(255, 90, 90, 90),
@@ -492,14 +485,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                     if (currentIndex == index)
                                                       invitingFriend = true;
                                                   });
-                                                  var querySnapshot =
-                                                      await Helper.groupsData
-                                                          .doc(con.viewGroupId)
-                                                          .get();
-
-                                                  var doc = querySnapshot;
-                                                  var joined =
-                                                      doc['groupJoined'];
 
                                                   var friendUserName =
                                                       friendModel.friends[index]
@@ -524,21 +509,10 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                   String userid = snapshot
                                                       .docs[0].id
                                                       .toString();
-
-                                                  joined.add({'uid': userid});
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection(
-                                                          Helper.groupsField)
-                                                      .doc(con.viewGroupId)
-                                                      .update({
-                                                    'groupJoined': joined
-                                                  });
-                                                  await con.updateGroup();
-                                                  await getFriends();
                                                   var notificationData = {
-                                                    'postType': 'requestFriend',
-                                                    'postId': userid,
+                                                    'postType': 'inviteGroup',
+                                                    'postId': con.viewGroupId,
+                                                    'userId': userid,
                                                     'postAdminId': UserManager
                                                         .userInfo['uid'],
                                                     'notifyTime': DateTime.now()
