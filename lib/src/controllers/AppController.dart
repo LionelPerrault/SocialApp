@@ -20,6 +20,7 @@ class AppController extends ControllerMVC {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    FirebaseAuth.instance.setSettings(appVerificationDisabledForTesting: false);
     FirebaseMessaging firebaseMessaging =
         FirebaseMessaging.instance; // Change here
     if (kIsWeb) {

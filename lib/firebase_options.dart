@@ -61,6 +61,10 @@ class DefaultFirebaseOptions {
     projectId: 'shnatter-a69cd',
     databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
+    androidClientId:
+        '444281700591-kj13rriv881n343802b13kqhjo9gat8v.apps.googleusercontent.com',
+    iosClientId:
+        '444281700591-l3lm336r9gmqg1ki57gkrfsgnu3en0dn.apps.googleusercontent.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -70,8 +74,10 @@ class DefaultFirebaseOptions {
     projectId: 'shnatter-a69cd',
     databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
-    androidClientId: '444281700591-6ukhfh3sooalvf974ngltp7o9kjohbu4.apps.googleusercontent.com',
-    iosClientId: '444281700591-l3lm336r9gmqg1ki57gkrfsgnu3en0dn.apps.googleusercontent.com',
+    androidClientId:
+        '444281700591-kj13rriv881n343802b13kqhjo9gat8v.apps.googleusercontent.com',
+    iosClientId:
+        '444281700591-l3lm336r9gmqg1ki57gkrfsgnu3en0dn.apps.googleusercontent.com',
     iosBundleId: 'com.shnatter',
   );
 
@@ -82,8 +88,10 @@ class DefaultFirebaseOptions {
     projectId: 'shnatter-a69cd',
     databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-a69cd.appspot.com',
-    androidClientId: '444281700591-6ukhfh3sooalvf974ngltp7o9kjohbu4.apps.googleusercontent.com',
-    iosClientId: '444281700591-l3lm336r9gmqg1ki57gkrfsgnu3en0dn.apps.googleusercontent.com',
+    androidClientId:
+        '444281700591-kj13rriv881n343802b13kqhjo9gat8v.apps.googleusercontent.com',
+    iosClientId:
+        '444281700591-l3lm336r9gmqg1ki57gkrfsgnu3en0dn.apps.googleusercontent.com',
     iosBundleId: 'com.shnatter',
   );
 }

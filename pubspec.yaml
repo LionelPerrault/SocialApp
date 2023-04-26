@@ -98,6 +98,7 @@ dependencies:
   geocoding: ^2.0.4
   geoflutterfire2: ^2.3.14
   flutter_launcher_icons: ^0.13.1
+  flutter_app_badger: ^1.5.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

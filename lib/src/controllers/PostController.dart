@@ -279,6 +279,27 @@ class PostController extends ControllerMVC {
   }
 
   //get one event function that using uid of firebase database
+  Map getSuchEvent(String id) {
+    id = id.split('/')[id.split('/').length - 1];
+    viewEventId = id;
+
+    Helper.eventsData.doc(id).get().then((value) {
+      return value.data();
+    });
+    return {};
+  }
+
+  Map getSuchGroup(String id) {
+    id = id.split('/')[id.split('/').length - 1];
+    viewGroupId = id;
+
+    Helper.groupsData.doc(id).get().then((value) {
+      return value.data();
+    });
+
+    return {};
+  }
+
   Future<bool> getSelectedEvent(String id) async {
     id = id.split('/')[id.split('/').length - 1];
     viewEventId = id;
@@ -1551,10 +1572,10 @@ class PostController extends ControllerMVC {
         'timeline': true,
         'comment': true,
         'followers': followers,
-        'eventId':
-            where == PostType.event.index ? PostController().viewEventId : '',
-        'groupId':
-            where == PostType.group.index ? PostController().viewGroupId : '',
+        // 'eventId':
+        //     where == PostType.event.index ? PostController().viewEventId : '',
+        // 'groupId':
+        //     where == PostType.group.index ? PostController().viewGroupId : '',
       };
       Helper.postCollection.add(postData);
 
@@ -1668,7 +1689,6 @@ class PostController extends ControllerMVC {
         adminInfo =
             await ProfileController().getUserInfo(currentPost['postAdmin']);
       }
-
       var eachPost = {
         'id': currentPost.id,
         'data': postData,
@@ -1680,9 +1700,21 @@ class PostController extends ControllerMVC {
         'header': currentPost['header'],
         'timeline': currentPost['timeline'],
         'comment': currentPost['comment'],
-        'eventId': currentPost['eventId'],
-        'groupId': currentPost['groupId'],
       };
+      if (currentPost['eventId'] != null) {
+        if (currentPost['eventId'].isNotEmpty) {
+          var event = await Helper.eventsData.doc(currentPost['eventId']).get();
+
+          eachPost['eventName'] = event['eventName'];
+        }
+      }
+
+      if (currentPost['groupId'] != null) {
+        if (currentPost['groupId'].isNotEmpty) {
+          var group = await Helper.groupsData.doc(currentPost['groupId']).get();
+          eachPost['groupName'] = group['groupName'];
+        }
+      }
 
       if (direction == -1) {
         postsBox = [eachPost, ...postsBox];
@@ -1832,8 +1864,8 @@ class PostController extends ControllerMVC {
       'header': postData['header'],
       'timeline': postData['timeline'],
       'comment': postData['comment'],
-      'eventId': postData['eventId'],
-      'groupId': postData['groupId'],
+      'eventName': postData['eventName'],
+      'groupName': postData['groupName'],
     };
     post = eachPost;
     setState(() {});
@@ -2161,6 +2193,8 @@ class PostController extends ControllerMVC {
     await Helper.notifiCollection
         .doc(notiUid)
         .update({'userList': allNot['userList']});
+
+    setState(() {});
   }
 
   Future checkNotify() async {
