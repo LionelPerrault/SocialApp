@@ -76,6 +76,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
           });
       setState(() {});
     } else {
+      footerBtnState = false;
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
