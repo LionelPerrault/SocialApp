@@ -111,7 +111,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
         Container(
           alignment: Alignment.center,
           width: 288,
-          height: 216,
+          height: 233,
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
