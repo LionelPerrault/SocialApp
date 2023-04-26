@@ -389,13 +389,16 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       var whereWord = '';
       print("event id is ${widget.postInfo['eventId']}");
       if (widget.postInfo['eventId'] != null) {
-        // if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
-        //  }
+        if (widget.postInfo['eventId'].isNotEmpty) {
+          con.getSelectedEvent(widget.postInfo['eventId']);
+          whereWord = ' at ${con.event['eventName']}';
+        }
       }
-      if (widget.postInfo.containsKey('groupId')) {
+
+      if (widget.postInfo['groupId'] != null) {
         if (widget.postInfo['groupId'].isNotEmpty) {
-          whereWord = ' at Group';
+          con.getSelectedGroup(widget.postInfo['groupId']);
+          whereWord = ' at ${con.group['groupName']}';
         }
       }
       verbSentence =
@@ -714,12 +717,15 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     print("event id is ${widget.postInfo['eventId']}");
     if (widget.postInfo['eventId'] != null) {
       if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+        con.getSelectedEvent(widget.postInfo['eventId']);
+        whereWord = ' at ${con.event['eventName']}';
       }
     }
+
     if (widget.postInfo['groupId'] != null) {
       if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+        con.getSelectedGroup(widget.postInfo['groupId']);
+        whereWord = ' at ${con.group['groupName']}';
       }
     }
     verbSentence = ' wrote';
@@ -1012,12 +1018,15 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     print("event id is ${widget.postInfo['eventId']}");
     if (widget.postInfo['eventId'] != null) {
       if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+        con.getSelectedEvent(widget.postInfo['eventId']);
+        whereWord = ' at ${con.event['eventName']}';
       }
     }
+
     if (widget.postInfo['groupId'] != null) {
       if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+        con.getSelectedGroup(widget.postInfo['groupId']);
+        whereWord = ' at ${con.group['groupName']}';
       }
     }
 
@@ -1313,12 +1322,15 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     var whereWord = '';
     if (widget.postInfo['eventId'] != null) {
       if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+        con.getSelectedEvent(widget.postInfo['eventId']);
+        whereWord = ' at ${con.event['eventName']}';
       }
     }
+
     if (widget.postInfo['groupId'] != null) {
       if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+        con.getSelectedGroup(widget.postInfo['groupId']);
+        whereWord = ' at ${con.group['groupName']}';
       }
     }
 
@@ -1606,12 +1618,15 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
     if (widget.postInfo['eventId'] != null) {
       if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+        con.getSelectedEvent(widget.postInfo['eventId']);
+        whereWord = ' at ${con.event['eventName']}';
       }
     }
+
     if (widget.postInfo['groupId'] != null) {
       if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+        con.getSelectedGroup(widget.postInfo['groupId']);
+        whereWord = ' at ${con.group['groupName']}';
       }
     }
 
@@ -1912,12 +1927,15 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
     if (widget.postInfo['eventId'] != null) {
       if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+        con.getSelectedEvent(widget.postInfo['eventId']);
+        whereWord = ' at ${con.event['eventName']}';
       }
     }
+
     if (widget.postInfo['groupId'] != null) {
       if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+        con.getSelectedGroup(widget.postInfo['groupId']);
+        whereWord = ' at ${con.group['groupName']}';
       }
     }
 
@@ -2211,7 +2229,6 @@ class PostCellState extends mvc.StateMVC<PostCell> {
           Expanded(
             child: InkWell(
               onTap: () {
-                print("checked1");
                 checkOption(label);
               },
               child: Container(
