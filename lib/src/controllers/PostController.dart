@@ -2161,6 +2161,8 @@ class PostController extends ControllerMVC {
     await Helper.notifiCollection
         .doc(notiUid)
         .update({'userList': allNot['userList']});
+
+    setState(() {});
   }
 
   Future checkNotify() async {

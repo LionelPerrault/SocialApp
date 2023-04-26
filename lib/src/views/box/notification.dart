@@ -118,8 +118,10 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                                 widget.hideMenu();
                               }
                               await postCon.checkNotification(
-                                  postCon.allNotification[index]['uid'],
-                                  UserManager.userInfo['uid']);
+                                postCon.allNotification[index]['uid'],
+                                UserManager.userInfo['uid'],
+                              );
+                              await postCon.allNotification.removeAt(index);
                               setState(() {});
                             },
                             hoverColor:

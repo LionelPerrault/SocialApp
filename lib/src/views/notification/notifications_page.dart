@@ -99,8 +99,11 @@ class NotificationsPageState extends mvc.StateMVC<NotificationsPage> {
                           child: ListTile(
                             onTap: () async {
                               await postCon.checkNotification(
-                                  postCon.allNotification[index]['uid'],
-                                  UserManager.userInfo['uid']);
+                                postCon.allNotification[index]['uid'],
+                                UserManager.userInfo['uid'],
+                              );
+                              await postCon.allNotification.removeAt(index);
+
                               setState(() {});
                             },
                             hoverColor:
