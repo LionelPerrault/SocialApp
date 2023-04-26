@@ -44,12 +44,12 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
           children: [
             SettingHeader(
               routerChange: widget.routerChange,
-              icon: Icon(
+              icon: const Icon(
                 Icons.location_on,
                 color: Color.fromARGB(255, 43, 83, 164),
               ),
               pagename: 'Location',
-              button: {
+              button: const {
                 'buttoncolor': Color.fromARGB(255, 17, 205, 239),
                 'icon': Icon(Icons.person),
                 'text': 'View Profile',
@@ -67,62 +67,36 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Current Location',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 700,
-                                child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
-                                    onchange: (value) async {
-                                      locationInfo['current'] = value;
-                                      setState(() {});
-                                    },
-                                    text: userInfo['current'] ?? ''),
-                              )
-                            ],
-                          )),
-                      const Padding(padding: EdgeInsets.only(right: 20))
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Current Location',
+                          50,
+                          1,
+                          (value) {
+                            locationInfo['current'] = value;
+                            setState(() {});
+                          },
+                          userInfo['current'] ?? '',
+                        ),
+                      ),
                     ],
                   ),
                   const Padding(padding: EdgeInsets.only(top: 20)),
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Hometown',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 700,
-                                child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
-                                    onchange: (value) async {
-                                      locationInfo['hometown'] = value;
-                                      setState(() {});
-                                    },
-                                    text: userInfo['hometown'] ?? ''),
-                              )
-                            ],
-                          )),
-                      const Padding(padding: EdgeInsets.only(right: 20))
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Hometown',
+                          50,
+                          1,
+                          (value) {
+                            locationInfo['hometown'] = value;
+                            setState(() {});
+                          },
+                          userInfo['hometown'] ?? '',
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -134,18 +108,54 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
         ));
   }
 
-  Widget input({label, onchange, obscureText = false, validator, text = ''}) {
+  Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
+    TextEditingController inputController = TextEditingController();
+    inputController.text = text;
     return Container(
-      height: 28,
-      child: StartedInput(
-        validator: (val) async {
-          validator(val);
-        },
-        obscureText: obscureText,
-        onChange: (val) async {
-          onchange(val);
-        },
-        text: text,
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  width: 400,
+                  height: height,
+                  child: Column(
+                    children: [
+                      TextField(
+                        maxLines: line,
+                        minLines: line,
+                        controller: inputController,
+                        onChanged: (value) {
+                          onChange(value);
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 10, left: 10),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 1),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

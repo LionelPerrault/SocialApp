@@ -59,88 +59,50 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('School',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 700,
-                                child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
-                                    onchange: (value) async {
-                                      educationInfo['school'] = value;
-                                      setState(() {});
-                                    },
-                                    text: userInfo['school'] ?? ''),
-                              )
-                            ],
-                          )),
-                      const Padding(padding: EdgeInsets.only(right: 20))
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'School',
+                          50,
+                          1,
+                          (value) async {
+                            educationInfo['school'] = value;
+                            setState(() {});
+                          },
+                          userInfo['school'] ?? '',
+                        ),
+                      ),
                     ],
                   ),
                   const Padding(padding: EdgeInsets.only(top: 20)),
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Major',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 300,
-                                child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
-                                    onchange: (value) async {
-                                      educationInfo['major'] = value;
-                                      setState(() {});
-                                    },
-                                    text: userInfo['major'] ?? ''),
-                              )
-                            ],
-                          )),
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Major',
+                          50,
+                          1,
+                          (value) async {
+                            educationInfo['major'] = value;
+                            setState(() {});
+                          },
+                          userInfo['major'] ?? '',
+                        ),
+                      ),
                       const Padding(padding: EdgeInsets.only(left: 25)),
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Class',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 300,
-                                child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
-                                    onchange: (value) async {
-                                      educationInfo['class'] = value;
-                                      setState(() {});
-                                    },
-                                    text: userInfo['class'] ?? ''),
-                              )
-                            ],
-                          )),
-                      const Padding(padding: EdgeInsets.only(right: 20))
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Class',
+                          50,
+                          1,
+                          (value) async {
+                            educationInfo['class'] = value;
+                            setState(() {});
+                          },
+                          userInfo['class'] ?? '',
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -152,18 +114,54 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
         ));
   }
 
-  Widget input({label, onchange, obscureText = false, validator, text}) {
+  Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
+    TextEditingController inputController = TextEditingController();
+    inputController.text = text;
     return Container(
-      height: 28,
-      child: StartedInput(
-        validator: (val) async {
-          validator(val);
-        },
-        obscureText: obscureText,
-        onChange: (val) async {
-          onchange(val);
-        },
-        text: text,
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  width: 400,
+                  height: height,
+                  child: Column(
+                    children: [
+                      TextField(
+                        maxLines: line,
+                        minLines: line,
+                        controller: inputController,
+                        onChanged: (value) {
+                          onChange(value);
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 10, left: 10),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 1),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

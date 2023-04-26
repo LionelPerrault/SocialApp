@@ -260,7 +260,9 @@ class SearchController extends ControllerMVC {
         'privacy': allPosts[i]['privacy'],
         'header': allPosts[i]['header'],
         'timeline': allPosts[i]['timeline'],
-        'comment': allPosts[i]['comment']
+        'comment': allPosts[i]['comment'],
+        'eventId': allPosts[i]['eventId'],
+        'groupId': allPosts[i]['groupId'],
       };
       if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
           eachPost['privacy'] == 'Public') {

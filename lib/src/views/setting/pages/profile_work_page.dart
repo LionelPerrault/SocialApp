@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/daytimeM.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
@@ -44,12 +37,12 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
           children: [
             SettingHeader(
               routerChange: widget.routerChange,
-              icon: Icon(
+              icon: const Icon(
                 Icons.work,
                 color: Color.fromARGB(255, 43, 83, 164),
               ),
               pagename: 'Work',
-              button: {
+              button: const {
                 'buttoncolor': Color.fromARGB(255, 17, 205, 239),
                 'icon': Icon(Icons.person),
                 'text': 'View Profile',
@@ -67,29 +60,17 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Work Title',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 700,
-                                child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
-                                    onchange: (value) async {
-                                      workInfo['workTitle'] = value;
-                                    },
-                                    text: userInfo['workTitle'] ?? ''),
-                              )
-                            ],
-                          )),
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Work Title',
+                          50,
+                          1,
+                          (value) {
+                            workInfo['workTitle'] = value;
+                          },
+                          userInfo['workTitle'] ?? '',
+                        ),
+                      ),
                       const Padding(padding: EdgeInsets.only(right: 20))
                     ],
                   ),
@@ -97,54 +78,30 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Work Place',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 300,
-                                child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
-                                    onchange: (value) async {
-                                      workInfo['workplace'] = value;
-                                    },
-                                    text: userInfo['workPlace'] ?? ''),
-                              )
-                            ],
-                          )),
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Work Place',
+                          50,
+                          1,
+                          (value) {
+                            workInfo['workplace'] = value;
+                          },
+                          userInfo['workPlace'] ?? '',
+                        ),
+                      ),
                       const Padding(padding: EdgeInsets.only(left: 25)),
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Work Website',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 300,
-                                child: input(
-                                    validator: (value) async {
-                                      print(value);
-                                    },
-                                    onchange: (value) async {
-                                      workInfo['workWebsite'] = value;
-                                    },
-                                    text: userInfo['workWebsite'] ?? ''),
-                              )
-                            ],
-                          )),
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Work Website',
+                          50,
+                          1,
+                          (value) async {
+                            workInfo['workWebsite'] = value;
+                          },
+                          userInfo['workWebsite'] ?? '',
+                        ),
+                      ),
                       const Padding(padding: EdgeInsets.only(right: 20))
                     ],
                   ),
@@ -157,18 +114,54 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
         ));
   }
 
-  Widget input({label, onchange, obscureText = false, validator, text = ''}) {
+  Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
+    TextEditingController inputController = TextEditingController();
+    inputController.text = text;
     return Container(
-      height: 28,
-      child: StartedInput(
-        validator: (val) async {
-          validator(val);
-        },
-        obscureText: obscureText,
-        onChange: (val) async {
-          onchange(val);
-        },
-        text: text,
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  width: 400,
+                  height: height,
+                  child: Column(
+                    children: [
+                      TextField(
+                        maxLines: line,
+                        minLines: line,
+                        controller: inputController,
+                        onChanged: (value) {
+                          onChange(value);
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 10, left: 10),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 1),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -64,7 +64,8 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
               },
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            SizedBox(
+            Container(
+              alignment: Alignment.center,
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5 + 40

@@ -120,8 +120,14 @@ class AlertYesNoWidgetState extends mvc.StateMVC<AlertYesNoWidget> {
                         minimumSize: const Size(110, 40),
                         maximumSize: const Size(110, 40),
                       ),
-                      onPressed: () {
-                        widget.yesFunc();
+                      onPressed: () async {
+                        if (!widget.progress) {
+                          widget.progress = true;
+                          setState(() {});
+                          await widget.yesFunc();
+                          widget.progress = false;
+                          setState(() {});
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

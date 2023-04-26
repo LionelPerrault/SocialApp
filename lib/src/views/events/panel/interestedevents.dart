@@ -45,7 +45,7 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
-    if (screenWidth <= 210) {
+    if (screenWidth <= 600) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,8 +70,8 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
         children: <Widget>[
           Expanded(
             child: GridView.count(
-              crossAxisCount: screenWidth > 800
-                  ? 4
+              crossAxisCount: screenWidth > 900
+                  ? 3
                   : screenWidth > 600
                       ? 2
                       : 1,

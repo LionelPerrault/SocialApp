@@ -61,7 +61,6 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
     },
   ];
   bool footerBtnState = false;
-  bool payLoading = false;
   List<Suggestion> autoLocationList = [];
   TextEditingController locationTextController = TextEditingController();
   @override
@@ -72,6 +71,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   }
 
   getTokenBudget() async {
+    bool payLoading = false;
     var adminSnap = await Helper.systemSnap.doc('config').get();
     var price = adminSnap.data()!['priceCreatingGroup'];
     var snapshot = await FirebaseFirestore.instance
@@ -99,6 +99,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
           });
       setState(() {});
     } else {
+      footerBtnState = false;
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) => AlertDialog(
@@ -196,7 +197,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
       Column(
         children: [
           SizedBox(
-              height: SizeConfig(context).screenHeight - 250,
+              height: SizeConfig(context).screenHeight - 200,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

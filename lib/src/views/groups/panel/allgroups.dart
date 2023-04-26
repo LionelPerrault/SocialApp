@@ -45,9 +45,8 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
-    Widget small = Container();
-    var data = ["1", "safdfsad", "sdfafasd"];
-    if (screenWidth <= 210) {
+
+    if (screenWidth <= 600) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,8 +66,8 @@ class AllGroupState extends mvc.StateMVC<AllGroup> {
     return SizedBox(
       height: SizeConfig(context).screenHeight - 200,
       child: GridView.count(
-        crossAxisCount: screenWidth > 800
-            ? 4
+        crossAxisCount: screenWidth > 900
+            ? 3
             : screenWidth > 600
                 ? 2
                 : 1,

@@ -1680,6 +1680,8 @@ class PostController extends ControllerMVC {
         'header': currentPost['header'],
         'timeline': currentPost['timeline'],
         'comment': currentPost['comment'],
+        'eventId': currentPost['eventId'],
+        'groupId': currentPost['groupId'],
       };
 
       if (direction == -1) {
@@ -1829,7 +1831,9 @@ class PostController extends ControllerMVC {
       'privacy': postData['privacy'],
       'header': postData['header'],
       'timeline': postData['timeline'],
-      'comment': postData['comment']
+      'comment': postData['comment'],
+      'eventId': postData['eventId'],
+      'groupId': postData['groupId'],
     };
     post = eachPost;
     setState(() {});
@@ -2157,6 +2161,8 @@ class PostController extends ControllerMVC {
     await Helper.notifiCollection
         .doc(notiUid)
         .update({'userList': allNot['userList']});
+
+    setState(() {});
   }
 
   Future checkNotify() async {
