@@ -43,7 +43,7 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
-    if (screenWidth <= 210) {
+    if (screenWidth <= 600) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
