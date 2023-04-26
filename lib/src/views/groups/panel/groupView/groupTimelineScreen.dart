@@ -75,10 +75,16 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
           Map data = post.data() as Map;
           var groupId = "";
           if (data.containsKey("groupId")) groupId = data['groupId'];
-          return (groupId == con.viewGroupId) &&
-              (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
-                  .toDate()
-                  .isAfter(con.postsGroup[0]['time'].toDate()));
+          bool newPostFlag = false;
+          if (con.postsGroup.isEmpty) {
+            newPostFlag = true;
+          } else {
+            newPostFlag = Timestamp(
+                    post['postTime'].seconds, post['postTime'].nanoseconds)
+                .toDate()
+                .isAfter(con.postsGroup[0]['time'].toDate());
+          }
+          return (groupId == con.viewGroupId) && newPostFlag;
         }).length;
         setState(() {});
       });
