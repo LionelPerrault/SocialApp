@@ -70,8 +70,8 @@ class MyEventsState extends mvc.StateMVC<MyEvents> {
         children: <Widget>[
           Expanded(
             child: GridView.count(
-              crossAxisCount: screenWidth > 800
-                  ? 4
+              crossAxisCount: screenWidth > 900
+                  ? 3
                   : screenWidth > 600
                       ? 2
                       : 1,

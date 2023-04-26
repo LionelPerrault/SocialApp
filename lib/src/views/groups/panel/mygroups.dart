@@ -68,8 +68,8 @@ class MyGroupsState extends mvc.StateMVC<MyGroups> {
     return SizedBox(
         height: SizeConfig(context).screenHeight - 200,
         child: GridView.count(
-          crossAxisCount: screenWidth > 800
-              ? 4
+          crossAxisCount: screenWidth > 900
+              ? 3
               : screenWidth > 600
                   ? 2
                   : 1,

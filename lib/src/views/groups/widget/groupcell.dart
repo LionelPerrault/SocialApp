@@ -110,6 +110,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
       children: [
         Container(
           alignment: Alignment.center,
+          margin: const EdgeInsets.only(top: 10),
           width: 288,
           height: 216,
           child: Stack(
