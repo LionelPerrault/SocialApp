@@ -90,13 +90,19 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
           Map data = post.data() as Map;
           var eventId = "";
           if (data.containsKey("eventId")) eventId = data['eventId'];
-          print("event id is ====$eventId");
-          return (eventId == con.viewEventId) &&
-              (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
-                  .toDate()
-                  .isAfter(con.postsEvent[0]['time'].toDate()));
+          bool newPostFlag = false;
+
+          if (con.postsEvent.isEmpty) {
+            newPostFlag = true;
+          } else {
+            newPostFlag = Timestamp(
+                    post['postTime'].seconds, post['postTime'].nanoseconds)
+                .toDate()
+                .isAfter(con.postsEvent[0]['time'].toDate());
+          }
+          return (eventId == con.viewEventId) && newPostFlag;
         }).length;
-        print("newPostNum of profile is $newPostNum");
+
         setState(() {});
       });
     });

@@ -79,14 +79,21 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
 
         var followers = [];
         if (data.containsKey("followers")) followers = [...data['followers']];
-        print("latesttime is ${con.postsTimeline[0]['time']}");
+
+        bool newPostFlag = false;
+        if (con.postsTimeline.isEmpty) {
+          newPostFlag = true;
+        } else {
+          newPostFlag =
+              Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
+                  .toDate()
+                  .isAfter(con.postsTimeline[0]['time'].toDate());
+        }
         return (post['postAdmin'] == UserManager.userInfo['uid'] ||
                 ((post['privacy'] == 'Public' ||
                         post['privacy'] == 'Friends') &&
                     followers.contains(UserManager.userInfo['userName']))) &&
-            (Timestamp(post['postTime'].seconds, post['postTime'].nanoseconds)
-                .toDate()
-                .isAfter(con.postsTimeline[0]['time'].toDate()));
+            newPostFlag;
       }).length;
 
       setState(() {});
