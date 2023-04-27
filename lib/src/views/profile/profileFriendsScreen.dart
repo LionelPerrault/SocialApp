@@ -320,8 +320,9 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
 
   Widget friendCell(value) {
     var friendUserName = value['requester'];
-    if (friendUserName == profileCon.viewProfileUserName)
+    if (friendUserName == profileCon.viewProfileUserName) {
       friendUserName = value['receiver'];
+    }
     var friendFullName = value[friendUserName]['name'];
     var friendAvatar = value[friendUserName]['avatar'];
     return Container(
@@ -334,6 +335,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
         children: [
           Container(
             width: 200,
+            height: 100,
             margin: const EdgeInsets.only(top: 60),
             padding: const EdgeInsets.only(top: 70),
             decoration: BoxDecoration(
@@ -368,7 +370,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                         friendAvatar != '' ? friendAvatar : Helper.avatar),
                     fit: BoxFit.cover,
                   ),
-                  color: Color.fromARGB(255, 192, 124, 124),
+                  color: const Color.fromARGB(255, 192, 124, 124),
                   borderRadius: BorderRadius.circular(60),
                   border: Border.all(color: Colors.grey)),
             ),
