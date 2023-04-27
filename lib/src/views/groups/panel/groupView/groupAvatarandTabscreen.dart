@@ -387,8 +387,8 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                                       color: Colors.white,
                                       size: 18.0,
                                     ),
-                              const Text('Join',
-                                  style: TextStyle(
+                              Text(con.viewGroupJoined ? 'Joined' : 'Join',
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 11,
                                       fontWeight: FontWeight.bold)),
