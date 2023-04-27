@@ -202,7 +202,7 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
   }
 
   Widget input({label, onchange, obscureText = false, validator}) {
-    return Container(
+    return SizedBox(
       height: 28,
       child: StartedInput(
         validator: (val) async {

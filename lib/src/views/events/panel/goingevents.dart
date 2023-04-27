@@ -7,7 +7,6 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
 class GoingEvents extends StatefulWidget {
   GoingEvents({Key? key, required this.routerChange})

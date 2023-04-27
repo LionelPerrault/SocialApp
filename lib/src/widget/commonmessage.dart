@@ -102,7 +102,7 @@ class SeekBarState extends State<SeekBar> {
                       .firstMatch("$_remaining")
                       ?.group(1) ??
                   '$_remaining',
-              style: TextStyle(color: Colors.blue)),
+              style: const TextStyle(color: Colors.blue)),
         ),
       ],
     );

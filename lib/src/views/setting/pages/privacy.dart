@@ -57,10 +57,10 @@ class SettingPrivacyScreenState extends mvc.StateMVC<SettingPrivacyScreen> {
           children: [
             SettingHeader(
               routerChange: widget.routerChange,
-              icon: Icon(Icons.privacy_tip_rounded,
+              icon: const Icon(Icons.privacy_tip_rounded,
                   color: Color.fromARGB(255, 255, 179, 7)),
               pagename: 'Privacy',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             // Container(
@@ -322,9 +322,8 @@ class SettingPrivacyScreenState extends mvc.StateMVC<SettingPrivacyScreen> {
         ));
   }
 
-  @override
   Widget select(text, icon, String info, onchange) {
-    return Container(
+    return SizedBox(
       width: 300,
       child: Row(
         children: [
@@ -336,7 +335,7 @@ class SettingPrivacyScreenState extends mvc.StateMVC<SettingPrivacyScreen> {
                 children: [
                   Text(
                     text,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Color.fromARGB(255, 82, 95, 127),
                         fontSize: 11,
                         fontWeight: FontWeight.bold),
@@ -354,7 +353,7 @@ class SettingPrivacyScreenState extends mvc.StateMVC<SettingPrivacyScreen> {
                         width: 300,
                         height: 30,
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 250, 250, 250),
+                            color: const Color.fromARGB(255, 250, 250, 250),
                             border: Border.all(color: Colors.grey)),
                         padding: const EdgeInsets.only(left: 20),
                         child: DropdownButton(

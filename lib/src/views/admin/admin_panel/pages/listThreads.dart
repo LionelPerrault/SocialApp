@@ -104,81 +104,79 @@ class AdminListThreadsState extends mvc.StateMVC<AdminListThreads> {
 
   @override
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.forum),
-            pagename: 'Forums › Threads',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.white,
-              'icon': const Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
-              'text': 'Search',
-              'valueColor': Colors.black,
-              'callback': () {
-                addroute = 'addNew';
-                setState(() {});
-              },
-              'size': Size(180, 50),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.forum),
+          pagename: 'Forums › Threads',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.white,
+            'icon': const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            'text': 'Search',
+            'valueColor': Colors.black,
+            'callback': () {
+              addroute = 'addNew';
+              setState(() {});
+            },
+            'size': const Size(180, 50),
+          },
+        ),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(3),
+                backgroundColor: Colors.white,
+                // elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3.0)),
+                maximumSize: const Size(100, 50),
+                minimumSize: const Size(100, 50)),
+            onPressed: () {
+              setState(() {});
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ),
+                Text('Search',
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold))
+              ],
+            )),
+        Container(
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.85
+              : SizeConfig(context).screenWidth,
+          height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            configuration: const PlutoGridConfiguration(
+              columnSize: PlutoGridColumnSizeConfig(),
+            ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {
+              print(event);
             },
           ),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(3),
-                  backgroundColor: Colors.white,
-                  // elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3.0)),
-                  maximumSize: Size(100, 50),
-                  minimumSize: Size(100, 50)),
-              onPressed: () {
-                setState(() {});
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.search,
-                    color: Colors.black,
-                  ),
-                  Text('Search',
-                      style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold))
-                ],
-              )),
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              configuration: const PlutoGridConfiguration(
-                columnSize: PlutoGridColumnSizeConfig(),
-              ),
-              columns: columns,
-              rows: rows,
-              columnGroups: columnGroups,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -198,7 +196,7 @@ class AdminListThreadsState extends mvc.StateMVC<AdminListThreads> {
                 addroute = 'main';
                 setState(() {});
               },
-              'size': Size(120, 50),
+              'size': const Size(120, 50),
             },
           ),
           Container(

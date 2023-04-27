@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';

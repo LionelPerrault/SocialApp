@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shnatter/src/controllers/HomeController.dart';
 import 'package:shnatter/src/helpers/relysiaHelper.dart';
@@ -131,7 +132,9 @@ class RelysiaManager {
         }
       });
     } catch (exception) {
-      print(exception.toString());
+      if (kDebugMode) {
+        print(exception.toString());
+      }
     }
     return {'balance': balance, 'success': result};
   }
@@ -168,7 +171,6 @@ class RelysiaManager {
               });
             });
             trHistory = list;
-            print(trHistory.length);
           } else {
             var list = [];
 
@@ -191,7 +193,6 @@ class RelysiaManager {
               list.add(trHistory[i]);
             }
             trHistory = list;
-            print(trHistory.length);
           }
           nextPageTokenId = history['data']['meta']['nextPageToken'];
           result = 'true';
@@ -232,7 +233,9 @@ class RelysiaManager {
         },
       );
     } catch (exception) {
-      print(exception.toString());
+      if (kDebugMode) {
+        print(exception.toString());
+      }
     }
     return {'success': r};
   }
@@ -282,7 +285,9 @@ class RelysiaManager {
         });
       }
     } catch (exception) {
-      print("Exception:" + exception.toString());
+      if (kDebugMode) {
+        print("Exception:$exception");
+      }
     }
     return {'success': success, 'data': leaderBoard, 'nextPageToken': next};
   }

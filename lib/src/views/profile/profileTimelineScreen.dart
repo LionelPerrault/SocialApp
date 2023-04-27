@@ -180,7 +180,6 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     .isAfter(
                         PostController().postsProfile[0]['time'].toDate())))
             .length;
-        print("newPostNum of profile is $newPostNum");
         setState(() {});
       });
     });
@@ -250,7 +249,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        _reference = _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = _reference.putFile(file);
@@ -438,7 +437,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
             : const SizedBox(),
         loadingFlagBottom || loadingFlag || !nextPostFlag
             ? !nextPostFlag && PostController().postsProfile.isNotEmpty
-                ? Text("There is no more data to show")
+                ? const Text("There is no more data to show")
                 : const SizedBox()
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -470,8 +469,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           'Load More...',
                           style: TextStyle(
                               color: Color.fromARGB(255, 90, 90, 90),
@@ -543,16 +542,16 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           : const SizedBox(),
                       postColumn(),
                     ])
-              : Container(
+              : SizedBox(
                   width: double.infinity,
                   child: Column(
-                    children: [
-                      Padding(padding: const EdgeInsets.only(top: 115)),
+                    children: const [
+                      Padding(padding: EdgeInsets.only(top: 115)),
                       Text(
                         "You can see the friends Timeline only if you are friends.",
                         textAlign: TextAlign.center,
                       ),
-                      Padding(padding: const EdgeInsets.only(top: 30)),
+                      Padding(padding: EdgeInsets.only(top: 30)),
                     ],
                   ),
                 )

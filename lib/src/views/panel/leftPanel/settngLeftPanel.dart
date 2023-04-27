@@ -56,7 +56,7 @@ class SettingsLeftPanel extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 220,
                           child: ListText(
                               onTap: () => {
@@ -69,7 +69,7 @@ class SettingsLeftPanel extends StatelessWidget {
                               label: 'Basic',
                               image: const SizedBox()),
                         ),
-                        Container(
+                        SizedBox(
                             width: 220,
                             child: ListText(
                                 onTap: () => {
@@ -81,7 +81,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                     },
                                 label: 'Work',
                                 image: const SizedBox())),
-                        Container(
+                        SizedBox(
                             width: 220,
                             child: ListText(
                                 onTap: () => {
@@ -93,7 +93,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                     },
                                 label: 'Location',
                                 image: const SizedBox())),
-                        Container(
+                        SizedBox(
                             width: 220,
                             child: ListText(
                                 onTap: () => {
@@ -105,7 +105,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                     },
                                 label: 'Education',
                                 image: const SizedBox())),
-                        Container(
+                        SizedBox(
                             width: 220,
                             child: ListText(
                                 onTap: () => {
@@ -117,7 +117,7 @@ class SettingsLeftPanel extends StatelessWidget {
                                     },
                                 label: 'Social Links',
                                 image: const SizedBox())),
-                        Container(
+                        SizedBox(
                             width: 220,
                             child: ListText(
                                 onTap: () => {
@@ -178,7 +178,7 @@ class SettingsLeftPanel extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                             width: 220,
                             child: ListText(
                                 onTap: () => {
@@ -197,7 +197,7 @@ class SettingsLeftPanel extends StatelessWidget {
                         //   label: 'Manage Sessions',
                         //   icon:
                         //       const SizedBox()),
-                        Container(
+                        SizedBox(
                             width: 220,
                             child: ListText(
                                 onTap: () => {

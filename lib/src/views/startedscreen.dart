@@ -71,7 +71,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     fullName = UserManager.userInfo['firstName'] +
         ' ' +
         UserManager.userInfo['lastName'];
-    print('this is full name:$fullName');
+
     progress = 0;
     selectFlag['jew'] = false;
     selectFlag['policy1'] = false;
@@ -145,10 +145,11 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   }
 
   void onSearchBarDismiss() {
-    if (showSearch)
+    if (showSearch) {
       setState(() {
         showSearch = false;
       });
+    }
   }
 
   bool _isDrawerOpen() {
@@ -663,7 +664,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Container(
+                                                SizedBox(
                                                   width: 360,
                                                   child: input(
                                                       validator: (value) async {
@@ -692,7 +693,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Container(
+                                                SizedBox(
                                                   width: 360,
                                                   child: input(
                                                       validator: (value) async {
@@ -764,7 +765,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                       DropdownMenuItem(
                                                         value: "complicated",
                                                         child: Text(
-                                                            "It\'s a complicated"),
+                                                            "It' s a complicated"),
                                                       ),
                                                       DropdownMenuItem(
                                                         value: "separated",
@@ -830,7 +831,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold)),
-                                                    const Padding(
+                                                    Padding(
                                                       padding: EdgeInsets.only(
                                                           top: 10),
                                                     ),
@@ -1177,16 +1178,16 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Container(
+                                                SizedBox(
                                                   width: 750,
                                                   child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['workTitle'] =
-                                                        value;
-                                                    setState(() {});
-                                                  }),
+                                                      validator:
+                                                          (value) async {},
+                                                      onchange: (value) async {
+                                                        saveData['workTitle'] =
+                                                            value;
+                                                        setState(() {});
+                                                      }),
                                                 )
                                               ],
                                             )),
@@ -1212,7 +1213,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Container(
+                                                SizedBox(
                                                   width: 360,
                                                   child: input(
                                                       validator:
@@ -1242,7 +1243,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Container(
+                                                SizedBox(
                                                   width: 360,
                                                   child: input(
                                                       validator: (value) async {
@@ -1296,7 +1297,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Container(
+                                                SizedBox(
                                                   width: 750,
                                                   child: input(
                                                       validator: (value) async {
@@ -1330,15 +1331,16 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Container(
+                                                SizedBox(
                                                   width: 360,
                                                   child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['school'] = value;
-                                                    setState(() {});
-                                                  }),
+                                                      validator:
+                                                          (value) async {},
+                                                      onchange: (value) async {
+                                                        saveData['school'] =
+                                                            value;
+                                                        setState(() {});
+                                                      }),
                                                 )
                                               ],
                                             )),
@@ -1359,7 +1361,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                         fontSize: 11,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Container(
+                                                SizedBox(
                                                   width: 360,
                                                   child: input(
                                                       validator: (value) async {
@@ -1711,7 +1713,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   }
 
   Widget input({label, onchange, obscureText = false, validator}) {
-    return Container(
+    return SizedBox(
       height: 28,
       child: StartedInput(
         validator: (val) async {
@@ -1757,7 +1759,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
 
   uploadFile(XFile? pickedFile) async {
     final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
+    UploadTask uploadTask;
     Reference _reference;
     try {
       if (kIsWeb) {
@@ -1794,11 +1796,9 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
             progress = 100.0 *
                 (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
             setState(() {});
-            print("Upload is $progress% complete.");
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
             print("Upload was canceled");

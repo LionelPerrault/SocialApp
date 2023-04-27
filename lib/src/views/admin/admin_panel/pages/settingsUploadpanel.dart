@@ -150,31 +150,29 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
   late var headerTab;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.settings),
-            pagename: 'Settings › Notifications',
-            button: const {'flag': false},
-            headerTab: headerTab,
-          ),
-          Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth < 700
-                  ? SizeConfig(context).screenWidth
-                  : SizeConfig(context).screenWidth * 0.75,
-              child: tabTitle == 'General'
-                  ? generalWidget()
-                  : tabTitle == 'Amazon S3'
-                      ? amazonWidget()
-                      : tabTitle == 'DigitalOcean'
-                          ? digitalOceanWidget()
-                          : tabTitle == 'Wasabi'
-                              ? wasabiWidget()
-                              : ftpWidget())
-        ],
-      ),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.settings),
+          pagename: 'Settings › Notifications',
+          button: const {'flag': false},
+          headerTab: headerTab,
+        ),
+        Container(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            width: SizeConfig(context).screenWidth < 700
+                ? SizeConfig(context).screenWidth
+                : SizeConfig(context).screenWidth * 0.75,
+            child: tabTitle == 'General'
+                ? generalWidget()
+                : tabTitle == 'Amazon S3'
+                    ? amazonWidget()
+                    : tabTitle == 'DigitalOcean'
+                        ? digitalOceanWidget()
+                        : tabTitle == 'Wasabi'
+                            ? wasabiWidget()
+                            : ftpWidget())
+      ],
     );
   }
 
@@ -252,69 +250,67 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
   }
 
   Widget wasabiWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        Container(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 30),
-          decoration: const BoxDecoration(
-              color: Color.fromRGBO(120, 137, 232, 1),
-              borderRadius: BorderRadius.all(Radius.circular(3))),
-          child: Container(
-              child: Row(children: [
-            SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwasabi.svg?alt=media&token=d06b96a0-8a09-4f37-b9db-65865c3368f7',
-              width: 30,
-            ),
-            const Padding(padding: EdgeInsets.only(left: 15)),
-            SizedBox(
-                width: SizeConfig(context).screenWidth * 0.5,
-                child: Text(
-                  "Wasabi Before enabling Wasabi, make sure you upload the whole 'uploads' folder to your bucket. Before disabling Wasabi, make sure you download the whole 'uploads' folder to your server.",
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(color: Colors.white, fontSize: fontSize),
-                ))
-          ])),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      Container(
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 30),
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(120, 137, 232, 1),
+            borderRadius: BorderRadius.all(Radius.circular(3))),
+        child: Container(
+            child: Row(children: [
+          SvgPicture.network(
             'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwasabi.svg?alt=media&token=d06b96a0-8a09-4f37-b9db-65865c3368f7',
-            'Wasabi',
-            'Enable Wasabi storage (Note: Enable this will disable all other options)'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        titleAndsubtitleInput('Bucket Name', 30, 1, 'Your Wasabi bucket name'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleDropdown(
-            'Bucket Region', bucketRegionItems, 'Your Wasabi bucket region'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput(
-            'Access Key ID', 30, 1, 'Your Wasabi Access Key ID'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput(
-            'Access Key Secret', 30, 1, 'Your Wasabi Access Key Secret'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        uploadFotter()
-      ]),
-    );
+            width: 30,
+          ),
+          const Padding(padding: EdgeInsets.only(left: 15)),
+          SizedBox(
+              width: SizeConfig(context).screenWidth * 0.5,
+              child: Text(
+                "Wasabi Before enabling Wasabi, make sure you upload the whole 'uploads' folder to your bucket. Before disabling Wasabi, make sure you download the whole 'uploads' folder to your server.",
+                overflow: TextOverflow.clip,
+                style: TextStyle(color: Colors.white, fontSize: fontSize),
+              ))
+        ])),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwasabi.svg?alt=media&token=d06b96a0-8a09-4f37-b9db-65865c3368f7',
+          'Wasabi',
+          'Enable Wasabi storage (Note: Enable this will disable all other options)'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      titleAndsubtitleInput('Bucket Name', 30, 1, 'Your Wasabi bucket name'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleDropdown(
+          'Bucket Region', bucketRegionItems, 'Your Wasabi bucket region'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput(
+          'Access Key ID', 30, 1, 'Your Wasabi Access Key ID'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput(
+          'Access Key Secret', 30, 1, 'Your Wasabi Access Key Secret'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      uploadFotter()
+    ]);
   }
 
   Widget digitalOceanWidget() {
@@ -329,8 +325,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
           decoration: const BoxDecoration(
               color: Color.fromRGBO(120, 137, 232, 1),
               borderRadius: BorderRadius.all(Radius.circular(3))),
-          child: Container(
-              child: Row(children: [
+          child: Row(children: [
             const Icon(
               FontAwesomeIcons.digitalOcean,
               color: Colors.white,
@@ -344,7 +339,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
                   overflow: TextOverflow.clip,
                   style: TextStyle(color: Colors.white, fontSize: fontSize),
                 ))
-          ])),
+          ]),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -577,8 +572,8 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
                       height: 100,
                     ),
                     Container(
-                        padding: EdgeInsets.only(top: 70, left: 70),
-                        child: Icon(Icons.photo_camera))
+                        padding: const EdgeInsets.only(top: 70, left: 70),
+                        child: const Icon(Icons.photo_camera))
                   ],
                 )
               ],
@@ -808,11 +803,11 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
                 });
               },
             )),
-        Container(
+        SizedBox(
           width: SizeConfig(context).screenWidth * 0.25,
           child: Text(
             content,
-            style: TextStyle(fontSize: 13),
+            style: const TextStyle(fontSize: 13),
           ),
         )
       ],
@@ -916,138 +911,132 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
   }
 
   Widget titleAndsubtitleDropdown(title, List<Map> dropDownItems, subtitle) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 100,
-            alignment: Alignment.topLeft,
-            child: Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 85, 95, 127)),
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 100,
+          alignment: Alignment.topLeft,
+          child: Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
           ),
-          Expanded(
-              flex: 2,
-              child: SizedBox(
-                width: 500,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                          width: 400,
-                          height: 30,
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 250, 250, 250),
-                              border: Border.all(color: Colors.grey)),
-                          child: DropdownButton(
-                            value: dropDownItems[0]['value'],
-                            items: dropDownItems
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                      value: e['value'],
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          e['title'],
-                                          style: const TextStyle(
-                                              fontSize: 13, color: Colors.grey),
-                                        ),
-                                      )),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              //get value when changed
-                            },
-                            icon: const Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Icon(Icons.arrow_drop_down)),
-                            iconEnabledColor: Colors.white, //Icon color
-                            style: const TextStyle(
-                              color: Colors.black, //Font color
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            dropdownColor: Colors.white,
-                            underline: Container(), //remove underline
-                            isExpanded: true,
-                            isDense: true,
-                          )),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      )
-                    ]),
-              ))
-        ],
-      ),
+        ),
+        Expanded(
+            flex: 2,
+            child: SizedBox(
+              width: 500,
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                    width: 400,
+                    height: 30,
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 250, 250, 250),
+                        border: Border.all(color: Colors.grey)),
+                    child: DropdownButton(
+                      value: dropDownItems[0]['value'],
+                      items: dropDownItems
+                          .map(
+                            (e) => DropdownMenuItem(
+                                value: e['value'],
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    e['title'],
+                                    style: const TextStyle(
+                                        fontSize: 13, color: Colors.grey),
+                                  ),
+                                )),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        //get value when changed
+                      },
+                      icon: const Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Icon(Icons.arrow_drop_down)),
+                      iconEnabledColor: Colors.white, //Icon color
+                      style: const TextStyle(
+                        color: Colors.black, //Font color
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      dropdownColor: Colors.white,
+                      underline: Container(), //remove underline
+                      isExpanded: true,
+                      isDense: true,
+                    )),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                )
+              ]),
+            ))
+      ],
     );
   }
 
   Widget titleAndsubtitleInput(title, height, line, subtitle) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 100,
-            alignment: Alignment.topLeft,
-            child: Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 85, 95, 127)),
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 100,
+          alignment: Alignment.topLeft,
+          child: Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
           ),
-          Expanded(
-              flex: 2,
-              child: SizedBox(
-                width: 500,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 400,
-                        height: height,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: line,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      )
-                    ]),
-              ))
-        ],
-      ),
+        ),
+        Expanded(
+            flex: 2,
+            child: SizedBox(
+              width: 500,
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  width: 400,
+                  height: height,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 250, 250, 250),
+                      border: Border.all(color: Colors.grey)),
+                  child: TextFormField(
+                    minLines: 1,
+                    maxLines: line,
+                    onChanged: (value) async {},
+                    keyboardType: TextInputType.multiline,
+                    style: const TextStyle(fontSize: 12),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: '',
+                      hintStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                )
+              ]),
+            ))
+      ],
     );
   }
 
@@ -1067,7 +1056,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1081,7 +1070,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
@@ -1139,7 +1128,7 @@ class AdminSettingsUploadState extends mvc.StateMVC<AdminSettingsUpload> {
                           items: dropDownItems
                               .map((e) => DropdownMenuItem(
                                   value: e['value'],
-                                  child: Container(
+                                  child: SizedBox(
                                       height: 70,
                                       child: ListTile(
                                         leading: Icon(e['icon']),

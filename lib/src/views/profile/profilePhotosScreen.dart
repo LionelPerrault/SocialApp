@@ -1,15 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import '../../controllers/HomeController.dart';
-import '../../routes/route_names.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
@@ -89,12 +82,14 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                     ProfileController().viewProfileUid ==
                         UserManager.userInfo['uid']
                 ? PhotosData()
-                : Text("You can see the friends data only if you are friends.")
+                : const Text(
+                    "You can see the friends data only if you are friends.")
             : isMyFriend() ||
                     ProfileController().viewProfileUid ==
                         UserManager.userInfo['uid']
                 ? AlbumsData()
-                : Text("You can see the friends data only if you are friends.")
+                : const Text(
+                    "You can see the friends data only if you are friends.")
       ]),
     );
   }
@@ -250,7 +245,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                 image: NetworkImage(value['url']),
                 fit: BoxFit.cover,
               ),
-              color: Color.fromARGB(255, 150, 99, 99),
+              color: const Color.fromARGB(255, 150, 99, 99),
               border: Border.all(color: Colors.transparent),
             ),
           ),
@@ -307,17 +302,12 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                       );
                     },
                     onHover: (hoverd) {
-                      print("$index is selected to $hoverd");
                       setState(() {
                         _focusedIndices[index] = hoverd;
                       });
                     },
                     child: AnimatedContainer(
-                      duration: Duration(milliseconds: 400),
-                      // decoration: BoxDecoration(
-                      //   color: _focusedIndices[index] ? Colors.black : Colors.grey,
-                      //   borderRadius: BorderRadius.circular(12.0),
-                      // ),
+                      duration: const Duration(milliseconds: 400),
                       child: Stack(
                         children: [
                           Icon(
@@ -347,7 +337,6 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   }
 
   Widget albumCell(value) {
-    print("value---------$value");
     return Container(
       alignment: Alignment.center,
       width: 200,
@@ -364,7 +353,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                   image: NetworkImage(value[0]['url']),
                   fit: BoxFit.cover,
                 ),
-                color: Color.fromARGB(255, 150, 99, 99),
+                color: const Color.fromARGB(255, 150, 99, 99),
                 border: Border.all(color: Colors.grey)),
           ),
         ],

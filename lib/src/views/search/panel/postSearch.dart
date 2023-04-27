@@ -33,7 +33,6 @@ class PostSearchState extends mvc.StateMVC<PostSearch> {
   @override
   Widget build(BuildContext context) {
     if (widget.searchValue != '') {
-      print("searchCon.posts is ${searchCon.posts}");
       resultPosts = searchCon.posts
           .where((post) => (post['header'].contains(widget.searchValue)))
           .toList();
@@ -77,7 +76,7 @@ class PostSearchState extends mvc.StateMVC<PostSearch> {
                   ],
                 ),
               )
-            : Container(
+            : SizedBox(
                 width: SizeConfig(context).screenWidth,
                 height: SizeConfig(context).screenHeight -
                     SizeConfig.navbarHeight -

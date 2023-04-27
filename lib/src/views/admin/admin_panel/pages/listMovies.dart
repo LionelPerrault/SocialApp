@@ -76,7 +76,7 @@ class AdminListMoviesState extends mvc.StateMVC<AdminListMovies> {
   String? selectedValue;
 
   bool check1 = false;
-  Color fontColor = Color.fromARGB(255, 10, 10, 10);
+  Color fontColor = const Color.fromARGB(255, 10, 10, 10);
   double fontSize = 14;
   var addroute = 'main';
 
@@ -99,54 +99,50 @@ class AdminListMoviesState extends mvc.StateMVC<AdminListMovies> {
 
   @override
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.movie_creation),
-            pagename: 'Movies',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.white,
-              'icon': const Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-              'text': 'Add New Movie',
-              'valueColor': Colors.black,
-              'callback': () {
-                addroute = 'addNew';
-                setState(() {});
-              },
-              'size': Size(180, 50),
-            },
-          ),
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              configuration: const PlutoGridConfiguration(
-                columnSize: PlutoGridColumnSizeConfig(),
-              ),
-              columns: columns,
-              rows: rows,
-              columnGroups: columnGroups,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
-              },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.movie_creation),
+          pagename: 'Movies',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.white,
+            'icon': const Icon(
+              Icons.add,
+              color: Colors.black,
             ),
+            'text': 'Add New Movie',
+            'valueColor': Colors.black,
+            'callback': () {
+              addroute = 'addNew';
+              setState(() {});
+            },
+            'size': const Size(180, 50),
+          },
+        ),
+        Container(
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.85
+              : SizeConfig(context).screenWidth,
+          height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            configuration: const PlutoGridConfiguration(
+              columnSize: PlutoGridColumnSizeConfig(),
+            ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {},
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -166,7 +162,7 @@ class AdminListMoviesState extends mvc.StateMVC<AdminListMovies> {
                 addroute = 'main';
                 setState(() {});
               },
-              'size': Size(120, 50),
+              'size': const Size(120, 50),
             },
           ),
           titleAndsubtitleInput('Movie Source', 40, 1,

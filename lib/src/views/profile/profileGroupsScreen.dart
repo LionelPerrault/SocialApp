@@ -74,7 +74,8 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
         mainTabs(),
         isMyFriend() || con.viewProfileUid == UserManager.userInfo['uid']
             ? likesData()
-            : Text("You can see the friends data only if you are friends.")
+            : const Text(
+                "You can see the friends data only if you are friends.")
       ]),
     );
   }

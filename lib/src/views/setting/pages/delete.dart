@@ -59,13 +59,13 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                           child: Row(
                             children: [
                               const Padding(padding: EdgeInsets.only(left: 30)),
-                              Icon(
+                              const Icon(
                                 Icons.warning_rounded,
                                 color: Colors.white,
                                 size: 30,
                               ),
                               const Padding(padding: EdgeInsets.only(left: 10)),
-                              Container(
+                              SizedBox(
                                   width: SizeConfig(context).screenWidth * 0.5,
                                   child: const Text(
                                     'Once you delete your account you will no longer can access it again',
@@ -99,7 +99,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                                   con.deleteUserAccount(context);
                                 },
                                 child: con.isProfileChange
-                                    ? Container(
+                                    ? SizedBox(
                                         width: 20,
                                         height: 20,
                                         child:

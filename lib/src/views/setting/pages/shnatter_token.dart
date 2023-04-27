@@ -455,16 +455,14 @@ class SettingShnatterTokenScreenState
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Container(
-                                            child: Text(
-                                              (data['from'] !=
-                                                      UserManager
-                                                          .userInfo['paymail']
-                                                  ? data['sender']
-                                                  : data['recipient']),
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            ),
+                                          Text(
+                                            (data['from'] !=
+                                                    UserManager
+                                                        .userInfo['paymail']
+                                                ? data['sender']
+                                                : data['recipient']),
+                                            style: const TextStyle(
+                                                color: Colors.black),
                                           ),
                                           Text(
                                             data['from'] !=

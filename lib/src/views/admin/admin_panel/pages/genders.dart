@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
+
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
@@ -109,7 +109,7 @@ class AdminGendersState extends mvc.StateMVC<AdminGenders> {
                 addroute = 'addNew';
                 setState(() {});
               },
-              'size': Size(180, 50),
+              'size': const Size(180, 50),
             },
           ),
           Container(
@@ -155,7 +155,7 @@ class AdminGendersState extends mvc.StateMVC<AdminGenders> {
                 addroute = 'main';
                 setState(() {});
               },
-              'size': Size(120, 50),
+              'size': const Size(120, 50),
             },
           ),
           titleAndsubtitleInput('Name', 30, 1, ''),
@@ -190,7 +190,7 @@ class AdminGendersState extends mvc.StateMVC<AdminGenders> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: 400,
                   height: height,
                   child: TextField(
@@ -206,7 +206,7 @@ class AdminGendersState extends mvc.StateMVC<AdminGenders> {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 400,
                   child: Text(
                     subtitle,

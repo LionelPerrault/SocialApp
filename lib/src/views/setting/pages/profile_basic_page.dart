@@ -216,7 +216,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 width: 400,
                                 child: customDropDownButton(
                                   title: 'I am',
@@ -239,7 +239,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: 400,
                                     child: customDropDownButton(
                                       title: 'Relationship Status',
@@ -267,7 +267,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 width: 400,
                                 child: customDropDownButton(
                                   title: 'Country',
@@ -313,7 +313,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 width: 400,
                                 child: customDropDownButton(
                                   width: 400,
@@ -334,7 +334,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                             const Padding(padding: EdgeInsets.only(left: 25)),
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 width: 400,
                                 child: customDropDownButton(
                                   title: '',
@@ -354,7 +354,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                             const Padding(padding: EdgeInsets.only(left: 25)),
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 width: 400,
                                 child: customDropDownButton(
                                   width: 400,
@@ -378,7 +378,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 width: 700,
                                 child: titleAndsubtitleInput('About Me', 100, 4,
                                     (value) {
@@ -393,7 +393,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 width: 700,
                                 child: titleAndsubtitleInput(
                                   'Religion',
@@ -432,23 +432,21 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           ),
                           const Padding(
                               padding: EdgeInsets.only(left: 25, right: 25)),
-                          Container(
-                            child: SizedBox(
-                              width: 400,
-                              child: titleAndsubtitleInput(
-                                'Last Name',
-                                50,
-                                1,
-                                (value) async {
-                                  setting_profile['lastName'] = value;
-                                },
-                                userInfo['lastName'],
-                              ),
+                          SizedBox(
+                            width: 400,
+                            child: titleAndsubtitleInput(
+                              'Last Name',
+                              50,
+                              1,
+                              (value) async {
+                                setting_profile['lastName'] = value;
+                              },
+                              userInfo['lastName'],
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20)),
                           Container(
-                            child: Container(
+                            child: SizedBox(
                               width: 400,
                               child: customDropDownButton(
                                 title: 'I am',
@@ -470,7 +468,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: 400,
                                   child: customDropDownButton(
                                     title: 'Relationship Status',
@@ -491,7 +489,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20)),
                           Container(
-                            child: Container(
+                            child: SizedBox(
                               width: 400,
                               child: customDropDownButton(
                                 title: 'Country',
@@ -530,7 +528,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20)),
                           Container(
-                            child: Container(
+                            child: SizedBox(
                               width: 400,
                               child: customDropDownButton(
                                 width: 400,
@@ -548,7 +546,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           ),
                           const Padding(padding: EdgeInsets.only(left: 25)),
                           Container(
-                            child: Container(
+                            child: SizedBox(
                               width: 400,
                               child: customDropDownButton(
                                 title: '',
@@ -566,7 +564,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           ),
                           const Padding(padding: EdgeInsets.only(left: 25)),
                           Container(
-                            child: Container(
+                            child: SizedBox(
                               width: 400,
                               child: customDropDownButton(
                                 width: 400,
@@ -583,29 +581,25 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20)),
-                          Container(
-                            child: Container(
-                              width: 400,
-                              child: titleAndsubtitleInput('About Me', 100, 4,
-                                  (value) {
-                                setting_profile['about'] = value;
-                              }, userInfo['about'] ?? ''),
-                            ),
+                          SizedBox(
+                            width: 400,
+                            child: titleAndsubtitleInput('About Me', 100, 4,
+                                (value) {
+                              setting_profile['about'] = value;
+                            }, userInfo['about'] ?? ''),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20)),
-                          Container(
-                            child: Container(
-                              width: 400,
-                              child: titleAndsubtitleInput(
-                                'Religion',
-                                50,
-                                1,
-                                (value) async {
-                                  setting_profile['current'] = value;
-                                  setState(() {});
-                                },
-                                userInfo['current'] ?? '',
-                              ),
+                          SizedBox(
+                            width: 400,
+                            child: titleAndsubtitleInput(
+                              'Religion',
+                              50,
+                              1,
+                              (value) async {
+                                setting_profile['current'] = value;
+                                setState(() {});
+                              },
+                              userInfo['current'] ?? '',
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20))
@@ -643,7 +637,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: Column(
@@ -691,7 +685,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                 fontWeight: FontWeight.w600),
           ),
           const Padding(padding: EdgeInsets.only(top: 2)),
-          Container(
+          SizedBox(
             height: 40,
             width: width,
             child: DropdownButtonFormField(

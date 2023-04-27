@@ -50,11 +50,8 @@ class RelysiaManager {
           )
           .then((res) => {
                 responseData = jsonDecode(res.body),
-                print('this is responseData in createUser: $responseData'),
               });
-    } catch (exception) {
-      print("occurs exception" + exception.toString());
-    }
+    } catch (exception) {}
     return responseData;
   }
 
@@ -75,9 +72,7 @@ class RelysiaManager {
           .then((res) => {
                 responseData = jsonDecode(res.body),
               });
-    } catch (exception) {
-      print("occurs exception" + exception.toString());
-    }
+    } catch (exception) {}
     return responseData;
   }
 
@@ -201,7 +196,7 @@ class RelysiaManager {
           }).then(
         (res) async {
           response = jsonDecode(res.body);
-          print(response['data']['histories']);
+
           if (response['statusCode'] == 200) {
             if (response['data']['histories'] != []) {
               for (var elem in response['data']['histories']) {
@@ -235,7 +230,6 @@ class RelysiaManager {
         },
       );
     } catch (exception) {
-      print(exception);
       Helper.showToast("An error has occurred. try again later");
     }
     return {'history': transHistory, 'success': result, 'nextPageToken': next};

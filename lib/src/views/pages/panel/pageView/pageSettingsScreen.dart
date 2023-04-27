@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:shnatter/src/widget/interests.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 import '../../../../widget/admin_list_text.dart';
 
@@ -141,48 +139,46 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize 
-            ?
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LeftSettingBar(),
-                Expanded(
-                  child: pageSettingTab == 'Page Settings'
-                      ? PageSettingsWidget()
-                      : pageSettingTab == 'Page Information'
-                          ? PageInformationWidget()
-                          : pageSettingTab == 'Admins'
-                              ? PageAdminsWidget()
-                              : pageSettingTab == 'Verification'
-                                  ? VerificationWidget()
-                                  : pageSettingTab == 'Interests'
-                                      ? GroupInterestsWidget()
-                                      : GroupDeleteWidget(),
-                ),
-              ],
-            )
-            :
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LeftSettingBar(),
-                Container(
-                  child: pageSettingTab == 'Page Settings'
-                      ? PageSettingsWidget()
-                      : pageSettingTab == 'Page Information'
-                          ? PageInformationWidget()
-                          : pageSettingTab == 'Admins'
-                              ? PageAdminsWidget()
-                              : pageSettingTab == 'Verification'
-                                  ? VerificationWidget()
-                                  : pageSettingTab == 'Interests'
-                                      ? GroupInterestsWidget()
-                                      : GroupDeleteWidget(),
-                ),
-              ],
-            )
-          )
+              child:
+                  SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LeftSettingBar(),
+                            Expanded(
+                              child: pageSettingTab == 'Page Settings'
+                                  ? PageSettingsWidget()
+                                  : pageSettingTab == 'Page Information'
+                                      ? PageInformationWidget()
+                                      : pageSettingTab == 'Admins'
+                                          ? PageAdminsWidget()
+                                          : pageSettingTab == 'Verification'
+                                              ? VerificationWidget()
+                                              : pageSettingTab == 'Interests'
+                                                  ? GroupInterestsWidget()
+                                                  : GroupDeleteWidget(),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LeftSettingBar(),
+                            Container(
+                              child: pageSettingTab == 'Page Settings'
+                                  ? PageSettingsWidget()
+                                  : pageSettingTab == 'Page Information'
+                                      ? PageInformationWidget()
+                                      : pageSettingTab == 'Admins'
+                                          ? PageAdminsWidget()
+                                          : pageSettingTab == 'Verification'
+                                              ? VerificationWidget()
+                                              : pageSettingTab == 'Interests'
+                                                  ? GroupInterestsWidget()
+                                                  : GroupDeleteWidget(),
+                            ),
+                          ],
+                        ))
         ],
       ),
     );
@@ -205,7 +201,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   icon: Icon(
                     e['icon'],
                     color: pageSettingTab == e['text']
-                        ? Color.fromARGB(255, 94, 114, 228)
+                        ? const Color.fromARGB(255, 94, 114, 228)
                         : Colors.grey,
                   ),
                 ),
@@ -217,13 +213,13 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget PageSettingsWidget() {
-    return Container(
+    return SizedBox(
       width: SizeConfig(context).screenWidth,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.settings), 'Page Settings'),
+          headerWidget(const Icon(Icons.settings), 'Page Settings'),
           Container(
-            padding: EdgeInsets.all(25),
+            padding: const EdgeInsets.all(25),
             child: Column(
               children: [
                 const Padding(padding: EdgeInsets.only(top: 15)),
@@ -231,7 +227,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 400,
                       child: customInput(
                         title: 'Name Your Page',
@@ -246,7 +242,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 400,
                       child: customInput(
                         title: 'Page UserName',
@@ -257,7 +253,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                   ],
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 5),
+                  padding: const EdgeInsets.only(top: 5),
                   width: 380,
                   child: const Text(
                     'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
@@ -277,7 +273,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget PageInformationWidget() {
-    return Container(
+    return SizedBox(
       width: 600,
       child: Column(
         children: [
@@ -319,7 +315,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   Widget InfoBasic() {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: 400,
           child: customInput(
             title: 'Company',
@@ -327,7 +323,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
             onChange: (value) {},
           ),
         ),
-        Container(
+        SizedBox(
           width: 400,
           child: customInput(
             title: 'Phone',
@@ -335,7 +331,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
             onChange: (value) {},
           ),
         ),
-        Container(
+        SizedBox(
           width: 400,
           child: customInput(
             title: 'Website',
@@ -343,7 +339,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
             onChange: (value) {},
           ),
         ),
-        Container(
+        SizedBox(
           width: 400,
           child: customInput(
             title: 'Location',
@@ -351,7 +347,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
             onChange: (value) {},
           ),
         ),
-        Container(
+        SizedBox(
           width: 400,
           child: customTextarea(
             title: 'About',
@@ -364,7 +360,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget InfoSocialLink() {
-    return Container(
+    return SizedBox(
       width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
           ? SizeConfig(context).screenWidth * 0.5 + 40
           : SizeConfig(context).screenWidth * 0.9 - 30,
@@ -385,7 +381,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Facebook Profile URL',
+                  const Text('Facebook Profile URL',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 12,
@@ -397,12 +393,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.1)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.facebook,
                         color: Color.fromARGB(255, 59, 87, 157),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 195,
                       height: 30,
                       child: TextFormField(
@@ -433,7 +429,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Twitter Profile URL',
+                  const Text('Twitter Profile URL',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 12,
@@ -445,12 +441,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.1)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.new_releases_sharp,
                         color: Color.fromARGB(255, 59, 87, 157),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 195,
                       height: 30,
                       child: TextFormField(
@@ -481,7 +477,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Youtube Profile URL',
+                  const Text('Youtube Profile URL',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 12,
@@ -493,12 +489,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.1)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.facebook,
                         color: Color.fromARGB(255, 59, 87, 157),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 195,
                       height: 30,
                       child: TextFormField(
@@ -529,7 +525,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Instagram Profile URL',
+                  const Text('Instagram Profile URL',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 12,
@@ -541,12 +537,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.1)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.new_releases_sharp,
                         color: Color.fromARGB(255, 59, 87, 157),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 195,
                       height: 30,
                       child: TextFormField(
@@ -577,7 +573,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Twitch Profile URL',
+                  const Text('Twitch Profile URL',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 12,
@@ -589,12 +585,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.1)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.youtube_searched_for_sharp,
                         color: Color.fromARGB(255, 59, 87, 157),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 195,
                       height: 30,
                       child: TextFormField(
@@ -625,7 +621,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Linkedin Profile URL',
+                  const Text('Linkedin Profile URL',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 12,
@@ -637,12 +633,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.1)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.new_releases_sharp,
                         color: Color.fromARGB(255, 59, 87, 157),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 195,
                       height: 30,
                       child: TextFormField(
@@ -673,7 +669,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Vokontakte Profile URL',
+                  const Text('Vokontakte Profile URL',
                       style: TextStyle(
                           color: Color.fromARGB(255, 82, 95, 127),
                           fontSize: 12,
@@ -685,12 +681,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.black, width: 0.1)),
-                      child: Icon(
+                      child: const Icon(
                         Icons.facebook,
                         color: Color.fromARGB(255, 59, 87, 157),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 195,
                       height: 30,
                       child: TextFormField(
@@ -792,11 +788,11 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget PageAdminsWidget() {
-    return Container(
+    return SizedBox(
       width: 600,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.groups), 'Members'),
+          headerWidget(const Icon(Icons.groups), 'Members'),
           Container(
             padding: const EdgeInsets.only(right: 30, left: 30),
             child: Column(
@@ -832,7 +828,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 100,
                                       child: Text(
                                         con.page['pageAdmin'][index]
@@ -957,7 +953,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 100,
                                       child: Text(
                                         con.page['pageLiked'][index]
@@ -1001,36 +997,32 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                     ),
                                     const Padding(
                                         padding: EdgeInsets.only(left: 10)),
-                                    Container(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 245, 54, 92),
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: const Size(125, 35),
-                                            maximumSize: const Size(125, 35)),
-                                        onPressed: () {
-                                          () => {};
-                                        },
-                                        child: Row(
-                                          children: const [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 18.0,
-                                            ),
-                                            Text('Remove Admin',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 245, 54, 92),
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.0)),
+                                          minimumSize: const Size(125, 35),
+                                          maximumSize: const Size(125, 35)),
+                                      onPressed: () {
+                                        () => {};
+                                      },
+                                      child: Row(
+                                        children: const [
+                                          Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                            size: 18.0,
+                                          ),
+                                          Text('Remove Admin',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold)),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -1053,12 +1045,12 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget VerificationWidget() {
-    return Container(
+    return SizedBox(
       width: 600,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.check_circle), 'Verification'),
-          Container(
+          headerWidget(const Icon(Icons.check_circle), 'Verification'),
+          SizedBox(
             width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                 ? SizeConfig(context).screenWidth * 0.5
                 : SizeConfig(context).screenWidth * 0.9 - 30,
@@ -1067,9 +1059,9 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                 Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       width: 100,
-                      child: Text(
+                      child: const Text(
                         'Chat Message Sound',
                         style: TextStyle(
                             color: Color.fromARGB(255, 82, 95, 127),
@@ -1078,23 +1070,24 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       ),
                     ),
                     Expanded(
-                        child: Container(
+                        child: SizedBox(
                       width: 230,
                       child: Column(
                         children: [
                           Container(
                             width: 230,
-                            color: Color.fromARGB(255, 235, 235, 235),
+                            color: const Color.fromARGB(255, 235, 235, 235),
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.camera_alt),
-                                  Padding(padding: EdgeInsets.only(left: 20)),
+                                  const Icon(Icons.camera_alt),
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 20)),
                                   Expanded(
-                                      child: Container(
+                                      child: SizedBox(
                                     width: 100,
-                                    child: Text(
+                                    child: const Text(
                                       'Your Photo',
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
@@ -1125,7 +1118,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                 ),
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
                                     backgroundColor: Colors.grey[300],
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -1149,14 +1142,14 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                     )),
                     const Padding(padding: EdgeInsets.only(left: 30)),
                     Expanded(
-                        child: Container(
+                        child: SizedBox(
                       width: 230,
                       child: Column(
                         children: [
                           Container(
                             width: 230,
                             height: 30,
-                            color: Color.fromARGB(255, 235, 235, 235),
+                            color: const Color.fromARGB(255, 235, 235, 235),
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -1193,7 +1186,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                 ),
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
                                     backgroundColor: Colors.grey[300],
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -1232,7 +1225,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                       child: Container(
                         width: 500,
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 250, 250, 250),
+                            color: const Color.fromARGB(255, 250, 250, 250),
                             border: Border.all(color: Colors.grey)),
                         child: TextFormField(
                           minLines: 1,
@@ -1266,11 +1259,11 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget GroupInterestsWidget() {
-    return Container(
+    return SizedBox(
       width: 600,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.heart_broken), 'Interests'),
+          headerWidget(const Icon(Icons.heart_broken), 'Interests'),
           Container(
             margin: const EdgeInsets.only(left: 30, right: 30),
             child: InterestsWidget(
@@ -1288,11 +1281,11 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   }
 
   Widget GroupDeleteWidget() {
-    return Container(
+    return SizedBox(
       width: 600,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.delete), 'Delete'),
+          headerWidget(const Icon(Icons.delete), 'Delete'),
           Container(
             padding: const EdgeInsets.only(right: 30, left: 30),
             child: Column(
@@ -1307,17 +1300,17 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                         child: Row(
-                          children: [
-                            const Padding(padding: EdgeInsets.only(left: 30)),
-                            const Icon(
+                          children: const [
+                            Padding(padding: EdgeInsets.only(left: 30)),
+                            Icon(
                               Icons.warning_rounded,
                               color: Colors.white,
                               size: 30,
                             ),
-                            const Padding(padding: EdgeInsets.only(left: 10)),
-                            Container(
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            SizedBox(
                                 width: 200,
-                                child: const Text(
+                                child: Text(
                                   'Once you delete your group you will no longer can access it again',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 11),

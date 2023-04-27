@@ -77,7 +77,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     con
         .getTimelinePost(defaultSlide, 1, PostType.event.index, con.viewEventId)
         .then((value) {
-      // profilePosts = value;
       loadingFlag = false;
       newPostNum = 0;
       if (con.postsEvent.length < 10) {
@@ -289,7 +288,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   late PostController con;
   @override
   Widget build(BuildContext context) {
-    print("event interested is ${con.event['eventInterested']}");
+    
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 10, left: 10, top: 15),
@@ -341,28 +340,28 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                       ? 'Security Event'
                       : 'Closed Event'),
           eventInfoCell(
-              icon: Icon(Icons.punch_clock),
+              icon: const Icon(Icons.punch_clock),
               text:
                   '${con.event["eventStartDate"]} to ${con.event["eventEndDate"]}'),
           eventInfoCell(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               text: 'Hosted by ${con.event["eventAdmin"][0]["fullName"]}'),
-          eventInfoCell(icon: Icon(Icons.sell), text: 'B/N'),
+          eventInfoCell(icon: const Icon(Icons.sell), text: 'B/N'),
           eventInfoCell(
-              icon: Icon(Icons.maps_ugc),
+              icon: const Icon(Icons.maps_ugc),
               text: '${con.event["eventLocation"]}'),
           const Divider(
             thickness: 0.1,
             color: Colors.black,
           ),
           eventInfoCell(
-              icon: Icon(Icons.event),
+              icon: const Icon(Icons.event),
               text: '${con.event["eventGoing"].length} Going'),
           eventInfoCell(
-              icon: Icon(Icons.event),
+              icon: const Icon(Icons.event),
               text: '${con.event["eventInterested"].length} Interested'),
           eventInfoCell(
-              icon: Icon(Icons.event),
+              icon: const Icon(Icons.event),
               text: '${con.event["eventInvited"].length} Invited'),
           const Padding(padding: EdgeInsets.only(top: 30)),
           UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']

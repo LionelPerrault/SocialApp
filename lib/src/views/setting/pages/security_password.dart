@@ -6,7 +6,6 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingSecurityPasswordScreen extends StatefulWidget {
   SettingSecurityPasswordScreen({Key? key, required this.routerChange})

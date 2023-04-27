@@ -381,7 +381,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                      children: [
+                                      children: const [
                                         Icon(
                                           FontAwesomeIcons.message,
                                           color: Color(0xff505050),
@@ -907,11 +907,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         if (whoComment == '') {
                           whoComment = e['id'];
                           commentHeight = key.currentContext!.size!.height;
-                          print("aaaaaaaaaa");
+
                           setState(() {});
                         } else {
                           whoComment = '';
-                          print("aaaaaaaaaa1");
+
                           setState(() {});
                         }
                       },
@@ -1054,11 +1054,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
           }
         }
       }
-      print("--------totallikeimage----------");
-      print(totalLikeImage);
       replyLikesCount = totalLikeImage;
       Map myCommentLike = {};
-      print("likesavalue -------- $likesvalue");
       myCommentLike = likesvalue
               .where((like) => like['uid'] == userInfo['uid'])
               .toList()

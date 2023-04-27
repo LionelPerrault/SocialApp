@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, annotate_overrides
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/SearchController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';

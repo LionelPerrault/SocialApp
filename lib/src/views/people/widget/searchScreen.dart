@@ -150,10 +150,11 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               title: 'Gender',
               item: gender,
               onChange: (value) {
-                if (value == 'any')
+                if (value == 'any') {
                   search.remove('sex');
-                else
+                } else {
                   search['sex'] = value;
+                }
               },
               context: context),
         ),
@@ -163,10 +164,11 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               title: 'Relationship',
               item: relationShip,
               onChange: (value) {
-                if (value == 'any')
+                if (value == 'any') {
                   search.remove('relationship');
-                else
+                } else {
                   search['relationship'] = value;
+                }
               },
               context: context),
         ),
@@ -301,7 +303,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
               fontWeight: FontWeight.w600),
         ),
         Padding(padding: EdgeInsets.only(top: 2)),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             controller: controller,
@@ -330,7 +332,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen> {
             fontWeight: FontWeight.w600),
       ),
       Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
           height: 40,
           width: SizeConfig(context).screenWidth < 900
               ? SizeConfig(context).screenWidth - 60

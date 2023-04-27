@@ -265,7 +265,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                   focusNode: searchFocusNode,
                                   onChanged: (value) async {
                                     searchText = value;
-                                    print("searchText is $searchText");
+
                                     await SearchController()
                                         .updateSearchText(value);
                                     await SearchController()
@@ -284,8 +284,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                         ...SearchController()
                                             .usersByWholeNameCaps,
                                       ];
-                                      print(
-                                          "searchText is ${SearchController().users}");
+
                                       SearchController().users = [
                                         ...{...SearchController().users}
                                       ];
@@ -294,7 +293,6 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                         ...SearchController().events,
                                         ...SearchController().groups
                                       ];
-                                      print("searchResult is $searchResult");
                                     } else {
                                       searchResult = [];
                                     }

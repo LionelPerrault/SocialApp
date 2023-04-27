@@ -10,9 +10,8 @@ class Media {
     this.id = id ?? "";
     this.url = url;
     this.thumb = thumb ?? "";
-    this.icon =  icon ?? "";
+    this.icon = icon ?? "";
   }
-
 
   Media.fromJSON(Map<String, dynamic> jsonMap) {
     try {
@@ -22,12 +21,11 @@ class Media {
       thumb = jsonMap['thumb'];
       icon = jsonMap['icon'];
       size = jsonMap['formated_size'];
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   Map toMap() {
-    var map = new Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map["id"] = id;
     map["name"] = name;
     map["url"] = url;
@@ -39,14 +37,14 @@ class Media {
 
   @override
   bool operator ==(dynamic other) {
-    return other.url == this.url;
+    return other.url == url;
   }
 
   @override
-  int get hashCode => this.url.hashCode;
+  int get hashCode => url.hashCode;
 
   @override
   String toString() {
-    return this.toMap().toString();
+    return toMap().toString();
   }
 }

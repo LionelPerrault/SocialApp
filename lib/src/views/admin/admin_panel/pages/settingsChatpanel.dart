@@ -48,10 +48,10 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 30, right: 20),
+      padding: const EdgeInsets.only(left: 30, right: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         AdminSettingHeader(
-          icon: Icon(Icons.settings),
+          icon: const Icon(Icons.settings),
           pagename: 'Settings › Chat',
           button: const {'flag': false},
         ),
@@ -111,7 +111,7 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         titleAndsubtitleInput('Twilio API SECRET', 30, 1, () {}, ''),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        AdminSettingFooter()
+        const AdminSettingFooter()
       ]),
     );
   }
@@ -121,13 +121,13 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
             color: Color.fromRGBO(82, 95, 127, 1),
             fontSize: 13,
             fontWeight: FontWeight.w600),
       ),
-      Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      const Padding(padding: EdgeInsets.only(top: 2)),
+      SizedBox(
           height: 40,
           width: SizeConfig(context).screenWidth < 900
               ? SizeConfig(context).screenWidth - 60
@@ -139,11 +139,11 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
                     value: e['value'], child: Text(e['title'])))
                 .toList(),
             onChanged: (value) {},
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(top: 10, left: 10),
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
               ),
             ),
             icon: const Padding(
@@ -199,7 +199,7 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
                           items: dropDownItems
                               .map((e) => DropdownMenuItem(
                                   value: e['value'],
-                                  child: Container(
+                                  child: SizedBox(
                                       height: 70,
                                       child: ListTile(
                                         leading: Icon(e['icon']),
@@ -227,7 +227,7 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
                           isDense: true,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: 400,
                         child: Text(subTitle),
                       )
@@ -250,7 +250,7 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,7 +264,7 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
@@ -303,7 +303,7 @@ class AdminSettingsChatState extends mvc.StateMVC<AdminSettingsChat> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height + 34,
                   child: Column(children: [

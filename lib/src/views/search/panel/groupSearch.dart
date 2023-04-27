@@ -67,7 +67,7 @@ class GroupSearchState extends mvc.StateMVC<GroupSearch> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
-                child: Container(
+                child: SizedBox(
                   width: SizeConfig(context).screenWidth,
                   height: SizeConfig(context).screenHeight -
                       SizeConfig.navbarHeight -

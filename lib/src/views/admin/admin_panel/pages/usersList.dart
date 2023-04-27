@@ -83,7 +83,7 @@ class AdminUsersListState extends mvc.StateMVC<AdminUsersList> {
   }
 
   listCell(itemData) {
-    return Container(
+    return SizedBox(
       height: 40,
       child: Row(
         children: [

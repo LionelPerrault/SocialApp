@@ -739,7 +739,6 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   }
 
   Widget GroupInterestsWidget() {
-    print(con.group['groupInterests']);
     return Flexible(
         child: Container(
             padding: const EdgeInsets.only(right: 15),

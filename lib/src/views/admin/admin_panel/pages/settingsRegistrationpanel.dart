@@ -94,24 +94,22 @@ class AdminSettingsRegistrationState
   ];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.settings),
-            pagename: 'Settings › Registration',
-            button: const {'flag': false},
-            headerTab: headerTab,
-          ),
-          Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth > 700
-                  ? SizeConfig(context).screenWidth * 0.75
-                  : SizeConfig(context).screenWidth,
-              child:
-                  tabTitle == 'General' ? generalWidget() : socialLoginWidget())
-        ],
-      ),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.settings),
+          pagename: 'Settings › Registration',
+          button: const {'flag': false},
+          headerTab: headerTab,
+        ),
+        Container(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            width: SizeConfig(context).screenWidth > 700
+                ? SizeConfig(context).screenWidth * 0.75
+                : SizeConfig(context).screenWidth,
+            child:
+                tabTitle == 'General' ? generalWidget() : socialLoginWidget())
+      ],
     );
   }
 
@@ -218,7 +216,7 @@ class AdminSettingsRegistrationState
   }
 
   Widget generalWidget() {
-    return Container(
+    return SizedBox(
         width: SizeConfig(context).screenWidth > 700
             ? SizeConfig(context).screenWidth * 0.75
             : SizeConfig(context).screenWidth,
@@ -230,8 +228,7 @@ class AdminSettingsRegistrationState
               decoration: const BoxDecoration(
                   color: Color.fromRGBO(55, 213, 242, 1),
                   borderRadius: BorderRadius.all(Radius.circular(3))),
-              child: Container(
-                  child: Row(children: [
+              child: Row(children: [
                 const Icon(
                   Icons.info_rounded,
                   color: Colors.white,
@@ -244,7 +241,7 @@ class AdminSettingsRegistrationState
                       overflow: TextOverflow.clip,
                       style: TextStyle(color: Colors.white, fontSize: fontSize),
                     ))
-              ])),
+              ]),
             ),
             const Padding(padding: EdgeInsets.only(top: 30)),
             pictureAndSelect(
@@ -253,80 +250,78 @@ class AdminSettingsRegistrationState
                 title: 'Registration',
                 content: 'Allow users to create accounts'),
             const Padding(padding: EdgeInsets.only(top: 30)),
-            Container(
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: Text(
-                        'Registration Type',
-                        style: TextStyle(
-                            color: fontColor,
-                            fontSize: fontSize,
-                            fontWeight: FontWeight.bold),
-                      ),
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      'Registration Type',
+                      style: TextStyle(
+                          color: fontColor,
+                          fontSize: fontSize,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.scale(
-                                scale: 1,
-                                child: Checkbox(
-                                  fillColor: MaterialStateProperty.all<Color>(
-                                      Colors.blue),
-                                  checkColor: Colors.white,
-                                  activeColor:
-                                      const Color.fromRGBO(0, 123, 255, 1),
-                                  value: check1,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              5.0))), // Rounded Checkbox
-                                  onChanged: (value) {
-                                    setState(() {
-                                      check1 = check1 ? false : true;
-                                    });
-                                  },
-                                )),
-                            const Text('Free'),
-                            Transform.scale(
-                                scale: 1,
-                                child: Checkbox(
-                                  fillColor: MaterialStateProperty.all<Color>(
-                                      Colors.blue),
-                                  checkColor: Colors.white,
-                                  activeColor:
-                                      const Color.fromRGBO(0, 123, 255, 1),
-                                  value: check1,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              5.0))), // Rounded Checkbox
-                                  onChanged: (value) {
-                                    setState(() {
-                                      check1 = check1 ? false : true;
-                                    });
-                                  },
-                                )),
-                            const Text('Subscriptions Only'),
-                          ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Transform.scale(
+                              scale: 1,
+                              child: Checkbox(
+                                fillColor: MaterialStateProperty.all<Color>(
+                                    Colors.blue),
+                                checkColor: Colors.white,
+                                activeColor:
+                                    const Color.fromRGBO(0, 123, 255, 1),
+                                value: check1,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            5.0))), // Rounded Checkbox
+                                onChanged: (value) {
+                                  setState(() {
+                                    check1 = check1 ? false : true;
+                                  });
+                                },
+                              )),
+                          const Text('Free'),
+                          Transform.scale(
+                              scale: 1,
+                              child: Checkbox(
+                                fillColor: MaterialStateProperty.all<Color>(
+                                    Colors.blue),
+                                checkColor: Colors.white,
+                                activeColor:
+                                    const Color.fromRGBO(0, 123, 255, 1),
+                                value: check1,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            5.0))), // Rounded Checkbox
+                                onChanged: (value) {
+                                  setState(() {
+                                    check1 = check1 ? false : true;
+                                  });
+                                },
+                              )),
+                          const Text('Subscriptions Only'),
+                        ],
+                      ),
+                      SizedBox(
+                        width: SizeConfig(context).screenWidth * 0.45,
+                        child: const Text(
+                          'Allow users to create accounts Free or via Subscriptions onlyMake sure you have configured Pro System',
+                          style: TextStyle(fontSize: 13),
                         ),
-                        SizedBox(
-                          width: SizeConfig(context).screenWidth * 0.45,
-                          child: const Text(
-                            'Allow users to create accounts Free or via Subscriptions onlyMake sure you have configured Pro System',
-                            style: TextStyle(fontSize: 13),
-                          ),
-                        ),
-                      ],
-                    )
-                  ]),
-            ),
+                      ),
+                    ],
+                  )
+                ]),
             const Padding(padding: EdgeInsets.only(top: 30)),
             Container(
               color: const Color.fromRGBO(240, 240, 240, 1),
@@ -351,7 +346,7 @@ class AdminSettingsRegistrationState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: 150,
                   child: Text(
                     'Invitations/User',
@@ -397,7 +392,7 @@ class AdminSettingsRegistrationState
                             (e) => DropdownMenuItem(
                                 value: e['value'],
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 10),
                                   child: Text(
                                     e['title'],
                                     style: const TextStyle(
@@ -546,80 +541,78 @@ class AdminSettingsRegistrationState
                 content:
                     'Enable account activation to send activation code to user`s email/phone'),
             const Padding(padding: EdgeInsets.only(top: 30)),
-            Container(
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: Text(
-                        'Activation Type',
-                        style: TextStyle(
-                            color: fontColor,
-                            fontSize: fontSize,
-                            fontWeight: FontWeight.bold),
-                      ),
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      'Activation Type',
+                      style: TextStyle(
+                          color: fontColor,
+                          fontSize: fontSize,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.scale(
-                                scale: 1,
-                                child: Checkbox(
-                                  fillColor: MaterialStateProperty.all<Color>(
-                                      Colors.blue),
-                                  checkColor: Colors.white,
-                                  activeColor:
-                                      const Color.fromRGBO(0, 123, 255, 1),
-                                  value: check1,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              5.0))), // Rounded Checkbox
-                                  onChanged: (value) {
-                                    setState(() {
-                                      check1 = check1 ? false : true;
-                                    });
-                                  },
-                                )),
-                            const Text('Email'),
-                            Transform.scale(
-                                scale: 1,
-                                child: Checkbox(
-                                  fillColor: MaterialStateProperty.all<Color>(
-                                      Colors.blue),
-                                  checkColor: Colors.white,
-                                  activeColor:
-                                      const Color.fromRGBO(0, 123, 255, 1),
-                                  value: check1,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              5.0))), // Rounded Checkbox
-                                  onChanged: (value) {
-                                    setState(() {
-                                      check1 = check1 ? false : true;
-                                    });
-                                  },
-                                )),
-                            const Text('SMS'),
-                          ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Transform.scale(
+                              scale: 1,
+                              child: Checkbox(
+                                fillColor: MaterialStateProperty.all<Color>(
+                                    Colors.blue),
+                                checkColor: Colors.white,
+                                activeColor:
+                                    const Color.fromRGBO(0, 123, 255, 1),
+                                value: check1,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            5.0))), // Rounded Checkbox
+                                onChanged: (value) {
+                                  setState(() {
+                                    check1 = check1 ? false : true;
+                                  });
+                                },
+                              )),
+                          const Text('Email'),
+                          Transform.scale(
+                              scale: 1,
+                              child: Checkbox(
+                                fillColor: MaterialStateProperty.all<Color>(
+                                    Colors.blue),
+                                checkColor: Colors.white,
+                                activeColor:
+                                    const Color.fromRGBO(0, 123, 255, 1),
+                                value: check1,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            5.0))), // Rounded Checkbox
+                                onChanged: (value) {
+                                  setState(() {
+                                    check1 = check1 ? false : true;
+                                  });
+                                },
+                              )),
+                          const Text('SMS'),
+                        ],
+                      ),
+                      SizedBox(
+                        width: SizeConfig(context).screenWidth * 0.45,
+                        child: const Text(
+                          'Select Email or SMS activation to send activation code to user`s email/phone Make sure you have configured SMS Settings',
+                          style: TextStyle(fontSize: 13),
                         ),
-                        SizedBox(
-                          width: SizeConfig(context).screenWidth * 0.45,
-                          child: const Text(
-                            'Select Email or SMS activation to send activation code to user`s email/phone Make sure you have configured SMS Settings',
-                            style: TextStyle(fontSize: 13),
-                          ),
-                        ),
-                      ],
-                    )
-                  ]),
-            ),
+                      ),
+                    ],
+                  )
+                ]),
             const Padding(padding: EdgeInsets.only(top: 30)),
             Container(
               color: const Color.fromRGBO(240, 240, 240, 1),
@@ -690,7 +683,7 @@ class AdminSettingsRegistrationState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            child: Container(
+            child: SizedBox(
           width: 200,
           child: Text(
             title,
@@ -701,7 +694,7 @@ class AdminSettingsRegistrationState
           ),
         )),
         const Flexible(fit: FlexFit.tight, child: SizedBox()),
-        Container(
+        SizedBox(
           width: SizeConfig(context).screenWidth * 0.5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -718,7 +711,7 @@ class AdminSettingsRegistrationState
                           (e) => DropdownMenuItem(
                               value: e['value'],
                               child: Padding(
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: Text(
                                   e['title'],
                                   style: const TextStyle(
@@ -774,7 +767,7 @@ class AdminSettingsRegistrationState
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   child: Column(children: [
                     TextField(
@@ -802,7 +795,7 @@ class AdminSettingsRegistrationState
   }
 
   Widget pictureAndSelect({svgSource = '', title, content, icon}) {
-    return Container(
+    return SizedBox(
         width: SizeConfig(context).screenWidth > 700
             ? SizeConfig(context).screenWidth * 0.75
             : SizeConfig(context).screenWidth,
@@ -823,7 +816,7 @@ class AdminSettingsRegistrationState
             Flexible(
                 flex: 4,
                 child: Container(
-                  padding: EdgeInsets.only(left: 10, right: 30),
+                  padding: const EdgeInsets.only(left: 10, right: 30),
                   width: SizeConfig(context).screenWidth * 0.5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -895,7 +888,7 @@ class AdminSettingsRegistrationState
                           items: dropDownItems
                               .map((e) => DropdownMenuItem(
                                   value: e['value'],
-                                  child: Container(
+                                  child: SizedBox(
                                       height: 70,
                                       child: ListTile(
                                         leading: Icon(e['icon']),

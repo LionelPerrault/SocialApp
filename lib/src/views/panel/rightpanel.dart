@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../box/users_suggestion_box.dart';
-import '../box/pages_suggestion_box.dart';
 import '../box/groups_suggestion_box.dart';
 import '../box/events_suggestion_box.dart';
 

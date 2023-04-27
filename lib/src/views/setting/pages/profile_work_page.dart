@@ -50,7 +50,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
               },
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
+            SizedBox(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5 + 40
@@ -134,7 +134,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: Column(

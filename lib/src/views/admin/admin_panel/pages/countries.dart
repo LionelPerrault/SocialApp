@@ -137,7 +137,7 @@ class AdminCountriesState extends mvc.StateMVC<AdminCountries> {
                 addroute = 'addNew';
                 setState(() {});
               },
-              'size': Size(180, 50),
+              'size': const Size(180, 50),
             },
           ),
           Container(
@@ -183,7 +183,7 @@ class AdminCountriesState extends mvc.StateMVC<AdminCountries> {
                 addroute = 'main';
                 setState(() {});
               },
-              'size': Size(120, 50),
+              'size': const Size(120, 50),
             },
           ),
           textAndSelect('Default', 'Make it the default country of the site'),
@@ -224,7 +224,7 @@ class AdminCountriesState extends mvc.StateMVC<AdminCountries> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: 400,
                   height: height,
                   child: TextField(
@@ -240,7 +240,7 @@ class AdminCountriesState extends mvc.StateMVC<AdminCountries> {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 400,
                   child: Text(
                     subtitle,
@@ -265,7 +265,7 @@ class AdminCountriesState extends mvc.StateMVC<AdminCountries> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
-              child: Container(
+              child: SizedBox(
             width: SizeConfig(context).screenWidth * 0.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,7 +279,7 @@ class AdminCountriesState extends mvc.StateMVC<AdminCountries> {
                 ),
                 Text(content,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(fontSize: 13)),
+                    style: const TextStyle(fontSize: 13)),
               ],
             ),
           )),

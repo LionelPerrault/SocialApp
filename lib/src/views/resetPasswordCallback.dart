@@ -1,12 +1,7 @@
-import 'dart:convert';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -14,8 +9,6 @@ import 'package:shnatter/src/widget/mprimary_button.dart';
 import '../helpers/helper.dart';
 // ignore: depend_on_referenced_packages
 import 'package:html/parser.dart' as html_parser;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:html/dom.dart' as dom;
 
 // ignore: must_be_immutable
 class ResetPasswordCallbackScreen extends StatefulWidget {
@@ -90,7 +83,7 @@ class ResetPasswordCallbackScreenState
                                   obscureText: newPasswordObscure,
                                   controller: passwordController,
                                   decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
+                                    border: const OutlineInputBorder(),
                                     labelText: "Password",
                                     suffixIcon: InkWell(
                                       onTap: () {
@@ -115,7 +108,7 @@ class ResetPasswordCallbackScreenState
                                   obscureText: newPasswordConfirmObscure,
                                   controller: confirmPasswordController,
                                   decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
+                                    border: const OutlineInputBorder(),
                                     labelText: "Confirm Password",
                                     suffixIcon: InkWell(
                                       onTap: () {

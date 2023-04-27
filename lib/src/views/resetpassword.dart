@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/whiteFooter.dart';
-import 'package:shnatter/src/widget/mprimary_button.dart';
 
 import '../controllers/UserController.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../helpers/helper.dart';
 import '../routes/route_names.dart';
@@ -157,7 +155,7 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                                   width: 260,
                                   height: 50,
                                   alignment: Alignment.center,
-                                  child: Container(
+                                  child: SizedBox(
                                     width: 400,
                                     height: 40,
                                     child: TextField(

@@ -1,16 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/widget/requestFriendCell.dart';
-
-import '../../controllers/UserController.dart';
 
 class ShnatterFriendRequest extends StatefulWidget {
   ShnatterFriendRequest(
@@ -43,14 +36,14 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
       borderRadius: BorderRadius.circular(3),
       child: Container(
           width: 400,
-          color: Color.fromARGB(255, 255, 255, 255),
+          color: const Color.fromARGB(255, 255, 255, 255),
           child: Column(
             children: [
               const SizedBox(
                 height: 10,
               ),
               Padding(
-                  padding: EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     // ignore: prefer_const_literals_to_create_immutables
@@ -62,7 +55,7 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                       ),
                     ],
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               const Divider(
@@ -74,7 +67,7 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                   //size: Size(100,100),
                   child: con.requestFriends.isEmpty
                       ? Container(
-                          padding: EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 15),
                           alignment: Alignment.topCenter,
                           child: const Text('No new requests'),
                         )
@@ -85,7 +78,7 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                               onClick: widget.onClick,
                               routerChange: widget.routerChange);
                         }).toList())),
-              Divider(height: 1, indent: 0),
+              const Divider(height: 1, indent: 0),
               Container(
                   color: Colors.grey[300],
                   alignment: Alignment.center,
@@ -93,8 +86,8 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
-                          child:
-                              Text('See All', style: TextStyle(fontSize: 11)),
+                          child: const Text('See All',
+                              style: TextStyle(fontSize: 11)),
                           onPressed: () {}),
                     ],
                   ))

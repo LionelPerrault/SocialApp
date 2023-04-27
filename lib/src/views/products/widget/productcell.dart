@@ -263,7 +263,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     return product['productTimeline'] == false
         ? DottedBorder(
             borderType: BorderType.RRect,
-            radius: Radius.circular(20),
+            radius: const Radius.circular(20),
             dashPattern: [10, 10],
             color: Colors.grey,
             strokeWidth: 2,
@@ -285,7 +285,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             border: widget.isShared
                 ? Border.all(color: Colors.blueAccent)
                 : Border.all(color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Column(
             children: [
@@ -295,7 +295,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       productAdmin == null
-                          ? SizedBox(
+                          ? const SizedBox(
                               child: Text('No Owenr'),
                             )
                           : Row(
@@ -336,7 +336,6 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                     recognizer:
                                                         TapGestureRecognizer()
                                                           ..onTap = () {
-                                                            print('username');
                                                             ProfileController()
                                                                 .updateProfile(
                                                                     productAdmin[
@@ -364,14 +363,15 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           child: Text(
                                             ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontSize: 14),
+                                            style:
+                                                const TextStyle(fontSize: 14),
                                           ),
                                         ),
                                         Visibility(
                                           visible: !widget.isShared,
                                           child: Container(
-                                            padding:
-                                                EdgeInsets.only(right: 9.0),
+                                            padding: const EdgeInsets.only(
+                                                right: 9.0),
                                             child: PopupMenuButton(
                                               onSelected: (value) {
                                                 popUpFunction(value);

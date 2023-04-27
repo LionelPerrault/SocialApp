@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/controllers/AdminController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:url_launcher/url_launcher.dart';
@@ -197,14 +194,12 @@ class AdminShnatterTokenState extends mvc.StateMVC<AdminShnatterToken> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Container(
-                                            child: Text(
-                                              (data['from'] != con.backupPaymail
-                                                  ? data['sender']
-                                                  : data['recipient']),
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            ),
+                                          Text(
+                                            (data['from'] != con.backupPaymail
+                                                ? data['sender']
+                                                : data['recipient']),
+                                            style: const TextStyle(
+                                                color: Colors.black),
                                           ),
                                           Text(
                                             data['from'] != con.backupPaymail

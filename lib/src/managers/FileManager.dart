@@ -6,14 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import '../../firebase_options.dart';
-import '../helpers/helper.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/userModel.dart';
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File, Platform;
 

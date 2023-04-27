@@ -10,7 +10,6 @@ import 'package:shnatter/src/views/events/panel/myevents.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
-import 'dart:io' show Platform;
 
 import '../../widget/createEventWidget.dart';
 

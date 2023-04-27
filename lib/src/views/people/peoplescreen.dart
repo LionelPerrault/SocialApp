@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:provider/provider.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/models/sendBadgeModel.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/people/tabs/discoverScreen.dart';
 import 'package:shnatter/src/views/people/tabs/friendRequestsScreen.dart';

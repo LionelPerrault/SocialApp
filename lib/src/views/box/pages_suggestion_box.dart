@@ -1,19 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-
-import '../../controllers/UserController.dart';
 
 class ShnatterPageSuggest extends StatefulWidget {
   ShnatterPageSuggest({Key? key, required this.routerChange}) : super(key: key);
@@ -108,7 +101,7 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                           contentPadding:
                               const EdgeInsets.only(left: 10, right: 10),
                           leading: Padding(
-                              padding: EdgeInsets.only(top: 5),
+                              padding: const EdgeInsets.only(top: 5),
                               child: CircleAvatar(
                                   radius: 17,
                                   backgroundImage: NetworkImage(
@@ -119,17 +112,17 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                                           : con.unlikedPages[index]['data']
                                               ['pagePicture']))),
                           title: Padding(
-                              padding: EdgeInsets.only(bottom: 5),
+                              padding: const EdgeInsets.only(bottom: 5),
                               child: Text(
                                 con.unlikedPages[index]['data']['pageName'],
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 11),
                               )),
                           subtitle: Padding(
-                              padding: EdgeInsets.only(bottom: 5),
+                              padding: const EdgeInsets.only(bottom: 5),
                               child: Text(
                                 '${con.unlikedPages[index]['data']['pageLiked'].length} Likes',
-                                style: TextStyle(fontSize: 10),
+                                style: const TextStyle(fontSize: 10),
                               )),
                           trailing: ElevatedButton(
                               onPressed: () async {

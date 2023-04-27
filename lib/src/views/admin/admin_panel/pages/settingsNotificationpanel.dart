@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
@@ -55,27 +53,25 @@ class AdminSettingsNotificationState
   late var headerTab;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.settings),
-            pagename: 'Settings › Notifications',
-            button: const {'flag': false},
-            headerTab: headerTab,
-          ),
-          Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth > 700
-                  ? SizeConfig(context).screenWidth * 0.75
-                  : SizeConfig(context).screenWidth,
-              child: tabTitle == 'Website Notifications'
-                  ? websiteNotificationWidget()
-                  : tabTitle == 'Email Notifications'
-                      ? emailNotificationWidget()
-                      : pushNotificationWidget())
-        ],
-      ),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.settings),
+          pagename: 'Settings › Notifications',
+          button: const {'flag': false},
+          headerTab: headerTab,
+        ),
+        Container(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            width: SizeConfig(context).screenWidth > 700
+                ? SizeConfig(context).screenWidth * 0.75
+                : SizeConfig(context).screenWidth,
+            child: tabTitle == 'Website Notifications'
+                ? websiteNotificationWidget()
+                : tabTitle == 'Email Notifications'
+                    ? emailNotificationWidget()
+                    : pushNotificationWidget())
+      ],
     );
   }
 
@@ -110,39 +106,37 @@ class AdminSettingsNotificationState
   }
 
   Widget websiteNotificationWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fprofile_visit.svg?alt=media&token=e9db87b2-5cb7-4dc4-b2d2-13541af59083',
-            'Profile Visit Notification',
-            'Turn the profile visit notification On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fbrowser_notification.svg?alt=media&token=16940a1f-c7d6-488d-a55d-6d7c84de0db5',
-            'Browser Notifications',
-            'Turn the browser notifications On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fnoty_notification.svg?alt=media&token=ae717745-b1c5-45ff-95b7-2a780c3e0b81',
-            'Noty Notifications',
-            'Turn the noty notifications On and Off (preview)'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        footer()
-      ]),
-    );
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fprofile_visit.svg?alt=media&token=e9db87b2-5cb7-4dc4-b2d2-13541af59083',
+          'Profile Visit Notification',
+          'Turn the profile visit notification On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fbrowser_notification.svg?alt=media&token=16940a1f-c7d6-488d-a55d-6d7c84de0db5',
+          'Browser Notifications',
+          'Turn the browser notifications On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fnoty_notification.svg?alt=media&token=ae717745-b1c5-45ff-95b7-2a780c3e0b81',
+          'Noty Notifications',
+          'Turn the noty notifications On and Off (preview)'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      footer()
+    ]);
   }
 
   Widget selectAndText(content) {
@@ -165,11 +159,11 @@ class AdminSettingsNotificationState
                 });
               },
             )),
-        Container(
+        SizedBox(
           width: SizeConfig(context).screenWidth * 0.25,
           child: Text(
             content,
-            style: TextStyle(fontSize: 13),
+            style: const TextStyle(fontSize: 13),
           ),
         )
       ],
@@ -177,55 +171,52 @@ class AdminSettingsNotificationState
   }
 
   Widget emailNotificationWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Femail_notification.svg?alt=media&token=feb354c9-e070-4f8d-9fc3-4d8861b38235',
-            'Email Notifications',
-            'Enable/Disable email notifications system'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              width: 100,
-              child: Text(
-                'Email User When',
-                style: TextStyle(color: fontColor, fontSize: 13),
-              ),
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Femail_notification.svg?alt=media&token=feb354c9-e070-4f8d-9fc3-4d8861b38235',
+          'Email Notifications',
+          'Enable/Disable email notifications system'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 10),
+            width: 100,
+            child: Text(
+              'Email User When',
+              style: TextStyle(color: fontColor, fontSize: 13),
             ),
-            const Padding(padding: EdgeInsets.only(left: 30)),
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  selectAndText('Someone liked his post'),
-                  selectAndText('Someone commented on his post'),
-                  selectAndText('Someone shared his post'),
-                  selectAndText('Someone posted on his timeline'),
-                  selectAndText('Someone mentioned him'),
-                  selectAndText('Someone visited his profile'),
-                  selectAndText(
-                      'Someone sent him or accepted his friend requset')
-                ])
-          ],
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        footer()
-      ]),
-    );
+          ),
+          const Padding(padding: EdgeInsets.only(left: 30)),
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                selectAndText('Someone liked his post'),
+                selectAndText('Someone commented on his post'),
+                selectAndText('Someone shared his post'),
+                selectAndText('Someone posted on his timeline'),
+                selectAndText('Someone mentioned him'),
+                selectAndText('Someone visited his profile'),
+                selectAndText('Someone sent him or accepted his friend requset')
+              ])
+        ],
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      footer()
+    ]);
   }
 
   Widget footer() {
@@ -262,7 +253,7 @@ class AdminSettingsNotificationState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            child: Container(
+            child: SizedBox(
           width: 200,
           child: Text(
             title,
@@ -273,7 +264,7 @@ class AdminSettingsNotificationState
           ),
         )),
         const Flexible(fit: FlexFit.tight, child: SizedBox()),
-        Container(
+        SizedBox(
           width: SizeConfig(context).screenWidth * 0.5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,7 +281,7 @@ class AdminSettingsNotificationState
                           (e) => DropdownMenuItem(
                               value: e['value'],
                               child: Padding(
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: Text(
                                   e['title'],
                                   style: const TextStyle(
@@ -346,7 +337,7 @@ class AdminSettingsNotificationState
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   child: Column(children: [
                     TextField(
@@ -387,7 +378,7 @@ class AdminSettingsNotificationState
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -401,7 +392,7 @@ class AdminSettingsNotificationState
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
@@ -429,7 +420,7 @@ class AdminSettingsNotificationState
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-              child: Container(
+              child: SizedBox(
             width: 200,
             child: Text(
               title,
@@ -439,7 +430,7 @@ class AdminSettingsNotificationState
                   fontWeight: FontWeight.bold),
             ),
           )),
-          Flexible(fit: FlexFit.tight, child: SizedBox()),
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
           Container(
             width: SizeConfig(context).screenWidth * 0.5,
             decoration: BoxDecoration(
@@ -451,7 +442,7 @@ class AdminSettingsNotificationState
               items: dropDownItems
                   .map((e) => DropdownMenuItem(
                       value: e['value'],
-                      child: Container(
+                      child: SizedBox(
                           height: 70,
                           child: ListTile(
                             leading: Icon(e['icon']),

@@ -39,7 +39,6 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
     con.getEvent('invited', UserManager.userInfo['uid']).then((value) => {
           returnValue = value,
           invitedEvents = value,
-          print(invitedEvents),
         });
   }
 
@@ -56,9 +55,7 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
                 routerChange: widget.routerChange,
                 eventData: event,
                 buttonFun: () {
-                  // con.interestedEvent(event['id']).then((value) {
                   getEventNow();
-                  // });
                 },
               ),
             )

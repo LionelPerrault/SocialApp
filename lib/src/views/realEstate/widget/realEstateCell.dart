@@ -268,7 +268,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
     return realEstate['realEstateTimeline'] == false
         ? DottedBorder(
             borderType: BorderType.RRect,
-            radius: Radius.circular(20),
+            radius: const Radius.circular(20),
             dashPattern: [10, 10],
             color: Colors.grey,
             strokeWidth: 2,
@@ -278,11 +278,6 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
   }
 
   Widget realEstateWidget() {
-    print("estateadmin =======$realEstateAdmin");
-    print("widget.data====== ${widget.data}");
-    print(
-        "widget.data['data']['realestateadmin'['uid'] ====== ${widget.data["data"]["realEstateAdmin"]["uid"]}");
-    print("estate ======$realEstate");
     return Row(
       children: [
         Expanded(
@@ -295,7 +290,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
             border: widget.isShared
                 ? Border.all(color: Colors.blueAccent)
                 : Border.all(color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Column(
             children: [
@@ -305,7 +300,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       realEstateAdmin == null
-                          ? SizedBox(
+                          ? const SizedBox(
                               child: Text('No Owenr'),
                             )
                           : Row(
@@ -374,14 +369,15 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                           child: Text(
                                             ' added new real estate for ${realEstate["realEstateOffer"]}',
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontSize: 14),
+                                            style:
+                                                const TextStyle(fontSize: 14),
                                           ),
                                         ),
                                         Visibility(
                                           visible: !widget.isShared,
                                           child: Container(
-                                            padding:
-                                                EdgeInsets.only(right: 9.0),
+                                            padding: const EdgeInsets.only(
+                                                right: 9.0),
                                             child: PopupMenuButton(
                                               onSelected: (value) {
                                                 popUpFunction(value);

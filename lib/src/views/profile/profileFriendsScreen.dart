@@ -45,7 +45,6 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     //add(widget.con);
     //con = controller as PeopleController;
 
-    print("profilecon viewusername is ${profileCon.viewProfileUserName}");
     friendModel.getFriends(profileCon.viewProfileUserName).then((value) {
       setState(() {});
     });

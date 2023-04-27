@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/daytimeM.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/mindslice.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingLocationScreen extends StatefulWidget {
@@ -57,7 +49,7 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
               },
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
+            SizedBox(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5 + 40
@@ -128,7 +120,7 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: Column(

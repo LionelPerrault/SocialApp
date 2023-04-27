@@ -17,22 +17,22 @@ class WhiteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 3,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
         minimumSize: miniumSize,
       ),
       onPressed: () {
-        this.onPressed();
+        onPressed();
       },
       child: isShowProgressive
-          ? SizedBox(
-              child: const CircularProgressIndicator(
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
+          ? const SizedBox(
               width: 15,
               height: 15.0,
+              child: CircularProgressIndicator(
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
             )
           : Text(buttonName,
               style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0))),

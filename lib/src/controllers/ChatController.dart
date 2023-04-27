@@ -143,27 +143,27 @@ class ChatController extends ControllerMVC {
   uploadFile(XFile? pickedFile, newOrNot, messageType) async {
     final _firebaseStorage = FirebaseStorage.instance;
     UploadTask uploadTask;
-    Reference _reference;
+    Reference reference;
     try {
       if (kIsWeb) {
         Uint8List bytes = await pickedFile!.readAsBytes();
-        _reference = _firebaseStorage
+        reference = _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = await _firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         progress = 0;
         sendMessage(newOrNot, messageType, downloadUrl);
         //await _reference.getDownloadURL().then((value) {

@@ -1,19 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/HomeController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/colors.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/widget/interests.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 class YesNoWidget extends StatefulWidget {
   late PostController Postcon;

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 MaterialColor kprimaryColor = createMaterialColor(Colors.black);
-MaterialColor kprimarySwatch =  createMaterialColor(Colors.black);
+MaterialColor kprimarySwatch = createMaterialColor(Colors.black);
 
-MaterialColor kprimaryShadow = createMaterialColor(Color.fromARGB(90, 23, 130, 177));
+MaterialColor kprimaryShadow =
+    createMaterialColor(const Color.fromARGB(90, 23, 130, 177));
 
-Color ktextColor = Color(0xFF2D2D3A);
-Color ksubTextColor = Color(0xFFADADB8);
+Color ktextColor = const Color(0xFF2D2D3A);
+Color ksubTextColor = const Color(0xFFADADB8);
 
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];
@@ -24,6 +25,7 @@ MaterialColor createMaterialColor(Color color) {
       b + ((ds < 0 ? b : (255 - b)) * ds).round(),
       1,
     );
-  };
+  }
+  ;
   return MaterialColor(color.value, swatch);
 }

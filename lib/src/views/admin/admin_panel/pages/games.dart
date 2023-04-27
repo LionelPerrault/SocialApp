@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
@@ -105,7 +104,7 @@ class AdminGamesState extends mvc.StateMVC<AdminGames> {
                 addroute = 'addNew';
                 setState(() {});
               },
-              'size': Size(180, 50),
+              'size': const Size(180, 50),
             },
           ),
           Container(
@@ -125,9 +124,7 @@ class AdminGamesState extends mvc.StateMVC<AdminGames> {
                 stateManager = event.stateManager;
                 stateManager.setShowColumnFilter(true);
               },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
-              },
+              onChanged: (PlutoGridOnChangedEvent event) {},
             ),
           ),
         ],
@@ -151,7 +148,7 @@ class AdminGamesState extends mvc.StateMVC<AdminGames> {
                 addroute = 'main';
                 setState(() {});
               },
-              'size': Size(120, 50),
+              'size': const Size(120, 50),
             },
           ),
           titleAndsubtitleInput('Game Name', 40, 1, ''),

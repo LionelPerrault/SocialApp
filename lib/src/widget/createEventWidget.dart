@@ -137,7 +137,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: SizeConfig(context).screenHeight - 200,
           child: SingleChildScrollView(
             child: Column(
@@ -383,7 +383,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                   ],
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                Container(
+                SizedBox(
                   width: 400,
                   child: InterestsWidget(
                     context: context,
@@ -466,7 +466,7 @@ Widget customInput({title, onChange, controller}) {
             fontWeight: FontWeight.w600),
       ),
       const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
         height: 40,
         child: TextField(
           controller: controller,
@@ -496,7 +496,7 @@ Widget customDateInput({title, onChange, controller, onTap}) {
             fontWeight: FontWeight.w600),
       ),
       const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
         height: 40,
         child: TextField(
           controller: controller,
@@ -535,7 +535,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
           children: [
             Expanded(
               flex: 2,
-              child: Container(
+              child: SizedBox(
                 width: 400,
                 height: double.parse(height.toString()),
                 child: TextField(

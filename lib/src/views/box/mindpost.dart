@@ -492,7 +492,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               ],
             ),
           ),
-          Divider(color: Color.fromARGB(99, 83, 79, 79), thickness: 0.3),
+          const Divider(color: Color.fromARGB(99, 83, 79, 79), thickness: 0.3),
           Offstage(
             offstage: !emojiShowing,
             child: SizedBox(
@@ -542,7 +542,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AnimatedContainer(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   child: Column(
                     children: [
                       SingleChildScrollView(
@@ -607,41 +607,39 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                           )
                                         : postLoading || postAudio == ''
                                             ? const SizedBox()
-                                            : Container(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  // crossAxisAlignment:
-                                                  //     CrossAxisAlignment.start,
-                                                  children: [
-                                                    SvgPicture.network(
-                                                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
-                                                      width: 20,
-                                                    ),
-                                                    const Text(
-                                                      'Audio uploaded successfully',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    IconButton(
-                                                      icon: const Icon(
-                                                          Icons.close,
-                                                          color: Colors.black,
-                                                          size: 13.0),
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20),
-                                                      tooltip: 'Delete',
-                                                      onPressed: () {
-                                                        postAudio = '';
-                                                        postLoading = false;
-                                                        nowPost = '';
-                                                        setState(() {});
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
+                                            : Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                // crossAxisAlignment:
+                                                //     CrossAxisAlignment.start,
+                                                children: [
+                                                  SvgPicture.network(
+                                                    'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
+                                                    width: 20,
+                                                  ),
+                                                  const Text(
+                                                    'Audio uploaded successfully',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.black,
+                                                        size: 13.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20),
+                                                    tooltip: 'Delete',
+                                                    onPressed: () {
+                                                      postAudio = '';
+                                                      postLoading = false;
+                                                      nowPost = '';
+                                                      setState(() {});
+                                                    },
+                                                  ),
+                                                ],
                                               )
                                   ],
                                 ),
@@ -892,7 +890,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                   child: IconButton(
                     icon: const Icon(Icons.close,
                         color: Colors.black, size: 13.0),
-                    padding: EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20),
                     tooltip: 'Delete',
                     onPressed: () {
                       postPhoto.removeWhere((item) => item['id'] == id);
@@ -925,192 +923,188 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   Widget feelingActivityWidget() {
-    return Container(
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(right: 20),
-              child: PopupMenuButton(
-                onSelected: (value) {
-                  activity = value['label'].toString();
-                  subActivity = '';
-                  subActivityLabel = value['subLabel'].toString();
-                  setState(() {});
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 238, 238, 238),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(padding: EdgeInsets.only(left: 15)),
-                      Expanded(
-                        child: Text(
-                          activity == '' ? 'What are you doing?' : activity,
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 14,
-                            color: Color.fromARGB(255, 111, 111, 111),
-                            fontWeight: FontWeight.bold,
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.only(right: 20),
+            child: PopupMenuButton(
+              onSelected: (value) {
+                activity = value['label'].toString();
+                subActivity = '';
+                subActivityLabel = value['subLabel'].toString();
+                setState(() {});
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 238, 238, 238),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(padding: EdgeInsets.only(left: 15)),
+                    Expanded(
+                      child: Text(
+                        activity == '' ? 'What are you doing?' : activity,
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 111, 111, 111),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              itemBuilder: (BuildContext bc) {
+                return activityCase
+                    .map(
+                      (e) => PopupMenuItem(
+                        value: {
+                          'label': e['label'],
+                          'svg': e['svg'],
+                          'subLabel': e['subLabel'],
+                        },
+                        child: Row(
+                          children: [
+                            const Padding(padding: EdgeInsets.only(left: 12.0)),
+                            SvgPicture.network(
+                              e['svg'],
+                              width: 30,
+                            ),
+                            const Padding(padding: EdgeInsets.only(left: 12.0)),
+                            Text(
+                              e['label'],
+                              style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Color.fromARGB(255, 90, 90, 90),
+                                  fontFamily: 'var(--body-font-family)',
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 14),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList();
+              },
+            ),
+          ),
+        ),
+        activity == ''
+            ? const SizedBox()
+            : Expanded(
+                flex: (subActivity != '' && activity == 'Feeling') ? 1 : 2,
+                child: activity == 'Feeling'
+                    ? Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.only(right: 20),
+                        child: PopupMenuButton(
+                          onSelected: (value) {
+                            subActivity = value.toString();
+                            setState(() {});
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 92, 114, 228),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 0)),
+                                Text(
+                                  subActivity == ''
+                                      ? 'How are you feeling?'
+                                      : subActivity,
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          itemBuilder: (BuildContext bc) {
+                            return feelingAction
+                                .map(
+                                  (e) => PopupMenuItem(
+                                    value: e['label'],
+                                    child: Row(
+                                      children: [
+                                        const Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 12.0)),
+                                        SvgPicture.network(
+                                          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda',
+                                          width: 30,
+                                        ),
+                                        const Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 12.0)),
+                                        Text(
+                                          e['label'],
+                                          style: const TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              color: Color.fromARGB(
+                                                  255, 90, 90, 90),
+                                              fontFamily:
+                                                  'var(--body-font-family)',
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 14),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList();
+                          },
+                        ),
+                      )
+                    : Container(
+                        height: 40,
+                        child: TextField(
+                          onChanged: (value) {
+                            subActivity = value;
+                            setState(() {});
+                          },
+                          decoration: InputDecoration(
+                            hintText: subActivityLabel,
+                            hintStyle: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14),
+                            contentPadding:
+                                const EdgeInsets.only(top: 10, left: 10),
+                            border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                            ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                itemBuilder: (BuildContext bc) {
-                  return activityCase
-                      .map(
-                        (e) => PopupMenuItem(
-                          value: {
-                            'label': e['label'],
-                            'svg': e['svg'],
-                            'subLabel': e['subLabel'],
-                          },
-                          child: Row(
-                            children: [
-                              const Padding(
-                                  padding: EdgeInsets.only(left: 12.0)),
-                              SvgPicture.network(
-                                e['svg'],
-                                width: 30,
-                              ),
-                              const Padding(
-                                  padding: EdgeInsets.only(left: 12.0)),
-                              Text(
-                                e['label'],
-                                style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    color: Color.fromARGB(255, 90, 90, 90),
-                                    fontFamily: 'var(--body-font-family)',
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 14),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                      .toList();
-                },
               ),
-            ),
-          ),
-          activity == ''
-              ? const SizedBox()
-              : Expanded(
-                  flex: (subActivity != '' && activity == 'Feeling') ? 1 : 2,
-                  child: activity == 'Feeling'
-                      ? Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.only(right: 20),
-                          child: PopupMenuButton(
-                            onSelected: (value) {
-                              subActivity = value.toString();
-                              setState(() {});
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 92, 114, 228),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 0)),
-                                  Text(
-                                    subActivity == ''
-                                        ? 'How are you feeling?'
-                                        : subActivity,
-                                    style: const TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            itemBuilder: (BuildContext bc) {
-                              return feelingAction
-                                  .map(
-                                    (e) => PopupMenuItem(
-                                      value: e['label'],
-                                      child: Row(
-                                        children: [
-                                          const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 12.0)),
-                                          SvgPicture.network(
-                                            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda',
-                                            width: 30,
-                                          ),
-                                          const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 12.0)),
-                                          Text(
-                                            e['label'],
-                                            style: const TextStyle(
-                                                overflow: TextOverflow.ellipsis,
-                                                color: Color.fromARGB(
-                                                    255, 90, 90, 90),
-                                                fontFamily:
-                                                    'var(--body-font-family)',
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 14),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                  .toList();
-                            },
-                          ),
-                        )
-                      : Container(
-                          height: 40,
-                          child: TextField(
-                            onChanged: (value) {
-                              subActivity = value;
-                              setState(() {});
-                            },
-                            decoration: InputDecoration(
-                              hintText: subActivityLabel,
-                              hintStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14),
-                              contentPadding:
-                                  const EdgeInsets.only(top: 10, left: 10),
-                              border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0)),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0)),
-                              ),
-                            ),
-                          ),
-                        ),
-                ),
-          (subActivity != '' && activity == 'Feeling')
-              ? const Expanded(flex: 1, child: SizedBox())
-              : const SizedBox()
-        ],
-      ),
+        (subActivity != '' && activity == 'Feeling')
+            ? const Expanded(flex: 1, child: SizedBox())
+            : const SizedBox()
+      ],
     );
   }
 
@@ -1128,47 +1122,45 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   Widget createPollWidget() {
     return Column(
       children: [
-        Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 30,
-                height: 30,
-                child: UserManager.userInfo['avatar'] != ''
-                    ? CircleAvatar(
-                        backgroundImage: NetworkImage(
-                        UserManager.userInfo['avatar'],
-                      ))
-                    : CircleAvatar(
-                        child: SvgPicture.network(Helper.avatar),
-                      ),
-              ),
-              Expanded(
-                  child: Container(
-                padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
-                child: TextField(
-                  onChanged: (value) {
-                    pollQuestion = value;
-                    setState(() {});
-                  },
-                  style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
-                  decoration: const InputDecoration(
-                    hoverColor: Color.fromARGB(255, 250, 250, 250),
-                    filled: true,
-                    fillColor: Color.fromARGB(255, 250, 250, 250),
-                    hintText: 'Ask something...',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(fontSize: 17.0, color: Colors.grey),
-                  ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 30,
+              height: 30,
+              child: UserManager.userInfo['avatar'] != ''
+                  ? CircleAvatar(
+                      backgroundImage: NetworkImage(
+                      UserManager.userInfo['avatar'],
+                    ))
+                  : CircleAvatar(
+                      child: SvgPicture.network(Helper.avatar),
+                    ),
+            ),
+            Expanded(
+                child: Container(
+              padding: const EdgeInsets.only(top: 10, bottom: 10, right: 4),
+              child: TextField(
+                onChanged: (value) {
+                  pollQuestion = value;
+                  setState(() {});
+                },
+                style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),
+                decoration: const InputDecoration(
+                  hoverColor: Color.fromARGB(255, 250, 250, 250),
+                  filled: true,
+                  fillColor: Color.fromARGB(255, 250, 250, 250),
+                  hintText: 'Ask something...',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(fontSize: 17.0, color: Colors.grey),
                 ),
-              )),
-              Container(
-                padding: const EdgeInsets.only(top: 40),
-                child: const Icon(Icons.emoji_emotions_outlined),
-              )
-            ],
-          ),
+              ),
+            )),
+            Container(
+              padding: const EdgeInsets.only(top: 40),
+              child: const Icon(Icons.emoji_emotions_outlined),
+            )
+          ],
         ),
         for (int i = 0; i < pollOption.length; i++)
           postInput(
@@ -1277,10 +1269,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         foundation.Uint8List? uploadfile = result.files.single.bytes;
         if (uploadfile != null) {
           pickedFile = XFile.fromData(uploadfile);
-          print("uploadFile is not null. pickedFile is $pickedFile");
         } else {
           pickedFile = XFile('');
-          print("pickedFile is $pickedFile. bytes is ${result.files.single}");
         }
       } else {
         if (result.files.single.path != null) {
@@ -1288,8 +1278,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         } else {
           pickedFile = XFile('');
         }
-
-        print("pickedfile ${pickedFile.path}");
       }
     } else {
       pickedFile = XFile('');
@@ -1303,31 +1291,31 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       photoLength = postPhoto.length - 1;
       setState(() {});
     }
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (foundation.kIsWeb) {
         //print("read bytes");
         foundation.Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = await firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         if (type == 'photo') {
           for (var i = 0; i < postPhoto.length; i++) {
             if (postPhoto[i]['id'] == photoLength) {
@@ -1340,7 +1328,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           setState(() {});
         }
         postLoading = false;
-        print(postAudio);
       });
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
         switch (taskSnapshot.state) {
@@ -1349,7 +1336,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               uploadPhotoProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $uploadPhotoProgress% complete.");
             } else {
               uploadAudioProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
@@ -1359,16 +1345,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
             // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
             uploadAudioProgress = 0;
             uploadPhotoProgress = 0;
             setState(() {});

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
 

@@ -40,7 +40,7 @@ class PostEachScreenState extends mvc.StateMVC<PostEachScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: SizeConfig(context).screenWidth < 600
           ? SizeConfig(context).screenWidth
           : 600,

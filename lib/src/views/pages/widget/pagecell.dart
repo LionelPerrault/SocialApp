@@ -117,8 +117,8 @@ class PageCellState extends mvc.StateMVC<PageCell> {
             children: [
               Container(
                 width: 200,
-                margin: EdgeInsets.only(top: 60),
-                padding: EdgeInsets.only(top: 70),
+                margin: const EdgeInsets.only(top: 60),
+                padding: const EdgeInsets.only(top: 70),
                 decoration: BoxDecoration(
                   color: Colors.grey[350],
                   borderRadius: BorderRadius.circular(5),
@@ -206,7 +206,7 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                               : Helper.pageAvatar),
                       fit: BoxFit.cover,
                     ),
-                    color: Color.fromARGB(255, 150, 99, 99),
+                    color: const Color.fromARGB(255, 150, 99, 99),
                     borderRadius: BorderRadius.circular(60),
                     border: Border.all(color: Colors.grey)),
               ),

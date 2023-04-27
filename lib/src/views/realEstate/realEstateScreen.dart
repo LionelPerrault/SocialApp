@@ -165,14 +165,14 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(3),
+                              padding: const EdgeInsets.all(3),
                               backgroundColor:
                                   const Color.fromARGB(255, 45, 206, 137),
                               // elevation: 3,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0.0)),
-                              minimumSize: Size(120, 50),
-                              maximumSize: Size(120, 50),
+                              minimumSize: const Size(120, 50),
+                              maximumSize: const Size(120, 50),
                             ),
                             onPressed: () {
                               (showDialog(

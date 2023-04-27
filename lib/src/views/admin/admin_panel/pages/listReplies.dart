@@ -125,7 +125,7 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
                 addroute = 'addNew';
                 setState(() {});
               },
-              'size': Size(180, 50),
+              'size': const Size(180, 50),
             },
           ),
           Row(
@@ -135,13 +135,13 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
               titleAndsubtitleInput('hhh', 40, 1, 'Search by Reply Text'),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     elevation: 3,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(3.0)),
-                    maximumSize: Size(100, 50),
-                    minimumSize: Size(100, 50)),
+                    maximumSize: const Size(100, 50),
+                    minimumSize: const Size(100, 50)),
                 onPressed: () {
                   setState(() {});
                 },
@@ -149,11 +149,11 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.search,
                       color: Colors.black,
                     ),
-                    Text('Search',
+                    const Text('Search',
                         style: TextStyle(
                             fontSize: 11,
                             color: Colors.black,
@@ -206,39 +206,37 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
                 addroute = 'main';
                 setState(() {});
               },
-              'size': Size(120, 50),
+              'size': const Size(120, 50),
             },
           ),
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: SizeConfig(context).screenWidth > 800
-                      ? SizeConfig(context).screenWidth * 0.85
-                      : SizeConfig(context).screenWidth,
-                  height: SizeConfig(context).screenHeight -
-                      SizeConfig.navbarHeight,
-                  padding: const EdgeInsets.all(15),
-                  child: PlutoGrid(
-                    configuration: const PlutoGridConfiguration(
-                      columnSize: PlutoGridColumnSizeConfig(),
-                    ),
-                    columns: columns,
-                    rows: rows,
-                    columnGroups: columnGroups,
-                    onLoaded: (PlutoGridOnLoadedEvent event) {
-                      stateManager = event.stateManager;
-                      stateManager.setShowColumnFilter(true);
-                    },
-                    onChanged: (PlutoGridOnChangedEvent event) {
-                      print(event);
-                    },
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: SizeConfig(context).screenWidth > 800
+                    ? SizeConfig(context).screenWidth * 0.85
+                    : SizeConfig(context).screenWidth,
+                height:
+                    SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+                padding: const EdgeInsets.all(15),
+                child: PlutoGrid(
+                  configuration: const PlutoGridConfiguration(
+                    columnSize: PlutoGridColumnSizeConfig(),
                   ),
+                  columns: columns,
+                  rows: rows,
+                  columnGroups: columnGroups,
+                  onLoaded: (PlutoGridOnLoadedEvent event) {
+                    stateManager = event.stateManager;
+                    stateManager.setShowColumnFilter(true);
+                  },
+                  onChanged: (PlutoGridOnChangedEvent event) {
+                    print(event);
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           )
         ],
       ),

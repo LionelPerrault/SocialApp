@@ -46,7 +46,6 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
   }
 
   chatWithOtherUser(chatUserInfo) async {
-    print(chatUserInfo);
     if (chatUserInfo['paywall'][UserManager.userInfo['uid']] == null ||
         chatUserInfo['paywall'][UserManager.userInfo['uid']] == '0') {
       con.avatar = chatUserInfo['avatar'];
@@ -171,8 +170,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
 
   Widget userList() {
     return SingleChildScrollView(
-        child: Container(
-            child: Column(
+        child: Column(
       children: searchUser
           .map((e) => ListTile(
                 contentPadding: EdgeInsets.all(10),
@@ -194,6 +192,6 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
                 title: Text(e['userName']),
               ))
           .toList(),
-    )));
+    ));
   }
 }

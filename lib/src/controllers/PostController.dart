@@ -302,13 +302,12 @@ class PostController extends ControllerMVC {
   Future<bool> getSelectedEvent(String id) async {
     id = id.split('/')[id.split('/').length - 1];
     viewEventId = id;
-    print("viewEventId is $viewEventId");
+
     await Helper.eventsData.doc(id).get().then((value) async {
       event = value.data();
-      viewEventInterested =
-          await boolInterested(value, UserManager.userInfo['uid']);
-      viewEventGoing = await boolGoing(value, UserManager.userInfo['uid']);
-      viewEventInvited = await boolInvited(value, UserManager.userInfo['uid']);
+      viewEventInterested = boolInterested(value, UserManager.userInfo['uid']);
+      viewEventGoing = boolGoing(value, UserManager.userInfo['uid']);
+      viewEventInvited = boolInvited(value, UserManager.userInfo['uid']);
       for (var i = 0; i < event['eventAdmin'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventAdmin'][i]['uid']);
@@ -322,11 +321,10 @@ class PostController extends ControllerMVC {
       }
 
       for (var i = 0; i < event['eventInterested'].length; i++) {
-        print("eventInterested is ${event['eventInterested']}");
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInterested'][i]['uid']);
         if (addAdmin == null) continue;
-        print("addAdmin is $addAdmin");
+
         event['eventInterested'][i] = {
           ...event['eventInterested'][i],
           'userName': addAdmin['userName'],
@@ -359,7 +357,6 @@ class PostController extends ControllerMVC {
         };
       }
       setState(() {});
-      print('This event was posted by ${event['eventAdmin'][0]["fullName"]}');
     });
     return true;
   }
@@ -530,11 +527,10 @@ class PostController extends ControllerMVC {
 
   //user  join in event invited function
   Future<bool> invitedEvent(String eventId) async {
-    print('now you are invited or uninvited this event ${eventId}');
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var invited = doc['eventInvited'];
-    var respon = await boolInvited(doc, UserManager.userInfo['uid']);
+    var respon = boolInvited(doc, UserManager.userInfo['uid']);
     if (respon) {
       invited.removeWhere(
           (item) => item['userName'] == UserManager.userInfo['uid']);
@@ -660,7 +656,6 @@ class PostController extends ControllerMVC {
         }
         setState(() {});
       }
-      print('Now you get all pages');
     });
     return realAllpage;
   }
@@ -694,10 +689,9 @@ class PostController extends ControllerMVC {
         'avatar': pageUser['avatar'],
       };
     }
-    print(page);
-    print('wanna pageinfo');
+
     setState(() {});
-    print('This page was posted by ${page['pageAdmin'][0]}');
+
     return true;
   }
 
@@ -775,12 +769,11 @@ class PostController extends ControllerMVC {
 
   //user join in page liked function
   Future<bool> likedPage(String pageId) async {
-    print('now you are liked or unliked this page ${pageId}');
     var querySnapshot = await Helper.pagesData.doc(pageId).get();
     var doc = querySnapshot;
     var liked = doc['pageLiked'];
     var respon = await boolLiked(doc, UserManager.userInfo['uid']);
-    print('respon$respon');
+
     if (respon) {
       liked.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
@@ -1383,7 +1376,6 @@ class PostController extends ControllerMVC {
         }
         setState(() {});
       }
-      print('Now you get all real estates');
     });
   }
 
@@ -1419,13 +1411,11 @@ class PostController extends ControllerMVC {
         .getUserInfo(realEstate['realEstateAdmin']['uid']);
     realEstateAdmin = adminInfo;
     setState(() {});
-    print('This real estate was posted by ${realEstate['realEstateAdmin']}');
+
     return true;
   }
 
   Future<void> productMarkAsSold(String productUid, bool value) async {
-    print(productUid);
-    print(value);
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .doc(productUid)
@@ -1435,8 +1425,6 @@ class PostController extends ControllerMVC {
   }
 
   Future<void> productSavePost(String productUid, bool value) async {
-    print(productUid);
-    print(value);
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .doc(productUid)
@@ -1446,7 +1434,6 @@ class PostController extends ControllerMVC {
   }
 
   Future<void> productDelete(String productUid) async {
-    print(productUid);
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .doc(productUid)
@@ -1457,8 +1444,6 @@ class PostController extends ControllerMVC {
   }
 
   Future<void> realEstateMarkAsSold(String realEstateUid, bool value) async {
-    print(realEstateUid);
-    print(value);
     await FirebaseFirestore.instance
         .collection(Helper.realEstatesField)
         .doc(realEstateUid)
@@ -1468,8 +1453,6 @@ class PostController extends ControllerMVC {
   }
 
   Future<void> realEstateSavePost(String realEstateUid, bool value) async {
-    print(realEstateUid);
-    print(value);
     await FirebaseFirestore.instance
         .collection(Helper.realEstatesField)
         .doc(realEstateUid)
@@ -1479,7 +1462,6 @@ class PostController extends ControllerMVC {
   }
 
   Future<void> realEstateDelete(String realEstateUid) async {
-    print(realEstateUid);
     await FirebaseFirestore.instance
         .collection(Helper.realEstatesField)
         .doc(realEstateUid)
@@ -1490,7 +1472,6 @@ class PostController extends ControllerMVC {
   }
 
   Future<void> productHideFromTimeline(String productUid, bool value) async {
-    print(productUid);
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .doc(productUid)
@@ -1500,7 +1481,6 @@ class PostController extends ControllerMVC {
   }
 
   Future<void> productTurnOffCommenting(String productUid, bool value) async {
-    print(productUid);
     await FirebaseFirestore.instance
         .collection(Helper.productsField)
         .doc(productUid)
@@ -1526,7 +1506,6 @@ class PostController extends ControllerMVC {
 
   Future<void> realEstateTurnOffCommenting(
       String realEstateUid, bool value) async {
-    print(realEstateUid);
     await FirebaseFirestore.instance
         .collection(Helper.realEstatesField)
         .doc(realEstateUid)
@@ -1620,7 +1599,6 @@ class PostController extends ControllerMVC {
           .where('postAdmin', isEqualTo: UserManager.userInfo['uid'])
           .where('privacy', isEqualTo: 'Only Me');
       if (direction == 0) {
-        //  profileQuery = profileQuery.where('postTime', isLessThan: lastTime);
         profileQuery = profileQuery.startAfterDocument(lastData);
       }
       profileSnap = await profileQuery.limit(slide).get();
@@ -1639,7 +1617,6 @@ class PostController extends ControllerMVC {
         baseQuery = baseQuery.where('groupId', isEqualTo: uid);
       }
       if (direction == 0) {
-        //baseQuery = baseQuery.where('postTime', isLessThan: lastTime);
         baseQuery = baseQuery.startAfterDocument(lastData);
       }
       profileSnap = await baseQuery.limit(slide).get();
@@ -1785,8 +1762,6 @@ class PostController extends ControllerMVC {
         .get()
         .then((querySnapshot) {
       for (var doc in querySnapshot.docs) {
-        print("field value is ${doc['value']}");
-        print("url is ${value['url']}");
         List<dynamic> updatedValue = doc['value']['photo']
             .where((elem) => elem['url'] != value['url'])
             .toList();
@@ -1799,7 +1774,7 @@ class PostController extends ControllerMVC {
             data['feeling'] = doc['value']['feeling'];
           }
           data['photo'] = updatedValue;
-          print('data is $data');
+
           doc.reference.update({'value': data});
         }
       }
@@ -2021,13 +1996,6 @@ class PostController extends ControllerMVC {
           commentLike.removeAt(i);
         }
       }
-      // commentLike.removeWhere(
-      //      (item) => item['userInfo']['userName'] == userInfo['uid']);
-
-      // if (gotLikes[userInfo['uid']] == like) {
-      //   gotLikes.removeWhere((key, value) => key == userInfo['uid']);
-      // } else {
-      //   gotLikes[userInfo['uid']] = like;
       List gotLike = List.from(commentLike);
       commentLike.add({
         'userInfo': userInfo,
@@ -2039,12 +2007,6 @@ class PostController extends ControllerMVC {
         'value': likes,
       });
 
-      // if (gotLikes['likes'][userInfo['uid']] == likes) {
-      //   gotLikes['likes'].removeWhere((key, value) => key == userInfo['uid']);
-      // } else {
-      //   gotLikes['likes'][userInfo['uid']] = likes;
-
-      print('$postId $commentId $likes');
       await Helper.postLikeComment
           .doc(postId)
           .collection('comments')
@@ -2052,8 +2014,7 @@ class PostController extends ControllerMVC {
           .update({'likes': gotLike});
 
       commentLikes[commentId] = commentLike;
-      print('saveLikesComment end');
-      // getComment(postId);
+
       setState(() {});
     }
   }
@@ -2079,14 +2040,7 @@ class PostController extends ControllerMVC {
       var comment = comments[postId].firstWhere((o) => o['id'] == commentId);
 
       comment['reply'] = reply;
-      // comments[postId].add({
-      //   'data': {'type': type, 'content': data, 'uid': userInfo['uid']},
-      //   'userInfo': userInfo,
-      //   'id': commentId,
-      //   'reply': reply,
-      //   'likes': {}
-      // });
-      print(comments[postId]);
+
       setState(() {});
     });
   }

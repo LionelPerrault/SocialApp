@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
@@ -232,7 +230,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: 400,
                   height: height,
                   child: TextField(
@@ -287,7 +285,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   height: 40,
                   width: 400,
                   child: DropdownButtonFormField(
@@ -340,7 +338,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
-              child: Container(
+              child: SizedBox(
             width: SizeConfig(context).screenWidth * 0.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

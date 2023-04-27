@@ -119,91 +119,87 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
   }
 
   Widget shnatterTokenWidget() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 20),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(top: 20),
+        ),
+        pictureAndSelect(
+            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fshnatter.svg?alt=media&token=66e16fcf-b1eb-4d50-bed0-cf368c8efe57',
+            'Shnatter token enabled',
+            'Enable payments via Shnatter token'),
+        const Padding(
+          padding: EdgeInsets.only(top: 20),
+        ),
+        Container(
+          alignment: Alignment.centerLeft,
+          width: 250,
+          height: 150,
+          decoration: const BoxDecoration(
+              color: Color.fromRGBO(233, 236, 239, 1),
+              borderRadius: BorderRadius.all(Radius.circular(3))),
+          padding: const EdgeInsets.only(left: 20),
+          child: const Text(
+            'In progress',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          pictureAndSelect(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fshnatter.svg?alt=media&token=66e16fcf-b1eb-4d50-bed0-cf368c8efe57',
-              'Shnatter token enabled',
-              'Enable payments via Shnatter token'),
-          const Padding(
-            padding: EdgeInsets.only(top: 20),
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            width: 250,
-            height: 150,
-            decoration: const BoxDecoration(
-                color: Color.fromRGBO(233, 236, 239, 1),
-                borderRadius: BorderRadius.all(Radius.circular(3))),
-            padding: const EdgeInsets.only(left: 20),
-            child: const Text(
-              'In progress',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 50),
-          ),
-          footer()
-        ],
-      ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 50),
+        ),
+        footer()
+      ],
     );
   }
 
   Widget bankTransfersWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fbank.svg?alt=media&token=70fb1c50-0532-4e7f-8736-68f035e8fb2e',
-            'Bank Transfers Enabled',
-            'Enable payments via Bank Transfers'),
-        const Padding(
-          padding: EdgeInsets.only(top: 20),
-        ),
-        titleAndsubtitleInput('Bank Name', 30, 1, () {}, 'Your Bank Name'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput(
-            'Bank Account Number', 30, 1, () {}, 'Your Bank Account Number'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput(
-            'Bank Account Name', 30, 1, () {}, 'Your Bank Account Name'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput('Bank Account Routing Code', 30, 1, () {},
-            'Your Bank Account Routing Code or SWIFT Code'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput(
-            'Bank Account Country', 30, 1, () {}, 'Your Bank Account Country'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput('Transfer Note', 100, 7, () {},
-            'This note will be displayed to the user while upload his bank transfer receipt'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        footer()
-      ]),
-    );
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fbank.svg?alt=media&token=70fb1c50-0532-4e7f-8736-68f035e8fb2e',
+          'Bank Transfers Enabled',
+          'Enable payments via Bank Transfers'),
+      const Padding(
+        padding: EdgeInsets.only(top: 20),
+      ),
+      titleAndsubtitleInput('Bank Name', 30, 1, () {}, 'Your Bank Name'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput(
+          'Bank Account Number', 30, 1, () {}, 'Your Bank Account Number'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput(
+          'Bank Account Name', 30, 1, () {}, 'Your Bank Account Name'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput('Bank Account Routing Code', 30, 1, () {},
+          'Your Bank Account Routing Code or SWIFT Code'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput(
+          'Bank Account Country', 30, 1, () {}, 'Your Bank Account Country'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput('Transfer Note', 100, 7, () {},
+          'This note will be displayed to the user while upload his bank transfer receipt'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      footer()
+    ]);
   }
 
   Widget checkoutWidget() {
@@ -245,33 +241,31 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
   }
 
   Widget coinPaymentsWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fcoin.svg?alt=media&token=0b6884d6-f726-480c-a058-b9ee3dc042f7',
-            'CoinPayments Enabled',
-            'Enable payments via CoinPayments'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput('Merchant ID', 30, 1, () {}, ''),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput('IPN Secret', 30, 1, () {}, ''),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        footer()
-      ]),
-    );
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fcoin.svg?alt=media&token=0b6884d6-f726-480c-a058-b9ee3dc042f7',
+          'CoinPayments Enabled',
+          'Enable payments via CoinPayments'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput('Merchant ID', 30, 1, () {}, ''),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput('IPN Secret', 30, 1, () {}, ''),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      footer()
+    ]);
   }
 
   Widget payStackWidget() {
@@ -400,8 +394,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           decoration: const BoxDecoration(
               color: Color.fromRGBO(120, 137, 232, 1),
               borderRadius: BorderRadius.all(Radius.circular(3))),
-          child: Container(
-              child: Row(children: [
+          child: Row(children: [
             SvgPicture.network(
               'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwasabi.svg?alt=media&token=d06b96a0-8a09-4f37-b9db-65865c3368f7',
               width: 30,
@@ -414,7 +407,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                   overflow: TextOverflow.clip,
                   style: TextStyle(color: Colors.white, fontSize: fontSize),
                 ))
-          ])),
+          ]),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -501,116 +494,112 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
   }
 
   Widget digitalOceanWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        Container(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 30),
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      Container(
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 30),
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(120, 137, 232, 1),
+            borderRadius: BorderRadius.all(Radius.circular(3))),
+        child: Row(children: [
+          const Icon(
+            FontAwesomeIcons.digitalOcean,
+            color: Colors.white,
+            size: 30,
+          ),
+          const Padding(padding: EdgeInsets.only(left: 15)),
+          SizedBox(
+              width: SizeConfig(context).screenWidth * 0.5,
+              child: Text(
+                "	DigitalOcean Before enabling DigitalOcean Space, make sure you upload the whole 'uploads' folder to your space. Before disabling DigitalOcean Space, make sure you download the whole 'uploads' folder to your server.",
+                overflow: TextOverflow.clip,
+                style: TextStyle(color: Colors.white, fontSize: fontSize),
+              ))
+        ]),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Famazon.svg?alt=media&token=537392f0-28b2-426a-81d9-fa54d9ac060e',
+          'DigitalOcean Space',
+          'Enable DigitalOcean storage (Note: Enable this will disable all other options)'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      titleAndsubtitleInput(
+          'Space Name', 30, 1, () {}, 'Your DigitalOcean space name'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput(
+          'Access Key ID', 30, 1, () {}, 'Your DigitalOcean Access Key ID'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput('Access Key Secret', 30, 1, () {},
+          'Your DigitalOcean Access Key Secret'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      Container(
+          height: 80,
           decoration: const BoxDecoration(
-              color: Color.fromRGBO(120, 137, 232, 1),
-              borderRadius: BorderRadius.all(Radius.circular(3))),
-          child: Container(
-              child: Row(children: [
-            const Icon(
-              FontAwesomeIcons.digitalOcean,
-              color: Colors.white,
-              size: 30,
-            ),
-            const Padding(padding: EdgeInsets.only(left: 15)),
-            SizedBox(
-                width: SizeConfig(context).screenWidth * 0.5,
-                child: Text(
-                  "	DigitalOcean Before enabling DigitalOcean Space, make sure you upload the whole 'uploads' folder to your space. Before disabling DigitalOcean Space, make sure you download the whole 'uploads' folder to your server.",
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(color: Colors.white, fontSize: fontSize),
-                ))
-          ])),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Famazon.svg?alt=media&token=537392f0-28b2-426a-81d9-fa54d9ac060e',
-            'DigitalOcean Space',
-            'Enable DigitalOcean storage (Note: Enable this will disable all other options)'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        titleAndsubtitleInput(
-            'Space Name', 30, 1, () {}, 'Your DigitalOcean space name'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput(
-            'Access Key ID', 30, 1, () {}, 'Your DigitalOcean Access Key ID'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput('Access Key Secret', 30, 1, () {},
-            'Your DigitalOcean Access Key Secret'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        Container(
-            height: 80,
-            decoration: const BoxDecoration(
-                color: Color.fromRGBO(240, 240, 240, 1),
-                border:
-                    Border(top: BorderSide(width: 0.5, color: Colors.grey))),
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 15),
-            child: Row(children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(200, 50),
-                  maximumSize: const Size(200, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Test Connection (Vision API)',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
+              color: Color.fromRGBO(240, 240, 240, 1),
+              border: Border(top: BorderSide(width: 0.5, color: Colors.grey))),
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 15),
+          child: Row(children: [
+            const Flexible(fit: FlexFit.tight, child: SizedBox()),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2.0)),
+                minimumSize: const Size(200, 50),
+                maximumSize: const Size(200, 50),
               ),
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(150, 50),
-                  maximumSize: const Size(150, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Save Changes',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 33, 37, 41),
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              )
-            ]))
-      ]),
-    );
+              onPressed: () {
+                () => {};
+              },
+              child: const Text('Test Connection (Vision API)',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.bold)),
+            ),
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2.0)),
+                minimumSize: const Size(150, 50),
+                maximumSize: const Size(150, 50),
+              ),
+              onPressed: () {
+                () => {};
+              },
+              child: const Text('Save Changes',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 33, 37, 41),
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.bold)),
+            )
+          ]))
+    ]);
   }
 
   Widget generalWidget() {
@@ -625,8 +614,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           decoration: const BoxDecoration(
               color: Color.fromRGBO(252, 124, 95, 1),
               borderRadius: BorderRadius.all(Radius.circular(3))),
-          child: Container(
-              child: Row(children: [
+          child: Row(children: [
             const Icon(
               Icons.warning,
               color: Colors.white,
@@ -640,7 +628,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                   overflow: TextOverflow.clip,
                   style: TextStyle(color: Colors.white, fontSize: fontSize),
                 ))
-          ])),
+          ]),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -751,8 +739,8 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                       height: 100,
                     ),
                     Container(
-                        padding: EdgeInsets.only(top: 70, left: 70),
-                        child: Icon(Icons.photo_camera))
+                        padding: const EdgeInsets.only(top: 70, left: 70),
+                        child: const Icon(Icons.photo_camera))
                   ],
                 )
               ],
@@ -784,7 +772,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         ),
         Container(
           height: 1,
-          color: Color.fromARGB(255, 218, 129, 129),
+          color: const Color.fromARGB(255, 218, 129, 129),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -967,7 +955,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: Container(
+          child: SizedBox(
             width: 150,
             child: Text(
               title,
@@ -979,44 +967,42 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           fit: FlexFit.tight,
           child: SizedBox(),
         ),
-        Container(
-          child: Row(children: [
-            Transform.scale(
-                scale: 1,
-                child: Checkbox(
-                  fillColor: MaterialStateProperty.all<Color>(Colors.blue),
-                  checkColor: Colors.white,
-                  activeColor: const Color.fromRGBO(0, 123, 255, 1),
-                  value: check1,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(5.0))), // Rounded Checkbox
-                  onChanged: (value) {
-                    setState(() {
-                      check1 = check1 ? false : true;
-                    });
-                  },
-                )),
-            Text(selectTitle1),
-            Transform.scale(
-                scale: 1,
-                child: Checkbox(
-                  fillColor: MaterialStateProperty.all<Color>(Colors.blue),
-                  checkColor: Colors.white,
-                  activeColor: const Color.fromRGBO(0, 123, 255, 1),
-                  value: check1,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(5.0))), // Rounded Checkbox
-                  onChanged: (value) {
-                    setState(() {
-                      check1 = check1 ? false : true;
-                    });
-                  },
-                )),
-            Text(selectTitle2),
-          ]),
-        )
+        Row(children: [
+          Transform.scale(
+              scale: 1,
+              child: Checkbox(
+                fillColor: MaterialStateProperty.all<Color>(Colors.blue),
+                checkColor: Colors.white,
+                activeColor: const Color.fromRGBO(0, 123, 255, 1),
+                value: check1,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(5.0))), // Rounded Checkbox
+                onChanged: (value) {
+                  setState(() {
+                    check1 = check1 ? false : true;
+                  });
+                },
+              )),
+          Text(selectTitle1),
+          Transform.scale(
+              scale: 1,
+              child: Checkbox(
+                fillColor: MaterialStateProperty.all<Color>(Colors.blue),
+                checkColor: Colors.white,
+                activeColor: const Color.fromRGBO(0, 123, 255, 1),
+                value: check1,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(5.0))), // Rounded Checkbox
+                onChanged: (value) {
+                  setState(() {
+                    check1 = check1 ? false : true;
+                  });
+                },
+              )),
+          Text(selectTitle2),
+        ])
       ],
     );
   }
@@ -1033,8 +1019,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           decoration: const BoxDecoration(
               color: Color.fromRGBO(252, 124, 95, 1),
               borderRadius: BorderRadius.all(Radius.circular(3))),
-          child: Container(
-              child: Row(children: [
+          child: Row(children: [
             const Icon(
               FontAwesomeIcons.amazon,
               color: Colors.white,
@@ -1048,7 +1033,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                   overflow: TextOverflow.clip,
                   style: TextStyle(color: Colors.white, fontSize: fontSize),
                 ))
-          ])),
+          ]),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 30),
@@ -1170,7 +1155,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            child: Container(
+            child: SizedBox(
           width: 200,
           child: Text(
             title,
@@ -1181,7 +1166,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
           ),
         )),
         const Flexible(fit: FlexFit.tight, child: SizedBox()),
-        Container(
+        SizedBox(
           width: SizeConfig(context).screenWidth * 0.5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1198,7 +1183,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                           (e) => DropdownMenuItem(
                               value: e['value'],
                               child: Padding(
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: Text(
                                   e['title'],
                                   style: const TextStyle(
@@ -1254,7 +1239,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   child: Column(children: [
                     TextField(
@@ -1299,7 +1284,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1313,7 +1298,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
@@ -1341,7 +1326,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-              child: Container(
+              child: SizedBox(
             width: 200,
             child: Text(
               title,
@@ -1351,7 +1336,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
                   fontWeight: FontWeight.bold),
             ),
           )),
-          Flexible(fit: FlexFit.tight, child: SizedBox()),
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
           Container(
             width: SizeConfig(context).screenWidth * 0.5,
             decoration: BoxDecoration(
@@ -1363,7 +1348,7 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
               items: dropDownItems
                   .map((e) => DropdownMenuItem(
                       value: e['value'],
-                      child: Container(
+                      child: SizedBox(
                           height: 70,
                           child: ListTile(
                             leading: Icon(e['icon']),

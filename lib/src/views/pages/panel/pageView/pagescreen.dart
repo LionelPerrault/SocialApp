@@ -4,9 +4,6 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/FileManager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageAvatarandTabscreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageEventsScreen.dart';
 import 'package:shnatter/src/views/pages/panel/pageView/pageSettingsScreen.dart';
@@ -59,7 +56,7 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
-        drawer: Drawer(),
+        drawer: const Drawer(),
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -94,7 +91,6 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
                           children: [
                               PageAvatarandTabScreen(
                                 onClick: (value) {
-                                  print(value);
                                   con.pageTab = value;
                                   setState(() {});
                                 },

@@ -33,7 +33,6 @@ final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 Future<List> findSimilarUsers(String myUserId) async {
   // Get my user document from Firebase
-  print(myUserId);
 
   final DocumentSnapshot myUserDoc =
       await firestore.collection(Helper.userField).doc(myUserId).get();
@@ -47,35 +46,23 @@ Future<List> findSimilarUsers(String myUserId) async {
   final List<DocumentSnapshot> allUsersDocs = allUsersQuery.docs;
 
   // Calculate similarity scores for each user and store them in a map
-  final Map<String, int> similarityScores = {};
   List<Map> potentialMatches = [];
   for (final DocumentSnapshot userDoc in allUsersDocs) {
     final String userId = userDoc.id;
-    final String userName = userDoc['userName'];
     if (userId == myUserId) {
       continue; // Skip my own user document
     }
-
-    print("userId is $userId");
 
     if (!(userDoc.data() as Map<String, dynamic>).containsKey('interests')) {
       continue;
     }
     final List<dynamic> userInterestIds = userDoc['interests'];
-    print("userInterestIds is $userInterestIds");
+
     int count = 0;
     for (final dynamic myInterestId in myInterestIds) {
       if (myInterestId == null) continue;
-      // final QueryDocumentSnapshot<Map<String, dynamic>> myInterest =
-      //     await _getInterestById(
-      //         myInterestId); // Helper method to get interest Map by ID
-      // if (myInterest == null) {
-      //   continue; // Skip invalid interests
-      // }
 
-      // print("myInterest is $myInterest");
       if (userInterestIds.contains(myInterestId)) {
-        print("friend suggested userId is $userId");
         count++;
       }
     }
@@ -84,25 +71,16 @@ Future<List> findSimilarUsers(String myUserId) async {
   }
   potentialMatches.sort((a, b) => b['count'] - a['count']);
 
-  // // Sort user documents by descending similarity score
-  // final List<DocumentSnapshot> similarUsersDocs = allUsersDocs
-  //     .where((userDoc) => similarityScores[userDoc.id]! > 0)
-  //     .toList();
-  // similarUsersDocs.sort(
-  //     (a, b) => similarityScores[b.id]!.compareTo(similarityScores[a.id]!));
-
-  // print("similarUserDocs----$similarUsersDocs");
   return potentialMatches;
 }
 
 Future<QueryDocumentSnapshot<Map<String, dynamic>>> _getInterestById(
     dynamic interestId) async {
-  print("myinterest id is $interestId");
   final QuerySnapshot<Map<String, dynamic>> interestDoc = await firestore
       .collection(Helper.interestsField)
       .where('id', isEqualTo: interestId.toString())
       .get();
-  print("interestDoc id is $interestDoc");
+
   List<QueryDocumentSnapshot<Map<String, dynamic>>> interest = interestDoc.docs;
   var returnvalue = null;
   if (interest.isNotEmpty) {
@@ -284,11 +262,10 @@ class PeopleController extends ControllerMVC {
         .where(fieldName1, isEqualTo: true)
         .where(fieldName2, isEqualTo: true)
         .get();
-    if (snapshot.docs.length > 0) {
+    if (snapshot.docs.isNotEmpty) {
       if (mapData != null) mapData['state'] = 0;
       return;
     }
-    Map<String, dynamic> notificationData;
     await FirebaseFirestore.instance.collection(Helper.friendCollection).add({
       'requester': UserManager.userInfo['userName'],
       'receiver': receiver,
@@ -318,7 +295,7 @@ class PeopleController extends ControllerMVC {
         .get();
 
     sendFriends = snapshots.docs.map((doc) {
-      Map data = doc.data() as Map;
+      Map data = doc.data();
       data['id'] = doc.id;
       return data;
     }).toList();
@@ -338,11 +315,12 @@ class PeopleController extends ControllerMVC {
       //if (userList.length > 0) lastData = userList[userList.length - 1];
 
       while (userList.length <= pagination * 5) {
-        var snapshot = null;
-        if (lastData == null)
+        QuerySnapshot<Map<String, dynamic>> snapshot;
+        if (lastData == null) {
           snapshot = await query.limit(20).get();
-        else
+        } else {
           snapshot = await query.startAfterDocument(lastData).limit(20).get();
+        }
         // get friends list and make hash;
         var snapshotFriend = await FirebaseFirestore.instance
             .collection(Helper.friendCollection)
@@ -350,7 +328,7 @@ class PeopleController extends ControllerMVC {
             //.where('state', isEqualTo: 1)
             .get();
         List friends = snapshotFriend.docs.map((doc) {
-          Map data = doc.data() as Map;
+          Map data = doc.data();
           data['id'] = doc.id;
           return data;
         }).toList();
@@ -558,10 +536,7 @@ class PeopleController extends ControllerMVC {
         .collection(Helper.userField)
         .orderBy('userName')
         .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
-    //if (search['keyword'] != null) {
-    //  query = query.where('userName', isGreaterThan: search['keyword']);
-    //  query = query.where('userName', isLessThan: search['keyword'] + 'z');
-    //}
+
     if (search['userName'] != null) {
       query = query.where('userName', isGreaterThan: search['userName']);
       query = query.where('userName', isLessThan: search['userName'] + 'z');
@@ -569,9 +544,7 @@ class PeopleController extends ControllerMVC {
     if (search['sex'] != null) {
       query = query.where('sex', isEqualTo: search['sex']);
     }
-    // if (search['sex'] != null) {
-    //   query = query.where('sex', isEqualTo: search['sex']);
-    // }
+
     if (search['relationship'] != null) {
       query = query.where('relationship', isEqualTo: search['relationship']);
     }

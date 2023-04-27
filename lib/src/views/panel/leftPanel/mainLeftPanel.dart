@@ -12,7 +12,7 @@ class MainLeftPanel extends StatelessWidget {
   Function routerFunction;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: SizeConfig.leftBarWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

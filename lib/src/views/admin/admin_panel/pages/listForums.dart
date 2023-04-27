@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -120,7 +121,7 @@ class AdminListForumsState extends mvc.StateMVC<AdminListForums> {
                 addroute = 'addNew';
                 setState(() {});
               },
-              'size': Size(180, 50),
+              'size': const Size(180, 50),
             },
           ),
           Container(
@@ -141,7 +142,9 @@ class AdminListForumsState extends mvc.StateMVC<AdminListForums> {
                 stateManager.setShowColumnFilter(true);
               },
               onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
+                if (kDebugMode) {
+                  print(event);
+                }
               },
             ),
           ),
@@ -166,7 +169,7 @@ class AdminListForumsState extends mvc.StateMVC<AdminListForums> {
                 addroute = 'main';
                 setState(() {});
               },
-              'size': Size(120, 50),
+              'size': const Size(120, 50),
             },
           ),
           titleAndsubtitleInput('Name', 40, 1, ''),

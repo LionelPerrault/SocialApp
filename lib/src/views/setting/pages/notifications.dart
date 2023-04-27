@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/daytimeM.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/mindslice.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingNotificationScreen extends StatefulWidget {
   SettingNotificationScreen({Key? key, required this.routerChange})
@@ -82,7 +76,7 @@ class SettingNotificationScreenState
               ],
             ),
             Container(
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 20),
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5
@@ -157,7 +151,7 @@ class SettingNotificationScreenState
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 20),
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5
@@ -255,7 +249,7 @@ class SettingNotificationScreenState
       children: [
         Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
               color: Color.fromARGB(255, 82, 95, 127),
               fontSize: 11,
               fontWeight: FontWeight.bold),
@@ -273,7 +267,7 @@ class SettingNotificationScreenState
               width: 250,
               height: 30,
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 250, 250, 250),
+                  color: const Color.fromARGB(255, 250, 250, 250),
                   border: Border.all(color: Colors.grey)),
               padding: const EdgeInsets.only(left: 20),
               child: DropdownButton(

@@ -23,7 +23,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
   var userInfo = UserManager.userInfo;
   //route variable
   String tabName = 'Discover';
-  Color color = Color.fromRGBO(230, 236, 245, 1);
+  Color color = const Color.fromRGBO(230, 236, 245, 1);
   @override
   void initState() {
     add(widget.con);
@@ -98,7 +98,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               sendFriends(),
-              Padding(padding: EdgeInsets.only(left: 20)),
+              const Padding(padding: EdgeInsets.only(left: 20)),
               SearchScreen(
                 isModal: false,
                 onClick: (value) async {
@@ -120,8 +120,8 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
 
   Widget sendFriends() {
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      padding: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 20),
       color: Colors.white,
       width: SizeConfig(context).screenWidth < 900
           ? SizeConfig(context).screenWidth - 60
@@ -130,20 +130,20 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(padding: EdgeInsets.only(top: 15)),
+          const Padding(padding: EdgeInsets.only(top: 15)),
           Container(
-            padding: EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 20),
             child: Text(
               con.isSearch
                   ? 'Search Results'
                   : 'Respond to Your Friend Request',
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
                   fontSize: 13),
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: 15)),
+          const Padding(padding: EdgeInsets.only(top: 15)),
           Container(
             height: 1,
             color: color,
@@ -151,20 +151,20 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
           con.isSearch && con.sendFriends.isEmpty
               ? Container(
                   alignment: Alignment.topCenter,
-                  padding: EdgeInsets.only(top: 20, bottom: 50),
-                  child: Text('No people available for your search',
+                  padding: const EdgeInsets.only(top: 20, bottom: 50),
+                  child: const Text('No people available for your search',
                       style: TextStyle(fontSize: 14)))
               : con.sendFriends.isEmpty
                   ? Container(
                       alignment: Alignment.topCenter,
-                      padding: EdgeInsets.only(top: 20, bottom: 50),
+                      padding: const EdgeInsets.only(top: 20, bottom: 50),
                       child:
-                          Text('No new sent', style: TextStyle(fontSize: 14)))
+                          const Text('No new sent', style: TextStyle(fontSize: 14)))
                   : Column(
                       children: con.sendFriends
                           .map((e) => Container(
                               padding:
-                                  EdgeInsets.only(top: 10, left: 20, right: 20),
+                                  const EdgeInsets.only(top: 10, left: 20, right: 20),
                               child: Column(
                                 children: [
                                   Row(
@@ -173,7 +173,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Padding(
+                                        const Padding(
                                             padding: EdgeInsets.only(left: 10)),
                                         e[e['receiver']]['avatar'] == ''
                                             ? CircleAvatar(
@@ -187,20 +187,20 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                         ['avatar'])),
                                         Container(
                                           padding:
-                                              EdgeInsets.only(left: 10, top: 5),
+                                              const EdgeInsets.only(left: 10, top: 5),
                                           child: Text(
                                             e[e['receiver']]['name'],
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.w900,
                                                 fontSize: 11),
                                           ),
                                         ),
-                                        Flexible(
+                                        const Flexible(
                                             fit: FlexFit.tight,
                                             child: SizedBox()),
                                         Container(
-                                          padding: EdgeInsets.only(top: 6),
+                                          padding: const EdgeInsets.only(top: 6),
                                           child: ElevatedButton(
                                             onPressed: () async {
                                               if (!e.containsKey('state') ||
@@ -240,7 +240,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                 backgroundColor:
                                                     (e as Map).containsKey('state') && e['state'] == -2
                                                         ? Colors.black
-                                                        : Color.fromRGBO(
+                                                        : const Color.fromRGBO(
                                                             245, 54, 92, 1),
                                                 elevation: 3,
                                                 shape: RoundedRectangleBorder(
@@ -260,7 +260,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                             child: (e as Map)
                                                         .containsKey('state') &&
                                                     e['state'] == -1
-                                                ? SizedBox(
+                                                ? const SizedBox(
                                                     width: 10,
                                                     height: 10,
                                                     child:
@@ -324,7 +324,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                           ),
                                         )
                                       ]),
-                                  Padding(padding: EdgeInsets.only(top: 10)),
+                                  const Padding(padding: EdgeInsets.only(top: 10)),
                                   Container(
                                     height: 1,
                                     color: color,

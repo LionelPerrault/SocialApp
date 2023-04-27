@@ -78,7 +78,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ),
         Container(
           height: 1,
-          color: Color.fromRGBO(240, 240, 240, 1),
+          color: const Color.fromRGBO(240, 240, 240, 1),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 25),
@@ -92,7 +92,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ),
         Container(
           height: 1,
-          color: Color.fromRGBO(240, 240, 240, 1),
+          color: const Color.fromRGBO(240, 240, 240, 1),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 25),
@@ -106,7 +106,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ),
         Container(
           height: 1,
-          color: Color.fromRGBO(240, 240, 240, 1),
+          color: const Color.fromRGBO(240, 240, 240, 1),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 25),
@@ -120,7 +120,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ),
         Container(
           height: 1,
-          color: Color.fromRGBO(240, 240, 240, 1),
+          color: const Color.fromRGBO(240, 240, 240, 1),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 25),
@@ -134,7 +134,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ),
         Container(
           height: 1,
-          color: Color.fromRGBO(240, 240, 240, 1),
+          color: const Color.fromRGBO(240, 240, 240, 1),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 25),
@@ -148,7 +148,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ),
         Container(
           height: 1,
-          color: Color.fromRGBO(240, 240, 240, 1),
+          color: const Color.fromRGBO(240, 240, 240, 1),
         ),
         const Padding(
           padding: EdgeInsets.only(top: 25),
@@ -167,7 +167,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ),
         Container(
           height: 1,
-          color: Color.fromRGBO(240, 240, 240, 1),
+          color: const Color.fromRGBO(240, 240, 240, 1),
         ),
         footer()
       ]),
@@ -242,7 +242,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         ),
         Container(
           height: 1,
-          color: Color.fromRGBO(240, 240, 240, 1),
+          color: const Color.fromRGBO(240, 240, 240, 1),
         ),
         footer()
       ]),
@@ -283,7 +283,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            child: Container(
+            child: SizedBox(
           width: 200,
           child: Text(
             title,
@@ -294,7 +294,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
           ),
         )),
         const Flexible(fit: FlexFit.tight, child: SizedBox()),
-        Container(
+        SizedBox(
           width: SizeConfig(context).screenWidth * 0.5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +311,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
                           (e) => DropdownMenuItem(
                               value: e['value'],
                               child: Padding(
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: Text(
                                   e['title'],
                                   style: const TextStyle(
@@ -398,7 +398,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
                       ),
                       Text(
                         subtitle,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                         ),
                       )
@@ -421,7 +421,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -435,7 +435,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
@@ -463,7 +463,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-              child: Container(
+              child: SizedBox(
             width: 200,
             child: Text(
               title,
@@ -473,7 +473,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
                   fontWeight: FontWeight.bold),
             ),
           )),
-          Flexible(fit: FlexFit.tight, child: SizedBox()),
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
           Container(
             width: SizeConfig(context).screenWidth * 0.5,
             decoration: BoxDecoration(
@@ -485,7 +485,7 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
               items: dropDownItems
                   .map((e) => DropdownMenuItem(
                       value: e['value'],
-                      child: Container(
+                      child: SizedBox(
                           height: 70,
                           child: ListTile(
                             leading: Icon(e['icon']),

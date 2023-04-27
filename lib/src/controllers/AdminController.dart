@@ -1,17 +1,8 @@
-// ignore_for_file: unused_local_variable, prefer_typing_uninitialized_variables
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/relysia_manager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/views/events/panel/eventView/eventTimelineScreen.dart';
 import '../helpers/helper.dart';
-import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-
-import '../views/profile/model/friends.dart';
 
 enum PostType { timeline, profile, event, group }
 
