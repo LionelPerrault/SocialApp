@@ -1,4 +1,7 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter/foundation.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
@@ -234,6 +237,13 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       postCon.allNotification = changeData;
       print(changeData);
       setState(() {});
+      if (!kIsWeb) {
+        dynamic res = await FlutterAppBadger.isAppBadgeSupported();
+
+        if (res != false) {
+          FlutterAppBadger.updateBadgeCount(postCon.allNotification.length);
+        }
+      }
     });
 
     SearchController().getAllSearchResult();

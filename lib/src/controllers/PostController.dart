@@ -9,7 +9,6 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/views/events/panel/eventView/eventTimelineScreen.dart';
 import '../helpers/helper.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-
 import '../views/profile/model/friends.dart';
 
 enum PostType { timeline, profile, event, group }

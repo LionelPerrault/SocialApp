@@ -16,8 +16,7 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import 'package:shnatter/src/managers/GeolocationManager.dart';
-import 'package:google_maps_flutter_web/google_maps_flutter_web.dart'
-    as gMapWeb;
+//import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 
 // ignore: must_be_immutable
 class UserExplore extends StatefulWidget {

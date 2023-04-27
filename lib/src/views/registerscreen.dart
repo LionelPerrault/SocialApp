@@ -122,7 +122,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                         color:
                                             const Color.fromRGBO(11, 35, 45, 1),
                                         child: const Text(
-                                          'Invite Code',
+                                          'Invitation Code',
                                           style: TextStyle(
                                             fontSize: 25,
                                             color: Colors.white,
@@ -145,7 +145,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                               padding:
                                                   EdgeInsets.only(top: 20)),
                                           input(
-                                              label: 'Invite Code',
+                                              label:
+                                                  'Please input your Invitation Code',
                                               icon: const Icon(
                                                 Icons.code,
                                                 color: Colors.white,
@@ -184,7 +185,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                           inviteCode);
                                                   if (!valid) {
                                                     con.failRegister =
-                                                        'Invite code is not correct.';
+                                                        'Invitation code is not correct.';
                                                     con.setState(() {});
                                                   } else {
                                                     setState(() {
