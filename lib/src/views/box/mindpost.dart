@@ -1309,7 +1309,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        reference = await firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = reference.putFile(file);

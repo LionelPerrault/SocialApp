@@ -141,9 +141,7 @@ class AdminThemesState extends mvc.StateMVC<AdminThemes> {
               stateManager = event.stateManager;
               stateManager.setShowColumnFilter(true);
             },
-            onChanged: (PlutoGridOnChangedEvent event) {
-              print(event);
-            },
+            onChanged: (PlutoGridOnChangedEvent event) {},
           ),
         ),
       ],

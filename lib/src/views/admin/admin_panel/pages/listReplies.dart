@@ -6,7 +6,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminListReplies extends StatefulWidget {
-  AdminListReplies({super.key});
+  const AdminListReplies({super.key});
 
   @override
   State createState() => AdminListRepliesState();
@@ -102,7 +102,6 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
     );
   }
 
-  @override
   Widget generalWidget() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

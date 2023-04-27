@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -158,7 +159,9 @@ class AdminCountriesState extends mvc.StateMVC<AdminCountries> {
                 stateManager.setShowColumnFilter(true);
               },
               onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
+                if (kDebugMode) {
+                  print(event);
+                }
               },
             ),
           ),

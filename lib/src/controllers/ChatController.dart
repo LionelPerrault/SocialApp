@@ -122,10 +122,10 @@ class ChatController extends ControllerMVC {
   }
 
   Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
+    final imagePicker = ImagePicker();
     XFile? pickedFile;
     if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
@@ -133,7 +133,7 @@ class ChatController extends ControllerMVC {
       // await Permission.photos.request();
       // var permissionStatus = await Permission.photos.status;
 
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     }
@@ -141,13 +141,13 @@ class ChatController extends ControllerMVC {
   }
 
   uploadFile(XFile? pickedFile, newOrNot, messageType) async {
-    final _firebaseStorage = FirebaseStorage.instance;
+    final firebaseStorage = FirebaseStorage.instance;
     UploadTask uploadTask;
     Reference reference;
     try {
       if (kIsWeb) {
         Uint8List bytes = await pickedFile!.readAsBytes();
-        reference = _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = reference.putData(
@@ -157,7 +157,7 @@ class ChatController extends ControllerMVC {
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = reference.putFile(file);

@@ -82,7 +82,7 @@ Future<QueryDocumentSnapshot<Map<String, dynamic>>> _getInterestById(
       .get();
 
   List<QueryDocumentSnapshot<Map<String, dynamic>>> interest = interestDoc.docs;
-  var returnvalue = null;
+  var returnvalue;
   if (interest.isNotEmpty) {
     returnvalue = interest[0];
   }
@@ -105,7 +105,7 @@ class PeopleController extends ControllerMVC {
   // discover user
   List userList;
 
-  var lastData = null;
+  var lastData;
 
   // avoid bugs
   bool isLocked = false;
@@ -123,7 +123,7 @@ class PeopleController extends ControllerMVC {
   late StreamSubscription subscription;
   //is Searching state or discover
   bool isSearch = false;
-  var searchQuery = null;
+  var searchQuery;
 
   BadgeModel sendBadge = BadgeModel();
 

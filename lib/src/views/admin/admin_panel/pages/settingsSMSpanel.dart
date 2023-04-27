@@ -247,107 +247,102 @@ class AdminSettingsSMSState extends mvc.StateMVC<AdminSettingsSMS> {
           child: const Text('BULKSMS'),
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Column(
-            children: [
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      width: 100,
-                      child: Text(
-                        'BulkSMS Username',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 85, 95, 127)),
-                      ),
-                    ),
-                    Expanded(
-                        flex: 2,
-                        child: SizedBox(
-                          width: 500,
-                          child: Column(children: [
-                            Container(
-                              width: 400,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 250, 250, 250),
-                                  border: Border.all(color: Colors.grey)),
-                              child: TextFormField(
-                                minLines: 1,
-                                maxLines: 7,
-                                onChanged: (value) async {},
-                                keyboardType: TextInputType.multiline,
-                                style: const TextStyle(fontSize: 12),
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  hintText: '',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                            ),
-                          ]),
-                        ))
-                  ],
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    width: 100,
-                    child: Text(
-                      'BulkSMS Password',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 85, 95, 127)),
-                    ),
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  width: 100,
+                  child: Text(
+                    'BulkSMS Username',
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 85, 95, 127)),
                   ),
-                  Expanded(
-                      flex: 2,
-                      child: SizedBox(
-                        width: 500,
-                        child: Column(children: [
-                          Container(
-                            width: 400,
-                            height: 30,
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 250, 250, 250),
-                                border: Border.all(color: Colors.grey)),
-                            child: TextFormField(
-                              minLines: 1,
-                              maxLines: 7,
-                              onChanged: (value) async {},
-                              keyboardType: TextInputType.multiline,
-                              style: const TextStyle(fontSize: 12),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: '',
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: SizedBox(
+                      width: 500,
+                      child: Column(children: [
+                        Container(
+                          width: 400,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 250, 250, 250),
+                              border: Border.all(color: Colors.grey)),
+                          child: TextFormField(
+                            minLines: 1,
+                            maxLines: 7,
+                            onChanged: (value) async {},
+                            keyboardType: TextInputType.multiline,
+                            style: const TextStyle(fontSize: 12),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              hintText: '',
+                              hintStyle: TextStyle(color: Colors.grey),
                             ),
                           ),
-                        ]),
-                      ))
-                ],
-              ),
-            ],
-          ),
+                        ),
+                      ]),
+                    ))
+              ],
+            ),
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  width: 100,
+                  child: Text(
+                    'BulkSMS Password',
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 85, 95, 127)),
+                  ),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: SizedBox(
+                      width: 500,
+                      child: Column(children: [
+                        Container(
+                          width: 400,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 250, 250, 250),
+                              border: Border.all(color: Colors.grey)),
+                          child: TextFormField(
+                            minLines: 1,
+                            maxLines: 7,
+                            onChanged: (value) async {},
+                            keyboardType: TextInputType.multiline,
+                            style: const TextStyle(fontSize: 12),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              hintText: '',
+                              hintStyle: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ))
+              ],
+            ),
+          ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         const Divider(

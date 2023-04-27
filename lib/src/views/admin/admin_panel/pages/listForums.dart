@@ -100,84 +100,80 @@ class AdminListForumsState extends mvc.StateMVC<AdminListForums> {
 
   @override
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.forum),
-            pagename: 'Forums',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.white,
-              'icon': const Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-              'text': 'Add New Game',
-              'valueColor': Colors.black,
-              'callback': () {
-                addroute = 'addNew';
-                setState(() {});
-              },
-              'size': const Size(180, 50),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.forum),
+          pagename: 'Forums',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.white,
+            'icon': const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            'text': 'Add New Game',
+            'valueColor': Colors.black,
+            'callback': () {
+              addroute = 'addNew';
+              setState(() {});
+            },
+            'size': const Size(180, 50),
+          },
+        ),
+        Container(
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.85
+              : SizeConfig(context).screenWidth,
+          height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            configuration: const PlutoGridConfiguration(
+              columnSize: PlutoGridColumnSizeConfig(),
+            ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {
+              if (kDebugMode) {
+                print(event);
+              }
             },
           ),
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              configuration: const PlutoGridConfiguration(
-                columnSize: PlutoGridColumnSizeConfig(),
-              ),
-              columns: columns,
-              rows: rows,
-              columnGroups: columnGroups,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                if (kDebugMode) {
-                  print(event);
-                }
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget addNewForumWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.forum),
-            pagename: 'Forums › Add New Forum',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': const Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.forum),
+          pagename: 'Forums › Add New Forum',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          titleAndsubtitleInput('Name', 40, 1, ''),
-          titleAndsubtitleInput('Description', 80, 4, ''),
-          titleAndsubtitleInput('Order', 40, 1, ''),
-          footer(),
-        ],
-      ),
+            'size': const Size(120, 50),
+          },
+        ),
+        titleAndsubtitleInput('Name', 40, 1, ''),
+        titleAndsubtitleInput('Description', 80, 4, ''),
+        titleAndsubtitleInput('Order', 40, 1, ''),
+        footer(),
+      ],
     );
   }
 
@@ -206,7 +202,7 @@ class AdminListForumsState extends mvc.StateMVC<AdminListForums> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 500,
                     height: height,
                     child: TextField(

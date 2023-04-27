@@ -132,110 +132,106 @@ class AdminSettingsSecurity extends StatelessWidget {
           ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 100,
-                child: Text(
-                  'Bad Login Limit',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 85, 95, 127)),
-                ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 100,
+              child: Text(
+                'Bad Login Limit',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 85, 95, 127)),
               ),
-              Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    width: 500,
-                    child: Column(children: [
-                      Container(
-                        width: 400,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: 7,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+            ),
+            Expanded(
+                flex: 2,
+                child: SizedBox(
+                  width: 500,
+                  child: Column(children: [
+                    Container(
+                      width: 400,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 250, 250, 250),
+                          border: Border.all(color: Colors.grey)),
+                      child: TextFormField(
+                        minLines: 1,
+                        maxLines: 7,
+                        onChanged: (value) async {},
+                        keyboardType: TextInputType.multiline,
+                        style: const TextStyle(fontSize: 12),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: '',
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
-                      const Text(
-                        'Number of bad login attempts till account get blocked',
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      )
-                    ]),
-                  ))
-            ],
-          ),
+                    ),
+                    const Text(
+                      'Number of bad login attempts till account get blocked',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    )
+                  ]),
+                ))
+          ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 100,
-                child: Text(
-                  'Lockout Time',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 85, 95, 127)),
-                ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 100,
+              child: Text(
+                'Lockout Time',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 85, 95, 127)),
               ),
-              Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    width: 500,
-                    child: Column(children: [
-                      Container(
-                        width: 400,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: 7,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+            ),
+            Expanded(
+                flex: 2,
+                child: SizedBox(
+                  width: 500,
+                  child: Column(children: [
+                    Container(
+                      width: 400,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 250, 250, 250),
+                          border: Border.all(color: Colors.grey)),
+                      child: TextFormField(
+                        minLines: 1,
+                        maxLines: 7,
+                        onChanged: (value) async {},
+                        keyboardType: TextInputType.multiline,
+                        style: const TextStyle(fontSize: 12),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: '',
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
-                      const Text(
-                        'Number of minutes the account will still locked out',
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      )
-                    ]),
-                  ))
-            ],
-          ),
+                    ),
+                    const Text(
+                      'Number of minutes the account will still locked out',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    )
+                  ]),
+                ))
+          ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         const Divider(
@@ -300,125 +296,123 @@ class AdminSettingsSecurity extends StatelessWidget {
           ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 100,
-                child: Text(
-                  'Two-Factor Authentication Via',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 85, 95, 127)),
-                ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 100,
+              child: Text(
+                'Two-Factor Authentication Via',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 85, 95, 127)),
               ),
-              Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    width: 500,
-                    child: Column(children: [
-                      Container(
-                          width: 400,
-                          height: 30,
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 250, 250, 250),
-                          ),
-                          child: Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Transform.scale(
-                                      scale: 0.7,
-                                      child: Checkbox(
-                                        fillColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.black),
-                                        checkColor: Colors.blue,
-                                        activeColor: const Color.fromRGBO(
-                                            0, 123, 255, 1),
-                                        value: false,
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    5.0))), // Rounded Checkbox
-                                        onChanged: (value) {},
-                                      )),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 1)),
-                                  const Text(
-                                    'Email',
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Transform.scale(
-                                      scale: 0.7,
-                                      child: Checkbox(
-                                        fillColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.black),
-                                        checkColor: Colors.blue,
-                                        activeColor: const Color.fromRGBO(
-                                            0, 123, 255, 1),
-                                        value: false,
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    5.0))), // Rounded Checkbox
-                                        onChanged: (value) {},
-                                      )),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 1)),
-                                  const Text(
-                                    'SMS',
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Transform.scale(
-                                      scale: 0.7,
-                                      child: Checkbox(
-                                        fillColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.black),
-                                        checkColor: Colors.blue,
-                                        activeColor: const Color.fromRGBO(
-                                            0, 123, 255, 1),
-                                        value: true,
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    5.0))), // Rounded Checkbox
-                                        onChanged: (value) {},
-                                      )),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 1)),
-                                  const Text(
-                                    'Google Authenticator',
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      const Text(
-                        'Select Email, SMS or Google Authenticator to send log in code to user Make sure you have configured SMS Settings',
-                        style: TextStyle(
-                          fontSize: 12,
+            ),
+            Expanded(
+                flex: 2,
+                child: SizedBox(
+                  width: 500,
+                  child: Column(children: [
+                    Container(
+                        width: 400,
+                        height: 30,
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 250, 250, 250),
                         ),
-                      )
-                    ]),
-                  ))
-            ],
-          ),
+                        child: Row(
+                          children: [
+                            Row(
+                              children: [
+                                Transform.scale(
+                                    scale: 0.7,
+                                    child: Checkbox(
+                                      fillColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.black),
+                                      checkColor: Colors.blue,
+                                      activeColor:
+                                          const Color.fromRGBO(0, 123, 255, 1),
+                                      value: false,
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                  5.0))), // Rounded Checkbox
+                                      onChanged: (value) {},
+                                    )),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 1)),
+                                const Text(
+                                  'Email',
+                                  style: TextStyle(
+                                      fontSize: 10, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Transform.scale(
+                                    scale: 0.7,
+                                    child: Checkbox(
+                                      fillColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.black),
+                                      checkColor: Colors.blue,
+                                      activeColor:
+                                          const Color.fromRGBO(0, 123, 255, 1),
+                                      value: false,
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                  5.0))), // Rounded Checkbox
+                                      onChanged: (value) {},
+                                    )),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 1)),
+                                const Text(
+                                  'SMS',
+                                  style: TextStyle(
+                                      fontSize: 10, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Transform.scale(
+                                    scale: 0.7,
+                                    child: Checkbox(
+                                      fillColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.black),
+                                      checkColor: Colors.blue,
+                                      activeColor:
+                                          const Color.fromRGBO(0, 123, 255, 1),
+                                      value: true,
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                  5.0))), // Rounded Checkbox
+                                      onChanged: (value) {},
+                                    )),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 1)),
+                                const Text(
+                                  'Google Authenticator',
+                                  style: TextStyle(
+                                      fontSize: 10, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
+                    const Text(
+                      'Select Email, SMS or Google Authenticator to send log in code to user Make sure you have configured SMS Settings',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    )
+                  ]),
+                ))
+          ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         const Divider(
@@ -426,118 +420,112 @@ class AdminSettingsSecurity extends StatelessWidget {
           color: Colors.black,
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                      child: Container(
+        Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
                     child: Row(
+                  children: [
+                    SizedBox(
+                      width: 35,
+                      height: 35,
+                      child: SvgPicture.network(
+                          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fconsored_word.svg?alt=media&token=3df34012-041e-4ec7-8d31-326567f3ddfb'),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 35,
-                          height: 35,
-                          child: SvgPicture.network(
-                              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fconsored_word.svg?alt=media&token=3df34012-041e-4ec7-8d31-326567f3ddfb'),
+                        const Text(
+                          'Censored Words Enabled',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 82, 95, 127),
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold),
                         ),
-                        const Padding(padding: EdgeInsets.only(left: 10)),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Censored Words Enabled',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 82, 95, 127),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 5)),
-                            SizedBox(
-                              width: SizeConfig(context).screenWidth * 0.35,
-                              child: const Text(
-                                'Enable/Disable Words to be censored',
-                                style: TextStyle(fontSize: 11),
-                              ),
-                            )
-                          ],
-                        ),
-                        const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                        const Padding(padding: EdgeInsets.only(top: 5)),
                         SizedBox(
-                          height: 20,
-                          child: Transform.scale(
-                            scaleX: 1,
-                            scaleY: 1,
-                            child: CupertinoSwitch(
-                              activeColor: Colors.black,
-                              // activeColor: kprimaryColor,
-                              value: true,
-                              onChanged: (value) {},
-                            ),
+                          width: SizeConfig(context).screenWidth * 0.35,
+                          child: const Text(
+                            'Enable/Disable Words to be censored',
+                            style: TextStyle(fontSize: 11),
                           ),
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 15))
+                        )
                       ],
                     ),
-                  ))
-                ],
-              )
-            ],
-          ),
-        ),
-        const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 100,
-                child: Text(
-                  'Censored Words',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 85, 95, 127)),
-                ),
-              ),
-              Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    width: 500,
-                    child: Column(children: [
-                      Container(
-                        width: 400,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: 7,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    SizedBox(
+                      height: 20,
+                      child: Transform.scale(
+                        scaleX: 1,
+                        scaleY: 1,
+                        child: CupertinoSwitch(
+                          activeColor: Colors.black,
+                          // activeColor: kprimaryColor,
+                          value: true,
+                          onChanged: (value) {},
                         ),
                       ),
-                      const Text(
-                        'Words to be censored, separated by a comma (,)',
-                        style: TextStyle(
-                          fontSize: 12,
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 15))
+                  ],
+                ))
+              ],
+            )
+          ],
+        ),
+        const Padding(padding: EdgeInsets.only(top: 20)),
+        Row(
+          children: [
+            const SizedBox(
+              width: 100,
+              child: Text(
+                'Censored Words',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 85, 95, 127)),
+              ),
+            ),
+            Expanded(
+                flex: 2,
+                child: SizedBox(
+                  width: 500,
+                  child: Column(children: [
+                    Container(
+                      width: 400,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 250, 250, 250),
+                          border: Border.all(color: Colors.grey)),
+                      child: TextFormField(
+                        minLines: 1,
+                        maxLines: 7,
+                        onChanged: (value) async {},
+                        keyboardType: TextInputType.multiline,
+                        style: const TextStyle(fontSize: 12),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: '',
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
-                      )
-                    ]),
-                  ))
-            ],
-          ),
+                      ),
+                    ),
+                    const Text(
+                      'Words to be censored, separated by a comma (,)',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    )
+                  ]),
+                ))
+          ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         const Divider(
@@ -647,51 +635,49 @@ class AdminSettingsSecurity extends StatelessWidget {
           ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 100,
-                child: Text(
-                  'reCAPTCHA Secret Key',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 85, 95, 127)),
-                ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 100,
+              child: Text(
+                'reCAPTCHA Secret Key',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 85, 95, 127)),
               ),
-              Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    width: 500,
-                    child: Column(children: [
-                      Container(
-                        width: 400,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: 7,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+            ),
+            Expanded(
+                flex: 2,
+                child: SizedBox(
+                  width: 500,
+                  child: Column(children: [
+                    Container(
+                      width: 400,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 250, 250, 250),
+                          border: Border.all(color: Colors.grey)),
+                      child: TextFormField(
+                        minLines: 1,
+                        maxLines: 7,
+                        onChanged: (value) async {},
+                        keyboardType: TextInputType.multiline,
+                        style: const TextStyle(fontSize: 12),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: '',
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
-                    ]),
-                  ))
-            ],
-          ),
+                    ),
+                  ]),
+                ))
+          ],
         ),
         const AdminSettingFooter()
       ]),

@@ -380,114 +380,111 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
   }
 
   Widget wasabiWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        Container(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 30),
-          decoration: const BoxDecoration(
-              color: Color.fromRGBO(120, 137, 232, 1),
-              borderRadius: BorderRadius.all(Radius.circular(3))),
-          child: Row(children: [
-            SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwasabi.svg?alt=media&token=d06b96a0-8a09-4f37-b9db-65865c3368f7',
-              width: 30,
-            ),
-            const Padding(padding: EdgeInsets.only(left: 15)),
-            SizedBox(
-                width: SizeConfig(context).screenWidth * 0.5,
-                child: Text(
-                  "Wasabi Before enabling Wasabi, make sure you upload the whole 'uploads' folder to your bucket. Before disabling Wasabi, make sure you download the whole 'uploads' folder to your server.",
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(color: Colors.white, fontSize: fontSize),
-                ))
-          ]),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      Container(
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 30),
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(120, 137, 232, 1),
+            borderRadius: BorderRadius.all(Radius.circular(3))),
+        child: Row(children: [
+          SvgPicture.network(
             'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwasabi.svg?alt=media&token=d06b96a0-8a09-4f37-b9db-65865c3368f7',
-            'Wasabi',
-            'Enable Wasabi storage (Note: Enable this will disable all other options)'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        titleAndsubtitleInput(
-            'Bucket Name', 30, 1, () {}, 'Your Wasabi bucket name'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput(
-            'Access Key ID', 30, 1, () {}, 'Your Wasabi Access Key ID'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput(
-            'Access Key Secret', 30, 1, () {}, 'Your Wasabi Access Key Secret'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        Container(
-            height: 80,
-            decoration: const BoxDecoration(
-                color: Color.fromRGBO(240, 240, 240, 1),
-                border:
-                    Border(top: BorderSide(width: 0.5, color: Colors.grey))),
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 15),
-            child: Row(children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(200, 50),
-                  maximumSize: const Size(200, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Test Connection (Vision API)',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
+            width: 30,
+          ),
+          const Padding(padding: EdgeInsets.only(left: 15)),
+          SizedBox(
+              width: SizeConfig(context).screenWidth * 0.5,
+              child: Text(
+                "Wasabi Before enabling Wasabi, make sure you upload the whole 'uploads' folder to your bucket. Before disabling Wasabi, make sure you download the whole 'uploads' folder to your server.",
+                overflow: TextOverflow.clip,
+                style: TextStyle(color: Colors.white, fontSize: fontSize),
+              ))
+        ]),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwasabi.svg?alt=media&token=d06b96a0-8a09-4f37-b9db-65865c3368f7',
+          'Wasabi',
+          'Enable Wasabi storage (Note: Enable this will disable all other options)'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      titleAndsubtitleInput(
+          'Bucket Name', 30, 1, () {}, 'Your Wasabi bucket name'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput(
+          'Access Key ID', 30, 1, () {}, 'Your Wasabi Access Key ID'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput(
+          'Access Key Secret', 30, 1, () {}, 'Your Wasabi Access Key Secret'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      Container(
+          height: 80,
+          decoration: const BoxDecoration(
+              color: Color.fromRGBO(240, 240, 240, 1),
+              border: Border(top: BorderSide(width: 0.5, color: Colors.grey))),
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 15),
+          child: Row(children: [
+            const Flexible(fit: FlexFit.tight, child: SizedBox()),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(245, 54, 92, 1),
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2.0)),
+                minimumSize: const Size(200, 50),
+                maximumSize: const Size(200, 50),
               ),
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2.0)),
-                  minimumSize: const Size(150, 50),
-                  maximumSize: const Size(150, 50),
-                ),
-                onPressed: () {
-                  () => {};
-                },
-                child: const Text('Save Changes',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 33, 37, 41),
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold)),
-              )
-            ]))
-      ]),
-    );
+              onPressed: () {
+                () => {};
+              },
+              child: const Text('Test Connection (Vision API)',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.bold)),
+            ),
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2.0)),
+                minimumSize: const Size(150, 50),
+                maximumSize: const Size(150, 50),
+              ),
+              onPressed: () {
+                () => {};
+              },
+              child: const Text('Save Changes',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 33, 37, 41),
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.bold)),
+            )
+          ]))
+    ]);
   }
 
   Widget digitalOceanWidget() {

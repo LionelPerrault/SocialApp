@@ -21,8 +21,8 @@ class Setting {
 
   Setting.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      appName = jsonMap['app_name'] ?? null;
-      mainColor = jsonMap['main_color'] ?? null;
+      appName = jsonMap['app_name'];
+      mainColor = jsonMap['main_color'];
       mainDarkColor = jsonMap['main_dark_color'] ?? '';
       secondColor = jsonMap['second_color'] ?? '';
       secondDarkColor = jsonMap['second_dark_color'] ?? '';

@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
+
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminSettingsSystem extends StatefulWidget {
-  AdminSettingsSystem({super.key});
+  const AdminSettingsSystem({super.key});
 
   @override
   State createState() => AdminSettingsSystemState();
@@ -1030,73 +1030,70 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
   }
 
   Widget moduleDropDown(title, List<Map> dropDownItems) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 100,
-            alignment: Alignment.topLeft,
-            child: Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 85, 95, 127)),
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 100,
+          alignment: Alignment.topLeft,
+          child: Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
           ),
-          Expanded(
-              flex: 2,
-              child: SizedBox(
-                width: 500,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 400,
-                        height: 70,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: DropdownButton(
-                          value: dropDownItems[0]['value'],
-                          itemHeight: 70,
-                          items: dropDownItems
-                              .map((e) => DropdownMenuItem(
-                                  value: e['value'],
-                                  child: SizedBox(
-                                      height: 70,
-                                      child: ListTile(
-                                        leading: Icon(e['icon']),
-                                        title: Text(e['title']),
-                                        subtitle: Text(e['subtitle']),
-                                      ))))
-                              .toList(),
-                          onChanged: (value) {
-                            //get value when changed
-                            // dropdownValue = value!;
-                            setState(() {});
-                          },
-                          icon: const Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Icon(Icons.arrow_drop_down)),
-                          iconEnabledColor: Colors.white, //Icon color
-                          style: const TextStyle(
-                            color: Colors.black, //Font color
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          dropdownColor: Colors.white,
-                          underline: Container(), //remove underline
-                          isExpanded: true,
-                          isDense: true,
-                        ),
-                      ),
-                    ]),
-              ))
-        ],
-      ),
+        ),
+        Expanded(
+            flex: 2,
+            child: SizedBox(
+              width: 500,
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  width: 400,
+                  height: 70,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 250, 250, 250),
+                      border: Border.all(color: Colors.grey)),
+                  child: DropdownButton(
+                    value: dropDownItems[0]['value'],
+                    itemHeight: 70,
+                    items: dropDownItems
+                        .map((e) => DropdownMenuItem(
+                            value: e['value'],
+                            child: SizedBox(
+                                height: 70,
+                                child: ListTile(
+                                  leading: Icon(e['icon']),
+                                  title: Text(e['title']),
+                                  subtitle: Text(e['subtitle']),
+                                ))))
+                        .toList(),
+                    onChanged: (value) {
+                      //get value when changed
+                      // dropdownValue = value!;
+                      setState(() {});
+                    },
+                    icon: const Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Icon(Icons.arrow_drop_down)),
+                    iconEnabledColor: Colors.white, //Icon color
+                    style: const TextStyle(
+                      color: Colors.black, //Font color
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    dropdownColor: Colors.white,
+                    underline: Container(), //remove underline
+                    isExpanded: true,
+                    isDense: true,
+                  ),
+                ),
+              ]),
+            ))
+      ],
     );
   }
 

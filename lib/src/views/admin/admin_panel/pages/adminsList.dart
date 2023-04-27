@@ -5,7 +5,6 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class AdminAdminsList extends StatefulWidget {
@@ -83,7 +82,7 @@ class AdminAdminsListState extends mvc.StateMVC<AdminAdminsList> {
   }
 
   listCell(itemData) {
-    return Container(
+    return SizedBox(
       height: 40,
       child: Row(
         children: [

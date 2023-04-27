@@ -1392,7 +1392,7 @@ class PostController extends ControllerMVC {
         await ProfileController().getUserInfo(product['productAdmin']['uid']);
     productAdmin = adminInfo;
     setState(() {});
-    print('This product was posted by ${product['realEstateAdmin']}');
+
     return true;
   }
 
@@ -1494,7 +1494,6 @@ class PostController extends ControllerMVC {
 
   Future<void> realEstateHideFromTimeline(
       String realEstateUid, bool value) async {
-    print(realEstateUid);
     await FirebaseFirestore.instance
         .collection(Helper.realEstatesField)
         .doc(realEstateUid)
@@ -1926,7 +1925,6 @@ class PostController extends ControllerMVC {
   }
 
   savePostLikes(postId, like) async {
-    print("save post likes");
     var userInfo = UserManager.userInfo;
     var snapshot = await Helper.postLikeComment.doc(postId).get();
     Map<String, dynamic> gotLikes = snapshot.data() ?? {};
@@ -1971,7 +1969,7 @@ class PostController extends ControllerMVC {
     //  await getReply(postId, snapshot.docs[i].id).then((value) {
     //    reply = value;
     //  });
-    print("comment-------------$userManager");
+
     comment.insert(0, {
       'data': {'uid': userManager['uid'], 'content': data, 'type': type},
       'userInfo': userManager,
@@ -1979,7 +1977,7 @@ class PostController extends ControllerMVC {
       'reply': reply,
       'likes': [],
     });
-    print("comment- added------------$comment");
+
     // if (!existId) {
     //   await Helper.postLikeComment.doc(postId).set({'likes': {}});
     // }

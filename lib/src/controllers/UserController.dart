@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:otp/otp.dart';
@@ -127,7 +128,7 @@ class UserController extends ControllerMVC {
       return false;
     }
 
-    passworkdValidation = await passworkdValidate(password);
+    passworkdValidation = passworkdValidate(password);
     if (signUpUserInfo['password'] != signUpUserInfo['confirmPassword']) {
       failRegister =
           'password is mismatching. please check your password again';
@@ -143,7 +144,9 @@ class UserController extends ControllerMVC {
         return false;
       }
     } on FirebaseAuthException catch (e) {
-      print(e.code);
+      if (kDebugMode) {
+        print(e.code);
+      }
     }
 
     QuerySnapshot<TokenLogin> querySnapshot =
@@ -316,7 +319,7 @@ class UserController extends ControllerMVC {
 
   Future<bool> enableDisableTwoFactorAuthentication(
       String verificationCode, String type) async {
-    var codeCheck = await twoFactorAuthenticationChecker(verificationCode);
+    var codeCheck = twoFactorAuthenticationChecker(verificationCode);
     if (codeCheck) {
       var twoFactorData = {
         'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : '',
@@ -580,7 +583,9 @@ class UserController extends ControllerMVC {
         }
       }
     } on FirebaseAuthException catch (e) {
-      print(e.code);
+      if (kDebugMode) {
+        print(e.code);
+      }
       if (e.code == 'invalid-email' || e.code == 'user-not-found') {
         failLogin = 'The email you entered does not belong to any account';
         setState(() {});
@@ -610,7 +615,7 @@ class UserController extends ControllerMVC {
         .collection("FCMToken")
         .where('token', isEqualTo: fcmtoken)
         .get();
-    if (!snapshot.docs.isEmpty) {
+    if (snapshot.docs.isNotEmpty) {
       var docuId = snapshot.docs.first.id;
       await FirebaseFirestore.instance
           .collection("FCMToken")
@@ -621,7 +626,7 @@ class UserController extends ControllerMVC {
 
   Future<bool> loginWithVerificationCode(
       String verificationCode, context) async {
-    var returnVal = await twoFactorAuthenticationChecker(verificationCode);
+    var returnVal = twoFactorAuthenticationChecker(verificationCode);
     if (returnVal) {
       await Helper.saveJSONPreference(Helper.userField, {...userInfo});
       await UserManager.getUserInfo();
@@ -705,7 +710,7 @@ class UserController extends ControllerMVC {
 
     ActionCodeSettings acs = ActionCodeSettings(
         url:
-            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
+            "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=$uuid",
         handleCodeInApp: false,
         iOSBundleId: DefaultFirebaseOptions.currentPlatform.iosBundleId);
     User? currentFirebaseUser = FirebaseAuth.instance.currentUser;
@@ -755,7 +760,6 @@ class UserController extends ControllerMVC {
       FirebaseAuth.instance.currentUser?.reload();
       // change password now!;
       // first get relysia password.
-      String uid = FirebaseAuth.instance.currentUser!.uid;
 
       {
         var response = await RelysiaManager.authUser(data['email'], password);
@@ -814,7 +818,7 @@ class UserController extends ControllerMVC {
 
   signOutUser(context) async {
     UserManager.isLogined = false;
-    print('logoutingg now......******........');
+
     await Helper.makeOffline();
     FirebaseAuth.instance.signOut();
     UserManager.userInfo = {};
@@ -920,21 +924,10 @@ class UserController extends ControllerMVC {
   }
 
   Future<void> resetGetUserInfo() async {
-    var info;
     FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
-        .get()
-        .then((value) async => {
-              userInfo = await Helper.getJSONPreference(Helper.userField),
-              userInfo['isStarted'] = true,
-              info = UserManager.userInfo.toString(),
-              UserManager.getUserInfo(),
-              await Helper.saveJSONPreference(Helper.userField,
-                  {...userInfo, 'avatar': value.data()!['avatar']}),
-              await Helper.getJSONPreference(Helper.userField),
-              setState(() {})
-            });
+        .get();
   }
 
   //change user avatar
@@ -1168,9 +1161,7 @@ class UserController extends ControllerMVC {
         // delete account on authentication after user data on database is deleted
         await FirebaseAuth.instance.currentUser?.delete();
       });
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
     timer?.cancel();
     UserManager.isLogined = false;
     await Navigator.pushReplacementNamed(context, RouteNames.login);

@@ -135,7 +135,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
                 addroute = 'addNew';
                 setState(() {});
               },
-              'size': Size(180, 50),
+              'size': const Size(180, 50),
             },
           ),
           Container(
@@ -155,9 +155,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
                 stateManager = event.stateManager;
                 stateManager.setShowColumnFilter(true);
               },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
-              },
+              onChanged: (PlutoGridOnChangedEvent event) {},
             ),
           ),
         ],
@@ -181,7 +179,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
                 addroute = 'main';
                 setState(() {});
               },
-              'size': Size(120, 50),
+              'size': const Size(120, 50),
             },
           ),
           textAndSelect('Default', 'Make it the default language of the site'),
@@ -352,7 +350,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
                 ),
                 Text(content,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(fontSize: 13)),
+                    style: const TextStyle(fontSize: 13)),
               ],
             ),
           )),

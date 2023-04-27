@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
+
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminListGenres extends StatefulWidget {
-  AdminListGenres({super.key});
+  const AdminListGenres({super.key});
 
   @override
   State createState() => AdminListGenresState();
@@ -213,31 +213,29 @@ class AdminListGenresState extends mvc.StateMVC<AdminListGenres> {
   }
 
   Widget addNewGenreWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.movie_creation),
-            pagename: 'Movies › Genres › Add New Genre',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': const Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.movie_creation),
+          pagename: 'Movies › Genres › Add New Genre',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          titleAndsubtitleInput('Name', 40, 1, ''),
-          titleAndsubtitleInput('Order', 40, 1, ''),
-          titleAndsubtitleInput('description', 200, 8, ''),
-          // titleAndsubtitleTextarea('Description',4,''),
-          footer(),
-        ],
-      ),
+            'size': const Size(120, 50),
+          },
+        ),
+        titleAndsubtitleInput('Name', 40, 1, ''),
+        titleAndsubtitleInput('Order', 40, 1, ''),
+        titleAndsubtitleInput('description', 200, 8, ''),
+        // titleAndsubtitleTextarea('Description',4,''),
+        footer(),
+      ],
     );
   }
   // Widget titleAndsubtitleTextarea(title, line, subtitle) {

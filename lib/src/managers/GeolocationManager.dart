@@ -9,13 +9,13 @@ class GeolocationManager {
   static LatLng searchPoint = const LatLng(0, 0);
   static LatLng choosePoint = const LatLng(0, 0);
 
-  static var timer = null;
+  static var timer;
 
   static void startGeoTimer() {
     if (timer != null) return;
 
     _getCurrentPosition();
-    timer = Timer.periodic(Duration(seconds: 60), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 60), (timer) {
       _getCurrentPosition();
     });
   }

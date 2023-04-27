@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/helper.dart';
@@ -29,7 +30,9 @@ class RelysiaManager {
                 //print(responseData),
               });
     } catch (exception) {
-      print("occurs exception" + exception.toString());
+      if (kDebugMode) {
+        print("occurs exception" + exception.toString());
+      }
     }
     return responseData;
   }
@@ -91,9 +94,7 @@ class RelysiaManager {
                 respondData = jsonDecode(res.body),
               });
       // ignore: empty_catches
-    } catch (exception) {
-      print(exception.toString());
-    }
+    } catch (exception) {}
     return r;
   }
 
@@ -112,9 +113,7 @@ class RelysiaManager {
                 paymail['address'] = resData['data']['address'],
               },
           });
-    } catch (exception) {
-      print(exception.toString());
-    }
+    } catch (exception) {}
     return paymail;
   }
 
@@ -135,7 +134,9 @@ class RelysiaManager {
               },
           });
     } catch (exception) {
-      print(exception.toString());
+      if (kDebugMode) {
+        print(exception.toString());
+      }
     }
     return balance;
   }
@@ -175,7 +176,9 @@ class RelysiaManager {
             );
       }
     } catch (exception) {
-      print(exception.toString());
+      if (kDebugMode) {
+        print(exception.toString());
+      }
     }
     return returnData;
   }

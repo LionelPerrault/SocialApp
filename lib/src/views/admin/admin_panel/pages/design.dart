@@ -7,7 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminDesign extends StatefulWidget {
-  AdminDesign({super.key});
+  const AdminDesign({super.key});
 
   @override
   State createState() => AdminDesignState();

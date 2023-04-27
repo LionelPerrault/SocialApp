@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminListMovies extends StatefulWidget {
-  AdminListMovies({super.key});
+  const AdminListMovies({super.key});
 
   @override
   State createState() => AdminListMoviesState();
@@ -147,41 +146,39 @@ class AdminListMoviesState extends mvc.StateMVC<AdminListMovies> {
   }
 
   Widget addNewMovieWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.movie_creation),
-            pagename: 'Movies › Add New Movie',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': const Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.movie_creation),
+          pagename: 'Movies › Add New Movie',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          titleAndsubtitleInput('Movie Source', 40, 1,
-              'From YouTube, Vimeo or site.com/movie.mp4'),
-          titleAndUpload('Or Upload Movie'),
-          titleAndsubtitleInput('Movie Title', 40, 1, ''),
-          titleAndsubtitleInput('Description', 80, 4, ''),
-          titleAndsubtitleInput('IMDB', 40, 1,
-              'IMDB Link, Example: https://www.imdb.com/title/tt0111161'),
-          titleAndsubtitleInput('Movie Star', 80, 4,
-              'Separated by a comma (,) Example: Tom Hanks, Julia Roberts, Jim Carrey'),
-          titleAndsubtitleInput(
-              'Release Year', 40, 1, 'Movie release year, Example: 1995'),
-          titleAndsubtitleInput(
-              'Duration', 40, 1, 'Movie duration in minutes, Example: 120'),
-          titleAndUpload('Poster'),
-          footer(),
-        ],
-      ),
+            'size': const Size(120, 50),
+          },
+        ),
+        titleAndsubtitleInput(
+            'Movie Source', 40, 1, 'From YouTube, Vimeo or site.com/movie.mp4'),
+        titleAndUpload('Or Upload Movie'),
+        titleAndsubtitleInput('Movie Title', 40, 1, ''),
+        titleAndsubtitleInput('Description', 80, 4, ''),
+        titleAndsubtitleInput('IMDB', 40, 1,
+            'IMDB Link, Example: https://www.imdb.com/title/tt0111161'),
+        titleAndsubtitleInput('Movie Star', 80, 4,
+            'Separated by a comma (,) Example: Tom Hanks, Julia Roberts, Jim Carrey'),
+        titleAndsubtitleInput(
+            'Release Year', 40, 1, 'Movie release year, Example: 1995'),
+        titleAndsubtitleInput(
+            'Duration', 40, 1, 'Movie duration in minutes, Example: 120'),
+        titleAndUpload('Poster'),
+        footer(),
+      ],
     );
   }
 
@@ -210,7 +207,7 @@ class AdminListMoviesState extends mvc.StateMVC<AdminListMovies> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 500,
                     height: height,
                     child: TextField(
