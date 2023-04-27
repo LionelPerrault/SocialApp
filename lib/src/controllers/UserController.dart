@@ -704,22 +704,12 @@ class UserController extends ControllerMVC {
     }
 
     ActionCodeSettings acs = ActionCodeSettings(
-<<<<<<< HEAD
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
         handleCodeInApp: false,
         iOSBundleId: DefaultFirebaseOptions.currentPlatform.iosBundleId);
     User? currentFirebaseUser = FirebaseAuth.instance.currentUser;
     await currentFirebaseUser!.sendEmailVerification(acs);
-=======
-      url:
-          "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${uuid}",
-      handleCodeInApp: false,
-      iOSBundleId: DefaultFirebaseOptions.currentPlatform.iosBundleId,
-    );
-    User? currentFirebaseUser = FirebaseAuth.instance.currentUser;
-    await currentFirebaseUser!.sendEmailVerification();
->>>>>>> f1df292cac3ae517b1f04d9255c16144068d294a
     return uuid;
   }
 
