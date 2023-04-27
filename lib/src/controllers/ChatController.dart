@@ -56,7 +56,6 @@ class ChatController extends ControllerMVC {
   }
 
   Future<bool> sendMessage(newOrNot, messageType, data) async {
-    var newChat = false;
     bool success = false;
     if (sendData) {
       return false;

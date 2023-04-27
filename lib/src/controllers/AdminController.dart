@@ -100,11 +100,6 @@ class AdminController extends ControllerMVC {
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-    var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.adminPanel)
-        .doc(Helper.backPaymail)
-        .get();
-    var backPaymail = snapshot.data()!['address'];
     await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
       (res) async => {
         if (res['success'] == true)

@@ -482,7 +482,8 @@ class ProfileAvatarandTabScreenState extends mvc
                                                   SizeConfig.smallScreenSize)
                                               ? 25
                                               : 15,
-                                          color: Color.fromRGBO(76, 76, 76, 1),
+                                          color: const Color.fromRGBO(
+                                              76, 76, 76, 1),
                                         ),
                                         (SizeConfig(context).screenWidth < 750)
                                             ? Container()

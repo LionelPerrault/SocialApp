@@ -3,9 +3,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/widget/postCell.dart';
-
-import '../../routes/route_names.dart';
 
 class PhotoEachScreen extends StatefulWidget {
   PhotoEachScreen({Key? key, required this.docId})

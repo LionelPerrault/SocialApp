@@ -451,12 +451,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     // cursorColor: Colors.white,
                     focusNode: _focus,
                     onTap: () {
-                      print("tapped popupshowing");
                       setState(() {
-                        if (nowPost != '')
+                        if (nowPost != '') {
                           popupShowing = true;
-                        else
+                        } else {
                           popupShowing = !popupShowing;
+                        }
                       });
                     },
                     style: const TextStyle(color: Color.fromARGB(255, 3, 3, 3)),

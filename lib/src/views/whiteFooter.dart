@@ -41,7 +41,7 @@ class footbarState extends State<footbar> {
                     Navigator.push<void>(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => AboutScreen(),
+                        builder: (BuildContext context) => const AboutScreen(),
                       ),
                     ),
                   },
@@ -61,7 +61,7 @@ class footbarState extends State<footbar> {
                     Navigator.push<void>(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => TermsScreen(),
+                        builder: (BuildContext context) => const TermsScreen(),
                       ),
                     ),
                   },
@@ -131,7 +131,8 @@ class rightFootbarState extends State<rightFootbar> {
                         Navigator.push<void>(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (BuildContext context) => AboutScreen(),
+                            builder: (BuildContext context) =>
+                                const AboutScreen(),
                           ),
                         ),
                       },
@@ -154,7 +155,8 @@ class rightFootbarState extends State<rightFootbar> {
                       Navigator.push<void>(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) => TermsScreen(),
+                          builder: (BuildContext context) =>
+                              const TermsScreen(),
                         ),
                       ),
                     },

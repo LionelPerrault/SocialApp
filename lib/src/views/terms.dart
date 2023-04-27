@@ -5,7 +5,8 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import '../helpers/helper.dart';
 
 class TermsScreen extends StatefulWidget {
-  TermsScreen({Key? key}) : super(key: key);
+  const TermsScreen({Key? key}) : super(key: key);
+  @override
   State createState() => TermsScreenState();
 }
 

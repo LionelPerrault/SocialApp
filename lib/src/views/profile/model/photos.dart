@@ -43,7 +43,7 @@ class Photos {
         .orderBy('postTime', descending: true)
         .get();
     var s = [];
-    s = await snapshot.docs.map((doc) => doc.data()['value']['photo']).toList();
+    s = snapshot.docs.map((doc) => doc.data()['value']['photo']).toList();
 
     photos = flatten(s);
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
+
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/people/widget/searchScreen.dart';
 import 'package:shnatter/src/widget/requestFriendCell.dart';

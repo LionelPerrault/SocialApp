@@ -260,9 +260,10 @@ class PostController extends ControllerMVC {
               if (!inInterested &&
                   !inGoing &&
                   !inInvited &&
-                  uid != data['eventAdmin'][0]['uid'])
+                  uid != data['eventAdmin'][0]['uid']) {
                 realAllEvents
                     .add({'data': data, 'id': id, 'interested': interested});
+              }
             }
           } else if (condition == 'unInterested' &&
               !interested &&
@@ -434,7 +435,7 @@ class PostController extends ControllerMVC {
     QuerySnapshot querySnapshot =
         await Helper.allInterests.orderBy('title').get();
     var doc = querySnapshot.docs;
-    print('Now you get all interests value to const');
+
     return doc;
   }
 
@@ -442,11 +443,10 @@ class PostController extends ControllerMVC {
 
   //user join in event interested function
   Future<bool> interestedEvent(String eventId) async {
-    print('now you are interested or uninterested this event ${eventId}');
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var interested = doc['eventInterested'];
-    var respon = await boolInterested(doc, UserManager.userInfo['uid']);
+    var respon = boolInterested(doc, UserManager.userInfo['uid']);
     if (respon) {
       interested
           .removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
@@ -489,7 +489,7 @@ class PostController extends ControllerMVC {
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var going = doc['eventGoing'];
-    var respon = await boolGoing(doc, UserManager.userInfo['uid']);
+    var respon = boolGoing(doc, UserManager.userInfo['uid']);
     if (respon) {
       going.removeWhere((item) => item['uid'] == UserManager.userInfo['uid']);
       await FirebaseFirestore.instance
@@ -641,7 +641,7 @@ class PostController extends ControllerMVC {
         var id = doc[i].id;
         var data = doc[i];
         var liked = await boolLiked(data, UserManager.userInfo['uid']);
-        print("uid----$uid,  pageadminuid: ${data['pageAdmin'][0]['uid']}");
+
         if (uid == data['pageAdmin'][0]['uid'] && condition == 'manage') {
           realAllpage.add({'data': data, 'id': id, 'liked': liked});
         } else if (condition == 'all') {
@@ -810,8 +810,6 @@ class PostController extends ControllerMVC {
   }
 
   Future<String> updatePageInfo(dynamic pageInfo) async {
-    print(page['pageUserName']);
-    print(pageInfo['pageUserName']);
     if (pageInfo['pageUserName'] == page['pageUserName']) {
       var result = await Helper.pagesData.doc(viewPageId).update(pageInfo);
       getSelectedPage(viewPageName);
@@ -893,13 +891,14 @@ class PostController extends ControllerMVC {
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
         var data = doc[i];
-        var joined = await boolJoined(data, UserManager.userInfo['uid']);
+        var joined = boolJoined(data, UserManager.userInfo['uid']);
         if (uid == data['groupAdmin'][0]['uid'] && condition == 'manage') {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
         } else if (condition == 'all' && uid != data['groupAdmin'][0]['uid']) {
           if (data['groupPost']) {
-            if (!joined && uid != data['groupAdmin'][0]['uid'])
+            if (!joined && uid != data['groupAdmin'][0]['uid']) {
               realAllGroups.add({'data': data, 'id': id, 'joined': joined});
+            }
           }
         } else if (condition == 'joined' && joined) {
           realAllGroups.add({'data': data, 'id': id, 'joined': joined});
@@ -1350,7 +1349,6 @@ class PostController extends ControllerMVC {
         }
         setState(() {});
       }
-      print('Now you get all products');
     });
   }
 

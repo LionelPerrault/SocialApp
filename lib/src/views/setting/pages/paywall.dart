@@ -45,7 +45,7 @@ class SettingPaywallForUserState extends mvc.StateMVC<SettingPaywallForUser> {
               button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
+            SizedBox(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5 + 40
@@ -104,7 +104,7 @@ class SettingPaywallForUserState extends mvc.StateMVC<SettingPaywallForUser> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: Column(

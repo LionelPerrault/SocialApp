@@ -576,7 +576,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                                         MaterialPageRoute<
                                                                             void>(
                                                                           builder: (BuildContext context) =>
-                                                                              TermsScreen(),
+                                                                              const TermsScreen(),
                                                                         ),
                                                                       );
                                                                     },
@@ -808,8 +808,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                 const EdgeInsets.only(top: 60, bottom: 53.5),
                             child: SizeConfig(context).screenWidth <
                                     SizeConfig.smallScreenSize
-                                ? footbarM()
-                                : footbar())
+                                ? const footbarM()
+                                : const footbar())
                       ],
                     )))));
   }

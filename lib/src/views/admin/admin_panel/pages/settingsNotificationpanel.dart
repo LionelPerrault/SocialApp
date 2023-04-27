@@ -7,7 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminSettingsNotification extends StatefulWidget {
-  AdminSettingsNotification({super.key});
+  const AdminSettingsNotification({super.key});
 
   @override
   State createState() => AdminSettingsNotificationState();
@@ -76,33 +76,31 @@ class AdminSettingsNotificationState
   }
 
   Widget pushNotificationWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2FsignalNotification.svg?alt=media&token=f93da041-d5e1-4df7-9e2e-73d0757f34ff',
-            'OneSignal Push Notifications',
-            'Turn the OneSignal push notification On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput('OneSignal APP ID', 30, 1, () {}, ''),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput('OneSignal REST API Key', 30, 1, () {}, ''),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        footer()
-      ]),
-    );
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2FsignalNotification.svg?alt=media&token=f93da041-d5e1-4df7-9e2e-73d0757f34ff',
+          'OneSignal Push Notifications',
+          'Turn the OneSignal push notification On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput('OneSignal APP ID', 30, 1, () {}, ''),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput('OneSignal REST API Key', 30, 1, () {}, ''),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      footer()
+    ]);
   }
 
   Widget websiteNotificationWidget() {

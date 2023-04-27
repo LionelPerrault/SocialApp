@@ -66,7 +66,6 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
       joinStatus = true;
       setState(() {});
       await con.joinedGroup(con.viewGroupId).then((value) {
-        print("con.viewgroupid is ${con.viewGroupId}");
         con.getSelectedGroup(con.viewGroupId);
         joinStatus = false;
         setState(() {});

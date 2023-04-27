@@ -33,53 +33,49 @@ class AdminSettingsSMSState extends mvc.StateMVC<AdminSettingsSMS> {
           button: const {'flag': false},
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: SizeConfig(context).screenWidth > 500 ? 150 : 100,
-                child: const Text(
-                  'Test Phone Number',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 85, 95, 127)),
-                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: SizeConfig(context).screenWidth > 500 ? 150 : 100,
+              child: const Text(
+                'Test Phone Number',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 85, 95, 127)),
               ),
-              SizeConfig(context).screenWidth > 590
-                  ? const Padding(padding: EdgeInsets.only(left: 100))
-                  : const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              Container(
-                child: Column(children: [
-                  Row(
-                    children: [
-                      section(
-                          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Ftwilio.svg?alt=media&token=92b10723-2469-4a13-9b6d-d98615cb59e2',
-                          'Twilio'),
-                      const Padding(padding: EdgeInsets.only(left: 30)),
-                      section(
-                          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2FBulkSMS.svg?alt=media&token=81da607f-6afa-48bc-b4f5-44933b78b587',
-                          'BulkSMS'),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  Row(
-                    children: [
-                      section(
-                          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2FInfobip.svg?alt=media&token=1ccad982-3864-467f-a291-40d8887b84d2',
-                          'Infobip'),
-                      const Padding(padding: EdgeInsets.only(left: 30)),
-                      section(
-                          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2FMsg91.svg?alt=media&token=bed4c7f9-9581-4158-b544-5e06dff2681e',
-                          'Msg91'),
-                    ],
-                  )
-                ]),
+            ),
+            SizeConfig(context).screenWidth > 590
+                ? const Padding(padding: EdgeInsets.only(left: 100))
+                : const Flexible(fit: FlexFit.tight, child: SizedBox()),
+            Column(children: [
+              Row(
+                children: [
+                  section(
+                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Ftwilio.svg?alt=media&token=92b10723-2469-4a13-9b6d-d98615cb59e2',
+                      'Twilio'),
+                  const Padding(padding: EdgeInsets.only(left: 30)),
+                  section(
+                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2FBulkSMS.svg?alt=media&token=81da607f-6afa-48bc-b4f5-44933b78b587',
+                      'BulkSMS'),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              Row(
+                children: [
+                  section(
+                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2FInfobip.svg?alt=media&token=1ccad982-3864-467f-a291-40d8887b84d2',
+                      'Infobip'),
+                  const Padding(padding: EdgeInsets.only(left: 30)),
+                  section(
+                      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2FMsg91.svg?alt=media&token=bed4c7f9-9581-4158-b544-5e06dff2681e',
+                      'Msg91'),
+                ],
               )
-            ],
-          ),
+            ])
+          ],
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
         const Divider(

@@ -29,7 +29,6 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
   final TextEditingController searchController = TextEditingController();
   late FileController filecon;
   bool showMenu = false;
-  late AnimationController _drawerSlideController;
   double progress = 0;
   //
   var userInfo = UserManager.userInfo;

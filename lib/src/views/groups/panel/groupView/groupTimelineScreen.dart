@@ -363,7 +363,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     );
   }
 
-  @override
   Widget groupInfoCell({icon, text}) {
     return Container(
       margin: const EdgeInsets.all(3),
@@ -378,7 +377,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     );
   }
 
-  @override
   Widget friendInvites() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),

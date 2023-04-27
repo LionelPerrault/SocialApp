@@ -154,7 +154,7 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
 
   Widget footer() {
     return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
+      padding: const EdgeInsets.only(right: 20, top: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(
@@ -172,7 +172,7 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(

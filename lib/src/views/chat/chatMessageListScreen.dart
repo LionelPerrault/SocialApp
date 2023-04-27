@@ -93,7 +93,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               var list = messageList[index].data();
-                              var chatUserName = '';
                               var me = UserManager.userInfo['userName'];
                               return Container(
                                 padding: EdgeInsets.only(

@@ -299,8 +299,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                         : const EdgeInsets.only(top: 80, right: 0, bottom: 20),
                     child: SizeConfig(context).screenWidth <
                             SizeConfig.smallScreenSize
-                        ? footbarM()
-                        : footbar())
+                        ? const footbarM()
+                        : const footbar())
               ],
             ),
           ),

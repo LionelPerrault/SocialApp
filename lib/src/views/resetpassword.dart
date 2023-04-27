@@ -52,7 +52,7 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
               const Padding(padding: EdgeInsets.only(left: 20)),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(

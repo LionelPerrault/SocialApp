@@ -39,10 +39,9 @@ class PageCellState extends mvc.StateMVC<PageCell> {
   }
 
   pageLikeFunc() async {
-    print(widget.pageInfo['data']['pageAdmin'][0]['uid']);
     var pageAdminInfo = await ProfileController()
         .getUserInfo(widget.pageInfo['data']['pageAdmin'][0]['uid']);
-    print(pageAdminInfo);
+
     if (pageAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         pageAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         widget.pageInfo['data']['pageAdmin'][0]['uid'] ==
@@ -159,10 +158,10 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                           pageLikeFunc();
                         },
                         child: loading
-                            ? Container(
+                            ? const SizedBox(
                                 width: 10,
                                 height: 10,
-                                child: const CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   color: Colors.grey,
                                 ),
                               )

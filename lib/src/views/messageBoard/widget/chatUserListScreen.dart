@@ -116,7 +116,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
                   widget.onBack('message-list');
                 },
                 // hoverColor: Color.fromRGBO(240, 240, 240, 1),
-                leading: Container(
+                leading: SizedBox(
                   width: 44,
                   height: 44,
                   child: Stack(

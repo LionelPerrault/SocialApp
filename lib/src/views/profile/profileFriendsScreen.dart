@@ -25,7 +25,6 @@ class ProfileFriendScreen extends StatefulWidget {
 
 class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
   bool showSearch = false;
   late FocusNode searchFocusNode;

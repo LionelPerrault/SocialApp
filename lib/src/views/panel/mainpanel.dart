@@ -131,7 +131,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {
                       loadingFlag = true;
                     });
-                    print("view new post");
+
                     await con.getTimelinePost(
                         newPostNum, -1, PostType.timeline.index, '');
 

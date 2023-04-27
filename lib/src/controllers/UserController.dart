@@ -514,7 +514,6 @@ class UserController extends ControllerMVC {
       setState(() {});
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      var uid = userCredential.user!.uid;
       failLogin = '';
       setState(() {});
       QuerySnapshot<TokenLogin> querySnapshot =
