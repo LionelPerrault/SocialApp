@@ -236,7 +236,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
           ),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
               backgroundColor: Colors.grey[300],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13)),
@@ -306,7 +306,8 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                                         Icon(
                                           e['icon'],
                                           size: 15,
-                                          color: Color.fromRGBO(76, 76, 76, 1),
+                                          color: const Color.fromRGBO(
+                                              76, 76, 76, 1),
                                         ),
                                         const Padding(
                                             padding: EdgeInsets.only(left: 5)),

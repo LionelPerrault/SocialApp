@@ -1074,7 +1074,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                           },
                         ),
                       )
-                    : Container(
+                    : SizedBox(
                         height: 40,
                         child: TextField(
                           onChanged: (value) {

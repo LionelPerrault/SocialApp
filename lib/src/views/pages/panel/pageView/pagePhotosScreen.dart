@@ -27,8 +27,7 @@ class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [mainTabs(), tab == 'Photos' ? PhotosData() : AlbumsData()]);
+    return Column(children: [mainTabs(), PhotosData()]);
   }
 
   Widget mainTabs() {
@@ -116,18 +115,6 @@ class PagePhotosScreenState extends mvc.StateMVC<PagePhotosScreen> {
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
             child: Text('${con.page['pageName']} doesn`t have photos',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
-        : Container();
-  }
-
-  Widget AlbumsData() {
-    return con.page['pageAlbums'].isEmpty
-        ? Container(
-            padding: const EdgeInsets.only(top: 40),
-            alignment: Alignment.center,
-            child: Text('${con.page['pageName']} doesn`t have albums',
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )

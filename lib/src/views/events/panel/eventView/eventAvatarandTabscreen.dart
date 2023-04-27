@@ -619,14 +619,14 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
 
   uploadFile(XFile? pickedFile, type) async {
     final firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
+    UploadTask uploadTask;
     Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        reference = await firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = reference.putData(
@@ -636,7 +636,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        reference = await firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = reference.putFile(file);

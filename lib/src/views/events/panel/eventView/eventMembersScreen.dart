@@ -355,8 +355,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container(
-            child: Row(
+        : Row(
             children: [
               Expanded(
                 child: GridView.count(
@@ -387,7 +386,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                 ),
               )
             ],
-          ));
+          );
   }
 
   Widget InvitesData() {
@@ -399,8 +398,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container(
-            child: Row(
+        : Row(
             children: [
               Expanded(
                 child: GridView.count(
@@ -431,7 +429,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                 ),
               )
             ],
-          ));
+          );
   }
 
   Widget UserCell(

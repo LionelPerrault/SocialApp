@@ -921,8 +921,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
   }
 
   Widget generalWidget() {
-    return Container(
-        child: Column(
+    return Column(
       children: [
         pictureAndSelect(
             'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fglobal.svg?alt=media&token=a643b225-ed3a-4d0a-9bfd-8b70518f6424',
@@ -951,7 +950,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
         const Padding(padding: EdgeInsets.only(top: 15)),
         footer()
       ],
-    ));
+    );
   }
 
   Widget footer() {

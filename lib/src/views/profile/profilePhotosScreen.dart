@@ -77,19 +77,12 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
       padding: const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
       child: Column(children: [
         mainTabs(),
-        tab == 'Photos'
-            ? isMyFriend() ||
-                    ProfileController().viewProfileUid ==
-                        UserManager.userInfo['uid']
-                ? PhotosData()
-                : const Text(
-                    "You can see the friends data only if you are friends.")
-            : isMyFriend() ||
-                    ProfileController().viewProfileUid ==
-                        UserManager.userInfo['uid']
-                ? AlbumsData()
-                : const Text(
-                    "You can see the friends data only if you are friends.")
+        isMyFriend() ||
+                ProfileController().viewProfileUid ==
+                    UserManager.userInfo['uid']
+            ? PhotosData()
+            : const Text(
+                "You can see the friends data only if you are friends.")
       ]),
     );
   }
@@ -355,45 +348,5 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
         ],
       ),
     );
-  }
-
-  Widget AlbumsData() {
-    return photoModel.albums.isEmpty
-        ? Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            height: SizeConfig(context).screenHeight * 0.2,
-            color: Colors.white,
-            alignment: Alignment.center,
-            child: Text('${userInfo['fullName']} doesn`t have albums',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
-        : Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: SizeConfig(context).screenWidth > 800
-                        ? 6
-                        : SizeConfig(context).screenWidth > 600
-                            ? 4
-                            : SizeConfig(context).screenWidth > 210
-                                ? 3
-                                : 2,
-                    childAspectRatio: 3 / 3,
-                    padding: const EdgeInsets.only(top: 30),
-                    mainAxisSpacing: 4.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 4.0,
-                    children: photoModel.albums
-                        .map((photo) => albumCell(photo))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          );
   }
 }

@@ -172,78 +172,76 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
   }
 
   Widget ProfileWidget() {
-    return Container(
-      child: Column(children: [
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Frelationship.svg?alt=media&token=244f5d2e-250f-4f69-8957-9bfed24b82d5',
-            'Relationship Status',
-            'Turn the Relationship Status On/Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwebsite.svg?alt=media&token=22e86aa8-514d-4991-ae0c-1b6ac192e780',
-            'Website',
-            'Turn the Website On/Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fabout_me.svg?alt=media&token=5099fbec-a252-412a-ac6f-7801d4f924aa',
-            'About Me',
-            'Turn the About Me On/Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwork_info.svg?alt=media&token=2fc36355-2dd3-4c98-9248-6ab26d9c62da',
-            'Work Info',
-            'Turn the Work info On/Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Flocation_info.svg?alt=media&token=d8976b06-7e99-46b9-a3dd-dd0d6ad95680',
-            'Location Info',
-            'Turn the Location info On/Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Feducation_info.svg?alt=media&token=4bc81127-a161-4ebb-8e7b-9af1fae3c2cc',
-            'Education Info',
-            'Turn the Education info On/Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fsocial.svg?alt=media&token=bc248830-258f-4252-8db1-6987db1219d4',
-            'Social Links',
-            'Turn the Social Links On/Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Finterests.svg?alt=media&token=f4470f89-d0ed-460a-bf9e-7fabb1102fe4',
-            'Interests',
-            'Turn the Interests On/Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fprofile_design.svg?alt=media&token=71e53bf9-a73d-42b4-b35a-015d6051813a',
-            'Profile Design',
-            'Allow users to upload background image to their profiles'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        footer()
-      ]),
-    );
+    return Column(children: [
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Frelationship.svg?alt=media&token=244f5d2e-250f-4f69-8957-9bfed24b82d5',
+          'Relationship Status',
+          'Turn the Relationship Status On/Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwebsite.svg?alt=media&token=22e86aa8-514d-4991-ae0c-1b6ac192e780',
+          'Website',
+          'Turn the Website On/Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fabout_me.svg?alt=media&token=5099fbec-a252-412a-ac6f-7801d4f924aa',
+          'About Me',
+          'Turn the About Me On/Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fwork_info.svg?alt=media&token=2fc36355-2dd3-4c98-9248-6ab26d9c62da',
+          'Work Info',
+          'Turn the Work info On/Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Flocation_info.svg?alt=media&token=d8976b06-7e99-46b9-a3dd-dd0d6ad95680',
+          'Location Info',
+          'Turn the Location info On/Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Feducation_info.svg?alt=media&token=4bc81127-a161-4ebb-8e7b-9af1fae3c2cc',
+          'Education Info',
+          'Turn the Education info On/Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fsocial.svg?alt=media&token=bc248830-258f-4252-8db1-6987db1219d4',
+          'Social Links',
+          'Turn the Social Links On/Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Finterests.svg?alt=media&token=f4470f89-d0ed-460a-bf9e-7fabb1102fe4',
+          'Interests',
+          'Turn the Interests On/Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fprofile_design.svg?alt=media&token=71e53bf9-a73d-42b4-b35a-015d6051813a',
+          'Profile Design',
+          'Allow users to upload background image to their profiles'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      footer()
+    ]);
   }
 
   Widget footer() {
@@ -347,62 +345,59 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
   }
 
   Widget titleAndsubtitleInput(title, height, line, subtitle) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 100,
-            alignment: Alignment.topLeft,
-            child: Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 85, 95, 127)),
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 100,
+          alignment: Alignment.topLeft,
+          child: Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
           ),
-          Expanded(
-              flex: 2,
-              child: SizedBox(
-                width: 500,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 400,
-                        height: height,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: line,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        subtitle,
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                      )
-                    ]),
-              ))
-        ],
-      ),
+        ),
+        Expanded(
+            flex: 2,
+            child: SizedBox(
+              width: 500,
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  width: 400,
+                  height: height,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 250, 250, 250),
+                      border: Border.all(color: Colors.grey)),
+                  child: TextFormField(
+                    minLines: 1,
+                    maxLines: line,
+                    onChanged: (value) async {},
+                    keyboardType: TextInputType.multiline,
+                    style: const TextStyle(fontSize: 12),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: '',
+                      hintStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                )
+              ]),
+            ))
+      ],
     );
   }
 

@@ -38,7 +38,7 @@ class EmailVerificationScreenState
       actionString = "Successfully Verified";
       // send axios
       http.get(Uri.parse(widget.continueUrl));
-      print("email verification sucessfully data is");
+
       setState(() {});
     } on FirebaseAuthException catch (e) {
       if (e.code == 'expired-action-code') {

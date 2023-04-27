@@ -400,53 +400,51 @@ class AdminSettingsSMSState extends mvc.StateMVC<AdminSettingsSMS> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    width: 100,
-                    child: Text(
-                      'Infobip Password',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 85, 95, 127)),
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  width: 100,
+                  child: Text(
+                    'Infobip Password',
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 85, 95, 127)),
                   ),
-                  Expanded(
-                      flex: 2,
-                      child: SizedBox(
-                        width: 500,
-                        child: Column(children: [
-                          Container(
-                            width: 400,
-                            height: 30,
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 250, 250, 250),
-                                border: Border.all(color: Colors.grey)),
-                            child: TextFormField(
-                              minLines: 1,
-                              maxLines: 7,
-                              onChanged: (value) async {},
-                              keyboardType: TextInputType.multiline,
-                              style: const TextStyle(fontSize: 12),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: '',
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: SizedBox(
+                      width: 500,
+                      child: Column(children: [
+                        Container(
+                          width: 400,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 250, 250, 250),
+                              border: Border.all(color: Colors.grey)),
+                          child: TextFormField(
+                            minLines: 1,
+                            maxLines: 7,
+                            onChanged: (value) async {},
+                            keyboardType: TextInputType.multiline,
+                            style: const TextStyle(fontSize: 12),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              hintText: '',
+                              hintStyle: TextStyle(color: Colors.grey),
                             ),
                           ),
-                        ]),
-                      ))
-                ],
-              ),
+                        ),
+                      ]),
+                    ))
+              ],
             ),
           ],
         ),
@@ -517,59 +515,57 @@ class AdminSettingsSMSState extends mvc.StateMVC<AdminSettingsSMS> {
           color: Colors.black,
         ),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                width: 100,
-                child: Text(
-                  'Test Phone Number',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 85, 95, 127)),
-                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              width: 100,
+              child: Text(
+                'Test Phone Number',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 85, 95, 127)),
               ),
-              Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    width: 500,
-                    child: Column(children: [
-                      Container(
-                        width: 400,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 250, 250, 250),
-                            border: Border.all(color: Colors.grey)),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: 7,
-                          onChanged: (value) async {},
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 12),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+            ),
+            Expanded(
+                flex: 2,
+                child: SizedBox(
+                  width: 500,
+                  child: Column(children: [
+                    Container(
+                      width: 400,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 250, 250, 250),
+                          border: Border.all(color: Colors.grey)),
+                      child: TextFormField(
+                        minLines: 1,
+                        maxLines: 7,
+                        onChanged: (value) async {},
+                        keyboardType: TextInputType.multiline,
+                        style: const TextStyle(fontSize: 12),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: '',
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
-                      const Text(
-                        'Your phone number to test the SMS service i.e +12344567890 A test SMS will be sent to this phone number when you test the connection',
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      )
-                    ]),
-                  ))
-            ],
-          ),
+                    ),
+                    const Text(
+                      'Your phone number to test the SMS service i.e +12344567890 A test SMS will be sent to this phone number when you test the connection',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    )
+                  ]),
+                ))
+          ],
         ),
         const AdminSettingFooter()
       ]),

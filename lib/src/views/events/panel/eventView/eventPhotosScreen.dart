@@ -35,8 +35,7 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [mainTabs(), tab == 'Photos' ? PhotosData() : AlbumsData()]);
+    return Column(children: [mainTabs(), PhotosData()]);
   }
 
   Widget mainTabs() {
@@ -158,7 +157,6 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
   }
 
   Widget albumCell(value) {
-    print("value---------$value");
     return Container(
       alignment: Alignment.center,
       width: 200,
@@ -207,43 +205,5 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
         ],
       ),
     );
-  }
-
-  Widget AlbumsData() {
-    return photoModel.albums.isEmpty
-        ? Container(
-            padding: const EdgeInsets.only(top: 40),
-            alignment: Alignment.center,
-            child: Text('${con.event['eventName']} doesn`t have photos',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
-        : Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: SizeConfig(context).screenWidth > 800
-                        ? 6
-                        : SizeConfig(context).screenWidth > 600
-                            ? 4
-                            : SizeConfig(context).screenWidth > 210
-                                ? 3
-                                : 2,
-                    childAspectRatio: 3 / 3,
-                    padding: const EdgeInsets.only(top: 30),
-                    mainAxisSpacing: 4.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 4.0,
-                    children: photoModel.albums
-                        .map((photo) => albumCell(photo))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          );
   }
 }
