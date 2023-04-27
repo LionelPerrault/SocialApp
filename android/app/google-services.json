@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "444281700591-ngk10f1emcvtmf94vh8rr2bjq0e8pjs2.apps.googleusercontent.com",
+          "client_id": "444281700591-kj13rriv881n343802b13kqhjo9gat8v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.shnatter",
@@ -43,7 +43,7 @@
               "client_id": "444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.shnatter"
+                "bundle_id": "com.shantter"
               }
             }
           ]

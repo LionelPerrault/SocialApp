@@ -43,10 +43,10 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
       'text': 'Group Settings',
       'icon': Icons.settings,
     },
-    {
-      'text': 'Join Requests',
-      'icon': Icons.person_add_alt,
-    },
+    // {
+    //   'text': 'Join Requests',
+    //   'icon': Icons.person_add_alt,
+    // },
     {
       'text': 'Members',
       'icon': Icons.groups,
@@ -83,7 +83,6 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   var privacy;
   var canPub;
   var approval;
-  var groupInterests;
   var footerBtnState = false;
   @override
   void initState() {
@@ -740,6 +739,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   }
 
   Widget GroupInterestsWidget() {
+    print(con.group['groupInterests']);
     return Flexible(
         child: Container(
             padding: const EdgeInsets.only(right: 15),
@@ -754,11 +754,11 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                         context: context,
                         data: con.group['groupInterests'],
                         sendUpdate: (value) {
-                          groupInterests = value;
+                          con.group['groupInterests'] = value;
                           setState(() {});
                         }),
                   ),
-                  footerWidget({'groupInterests': groupInterests})
+                  footerWidget({'groupInterests': con.group['groupInterests']})
                 ],
               ),
             )));
@@ -946,6 +946,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                   'groupPrivacy': privacy,
                   'groupCanPub': canPub,
                   'groupApproval': approval,
+                  'groupInterests': con.group['groupInterests'],
                 }).then(
                   (value) async {
                     footerBtnState = false;

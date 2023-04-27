@@ -387,15 +387,16 @@ class PostCellState extends mvc.StateMVC<PostCell> {
         verbSentence = '$verbSentence & ';
       }
       var whereWord = '';
-      print("event id is ${widget.postInfo['eventId']}");
-      if (widget.postInfo['eventId'] != null) {
-        // if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
-        //  }
+
+      if (widget.postInfo['eventName'] != null) {
+        if (widget.postInfo['eventName'].isNotEmpty) {
+          whereWord = ' at Event "${widget.postInfo['eventName']}"';
+        }
       }
-      if (widget.postInfo.containsKey('groupId')) {
-        if (widget.postInfo['groupId'].isNotEmpty) {
-          whereWord = ' at Group';
+
+      if (widget.postInfo['groupName'] != null) {
+        if (widget.postInfo['groupName'].isNotEmpty) {
+          whereWord = ' at Group "${widget.postInfo['groupName']}"';
         }
       }
       verbSentence =
@@ -711,17 +712,17 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
     var verbSentence = '';
     var whereWord = '';
-    print("event id is ${widget.postInfo['eventId']}");
-    if (widget.postInfo['eventId'] != null) {
-      if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+       if (widget.postInfo['eventName'] != null) {
+        if (widget.postInfo['eventName'].isNotEmpty) {
+          whereWord = ' at Event "${widget.postInfo['eventName']}"';
+        }
       }
-    }
-    if (widget.postInfo['groupId'] != null) {
-      if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+
+      if (widget.postInfo['groupName'] != null) {
+        if (widget.postInfo['groupName'].isNotEmpty) {
+          whereWord = ' at Group "${widget.postInfo['groupName']}"';
+        }
       }
-    }
     verbSentence = ' wrote';
 
     verbSentence = '$verbSentence$whereWord';
@@ -1009,18 +1010,17 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
     var verbSentence = '';
     var whereWord = '';
-    print("event id is ${widget.postInfo['eventId']}");
-    if (widget.postInfo['eventId'] != null) {
-      if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+       if (widget.postInfo['eventName'] != null) {
+        if (widget.postInfo['eventName'].isNotEmpty) {
+          whereWord = ' at Event "${widget.postInfo['eventName']}"';
+        }
       }
-    }
-    if (widget.postInfo['groupId'] != null) {
-      if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
-      }
-    }
 
+      if (widget.postInfo['groupName'] != null) {
+        if (widget.postInfo['groupName'].isNotEmpty) {
+          whereWord = ' at Group "${widget.postInfo['groupName']}"';
+        }
+      }
     verbSentence =
         'shared ${widget.sharedPost!['adminInfo']!['firstName']} ${widget.sharedPost!['adminInfo']!['lastName']} \'s ${widget.sharedPost['type'] == 'photo' || widget.sharedPost['type'] == 'audio' || widget.sharedPost['type'] == 'poll' || widget.sharedPost['type'] == 'product' || widget.sharedPost['type'] == 'realestate' ? widget.sharedPost['type'] : 'Post'}';
     verbSentence = '$verbSentence$whereWord';
@@ -1311,16 +1311,17 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
     var verbSentence = '';
     var whereWord = '';
-    if (widget.postInfo['eventId'] != null) {
-      if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+       if (widget.postInfo['eventName'] != null) {
+        if (widget.postInfo['eventName'].isNotEmpty) {
+          whereWord = ' at Event "${widget.postInfo['eventName']}"';
+        }
       }
-    }
-    if (widget.postInfo['groupId'] != null) {
-      if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+
+      if (widget.postInfo['groupName'] != null) {
+        if (widget.postInfo['groupName'].isNotEmpty) {
+          whereWord = ' at Group "${widget.postInfo['groupName']}"';
+        }
       }
-    }
 
     verbSentence = ' added an audio';
     verbSentence = '$verbSentence$whereWord';
@@ -1604,16 +1605,17 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     var verbSentence = '';
     var whereWord = '';
 
-    if (widget.postInfo['eventId'] != null) {
-      if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+       if (widget.postInfo['eventName'] != null) {
+        if (widget.postInfo['eventName'].isNotEmpty) {
+          whereWord = ' at Event "${widget.postInfo['eventName']}"';
+        }
       }
-    }
-    if (widget.postInfo['groupId'] != null) {
-      if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+
+      if (widget.postInfo['groupName'] != null) {
+        if (widget.postInfo['groupName'].isNotEmpty) {
+          whereWord = ' at Group "${widget.postInfo['groupName']}"';
+        }
       }
-    }
 
     verbSentence = ' posted checkin';
     verbSentence = '$verbSentence$whereWord';
@@ -1910,16 +1912,17 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     var verbSentence = '';
     var whereWord = '';
 
-    if (widget.postInfo['eventId'] != null) {
-      if (widget.postInfo['eventId'].isNotEmpty) {
-        whereWord = ' at Event';
+       if (widget.postInfo['eventName'] != null) {
+        if (widget.postInfo['eventName'].isNotEmpty) {
+          whereWord = ' at Event "${widget.postInfo['eventName']}"';
+        }
       }
-    }
-    if (widget.postInfo['groupId'] != null) {
-      if (widget.postInfo['groupId'].isNotEmpty) {
-        whereWord = ' at Group';
+
+      if (widget.postInfo['groupName'] != null) {
+        if (widget.postInfo['groupName'].isNotEmpty) {
+          whereWord = ' at Group "${widget.postInfo['groupName']}"';
+        }
       }
-    }
 
     verbSentence = ' added a poll';
     verbSentence = '$verbSentence$whereWord';

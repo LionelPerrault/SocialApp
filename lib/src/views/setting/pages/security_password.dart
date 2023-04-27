@@ -57,112 +57,90 @@ class SettingSecurityPasswordScreenState
                       : SizeConfig(context).screenWidth * 0.9 - 30,
               child: Column(
                 children: [
-                  Container(
-                    width: 680,
-                    height: 65,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 252, 124, 95),
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                    child: Row(
-                      children: [
-                        const Padding(padding: EdgeInsets.only(left: 30)),
-                        const Icon(
-                          Icons.warning_rounded,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 10)),
-                        SizedBox(
-                            width: SizeConfig(context).screenWidth >
-                                    SizeConfig.smallScreenSize
-                                ? SizeConfig(context).screenWidth * 0.3
-                                : SizeConfig(context).screenWidth * 0.5 - 20,
-                            child: const Text(
-                              'Changing password will log you out from all other sessions',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11),
-                            ))
-                      ],
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Container(
+                          width: 680,
+                          height: 65,
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 252, 124, 95),
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                          child: Row(
                             children: [
-                              const Text('Confirm Current Password',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
+                              const Padding(padding: EdgeInsets.only(left: 30)),
+                              const Icon(
+                                Icons.warning_rounded,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              const Padding(padding: EdgeInsets.only(left: 10)),
                               SizedBox(
-                                width: 700,
-                                child: input(
-                                    validator: (value) async {},
-                                    onchange: (value) async {
-                                      currentPassword = value;
-                                    },
-                                    obscureText: true),
-                              )
+                                  width: SizeConfig(context).screenWidth >
+                                          SizeConfig.smallScreenSize
+                                      ? SizeConfig(context).screenWidth * 0.3
+                                      : SizeConfig(context).screenWidth * 0.5 -
+                                          20,
+                                  child: const Text(
+                                    'Changing password will log you out from all other sessions',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 11),
+                                  ))
                             ],
-                          )),
-                      const Padding(padding: EdgeInsets.only(right: 20))
+                          ),
+                        ),
+                      )
                     ],
                   ),
                   const Padding(padding: EdgeInsets.only(top: 20)),
                   Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Your New Password',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                width: 300,
-                                child: input(
-                                    validator: (value) async {},
-                                    onchange: (value) async {
-                                      newPassword = value;
-                                    },
-                                    obscureText: true),
-                              )
-                            ],
-                          )),
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Your New Password',
+                          50,
+                          1,
+                          (value) async {
+                            currentPassword = value;
+                            setState(() {});
+                          },
+                          '',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Your New Password',
+                          50,
+                          1,
+                          (value) async {
+                            newPassword = value;
+                            setState(() {});
+                          },
+                          '',
+                        ),
+                      ),
                       const Padding(padding: EdgeInsets.only(left: 25)),
                       Expanded(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Confirm New Password',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                width: 300,
-                                child: input(
-                                    validator: (value) async {},
-                                    onchange: (value) async {
-                                      confirmPassword = value;
-                                    },
-                                    obscureText: true),
-                              )
-                            ],
-                          )),
-                      const Padding(padding: EdgeInsets.only(right: 20))
+                        flex: 1,
+                        child: titleAndsubtitleInput(
+                          'Confirm New Password',
+                          50,
+                          1,
+                          (value) async {
+                            confirmPassword = value;
+                            setState(() {});
+                          },
+                          '',
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -178,17 +156,55 @@ class SettingSecurityPasswordScreenState
         ));
   }
 
-  Widget input({label, onchange, obscureText = false, validator}) {
-    return SizedBox(
-      height: 28,
-      child: StartedInput(
-        validator: (val) async {
-          validator(val);
-        },
-        obscureText: obscureText,
-        onChange: (val) async {
-          onchange(val);
-        },
+  Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
+    TextEditingController inputController = TextEditingController();
+    inputController.text = text;
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  width: 400,
+                  height: height,
+                  child: Column(
+                    children: [
+                      TextField(
+                        maxLines: line,
+                        minLines: line,
+                        controller: inputController,
+                        obscureText: true,
+                        onChanged: (value) {
+                          onChange(value);
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 10, left: 10),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 1),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
