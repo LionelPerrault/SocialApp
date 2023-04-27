@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as gMap;
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +16,8 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import 'package:shnatter/src/managers/GeolocationManager.dart';
+import 'package:google_maps_flutter_web/google_maps_flutter_web.dart'
+    as gMapWeb;
 
 // ignore: must_be_immutable
 class UserExplore extends StatefulWidget {
@@ -39,19 +41,19 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
   double zoomv = 19;
   GeoFlutterFire geo = GeoFlutterFire();
   late StreamSubscription subscription;
-  LatLng searchPoint = const LatLng(0, 0);
-  LatLng choosePoint = const LatLng(0, 0);
+  gMap.LatLng searchPoint = const gMap.LatLng(0, 0);
+  gMap.LatLng choosePoint = const gMap.LatLng(0, 0);
 
   String _currentAddress = "...";
   //Position? _currentPosition;
-  late GoogleMapController mapController;
+  late gMap.GoogleMapController mapController;
   bool isInitialized = false;
-  Map<MarkerId, Marker> markers =
-      <MarkerId, Marker>{}; // CLASS MEMBER, MAP OF MARKS
+  Map<gMap.MarkerId, gMap.Marker> markers =
+      <gMap.MarkerId, gMap.Marker>{}; // CLASS MEMBER, MAP OF MARKS
   List<Map> clientData = [];
-  static const CameraPosition _kLake = CameraPosition(
+  static const gMap.CameraPosition _kLake = gMap.CameraPosition(
       bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
+      target: gMap.LatLng(37.43296265331129, -122.08832357078792),
       tilt: 59.440717697143555,
       zoom: 19.151926040649414);
   double _currentSliderValue = 10;
@@ -145,8 +147,8 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() => {
-            searchPoint = LatLng(position.latitude, position.longitude),
-            choosePoint = LatLng(position.latitude, position.longitude),
+            searchPoint = gMap.LatLng(position.latitude, position.longitude),
+            choosePoint = gMap.LatLng(position.latitude, position.longitude),
             //searchPoint = const LatLng(47.3707688, 8.5110079)
             //searchPoint = LatLng(48.84311, 2.345817)
           });
@@ -163,10 +165,10 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     choosePoint = GeolocationManager.choosePoint;
 
     if (isInitialized) {
-      mapController.moveCamera(CameraUpdate.newCameraPosition(
+      mapController.moveCamera(gMap.CameraUpdate.newCameraPosition(
           // on below line we have given positions of Location 5
-          CameraPosition(
-        target: LatLng(searchPoint.latitude, searchPoint.longitude),
+          gMap.CameraPosition(
+        target: gMap.LatLng(searchPoint.latitude, searchPoint.longitude),
         zoom: zoomv.toDouble(),
       )));
     }
@@ -175,7 +177,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     _getAddressFromLatLng(searchPoint);
   }
 
-  Future<void> _getAddressFromLatLng(LatLng position) async {
+  Future<void> _getAddressFromLatLng(gMap.LatLng position) async {
     if (!kIsWeb) {
       try {
         await placemarkFromCoordinates(position.latitude, position.longitude)
@@ -227,11 +229,12 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
   void _updateMarkers(List<DocumentSnapshot> documentList) {
     // add my position
     markers = {};
-    var marker = Marker(
-      markerId: const MarkerId("it's my position"),
-      position: LatLng(searchPoint.latitude, searchPoint.longitude),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      infoWindow: const InfoWindow(title: 'Magic Marker', snippet: '*'),
+    var marker = gMap.Marker(
+      markerId: const gMap.MarkerId("it's my position"),
+      position: gMap.LatLng(searchPoint.latitude, searchPoint.longitude),
+      icon: gMap.BitmapDescriptor.defaultMarkerWithHue(
+          gMap.BitmapDescriptor.hueBlue),
+      infoWindow: const gMap.InfoWindow(title: 'Magic Marker', snippet: '*'),
       onTap: () {},
     );
     markers[marker.markerId] = marker;
@@ -242,12 +245,12 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         clientData.add({...data, 'id': document.id});
         GeoPoint pos = data['position']['geopoint'] as GeoPoint;
 
-        var marker = Marker(
-            markerId: MarkerId(document.id),
-            position: LatLng(pos.latitude, pos.longitude),
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-            infoWindow: InfoWindow(
+        var marker = gMap.Marker(
+            markerId: gMap.MarkerId(document.id),
+            position: gMap.LatLng(pos.latitude, pos.longitude),
+            icon: gMap.BitmapDescriptor.defaultMarkerWithHue(
+                gMap.BitmapDescriptor.hueRed),
+            infoWindow: gMap.InfoWindow(
                 onTap: () async {
                   ProfileController().updateProfile(data["userName"]);
                   widget.routerChange({
@@ -636,29 +639,29 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
       }
     }
 
-    Set<Circle> circles = {};
+    Set<gMap.Circle> circles = {};
     circles = {
-      Circle(
-        circleId: const CircleId("current"),
-        center: LatLng(searchPoint.latitude, searchPoint.longitude),
+      gMap.Circle(
+        circleId: const gMap.CircleId("current"),
+        center: gMap.LatLng(searchPoint.latitude, searchPoint.longitude),
         strokeWidth: 2,
         radius: _currentSliderValue * 100,
       )
     };
-    return GoogleMap(
+    return gMap.GoogleMap(
       gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
         Factory<OneSequenceGestureRecognizer>(
           () => EagerGestureRecognizer(),
         ),
       },
-      mapType: MapType.normal,
+      mapType: gMap.MapType.normal,
       initialCameraPosition: searchPoint != null
-          ? CameraPosition(
-              target: LatLng(searchPoint.latitude, searchPoint.longitude),
+          ? gMap.CameraPosition(
+              target: gMap.LatLng(searchPoint.latitude, searchPoint.longitude),
               zoom: zoomv.toDouble(),
             )
           : _kLake,
-      markers: Set<Marker>.of(markers.values),
+      markers: Set<gMap.Marker>.of(markers.values),
       circles: circles,
       onCameraMove: (position) async => {
         //if (isSelectArea)
@@ -666,18 +669,19 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         zoomv = await mapController.getZoomLevel(),
         setState(() {
           searchPoint =
-              LatLng(position.target.latitude, position.target.longitude);
+              gMap.LatLng(position.target.latitude, position.target.longitude);
         })
         //  }
       },
-      onMapCreated: (GoogleMapController controller) {
+      onMapCreated: (gMap.GoogleMapController controller) {
         mapController = controller;
         isInitialized = true;
-        var marker = Marker(
-          markerId: const MarkerId("it's my position"),
-          position: LatLng(searchPoint.latitude, searchPoint.longitude),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          infoWindow: const InfoWindow(title: 'Me', snippet: '*'),
+        var marker = gMap.Marker(
+          markerId: const gMap.MarkerId("it's my position"),
+          position: gMap.LatLng(searchPoint.latitude, searchPoint.longitude),
+          icon: gMap.BitmapDescriptor.defaultMarkerWithHue(
+              gMap.BitmapDescriptor.hueBlue),
+          infoWindow: const gMap.InfoWindow(title: 'Me', snippet: '*'),
           onTap: () {
             //
           },
