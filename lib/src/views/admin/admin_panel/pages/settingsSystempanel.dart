@@ -701,225 +701,223 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
   }
 
   Widget modulesWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fflag.svg?alt=media&token=76c17503-436c-410c-9162-7acae10bad2c',
-            'Pages',
-            'Turn the pages On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Create Pages', pagesDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgroups.svg?alt=media&token=d7cbc632-b7d0-44f9-abfd-3dac56316899',
-            'Groups',
-            'Turn the groups On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Create Pages', groupsDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fevents.svg?alt=media&token=c11b765b-8ac7-4aab-af62-ffeef9aa74d4',
-            'Events',
-            'Turn the events On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Create Events', eventsDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgroups.svg?alt=media&token=d7cbc632-b7d0-44f9-abfd-3dac56316899',
-            'People',
-            'Turn the people On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Find People', groupsDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fblogs.svg?alt=media&token=b3d93493-295f-4672-ad28-e9605aca3f5d',
-            'Blogs',
-            'Turn the blogs On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Write Articles', blogsDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fmarketplace.svg?alt=media&token=60d5ed49-9158-4b02-a3fb-0235dd48a55c',
-            'Marketplace',
-            'Turn the marketplace On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Sell Products', marketPlaceDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Foffers.svg?alt=media&token=0bbc0a52-b16f-4eea-963a-0f895fb2b2f3',
-            'Offers',
-            'Turn the offers On and Off Only pages can publish offers (Pages must be enabled too)'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fforums.svg?alt=media&token=c93542ac-9562-424b-a071-8551a2a7ba4d',
-            'Jobs',
-            'Turn the jobs On and Off Only pages can publish jobs (Pages must be enabled too)'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Foffers.svg?alt=media&token=0bbc0a52-b16f-4eea-963a-0f895fb2b2f3',
-            'Forums',
-            'Turn the forums On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fonline_user.svg?alt=media&token=dc5f4f98-16fd-4010-84d1-bdecac1982a6',
-            'Online Users',
-            'Show forums online users'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fstatistics.svg?alt=media&token=b9b43bc0-27cd-4929-80d8-2ea563dcb48a',
-            'Statistics',
-            'Show forums statistics'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Add Threads/Replies', statisticsDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fmovies.svg?alt=media&token=8cda0645-e9fd-4d05-8456-7c299de0a8a1',
-            'Movies',
-            'Turn the movies On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Watch Movies', moviesDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgames.svg?alt=media&token=a4c021e4-a2a9-43e7-ae5e-c189f4fc56eb',
-            'Games',
-            'Turn the games On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        moduleDropDown('Who Can Play Games', gamesDropDown),
-        const Padding(
-          padding: EdgeInsets.only(top: 15),
-        ),
-        footer()
-      ]),
-    );
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fflag.svg?alt=media&token=76c17503-436c-410c-9162-7acae10bad2c',
+          'Pages',
+          'Turn the pages On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Create Pages', pagesDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgroups.svg?alt=media&token=d7cbc632-b7d0-44f9-abfd-3dac56316899',
+          'Groups',
+          'Turn the groups On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Create Pages', groupsDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fevents.svg?alt=media&token=c11b765b-8ac7-4aab-af62-ffeef9aa74d4',
+          'Events',
+          'Turn the events On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Create Events', eventsDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgroups.svg?alt=media&token=d7cbc632-b7d0-44f9-abfd-3dac56316899',
+          'People',
+          'Turn the people On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Find People', groupsDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fblogs.svg?alt=media&token=b3d93493-295f-4672-ad28-e9605aca3f5d',
+          'Blogs',
+          'Turn the blogs On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Write Articles', blogsDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fmarketplace.svg?alt=media&token=60d5ed49-9158-4b02-a3fb-0235dd48a55c',
+          'Marketplace',
+          'Turn the marketplace On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Sell Products', marketPlaceDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Foffers.svg?alt=media&token=0bbc0a52-b16f-4eea-963a-0f895fb2b2f3',
+          'Offers',
+          'Turn the offers On and Off Only pages can publish offers (Pages must be enabled too)'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fforums.svg?alt=media&token=c93542ac-9562-424b-a071-8551a2a7ba4d',
+          'Jobs',
+          'Turn the jobs On and Off Only pages can publish jobs (Pages must be enabled too)'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Foffers.svg?alt=media&token=0bbc0a52-b16f-4eea-963a-0f895fb2b2f3',
+          'Forums',
+          'Turn the forums On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fonline_user.svg?alt=media&token=dc5f4f98-16fd-4010-84d1-bdecac1982a6',
+          'Online Users',
+          'Show forums online users'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fstatistics.svg?alt=media&token=b9b43bc0-27cd-4929-80d8-2ea563dcb48a',
+          'Statistics',
+          'Show forums statistics'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Add Threads/Replies', statisticsDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fmovies.svg?alt=media&token=8cda0645-e9fd-4d05-8456-7c299de0a8a1',
+          'Movies',
+          'Turn the movies On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Watch Movies', moviesDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fgames.svg?alt=media&token=a4c021e4-a2a9-43e7-ae5e-c189f4fc56eb',
+          'Games',
+          'Turn the games On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      moduleDropDown('Who Can Play Games', gamesDropDown),
+      const Padding(
+        padding: EdgeInsets.only(top: 15),
+      ),
+      footer()
+    ]);
   }
 
   Widget generalWidget() {
@@ -995,7 +993,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
             fontWeight: FontWeight.w600),
       ),
       const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
           height: 40,
           width: SizeConfig(context).screenWidth < 900
               ? SizeConfig(context).screenWidth - 60
@@ -1067,7 +1065,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
                           items: dropDownItems
                               .map((e) => DropdownMenuItem(
                                   value: e['value'],
-                                  child: Container(
+                                  child: SizedBox(
                                       height: 70,
                                       child: ListTile(
                                         leading: Icon(e['icon']),
@@ -1168,7 +1166,7 @@ class AdminSettingsSystemState extends mvc.StateMVC<AdminSettingsSystem> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: TextField(

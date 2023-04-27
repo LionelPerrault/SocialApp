@@ -486,7 +486,6 @@ class PostController extends ControllerMVC {
 
   //user join in event going function
   Future<bool> goingEvent(String eventId) async {
-    print('now you are going or ungoing this event ${eventId}');
     var querySnapshot = await Helper.eventsData.doc(eventId).get();
     var doc = querySnapshot;
     var going = doc['eventGoing'];
@@ -1677,17 +1676,20 @@ class PostController extends ControllerMVC {
         'timeline': currentPost['timeline'],
         'comment': currentPost['comment'],
       };
-      if (currentPost['eventId'] != null) {
-        if (currentPost['eventId'].isNotEmpty) {
-          var event = await Helper.eventsData.doc(currentPost['eventId']).get();
+
+      Map curPost = currentPost.data() as Map;
+
+      if (curPost.containsKey('eventId')) {
+        if (curPost['eventId'].isNotEmpty) {
+          var event = await Helper.eventsData.doc(curPost['eventId']).get();
 
           eachPost['eventName'] = event['eventName'];
         }
       }
 
-      if (currentPost['groupId'] != null) {
-        if (currentPost['groupId'].isNotEmpty) {
-          var group = await Helper.groupsData.doc(currentPost['groupId']).get();
+      if (curPost.containsKey('groupId')) {
+        if (curPost['groupId'].isNotEmpty) {
+          var group = await Helper.groupsData.doc(curPost['groupId']).get();
           eachPost['groupName'] = group['groupName'];
         }
       }
@@ -1838,9 +1840,22 @@ class PostController extends ControllerMVC {
       'header': postData['header'],
       'timeline': postData['timeline'],
       'comment': postData['comment'],
-      'eventName': postData['eventName'],
-      'groupName': postData['groupName'],
     };
+    if (postData['eventId'] != null) {
+      if (postData['eventId'].isNotEmpty) {
+        var event = await Helper.eventsData.doc(postData['eventId']).get();
+
+        eachPost['eventName'] = event['eventName'];
+      }
+    }
+
+    if (postData['groupId'] != null) {
+      if (postData['groupId'].isNotEmpty) {
+        var group = await Helper.groupsData.doc(postData['groupId']).get();
+        eachPost['groupName'] = group['groupName'];
+      }
+    }
+
     post = eachPost;
     setState(() {});
   }

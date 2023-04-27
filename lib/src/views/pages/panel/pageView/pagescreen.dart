@@ -44,9 +44,7 @@ class PageEachScreenState extends mvc.StateMVC<PageEachScreen>
   }
 
   void getSelectedPage(String docId) {
-    con.getSelectedPage(docId).then((value) => {
-          print('You get selected page info!'),
-        });
+    con.getSelectedPage(docId).then((value) => {});
   }
 
   late PostController con;

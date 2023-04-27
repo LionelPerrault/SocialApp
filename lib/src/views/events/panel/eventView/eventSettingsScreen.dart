@@ -72,20 +72,18 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   late PostController con;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          LeftSettingBar(),
-          Expanded(
-            child: eventSettingTab == 'Event Settings'
-                ? EventSettingsWidget()
-                : eventSettingTab == 'Event Interests'
-                    ? EventInterestsWidget()
-                    : EventDeleteWidget(),
-          ),
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LeftSettingBar(),
+        Expanded(
+          child: eventSettingTab == 'Event Settings'
+              ? EventSettingsWidget()
+              : eventSettingTab == 'Event Interests'
+                  ? EventInterestsWidget()
+                  : EventDeleteWidget(),
+        ),
+      ],
     );
   }
 
@@ -108,7 +106,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                   icon: Icon(
                     e['icon'],
                     color: eventSettingTab == e['text']
-                        ? Color.fromARGB(255, 94, 114, 228)
+                        ? const Color.fromARGB(255, 94, 114, 228)
                         : Colors.grey,
                   ),
                 ),
@@ -120,12 +118,12 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   }
 
   Widget EventSettingsWidget() {
-    return Container(
+    return SizedBox(
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.settings), 'Settings'),
-          Container(
+          headerWidget(const Icon(Icons.settings), 'Settings'),
+          SizedBox(
             width: 430,
             child: Column(children: [
               const Padding(padding: EdgeInsets.only(top: 15)),
@@ -133,7 +131,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customInput(
                       title: 'Name Your Event',
@@ -151,7 +149,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customInput(
                       title: 'Location',
@@ -169,7 +167,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customDateInput(
                       title: 'Start Date',
@@ -183,21 +181,14 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                 2000), //DateTime.now() - not to allow to choose before today.
                             lastDate: DateTime(2101));
                         if (pickedDate != null) {
-                          print(
-                              pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
                           String formattedDate = DateFormat('yyyy-MM-dd').format(
                               pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                          print(
-                              formattedDate); //formatted date output using intl package =>  2022-07-04
-                          //You can format date as per your need
 
                           setState(() {
                             eventStartDController.text = formattedDate;
                             eventInfo['eventStartDate'] = formattedDate;
                           });
-                        } else {
-                          print("Date is not selected");
-                        }
+                        } else {}
                       },
                     ),
                   ),
@@ -208,7 +199,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customDateInput(
                       title: 'End Date',
@@ -269,7 +260,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                         child: Container(
                           width: 380,
                           height: 40,
-                          padding: EdgeInsets.only(right: 30),
+                          padding: const EdgeInsets.only(right: 30),
                           child: DecoratedBox(
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 17, 205, 239),
@@ -365,7 +356,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     child: customTextarea(
                       title: 'About',
@@ -438,11 +429,11 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   }
 
   Widget EventInterestsWidget() {
-    return Container(
+    return SizedBox(
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.settings), 'Settings'),
+          headerWidget(const Icon(Icons.settings), 'Settings'),
           Container(
             margin: const EdgeInsets.only(left: 30, right: 30),
             child: InterestsWidget(
@@ -460,11 +451,11 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   }
 
   Widget EventDeleteWidget() {
-    return Container(
+    return SizedBox(
       width: 450,
       child: Column(
         children: [
-          headerWidget(Icon(Icons.settings), 'Settings'),
+          headerWidget(const Icon(Icons.settings), 'Settings'),
           Container(
             padding: const EdgeInsets.only(right: 30, left: 30),
             child: Column(
@@ -479,17 +470,17 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                         child: Row(
-                          children: [
-                            const Padding(padding: EdgeInsets.only(left: 30)),
+                          children: const [
+                            Padding(padding: EdgeInsets.only(left: 30)),
                             Icon(
                               Icons.warning_rounded,
                               color: Colors.white,
                               size: 30,
                             ),
-                            const Padding(padding: EdgeInsets.only(left: 10)),
-                            Container(
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            SizedBox(
                                 width: 200,
-                                child: const Text(
+                                child: Text(
                                   'Once you delete your event you will no longer can access it again',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 11),
@@ -656,7 +647,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
   }
 
   Widget input({label, onchange, obscureText = false, validator}) {
-    return Container(
+    return SizedBox(
       height: 28,
       child: StartedInput(
         validator: (val) async {
@@ -792,7 +783,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
               fontWeight: FontWeight.w600),
         ),
         const Padding(padding: EdgeInsets.only(top: 2)),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             controller: controller,

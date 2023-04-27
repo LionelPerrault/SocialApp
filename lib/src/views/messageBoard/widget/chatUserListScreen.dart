@@ -47,9 +47,9 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
         .snapshots();
     onlineStream.listen((event) {
       var arr = [];
-      event.docs.forEach((e) {
+      for (var e in event.docs) {
         arr.add(e.data());
-      });
+      }
       con.onlineStatus = arr;
       setState(() {});
     });
@@ -93,11 +93,11 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
             }
             var chatUserFullName = t[chatUserName]['name'];
             var status = 0;
-            con.onlineStatus.forEach((e) {
+            for (var e in con.onlineStatus) {
               if (e['userName'] == chatUserName) {
                 status = e['status'];
               }
-            });
+            }
             //     print(chatUserFullName);
             return Column(children: [
               ListTile(

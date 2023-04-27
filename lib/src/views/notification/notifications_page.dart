@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -173,7 +170,7 @@ class NotificationsPageState extends mvc.StateMVC<NotificationsPage> {
                               await postCon.checkNotify();
                               postCon.allNotification = [];
                               postCon.realNotifi = [];
-                              print("removed realNotifi empty in noti page");
+
                               postCon.setState(() {});
                             }),
                       ],

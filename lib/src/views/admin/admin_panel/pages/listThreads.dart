@@ -251,7 +251,7 @@ class AdminListThreadsState extends mvc.StateMVC<AdminListThreads> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 500,
                     height: height,
                     child: TextField(

@@ -32,7 +32,6 @@ class ChatMessage {
 }
 
 class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
-  
   bool check1 = false;
   bool check2 = false;
   late ChatController con;
@@ -260,7 +259,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                     return SizedBox(
                         height: SizeConfig(context).screenHeight - 220,
                         child: Center(child: CircularProgressIndicator()));
-                    ;
                   }
                 }));
   }

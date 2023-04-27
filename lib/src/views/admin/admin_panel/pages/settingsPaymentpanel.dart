@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminSettingsPayment extends StatefulWidget {
-  AdminSettingsPayment({super.key});
+  const AdminSettingsPayment({super.key});
 
   @override
   State createState() => AdminSettingsPaymentState();
@@ -203,41 +202,39 @@ class AdminSettingsPaymentState extends mvc.StateMVC<AdminSettingsPayment> {
   }
 
   Widget checkoutWidget() {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2F2checkout.svg?alt=media&token=0a8b199e-9052-4c33-a04f-f044cccca356',
-            '2Checkout Enabled',
-            'Enable payments via 2Checkout'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        textAndSelect('2Checkout Mode', 'Live', 'Demo'),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput('Merchant Code', 30, 1, () {}, ''),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput('API Publishable Key', 30, 1, () {}, ''),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-        ),
-        titleAndsubtitleInput('API Private Key', 30, 1, () {}, ''),
-        const Padding(
-          padding: EdgeInsets.only(top: 20),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        footer()
-      ]),
-    );
+    return Column(children: [
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2F2checkout.svg?alt=media&token=0a8b199e-9052-4c33-a04f-f044cccca356',
+          '2Checkout Enabled',
+          'Enable payments via 2Checkout'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      textAndSelect('2Checkout Mode', 'Live', 'Demo'),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput('Merchant Code', 30, 1, () {}, ''),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput('API Publishable Key', 30, 1, () {}, ''),
+      const Padding(
+        padding: EdgeInsets.only(top: 10),
+      ),
+      titleAndsubtitleInput('API Private Key', 30, 1, () {}, ''),
+      const Padding(
+        padding: EdgeInsets.only(top: 20),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      footer()
+    ]);
   }
 
   Widget coinPaymentsWidget() {

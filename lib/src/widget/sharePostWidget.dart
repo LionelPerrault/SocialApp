@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 
 class SharePostModal extends StatefulWidget {
   BuildContext context;
-  final PostController Postcon;
+  final PostController postCon;
 
   var postInfo;
 
@@ -17,7 +17,7 @@ class SharePostModal extends StatefulWidget {
     required this.routerChange,
     required this.postInfo,
     this.editData,
-  })  : Postcon = PostController(),
+  })  : postCon = PostController(),
         super(key: key);
   Function routerChange;
 
@@ -28,12 +28,10 @@ class SharePostModal extends StatefulWidget {
 
 class SharePostModalState extends mvc.StateMVC<SharePostModal> {
   bool isSound = false;
-  late PostController Postcon;
+  late PostController postCon;
   bool postLoading = false;
   Color _color = const Color.fromRGBO(51, 103, 214, 0.65);
-  Color _color2 = const Color.fromRGBO(0, 0, 0, 0.2);
   double _width = 2;
-  double _width2 = 1;
 
   String postMessage = '';
   double uploadPhotoProgress = 0;
@@ -49,8 +47,8 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
   // bool loading = false;
   @override
   void initState() {
-    add(widget.Postcon);
-    Postcon = controller as PostController;
+    add(widget.postCon);
+    postCon = controller as PostController;
     if (widget.editData == null) {
       widget.editData = {
         'id': '',
@@ -95,9 +93,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                       onTap: () {
                         setState(() {
                           _color = const Color.fromRGBO(51, 103, 214, 0.65);
-                          _color2 = const Color.fromRGBO(0, 0, 0, 0.2);
                           _width = 2;
-                          _width2 = 1;
                         });
                       },
                       child: Container(
@@ -233,8 +229,8 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                   postPayload = widget.postInfo;
 
                   postLoading = true;
-                  await Postcon.savePost(postCase, postPayload, 'Public',
-                          header: header)
+                  await postCon
+                      .savePost(postCase, postPayload, 'Public', header: header)
                       .then((value) {
                     postLoading = false;
 

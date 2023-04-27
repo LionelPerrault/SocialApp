@@ -80,11 +80,11 @@ class TwoFactorAuthenticationScreenState
                     ),
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
+              const Padding(
+                padding: EdgeInsets.symmetric(
                   horizontal: 10.0,
                 ),
-                child: Container(
+                child: SizedBox(
                   height: 5.0,
                   width: 30.0,
                   // color: shake ? Colors.red : Colors.black,

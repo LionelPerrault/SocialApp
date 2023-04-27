@@ -355,7 +355,8 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
               children: [
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 45, 205, 137),
+                        backgroundColor:
+                            const Color.fromARGB(255, 45, 205, 137),
                         elevation: 3,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(2.0)),
@@ -517,31 +518,31 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   }
 
   uploadFile(XFile? pickedFile, type) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         if (type == 'cover') {
           await con.updateGroupInfo({'groupCover': downloadUrl});
         } else {

@@ -117,39 +117,37 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
                                 color: Color.fromRGBO(108, 117, 125, 1)),
                           ))
                     ]))
-            : Container(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Expanded(
-                      child: GridView.count(
-                        crossAxisCount: screenWidth > 800
-                            ? 4
-                            : screenWidth > 600
-                                ? 3
-                                : screenWidth > 210
-                                    ? 2
-                                    : 1,
-                        childAspectRatio: 2 / 3,
-                        padding: const EdgeInsets.all(4.0),
-                        mainAxisSpacing: 4.0,
-                        shrinkWrap: true,
-                        crossAxisSpacing: 4.0,
-                        children: myPages
-                            .map(
-                              (page) => PageCell(
-                                pageInfo: page,
-                                refreshFunc: () {
-                                  getPageNow();
-                                },
-                                routerChange: widget.routerChange,
-                              ),
-                            )
-                            .toList(),
-                      ),
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: GridView.count(
+                      crossAxisCount: screenWidth > 800
+                          ? 4
+                          : screenWidth > 600
+                              ? 3
+                              : screenWidth > 210
+                                  ? 2
+                                  : 1,
+                      childAspectRatio: 2 / 3,
+                      padding: const EdgeInsets.all(4.0),
+                      mainAxisSpacing: 4.0,
+                      shrinkWrap: true,
+                      crossAxisSpacing: 4.0,
+                      children: myPages
+                          .map(
+                            (page) => PageCell(
+                              pageInfo: page,
+                              refreshFunc: () {
+                                getPageNow();
+                              },
+                              routerChange: widget.routerChange,
+                            ),
+                          )
+                          .toList(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
   }
 }

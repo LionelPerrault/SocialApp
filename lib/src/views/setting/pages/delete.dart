@@ -40,7 +40,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                 color: Color.fromARGB(255, 244, 67, 54),
               ),
               pagename: 'Delete Account',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
@@ -99,11 +99,10 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                                   con.deleteUserAccount(context);
                                 },
                                 child: con.isProfileChange
-                                    ? SizedBox(
+                                    ? const SizedBox(
                                         width: 20,
                                         height: 20,
-                                        child:
-                                            const CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(),
                                       )
                                     : Row(
                                         mainAxisAlignment:

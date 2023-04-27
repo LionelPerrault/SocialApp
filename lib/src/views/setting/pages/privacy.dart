@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:flutter/cupertino.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
-import 'package:shnatter/src/utils/colors.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';

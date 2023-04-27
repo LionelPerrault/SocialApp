@@ -94,7 +94,7 @@ class _PinInputFieldState extends State<PinInputField> {
         ),
         errorPinTheme: defaultPinTheme.copyWith(
           decoration: BoxDecoration(
-            color: Theme.of(context).errorColor,
+            color: Theme.of(context).colorScheme.error,
             borderRadius: BorderRadius.circular(8),
           ),
         ),
@@ -102,14 +102,6 @@ class _PinInputFieldState extends State<PinInputField> {
         controller: _pinPutController,
         onCompleted: widget.onSubmit,
         pinAnimationType: PinAnimationType.scale,
-        // submittedFieldDecoration: _pinPutDecoration,
-        // selectedFieldDecoration: _pinPutDecoration,
-        // followingFieldDecoration: _pinPutDecoration,
-        // textStyle: const TextStyle(
-        //   color: Colors.black,
-        //   fontSize: 20.0,
-        //   fontWeight: FontWeight.w600,
-        // ),
       ),
     );
   }

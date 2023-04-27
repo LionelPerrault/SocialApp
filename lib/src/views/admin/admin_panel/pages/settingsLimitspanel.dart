@@ -56,7 +56,7 @@ class AdminSettingsLimitsState extends mvc.StateMVC<AdminSettingsLimits> {
         titleAndsubtitleInput('Search Results', 30, 1, () {},
             'The number of results in the search module'),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        new Divider(
+        const Divider(
           thickness: 0.1,
           color: Colors.black,
         ),
@@ -93,7 +93,7 @@ class AdminSettingsLimitsState extends mvc.StateMVC<AdminSettingsLimits> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   child: Column(children: [
                     TextField(

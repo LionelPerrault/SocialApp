@@ -28,7 +28,7 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
                 color: Color.fromARGB(255, 40, 167, 69),
               ),
               pagename: 'Download Your Information',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(

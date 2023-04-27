@@ -28,15 +28,12 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
     add(widget.con);
     con = controller as PostController;
     super.initState();
-    print(widget.docId);
-    //  getSelectedPhoto(widget.docId);
   }
 
   void getSelectedPhoto(String docId) {
     con.getSelectedPost(docId).then((value) => {
           loading = false,
           setState(() {}),
-          print('You get selected post info!'),
         });
   }
 
@@ -85,12 +82,12 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
               Navigator.pop(context);
             },
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
-              padding: EdgeInsets.all(8),
-              child: Icon(
+              padding: const EdgeInsets.all(8),
+              child: const Icon(
                 Icons.close,
                 color: Colors.black,
                 size: 20,

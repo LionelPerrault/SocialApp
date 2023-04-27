@@ -264,7 +264,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
         ? DottedBorder(
             borderType: BorderType.RRect,
             radius: const Radius.circular(20),
-            dashPattern: [10, 10],
+            dashPattern: const [10, 10],
             color: Colors.grey,
             strokeWidth: 2,
             child: productWidget(),

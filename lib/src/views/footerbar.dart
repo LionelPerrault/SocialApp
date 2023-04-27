@@ -4,12 +4,13 @@ import 'package:shnatter/src/views/terms.dart';
 import 'about.dart';
 
 class footbar extends StatefulWidget {
-  footbar({Key? key}) : super(key: key);
+  const footbar({Key? key}) : super(key: key);
   @override
   State createState() => footbarState();
 }
 
 class footbarState extends State<footbar> {
+  @override
   Widget build(BuildContext context) {
     return Container(
         height: 70,
@@ -77,15 +78,16 @@ class footbarState extends State<footbar> {
 }
 
 class footbarM extends StatefulWidget {
-  footbarM({Key? key}) : super(key: key);
+  const footbarM({Key? key}) : super(key: key);
   @override
   State createState() => footbarMState();
 }
 
 class footbarMState extends State<footbarM> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: Container(
         height: 75,
         decoration: const BoxDecoration(

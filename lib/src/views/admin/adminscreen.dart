@@ -139,7 +139,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                                           onClick: (value) {
                                             adminAllRouter = value;
                                             clickMenu();
-                                            print(value);
+
                                             setState(() {});
                                           },
                                         ),

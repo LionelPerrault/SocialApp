@@ -7,7 +7,6 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
 class InterestedEvents extends StatefulWidget {
   InterestedEvents({Key? key, required this.routerChange})
@@ -16,6 +15,7 @@ class InterestedEvents extends StatefulWidget {
   late PostController con;
   Function routerChange;
 
+  @override
   State createState() => InterestedEventsState();
 }
 
@@ -64,39 +64,37 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
             .toList(),
       );
     }
-    return Container(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: screenWidth > 900
-                  ? 3
-                  : screenWidth > 600
-                      ? 2
-                      : 1,
-              // childAspectRatio: 2 / 3,
-              padding: const EdgeInsets.all(4.0),
-              mainAxisSpacing: 4.0,
-              shrinkWrap: true,
-              crossAxisSpacing: 4.0,
-              children: interestedEvents
-                  .map(
-                    (event) => EventCell(
-                      routerChange: widget.routerChange,
-                      eventData: event,
-                      buttonFun: () {
-                        // con.interestedEvent(event['id']).then((value) {
-                        getEventNow();
-                        // });
-                      },
-                    ),
-                  )
-                  .toList(),
-            ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: screenWidth > 900
+                ? 3
+                : screenWidth > 600
+                    ? 2
+                    : 1,
+            // childAspectRatio: 2 / 3,
+            padding: const EdgeInsets.all(4.0),
+            mainAxisSpacing: 4.0,
+            shrinkWrap: true,
+            crossAxisSpacing: 4.0,
+            children: interestedEvents
+                .map(
+                  (event) => EventCell(
+                    routerChange: widget.routerChange,
+                    eventData: event,
+                    buttonFun: () {
+                      // con.interestedEvent(event['id']).then((value) {
+                      getEventNow();
+                      // });
+                    },
+                  ),
+                )
+                .toList(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

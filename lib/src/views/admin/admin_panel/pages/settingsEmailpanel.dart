@@ -148,7 +148,7 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height + 34,
                   child: Column(children: [

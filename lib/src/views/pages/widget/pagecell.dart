@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';

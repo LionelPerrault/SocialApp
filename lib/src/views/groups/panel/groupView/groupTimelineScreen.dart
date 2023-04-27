@@ -35,7 +35,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   final TextEditingController searchController = TextEditingController();
   late FocusNode searchFocusNode;
   bool showMenu = false;
-  late AnimationController _drawerSlideController;
   var subUrl = '';
   Friends friendModel = Friends();
   bool invitingFriend = false;

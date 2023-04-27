@@ -41,9 +41,9 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                 color: Color.fromARGB(255, 43, 83, 164),
               ),
               pagename: 'Education',
-              button: {
-                'buttoncolor': const Color.fromARGB(255, 17, 205, 239),
-                'icon': const Icon(Icons.person),
+              button: const {
+                'buttoncolor': Color.fromARGB(255, 17, 205, 239),
+                'icon': Icon(Icons.person),
                 'text': 'View Profile',
                 'flag': true
               },

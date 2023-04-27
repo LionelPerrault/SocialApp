@@ -121,43 +121,17 @@ class rightFootbarState extends State<rightFootbar> {
               height: 1,
             ),
             const Padding(padding: EdgeInsets.only(top: 10)),
-            Container(
-              // margin: const EdgeInsets.only(right: 20),
-              child: Row(
-                children: [
-                  const Padding(padding: EdgeInsets.only(left: 5)),
-                  Expanded(
-                      // ignore: sort_child_properties_last
-                      child: InkWell(
-                        onTap: () => {
-                          Navigator.push<void>(
-                            context,
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) => AboutScreen(),
-                            ),
-                          ),
-                        },
-                        child: GestureDetector(
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'About',
-                              style:
-                                  TextStyle(fontSize: 11, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                      flex: 1),
-                  const Padding(padding: EdgeInsets.only(left: 5)),
-                  Expanded(
+            Row(
+              children: [
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Expanded(
                     // ignore: sort_child_properties_last
                     child: InkWell(
                       onTap: () => {
                         Navigator.push<void>(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (BuildContext context) => TermsScreen(),
+                            builder: (BuildContext context) => AboutScreen(),
                           ),
                         ),
                       },
@@ -165,29 +139,51 @@ class rightFootbarState extends State<rightFootbar> {
                         child: Container(
                           alignment: Alignment.center,
                           child: const Text(
-                            'Terms',
+                            'About',
                             style: TextStyle(fontSize: 11, color: Colors.black),
                           ),
                         ),
                       ),
                     ),
-                    flex: 1,
+                    flex: 1),
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Expanded(
+                  // ignore: sort_child_properties_last
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => TermsScreen(),
+                        ),
+                      ),
+                    },
+                    child: GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Terms',
+                          style: TextStyle(fontSize: 11, color: Colors.black),
+                        ),
+                      ),
+                    ),
                   ),
-                  // text('Terms', Colors.grey, 13),
-                  const Padding(padding: EdgeInsets.only(left: 5)),
-                  Expanded(
-                    // ignore: sort_child_properties_last
-                    child: text('Contact Us', Colors.black, 11),
-                    flex: 1,
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 5)),
-                  Expanded(
-                    // ignore: sort_child_properties_last
-                    child: text('Directory', Colors.black, 11),
-                    flex: 1,
-                  ),
-                ],
-              ),
+                  flex: 1,
+                ),
+                // text('Terms', Colors.grey, 13),
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Expanded(
+                  // ignore: sort_child_properties_last
+                  child: text('Contact Us', Colors.black, 11),
+                  flex: 1,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Expanded(
+                  // ignore: sort_child_properties_last
+                  child: text('Directory', Colors.black, 11),
+                  flex: 1,
+                ),
+              ],
             )
           ],
         ),

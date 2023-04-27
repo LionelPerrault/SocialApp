@@ -127,7 +127,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                       height: 40,
                       color: tab == 'Going'
                           ? Colors.white
-                          : Color.fromRGBO(240, 240, 240, 1),
+                          : const Color.fromRGBO(240, 240, 240, 1),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -138,9 +138,9 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                           badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventGoing"].length}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            badgeStyle: badges.BadgeStyle(
+                            badgeStyle: const badges.BadgeStyle(
                               badgeColor: Color.fromARGB(255, 23, 162, 184),
                             ),
                           )
@@ -161,7 +161,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                       height: 40,
                       color: tab == 'Interested'
                           ? Colors.white
-                          : Color.fromRGBO(240, 240, 240, 1),
+                          : const Color.fromRGBO(240, 240, 240, 1),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -172,9 +172,9 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                           badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventInterested"].length}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            badgeStyle: badges.BadgeStyle(
+                            badgeStyle: const badges.BadgeStyle(
                               badgeColor: Color.fromARGB(255, 23, 162, 184),
                             ),
                           )
@@ -195,7 +195,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                       height: 40,
                       color: tab == 'Invited'
                           ? Colors.white
-                          : Color.fromRGBO(240, 240, 240, 1),
+                          : const Color.fromRGBO(240, 240, 240, 1),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -206,9 +206,9 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                           badges.Badge(
                             badgeContent: Text(
                               '${con.event["eventInvited"].length}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            badgeStyle: badges.BadgeStyle(
+                            badgeStyle: const badges.BadgeStyle(
                               badgeColor: Color.fromARGB(255, 23, 162, 184),
                             ),
                           )
@@ -229,7 +229,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                       height: 40,
                       color: tab == 'Invites'
                           ? Colors.white
-                          : Color.fromRGBO(240, 240, 240, 1),
+                          : const Color.fromRGBO(240, 240, 240, 1),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -240,9 +240,9 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                           badges.Badge(
                             badgeContent: Text(
                               '${invites.length}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            badgeStyle: badges.BadgeStyle(
+                            badgeStyle: const badges.BadgeStyle(
                               badgeColor: Color.fromARGB(255, 23, 162, 184),
                             ),
                           )
@@ -312,8 +312,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                 style:
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
-        : Container(
-            child: Row(
+        : Row(
             children: [
               Expanded(
                 child: GridView.count(
@@ -344,7 +343,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                 ),
               )
             ],
-          ));
+          );
   }
 
   Widget InvitedData() {
@@ -452,15 +451,15 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
             children: [
               Container(
                 width: 160,
-                margin: EdgeInsets.only(top: 50),
-                padding: EdgeInsets.only(top: 50),
+                margin: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 50),
                 decoration: BoxDecoration(
                   color: Colors.grey[350],
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Column(
                   children: [
-                    Padding(padding: EdgeInsets.only(top: 10)),
+                    const Padding(padding: EdgeInsets.only(top: 10)),
                     Container(
                       alignment: Alignment.center,
                       width: 150,
@@ -477,7 +476,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                         ]),
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10))
+                    const Padding(padding: EdgeInsets.only(top: 10))
                   ],
                 ),
               ),
@@ -485,7 +484,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                 alignment: Alignment.topCenter,
                 width: 100,
                 height: 100,
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50)),

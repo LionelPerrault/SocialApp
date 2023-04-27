@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/controllers/AdminController.dart';
@@ -84,35 +83,31 @@ class AdminShnatterTokenState extends mvc.StateMVC<AdminShnatterToken> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            child: generalWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          child: generalWidget(),
+        ),
+      ],
     );
   }
 
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.attach_money_outlined),
-            pagename: 'Transactions History',
-            button: const {
-              'flag': false,
-            },
-          ),
-          transList(),
-        ],
-      ),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.attach_money_outlined),
+          pagename: 'Transactions History',
+          button: const {
+            'flag': false,
+          },
+        ),
+        transList(),
+      ],
     );
   }
 

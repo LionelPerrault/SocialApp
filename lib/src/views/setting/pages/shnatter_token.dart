@@ -282,7 +282,7 @@ class SettingShnatterTokenScreenState
                       RelysiaManager.payNow(
                           con.token, "4798@shnatter.app", "1000", "for test");
                     },
-                    child: Text("send for test"),
+                    child: const Text("send for test"),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,

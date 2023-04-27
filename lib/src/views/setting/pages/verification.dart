@@ -29,10 +29,10 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                 color: Color.fromARGB(255, 33, 150, 243),
               ),
               pagename: 'Verification',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
+            SizedBox(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5
@@ -53,7 +53,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                         ),
                       ),
                       Expanded(
-                          child: Container(
+                          child: SizedBox(
                         width: 230,
                         child: Column(
                           children: [
@@ -63,14 +63,13 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.camera_alt),
-                                    const Padding(
-                                        padding: EdgeInsets.only(left: 20)),
+                                  children: const [
+                                    Icon(Icons.camera_alt),
+                                    Padding(padding: EdgeInsets.only(left: 20)),
                                     Expanded(
-                                        child: Container(
+                                        child: SizedBox(
                                       width: 100,
-                                      child: const Text(
+                                      child: Text(
                                         'Your Photo',
                                         overflow: TextOverflow.clip,
                                         style: TextStyle(
@@ -125,7 +124,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                       )),
                       const Padding(padding: EdgeInsets.only(left: 30)),
                       Expanded(
-                          child: Container(
+                          child: SizedBox(
                         width: 230,
                         child: Column(
                           children: [
@@ -243,7 +242,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
   }
 
   Widget input({label, onchange, obscureText = false, validator}) {
-    return Container(
+    return SizedBox(
       height: 28,
       child: StartedInput(
         validator: (val) async {

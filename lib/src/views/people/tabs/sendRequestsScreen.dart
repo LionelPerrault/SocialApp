@@ -158,13 +158,13 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                   ? Container(
                       alignment: Alignment.topCenter,
                       padding: const EdgeInsets.only(top: 20, bottom: 50),
-                      child:
-                          const Text('No new sent', style: TextStyle(fontSize: 14)))
+                      child: const Text('No new sent',
+                          style: TextStyle(fontSize: 14)))
                   : Column(
                       children: con.sendFriends
                           .map((e) => Container(
-                              padding:
-                                  const EdgeInsets.only(top: 10, left: 20, right: 20),
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 20, right: 20),
                               child: Column(
                                 children: [
                                   Row(
@@ -186,8 +186,8 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                     e[e['receiver']]
                                                         ['avatar'])),
                                         Container(
-                                          padding:
-                                              const EdgeInsets.only(left: 10, top: 5),
+                                          padding: const EdgeInsets.only(
+                                              left: 10, top: 5),
                                           child: Text(
                                             e[e['receiver']]['name'],
                                             style: const TextStyle(
@@ -200,7 +200,8 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                             fit: FlexFit.tight,
                                             child: SizedBox()),
                                         Container(
-                                          padding: const EdgeInsets.only(top: 6),
+                                          padding:
+                                              const EdgeInsets.only(top: 6),
                                           child: ElevatedButton(
                                             onPressed: () async {
                                               if (!e.containsKey('state') ||
@@ -238,27 +239,25 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                             },
                                             style: ElevatedButton.styleFrom(
                                                 backgroundColor:
-                                                    (e as Map).containsKey('state') && e['state'] == -2
+                                                    (e as Map).containsKey('state') &&
+                                                            e['state'] == -2
                                                         ? Colors.black
                                                         : const Color.fromRGBO(
                                                             245, 54, 92, 1),
                                                 elevation: 3,
                                                 shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            2.0)),
-                                                minimumSize:
-                                                    (e as Map).containsKey('state') &&
-                                                            e['state'] == -1
-                                                        ? const Size(60, 35)
-                                                        : const Size(70, 35),
+                                                    borderRadius: BorderRadius.circular(
+                                                        2.0)),
+                                                minimumSize: (e).containsKey('state') &&
+                                                        e['state'] == -1
+                                                    ? const Size(60, 35)
+                                                    : const Size(70, 35),
                                                 maximumSize:
-                                                    (e as Map).containsKey('state') &&
+                                                    (e).containsKey('state') &&
                                                             e['state'] == -1
                                                         ? const Size(60, 35)
                                                         : const Size(70, 35)),
-                                            child: (e as Map)
-                                                        .containsKey('state') &&
+                                            child: (e).containsKey('state') &&
                                                     e['state'] == -1
                                                 ? const SizedBox(
                                                     width: 10,
@@ -268,8 +267,7 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                       color: Colors.white,
                                                     ),
                                                   )
-                                                : (e as Map).containsKey(
-                                                            'state') &&
+                                                : (e).containsKey('state') &&
                                                         e['state'] == -2
                                                     ? Row(
                                                         mainAxisAlignment:
@@ -324,7 +322,8 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                           ),
                                         )
                                       ]),
-                                  const Padding(padding: EdgeInsets.only(top: 10)),
+                                  const Padding(
+                                      padding: EdgeInsets.only(top: 10)),
                                   Container(
                                     height: 1,
                                     color: color,

@@ -52,7 +52,7 @@ class MindSlice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(2),
+      margin: const EdgeInsets.all(2),
       child: IgnorePointer(
         ignoring: disabled,
         child: ElevatedButton(

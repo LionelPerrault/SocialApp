@@ -4,16 +4,15 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/interests.dart';
 
 class CreatePageModal extends StatefulWidget {
   BuildContext context;
-  late PostController Postcon;
+  late PostController postCon;
   CreatePageModal({Key? key, required this.context, required this.routerChange})
-      : Postcon = PostController(),
+      : postCon = PostController(),
         super(key: key);
   Function routerChange;
   @override
@@ -22,7 +21,7 @@ class CreatePageModal extends StatefulWidget {
 
 class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
   bool isSound = false;
-  late PostController Postcon;
+  late PostController postCon;
   Map<String, dynamic> pageInfo = {
     'pageAbout': '',
     'pageInterests': [],
@@ -33,8 +32,8 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
   bool payLoading = false;
   @override
   void initState() {
-    add(widget.Postcon);
-    Postcon = controller as PostController;
+    add(widget.postCon);
+    postCon = controller as PostController;
     super.initState();
   }
 
@@ -48,7 +47,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
     var paymail = snapshot.data()!['address'];
     setState(() {});
     if (price == '0') {
-      await Postcon.createPage(context, pageInfo).then((value) => {
+      await postCon.createPage(context, pageInfo).then((value) => {
             footerBtnState = false,
             setState(
               () => {},
@@ -85,7 +84,8 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                             Navigator.of(dialogContext).pop(true),
                             // loading = true,
                             setState(() {}),
-                            await Postcon.createPage(context, pageInfo)
+                            await postCon
+                                .createPage(context, pageInfo)
                                 .then((value) {
                               footerBtnState = false;
                               setState(() => {});
@@ -220,7 +220,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
+                  minimumSize: const Size(100, 50),
                 ),
                 onPressed: () {
                   Navigator.of(widget.context).pop(true);
@@ -237,7 +237,7 @@ class CreatePageModalState extends mvc.StateMVC<CreatePageModal> {
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
+                  minimumSize: const Size(100, 50),
                 ),
                 onPressed: () {
                   footerBtnState = true;

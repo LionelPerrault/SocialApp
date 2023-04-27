@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'dart:io' show File, Platform;
@@ -247,31 +246,31 @@ class SettingDesignScreenState extends State<SettingDesignScreen> {
   }
 
   uploadFile(XFile? pickedFile) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         var snapshot = await FirebaseFirestore.instance
             .collection(Helper.userField)
             .where('userName', isEqualTo: UserManager.userInfo['userName'])

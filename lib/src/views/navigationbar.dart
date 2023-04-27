@@ -215,7 +215,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
             dynamic groupData = groupV.data();
             var type = allNotifi[i]['postType'];
             var text = Helper.notificationText[type.toString()]['text'];
-            print('$groupData this is invitegroupdata');
+
             if (data != null && groupData != null) {
               addData = {
                 // ...allNotifi[i],
@@ -235,7 +235,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       }
       postCon.realNotifi = changeData;
       postCon.allNotification = changeData;
-      print(changeData);
+
       setState(() {});
       if (!kIsWeb) {
         dynamic res = await FlutterAppBadger.isAppBadgeSupported();

@@ -175,7 +175,7 @@ class SettingSecurityPasswordScreenState
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: Column(

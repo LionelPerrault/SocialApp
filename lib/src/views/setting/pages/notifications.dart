@@ -65,7 +65,7 @@ class SettingNotificationScreenState
                 color: Color.fromARGB(255, 103, 58, 183),
               ),
               pagename: 'Notification',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Row(
@@ -86,63 +86,60 @@ class SettingNotificationScreenState
                   Row(
                     children: [
                       Expanded(
-                          child: Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 35,
-                              height: 35,
-                              child: SvgPicture.network(
-                                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings%2FmessageSound.svg?alt=media&token=35c1c371-9fa0-44f0-bc57-55aa6a9023e5'),
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 10)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Chat Message Sound',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
+                          child: Row(
+                        children: [
+                          SizedBox(
+                            width: 35,
+                            height: 35,
+                            child: SvgPicture.network(
+                                'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings%2FmessageSound.svg?alt=media&token=35c1c371-9fa0-44f0-bc57-55aa6a9023e5'),
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Chat Message Sound',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 82, 95, 127),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 5)),
+                              SizedBox(
+                                width: SizeConfig(context).screenWidth >
+                                        SizeConfig.smallScreenSize
+                                    ? SizeConfig(context).screenWidth * 0.3
+                                    : SizeConfig(context).screenWidth * 0.5 -
+                                        20,
+                                child: const Text(
+                                  'A sound will be played each time you receive a new message on an inactive chat window',
+                                  style: TextStyle(fontSize: 11),
                                 ),
-                                const Padding(padding: EdgeInsets.only(top: 5)),
-                                SizedBox(
-                                  width: SizeConfig(context).screenWidth >
-                                          SizeConfig.smallScreenSize
-                                      ? SizeConfig(context).screenWidth * 0.3
-                                      : SizeConfig(context).screenWidth * 0.5 -
-                                          20,
-                                  child: const Text(
-                                    'A sound will be played each time you receive a new message on an inactive chat window',
-                                    style: TextStyle(fontSize: 11),
-                                  ),
-                                )
-                              ],
-                            ),
-                            const Flexible(
-                                fit: FlexFit.tight, child: SizedBox()),
-                            SizedBox(
-                              height: 20,
-                              child: Transform.scale(
-                                scaleX: 0.55,
-                                scaleY: 0.55,
-                                child: CupertinoSwitch(
-                                  //thumbColor: kprimaryColor,
-                                  activeColor: kprimaryColor,
-                                  value: chatEnable,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      chatEnable = value;
-                                    });
-                                  },
-                                ),
+                              )
+                            ],
+                          ),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                          SizedBox(
+                            height: 20,
+                            child: Transform.scale(
+                              scaleX: 0.55,
+                              scaleY: 0.55,
+                              child: CupertinoSwitch(
+                                //thumbColor: kprimaryColor,
+                                activeColor: kprimaryColor,
+                                value: chatEnable,
+                                onChanged: (value) {
+                                  setState(() {
+                                    chatEnable = value;
+                                  });
+                                },
                               ),
                             ),
-                            const Padding(padding: EdgeInsets.only(left: 15))
-                          ],
-                        ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 15))
+                        ],
                       ))
                     ],
                   )
@@ -161,63 +158,60 @@ class SettingNotificationScreenState
                   Row(
                     children: [
                       Expanded(
-                          child: Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 35,
-                              height: 35,
-                              child: SvgPicture.network(
-                                  'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings%2FnotifiSound.svg?alt=media&token=dc7cf2df-4229-448b-a313-b1e56ca4db97'),
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 10)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Notifications Sound',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 95, 127),
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
+                          child: Row(
+                        children: [
+                          SizedBox(
+                            width: 35,
+                            height: 35,
+                            child: SvgPicture.network(
+                                'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings%2FnotifiSound.svg?alt=media&token=dc7cf2df-4229-448b-a313-b1e56ca4db97'),
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Notifications Sound',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 82, 95, 127),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 5)),
+                              SizedBox(
+                                width: SizeConfig(context).screenWidth >
+                                        SizeConfig.smallScreenSize
+                                    ? SizeConfig(context).screenWidth * 0.3
+                                    : SizeConfig(context).screenWidth * 0.5 -
+                                        20,
+                                child: const Text(
+                                  'A sound will be played each time you receive a new activity notification',
+                                  style: TextStyle(fontSize: 11),
                                 ),
-                                const Padding(padding: EdgeInsets.only(top: 5)),
-                                SizedBox(
-                                  width: SizeConfig(context).screenWidth >
-                                          SizeConfig.smallScreenSize
-                                      ? SizeConfig(context).screenWidth * 0.3
-                                      : SizeConfig(context).screenWidth * 0.5 -
-                                          20,
-                                  child: const Text(
-                                    'A sound will be played each time you receive a new activity notification',
-                                    style: TextStyle(fontSize: 11),
-                                  ),
-                                )
-                              ],
-                            ),
-                            const Flexible(
-                                fit: FlexFit.tight, child: SizedBox()),
-                            SizedBox(
-                              height: 20,
-                              child: Transform.scale(
-                                scaleX: 0.55,
-                                scaleY: 0.55,
-                                child: CupertinoSwitch(
-                                  //thumbColor: kprimaryColor,
-                                  activeColor: kprimaryColor,
-                                  value: notificationEnable,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      chatEnable = value;
-                                    });
-                                  },
-                                ),
+                              )
+                            ],
+                          ),
+                          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                          SizedBox(
+                            height: 20,
+                            child: Transform.scale(
+                              scaleX: 0.55,
+                              scaleY: 0.55,
+                              child: CupertinoSwitch(
+                                //thumbColor: kprimaryColor,
+                                activeColor: kprimaryColor,
+                                value: notificationEnable,
+                                onChanged: (value) {
+                                  setState(() {
+                                    chatEnable = value;
+                                  });
+                                },
                               ),
                             ),
-                            const Padding(padding: EdgeInsets.only(left: 15))
-                          ],
-                        ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 15))
+                        ],
                       ))
                     ],
                   )
@@ -241,7 +235,6 @@ class SettingNotificationScreenState
         ));
   }
 
-  @override
   Widget select(text, icon, String info, onchange) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

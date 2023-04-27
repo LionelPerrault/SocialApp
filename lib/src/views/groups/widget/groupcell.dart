@@ -11,7 +11,6 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable

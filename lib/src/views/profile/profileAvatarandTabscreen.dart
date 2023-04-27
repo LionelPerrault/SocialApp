@@ -521,7 +521,7 @@ class ProfileAvatarandTabScreenState extends mvc
   }
 
   Widget setPaywallWidget() {
-    return Container(
+    return SizedBox(
       width: 400,
       height: 300,
       child: Row(
@@ -559,7 +559,7 @@ class ProfileAvatarandTabScreenState extends mvc
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: 400,
                                     height: 30,
                                     child: TextField(
@@ -720,7 +720,7 @@ class ProfileAvatarandTabScreenState extends mvc
   }
 
   uploadFile(XFile? pickedFile, type) async {
-    final _firebaseStorage = FirebaseStorage.instance;
+    final firebaseStorage = FirebaseStorage.instance;
     UploadTask uploadTask;
     Reference reference;
     try {
@@ -728,7 +728,7 @@ class ProfileAvatarandTabScreenState extends mvc
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        reference = _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = reference.putData(
@@ -738,7 +738,7 @@ class ProfileAvatarandTabScreenState extends mvc
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        reference = _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
         uploadTask = reference.putFile(file);

@@ -413,21 +413,19 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                       ],
                     )
                   : Padding(
-                      padding: EdgeInsets.only(right: 25),
+                      padding: const EdgeInsets.only(right: 25),
                       child: Column(
                         children: [
-                          Container(
-                            child: SizedBox(
-                              width: 400,
-                              child: titleAndsubtitleInput(
-                                'First Name',
-                                50,
-                                1,
-                                (value) async {
-                                  setting_profile['firstName'] = value;
-                                },
-                                userInfo['firstName'],
-                              ),
+                          SizedBox(
+                            width: 400,
+                            child: titleAndsubtitleInput(
+                              'First Name',
+                              50,
+                              1,
+                              (value) async {
+                                setting_profile['firstName'] = value;
+                              },
+                              userInfo['firstName'],
                             ),
                           ),
                           const Padding(
@@ -445,139 +443,124 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20)),
-                          Container(
-                            child: SizedBox(
+                          SizedBox(
+                            width: 400,
+                            child: customDropDownButton(
+                              title: 'I am',
                               width: 400,
-                              child: customDropDownButton(
-                                title: 'I am',
-                                width: 400,
-                                item: gender,
-                                value: userInfo['sex'] ?? gender[0]['value'],
-                                onChange: (value) {
-                                  //get value when changed
-                                  setting_profile['sex'] = value;
-                                  userInfo['sex'] = value!;
-                                  setState(() {});
-                                },
-                              ),
+                              item: gender,
+                              value: userInfo['sex'] ?? gender[0]['value'],
+                              onChange: (value) {
+                                //get value when changed
+                                setting_profile['sex'] = value;
+                                userInfo['sex'] = value!;
+                                setState(() {});
+                              },
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(left: 25)),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 400,
+                                child: customDropDownButton(
+                                  title: 'Relationship Status',
                                   width: 400,
-                                  child: customDropDownButton(
-                                    title: 'Relationship Status',
-                                    width: 400,
-                                    item: userRelationship,
-                                    value: userInfo['relationship'] ??
-                                        userRelationship[0]['value'],
-                                    onChange: (value) {
-                                      //get value when changed
-                                      setting_profile['relationship'] = value;
-                                      userInfo['relationship'] = value!;
-                                      setState(() {});
-                                    },
-                                  ),
+                                  item: userRelationship,
+                                  value: userInfo['relationship'] ??
+                                      userRelationship[0]['value'],
+                                  onChange: (value) {
+                                    //get value when changed
+                                    setting_profile['relationship'] = value;
+                                    userInfo['relationship'] = value!;
+                                    setState(() {});
+                                  },
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20)),
-                          Container(
-                            child: SizedBox(
+                          SizedBox(
+                            width: 400,
+                            child: customDropDownButton(
+                              title: 'Country',
                               width: 400,
-                              child: customDropDownButton(
-                                title: 'Country',
-                                width: 400,
-                                item: country,
-                                value:
-                                    userInfo['country'] ?? country[0]['value'],
-                                onChange: (value) {
-                                  //get value when changed
-                                  setting_profile['country'] = value;
-                                  userInfo['country'] = value!;
-                                  setState(() {});
-                                },
-                              ),
+                              item: country,
+                              value: userInfo['country'] ?? country[0]['value'],
+                              onChange: (value) {
+                                //get value when changed
+                                setting_profile['country'] = value;
+                                userInfo['country'] = value!;
+                                setState(() {});
+                              },
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(left: 25)),
-                          Container(
-                            child: SizedBox(
-                                width: 400,
-                                child: Column(
-                                  children: [
-                                    titleAndsubtitleInput(
-                                      'Website',
-                                      50,
-                                      1,
-                                      (value) async {
-                                        setting_profile['workWebsite'] = value;
-                                      },
-                                      userInfo['workWebsite'] ?? '',
-                                    ),
-                                    const Text(
-                                        'Website link must start with http:// or https://'),
-                                  ],
-                                )),
-                          ),
+                          SizedBox(
+                              width: 400,
+                              child: Column(
+                                children: [
+                                  titleAndsubtitleInput(
+                                    'Website',
+                                    50,
+                                    1,
+                                    (value) async {
+                                      setting_profile['workWebsite'] = value;
+                                    },
+                                    userInfo['workWebsite'] ?? '',
+                                  ),
+                                  const Text(
+                                      'Website link must start with http:// or https://'),
+                                ],
+                              )),
                           const Padding(padding: EdgeInsets.only(right: 20)),
-                          Container(
-                            child: SizedBox(
+                          SizedBox(
+                            width: 400,
+                            child: customDropDownButton(
                               width: 400,
-                              child: customDropDownButton(
-                                width: 400,
-                                title: 'Birthday',
-                                item: month,
-                                value: userInfo['birthM'] ?? month[0]['value'],
-                                onChange: (value) {
-                                  //get value when changed
-                                  userInfo['birthM'] = value.toString();
-                                  setting_profile['birthM'] = value.toString();
-                                  setState(() {});
-                                },
-                              ),
+                              title: 'Birthday',
+                              item: month,
+                              value: userInfo['birthM'] ?? month[0]['value'],
+                              onChange: (value) {
+                                //get value when changed
+                                userInfo['birthM'] = value.toString();
+                                setting_profile['birthM'] = value.toString();
+                                setState(() {});
+                              },
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(left: 25)),
-                          Container(
-                            child: SizedBox(
+                          SizedBox(
+                            width: 400,
+                            child: customDropDownButton(
+                              title: '',
                               width: 400,
-                              child: customDropDownButton(
-                                title: '',
-                                width: 400,
-                                item: bDay,
-                                value: userInfo['birthD'] ?? bDay[0]['value'],
-                                onChange: (value) {
-                                  //get value when changed
-                                  userInfo['birthD'] = value.toString();
-                                  setting_profile['birthD'] = value.toString();
-                                  setState(() {});
-                                },
-                              ),
+                              item: bDay,
+                              value: userInfo['birthD'] ?? bDay[0]['value'],
+                              onChange: (value) {
+                                //get value when changed
+                                userInfo['birthD'] = value.toString();
+                                setting_profile['birthD'] = value.toString();
+                                setState(() {});
+                              },
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(left: 25)),
-                          Container(
-                            child: SizedBox(
+                          SizedBox(
+                            width: 400,
+                            child: customDropDownButton(
                               width: 400,
-                              child: customDropDownButton(
-                                width: 400,
-                                title: '',
-                                item: year,
-                                value: userInfo['birthY'] ?? year[0]['value'],
-                                onChange: (value) {
-                                  //get value when changed
-                                  userInfo['birthY'] = value.toString();
-                                  setting_profile['birthY'] = value.toString();
-                                  setState(() {});
-                                },
-                              ),
+                              title: '',
+                              item: year,
+                              value: userInfo['birthY'] ?? year[0]['value'],
+                              onChange: (value) {
+                                //get value when changed
+                                userInfo['birthY'] = value.toString();
+                                setting_profile['birthY'] = value.toString();
+                                setState(() {});
+                              },
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20)),

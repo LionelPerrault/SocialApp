@@ -137,7 +137,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                 return Scaffold(
                   backgroundColor: Colors.black,
                   appBar: AppBar(
-                    backgroundColor: Color.fromARGB(255, 44, 44, 44),
+                    backgroundColor: const Color.fromARGB(255, 44, 44, 44),
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {

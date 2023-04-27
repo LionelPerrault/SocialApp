@@ -28,7 +28,7 @@ class SettingSecuritySessScreenState extends State<SettingSecuritySessScreen> {
                 color: Color.fromARGB(255, 139, 195, 74),
               ),
               pagename: 'Manage Sessions',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             SizedBox(

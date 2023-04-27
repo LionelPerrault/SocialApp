@@ -38,7 +38,7 @@ class NotificationsScreenState extends mvc.StateMVC<NotificationsScreen> {
         .collection(Helper.notificationField)
         .get();
     var allNotifi = snapshot.docs;
-    var notifyData = null;
+    var notifyData;
     for (var i = 0; i < allNotifi.length; i++) {
       notifyData = allNotifi[i].data();
       var adminUid = notifyData['postAdminId'];
@@ -160,7 +160,7 @@ class NotificationsScreenState extends mvc.StateMVC<NotificationsScreen> {
             )
           : SizedBox(
               height: SizeConfig(context).screenHeight - 100,
-              child: Center(child: CircularProgressIndicator())),
+              child: const Center(child: CircularProgressIndicator())),
     );
   }
 }

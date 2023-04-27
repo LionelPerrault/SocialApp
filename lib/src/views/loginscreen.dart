@@ -508,7 +508,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
           ),
           prefixIcon: icon,
           suffixIcon: IconButton(
-            padding: EdgeInsets.only(bottom: 3),
+            padding: const EdgeInsets.only(bottom: 3),
             icon: Icon(
               isObscure ? Icons.visibility_off : Icons.visibility,
               color: Colors.white,

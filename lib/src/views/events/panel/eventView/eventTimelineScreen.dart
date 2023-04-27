@@ -41,12 +41,10 @@ class EventTimelineScreen extends StatefulWidget {
 class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
   late FocusNode searchFocusNode;
   bool showMenu = false;
   Friends friendModel = Friends();
-  late AnimationController _drawerSlideController;
   double width = 0;
   double itemWidth = 0;
   List<Map> sampleData = [
@@ -288,7 +286,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   late PostController con;
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 10, left: 10, top: 15),
@@ -452,15 +449,15 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                       itemBuilder: (context, index) {
                         var friendUserName =
                             friendModel.friends[index]['requester'].toString();
-                        if (friendUserName == UserManager.userInfo['userName'])
+                        if (friendUserName ==
+                            UserManager.userInfo['userName']) {
                           friendUserName =
                               friendModel.friends[index]['receiver'].toString();
+                        }
 
                         return Material(
                             child: ListTile(
-                                onTap: () {
-                                  print("tap!");
-                                },
+                                onTap: () {},
                                 hoverColor:
                                     const Color.fromARGB(255, 243, 243, 243),
                                 // tileColor: Colors.white,
@@ -528,12 +525,13 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                                               ['requester']
                                                           .toString();
                                                   if (friendUserName ==
-                                                      UserManager
-                                                          .userInfo['userName'])
+                                                      UserManager.userInfo[
+                                                          'userName']) {
                                                     friendUserName = friendModel
                                                         .friends[index]
                                                             ['receiver']
                                                         .toString();
+                                                  }
                                                   print(friendUserName);
 
                                                   var snapshot =

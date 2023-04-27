@@ -338,10 +338,10 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
   }
 
   Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
+    final imagePicker = ImagePicker();
     XFile? pickedFile;
     if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
@@ -350,7 +350,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
       // var permissionStatus = await Permission.photos.status;
 
       //if (permissionStatus.isGranted) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
       //} else {
@@ -361,31 +361,31 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
   }
 
   uploadFile(XFile? pickedFile, type) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         if (type == 'avatar') {
           con.updatePageInfo({
             'pageUserName': con.page['pageUserName'],
@@ -396,9 +396,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
             'pageUserName': con.page['pageUserName'],
             'pageCover': downloadUrl
           });
-          print(downloadUrl);
         }
-        print(type);
       });
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
         switch (taskSnapshot.state) {
@@ -407,20 +405,16 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
               avatarProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $avatarProgress% complete.");
             } else {
               coverProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $coverProgress% complete.");
             }
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
             // Handle unsuccessful uploads

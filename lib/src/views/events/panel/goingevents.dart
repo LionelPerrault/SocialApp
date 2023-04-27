@@ -15,6 +15,7 @@ class GoingEvents extends StatefulWidget {
   late PostController con;
   Function routerChange;
 
+  @override
   State createState() => GoingEventsState();
 }
 

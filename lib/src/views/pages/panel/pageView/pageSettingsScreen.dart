@@ -134,53 +134,50 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
   late PostController con;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              child:
-                  SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-                      ? Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            LeftSettingBar(),
-                            Expanded(
-                              child: pageSettingTab == 'Page Settings'
-                                  ? PageSettingsWidget()
-                                  : pageSettingTab == 'Page Information'
-                                      ? PageInformationWidget()
-                                      : pageSettingTab == 'Admins'
-                                          ? PageAdminsWidget()
-                                          : pageSettingTab == 'Verification'
-                                              ? VerificationWidget()
-                                              : pageSettingTab == 'Interests'
-                                                  ? GroupInterestsWidget()
-                                                  : GroupDeleteWidget(),
-                            ),
-                          ],
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            LeftSettingBar(),
-                            Container(
-                              child: pageSettingTab == 'Page Settings'
-                                  ? PageSettingsWidget()
-                                  : pageSettingTab == 'Page Information'
-                                      ? PageInformationWidget()
-                                      : pageSettingTab == 'Admins'
-                                          ? PageAdminsWidget()
-                                          : pageSettingTab == 'Verification'
-                                              ? VerificationWidget()
-                                              : pageSettingTab == 'Interests'
-                                                  ? GroupInterestsWidget()
-                                                  : GroupDeleteWidget(),
-                            ),
-                          ],
-                        ))
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+            child: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      LeftSettingBar(),
+                      Expanded(
+                        child: pageSettingTab == 'Page Settings'
+                            ? PageSettingsWidget()
+                            : pageSettingTab == 'Page Information'
+                                ? PageInformationWidget()
+                                : pageSettingTab == 'Admins'
+                                    ? PageAdminsWidget()
+                                    : pageSettingTab == 'Verification'
+                                        ? VerificationWidget()
+                                        : pageSettingTab == 'Interests'
+                                            ? GroupInterestsWidget()
+                                            : GroupDeleteWidget(),
+                      ),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      LeftSettingBar(),
+                      Container(
+                        child: pageSettingTab == 'Page Settings'
+                            ? PageSettingsWidget()
+                            : pageSettingTab == 'Page Information'
+                                ? PageInformationWidget()
+                                : pageSettingTab == 'Admins'
+                                    ? PageAdminsWidget()
+                                    : pageSettingTab == 'Verification'
+                                        ? VerificationWidget()
+                                        : pageSettingTab == 'Interests'
+                                            ? GroupInterestsWidget()
+                                            : GroupDeleteWidget(),
+                      ),
+                    ],
+                  ))
+      ],
     );
   }
 
@@ -807,9 +804,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                     itemCount: con.page['pageAdmin'].length,
                     itemBuilder: (context, index) => Material(
                         child: ListTile(
-                            onTap: () {
-                              print("tap!");
-                            },
+                            onTap: () {},
                             hoverColor:
                                 const Color.fromARGB(255, 243, 243, 243),
                             // tileColor: Colors.white,
@@ -932,9 +927,7 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                     itemCount: con.page['pageLiked'].length,
                     itemBuilder: (context, index) => Material(
                         child: ListTile(
-                            onTap: () {
-                              print("tap!");
-                            },
+                            onTap: () {},
                             hoverColor:
                                 const Color.fromARGB(255, 243, 243, 243),
                             // tileColor: Colors.white,
@@ -963,36 +956,32 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                             fontSize: 12),
                                       ),
                                     ),
-                                    Container(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 245, 54, 92),
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0)),
-                                            minimumSize: const Size(90, 35),
-                                            maximumSize: const Size(90, 35)),
-                                        onPressed: () {
-                                          () => {};
-                                        },
-                                        child: Row(
-                                          children: const [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 18.0,
-                                            ),
-                                            Text('Remove',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 11,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 245, 54, 92),
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.0)),
+                                          minimumSize: const Size(90, 35),
+                                          maximumSize: const Size(90, 35)),
+                                      onPressed: () {
+                                        () => {};
+                                      },
+                                      child: Row(
+                                        children: const [
+                                          Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                            size: 18.0,
+                                          ),
+                                          Text('Remove',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold)),
+                                        ],
                                       ),
                                     ),
                                     const Padding(
@@ -1080,14 +1069,13 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.camera_alt),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 20)),
+                                children: const [
+                                  Icon(Icons.camera_alt),
+                                  Padding(padding: EdgeInsets.only(left: 20)),
                                   Expanded(
                                       child: SizedBox(
                                     width: 100,
-                                    child: const Text(
+                                    child: Text(
                                       'Your Photo',
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(

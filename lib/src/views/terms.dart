@@ -21,7 +21,6 @@ class TermsScreenState extends mvc.StateMVC<TermsScreen> {
   String dropdownValue = 'Male';
   @override
   Widget build(BuildContext context) {
-    print(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

@@ -4,7 +4,6 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingWorkScreen extends StatefulWidget {
@@ -168,7 +167,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
 
   Widget footer() {
     return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
+      padding: const EdgeInsets.only(right: 20, top: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(
@@ -186,7 +185,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(

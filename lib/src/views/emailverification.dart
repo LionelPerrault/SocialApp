@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class EmailVerificationScreen extends StatefulWidget {
   EmailVerificationScreen(Key? key,
       {required this.oobCode, required this.apiKey, required this.continueUrl})
-      : super(key: key) {}
+      : super(key: key);
   String oobCode;
   String apiKey;
   String continueUrl;

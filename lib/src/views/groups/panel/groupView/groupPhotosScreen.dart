@@ -149,13 +149,12 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
             image: NetworkImage(value['url']),
             fit: BoxFit.cover,
           ),
-          color: Color.fromARGB(255, 150, 99, 99),
+          color: const Color.fromARGB(255, 150, 99, 99),
           border: Border.all(color: Colors.grey)),
     );
   }
 
   Widget albumCell(value) {
-    print("value---------$value");
     return Container(
       alignment: Alignment.topCenter,
       width: 200,
@@ -165,7 +164,7 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
             image: NetworkImage(value[0]['url']),
             fit: BoxFit.cover,
           ),
-          color: Color.fromARGB(255, 150, 99, 99),
+          color: const Color.fromARGB(255, 150, 99, 99),
           border: Border.all(color: Colors.grey)),
     );
   }

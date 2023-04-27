@@ -32,7 +32,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
   Photos photoModel = Photos();
-  Map _focusedIndices = {};
+  final Map _focusedIndices = {};
   Friends friendModel = Friends();
   bool deleteLoading = false;
   @override
@@ -227,8 +227,6 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   }
 
   Widget photoCell(value, index) {
-    print("value---------$value");
-    print("index---------$index");
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
@@ -273,7 +271,6 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                           title: const SizedBox(),
                           content: AlertYesNoWidget(
                               yesFunc: () {
-                                bool _isDeleting = false;
                                 Navigator.of(context).pop(
                                     true); // call Navigator outside of the previous block.
                                 setState(() {
@@ -287,8 +284,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
 
                                 setState(() {
                                   deleteLoading = false;
-                                  _isDeleting =
-                                      true; // set flag when both operations have completed successfully
+// set flag when both operations have completed successfully
                                 });
                               },
                               noFunc: () {

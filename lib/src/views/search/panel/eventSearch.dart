@@ -65,7 +65,7 @@ class EventSearchState extends mvc.StateMVC<EventSearch> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
-                child: Container(
+                child: SizedBox(
                   width: SizeConfig(context).screenWidth,
                   height: SizeConfig(context).screenHeight -
                       SizeConfig.navbarHeight -

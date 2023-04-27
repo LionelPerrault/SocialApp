@@ -618,31 +618,31 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
   }
 
   uploadFile(XFile? pickedFile, type) async {
-    final _firebaseStorage = FirebaseStorage.instance;
+    final firebaseStorage = FirebaseStorage.instance;
     var uploadTask;
-    Reference _reference;
+    Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        reference = await firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = await firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         if (type == 'profile_cover') {
           con.updateEventInfo({
             'eventPicture': downloadUrl,
@@ -663,26 +663,21 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               avatarProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $avatarProgress% complete.");
             } else {
               coverProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $coverProgress% complete.");
             }
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
             // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
             coverProgress = 0;
             setState(() {});
             // Handle successful uploads on complete
