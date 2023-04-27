@@ -355,8 +355,7 @@ class UserController extends ControllerMVC {
     var allUser = user.docs;
     String sender = '';
     String recipient = '';
-    int sendFlag = 0;
-    int reciFlag = 0;
+
     if (token == '') {
       var relysiaAuth = await RelysiaManager.authUser(
           UserManager.userInfo['email'], UserManager.userInfo['password']);
@@ -408,8 +407,6 @@ class UserController extends ControllerMVC {
                           'notes': trdata[i]['notes'],
                           'balance': trdata[i]['balance_change'],
                         }),
-                        sendFlag = 0,
-                        reciFlag = 0,
                       },
                   },
                 nextPageTokenCount = res['nextPageToken'],
@@ -472,7 +469,6 @@ class UserController extends ControllerMVC {
       isEmailExist = '';
       Helper.showToast('Email is sent');
     } on FirebaseAuthException catch (e) {
-      print(e.code);
       if (e.code == 'invalid-email') {
         isEmailExist = 'Not email type';
       } else if (e.code == 'user-not-found') {
@@ -978,8 +974,6 @@ class UserController extends ControllerMVC {
   }
 
   saveAccountSettings(email, userName, nearByOptOut) async {
-    var userManager = UserManager.userInfo;
-
     isSettingAction = true;
     setState(() {});
     if (!email.contains('@')) {

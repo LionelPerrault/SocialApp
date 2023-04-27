@@ -44,7 +44,7 @@ class RelysiaHelper {
   static var qrlanding;
   static var myToken = [];
   static var clientsData = [];
-  static var authdata = null;
+  static var authdata;
   static var carouselList = [];
   static var logoIcon = '';
   static var logoTitle = '';

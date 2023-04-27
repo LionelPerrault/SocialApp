@@ -87,18 +87,16 @@ class AdminListThreadsState extends mvc.StateMVC<AdminListThreads> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            child: addroute == 'main' ? generalWidget() : threadFindWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.85
+              : SizeConfig(context).screenWidth,
+          child: addroute == 'main' ? generalWidget() : threadFindWidget(),
+        ),
+      ],
     );
   }
 
@@ -181,48 +179,46 @@ class AdminListThreadsState extends mvc.StateMVC<AdminListThreads> {
   }
 
   Widget threadFindWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.forum),
-            pagename: 'Forums › Threads › Find',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': const Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.forum),
+          pagename: 'Forums › Threads › Find',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
+            },
+            'size': const Size(120, 50),
+          },
+        ),
+        Container(
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.85
+              : SizeConfig(context).screenWidth,
+          height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            configuration: const PlutoGridConfiguration(
+              columnSize: PlutoGridColumnSizeConfig(),
+            ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {
+              print(event);
             },
           ),
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              configuration: const PlutoGridConfiguration(
-                columnSize: PlutoGridColumnSizeConfig(),
-              ),
-              columns: columns,
-              rows: rows,
-              columnGroups: columnGroups,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

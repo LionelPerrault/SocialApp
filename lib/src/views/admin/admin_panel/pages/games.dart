@@ -79,7 +79,6 @@ class AdminGamesState extends mvc.StateMVC<AdminGames> {
     );
   }
 
-  @override
   Widget generalWidget() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -129,33 +128,31 @@ class AdminGamesState extends mvc.StateMVC<AdminGames> {
   }
 
   Widget addNewGameWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.gamepad),
-            pagename: 'Games › Add New Game',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': const Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.gamepad),
+          pagename: 'Games › Add New Game',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          titleAndsubtitleInput('Game Name', 40, 1, ''),
-          titleAndsubtitleInput('Description', 80, 4, ''),
-          titleAndsubtitleInput(
-              'Game Source', 80, 4, 'The source link of your embedded game'),
-          titleAndUpload('Thumbnail'),
-          const Divider(thickness: 0.1, color: Colors.black),
-          footer(),
-        ],
-      ),
+            'size': const Size(120, 50),
+          },
+        ),
+        titleAndsubtitleInput('Game Name', 40, 1, ''),
+        titleAndsubtitleInput('Description', 80, 4, ''),
+        titleAndsubtitleInput(
+            'Game Source', 80, 4, 'The source link of your embedded game'),
+        titleAndUpload('Thumbnail'),
+        const Divider(thickness: 0.1, color: Colors.black),
+        footer(),
+      ],
     );
   }
 

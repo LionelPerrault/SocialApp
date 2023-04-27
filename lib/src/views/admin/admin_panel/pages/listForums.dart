@@ -7,7 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminListForums extends StatefulWidget {
-  AdminListForums({super.key});
+  const AdminListForums({super.key});
 
   @override
   State createState() => AdminListForumsState();
@@ -83,22 +83,19 @@ class AdminListForumsState extends mvc.StateMVC<AdminListForums> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            child: addroute == 'main' ? generalWidget() : addNewForumWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.85
+              : SizeConfig(context).screenWidth,
+          child: addroute == 'main' ? generalWidget() : addNewForumWidget(),
+        ),
+      ],
     );
   }
 
-  @override
   Widget generalWidget() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

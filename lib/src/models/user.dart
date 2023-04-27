@@ -29,14 +29,14 @@ class User {
       //} catch (e) {
       //phone = "";
       //}
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).isNotEmpty
           ? Media.fromJSON(jsonMap['media'][0])
           : Media(url: '');
     } catch (e) {}
   }
 
   Map toMap() {
-    var map = Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map["id"] = id;
     map["email"] = email;
     map["password"] = password;
@@ -44,7 +44,7 @@ class User {
   }
 
   Map toRestrictMap() {
-    var map = Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map["id"] = id;
     map["email"] = email;
     return map;

@@ -81,18 +81,16 @@ class AdminListMoviesState extends mvc.StateMVC<AdminListMovies> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            child: addroute == 'main' ? generalWidget() : addNewMovieWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          child: addroute == 'main' ? generalWidget() : addNewMovieWidget(),
+        ),
+      ],
     );
   }
 

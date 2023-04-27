@@ -81,7 +81,6 @@ class RelysiaManager {
 
   static Future<int> createWallet(String token) async {
     var r = 0;
-    var respondData = {};
     try {
       await http
           .get(Uri.parse('https://api.relysia.com/v1/createWallet'), headers: {
@@ -89,10 +88,7 @@ class RelysiaManager {
         'serviceID': serviceId,
         'walletTitle': '00000000-0000-0000-0000-000000000000',
         'paymailActivate': 'true',
-      }).then((res) => {
-                r = 1,
-                respondData = jsonDecode(res.body),
-              });
+      }).then((res) =>);
       // ignore: empty_catches
     } catch (exception) {}
     return r;

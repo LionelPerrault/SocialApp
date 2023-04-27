@@ -14,7 +14,6 @@ import '../managers/user_manager.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments;
     var url = settings.name.toString();
     if (url.contains("auth?")) {
       //fetch params;

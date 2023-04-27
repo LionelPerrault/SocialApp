@@ -178,9 +178,7 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
               stateManager = event.stateManager;
               stateManager.setShowColumnFilter(true);
             },
-            onChanged: (PlutoGridOnChangedEvent event) {
-              print(event);
-            },
+            onChanged: (PlutoGridOnChangedEvent event) {},
           ),
         ),
       ],
@@ -263,7 +261,7 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 300,
                     height: height,
                     child: TextField(

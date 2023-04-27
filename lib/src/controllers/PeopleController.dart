@@ -221,24 +221,6 @@ class PeopleController extends ControllerMVC {
     setState(() {});
   }
 
-  getFriendSubstituteList() async {
-    List friendids = await findSimilarUsers(UserManager.userInfo['uid']);
-  }
-
-  getAllUserList() async {
-    if (isLocked) return;
-    isLocked = true;
-    //await getReceiveRequests(userInfo['userName']);
-    var query = FirebaseFirestore.instance
-        .collection(Helper.userField)
-        .orderBy('userName')
-        .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
-
-    //await getDiscoverList(query);
-    isLocked = false;
-    setState(() {});
-  }
-
   requestFriendDirectlyMap(Map mapData) async {
     var receiver = mapData['userName'];
     var fullName = '${mapData['firstName']} ${mapData['lastName']}';

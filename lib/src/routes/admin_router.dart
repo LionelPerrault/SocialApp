@@ -34,7 +34,6 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/games.dart';
 class AdminRouter {
   AdminRouter(String settingPage);
   static adminRouter(settingPage) {
-    print(settingPage);
     switch (settingPage) {
       case '':
         return AdminMainPanel();
@@ -47,15 +46,15 @@ class AdminRouter {
       case '/settings/live':
         return AdminSettingsLive();
       case '/settings/system':
-        return AdminSettingsSystem();
+        return const AdminSettingsSystem();
       case '/settings/security':
         return const AdminSettingsSecurity();
       case '/settings/registration':
-        return AdminSettingsRegistration();
+        return const AdminSettingsRegistration();
       case '/settings/account':
-        return AdminSettingsAccount();
+        return const AdminSettingsAccount();
       case '/settings/notification':
-        return AdminSettingsNotification();
+        return const AdminSettingsNotification();
       case '/settings/upload':
         return const AdminSettingsUpload();
       case '/settings/payments':
@@ -69,7 +68,7 @@ class AdminRouter {
       case '/manage-prices':
         return AdminManagePrice();
       case '/design':
-        return AdminDesign();
+        return const AdminDesign();
       case '/currencies':
         return const AdminCurrencies();
       case '/languages':
@@ -79,7 +78,7 @@ class AdminRouter {
       case '/shnatter_token':
         return AdminShnatterToken();
       case '/genders':
-        return AdminGenders();
+        return const AdminGenders();
       case '/countries':
         return AdminCountries();
       case '/users':
@@ -94,13 +93,13 @@ class AdminRouter {
       case '/forums/listThreads':
         return AdminListThreads();
       case '/forums/listReplies':
-        return AdminListReplies();
+        return const AdminListReplies();
       case '/movies/listMovies':
-        return AdminListMovies();
+        return const AdminListMovies();
       case '/movies/listGenres':
-        return AdminListGenres();
+        return const AdminListGenres();
       case '/games':
-        return AdminGames();
+        return const AdminGames();
     }
   }
 }

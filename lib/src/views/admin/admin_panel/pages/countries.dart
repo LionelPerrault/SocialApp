@@ -8,7 +8,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminCountries extends StatefulWidget {
-  AdminCountries({super.key});
+  const AdminCountries({super.key});
 
   @override
   State createState() => AdminCountriesState();
@@ -103,103 +103,97 @@ class AdminCountriesState extends mvc.StateMVC<AdminCountries> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            child: addroute == 'main' ? generalWidget() : addNewThemeWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          child: addroute == 'main' ? generalWidget() : addNewThemeWidget(),
+        ),
+      ],
     );
   }
 
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.language),
-            pagename: 'Countries',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.white,
-              'icon': const Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-              'text': 'Add New Country',
-              'valueColor': Colors.black,
-              'callback': () {
-                addroute = 'addNew';
-                setState(() {});
-              },
-              'size': const Size(180, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.language),
+          pagename: 'Countries',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.white,
+            'icon': const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            'text': 'Add New Country',
+            'valueColor': Colors.black,
+            'callback': () {
+              addroute = 'addNew';
+              setState(() {});
+            },
+            'size': const Size(180, 50),
+          },
+        ),
+        Container(
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            configuration: const PlutoGridConfiguration(
+              columnSize: PlutoGridColumnSizeConfig(),
+            ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {
+              if (kDebugMode) {
+                print(event);
+              }
             },
           ),
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              configuration: const PlutoGridConfiguration(
-                columnSize: PlutoGridColumnSizeConfig(),
-              ),
-              columns: columns,
-              rows: rows,
-              columnGroups: columnGroups,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                if (kDebugMode) {
-                  print(event);
-                }
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget addNewThemeWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.language),
-            pagename: 'Countries › Add New Country',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': const Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.language),
+          pagename: 'Countries › Add New Country',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          textAndSelect('Default', 'Make it the default country of the site'),
-          textAndSelect('Enabled', 'Make it enbaled so the user can select it'),
-          titleAndsubtitleInput('Country Name', 30, 1, ''),
-          titleAndsubtitleInput(
-              'Country Code', 30, 1, 'Country Code, For Example: us, sa or fr'),
-          titleAndsubtitleInput(
-              'Phone Code', 30, 1, 'Phone Code, For Example: +1, +44 or +971'),
-          titleAndsubtitleInput('Order', 30, 1, ''),
-          footer(),
-        ],
-      ),
+            'size': const Size(120, 50),
+          },
+        ),
+        textAndSelect('Default', 'Make it the default country of the site'),
+        textAndSelect('Enabled', 'Make it enbaled so the user can select it'),
+        titleAndsubtitleInput('Country Name', 30, 1, ''),
+        titleAndsubtitleInput(
+            'Country Code', 30, 1, 'Country Code, For Example: us, sa or fr'),
+        titleAndsubtitleInput(
+            'Phone Code', 30, 1, 'Phone Code, For Example: +1, +44 or +971'),
+        titleAndsubtitleInput('Order', 30, 1, ''),
+        footer(),
+      ],
     );
   }
 

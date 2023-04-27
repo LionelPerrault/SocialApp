@@ -66,111 +66,109 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
   }
 
   Widget generalWidget() {
-    return Container(
-      child: Column(children: [
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fshow_username.svg?alt=media&token=5a47447e-9c39-4465-9403-d3136c240f19',
-            'Show Usernames Only',
-            'If disabled full names will be displayed instead'),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fdelete_account.svg?alt=media&token=def05e10-6e49-4704-a815-f6b6273c1a14',
-            'Delete Account (GDPR)',
-            'Allow users to delete their account'),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fdownload.svg?alt=media&token=4c0ad296-bd2d-46dc-b46d-babff026c6f5',
-            'Download User Information (GDPR)',
-            'Allow users to download their account information from settings page'),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fpokes.svg?alt=media&token=2c7acee3-c22b-472e-a40e-af0a60db7868',
-            'Pokes',
-            'Enable users to poke each others'),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fverification.svg?alt=media&token=abd89942-54ac-4130-99bc-6b09b21e8a32',
-            'Verification Requests',
-            'Turn the verification requests from users & pages On and Off'),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fdisable_friend.svg?alt=media&token=d696c49e-4a0b-4048-8d46-c19b939f1c37',
-            'Disable Friend Request After Decline',
-            'If enabled user A will be able to send friendship request to user B again'),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 25),
-        ),
-        pictureAndSelect(
-            'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fadblock.svg?alt=media&token=983847bb-7157-4338-bc65-b3fbfbbe8aff',
-            'Adblock Detector',
-            'Turn the Adblock auto detector notification On and Off, (Note: Admin is exception) Red block message will appear to make user disable adblock from his browser'),
-        const Padding(
-          padding: EdgeInsets.only(top: 30),
-        ),
-        titleAndsubtitleInput('Max Friends/User', 30, 1,
-            'The Maximum number of friends allowed per User (0 for unlimited)'),
-        const Padding(
-          padding: EdgeInsets.only(top: 50),
-        ),
-        Container(
-          height: 1,
-          color: const Color.fromRGBO(240, 240, 240, 1),
-        ),
-        footer()
-      ]),
-    );
+    return Column(children: [
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fshow_username.svg?alt=media&token=5a47447e-9c39-4465-9403-d3136c240f19',
+          'Show Usernames Only',
+          'If disabled full names will be displayed instead'),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fdelete_account.svg?alt=media&token=def05e10-6e49-4704-a815-f6b6273c1a14',
+          'Delete Account (GDPR)',
+          'Allow users to delete their account'),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fdownload.svg?alt=media&token=4c0ad296-bd2d-46dc-b46d-babff026c6f5',
+          'Download User Information (GDPR)',
+          'Allow users to download their account information from settings page'),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fpokes.svg?alt=media&token=2c7acee3-c22b-472e-a40e-af0a60db7868',
+          'Pokes',
+          'Enable users to poke each others'),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fverification.svg?alt=media&token=abd89942-54ac-4130-99bc-6b09b21e8a32',
+          'Verification Requests',
+          'Turn the verification requests from users & pages On and Off'),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fdisable_friend.svg?alt=media&token=d696c49e-4a0b-4048-8d46-c19b939f1c37',
+          'Disable Friend Request After Decline',
+          'If enabled user A will be able to send friendship request to user B again'),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      const Padding(
+        padding: EdgeInsets.only(top: 25),
+      ),
+      pictureAndSelect(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fadmin%2Fsettings%2Fadblock.svg?alt=media&token=983847bb-7157-4338-bc65-b3fbfbbe8aff',
+          'Adblock Detector',
+          'Turn the Adblock auto detector notification On and Off, (Note: Admin is exception) Red block message will appear to make user disable adblock from his browser'),
+      const Padding(
+        padding: EdgeInsets.only(top: 30),
+      ),
+      titleAndsubtitleInput('Max Friends/User', 30, 1,
+          'The Maximum number of friends allowed per User (0 for unlimited)'),
+      const Padding(
+        padding: EdgeInsets.only(top: 50),
+      ),
+      Container(
+        height: 1,
+        color: const Color.fromRGBO(240, 240, 240, 1),
+      ),
+      footer()
+    ]);
   }
 
   Widget ProfileWidget() {
