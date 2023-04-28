@@ -56,6 +56,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
       });
       loading = false;
       setState(() {});
+      print("joined function1");
     } else {
       showDialog(
         context: context,

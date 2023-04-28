@@ -38,7 +38,11 @@ class InterestedEventsState extends mvc.StateMVC<InterestedEvents> {
   void getEventNow() {
     con.getEvent('interested', UserManager.userInfo['uid']).then((value) => {
           interestedEvents = value,
+          print("interested"),
           print(returnValue),
+          setState(
+            () {},
+          )
         });
   }
 
