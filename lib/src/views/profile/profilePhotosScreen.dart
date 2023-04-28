@@ -266,19 +266,19 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                               yesFunc: () {
                                 Navigator.of(context).pop(
                                     true); // call Navigator outside of the previous block.
-                                setState(() {
-                                  deleteLoading = true;
-                                });
+                                // setState(() {
+                                //   deleteLoading = true;
+                                // });
                                 photoModel.photos.removeAt(index);
 
                                 PostController().deletePhoto(value);
                                 PostController()
                                     .deletePhotoFromTimeline(value['url']);
 
-                                setState(() {
-                                  deleteLoading = false;
-// set flag when both operations have completed successfully
-                                });
+//                                 setState(() {
+//                                   deleteLoading = false;
+// // set flag when both operations have completed successfully
+//                                 });
                               },
                               noFunc: () {
                                 Navigator.of(context).pop(true);
