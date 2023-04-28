@@ -174,10 +174,11 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        drawerEnableOpenDragGesture: false,
-        drawer: const Drawer(),
-        body: Stack(
+      key: _scaffoldKey,
+      drawerEnableOpenDragGesture: false,
+      drawer: const Drawer(),
+      body: SafeArea(
+        child: Stack(
           fit: StackFit.expand,
           children: [
             ShnatterNavigation(
@@ -1709,7 +1710,9 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                   children: [])));
                 }),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Widget input({label, onchange, obscureText = false, validator}) {
