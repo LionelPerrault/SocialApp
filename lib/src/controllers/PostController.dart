@@ -1546,10 +1546,10 @@ class PostController extends ControllerMVC {
         'timeline': true,
         'comment': true,
         'followers': followers,
-        // 'eventId':
-        //     where == PostType.event.index ? PostController().viewEventId : '',
-        // 'groupId':
-        //     where == PostType.group.index ? PostController().viewGroupId : '',
+        'eventId':
+            where == PostType.event.index ? PostController().viewEventId : '',
+        'groupId':
+            where == PostType.group.index ? PostController().viewGroupId : '',
       };
       Helper.postCollection.add(postData);
 
