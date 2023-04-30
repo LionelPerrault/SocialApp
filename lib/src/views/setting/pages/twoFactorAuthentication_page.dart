@@ -192,7 +192,7 @@ class TwoFactorAuthenticationScreenState
                                   onPressed: () {
                                     FlutterClipboard.copy('JBSWY3DPEHPK3PXP')
                                         .then((value) => Helper.showToast(
-                                            'Secret Key was cofied!'));
+                                            'Secret Key Copied!'));
                                   },
                                   iconSize: 20,
                                   icon: const Icon(

@@ -346,8 +346,9 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                           onPressed: () {
                                             FlutterClipboard.copy(
                                                     userInfo['uid'])
-                                                .then((value) => Helper.showToast(
-                                                    'Secret Key was cofied!'));
+                                                .then((value) =>
+                                                    Helper.showToast(
+                                                        'Invite Code Copied!'));
                                           },
                                           icon: Icon(
                                             Icons.copy,
@@ -639,7 +640,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     onPressed: () {
                                       FlutterClipboard.copy(userInfo['uid'])
                                           .then((value) => Helper.showToast(
-                                              'Secret Key was cofied!'));
+                                              'Invite Code Copied!'));
                                     },
                                     icon: Icon(
                                       Icons.copy,
