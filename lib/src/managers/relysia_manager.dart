@@ -88,7 +88,9 @@ class RelysiaManager {
         'serviceID': serviceId,
         'walletTitle': '00000000-0000-0000-0000-000000000000',
         'paymailActivate': 'true',
-      });
+      }).then((res) => {
+                r = 1,
+              });
       // ignore: empty_catches
     } catch (exception) {}
     return r;
