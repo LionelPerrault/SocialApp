@@ -168,15 +168,15 @@ class UserController extends ControllerMVC {
       setState(() {});
       return false;
     }
-    RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
-          if (res['data'] == null)
-            {
-              failRegister = 'No access the net',
-              isSendRegisterInfo = false,
-              setState(() {}),
-            }
-        });
-    if (isSendRegisterInfo = false) {
+    // RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
+    //       if (res['data'] == null)
+    //         {
+    //           failRegister = 'No access the net',
+    //           isSendRegisterInfo = false,
+    //           setState(() {}),
+    //         }
+    //     });
+    if (isSendRegisterInfo == false) {
       return false;
     }
     failRegister = '';
@@ -852,6 +852,9 @@ class UserController extends ControllerMVC {
   void createEmail() async {
     token = responseData['data']['token'];
     RelysiaManager.createWallet(token).then((rr) => {
+          print(
+              '////////////////////////////////////////////////////////////////////////////'),
+          print(rr),
           if (rr == 0)
             {
               Helper.showToast("Error occurs while create wallet"),
