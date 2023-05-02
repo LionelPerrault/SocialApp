@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/daytimeM.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/mindslice.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingVerificationScreen extends StatefulWidget {
@@ -35,10 +29,10 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                 color: Color.fromARGB(255, 33, 150, 243),
               ),
               pagename: 'Verification',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
+            SizedBox(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5
@@ -48,9 +42,9 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                   Row(
                     children: [
                       Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         width: 100,
-                        child: Text(
+                        child: const Text(
                           'Chat Message Sound',
                           style: TextStyle(
                               color: Color.fromARGB(255, 82, 95, 127),
@@ -59,21 +53,21 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                         ),
                       ),
                       Expanded(
-                          child: Container(
+                          child: SizedBox(
                         width: 230,
                         child: Column(
                           children: [
                             Container(
                               width: 230,
-                              color: Color.fromARGB(255, 235, 235, 235),
+                              color: const Color.fromARGB(255, 235, 235, 235),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
+                                  children: const [
                                     Icon(Icons.camera_alt),
                                     Padding(padding: EdgeInsets.only(left: 20)),
                                     Expanded(
-                                        child: Container(
+                                        child: SizedBox(
                                       width: 100,
                                       child: Text(
                                         'Your Photo',
@@ -106,7 +100,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                                   ),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       backgroundColor: Colors.grey[300],
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -130,14 +124,14 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                       )),
                       const Padding(padding: EdgeInsets.only(left: 30)),
                       Expanded(
-                          child: Container(
+                          child: SizedBox(
                         width: 230,
                         child: Column(
                           children: [
                             Container(
                               width: 230,
                               height: 30,
-                              color: Color.fromARGB(255, 235, 235, 235),
+                              color: const Color.fromARGB(255, 235, 235, 235),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -174,7 +168,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                                   ),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       backgroundColor: Colors.grey[300],
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -201,7 +195,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                   const Padding(padding: EdgeInsets.only(top: 20)),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         'Chat Message Sound',
                         style: TextStyle(
                             color: Color.fromARGB(255, 82, 95, 127),
@@ -213,7 +207,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                         child: Container(
                           width: 500,
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 250, 250, 250),
+                              color: const Color.fromARGB(255, 250, 250, 250),
                               border: Border.all(color: Colors.grey)),
                           child: TextFormField(
                             minLines: 1,
@@ -222,8 +216,8 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                               // setState(() {});
                             },
                             keyboardType: TextInputType.multiline,
-                            style: TextStyle(fontSize: 12),
-                            decoration: InputDecoration(
+                            style: const TextStyle(fontSize: 12),
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
@@ -248,7 +242,7 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
   }
 
   Widget input({label, onchange, obscureText = false, validator}) {
-    return Container(
+    return SizedBox(
       height: 28,
       child: StartedInput(
         validator: (val) async {

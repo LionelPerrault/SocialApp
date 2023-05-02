@@ -4,12 +4,13 @@ import 'package:shnatter/src/views/terms.dart';
 import 'about.dart';
 
 class footbar extends StatefulWidget {
-  footbar({Key? key}) : super(key: key);
+  const footbar({Key? key}) : super(key: key);
   @override
   State createState() => footbarState();
 }
 
 class footbarState extends State<footbar> {
+  @override
   Widget build(BuildContext context) {
     return Container(
         height: 70,
@@ -31,7 +32,7 @@ class footbarState extends State<footbar> {
                     Navigator.push<void>(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => AboutScreen(),
+                        builder: (BuildContext context) => const AboutScreen(),
                       ),
                     ),
                   },
@@ -51,7 +52,7 @@ class footbarState extends State<footbar> {
                     Navigator.push<void>(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => TermsScreen(),
+                        builder: (BuildContext context) => const TermsScreen(),
                       ),
                     ),
                   },
@@ -77,15 +78,16 @@ class footbarState extends State<footbar> {
 }
 
 class footbarM extends StatefulWidget {
-  footbarM({Key? key}) : super(key: key);
+  const footbarM({Key? key}) : super(key: key);
   @override
   State createState() => footbarMState();
 }
 
 class footbarMState extends State<footbarM> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: Container(
         height: 75,
         decoration: const BoxDecoration(
@@ -104,43 +106,18 @@ class footbarMState extends State<footbarM> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 5)),
-            Container(
-              // margin: const EdgeInsets.only(right: 20),
-              child: Row(
-                children: [
-                  const Padding(padding: EdgeInsets.only(left: 5)),
-                  Expanded(
-                      // ignore: sort_child_properties_last
-                      child: InkWell(
-                        onTap: () => {
-                          Navigator.push<void>(
-                            context,
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) => AboutScreen(),
-                            ),
-                          ),
-                        },
-                        child: GestureDetector(
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'About',
-                              style:
-                                  TextStyle(fontSize: 13, color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                      ),
-                      flex: 1),
-                  const Padding(padding: EdgeInsets.only(left: 5)),
-                  Expanded(
+            Row(
+              children: [
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Expanded(
                     // ignore: sort_child_properties_last
                     child: InkWell(
                       onTap: () => {
                         Navigator.push<void>(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (BuildContext context) => TermsScreen(),
+                            builder: (BuildContext context) =>
+                                const AboutScreen(),
                           ),
                         ),
                       },
@@ -148,30 +125,53 @@ class footbarMState extends State<footbarM> {
                         child: Container(
                           alignment: Alignment.center,
                           child: const Text(
-                            'Terms',
+                            'About',
                             style: TextStyle(fontSize: 13, color: Colors.grey),
                           ),
                         ),
                       ),
                     ),
-                    flex: 1,
+                    flex: 1),
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Expanded(
+                  // ignore: sort_child_properties_last
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const TermsScreen(),
+                        ),
+                      ),
+                    },
+                    child: GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Terms',
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                        ),
+                      ),
+                    ),
                   ),
-                  // text('Terms', Colors.grey, 13),
-                  const Padding(padding: EdgeInsets.only(left: 5)),
-                  Expanded(
-                    // ignore: sort_child_properties_last
-                    child: text('Contact Us', Colors.grey, 13),
-                    flex: 1,
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 5)),
-                  Expanded(
-                    // ignore: sort_child_properties_last
-                    child: text('Directory', Colors.grey, 13),
-                    flex: 1,
-                  ),
-                  const Padding(padding: EdgeInsets.only(right: 10)),
-                ],
-              ),
+                  flex: 1,
+                ),
+                // text('Terms', Colors.grey, 13),
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Expanded(
+                  // ignore: sort_child_properties_last
+                  child: text('Contact Us', Colors.grey, 13),
+                  flex: 1,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Expanded(
+                  // ignore: sort_child_properties_last
+                  child: text('Directory', Colors.grey, 13),
+                  flex: 1,
+                ),
+                const Padding(padding: EdgeInsets.only(right: 10)),
+              ],
             )
           ],
         ),

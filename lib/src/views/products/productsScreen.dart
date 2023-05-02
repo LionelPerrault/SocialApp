@@ -143,7 +143,7 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                               )
                             ],
                           )),
-                      Container(
+                      SizedBox(
                         width: SizeConfig(context).screenWidth >
                                 SizeConfig.mediumScreenSize
                             ? 700

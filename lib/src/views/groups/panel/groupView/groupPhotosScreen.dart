@@ -36,8 +36,7 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [mainTabs(), tab == 'Photos' ? PhotosData() : AlbumsData()]);
+    return Column(children: [mainTabs(), PhotosData()]);
   }
 
   Widget mainTabs() {
@@ -149,13 +148,12 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
             image: NetworkImage(value['url']),
             fit: BoxFit.cover,
           ),
-          color: Color.fromARGB(255, 150, 99, 99),
+          color: const Color.fromARGB(255, 150, 99, 99),
           border: Border.all(color: Colors.grey)),
     );
   }
 
   Widget albumCell(value) {
-    print("value---------$value");
     return Container(
       alignment: Alignment.topCenter,
       width: 200,
@@ -165,25 +163,8 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
             image: NetworkImage(value[0]['url']),
             fit: BoxFit.cover,
           ),
-          color: Color.fromARGB(255, 150, 99, 99),
+          color: const Color.fromARGB(255, 150, 99, 99),
           border: Border.all(color: Colors.grey)),
     );
-  }
-
-  Widget AlbumsData() {
-    return photoModel.albums.isEmpty
-        ? Container(
-            padding: const EdgeInsets.only(top: 40),
-            alignment: Alignment.center,
-            child: Text('${con.group['groupName']} doesn`t have albums',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children:
-                photoModel.albums.map((photo) => albumCell(photo)).toList(),
-          );
   }
 }

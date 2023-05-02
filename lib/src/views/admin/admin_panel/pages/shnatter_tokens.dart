@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/controllers/AdminController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:url_launcher/url_launcher.dart';
@@ -87,35 +83,31 @@ class AdminShnatterTokenState extends mvc.StateMVC<AdminShnatterToken> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            child: generalWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          child: generalWidget(),
+        ),
+      ],
     );
   }
 
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.attach_money_outlined),
-            pagename: 'Transactions History',
-            button: const {
-              'flag': false,
-            },
-          ),
-          transList(),
-        ],
-      ),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.attach_money_outlined),
+          pagename: 'Transactions History',
+          button: const {
+            'flag': false,
+          },
+        ),
+        transList(),
+      ],
     );
   }
 
@@ -197,14 +189,12 @@ class AdminShnatterTokenState extends mvc.StateMVC<AdminShnatterToken> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Container(
-                                            child: Text(
-                                              (data['from'] != con.backupPaymail
-                                                  ? data['sender']
-                                                  : data['recipient']),
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            ),
+                                          Text(
+                                            (data['from'] != con.backupPaymail
+                                                ? data['sender']
+                                                : data['recipient']),
+                                            style: const TextStyle(
+                                                color: Colors.black),
                                           ),
                                           Text(
                                             data['from'] != con.backupPaymail

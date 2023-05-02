@@ -38,14 +38,14 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
   Widget build(BuildContext context) {
     var e = widget.cellData;
     return Container(
-        padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+        padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
         child: Column(
           children: [
             Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10)),
+                  const Padding(padding: EdgeInsets.only(left: 10)),
                   e.value[e.value['requester']]['avatar'] == ''
                       ? CircleAvatar(
                           radius: 20, child: SvgPicture.network(Helper.avatar))
@@ -208,7 +208,7 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                     (e.value['state'] == -3 ||
                                         e.value['state'] == -1 ||
                                         e.value['state'] == -2)
-                                ? SizedBox(
+                                ? const SizedBox(
                                     width: 10,
                                     height: 10,
                                     child: CircularProgressIndicator(
@@ -244,7 +244,7 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                           ),
                   )
                 ]),
-            Padding(padding: EdgeInsets.only(top: 10)),
+            const Padding(padding: EdgeInsets.only(top: 10)),
             Container(
               height: 1,
               color: color,

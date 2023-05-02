@@ -83,9 +83,6 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
   }
 
   Future<void> getData() async {
-    // if (!mounted) return;
-
-    print("widget.data ============${widget.data}");
     widget.data['type'] = 'realestate';
 
     realEstate = widget.data['data'];
@@ -268,8 +265,8 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
     return realEstate['realEstateTimeline'] == false
         ? DottedBorder(
             borderType: BorderType.RRect,
-            radius: Radius.circular(20),
-            dashPattern: [10, 10],
+            radius: const Radius.circular(20),
+            dashPattern: const [10, 10],
             color: Colors.grey,
             strokeWidth: 2,
             child: realEstateWidget(),
@@ -278,11 +275,6 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
   }
 
   Widget realEstateWidget() {
-    print("estateadmin =======$realEstateAdmin");
-    print("widget.data====== ${widget.data}");
-    print(
-        "widget.data['data']['realestateadmin'['uid'] ====== ${widget.data["data"]["realEstateAdmin"]["uid"]}");
-    print("estate ======$realEstate");
     return Row(
       children: [
         Expanded(
@@ -295,7 +287,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
             border: widget.isShared
                 ? Border.all(color: Colors.blueAccent)
                 : Border.all(color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Column(
             children: [
@@ -304,186 +296,159 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      realEstateAdmin == null
-                          ? SizedBox(
-                              child: Text('No Owenr'),
-                            )
-                          : Row(
-                              children: [
-                                realEstateAdmin['avatar'] != ''
-                                    ? CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                        realEstateAdmin['avatar'],
-                                      ))
-                                    : CircleAvatar(
-                                        child:
-                                            SvgPicture.network(Helper.avatar),
-                                      ),
-                                const Padding(
-                                    padding: EdgeInsets.only(left: 10)),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(
+                      Row(
+                        children: [
+                          realEstateAdmin['avatar'] != ''
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                  realEstateAdmin['avatar'],
+                                ))
+                              : CircleAvatar(
+                                  child: SvgPicture.network(Helper.avatar),
+                                ),
+                          const Padding(padding: EdgeInsets.only(left: 10)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 10),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text:
+                                                  '${realEstateAdmin['firstName']!} ${realEstateAdmin['lastName']!}',
                                               style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 10),
-                                              children: <TextSpan>[
-                                                TextSpan(
-                                                    text:
-                                                        '${realEstateAdmin['firstName']!} ${realEstateAdmin['lastName']!}',
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15,
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () {
-                                                            print('username');
-                                                            ProfileController()
-                                                                .updateProfile(
-                                                                    realEstateAdmin[
-                                                                        'userName']!);
-                                                            widget
-                                                                .routerChange({
-                                                              'router':
-                                                                  RouteNames
-                                                                      .profile,
-                                                              'subRouter':
-                                                                  realEstateAdmin[
-                                                                      'userName']!,
-                                                            });
-                                                          })
-                                              ]),
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              SizeConfig(context).screenWidth <
-                                                      600
-                                                  ? SizeConfig(context)
-                                                          .screenWidth -
-                                                      340
-                                                  : 350,
-                                          child: Text(
-                                            ' added new real estate for ${realEstate["realEstateOffer"]}',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontSize: 14),
-                                          ),
-                                        ),
-                                        Visibility(
-                                          visible: !widget.isShared,
-                                          child: Container(
-                                            padding:
-                                                EdgeInsets.only(right: 9.0),
-                                            child: PopupMenuButton(
-                                              onSelected: (value) {
-                                                popUpFunction(value);
-                                              },
-                                              child: const Icon(
-                                                Icons.arrow_drop_down,
-                                                size: 18,
-                                              ),
-                                              itemBuilder: (BuildContext bc) {
-                                                return popupMenuItem
-                                                    .map(
-                                                      (e) => PopupMenuItem(
-                                                        value: e['value'],
-                                                        child: Row(
-                                                          children: [
-                                                            const Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            5.0)),
-                                                            Icon(e['icon']),
-                                                            const Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            12.0)),
-                                                            Text(
-                                                              e['value'] ==
-                                                                      'timeline'
-                                                                  ? realEstate[
-                                                                          'realEstateTimeline']
-                                                                      ? e[
-                                                                          'label']
-                                                                      : e[
-                                                                          'labelE']
-                                                                  : e['value'] ==
-                                                                          'comment'
-                                                                      ? realEstate[
-                                                                              'realEstateOnOffCommenting']
-                                                                          ? e['label']
-                                                                          : e['labelE']
-                                                                      : e['label'],
-                                                              style: const TextStyle(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900,
-                                                                  fontSize: 12),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )
-                                                    .toList();
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  ProfileController()
+                                                      .updateProfile(
+                                                          realEstateAdmin[
+                                                              'userName']!);
+                                                  widget.routerChange({
+                                                    'router':
+                                                        RouteNames.profile,
+                                                    'subRouter':
+                                                        realEstateAdmin[
+                                                            'userName']!,
+                                                  });
+                                                })
+                                        ]),
+                                  ),
+                                  SizedBox(
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 340
+                                        : 350,
+                                    child: Text(
+                                      ' added new real estate for ${realEstate["realEstateOffer"]}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 14),
                                     ),
-                                    const Padding(
-                                        padding: EdgeInsets.only(top: 3)),
-                                    Row(
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(children: <TextSpan>[
-                                            TextSpan(
-                                                text: postTime,
-                                                style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 10,
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        widget.routerChange({
-                                                          'router': RouteNames
-                                                              .realEstate,
-                                                          'subRouter':
-                                                              realEstateId,
-                                                        });
-                                                      })
-                                          ]),
+                                  ),
+                                  Visibility(
+                                    visible: !widget.isShared,
+                                    child: Container(
+                                      padding:
+                                          const EdgeInsets.only(right: 9.0),
+                                      child: PopupMenuButton(
+                                        onSelected: (value) {
+                                          popUpFunction(value);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18,
                                         ),
-                                        const Text(' - '),
-                                        const Icon(
-                                          Icons.language,
-                                          color: Colors.grey,
-                                          size: 12,
-                                        )
-                                      ],
+                                        itemBuilder: (BuildContext bc) {
+                                          return popupMenuItem
+                                              .map(
+                                                (e) => PopupMenuItem(
+                                                  value: e['value'],
+                                                  child: Row(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 5.0)),
+                                                      Icon(e['icon']),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 12.0)),
+                                                      Text(
+                                                        e['value'] == 'timeline'
+                                                            ? realEstate[
+                                                                    'realEstateTimeline']
+                                                                ? e['label']
+                                                                : e['labelE']
+                                                            : e['value'] ==
+                                                                    'comment'
+                                                                ? realEstate[
+                                                                        'realEstateOnOffCommenting']
+                                                                    ? e['label']
+                                                                    : e['labelE']
+                                                                : e['label'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    90,
+                                                                    90,
+                                                                    90),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                              .toList();
+                                        },
+                                      ),
                                     ),
-                                  ],
-                                )
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 3)),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                          text: postTime,
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 10,
+                                              overflow: TextOverflow.ellipsis),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              widget.routerChange({
+                                                'router': RouteNames.realEstate,
+                                                'subRouter': realEstateId,
+                                              });
+                                            })
+                                    ]),
+                                  ),
+                                  const Text(' - '),
+                                  const Icon(
+                                    Icons.language,
+                                    color: Colors.grey,
+                                    size: 12,
+                                  )
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                       const Padding(padding: EdgeInsets.only(top: 15)),
                       Text(
                         realEstate['realEstateName'],

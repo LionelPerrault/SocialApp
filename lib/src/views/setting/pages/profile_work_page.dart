@@ -4,7 +4,6 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingWorkScreen extends StatefulWidget {
@@ -50,7 +49,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
               },
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
+            SizedBox(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5 + 40
@@ -134,7 +133,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: Column(
@@ -168,7 +167,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
 
   Widget footer() {
     return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
+      padding: const EdgeInsets.only(right: 20, top: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(
@@ -186,7 +185,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(

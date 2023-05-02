@@ -42,7 +42,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   int postsCount = 0;
   int newPostNum = 0;
   bool nextPostFlag = true;
-  var lastTime;
+
   bool hasMore = true; // flag for more posts available or not
 
   var showTenCountPosts = [];
@@ -61,7 +61,6 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     final Stream<QuerySnapshot> postStream =
         Helper.postCollection.orderBy('postTime').snapshots();
     loadingFlag = true;
-    // con.posts = [];
 
     con
         .getTimelinePost(defaultSlide, 1, PostType.timeline.index, '')
@@ -132,7 +131,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                     setState(() {
                       loadingFlag = true;
                     });
-                    print("view new post");
+
                     await con.getTimelinePost(
                         newPostNum, -1, PostType.timeline.index, '');
 
@@ -235,10 +234,10 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
+                        children: const [
                           Text(
                             'Load More...',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Color.fromARGB(255, 90, 90, 90),
                                 fontFamily: 'var(--body-font-family)',
                                 fontWeight: FontWeight.w900,

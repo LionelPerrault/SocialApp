@@ -6,9 +6,6 @@ import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
@@ -17,10 +14,10 @@ import 'package:shnatter/src/widget/interests.dart';
 // ignore: must_be_immutable
 class CreateEventModal extends StatefulWidget {
   BuildContext context;
-  late PostController Postcon;
+  late PostController postCon;
   CreateEventModal(
       {Key? key, required this.context, required this.routerChange})
-      : Postcon = PostController(),
+      : postCon = PostController(),
         super(key: key);
   Function routerChange;
   @override
@@ -29,7 +26,7 @@ class CreateEventModal extends StatefulWidget {
 
 class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   bool isSound = false;
-  late PostController Postcon;
+  late PostController postCon;
   Map<String, dynamic> eventInfo = {
     'eventPrivacy': 'public',
     'eventAbout': '',
@@ -44,8 +41,8 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   // bool loading = false;
   @override
   void initState() {
-    add(widget.Postcon);
-    Postcon = controller as PostController;
+    add(widget.postCon);
+    postCon = controller as PostController;
     super.initState();
   }
 
@@ -59,7 +56,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
     var paymail = snapshot.data()!['address'];
     setState(() {});
     if (price == '0') {
-      await Postcon.createEvent(context, eventInfo).then((value) => {
+      await postCon.createEvent(context, eventInfo).then((value) => {
             footerBtnState = false,
             setState(
               () => {},
@@ -97,7 +94,8 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                             Navigator.of(dialogContext).pop(true),
                             // loading = true,
                             setState(() {}),
-                            await Postcon.createEvent(context, eventInfo)
+                            await postCon
+                                .createEvent(context, eventInfo)
                                 .then((value) {
                               footerBtnState = false;
                               setState(() => {});
@@ -137,7 +135,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: SizeConfig(context).screenHeight - 200,
           child: SingleChildScrollView(
             child: Column(
@@ -194,21 +192,15 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                 2000), //DateTime.now() - not to allow to choose before today.
                             lastDate: DateTime(2101));
                         if (pickedDate != null) {
-                          print(
-                              pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
                           String formattedDate = DateFormat('yyyy-MM-dd').format(
                               pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                          print(
-                              formattedDate); //formatted date output using intl package =>  2022-07-04
                           //You can format date as per your need
 
                           setState(() {
                             startDateController.text = formattedDate;
                             eventInfo['eventStartDate'] = formattedDate;
                           });
-                        } else {
-                          print("Date is not selected");
-                        }
+                        } else {}
                       },
                     ),
                   ],
@@ -230,21 +222,16 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                 2000), //DateTime.now() - not to allow to choose before today.
                             lastDate: DateTime(2101));
                         if (pickedDate != null) {
-                          print(
-                              pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
                           String formattedDate = DateFormat('yyyy-MM-dd').format(
                               pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                          print(
-                              formattedDate); //formatted date output using intl package =>  2022-07-04
+
                           //You can format date as per your need
 
                           setState(() {
                             eventInfo['eventEndDate'] = formattedDate;
                             endDateController.text = formattedDate;
                           });
-                        } else {
-                          print("Date is not selected");
-                        }
+                        } else {}
                       },
                     ),
                   ],
@@ -383,7 +370,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                   ],
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                Container(
+                SizedBox(
                   width: 400,
                   child: InterestsWidget(
                     context: context,
@@ -409,7 +396,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
+                  minimumSize: const Size(100, 50),
                 ),
                 onPressed: () {
                   Navigator.of(widget.context).pop(true);
@@ -426,10 +413,9 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: Size(100, 50),
+                  minimumSize: const Size(100, 50),
                 ),
                 onPressed: () {
-                  print(eventInfo);
                   footerBtnState = true;
                   setState(() {});
                   getTokenBudget();
@@ -466,7 +452,7 @@ Widget customInput({title, onChange, controller}) {
             fontWeight: FontWeight.w600),
       ),
       const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
         height: 40,
         child: TextField(
           controller: controller,
@@ -496,7 +482,7 @@ Widget customDateInput({title, onChange, controller, onTap}) {
             fontWeight: FontWeight.w600),
       ),
       const Padding(padding: EdgeInsets.only(top: 2)),
-      Container(
+      SizedBox(
         height: 40,
         child: TextField(
           controller: controller,
@@ -535,7 +521,7 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
           children: [
             Expanded(
               flex: 2,
-              child: Container(
+              child: SizedBox(
                 width: 400,
                 height: double.parse(height.toString()),
                 child: TextField(

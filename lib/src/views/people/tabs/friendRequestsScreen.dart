@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
+
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/people/widget/searchScreen.dart';
 import 'package:shnatter/src/widget/requestFriendCell.dart';
@@ -23,7 +23,7 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
   late PeopleController con;
   //route variable
   String tabName = 'Discover';
-  Color color = Color.fromRGBO(230, 236, 245, 1);
+  Color color = const Color.fromRGBO(230, 236, 245, 1);
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
@@ -94,7 +94,7 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               requestFriendWidget(),
-              Padding(padding: EdgeInsets.only(left: 20)),
+              const Padding(padding: EdgeInsets.only(left: 20)),
               SearchScreen(
                 isModal: false,
                 onClick: (value) {
@@ -117,8 +117,8 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
 
   Widget requestFriendWidget() {
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      padding: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 20),
       color: Colors.white,
       width: SizeConfig(context).screenWidth < 900
           ? SizeConfig(context).screenWidth - 60
@@ -127,20 +127,20 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(padding: EdgeInsets.only(top: 15)),
+          const Padding(padding: EdgeInsets.only(top: 15)),
           Container(
-            padding: EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 20),
             child: Text(
               con.isSearch
                   ? 'Search Results'
                   : 'Respond to Your Friend Request',
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
                   fontSize: 13),
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: 15)),
+          const Padding(padding: EdgeInsets.only(top: 15)),
           Container(
             height: 1,
             color: color,
@@ -148,14 +148,14 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
           con.isSearch && con.requestFriends.isEmpty
               ? Container(
                   alignment: Alignment.topCenter,
-                  padding: EdgeInsets.only(top: 20, bottom: 50),
-                  child: Text('No people available for your search',
+                  padding: const EdgeInsets.only(top: 20, bottom: 50),
+                  child: const Text('No people available for your search',
                       style: TextStyle(fontSize: 14)))
               : con.requestFriends.isEmpty
                   ? Container(
                       alignment: Alignment.topCenter,
-                      padding: EdgeInsets.only(top: 20, bottom: 50),
-                      child: Text('No new requests',
+                      padding: const EdgeInsets.only(top: 20, bottom: 50),
+                      child: const Text('No new requests',
                           style: TextStyle(fontSize: 14)))
                   : Column(
                       children: con.requestFriends.asMap().entries.map((e) {

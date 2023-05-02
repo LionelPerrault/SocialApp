@@ -3,7 +3,7 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
+
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class SettingEducationScreen extends StatefulWidget {
@@ -36,12 +36,12 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
           children: [
             SettingHeader(
               routerChange: widget.routerChange,
-              icon: Icon(
+              icon: const Icon(
                 Icons.school,
                 color: Color.fromARGB(255, 43, 83, 164),
               ),
               pagename: 'Education',
-              button: {
+              button: const {
                 'buttoncolor': Color.fromARGB(255, 17, 205, 239),
                 'icon': Icon(Icons.person),
                 'text': 'View Profile',
@@ -49,7 +49,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
               },
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Container(
+            SizedBox(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                       ? SizeConfig(context).screenWidth * 0.5 + 40
@@ -134,7 +134,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: Column(
@@ -168,7 +168,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
 
   Widget footer() {
     return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
+      padding: const EdgeInsets.only(right: 20, top: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(
@@ -186,7 +186,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(

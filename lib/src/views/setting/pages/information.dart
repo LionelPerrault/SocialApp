@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/utils/svg.dart';
-import 'package:shnatter/src/views/box/daytimeM.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:shnatter/src/widget/mindslice.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 
 class SettingInfoScreen extends StatefulWidget {
   SettingInfoScreen({Key? key, required this.routerChange}) : super(key: key);
@@ -34,11 +28,11 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
                 color: Color.fromARGB(255, 40, 167, 69),
               ),
               pagename: 'Download Your Information',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
-              padding: EdgeInsets.only(right: 30),
+              padding: const EdgeInsets.only(right: 30),
               child: Column(
                 children: [
                   Row(
@@ -53,19 +47,20 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
                           ),
                           child: Row(
                             children: [
-                              Padding(padding: EdgeInsets.only(left: 30)),
-                              Icon(
+                              const Padding(padding: EdgeInsets.only(left: 30)),
+                              const Icon(
                                 Icons.warning_rounded,
                                 color: Colors.white,
                                 size: 30,
                               ),
-                              Padding(padding: EdgeInsets.only(left: 10)),
+                              const Padding(padding: EdgeInsets.only(left: 10)),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(padding: EdgeInsets.only(top: 20)),
-                                  Text(
+                                  const Padding(
+                                      padding: EdgeInsets.only(top: 20)),
+                                  const Text(
                                     'Download Your Information',
                                     style: TextStyle(
                                         color: Colors.white,
@@ -75,7 +70,7 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
                                   Container(
                                     width:
                                         SizeConfig(context).screenWidth * 0.6,
-                                    child: Text(
+                                    child: const Text(
                                       'You can download all of it at once, or you can select only the types of information you want',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 11),
@@ -146,10 +141,10 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
       child: Container(
           width: 90,
           height: 90,
-          margin: EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.all(3),
+                padding: const EdgeInsets.all(3),
                 backgroundColor: Colors.white,
                 // elevation: 3,
                 shape: RoundedRectangleBorder(
@@ -167,13 +162,13 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
                   Container(
                     width: 40,
                     height: 40,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         // color: Colors.grey,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: SvgPicture.network(url),
                   ),
                   Text(text,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 11,
                           color: Colors.grey,
                           fontWeight: FontWeight.bold))

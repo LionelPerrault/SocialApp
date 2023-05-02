@@ -1,15 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
-import '../../controllers/HomeController.dart';
-import '../../routes/route_names.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
@@ -39,7 +32,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   var userInfo = UserManager.userInfo;
   String tab = 'Photos';
   Photos photoModel = Photos();
-  Map _focusedIndices = {};
+  final Map _focusedIndices = {};
   Friends friendModel = Friends();
   bool deleteLoading = false;
   @override
@@ -84,17 +77,12 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
       padding: const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
       child: Column(children: [
         mainTabs(),
-        tab == 'Photos'
-            ? isMyFriend() ||
-                    ProfileController().viewProfileUid ==
-                        UserManager.userInfo['uid']
-                ? PhotosData()
-                : Text("You can see the friends data only if you are friends.")
-            : isMyFriend() ||
-                    ProfileController().viewProfileUid ==
-                        UserManager.userInfo['uid']
-                ? AlbumsData()
-                : Text("You can see the friends data only if you are friends.")
+        isMyFriend() ||
+                ProfileController().viewProfileUid ==
+                    UserManager.userInfo['uid']
+            ? PhotosData()
+            : const Text(
+                "You can see the friends data only if you are friends.")
       ]),
     );
   }
@@ -232,8 +220,6 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   }
 
   Widget photoCell(value, index) {
-    print("value---------$value");
-    print("index---------$index");
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
@@ -250,7 +236,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                 image: NetworkImage(value['url']),
                 fit: BoxFit.cover,
               ),
-              color: Color.fromARGB(255, 150, 99, 99),
+              color: const Color.fromARGB(255, 150, 99, 99),
               border: Border.all(color: Colors.transparent),
             ),
           ),
@@ -278,23 +264,21 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                           title: const SizedBox(),
                           content: AlertYesNoWidget(
                               yesFunc: () {
-                                bool _isDeleting = false;
                                 Navigator.of(context).pop(
                                     true); // call Navigator outside of the previous block.
-                                setState(() {
-                                  deleteLoading = true;
-                                });
+                                // setState(() {
+                                //   deleteLoading = true;
+                                // });
                                 photoModel.photos.removeAt(index);
 
                                 PostController().deletePhoto(value);
                                 PostController()
                                     .deletePhotoFromTimeline(value['url']);
 
-                                setState(() {
-                                  deleteLoading = false;
-                                  _isDeleting =
-                                      true; // set flag when both operations have completed successfully
-                                });
+//                                 setState(() {
+//                                   deleteLoading = false;
+// // set flag when both operations have completed successfully
+//                                 });
                               },
                               noFunc: () {
                                 Navigator.of(context).pop(true);
@@ -307,17 +291,12 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                       );
                     },
                     onHover: (hoverd) {
-                      print("$index is selected to $hoverd");
                       setState(() {
                         _focusedIndices[index] = hoverd;
                       });
                     },
                     child: AnimatedContainer(
-                      duration: Duration(milliseconds: 400),
-                      // decoration: BoxDecoration(
-                      //   color: _focusedIndices[index] ? Colors.black : Colors.grey,
-                      //   borderRadius: BorderRadius.circular(12.0),
-                      // ),
+                      duration: const Duration(milliseconds: 400),
                       child: Stack(
                         children: [
                           Icon(
@@ -347,7 +326,6 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   }
 
   Widget albumCell(value) {
-    print("value---------$value");
     return Container(
       alignment: Alignment.center,
       width: 200,
@@ -364,51 +342,11 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                   image: NetworkImage(value[0]['url']),
                   fit: BoxFit.cover,
                 ),
-                color: Color.fromARGB(255, 150, 99, 99),
+                color: const Color.fromARGB(255, 150, 99, 99),
                 border: Border.all(color: Colors.grey)),
           ),
         ],
       ),
     );
-  }
-
-  Widget AlbumsData() {
-    return photoModel.albums.isEmpty
-        ? Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            height: SizeConfig(context).screenHeight * 0.2,
-            color: Colors.white,
-            alignment: Alignment.center,
-            child: Text('${userInfo['fullName']} doesn`t have albums',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
-        : Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: SizeConfig(context).screenWidth > 800
-                        ? 6
-                        : SizeConfig(context).screenWidth > 600
-                            ? 4
-                            : SizeConfig(context).screenWidth > 210
-                                ? 3
-                                : 2,
-                    childAspectRatio: 3 / 3,
-                    padding: const EdgeInsets.only(top: 30),
-                    mainAxisSpacing: 4.0,
-                    shrinkWrap: true,
-                    crossAxisSpacing: 4.0,
-                    children: photoModel.albums
-                        .map((photo) => albumCell(photo))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          );
   }
 }

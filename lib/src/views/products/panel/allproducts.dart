@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/products/widget/productcell.dart';
 
 import '../../../controllers/PostController.dart';
 
@@ -15,6 +14,7 @@ class AllProducts extends StatefulWidget {
         super(key: key);
   late PostController con;
   Function routerChange;
+  @override
   State createState() => AllProductsState();
 }
 
@@ -47,7 +47,7 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
           : 600,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[],
+        children: const <Widget>[],
       ),
     );
   }

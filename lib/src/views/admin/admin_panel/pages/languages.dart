@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminLanguages extends StatefulWidget {
-  AdminLanguages({super.key});
+  const AdminLanguages({super.key});
 
   @override
   State createState() => AdminLanguagesState();
@@ -101,110 +99,101 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            child:
-                addroute == 'main' ? generalWidget() : addNewCurrencyWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          child: addroute == 'main' ? generalWidget() : addNewCurrencyWidget(),
+        ),
+      ],
     );
   }
 
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.language),
-            pagename: 'Languages',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.white,
-              'icon': const Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-              'text': 'Add New Language',
-              'valueColor': Colors.black,
-              'callback': () {
-                addroute = 'addNew';
-                setState(() {});
-              },
-              'size': Size(180, 50),
-            },
-          ),
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              configuration: const PlutoGridConfiguration(
-                columnSize: PlutoGridColumnSizeConfig(),
-              ),
-              columns: columns,
-              rows: rows,
-              columnGroups: columnGroups,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
-              },
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.language),
+          pagename: 'Languages',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.white,
+            'icon': const Icon(
+              Icons.add,
+              color: Colors.black,
             ),
+            'text': 'Add New Language',
+            'valueColor': Colors.black,
+            'callback': () {
+              addroute = 'addNew';
+              setState(() {});
+            },
+            'size': const Size(180, 50),
+          },
+        ),
+        Container(
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            configuration: const PlutoGridConfiguration(
+              columnSize: PlutoGridColumnSizeConfig(),
+            ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {},
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget addNewCurrencyWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.language),
-            pagename: 'Languages › Add New Language',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.language),
+          pagename: 'Languages › Add New Language',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          textAndSelect('Default', 'Make it the default language of the site'),
-          textAndSelect('Enabled',
-              'Make it enbaled so the user can translate the site to it'),
-          titleAndsubtitleInput('Code', 30, 1,
-              'Language country_code, For Example: en_us, ar_sa or fr_fr'),
-          titleAndsubtitleInput(
-              'Native Name', 30, 1, 'The native name of this language'),
-          titleAndUpload('Flag'),
-          customDropDownButton(
-              title: 'Direction',
-              item: direction,
-              onChange: (value) {},
-              context: context,
-              subTitle:
-                  'The direction of this language \'Left To Right\' or \'Right To Left\''),
-          titleAndsubtitleInput('Order', 30, 1, ''),
-          footer(),
-        ],
-      ),
+            'size': const Size(120, 50),
+          },
+        ),
+        textAndSelect('Default', 'Make it the default language of the site'),
+        textAndSelect('Enabled',
+            'Make it enbaled so the user can translate the site to it'),
+        titleAndsubtitleInput('Code', 30, 1,
+            'Language country_code, For Example: en_us, ar_sa or fr_fr'),
+        titleAndsubtitleInput(
+            'Native Name', 30, 1, 'The native name of this language'),
+        titleAndUpload('Flag'),
+        customDropDownButton(
+            title: 'Direction',
+            item: direction,
+            onChange: (value) {},
+            context: context,
+            subTitle:
+                'The direction of this language \'Left To Right\' or \'Right To Left\''),
+        titleAndsubtitleInput('Order', 30, 1, ''),
+        footer(),
+      ],
     );
   }
 
@@ -232,7 +221,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: 400,
                   height: height,
                   child: TextField(
@@ -287,7 +276,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   height: 40,
                   width: 400,
                   child: DropdownButtonFormField(
@@ -340,7 +329,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
-              child: Container(
+              child: SizedBox(
             width: SizeConfig(context).screenWidth * 0.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -354,7 +343,7 @@ class AdminLanguagesState extends mvc.StateMVC<AdminLanguages> {
                 ),
                 Text(content,
                     overflow: TextOverflow.clip,
-                    style: TextStyle(fontSize: 13)),
+                    style: const TextStyle(fontSize: 13)),
               ],
             ),
           )),

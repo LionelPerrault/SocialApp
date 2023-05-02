@@ -35,7 +35,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   final TextEditingController searchController = TextEditingController();
   late FocusNode searchFocusNode;
   bool showMenu = false;
-  late AnimationController _drawerSlideController;
   var subUrl = '';
   Friends friendModel = Friends();
   bool invitingFriend = false;
@@ -364,7 +363,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     );
   }
 
-  @override
   Widget groupInfoCell({icon, text}) {
     return Container(
       margin: const EdgeInsets.all(3),
@@ -379,7 +377,6 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
     );
   }
 
-  @override
   Widget friendInvites() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),

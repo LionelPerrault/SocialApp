@@ -78,7 +78,7 @@ class UserProfileScreenState extends mvc.StateMVC<UserProfileScreen>
       }
     }
     return (con.viewProfileFullName == "UserNotExits!~")
-        ? Expanded(
+        ? const Expanded(
             child: Center(child: Text("This user doesn't exists!!")),
           )
         : Expanded(

@@ -44,7 +44,7 @@ class RelysiaHelper {
   static var qrlanding;
   static var myToken = [];
   static var clientsData = [];
-  static var authdata = null;
+  static var authdata;
   static var carouselList = [];
   static var logoIcon = '';
   static var logoTitle = '';
@@ -82,12 +82,12 @@ class RelysiaHelper {
     final prefs = await SharedPreferences.getInstance();
     String? k = '{}';
     k = prefs.getString(field);
-    if (k == null) return Map();
+    if (k == null) return {};
     return jsonDecode(k);
   }
 
   static Future<void> clientCarouselData(String router) async {
-    clientsData.forEach((elem) {
+    for (var elem in clientsData) {
       if (elem['id'] == router) {
         var mapData = elem['data'];
         adminDocId = mapData['adminDocId'];
@@ -101,7 +101,7 @@ class RelysiaHelper {
         qrcodeTitle = mapData['qrcodeTitle'];
         isPageShow = true;
       }
-    });
+    }
   }
 
   static translateLanguage(language) async {

@@ -7,7 +7,6 @@ import 'package:shnatter/src/utils/size_config.dart';
 
 import '../../../controllers/PostController.dart';
 import '../widget/marketCell2.dart';
-import '../widget/realEstateCell.dart';
 
 // ignore: must_be_immutable
 class RealEstateAllProduct extends StatefulWidget {

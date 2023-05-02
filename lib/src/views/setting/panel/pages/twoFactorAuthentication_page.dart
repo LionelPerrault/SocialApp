@@ -80,11 +80,11 @@ class TwoFactorAuthenticationScreenState
                     ),
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
+              const Padding(
+                padding: EdgeInsets.symmetric(
                   horizontal: 10.0,
                 ),
-                child: Container(
+                child: SizedBox(
                   height: 5.0,
                   width: 30.0,
                   // color: shake ? Colors.red : Colors.black,
@@ -192,7 +192,7 @@ class TwoFactorAuthenticationScreenState
                                   onPressed: () {
                                     FlutterClipboard.copy('JBSWY3DPEHPK3PXP')
                                         .then((value) => Helper.showToast(
-                                            'Secret Key was cofied!'));
+                                            'Secret Key Copied!'));
                                   },
                                   iconSize: 20,
                                   icon: const Icon(

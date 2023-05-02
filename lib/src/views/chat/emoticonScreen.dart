@@ -29,7 +29,6 @@ class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
   bool check1 = false;
   bool check2 = false;
   late ChatController con;
-  late ScrollController _scrollController;
   var isMessageTap = 'all-list';
   var r = 0;
   var t = [];
@@ -40,12 +39,10 @@ class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
     add(widget.con);
     con = controller as ChatController;
     super.initState();
-    _scrollController = ScrollController();
     if (con.emojiList.isEmpty) {
       FirebaseFirestore.instance.collection(Helper.emoticons).get().then(
         (value) {
           for (int i = 0; i < value.docs.length; i++) {
-            print(value.docs[i]['emoticon']);
             if ((i + 1) % 10 != 0) {
               t.add(value.docs[i]['emoticon']);
             }

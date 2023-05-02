@@ -1,17 +1,8 @@
-// ignore_for_file: unused_local_variable, prefer_typing_uninitialized_variables
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/relysia_manager.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/views/events/panel/eventView/eventTimelineScreen.dart';
 import '../helpers/helper.dart';
-import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-
-import '../views/profile/model/friends.dart';
 
 enum PostType { timeline, profile, event, group }
 
@@ -102,18 +93,12 @@ class AdminController extends ControllerMVC {
     var allUser = user.docs;
     String sender = '';
     String recipient = '';
-    int sendFlag = 0;
-    int reciFlag = 0;
+
     if (token == '') {
       var relysiaAuth = await RelysiaManager.authUser(
           UserManager.userInfo['email'], UserManager.userInfo['password']);
       token = relysiaAuth['data']['token'];
     }
-    var snapshot = await FirebaseFirestore.instance
-        .collection(Helper.adminPanel)
-        .doc(Helper.backPaymail)
-        .get();
-    var backPaymail = snapshot.data()!['address'];
     await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
       (res) async => {
         if (res['success'] == true)
@@ -149,8 +134,6 @@ class AdminController extends ControllerMVC {
                           'notes': trdata[i]['notes'],
                           'balance': trdata[i]['balance_change'],
                         }),
-                        sendFlag = 0,
-                        reciFlag = 0,
                       },
                   },
                 nextPageTokenCount = res['nextPageToken'],

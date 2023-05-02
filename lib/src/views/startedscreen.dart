@@ -13,7 +13,7 @@ import 'package:path/path.dart' as PPath;
 import '../controllers/UserController.dart';
 import '../utils/size_config.dart';
 import 'dart:io' show File, Platform;
-import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
+import 'package:flutter/foundation.dart' show Uint8List, kDebugMode, kIsWeb;
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -225,10 +225,11 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   }
 
   void onSearchBarDismiss() {
-    if (showSearch)
+    if (showSearch) {
       setState(() {
         showSearch = false;
       });
+    }
   }
 
   bool _isDrawerOpen() {
@@ -254,10 +255,11 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   Widget build(BuildContext context) {
     List<dynamic> bDay = day[saveData['birthM'] ?? '1'];
     return Scaffold(
-        key: _scaffoldKey,
-        drawerEnableOpenDragGesture: false,
-        drawer: const Drawer(),
-        body: Stack(
+      key: _scaffoldKey,
+      drawerEnableOpenDragGesture: false,
+      drawer: const Drawer(),
+      body: SafeArea(
+        child: Stack(
           fit: StackFit.expand,
           children: [
             ShnatterNavigation(
@@ -751,7 +753,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold)),
-                                                    const Padding(
+                                                    Padding(
                                                       padding: EdgeInsets.only(
                                                           top: 10),
                                                     ),
@@ -1319,16 +1321,15 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                           : Padding(
                               padding: const EdgeInsets.only(
                                   top: SizeConfig.navbarHeight),
-                              child: Container(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: []),
-                              )));
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [])));
                 }),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Widget customInput({title, onChange, controller}) {
@@ -1497,31 +1498,31 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   }
 
   uploadFile(XFile? pickedFile) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         userCon.userAvatar = downloadUrl;
         userCon.setState(() {});
         userCon.changeAvatar();
@@ -1535,20 +1536,17 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
             progress = 100.0 *
                 (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
             setState(() {});
-            print("Upload is $progress% complete.");
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
             // Handle unsuccessful uploads
             break;
           case TaskState.success:
-            print("Upload is completed");
+
             // Handle successful uploads on complete
             // ...
             //  var downloadUrl = await _reference.getDownloadURL();

@@ -1,5 +1,6 @@
 // ignore: file_names
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:flutter/foundation.dart';
 
 class ChatModel {
   late var chatInfo = {};
@@ -13,7 +14,9 @@ class ChatModel {
       users = json['users'];
       lastData = json['lastData'];
     } catch (e) {
-      print("error occurs =============== {$e}");
+      if (kDebugMode) {
+        print("error occurs =============== {$e}");
+      }
     }
   }
 

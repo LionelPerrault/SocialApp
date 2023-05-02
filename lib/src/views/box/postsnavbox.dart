@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/createEventWidget.dart';
 import 'package:shnatter/src/widget/createGroupWidget.dart';
@@ -72,7 +70,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
     // },
     {
       'icon': Icons.person_add_sharp,
-      'color': Color.fromARGB(255, 43, 83, 164),
+      'color': const Color.fromARGB(255, 43, 83, 164),
       'text': 'Add Friend',
       'onTap': (context) {
         widget.routerChange({
@@ -82,7 +80,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
     },
     {
       'icon': Icons.production_quantity_limits_sharp,
-      'color': Color.fromARGB(255, 43, 83, 164),
+      'color': const Color.fromARGB(255, 43, 83, 164),
       'text': 'Create Product',
       'onTap': (context) {
         //Navigator.of(context).pop(true);
@@ -136,7 +134,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
     // },
     {
       'icon': Icons.groups,
-      'color': Color.fromARGB(255, 43, 83, 164),
+      'color': const Color.fromARGB(255, 43, 83, 164),
       'text': 'Create Group',
       'onTap': (context) {
         //Navigator.of(context).pop(true);
@@ -165,7 +163,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
     },
     {
       'icon': Icons.edit_calendar_rounded,
-      'color': Color.fromARGB(255, 247, 159, 88),
+      'color': const Color.fromARGB(255, 247, 159, 88),
       'text': 'Create Event',
       'onTap': (context) {
         //Navigator.of(context).pop(true);
@@ -216,7 +214,7 @@ class PostsNavBoxState extends State<PostsNavBox> {
                 //size: Size(100,100),
                 child: ListView(
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   children: eachList
                       .map((list) => PostButtonCell(nowContext, list['icon'],
                           list['color'], list['text'], list['onTap']))

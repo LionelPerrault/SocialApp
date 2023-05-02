@@ -17,7 +17,6 @@ import 'package:shnatter/src/views/profile/profilescreen.dart';
 import 'package:shnatter/src/views/search/searchScreen.dart';
 import 'package:shnatter/src/views/setting/settingsMain.dart';
 
-import '../views/photoView/photoscreen.dart';
 import '../views/realEstate/panel/realEstateView/realestatescreen.dart';
 import '../views/realEstate/realEstateScreen.dart';
 

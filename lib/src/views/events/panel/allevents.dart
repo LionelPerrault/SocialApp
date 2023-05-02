@@ -15,6 +15,7 @@ class AllEvents extends StatefulWidget {
   late PostController con;
   Function routerChange;
 
+  @override
   State createState() => AllEventsState();
 }
 
@@ -62,39 +63,37 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
             .toList(),
       );
     }
-    return Container(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: screenWidth > 900
-                  ? 3
-                  : screenWidth > 600
-                      ? 2
-                      : 1,
-              // childAspectRatio: 2 / 3,
-              padding: const EdgeInsets.all(4.0),
-              mainAxisSpacing: 4.0,
-              shrinkWrap: true,
-              crossAxisSpacing: 4.0,
-              children: realAllEvents
-                  .map(
-                    (event) => EventCell(
-                      routerChange: widget.routerChange,
-                      eventData: event,
-                      buttonFun: () {
-                        // con.interestedEvent(event['id']).then((value) {
-                        getEventNow();
-                        // });
-                      },
-                    ),
-                  )
-                  .toList(),
-            ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: screenWidth > 900
+                ? 3
+                : screenWidth > 600
+                    ? 2
+                    : 1,
+            // childAspectRatio: 2 / 3,
+            padding: const EdgeInsets.all(4.0),
+            mainAxisSpacing: 4.0,
+            shrinkWrap: true,
+            crossAxisSpacing: 4.0,
+            children: realAllEvents
+                .map(
+                  (event) => EventCell(
+                    routerChange: widget.routerChange,
+                    eventData: event,
+                    buttonFun: () {
+                      // con.interestedEvent(event['id']).then((value) {
+                      getEventNow();
+                      // });
+                    },
+                  ),
+                )
+                .toList(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

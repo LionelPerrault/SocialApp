@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -75,6 +73,7 @@ class StartedInputState extends State<StartedInput> {
       },
       validator: (String? value) {
         widget.validator(value);
+        return null;
       },
     );
   }

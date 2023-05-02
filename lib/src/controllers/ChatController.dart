@@ -56,7 +56,6 @@ class ChatController extends ControllerMVC {
   }
 
   Future<bool> sendMessage(newOrNot, messageType, data) async {
-    var newChat = false;
     bool success = false;
     if (sendData) {
       return false;
@@ -122,10 +121,10 @@ class ChatController extends ControllerMVC {
   }
 
   Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
+    final imagePicker = ImagePicker();
     XFile? pickedFile;
     if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
@@ -133,7 +132,7 @@ class ChatController extends ControllerMVC {
       // await Permission.photos.request();
       // var permissionStatus = await Permission.photos.status;
 
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     }
@@ -141,29 +140,29 @@ class ChatController extends ControllerMVC {
   }
 
   uploadFile(XFile? pickedFile, newOrNot, messageType) async {
-    final _firebaseStorage = FirebaseStorage.instance;
+    final firebaseStorage = FirebaseStorage.instance;
     UploadTask uploadTask;
-    Reference _reference;
+    Reference reference;
     try {
       if (kIsWeb) {
         Uint8List bytes = await pickedFile!.readAsBytes();
-        _reference = _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         progress = 0;
         sendMessage(newOrNot, messageType, downloadUrl);
         //await _reference.getDownloadURL().then((value) {

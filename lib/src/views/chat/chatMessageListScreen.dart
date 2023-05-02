@@ -32,7 +32,6 @@ class ChatMessage {
 }
 
 class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
-  
   bool check1 = false;
   bool check2 = false;
   late ChatController con;
@@ -94,7 +93,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               var list = messageList[index].data();
-                              var chatUserName = '';
                               var me = UserManager.userInfo['userName'];
                               return Container(
                                 padding: EdgeInsets.only(
@@ -260,7 +258,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                     return SizedBox(
                         height: SizeConfig(context).screenHeight - 220,
                         child: Center(child: CircularProgressIndicator()));
-                    ;
                   }
                 }));
   }

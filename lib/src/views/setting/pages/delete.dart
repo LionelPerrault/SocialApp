@@ -40,7 +40,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                 color: Color.fromARGB(255, 244, 67, 54),
               ),
               pagename: 'Delete Account',
-              button: {'flag': false},
+              button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
@@ -59,13 +59,13 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                           child: Row(
                             children: [
                               const Padding(padding: EdgeInsets.only(left: 30)),
-                              Icon(
+                              const Icon(
                                 Icons.warning_rounded,
                                 color: Colors.white,
                                 size: 30,
                               ),
                               const Padding(padding: EdgeInsets.only(left: 10)),
-                              Container(
+                              SizedBox(
                                   width: SizeConfig(context).screenWidth * 0.5,
                                   child: const Text(
                                     'Once you delete your account you will no longer can access it again',
@@ -99,11 +99,10 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                                   con.deleteUserAccount(context);
                                 },
                                 child: con.isProfileChange
-                                    ? Container(
+                                    ? const SizedBox(
                                         width: 20,
                                         height: 20,
-                                        child:
-                                            const CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(),
                                       )
                                     : Row(
                                         mainAxisAlignment:

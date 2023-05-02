@@ -153,7 +153,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                             ],
                           ),
                           const Padding(padding: EdgeInsets.only(top: 20)),
-                          new Divider(
+                          Divider(
                             indent: 5,
                             endIndent: 20,
                           ),
@@ -244,8 +244,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                   )),
                             ],
                           ),
-                          Container(
-                              child: Row(
+                          Row(
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
                               Expanded(
@@ -267,7 +266,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     ),
                                   )),
                             ],
-                          )),
+                          ),
                           const Padding(padding: EdgeInsets.only(top: 20)),
                           const Divider(
                             indent: 5,
@@ -347,8 +346,9 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                           onPressed: () {
                                             FlutterClipboard.copy(
                                                     userInfo['uid'])
-                                                .then((value) => Helper.showToast(
-                                                    'Secret Key was cofied!'));
+                                                .then((value) =>
+                                                    Helper.showToast(
+                                                        'Invite Code Copied!'));
                                           },
                                           icon: Icon(
                                             Icons.copy,
@@ -640,7 +640,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     onPressed: () {
                                       FlutterClipboard.copy(userInfo['uid'])
                                           .then((value) => Helper.showToast(
-                                              'Secret Key was cofied!'));
+                                              'Invite Code Copied!'));
                                     },
                                     icon: Icon(
                                       Icons.copy,

@@ -34,13 +34,12 @@ class PostEachScreenState extends mvc.StateMVC<PostEachScreen>
     con.getSelectedPost(docId).then((value) => {
           loading = false,
           setState(() {}),
-          print('You get selected post info!'),
         });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: SizeConfig(context).screenWidth < 600
           ? SizeConfig(context).screenWidth
           : 600,
@@ -57,7 +56,7 @@ class PostEachScreenState extends mvc.StateMVC<PostEachScreen>
                       : SizeConfig(context).screenWidth > 600
                           ? 600
                           : SizeConfig(context).screenWidth,
-                  padding: EdgeInsets.only(top: 100),
+                  padding: const EdgeInsets.only(top: 100),
                   child: loading
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,

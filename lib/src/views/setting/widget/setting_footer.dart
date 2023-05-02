@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shnatter/src/utils/size_config.dart';
-
 // ignore: must_be_immutable
 class SettingFooter extends StatelessWidget {
   SettingFooter({super.key, required this.onClick, this.isChange = false});
@@ -14,7 +10,7 @@ class SettingFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 20, top: 20),
+      padding: const EdgeInsets.only(right: 20, top: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(
@@ -34,7 +30,7 @@ class SettingFooter extends StatelessWidget {
               //const Flexible(fit: FlexFit.tight, child: SizedBox()),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     backgroundColor: Colors.white,
                     // elevation: 3,
                     shape: RoundedRectangleBorder(
@@ -63,7 +59,7 @@ class SettingFooter extends StatelessWidget {
                                     fontWeight: FontWeight.bold))
                           ],
                         )
-                      : Text('Save Changes',
+                      : const Text('Save Changes',
                           style: TextStyle(
                               fontSize: 11,
                               color: Colors.black,

@@ -41,12 +41,10 @@ class EventTimelineScreen extends StatefulWidget {
 class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
   late FocusNode searchFocusNode;
   bool showMenu = false;
   Friends friendModel = Friends();
-  late AnimationController _drawerSlideController;
   double width = 0;
   double itemWidth = 0;
   List<Map> sampleData = [
@@ -77,7 +75,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     con
         .getTimelinePost(defaultSlide, 1, PostType.event.index, con.viewEventId)
         .then((value) {
-      // profilePosts = value;
       loadingFlag = false;
       newPostNum = 0;
       if (con.postsEvent.length < 10) {
@@ -289,7 +286,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
   late PostController con;
   @override
   Widget build(BuildContext context) {
-    print("event interested is ${con.event['eventInterested']}");
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(right: 10, left: 10, top: 15),
@@ -341,28 +337,28 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                       ? 'Security Event'
                       : 'Closed Event'),
           eventInfoCell(
-              icon: Icon(Icons.punch_clock),
+              icon: const Icon(Icons.punch_clock),
               text:
                   '${con.event["eventStartDate"]} to ${con.event["eventEndDate"]}'),
           eventInfoCell(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               text: 'Hosted by ${con.event["eventAdmin"][0]["fullName"]}'),
-          eventInfoCell(icon: Icon(Icons.sell), text: 'B/N'),
+          eventInfoCell(icon: const Icon(Icons.sell), text: 'B/N'),
           eventInfoCell(
-              icon: Icon(Icons.maps_ugc),
+              icon: const Icon(Icons.maps_ugc),
               text: '${con.event["eventLocation"]}'),
           const Divider(
             thickness: 0.1,
             color: Colors.black,
           ),
           eventInfoCell(
-              icon: Icon(Icons.event),
+              icon: const Icon(Icons.event),
               text: '${con.event["eventGoing"].length} Going'),
           eventInfoCell(
-              icon: Icon(Icons.event),
+              icon: const Icon(Icons.event),
               text: '${con.event["eventInterested"].length} Interested'),
           eventInfoCell(
-              icon: Icon(Icons.event),
+              icon: const Icon(Icons.event),
               text: '${con.event["eventInvited"].length} Invited'),
           const Padding(padding: EdgeInsets.only(top: 30)),
           UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']
@@ -453,15 +449,15 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                       itemBuilder: (context, index) {
                         var friendUserName =
                             friendModel.friends[index]['requester'].toString();
-                        if (friendUserName == UserManager.userInfo['userName'])
+                        if (friendUserName ==
+                            UserManager.userInfo['userName']) {
                           friendUserName =
                               friendModel.friends[index]['receiver'].toString();
+                        }
 
                         return Material(
                             child: ListTile(
-                                onTap: () {
-                                  print("tap!");
-                                },
+                                onTap: () {},
                                 hoverColor:
                                     const Color.fromARGB(255, 243, 243, 243),
                                 // tileColor: Colors.white,
@@ -529,12 +525,13 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                                               ['requester']
                                                           .toString();
                                                   if (friendUserName ==
-                                                      UserManager
-                                                          .userInfo['userName'])
+                                                      UserManager.userInfo[
+                                                          'userName']) {
                                                     friendUserName = friendModel
                                                         .friends[index]
                                                             ['receiver']
                                                         .toString();
+                                                  }
                                                   print(friendUserName);
 
                                                   var snapshot =

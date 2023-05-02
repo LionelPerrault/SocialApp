@@ -22,7 +22,7 @@ class AdminSettingsLimitsState extends mvc.StateMVC<AdminSettingsLimits> {
       padding: const EdgeInsets.only(left: 30, right: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         AdminSettingHeader(
-          icon: Icon(Icons.settings),
+          icon: const Icon(Icons.settings),
           pagename: 'Settings › Limits',
           button: const {'flag': false},
         ),
@@ -56,7 +56,7 @@ class AdminSettingsLimitsState extends mvc.StateMVC<AdminSettingsLimits> {
         titleAndsubtitleInput('Search Results', 30, 1, () {},
             'The number of results in the search module'),
         const Padding(padding: EdgeInsets.only(top: 20)),
-        new Divider(
+        const Divider(
           thickness: 0.1,
           color: Colors.black,
         ),
@@ -70,7 +70,7 @@ class AdminSettingsLimitsState extends mvc.StateMVC<AdminSettingsLimits> {
             'The Max even number of results per request'),
         titleAndsubtitleInput('Daily chat thereshold', 30, 1, () {},
             'The Max number of chat messages per day'),
-        AdminSettingFooter()
+        const AdminSettingFooter()
       ]),
     );
   }
@@ -93,7 +93,7 @@ class AdminSettingsLimitsState extends mvc.StateMVC<AdminSettingsLimits> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   child: Column(children: [
                     TextField(

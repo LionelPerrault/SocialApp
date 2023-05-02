@@ -482,7 +482,8 @@ class ProfileAvatarandTabScreenState extends mvc
                                                   SizeConfig.smallScreenSize)
                                               ? 25
                                               : 15,
-                                          color: Color.fromRGBO(76, 76, 76, 1),
+                                          color: const Color.fromRGBO(
+                                              76, 76, 76, 1),
                                         ),
                                         (SizeConfig(context).screenWidth < 750)
                                             ? Container()
@@ -521,7 +522,7 @@ class ProfileAvatarandTabScreenState extends mvc
   }
 
   Widget setPaywallWidget() {
-    return Container(
+    return SizedBox(
       width: 400,
       height: 300,
       child: Row(
@@ -559,7 +560,7 @@ class ProfileAvatarandTabScreenState extends mvc
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: 400,
                                     height: 30,
                                     child: TextField(
@@ -720,34 +721,34 @@ class ProfileAvatarandTabScreenState extends mvc
   }
 
   uploadFile(XFile? pickedFile, type) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
 
       uploadTask.whenComplete(() async {
         Map postPayload = {};
 
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         var postPhoto = [];
         postPhoto.add({'id': 0, 'url': downloadUrl});
         postPayload['photo'] = postPhoto;

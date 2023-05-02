@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/widget/primaryInput.dart';
 
 import '../helpers/helper.dart';
-import '../routes/route_names.dart';
-import '../widget/mprimary_button.dart';
 
 class TermsScreen extends StatefulWidget {
-  TermsScreen({Key? key}) : super(key: key);
+  const TermsScreen({Key? key}) : super(key: key);
+  @override
   State createState() => TermsScreenState();
 }
 
@@ -24,7 +22,6 @@ class TermsScreenState extends mvc.StateMVC<TermsScreen> {
   String dropdownValue = 'Male';
   @override
   Widget build(BuildContext context) {
-    print(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

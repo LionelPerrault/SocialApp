@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
@@ -41,10 +39,9 @@ class PageCellState extends mvc.StateMVC<PageCell> {
   }
 
   pageLikeFunc() async {
-    print(widget.pageInfo['data']['pageAdmin'][0]['uid']);
     var pageAdminInfo = await ProfileController()
         .getUserInfo(widget.pageInfo['data']['pageAdmin'][0]['uid']);
-    print(pageAdminInfo);
+
     if (pageAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         pageAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         widget.pageInfo['data']['pageAdmin'][0]['uid'] ==
@@ -117,8 +114,8 @@ class PageCellState extends mvc.StateMVC<PageCell> {
             children: [
               Container(
                 width: 200,
-                margin: EdgeInsets.only(top: 60),
-                padding: EdgeInsets.only(top: 70),
+                margin: const EdgeInsets.only(top: 60),
+                padding: const EdgeInsets.only(top: 70),
                 decoration: BoxDecoration(
                   color: Colors.grey[350],
                   borderRadius: BorderRadius.circular(5),
@@ -161,10 +158,10 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                           pageLikeFunc();
                         },
                         child: loading
-                            ? Container(
+                            ? const SizedBox(
                                 width: 10,
                                 height: 10,
-                                child: const CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   color: Colors.grey,
                                 ),
                               )
@@ -206,7 +203,7 @@ class PageCellState extends mvc.StateMVC<PageCell> {
                               : Helper.pageAvatar),
                       fit: BoxFit.cover,
                     ),
-                    color: Color.fromARGB(255, 150, 99, 99),
+                    color: const Color.fromARGB(255, 150, 99, 99),
                     borderRadius: BorderRadius.circular(60),
                     border: Border.all(color: Colors.grey)),
               ),

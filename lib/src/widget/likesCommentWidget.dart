@@ -198,107 +198,170 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            child: Stack(
-              children: [
-                Container(
-                  height: 50,
-                  color: Colors.white,
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Padding(padding: EdgeInsets.only(left: 15)),
-                      InkWell(
-                        onTap: () {
-                          viewLikeUser(con.likes[widget.postInfo['id']]);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: totalLikeImage
-                              .map(
-                                (val) => Container(
-                                  padding: EdgeInsets.only(left: 3),
-                                  child: Row(
-                                    children: [
-                                      Image.network(
-                                        emoticon[val].toString(),
-                                        width: 20,
-                                      ),
-                                    ],
-                                  ),
+          Stack(
+            children: [
+              Container(
+                height: 50,
+                color: Colors.white,
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Padding(padding: EdgeInsets.only(left: 15)),
+                    InkWell(
+                      onTap: () {
+                        viewLikeUser(con.likes[widget.postInfo['id']]);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: totalLikeImage
+                            .map(
+                              (val) => Container(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Row(
+                                  children: [
+                                    Image.network(
+                                      emoticon[val].toString(),
+                                      width: 20,
+                                    ),
+                                  ],
                                 ),
-                              )
-                              .toList(),
-                        ),
+                              ),
+                            )
+                            .toList(),
                       ),
-                      Text(
-                          '${likesvalue == null || likesvalue.length == 0 ? '' : likesvalue.length}'),
-                      const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                      const Icon(
-                        FontAwesomeIcons.solidComment,
-                        color: Colors.grey,
-                        size: 13,
-                      ),
-                      const Padding(padding: EdgeInsets.only(left: 5)),
-                      InkWell(
-                          onTap: () async {
-                            isComment = !isComment;
+                    ),
+                    Text(
+                        '${likesvalue == null || likesvalue.length == 0 ? '' : likesvalue.length}'),
+                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    const Icon(
+                      FontAwesomeIcons.solidComment,
+                      color: Colors.grey,
+                      size: 13,
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 5)),
+                    InkWell(
+                        onTap: () async {
+                          isComment = !isComment;
+                          setState(() {});
+                        },
+                        child: Text(
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                            '${allComment != null ? allComment.length : 0} comments')),
+                    const Padding(padding: EdgeInsets.only(right: 15)),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 40),
+                child: const Divider(
+                    color: Color.fromARGB(69, 83, 79, 79), thickness: 0.1),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 50),
+                height: 45,
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, top: 5, bottom: 5),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: IgnorePointer(
+                        ignoring: !isVerified,
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          onEnter: (value) {
+                            whoHover = 'like';
+
                             setState(() {});
                           },
-                          child: Text(
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
+                          onExit: (event) {
+                            whoHover = '';
+                            setState(() {});
+                          },
+                          child: Container(
+                            foregroundDecoration: isVerified
+                                ? null
+                                : const BoxDecoration(
+                                    //this can make disabled effect
+                                    color: Colors.grey,
+                                    backgroundBlendMode: BlendMode.lighten),
+                            child: InkWell(
+                              onTap: () {
+                                isLike = !isLike;
+                                setState(() {});
+                              },
+                              child: AnimatedContainer(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: whoHover == 'like'
+                                        ? const Color.fromRGBO(240, 240, 245, 1)
+                                        : Colors.white,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(3))),
+                                duration: const Duration(milliseconds: 300),
+                                width: SizeConfig(context).screenWidth > 600
+                                    ? (600 - 60) / 3
+                                    : (SizeConfig(context).screenWidth - 60) /
+                                        3,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    myLike['value'] == null
+                                        ? const Icon(
+                                            FontAwesomeIcons.thumbsUp,
+                                            color: Color(0xff505050),
+                                            size: 15,
+                                          )
+                                        : Image.network(
+                                            emoticon[myLike['value']]
+                                                .toString(),
+                                            width: 20,
+                                          ),
+                                    const Padding(
+                                        padding: EdgeInsets.only(left: 5)),
+                                    Text(
+                                      myLike['value'] ?? 'Like',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: myLike['value'] == null
+                                            ? const Color(0xff505050)
+                                            : likesColor[myLike['value']],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              '${allComment != null ? allComment.length : 0} comments')),
-                      const Padding(padding: EdgeInsets.only(right: 15)),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 40),
-                  child: const Divider(
-                      color: Color.fromARGB(69, 83, 79, 79), thickness: 0.1),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 50),
-                  height: 45,
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 5, bottom: 5),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: IgnorePointer(
-                          ignoring: !isVerified,
-                          child: MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            onEnter: (value) {
-                              whoHover = 'like';
-
-                              setState(() {});
-                            },
-                            onExit: (event) {
-                              whoHover = '';
-                              setState(() {});
-                            },
-                            child: Container(
-                              foregroundDecoration: isVerified
-                                  ? null
-                                  : const BoxDecoration(
-                                      //this can make disabled effect
-                                      color: Colors.grey,
-                                      backgroundBlendMode: BlendMode.lighten),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    widget.commentFlag
+                        ? Expanded(
+                            child: MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              onEnter: (value) {
+                                whoHover = 'comment';
+                                setState(() {});
+                              },
+                              onExit: (event) {
+                                whoHover = '';
+                                setState(() {});
+                              },
                               child: InkWell(
-                                onTap: () {
-                                  isLike = !isLike;
+                                onTap: () async {
+                                  isComment = true;
                                   setState(() {});
                                 },
                                 child: AnimatedContainer(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                      color: whoHover == 'like'
+                                      color: whoHover == 'comment'
                                           ? const Color.fromRGBO(
                                               240, 240, 245, 1)
                                           : Colors.white,
@@ -313,195 +376,124 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: [
-                                      myLike['value'] == null
-                                          ? const Icon(
-                                              FontAwesomeIcons.thumbsUp,
-                                              color: Color(0xff505050),
-                                              size: 15,
-                                            )
-                                          : Image.network(
-                                              emoticon[myLike['value']]
-                                                  .toString(),
-                                              width: 20,
-                                            ),
-                                      const Padding(
+                                    children: const [
+                                      Icon(
+                                        FontAwesomeIcons.message,
+                                        color: Color(0xff505050),
+                                        size: 15,
+                                      ),
+                                      Padding(
                                           padding: EdgeInsets.only(left: 5)),
                                       Text(
-                                        myLike['value'] ?? 'Like',
+                                        'Comment',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: myLike['value'] == null
-                                              ? const Color(0xff505050)
-                                              : likesColor[myLike['value']],
-                                        ),
-                                      ),
+                                            color: Color(0xff505050),
+                                            fontWeight: FontWeight.w700),
+                                      )
                                     ],
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      widget.commentFlag
-                          ? Expanded(
-                              child: MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                onEnter: (value) {
-                                  whoHover = 'comment';
-                                  setState(() {});
-                                },
-                                onExit: (event) {
-                                  whoHover = '';
-                                  setState(() {});
-                                },
-                                child: InkWell(
-                                  onTap: () async {
-                                    isComment = true;
-                                    setState(() {});
-                                  },
-                                  child: AnimatedContainer(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: whoHover == 'comment'
-                                            ? const Color.fromRGBO(
-                                                240, 240, 245, 1)
-                                            : Colors.white,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(3))),
-                                    duration: const Duration(milliseconds: 300),
-                                    width: SizeConfig(context).screenWidth > 600
-                                        ? (600 - 60) / 3
-                                        : (SizeConfig(context).screenWidth -
-                                                60) /
-                                            3,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          FontAwesomeIcons.message,
-                                          color: Color(0xff505050),
-                                          size: 15,
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          'Comment',
-                                          style: TextStyle(
-                                              color: const Color(0xff505050),
-                                              fontWeight: FontWeight.w700),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          : const SizedBox(),
-                      Expanded(
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          onEnter: (value) {
-                            whoHover = 'share';
+                          )
+                        : const SizedBox(),
+                    Expanded(
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        onEnter: (value) {
+                          whoHover = 'share';
 
-                            setState(() {});
+                          setState(() {});
+                        },
+                        onExit: (event) {
+                          whoHover = '';
+                          setState(() {});
+                        },
+                        child: InkWell(
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: AlertDialog(
+                                        title: Row(
+                                          children: const [
+                                            Icon(
+                                              FontAwesomeIcons.share,
+                                              size: 15,
+                                              color: Color(0xff505050),
+                                            ),
+                                            Text(
+                                              'Share',
+                                              style: TextStyle(
+                                                  color: Color(0xff505050),
+                                                  fontSize: 15,
+                                                  fontStyle: FontStyle.normal),
+                                            ),
+                                          ],
+                                        ),
+                                        insetPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 1),
+                                        content: SharePostModal(
+                                          context: context,
+                                          routerChange: widget.routerChange,
+                                          postInfo: widget.shareFlag
+                                              ? widget.postInfo
+                                              : widget.postInfo['data'],
+                                        ))));
                           },
-                          onExit: (event) {
-                            whoHover = '';
-                            setState(() {});
-                          },
-                          child: InkWell(
-                            onTap: () async {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => Padding(
-                                      padding: EdgeInsets.all(20),
-                                      child: AlertDialog(
-                                          title: Row(
-                                            children: const [
-                                              Icon(
-                                                FontAwesomeIcons.share,
-                                                size: 15,
-                                                color: Color(0xff505050),
-                                              ),
-                                              Text(
-                                                'Share',
-                                                style: TextStyle(
-                                                    color:
-                                                        const Color(0xff505050),
-                                                    fontSize: 15,
-                                                    fontStyle:
-                                                        FontStyle.normal),
-                                              ),
-                                            ],
-                                          ),
-                                          insetPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 1),
-                                          content: SharePostModal(
-                                            context: context,
-                                            routerChange: widget.routerChange,
-                                            postInfo: widget.shareFlag
-                                                ? widget.postInfo
-                                                : widget.postInfo['data'],
-                                          ))));
-                            },
-                            child: AnimatedContainer(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: whoHover == 'share'
-                                      ? const Color.fromRGBO(240, 240, 245, 1)
-                                      : Colors.white,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(3))),
-                              duration: const Duration(milliseconds: 300),
-                              width: SizeConfig(context).screenWidth > 600
-                                  ? (600 - 60) / 3
-                                  : (SizeConfig(context).screenWidth - 60) / 3,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Icon(
-                                    FontAwesomeIcons.share,
-                                    color: Color(0xff505050),
-                                    size: 15,
-                                  ),
-                                  Padding(padding: EdgeInsets.only(left: 5)),
-                                  Text(
-                                    'Share',
-                                    style: TextStyle(
-                                        color: Color(0xff505050),
-                                        fontWeight: FontWeight.w700),
-                                  )
-                                ],
-                              ),
+                          child: AnimatedContainer(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: whoHover == 'share'
+                                    ? const Color.fromRGBO(240, 240, 245, 1)
+                                    : Colors.white,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(3))),
+                            duration: const Duration(milliseconds: 300),
+                            width: SizeConfig(context).screenWidth > 600
+                                ? (600 - 60) / 3
+                                : (SizeConfig(context).screenWidth - 60) / 3,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  FontAwesomeIcons.share,
+                                  color: Color(0xff505050),
+                                  size: 15,
+                                ),
+                                Padding(padding: EdgeInsets.only(left: 5)),
+                                Text(
+                                  'Share',
+                                  style: TextStyle(
+                                      color: Color(0xff505050),
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
-                isLike
-                    ? Container(
-                        margin: const EdgeInsets.only(top: 6),
-                        child: likesWidget('product', (value) async {
-                          isLike = false;
-                          await con.savePostLikes(widget.postInfo['id'], value);
+              ),
+              isLike
+                  ? Container(
+                      margin: const EdgeInsets.only(top: 6),
+                      child: likesWidget('product', (value) async {
+                        isLike = false;
+                        await con.savePostLikes(widget.postInfo['id'], value);
 
-                          // myLike['value'] = value;
+                        // myLike['value'] = value;
 
-                          whoHover = '';
-                        }),
-                      )
-                    : Container()
-              ],
-            ),
+                        whoHover = '';
+                      }),
+                    )
+                  : Container()
+            ],
           ),
           // SingleChildScrollView(
           //   controller: _scrollController,
@@ -770,14 +762,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                     child: MouseRegion(
                       child: InkWell(
                           onTap: () {
-                            // try {
-                            print("onclikc value is $onClick");
                             onClick(e['value']);
-                            // } catch (e) {
-                            //   print("onclikc value is $onClick");
-                            //   print("onclikc value is $what");
-                            //   print("unknown ================$e");
-                            // }
                           },
                           child: AnimatedContainer(
                             height: whatImage == e['value'] ? 50 : 40,
@@ -812,15 +797,14 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
           }
         }
         if (flag) {
-          print(likesvalue[i]['value']);
           totalLikeImage.add(likesvalue[i]['value']);
         }
       }
     }
-    print(totalLikeImage);
+
     var commentLikesCount = totalLikeImage;
     Map myCommentLike = {};
-    print("likesavalue -------- $likesvalue");
+
     myCommentLike = likesvalue
             .where((like) => like['uid'] == userInfo['uid'])
             .toList()
@@ -907,11 +891,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         if (whoComment == '') {
                           whoComment = e['id'];
                           commentHeight = key.currentContext!.size!.height;
-                          print("aaaaaaaaaa");
+
                           setState(() {});
                         } else {
                           whoComment = '';
-                          print("aaaaaaaaaa1");
+
                           setState(() {});
                         }
                       },
@@ -967,7 +951,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                     //${likesvalue == null || likesvalue.length == 0 ? '' : likesvalue.length}'
                     likesvalue.length > 1
                         ? Text(likesvalue.length.toString())
-                        : SizedBox()
+                        : const SizedBox()
                   ],
                 ),
               ),
@@ -997,7 +981,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           },
                           child: Text(
                             '${e['reply'].length} Replies',
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
                         )
                       ]),
@@ -1009,7 +993,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         reply[e['id']] = value;
                       }, () async {
                         if (reply[e['id']] != '') {
-                          print("e[id]: ---  ${e['id']}");
                           await con.saveReply(widget.postInfo['id'], e['id'],
                               reply[e['id']], 'text');
                           setState(() {});
@@ -1034,7 +1017,6 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     //  List replies = con.commentReply[e['id']] ?? [];
     //List commentLikesCount = con.commentLikesCount[e['id']] ?? [];
     var totalLikeImage = [];
-    Map myLike = {};
     if (con.replyLikesCount != null) {
       var likesvalue = con.replyLikesCount[val['id']] ?? [];
       if (likesvalue != null) {
@@ -1049,24 +1031,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             }
           }
           if (flag) {
-            print(likesvalue[i]['likes']);
             totalLikeImage.add(likesvalue[i]['likes']);
           }
         }
       }
-      print("--------totallikeimage----------");
-      print(totalLikeImage);
       replyLikesCount = totalLikeImage;
-      Map myCommentLike = {};
-      print("likesavalue -------- $likesvalue");
-      myCommentLike = likesvalue
-              .where((like) => like['uid'] == userInfo['uid'])
-              .toList()
-              .isEmpty
-          ? {}
-          : likesvalue
-              .where((like) => like['uid'] == userInfo['uid'])
-              .toList()[0];
     }
 
     return Container(
@@ -1138,28 +1107,14 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         if (whoComment == '') {
                           whoComment = val['id'];
                           commentHeight = key1.currentContext!.size!.height;
-                          // print("aaaaaaaaaa");
-                          // print(con.replyLikesCount);
-                          // print("val----${val['id']}");
-                          // print("e----${e['id']}");
+
                           setState(() {});
                         } else {
                           whoComment = '';
-                          print("aaaaaaaaaa1");
+
                           setState(() {});
                         }
                       },
-                      // MouseRegion(
-                      //   cursor: SystemMouseCursors.click,
-                      //   onEnter: (event) {
-                      //     whoComment = val['id'];
-                      //     commentHeight = key1.currentContext!.size!.height;
-                      //     setState(() {});
-                      //   },
-                      //   onExit: (event) {
-                      //     whoComment = '';
-                      //     setState(() {});
-                      //   },
                       child: Text(
                         con.replyLikes[val['id']] ?? 'Like',
                         style: TextStyle(
@@ -1222,12 +1177,10 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   }
 
   Widget allLikeUser(postlike) {
-    print("likesimage");
-    print(likesImage);
     return Row(
       children: [
         Expanded(
-          child: Container(
+          child: SizedBox(
             width: 400,
             height: 300,
             child: DefaultTabController(
@@ -1245,11 +1198,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       for (int i = 0; i < likesImage.length; i++)
                         Tab(
                           height: 30,
-                          child: Container(
-                            child: Image.network(
-                              likesImage[i]['image'],
-                              width: 40,
-                            ),
+                          child: Image.network(
+                            likesImage[i]['image'],
+                            width: 40,
                           ),
                         ),
                     ],
@@ -1573,16 +1524,14 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
 }
 
 Widget input({label, onchange, obscureText = false, validator}) {
-  return Container(
+  return SizedBox(
     height: 28,
     child: StartedInput(
       validator: (val) async {
-        print("val$val");
         validator(val);
       },
       obscureText: obscureText,
       onChange: (val) async {
-        print("val$val");
         onchange(val);
       },
     ),

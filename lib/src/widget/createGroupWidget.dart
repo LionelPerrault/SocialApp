@@ -19,10 +19,10 @@ import 'package:uuid/uuid.dart';
 // ignore: must_be_immutable
 class CreateGroupModal extends StatefulWidget {
   BuildContext context;
-  late PostController Postcon;
+  late PostController postCon;
   CreateGroupModal(
       {Key? key, required this.context, required this.routerChange})
-      : Postcon = PostController(),
+      : postCon = PostController(),
         super(key: key);
   Function routerChange;
   @override
@@ -31,7 +31,7 @@ class CreateGroupModal extends StatefulWidget {
 
 class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   bool isSound = false;
-  late PostController Postcon;
+  late PostController postCon;
   Map<String, dynamic> groupInfo = {
     'groupAbout': '',
     'groupPrivacy': 'public',
@@ -65,8 +65,8 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   TextEditingController locationTextController = TextEditingController();
   @override
   void initState() {
-    add(widget.Postcon);
-    Postcon = controller as PostController;
+    add(widget.postCon);
+    postCon = controller as PostController;
     super.initState();
   }
 
@@ -82,7 +82,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
     setState(() {});
 
     if (price == '0') {
-      await Postcon.createGroup(context, groupInfo).then((value) => {
+      await postCon.createGroup(context, groupInfo).then((value) => {
             footerBtnState = false,
             setState(
               () => {},
@@ -118,7 +118,8 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                             setState(() {}),
                             Navigator.of(dialogContext).pop(true),
                             setState(() {}),
-                            await Postcon.createGroup(context, groupInfo)
+                            await postCon
+                                .createGroup(context, groupInfo)
                                 .then((value) {
                               footerBtnState = false;
                               setState(() => {});

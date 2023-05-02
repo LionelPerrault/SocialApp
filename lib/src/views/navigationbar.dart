@@ -215,7 +215,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
             dynamic groupData = groupV.data();
             var type = allNotifi[i]['postType'];
             var text = Helper.notificationText[type.toString()]['text'];
-            print('$groupData this is invitegroupdata');
+
             if (data != null && groupData != null) {
               addData = {
                 // ...allNotifi[i],
@@ -235,7 +235,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       }
       postCon.realNotifi = changeData;
       postCon.allNotification = changeData;
-      print(changeData);
+
       setState(() {});
       if (!kIsWeb) {
         dynamic res = await FlutterAppBadger.isAppBadgeSupported();
@@ -548,18 +548,15 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             child:
                                 GestureDetector(child: const Text('Privacy')),
                           ),
-                          UserManager.userInfo['admin'] == 'admin'
-                              ? const PopupMenuDivider()
-                              : const PopupMenuDivider(height: 0),
-                          UserManager.userInfo['admin'] == 'admin'
-                              ? PopupMenuItem<Menu>(
-                                  value: Menu.itemAdminPanel,
-                                  child: GestureDetector(
-                                      child: const Text('AdminPanel')),
-                                )
-                              : const PopupMenuItem<Menu>(
-                                  child: SizedBox(),
-                                ),
+                          if (UserManager.userInfo['admin'] == 'admin')
+                            const PopupMenuDivider(),
+                          if (UserManager.userInfo['admin'] == 'admin')
+                            PopupMenuItem<Menu>(
+                              value: Menu.itemAdminPanel,
+                              child: GestureDetector(
+                                child: const Text('AdminPanel'),
+                              ),
+                            ),
                           const PopupMenuDivider(),
                           PopupMenuItem<Menu>(
                               onTap: () => {onLogOut()},

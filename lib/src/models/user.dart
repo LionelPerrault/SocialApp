@@ -1,4 +1,3 @@
-import '../helpers/helper.dart';
 import '../models/media.dart';
 
 enum UserState { available, away, busy }
@@ -10,36 +9,34 @@ class User {
   String authKey = '';
   String balance = '';
   String payID = '';
-  Media image = new Media(url: 'test');
+  Media image = Media(url: 'test');
   // used for indicate if client logged in or not
   bool auth = false;
-
 
   User();
 
   User.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'].toString();
-      email = jsonMap['email'] != null ? jsonMap['email'] : '';
+      email = jsonMap['email'] ?? '';
       password = jsonMap['pasword'] != null ? jsonMap['password'] : '';
       authKey = jsonMap['authKey'];
       balance = jsonMap['balance'];
       payID = jsonMap['payID'];
 
       //try {
-        //phone = jsonMap['custom_fields']['phone']['view'];
+      //phone = jsonMap['custom_fields']['phone']['view'];
       //} catch (e) {
-        //phone = "";
+      //phone = "";
       //}
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).isNotEmpty
           ? Media.fromJSON(jsonMap['media'][0])
-          : new Media(url: '');
-    } catch (e) {
-    }
+          : Media(url: '');
+    } catch (e) {}
   }
 
   Map toMap() {
-    var map = new Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map["id"] = id;
     map["email"] = email;
     map["password"] = password;
@@ -47,7 +44,7 @@ class User {
   }
 
   Map toRestrictMap() {
-    var map = new Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map["id"] = id;
     map["email"] = email;
     return map;
@@ -55,9 +52,8 @@ class User {
 
   @override
   String toString() {
-    var map = this.toMap();
-    map["auth"] = this.auth;
+    var map = toMap();
+    map["auth"] = auth;
     return map.toString();
   }
-
 }

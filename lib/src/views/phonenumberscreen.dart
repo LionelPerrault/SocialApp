@@ -2,7 +2,6 @@ import 'package:easy_container/easy_container.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/widget/mprimary_button.dart';
 
 class PhoneNumberScreen extends StatefulWidget {
   static const id = 'PhoneNumberScreen';
@@ -60,21 +59,20 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               OutlinedButton(
-                  child: Text('Back'),
                   style: OutlinedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 44, 44, 44),
+                      backgroundColor: const Color.fromARGB(255, 44, 44, 44),
                       foregroundColor: Colors.white70,
                       fixedSize: const Size(100, 40)),
                   onPressed: () {
                     widget.onBack('', true);
-                  }),
+                  },
+                  child: const Text('Back')),
               const SizedBox(
                 width: 10,
               ),
               OutlinedButton(
-                  child: Text('Verify'),
                   style: OutlinedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 44, 44, 44),
+                      backgroundColor: const Color.fromARGB(255, 44, 44, 44),
                       foregroundColor: Colors.white70,
                       fixedSize: const Size(100, 40)),
                   onPressed: () {
@@ -84,7 +82,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     } else {
                       widget.onBack(phoneNumber, false);
                     }
-                  }),
+                  },
+                  child: const Text('Verify')),
             ],
           )
         ],

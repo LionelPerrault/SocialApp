@@ -8,7 +8,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'dart:io' show File;
@@ -778,18 +777,16 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                   alignment: Alignment.topRight,
                   child: Column(
                     children: [
-                      Container(
-                        child: IconButton(
-                          icon: const Icon(Icons.close,
-                              color: Colors.black, size: 13.0),
-                          tooltip: 'Delete',
-                          onPressed: () {
-                            setState(() {
-                              realEstateFile
-                                  .removeWhere((item) => item['id'] == id);
-                            });
-                          },
-                        ),
+                      IconButton(
+                        icon: const Icon(Icons.close,
+                            color: Colors.black, size: 13.0),
+                        tooltip: 'Delete',
+                        onPressed: () {
+                          setState(() {
+                            realEstateFile
+                                .removeWhere((item) => item['id'] == id);
+                          });
+                        },
                       ),
                       const Icon(
                         Icons.file_copy,
@@ -876,14 +873,14 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
   }
 
   Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
+    final imagePicker = ImagePicker();
     XFile? pickedFile;
     if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     }

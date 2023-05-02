@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shnatter/src/controllers/HomeController.dart';
 import 'package:shnatter/src/helpers/relysiaHelper.dart';
@@ -57,7 +58,9 @@ class RelysiaManager {
                 //print(responseData),
               });
     } catch (exception) {
-      print("occurs exception" + exception.toString());
+      if (kDebugMode) {
+        print("occurs exception" + exception.toString());
+      }
     }
     return responseData;
   }
@@ -65,7 +68,7 @@ class RelysiaManager {
   static Future<int> createWallet(String token) async {
     var r = 0;
     var respondData = {};
-    print("token is $token");
+
     try {
       await http
           .get(Uri.parse('https://api.relysia.com/v1/createWallet'), headers: {
@@ -131,14 +134,16 @@ class RelysiaManager {
         }
       });
     } catch (exception) {
-      print(exception.toString());
+      if (kDebugMode) {
+        print(exception.toString());
+      }
     }
     return {'balance': balance, 'success': result};
   }
 
   static Future<Map> getTransactionHistory(String token, nextPageToken) async {
     var result = '';
-    print(1);
+
     try {
       await http.get(Uri.parse('https://api.relysia.com/v2/history'), headers: {
         'authToken': token,
@@ -150,11 +155,9 @@ class RelysiaManager {
         if (history['statusCode'] == 200) {
           if (nextPageToken == '') {
             var list = [];
-            print(history['data']['histories'].length);
+
             history['data']['histories'].forEach((elem) {
-              print(elem['to']);
               elem['to'].forEach((e) {
-                print(e.length);
                 if (e['tokenId'] == RelysiaHelper.tokenId) {
                   list.add({
                     'txId': e['txId'] ?? '',
@@ -168,7 +171,6 @@ class RelysiaManager {
               });
             });
             trHistory = list;
-            print(trHistory.length);
           } else {
             var list = [];
 
@@ -191,7 +193,6 @@ class RelysiaManager {
               list.add(trHistory[i]);
             }
             trHistory = list;
-            print(trHistory.length);
           }
           nextPageTokenId = history['data']['meta']['nextPageToken'];
           result = 'true';
@@ -232,7 +233,9 @@ class RelysiaManager {
         },
       );
     } catch (exception) {
-      print(exception.toString());
+      if (kDebugMode) {
+        print(exception.toString());
+      }
     }
     return {'success': r};
   }
@@ -269,12 +272,11 @@ class RelysiaManager {
                   if (elem['paymail'] != 'poiintz@relysia.com' &&
                       !elem['paymail'].contains('shnatter') &&
                       elem['paymail'].contains('@poiintz.app') &&
-                      strPaymailList.indexOf(elem['paymail']) < 0)
+                      !strPaymailList.contains(elem['paymail']))
                     {leaderBoard.add(elem), count++}
                 });
             next = response['data']['nextPageToken'].toString();
             success = true;
-            print(response['data']);
           } else if (response['statusCode'] == 401) {
             success = false;
             next = 'null';
@@ -282,7 +284,9 @@ class RelysiaManager {
         });
       }
     } catch (exception) {
-      print("Exception:" + exception.toString());
+      if (kDebugMode) {
+        print("Exception:$exception");
+      }
     }
     return {'success': success, 'data': leaderBoard, 'nextPageToken': next};
   }

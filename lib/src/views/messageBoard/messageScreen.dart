@@ -103,7 +103,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   }
 
   Widget MobileScreen() {
-    return Container(
+    return SizedBox(
       width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth
           : SizeConfig(context).screenWidth - SizeConfig.leftBarWidth,

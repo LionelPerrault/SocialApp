@@ -78,7 +78,6 @@ class ProfileController extends ControllerMVC {
 
   //get user profile info
   Future<bool> getProfileInfo() async {
-    print("callll profile get info =============");
     bool getFlag = false;
     isGetData = false;
     await FirebaseFirestore.instance
@@ -86,7 +85,7 @@ class ProfileController extends ControllerMVC {
         .where('userName', isEqualTo: viewProfileUserName)
         .get()
         .then((value) {
-      if (value.docs.length > 0) {
+      if (value.docs.isNotEmpty) {
         viewProfileFullName =
             '${value.docs[0].data()['firstName']} ${value.docs[0].data()['lastName']}';
         viewProfileUid = value.docs[0].id;

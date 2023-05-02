@@ -35,7 +35,6 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   String inviteCode = '';
   String phoneNumber = '';
   late UserController con;
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -47,13 +46,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   var signUpUserInfo = {};
   String dropdownValue = 'Male';
   var isObscure = true;
-  var _isButtonDisabled = false;
 
-  @override
   void buttonDisableFlag() {
-    setState(() {
-      _isButtonDisabled = true;
-    });
+    setState(() {});
   }
 
   final RegExp emailValidatorRegExp =
@@ -68,6 +63,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
     setState(() {});
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
@@ -580,7 +576,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                                         MaterialPageRoute<
                                                                             void>(
                                                                           builder: (BuildContext context) =>
-                                                                              TermsScreen(),
+                                                                              const TermsScreen(),
                                                                         ),
                                                                       );
                                                                     },
@@ -628,7 +624,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                     top: 5),
                                                 child: MyPrimaryButton(
                                                   color: allInputed
-                                                      ? Color.fromARGB(
+                                                      ? const Color.fromARGB(
                                                           255, 103, 181, 245)
                                                       : Colors.white,
                                                   isShowProgressive:
@@ -812,8 +808,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                 const EdgeInsets.only(top: 60, bottom: 53.5),
                             child: SizeConfig(context).screenWidth <
                                     SizeConfig.smallScreenSize
-                                ? footbarM()
-                                : footbar())
+                                ? const footbarM()
+                                : const footbar())
                       ],
                     )))));
   }
@@ -890,7 +886,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
           ),
           prefixIcon: icon,
           suffixIcon: IconButton(
-            padding: EdgeInsets.only(bottom: 3),
+            padding: const EdgeInsets.only(bottom: 3),
             icon: Icon(
               isObscure ? Icons.visibility_off : Icons.visibility,
               color: Colors.white,

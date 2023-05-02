@@ -3,13 +3,11 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'dart:io' show File;
@@ -370,7 +368,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                                                                       .circular(
                                                                           5.0))),
                                                   onChanged: (value) {
-                                                    print(value);
                                                     offer1 = value!;
                                                     offer2 = !offer1;
                                                     productInfo[

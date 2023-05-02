@@ -5,7 +5,8 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import '../helpers/helper.dart';
 
 class AboutScreen extends StatefulWidget {
-  AboutScreen({Key? key}) : super(key: key);
+  const AboutScreen({Key? key}) : super(key: key);
+  @override
   State createState() => AboutScreenState();
 }
 

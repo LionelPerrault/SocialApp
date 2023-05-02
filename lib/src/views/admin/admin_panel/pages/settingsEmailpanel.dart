@@ -27,7 +27,7 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         AdminSettingHeader(
-          icon: Icon(Icons.settings),
+          icon: const Icon(Icons.settings),
           pagename: 'Settings › Email',
           button: const {'flag': false},
         ),
@@ -77,7 +77,7 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         titleAndsubtitleInput('SMTP Password', 30, 1, () {}, ''),
         titleAndsubtitleInput('Set From', 30, 1, () {},
             'Set the From email address, For example: email@domain.com'),
-        AdminSettingFooter()
+        const AdminSettingFooter()
       ]),
     );
   }
@@ -94,7 +94,7 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
         Flexible(
             flex: 4,
             child: Container(
-              padding: EdgeInsets.only(left: 10, right: 30),
+              padding: const EdgeInsets.only(left: 10, right: 30),
               width: SizeConfig(context).screenWidth * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +108,7 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
                   ),
                   Text(content,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(fontSize: 13)),
+                      style: const TextStyle(fontSize: 13)),
                 ],
               ),
             )),
@@ -148,7 +148,7 @@ class AdminSettingsEmailState extends mvc.StateMVC<AdminSettingsEmail> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height + 34,
                   child: Column(children: [

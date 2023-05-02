@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 
 class Friends {
-  Friends() {}
+  Friends();
   var friends = [];
   // get my  friends in collection
   Future<List> getFriends(name) async {

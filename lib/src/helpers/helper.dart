@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../models/setting.dart';
 import 'package:crypto/crypto.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/userModel.dart';
 
@@ -165,7 +164,7 @@ class Helper {
     final prefs = await SharedPreferences.getInstance();
     String? rValue = "";
     rValue = prefs.getString(field);
-    return rValue != null ? rValue : "";
+    return rValue ?? "";
   }
 
   static saveJSONPreference(String field, Map<String, dynamic> data) async {

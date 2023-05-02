@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
-import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
+
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminListGenres extends StatefulWidget {
-  AdminListGenres({super.key});
+  const AdminListGenres({super.key});
 
   @override
   State createState() => AdminListGenresState();
@@ -140,24 +140,22 @@ class AdminListGenresState extends mvc.StateMVC<AdminListGenres> {
   String? selectedValue;
 
   bool check1 = false;
-  Color fontColor = Color.fromARGB(255, 10, 10, 10);
+  Color fontColor = const Color.fromARGB(255, 10, 10, 10);
   double fontSize = 14;
   var addroute = 'main';
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.75
-                : SizeConfig(context).screenWidth,
-            child: addroute == 'main' ? generalWidget() : addNewGenreWidget(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.75
+              : SizeConfig(context).screenWidth,
+          child: addroute == 'main' ? generalWidget() : addNewGenreWidget(),
+        ),
+      ],
     );
   }
 
@@ -184,7 +182,7 @@ class AdminListGenresState extends mvc.StateMVC<AdminListGenres> {
                 addroute = 'addNew';
                 setState(() {});
               },
-              'size': Size(180, 50),
+              'size': const Size(180, 50),
             },
           ),
           Container(
@@ -215,31 +213,29 @@ class AdminListGenresState extends mvc.StateMVC<AdminListGenres> {
   }
 
   Widget addNewGenreWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.movie_creation),
-            pagename: 'Movies › Genres › Add New Genre',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.movie_creation),
+          pagename: 'Movies › Genres › Add New Genre',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          titleAndsubtitleInput('Name', 40, 1, ''),
-          titleAndsubtitleInput('Order', 40, 1, ''),
-          titleAndsubtitleInput('description', 200, 8, ''),
-          // titleAndsubtitleTextarea('Description',4,''),
-          footer(),
-        ],
-      ),
+            'size': const Size(120, 50),
+          },
+        ),
+        titleAndsubtitleInput('Name', 40, 1, ''),
+        titleAndsubtitleInput('Order', 40, 1, ''),
+        titleAndsubtitleInput('description', 200, 8, ''),
+        // titleAndsubtitleTextarea('Description',4,''),
+        footer(),
+      ],
     );
   }
   // Widget titleAndsubtitleTextarea(title, line, subtitle) {
@@ -323,7 +319,7 @@ class AdminListGenresState extends mvc.StateMVC<AdminListGenres> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 500,
                     height: height,
                     child: TextField(

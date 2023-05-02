@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/helper.dart';
@@ -29,7 +30,9 @@ class RelysiaManager {
                 //print(responseData),
               });
     } catch (exception) {
-      print("occurs exception" + exception.toString());
+      if (kDebugMode) {
+        print("occurs exception" + exception.toString());
+      }
     }
     return responseData;
   }
@@ -50,11 +53,8 @@ class RelysiaManager {
           )
           .then((res) => {
                 responseData = jsonDecode(res.body),
-                print('this is responseData in createUser: $responseData'),
               });
-    } catch (exception) {
-      print("occurs exception" + exception.toString());
-    }
+    } catch (exception) {}
     return responseData;
   }
 
@@ -75,15 +75,12 @@ class RelysiaManager {
           .then((res) => {
                 responseData = jsonDecode(res.body),
               });
-    } catch (exception) {
-      print("occurs exception" + exception.toString());
-    }
+    } catch (exception) {}
     return responseData;
   }
 
   static Future<int> createWallet(String token) async {
     var r = 0;
-    var respondData = {};
     try {
       await http
           .get(Uri.parse('https://api.relysia.com/v1/createWallet'), headers: {
@@ -93,12 +90,9 @@ class RelysiaManager {
         'paymailActivate': 'true',
       }).then((res) => {
                 r = 1,
-                respondData = jsonDecode(res.body),
               });
       // ignore: empty_catches
-    } catch (exception) {
-      print(exception.toString());
-    }
+    } catch (exception) {}
     return r;
   }
 
@@ -117,9 +111,7 @@ class RelysiaManager {
                 paymail['address'] = resData['data']['address'],
               },
           });
-    } catch (exception) {
-      print(exception.toString());
-    }
+    } catch (exception) {}
     return paymail;
   }
 
@@ -140,7 +132,9 @@ class RelysiaManager {
               },
           });
     } catch (exception) {
-      print(exception.toString());
+      if (kDebugMode) {
+        print(exception.toString());
+      }
     }
     return balance;
   }
@@ -180,7 +174,9 @@ class RelysiaManager {
             );
       }
     } catch (exception) {
-      print(exception.toString());
+      if (kDebugMode) {
+        print(exception.toString());
+      }
     }
     return returnData;
   }
@@ -201,7 +197,7 @@ class RelysiaManager {
           }).then(
         (res) async {
           response = jsonDecode(res.body);
-          print(response['data']['histories']);
+
           if (response['statusCode'] == 200) {
             if (response['data']['histories'] != []) {
               for (var elem in response['data']['histories']) {
@@ -235,7 +231,6 @@ class RelysiaManager {
         },
       );
     } catch (exception) {
-      print(exception);
       Helper.showToast("An error has occurred. try again later");
     }
     return {'history': transHistory, 'success': result, 'nextPageToken': next};

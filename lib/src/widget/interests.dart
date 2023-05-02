@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-
 class InterestsWidget extends StatefulWidget {
   BuildContext context;
   Function sendUpdate;
   var data;
-  late PostController Postcon;
+  late PostController postCon;
   bool header;
   InterestsWidget(
       {Key? key,
@@ -17,7 +14,7 @@ class InterestsWidget extends StatefulWidget {
       required this.sendUpdate,
       this.data,
       this.header = false})
-      : Postcon = PostController(),
+      : postCon = PostController(),
         super(key: key);
   @override
   State createState() => InterestsWidgetState();
@@ -25,7 +22,7 @@ class InterestsWidget extends StatefulWidget {
 
 class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
   bool isSound = false;
-  late PostController Postcon;
+  late PostController postCon;
   var interests = "none";
   var interest = 'none';
   var interestsCheck = [];
@@ -37,9 +34,9 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
   List subCategory = [];
   @override
   void initState() {
-    add(widget.Postcon);
-    Postcon = controller as PostController;
-    Postcon.getAllInterests().then((allInterests) => {
+    add(widget.postCon);
+    postCon = controller as PostController;
+    postCon.getAllInterests().then((allInterests) => {
           for (int i = 0; i < allInterests.length; i++)
             {
               if (allInterests[i]['parentId'] == '0')
@@ -311,7 +308,7 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                             const Padding(padding: EdgeInsets.only(left: 30))
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           thickness: 0.1,
                           color: Colors.black,
                         )

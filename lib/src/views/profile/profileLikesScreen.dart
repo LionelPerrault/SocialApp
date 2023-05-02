@@ -1,15 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/views/box/searchbox.dart';
-import 'package:shnatter/src/views/chat/chatScreen.dart';
-import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/views/pages/widget/pagecell.dart';
-import '../../controllers/HomeController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/ProfileController.dart';
@@ -44,7 +38,6 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
         .then((value) => {
               myPages = value,
               getFlag = false,
-              print("myPages----------$myPages"),
               setState(() {}),
             });
   }
@@ -124,39 +117,37 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
                                 color: Color.fromRGBO(108, 117, 125, 1)),
                           ))
                     ]))
-            : Container(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Expanded(
-                      child: GridView.count(
-                        crossAxisCount: screenWidth > 800
-                            ? 4
-                            : screenWidth > 600
-                                ? 3
-                                : screenWidth > 210
-                                    ? 2
-                                    : 1,
-                        childAspectRatio: 2 / 3,
-                        padding: const EdgeInsets.all(4.0),
-                        mainAxisSpacing: 4.0,
-                        shrinkWrap: true,
-                        crossAxisSpacing: 4.0,
-                        children: myPages
-                            .map(
-                              (page) => PageCell(
-                                pageInfo: page,
-                                refreshFunc: () {
-                                  getPageNow();
-                                },
-                                routerChange: widget.routerChange,
-                              ),
-                            )
-                            .toList(),
-                      ),
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: GridView.count(
+                      crossAxisCount: screenWidth > 800
+                          ? 4
+                          : screenWidth > 600
+                              ? 3
+                              : screenWidth > 210
+                                  ? 2
+                                  : 1,
+                      childAspectRatio: 2 / 3,
+                      padding: const EdgeInsets.all(4.0),
+                      mainAxisSpacing: 4.0,
+                      shrinkWrap: true,
+                      crossAxisSpacing: 4.0,
+                      children: myPages
+                          .map(
+                            (page) => PageCell(
+                              pageInfo: page,
+                              refreshFunc: () {
+                                getPageNow();
+                              },
+                              routerChange: widget.routerChange,
+                            ),
+                          )
+                          .toList(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
   }
 }

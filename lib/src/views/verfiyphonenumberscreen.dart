@@ -137,7 +137,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                 return Scaffold(
                   backgroundColor: Colors.black,
                   appBar: AppBar(
-                    backgroundColor: Color.fromARGB(255, 44, 44, 44),
+                    backgroundColor: const Color.fromARGB(255, 44, 44, 44),
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
@@ -208,7 +208,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                                   // ),
                                   SizedBox(height: 50),
                                   Text(
-                                    'Waiting for code received by sms',
+                                    'Enter the code received by SMS',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 18,
@@ -220,14 +220,14 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                                   Divider(
                                     color: Colors.white,
                                   ),
-                                  Text(
-                                    'OR',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Divider(
-                                    color: Colors.white,
-                                  ),
+                                  // Text(
+                                  //   'OR',
+                                  //   textAlign: TextAlign.center,
+                                  //   style: TextStyle(color: Colors.white),
+                                  // ),
+                                  // Divider(
+                                  //   color: Colors.white,
+                                  // ),
                                 ],
                               ),
                             const SizedBox(height: 15),

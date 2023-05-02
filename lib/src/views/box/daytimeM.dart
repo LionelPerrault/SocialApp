@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
@@ -69,7 +68,7 @@ class DayTimeM extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: SizeConfig(context).screenWidth >
                                 SizeConfig.smallScreenSize
                             ? 410

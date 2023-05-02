@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -12,7 +11,6 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
-import 'package:shnatter/src/widget/list_text.dart';
 import 'package:path/path.dart' as PPath;
 import '../../controllers/PostController.dart';
 import '../../helpers/helper.dart';
@@ -180,7 +178,6 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     .isAfter(
                         PostController().postsProfile[0]['time'].toDate())))
             .length;
-        print("newPostNum of profile is $newPostNum");
         setState(() {});
       });
     });
@@ -232,32 +229,32 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   }
 
   uploadFile(XFile? pickedFile, type) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
 
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         if (type == 'profile_cover') {
           FirebaseFirestore.instance
               .collection(Helper.userField)
@@ -438,7 +435,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
             : const SizedBox(),
         loadingFlagBottom || loadingFlag || !nextPostFlag
             ? !nextPostFlag && PostController().postsProfile.isNotEmpty
-                ? Text("There is no more data to show")
+                ? const Text("There is no more data to show")
                 : const SizedBox()
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -470,8 +467,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           'Load More...',
                           style: TextStyle(
                               color: Color.fromARGB(255, 90, 90, 90),
@@ -543,16 +540,16 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           : const SizedBox(),
                       postColumn(),
                     ])
-              : Container(
+              : SizedBox(
                   width: double.infinity,
                   child: Column(
-                    children: [
-                      Padding(padding: const EdgeInsets.only(top: 115)),
+                    children: const [
+                      Padding(padding: EdgeInsets.only(top: 115)),
                       Text(
                         "You can see the friends Timeline only if you are friends.",
                         textAlign: TextAlign.center,
                       ),
-                      Padding(padding: const EdgeInsets.only(top: 30)),
+                      Padding(padding: EdgeInsets.only(top: 30)),
                     ],
                   ),
                 )

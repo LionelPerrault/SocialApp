@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:provider/provider.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/models/sendBadgeModel.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/people/tabs/discoverScreen.dart';
 import 'package:shnatter/src/views/people/tabs/friendRequestsScreen.dart';
@@ -44,29 +42,22 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // padding: EdgeInsets.only(
-      //     right: SizeConfig(context).screenWidth < 700 ? 30 : 70,
-      //     top: 10,
-      //     left: SizeConfig(context).screenWidth < 700 ? 30 : 70),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          mainTabWidget(),
-          con.tabName == 'Discover'
-              ? PeopleDiscoverScreen(
-                  routerChange: widget.routerChange,
-                )
-              : con.tabName == 'Friend Requests'
-                  ? FriendRequestsScreen(routerChange: widget.routerChange)
-                  : SendRequestsScreen()
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        mainTabWidget(),
+        con.tabName == 'Discover'
+            ? PeopleDiscoverScreen(
+                routerChange: widget.routerChange,
+              )
+            : con.tabName == 'Friend Requests'
+                ? FriendRequestsScreen(routerChange: widget.routerChange)
+                : SendRequestsScreen()
+      ],
     );
   }
 
   Widget mainTabWidget() {
-    print(con.sendFriends.length);
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         controller: _scrollController,

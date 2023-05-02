@@ -1,13 +1,9 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:convert';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart' as http;
-
-import '../models/userModel.dart';
 
 enum EmailType { emailVerify, googleVerify }
 

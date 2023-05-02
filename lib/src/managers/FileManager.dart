@@ -2,18 +2,11 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import '../../firebase_options.dart';
-import '../helpers/helper.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/userModel.dart';
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File, Platform;
 
@@ -42,10 +35,10 @@ class FileController extends ControllerMVC {
   }
 
   Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
+    final imagePicker = ImagePicker();
     XFile? pickedFile;
     if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
@@ -53,7 +46,7 @@ class FileController extends ControllerMVC {
       // await Permission.photos.request();
       // var permissionStatus = await Permission.photos.status;
 
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     }
@@ -61,29 +54,29 @@ class FileController extends ControllerMVC {
   }
 
   uploadFile(XFile? pickedFile) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (kIsWeb) {
         Uint8List bytes = await pickedFile!.readAsBytes();
-        _reference = _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         userCon.userAvatar = downloadUrl;
         userCon.setState(() {});
         userCon.changeAvatar();

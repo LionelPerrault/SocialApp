@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 
 // ignore: must_be_immutable
 class SettingHeader extends StatelessWidget {
@@ -22,7 +19,7 @@ class SettingHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 20, right: 20),
+      padding: const EdgeInsets.only(top: 20, right: 20),
       child: Container(
         height: 65,
         decoration: const BoxDecoration(
@@ -44,7 +41,7 @@ class SettingHeader extends StatelessWidget {
             button['flag']
                 ? ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(3),
+                      padding: const EdgeInsets.all(3),
                       backgroundColor: button['buttoncolor'],
                       // elevation: 3,
                       shape: RoundedRectangleBorder(
@@ -67,13 +64,13 @@ class SettingHeader extends StatelessWidget {
                       children: [
                         button['icon'],
                         Text(button['text'],
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 11,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold))
                       ],
                     ))
-                : SizedBox(),
+                : const SizedBox(),
             const Padding(padding: EdgeInsets.only(right: 30))
           ],
         ),

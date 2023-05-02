@@ -125,7 +125,6 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                           ...SearchController().usersByWholeName,
                           ...SearchController().usersByWholeNameCaps,
                         ];
-                        print("searchText is ${SearchController().users}");
 
                         searchResultUsers = [...SearchController().users];
                         searchResultEvents = [...SearchController().events];

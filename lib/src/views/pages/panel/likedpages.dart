@@ -7,7 +7,6 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/pages/widget/pagecell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
 class LikedPages extends StatefulWidget {
   LikedPages({Key? key, required this.routerChange})
@@ -15,6 +14,7 @@ class LikedPages extends StatefulWidget {
         super(key: key);
   late PostController con;
   Function routerChange;
+  @override
   State createState() => LikedPagesState();
 }
 
@@ -39,7 +39,6 @@ class LikedPagesState extends mvc.StateMVC<LikedPages> {
     con.getPage('liked', UserManager.userInfo['uid']).then((value) => {
           likedPages = value,
           likedPages.where((event) => event['data']['eventPost'] == true),
-          print(likedPages),
           setState(() {}),
         });
   }

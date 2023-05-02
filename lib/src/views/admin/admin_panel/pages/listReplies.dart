@@ -6,7 +6,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 // ignore: must_be_immutable
 class AdminListReplies extends StatefulWidget {
-  AdminListReplies({super.key});
+  const AdminListReplies({super.key});
 
   @override
   State createState() => AdminListRepliesState();
@@ -102,146 +102,137 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
     );
   }
 
-  @override
   Widget generalWidget() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.forum),
-            pagename: 'Forums › Replies',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.white,
-              'icon': const Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
-              'text': 'Search',
-              'valueColor': Colors.black,
-              'callback': () {
-                addroute = 'addNew';
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.forum),
+          pagename: 'Forums › Replies',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.white,
+            'icon': const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            'text': 'Search',
+            'valueColor': Colors.black,
+            'callback': () {
+              addroute = 'addNew';
+              setState(() {});
+            },
+            'size': const Size(180, 50),
+          },
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            titleAndsubtitleInput('hhh', 40, 1, 'Search by Reply Text'),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(3),
+                  backgroundColor: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3.0)),
+                  maximumSize: const Size(100, 50),
+                  minimumSize: const Size(100, 50)),
+              onPressed: () {
                 setState(() {});
               },
-              'size': Size(180, 50),
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              titleAndsubtitleInput('hhh', 40, 1, 'Search by Reply Text'),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(3),
-                    backgroundColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    maximumSize: Size(100, 50),
-                    minimumSize: Size(100, 50)),
-                onPressed: () {
-                  setState(() {});
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.search,
-                      color: Colors.black,
-                    ),
-                    Text('Search',
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold))
-                  ],
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                  const Text('Search',
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold))
+                ],
               ),
-            ],
-          ),
-          Container(
-            width: SizeConfig(context).screenWidth > 800
-                ? SizeConfig(context).screenWidth * 0.85
-                : SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-            padding: const EdgeInsets.all(15),
-            child: PlutoGrid(
-              configuration: const PlutoGridConfiguration(
-                columnSize: PlutoGridColumnSizeConfig(),
-              ),
-              columns: columns,
-              rows: rows,
-              columnGroups: columnGroups,
-              onLoaded: (PlutoGridOnLoadedEvent event) {
-                stateManager = event.stateManager;
-                stateManager.setShowColumnFilter(true);
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                print(event);
-              },
             ),
+          ],
+        ),
+        Container(
+          width: SizeConfig(context).screenWidth > 800
+              ? SizeConfig(context).screenWidth * 0.85
+              : SizeConfig(context).screenWidth,
+          height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+          padding: const EdgeInsets.all(15),
+          child: PlutoGrid(
+            configuration: const PlutoGridConfiguration(
+              columnSize: PlutoGridColumnSizeConfig(),
+            ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {},
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget replieFindWidget() {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.forum),
-            pagename: 'Forums › Replires › Find',
-            button: {
-              'flag': true,
-              'buttoncolor': Colors.grey,
-              'icon': const Icon(Icons.arrow_back),
-              'text': 'Go Back',
-              'callback': () {
-                addroute = 'main';
-                setState(() {});
-              },
-              'size': Size(120, 50),
+    return Column(
+      children: [
+        AdminSettingHeader(
+          icon: const Icon(Icons.forum),
+          pagename: 'Forums › Replires › Find',
+          button: {
+            'flag': true,
+            'buttoncolor': Colors.grey,
+            'icon': const Icon(Icons.arrow_back),
+            'text': 'Go Back',
+            'callback': () {
+              addroute = 'main';
+              setState(() {});
             },
-          ),
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: SizeConfig(context).screenWidth > 800
-                      ? SizeConfig(context).screenWidth * 0.85
-                      : SizeConfig(context).screenWidth,
-                  height: SizeConfig(context).screenHeight -
-                      SizeConfig.navbarHeight,
-                  padding: const EdgeInsets.all(15),
-                  child: PlutoGrid(
-                    configuration: const PlutoGridConfiguration(
-                      columnSize: PlutoGridColumnSizeConfig(),
-                    ),
-                    columns: columns,
-                    rows: rows,
-                    columnGroups: columnGroups,
-                    onLoaded: (PlutoGridOnLoadedEvent event) {
-                      stateManager = event.stateManager;
-                      stateManager.setShowColumnFilter(true);
-                    },
-                    onChanged: (PlutoGridOnChangedEvent event) {
-                      print(event);
-                    },
-                  ),
+            'size': const Size(120, 50),
+          },
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: SizeConfig(context).screenWidth > 800
+                  ? SizeConfig(context).screenWidth * 0.85
+                  : SizeConfig(context).screenWidth,
+              height:
+                  SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
+              padding: const EdgeInsets.all(15),
+              child: PlutoGrid(
+                configuration: const PlutoGridConfiguration(
+                  columnSize: PlutoGridColumnSizeConfig(),
                 ),
-              ],
+                columns: columns,
+                rows: rows,
+                columnGroups: columnGroups,
+                onLoaded: (PlutoGridOnLoadedEvent event) {
+                  stateManager = event.stateManager;
+                  stateManager.setShowColumnFilter(true);
+                },
+                onChanged: (PlutoGridOnChangedEvent event) {
+                  print(event);
+                },
+              ),
             ),
-          )
-        ],
-      ),
+          ],
+        )
+      ],
     );
   }
 
@@ -270,7 +261,7 @@ class AdminListRepliesState extends mvc.StateMVC<AdminListReplies> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 300,
                     height: height,
                     child: TextField(

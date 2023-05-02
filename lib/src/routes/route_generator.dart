@@ -14,7 +14,6 @@ import '../managers/user_manager.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments;
     var url = settings.name.toString();
     if (url.contains("auth?")) {
       //fetch params;
@@ -83,7 +82,7 @@ class RouteGenerator {
         if (UserManager.userInfo['admin'] == 'admin') {
           Helper.showToast("ok you are admin");
           return MaterialPageRoute(
-              builder: (context) => AdminScreen(), settings: settings);
+              builder: (context) => const AdminScreen(), settings: settings);
         } else {
           Helper.showToast('you don\'t have permission to access this page');
           return MaterialPageRoute(

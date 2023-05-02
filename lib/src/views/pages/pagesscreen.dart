@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/views/box/searchbox.dart';
+
 import 'package:shnatter/src/views/chat/chatScreen.dart';
 import 'package:shnatter/src/widget/createPageWidget.dart';
 
 import '../../controllers/PostController.dart';
 import '../../utils/size_config.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 class PagesScreen extends StatefulWidget {
   PagesScreen({Key? key, required this.routerChange})
@@ -26,7 +24,6 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
   final TextEditingController searchController = TextEditingController();
   late FocusNode searchFocusNode;
   bool showMenu = false;
-  late AnimationController _drawerSlideController;
   //route variable
   String pageSubRoute = '';
 

@@ -107,7 +107,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                   child: Padding(
                     padding:
                         const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                    child: Container(color: Color.fromARGB(41, 0, 0, 0)),
+                    child: Container(color: const Color.fromARGB(41, 0, 0, 0)),
                   )),
             AnimatedBuilder(
                 animation: _drawerSlideController,
@@ -139,7 +139,7 @@ class AdminScreenState extends mvc.StateMVC<AdminScreen>
                                           onClick: (value) {
                                             adminAllRouter = value;
                                             clickMenu();
-                                            print(value);
+
                                             setState(() {});
                                           },
                                         ),

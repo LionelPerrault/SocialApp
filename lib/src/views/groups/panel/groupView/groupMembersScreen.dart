@@ -286,35 +286,40 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
-              Container(
-                width: 160,
-                margin: const EdgeInsets.only(top: 50),
-                padding: const EdgeInsets.only(top: 50),
-                decoration: BoxDecoration(
-                  color: Colors.grey[350],
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Column(
-                  children: [
-                    const Padding(padding: EdgeInsets.only(top: 10)),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 150,
-                      child: RichText(
-                        text: TextSpan(children: <TextSpan>[
-                          TextSpan(
-                              text: header,
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 18),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  groupTap();
-                                }),
-                        ]),
+              GestureDetector(
+                onTap: () {
+                  groupTap();
+                },
+                child: Container(
+                  width: 160,
+                  margin: const EdgeInsets.only(top: 50),
+                  padding: const EdgeInsets.only(top: 50),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[350],
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Column(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(top: 10)),
+                      Container(
+                        alignment: Alignment.center,
+                        width: 150,
+                        child: RichText(
+                          text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                                text: header,
+                                style: const TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    groupTap();
+                                  }),
+                          ]),
+                        ),
                       ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 10))
-                  ],
+                      const Padding(padding: EdgeInsets.only(top: 10))
+                    ],
+                  ),
                 ),
               ),
               Container(

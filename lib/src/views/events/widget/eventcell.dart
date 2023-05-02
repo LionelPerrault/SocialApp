@@ -12,8 +12,6 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
-import '../../../utils/size_config.dart';
-
 // ignore: must_be_immutable
 class EventCell extends StatefulWidget {
   EventCell({
@@ -37,21 +35,18 @@ class EventCellState extends mvc.StateMVC<EventCell> {
   bool payLoading = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     add(widget.con);
     con = controller as PostController;
   }
 
   eventInterestedFunc() async {
-    print(widget.eventData['data']['eventAdmin'][0]['uid']);
     var eventAdminInfo = await ProfileController()
         .getUserInfo(widget.eventData['data']['eventAdmin'][0]['uid']);
     if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         widget.eventData['data']['eventAdmin'][0]['uid'] ==
             UserManager.userInfo['uid']) {
-      print(widget.eventData['data']['eventAdmin'][0]['uid']);
       loading = true;
       setState(() {});
       await con.interestedEvent(widget.eventData['id']).then((value) {
@@ -119,8 +114,8 @@ class EventCellState extends mvc.StateMVC<EventCell> {
             children: [
               Container(
                 width: 260,
-                margin: EdgeInsets.only(top: 60),
-                padding: EdgeInsets.only(top: 70),
+                margin: const EdgeInsets.only(top: 60),
+                padding: const EdgeInsets.only(top: 70),
                 decoration: BoxDecoration(
                   color: Colors.grey[350],
                   borderRadius: BorderRadius.circular(5),
@@ -164,10 +159,10 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                           eventInterestedFunc();
                         },
                         child: loading
-                            ? Container(
+                            ? const SizedBox(
                                 width: 10,
                                 height: 10,
-                                child: const CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   color: Colors.grey,
                                 ),
                               )
@@ -176,17 +171,17 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   !widget.eventData['interested']
-                                      ? Icon(
+                                      ? const Icon(
                                           Icons.star,
                                           color: Colors.black,
                                           size: 18.0,
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           Icons.check,
                                           color: Colors.black,
                                           size: 18.0,
                                         ),
-                                  Text('Interested',
+                                  const Text('Interested',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 11,

@@ -113,7 +113,7 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
         widget.button['flag']
             ? ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(3),
+                  padding: const EdgeInsets.all(3),
                   backgroundColor: widget.button['buttoncolor'],
                   // elevation: 3,
                   shape: RoundedRectangleBorder(
@@ -136,7 +136,7 @@ class AdminSettingHeaderState extends mvc.StateMVC<AdminSettingHeader> {
                             fontWeight: FontWeight.bold))
                   ],
                 ))
-            : SizedBox(),
+            : const SizedBox(),
         const Padding(padding: EdgeInsets.only(right: 30))
       ],
     );

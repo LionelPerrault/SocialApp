@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 
 class AlertYesNoWidget extends StatefulWidget {
-  late PostController Postcon;
+  late PostController postCon;
   AlertYesNoWidget({
     Key? key,
     required this.yesFunc,
@@ -12,7 +11,7 @@ class AlertYesNoWidget extends StatefulWidget {
     required this.header,
     required this.text,
     required this.progress,
-  })  : Postcon = PostController(),
+  })  : postCon = PostController(),
         super(key: key);
   Function yesFunc;
   Function noFunc;

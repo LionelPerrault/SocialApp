@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
 
@@ -117,13 +113,13 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
           padding: const EdgeInsets.only(top: 30),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
               backgroundColor: const Color.fromARGB(255, 33, 37, 41),
               // elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
-              minimumSize: Size(200, 40),
-              maximumSize: Size(200, 40),
+              minimumSize: const Size(200, 40),
+              maximumSize: const Size(200, 40),
             ),
             onPressed: () {
               (showDialog(
@@ -166,7 +162,7 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
                             fontSize: 11,
                             color: Colors.white,
                             fontWeight: FontWeight.bold))
-                    : SizedBox()
+                    : const SizedBox()
               ],
             ),
           ),

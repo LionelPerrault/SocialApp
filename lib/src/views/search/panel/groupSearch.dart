@@ -7,10 +7,7 @@ import 'package:shnatter/src/controllers/SearchController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-import 'package:shnatter/src/views/events/widget/eventcell.dart';
 import 'package:shnatter/src/views/search/widget/groupCell.dart';
-
-import '../../../controllers/SearchController.dart';
 
 class GroupSearch extends StatefulWidget {
   GroupSearch(
@@ -67,7 +64,7 @@ class GroupSearchState extends mvc.StateMVC<GroupSearch> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
-                child: Container(
+                child: SizedBox(
                   width: SizeConfig(context).screenWidth,
                   height: SizeConfig(context).screenHeight -
                       SizeConfig.navbarHeight -

@@ -39,6 +39,9 @@ class JoinedGroupsState extends mvc.StateMVC<JoinedGroups> {
     con.getGroup('joined', UserManager.userInfo['uid']).then((value) => {
           returnValue = value,
           joinedGroups = value,
+          setState(
+            () {},
+          )
         });
   }
 

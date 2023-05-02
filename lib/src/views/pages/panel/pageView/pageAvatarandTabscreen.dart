@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -6,11 +5,9 @@ import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
@@ -56,18 +53,15 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
     add(widget.con);
     con = controller as PostController;
     var pageInfo = con.page;
-    print(con.page['pageAdminInfo']);
-    print('this is pageInfo');
     avatar = con.page['pagePicture'];
     cover = con.page['pageCover'];
     _gotoHome();
   }
 
   pageLikeFunc() async {
-    print(con.page['pageAdmin'][0]['uid']);
     var pageAdminInfo =
         await ProfileController().getUserInfo(con.page['pageAdmin'][0]['uid']);
-    print(pageAdminInfo);
+
     if (pageAdminInfo!['paywall']['likeMyPage'] == null ||
         pageAdminInfo['paywall']['likeMyPage'] == '0' ||
         con.page['pageAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
@@ -242,7 +236,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
           ),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
               backgroundColor: Colors.grey[300],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13)),
@@ -312,7 +306,8 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
                                         Icon(
                                           e['icon'],
                                           size: 15,
-                                          color: Color.fromRGBO(76, 76, 76, 1),
+                                          color: const Color.fromRGBO(
+                                              76, 76, 76, 1),
                                         ),
                                         const Padding(
                                             padding: EdgeInsets.only(left: 5)),
@@ -344,10 +339,10 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
   }
 
   Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
+    final imagePicker = ImagePicker();
     XFile? pickedFile;
     if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
@@ -356,7 +351,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
       // var permissionStatus = await Permission.photos.status;
 
       //if (permissionStatus.isGranted) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
       //} else {
@@ -367,31 +362,31 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
   }
 
   uploadFile(XFile? pickedFile, type) async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
-    Reference _reference;
+    final firebaseStorage = FirebaseStorage.instance;
+    UploadTask uploadTask;
+    Reference reference;
     try {
       if (kIsWeb) {
         //print("read bytes");
         Uint8List bytes = await pickedFile!.readAsBytes();
         //print(bytes);
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putData(
+        uploadTask = reference.putData(
           bytes,
           SettableMetadata(contentType: 'image/jpeg'),
         );
       } else {
         var file = File(pickedFile!.path);
         //write a code for android or ios
-        _reference = await _firebaseStorage
+        reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
-        uploadTask = _reference.putFile(file);
+        uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
-        var downloadUrl = await _reference.getDownloadURL();
+        var downloadUrl = await reference.getDownloadURL();
         if (type == 'avatar') {
           con.updatePageInfo({
             'pageUserName': con.page['pageUserName'],
@@ -402,9 +397,7 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
             'pageUserName': con.page['pageUserName'],
             'pageCover': downloadUrl
           });
-          print(downloadUrl);
         }
-        print(type);
       });
       uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
         switch (taskSnapshot.state) {
@@ -413,20 +406,16 @@ class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
               avatarProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $avatarProgress% complete.");
             } else {
               coverProgress = 100.0 *
                   (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
               setState(() {});
-              print("Upload is $coverProgress% complete.");
             }
 
             break;
           case TaskState.paused:
-            print("Upload is paused.");
             break;
           case TaskState.canceled:
-            print("Upload was canceled");
             break;
           case TaskState.error:
             // Handle unsuccessful uploads
