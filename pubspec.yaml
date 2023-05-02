@@ -85,8 +85,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   just_audio: ^0.9.32
 
-  just_audio_libwinmedia: ^0.0.4+1
-  file_picker: ^4.6.1
+  file_picker: ^5.2.11
   flutter_sound: ^9.2.13
   flutter_otp_text_field: ^1.1.1
   otp_text_field: ^1.1.3
