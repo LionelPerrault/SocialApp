@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
@@ -41,23 +43,86 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   var progress;
   var selectFlag = {};
   Map<String, dynamic> saveData = {};
-  var country = 'none';
-  var relation = "none";
-  var birthM = "none";
-  var birthD = "none";
-  var birthY = "none";
-  var interests = "none";
+  List country = [
+    {
+      'title': 'Select Country',
+      'value': 'none',
+    },
+    {
+      'title': 'United State',
+      'value': 'us',
+    },
+    {
+      'title': 'Switzerland',
+      'value': 'sw',
+    },
+    {
+      'title': 'Canada',
+      'value': 'ca',
+    },
+  ];
+  List userRelationship = [
+    {
+      'value': 'none',
+      'title': 'Select Relationship',
+    },
+    {
+      'value': 'single',
+      'title': 'Single',
+    },
+    {
+      'value': 'inarelationship',
+      'title': 'In a relationship',
+    },
+    {
+      'value': 'Married',
+      'title': 'Married',
+    },
+    {
+      'value': 'complicated',
+      'title': 'It\'s a complicated',
+    },
+    {
+      'value': 'separated',
+      'title': 'Seperated',
+    },
+    {
+      'value': 'divorced',
+      'title': 'Divorced',
+    },
+    {
+      'value': 'widowed',
+      'title': 'Widowed',
+    },
+  ];
+
   var interestsCheck = [];
   var parent;
-  List years = [];
-  List days = [];
-  List months = [];
+
+  Map day = {};
+  List<dynamic> year = [
+    {'value': 'none', 'title': 'Year'}
+  ];
+  List<dynamic> month = [
+    {'value': 'none', 'title': 'Month'},
+    {'value': '1', 'title': 'Jan'},
+    {'value': '2', 'title': 'Feb'},
+    {'value': '3', 'title': 'Mar'},
+    {'value': '4', 'title': 'Apr'},
+    {'value': '5', 'title': 'May'},
+    {'value': '6', 'title': 'Jun'},
+    {'value': '7', 'title': 'Jul'},
+    {'value': '8', 'title': 'Aug'},
+    {'value': '9', 'title': 'Sep'},
+    {'value': '10', 'title': 'Oct'},
+    {'value': '11', 'title': 'Nov'},
+    {'value': '12', 'title': 'Dec'}
+  ];
   List category = [
     {'title': 'none'}
   ];
   List subCategory = [];
   var isShowProgressive = false;
-  var fullName = '';
   late AnimationController _drawerSlideController;
   var suggest = <String, bool>{
     'friends': true,
@@ -68,27 +133,36 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
   //
   @override
   void initState() {
-    fullName = UserManager.userInfo['firstName'] +
-        ' ' +
-        UserManager.userInfo['lastName'];
-    print('this is full name:$fullName');
     progress = 0;
     selectFlag['jew'] = false;
     selectFlag['policy1'] = false;
     selectFlag['policy2'] = false;
     selectFlag['policy3'] = false;
     selectFlag['avatar'] = '';
-    years.add('none');
-    for (int i = 1905; i < 2023; i++) {
-      years.add('$i');
-    }
-    days.add('none');
-    for (int i = 1; i < 32; i++) {
-      days.add('$i');
-    }
-    months.add('none');
     for (int i = 1; i < 13; i++) {
-      months.add('$i');
+      var d = [
+        {'value': 'none', 'title': 'Day'}
+      ];
+      for (int j = 1; j < 32; j++) {
+        if (i == 2 && j == 29) {
+          break;
+        } else if (i == 4 || i == 6 || i == 9 || i == 11) {
+          if (j == 31) {
+            break;
+          }
+        }
+        d.add({
+          'value': j.toString(),
+          'title': j.toString(),
+        });
+      }
+      day = {...day, i.toString(): d};
+    }
+    for (int i = 1910; i < 2022; i++) {
+      year.add({
+        'value': i.toString(),
+        'title': i.toString(),
+      });
     }
     add(widget.userCon);
     super.initState();
@@ -122,6 +196,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
               setState(() {})
             }
         });
+    Helper.userCollection
+        .doc(UserManager.userInfo['uid'])
+        .get()
+        .then((value) => {
+              saveData = value.data()!,
+            });
   }
 
   void onSearchBarFocus() {
@@ -172,6 +252,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> bDay = day[saveData['birthM'] ?? '1'];
     return Scaffold(
         key: _scaffoldKey,
         drawerEnableOpenDragGesture: false,
@@ -337,7 +418,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                       const Padding(
                                           padding: EdgeInsets.only(left: 10)),
                                       Text(
-                                        fullName,
+                                        UserManager.userInfo['fullName'],
                                         style: const TextStyle(
                                             color: Color.fromARGB(
                                                 255, 0, 123, 255),
@@ -566,81 +647,22 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Country',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 750,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              250,
-                                                              250,
-                                                              250),
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20),
-                                                  child: DropdownButton(
-                                                    value: country,
-                                                    items: const [
-                                                      //add items in the dropdown
-                                                      DropdownMenuItem(
-                                                        value: "none",
-                                                        child: Text(
-                                                            "Select Country"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                          value: "us",
-                                                          child: Text(
-                                                              "United State")),
-                                                      DropdownMenuItem(
-                                                        value: "sw",
-                                                        child:
-                                                            Text("Switzerland"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "ca",
-                                                        child: Text("Canada"),
-                                                      ),
-                                                    ],
-                                                    onChanged: (String? value) {
-                                                      //get value when changed
-                                                      saveData['country'] =
-                                                          value;
-                                                      country = value!;
-                                                      setState(() {});
-                                                    },
-                                                    style: const TextStyle(
-                                                        //te
-                                                        color: Colors
-                                                            .black, //Font color
-                                                        fontSize:
-                                                            12 //font size on dropdown button
-                                                        ),
-
-                                                    dropdownColor: Colors.white,
-                                                    underline:
-                                                        Container(), //remove underline
-                                                    isExpanded: true,
-                                                    isDense: true,
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: Container(
+                                            width: 400,
+                                            child: customDropDownButton(
+                                              title: 'Country',
+                                              width: 400,
+                                              item: country,
+                                              value: saveData['country'] ??
+                                                  country[0]['value'],
+                                              onChange: (value) {
+                                                saveData['country'] = value!;
+                                                setState(() {});
+                                              },
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     const Padding(
@@ -649,62 +671,25 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Current City',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 360,
-                                                  child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['current'] = value;
-                                                    setState(() {});
-                                                  }),
-                                                )
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: customInput(
+                                              title: 'Current City',
+                                              onChange: (value) async {
+                                                saveData['current'] = value;
+                                                setState(() {});
+                                              }),
+                                        ),
                                         const Padding(
                                             padding: EdgeInsets.only(left: 30)),
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Hometown',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 360,
-                                                  child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['hometown'] =
-                                                        value;
-                                                    setState(() {});
-                                                  }),
-                                                )
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: customInput(
+                                              title: 'Hometown',
+                                              onChange: (value) async {
+                                                saveData['hometown'] = value;
+                                                setState(() {});
+                                              }),
+                                        ),
                                       ],
                                     ),
                                     const Padding(
@@ -713,97 +698,33 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                    'Relationship Status',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 360,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              250,
-                                                              250,
-                                                              250),
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20),
-                                                  child: DropdownButton(
-                                                    value: relation,
-                                                    items: const [
-                                                      //add items in the dropdown
-                                                      DropdownMenuItem(
-                                                        value: "none",
-                                                        child: Text(
-                                                            "Select Relationship"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                          value: "single",
-                                                          child:
-                                                              Text("Single")),
-                                                      DropdownMenuItem(
-                                                        value:
-                                                            "inarelationship",
-                                                        child: Text(
-                                                            "In a relationship"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "complicated",
-                                                        child: Text(
-                                                            "It\'s a complicated"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "separated",
-                                                        child:
-                                                            Text("Separated"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "divorced",
-                                                        child: Text("Divorced"),
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        value: "widowed",
-                                                        child: Text("Widowed"),
-                                                      ),
-                                                    ],
-                                                    onChanged: (String? value) {
-                                                      //get value when changed
-                                                      saveData['relationship'] =
-                                                          value;
-                                                      relation = value!;
-                                                      setState(() {});
-                                                    },
-                                                    style: const TextStyle(
-                                                        //te
-                                                        color: Colors
-                                                            .black, //Font color
-                                                        fontSize:
-                                                            12 //font size on dropdown button
-                                                        ),
-
-                                                    dropdownColor: Colors.white,
-                                                    underline:
-                                                        Container(), //remove underline
-                                                    isExpanded: true,
-                                                    isDense: true,
-                                                  ),
+                                          flex: 2,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: 400,
+                                                child: customDropDownButton(
+                                                  title: 'Relationship Status',
+                                                  width: 400,
+                                                  item: userRelationship,
+                                                  value: saveData[
+                                                          'relationship'] ??
+                                                      userRelationship[0]
+                                                          ['value'],
+                                                  onChange: (value) {
+                                                    saveData['relationship'] =
+                                                        value!;
+                                                    setState(() {});
+                                                  },
                                                 ),
-                                              ],
-                                            )),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         Expanded(
                                             flex: 1,
                                             child: Column(
@@ -876,203 +797,59 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Birthday',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 230,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              250,
-                                                              250,
-                                                              250),
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20),
-                                                  child: DropdownButton(
-                                                    value: birthM,
-                                                    items: months
-                                                        .map((year) =>
-                                                            DropdownMenuItem(
-                                                              value: year,
-                                                              child: Text(
-                                                                  year == 'none'
-                                                                      ? "Month"
-                                                                      : year),
-                                                            ))
-                                                        .toList(),
-                                                    onChanged:
-                                                        // ignore: unnecessary_question_mark
-                                                        (dynamic? value) {
-                                                      //get value when changed
-                                                      saveData['birthM'] =
-                                                          value;
-                                                      birthM = value!;
-                                                      setState(() {});
-                                                    },
-                                                    style: const TextStyle(
-                                                        //te
-                                                        color: Colors
-                                                            .black, //Font color
-                                                        fontSize:
-                                                            12 //font size on dropdown button
-                                                        ),
-
-                                                    dropdownColor: Colors.white,
-                                                    underline:
-                                                        Container(), //remove underline
-                                                    isExpanded: true,
-                                                    isDense: true,
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: Container(
+                                            width: 400,
+                                            child: customDropDownButton(
+                                              width: 400,
+                                              title: 'Birthday',
+                                              item: month,
+                                              value: saveData['birthM'] ??
+                                                  month[0]['value'],
+                                              onChange: (value) {
+                                                saveData['birthM'] =
+                                                    value.toString();
+                                                setState(() {});
+                                              },
+                                            ),
+                                          ),
+                                        ),
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 230,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              250,
-                                                              250,
-                                                              250),
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20),
-                                                  child: DropdownButton(
-                                                    value: birthD,
-                                                    items: days
-                                                        .map((year) =>
-                                                            DropdownMenuItem(
-                                                              value: year,
-                                                              child: Text(
-                                                                  year == 'none'
-                                                                      ? "Day"
-                                                                      : year),
-                                                            ))
-                                                        .toList(),
-                                                    onChanged:
-                                                        (dynamic? value) {
-                                                      //get value when changed
-                                                      saveData['birthD'] =
-                                                          value;
-                                                      birthD = value!;
-                                                      setState(() {});
-                                                    },
-                                                    style: const TextStyle(
-                                                        //te
-                                                        color: Colors
-                                                            .black, //Font color
-                                                        fontSize:
-                                                            12 //font size on dropdown button
-                                                        ),
-
-                                                    dropdownColor: Colors.white,
-                                                    underline:
-                                                        Container(), //remove underline
-                                                    isExpanded: true,
-                                                    isDense: true,
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: Container(
+                                            width: 400,
+                                            child: customDropDownButton(
+                                              title: '',
+                                              width: 400,
+                                              item: bDay,
+                                              value: saveData['birthD'] ??
+                                                  bDay[0]['value'],
+                                              onChange: (value) {
+                                                saveData['birthD'] =
+                                                    value.toString();
+                                                setState(() {});
+                                              },
+                                            ),
+                                          ),
+                                        ),
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 230,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              250,
-                                                              250,
-                                                              250),
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20),
-                                                  child: DropdownButton(
-                                                    value: birthY,
-                                                    items: years
-                                                        .map((year) =>
-                                                            DropdownMenuItem(
-                                                              value: year,
-                                                              child: Text(
-                                                                  year == 'none'
-                                                                      ? "Year"
-                                                                      : year),
-                                                            ))
-                                                        .toList(),
-                                                    onChanged:
-                                                        (dynamic? value) {
-                                                      saveData['birthY'] =
-                                                          value;
-                                                      birthY = value!;
-                                                      setState(() {});
-                                                    },
-                                                    style: const TextStyle(
-                                                        //te
-                                                        color: Colors
-                                                            .black, //Font color
-                                                        fontSize:
-                                                            12 //font size on dropdown button
-                                                        ),
-
-                                                    dropdownColor: Colors.white,
-                                                    underline:
-                                                        Container(), //remove underline
-                                                    isExpanded: true,
-                                                    isDense: true,
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: Container(
+                                            width: 400,
+                                            child: customDropDownButton(
+                                              width: 400,
+                                              title: '',
+                                              item: year,
+                                              value: saveData['birthY'] ??
+                                                  year[0]['value'],
+                                              onChange: (value) {
+                                                saveData['birthY'] =
+                                                    value.toString();
+                                                setState(() {});
+                                              },
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     const Padding(
@@ -1081,61 +858,15 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('About Me',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 750,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              250,
-                                                              250,
-                                                              250),
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  child: TextFormField(
-                                                    minLines: 1,
-                                                    maxLines: 5,
-                                                    onChanged: (value) async {
-                                                      saveData['about'] = value;
-                                                      setState(() {});
-                                                    },
-                                                    keyboardType:
-                                                        TextInputType.multiline,
-                                                    style: const TextStyle(
-                                                        fontSize: 12),
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border: InputBorder.none,
-                                                      focusedBorder:
-                                                          InputBorder.none,
-                                                      enabledBorder:
-                                                          InputBorder.none,
-                                                      errorBorder:
-                                                          InputBorder.none,
-                                                      disabledBorder:
-                                                          InputBorder.none,
-                                                      hintText: '',
-                                                      hintStyle: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: Container(
+                                            width: 700,
+                                            child: titleAndsubtitleInput(
+                                                'About Me', 100, 4, (value) {
+                                              saveData['about'] = value;
+                                            }, saveData['about'] ?? ''),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     const Padding(
@@ -1163,33 +894,14 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Work Title',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 750,
-                                                  child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['workTitle'] =
-                                                        value;
-                                                    setState(() {});
-                                                  }),
-                                                )
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: customInput(
+                                              title: 'Work Title',
+                                              onChange: (value) async {
+                                                saveData['workTitle'] = value;
+                                                setState(() {});
+                                              }),
+                                        ),
                                       ],
                                     ),
                                     const Padding(
@@ -1198,63 +910,25 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Work Place',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 360,
-                                                  child: input(
-                                                      validator:
-                                                          (value) async {},
-                                                      onchange: (value) async {
-                                                        saveData['workPlace'] =
-                                                            value;
-                                                        setState(() {});
-                                                      }),
-                                                )
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: customInput(
+                                              title: 'Work Place',
+                                              onChange: (value) async {
+                                                saveData['workPlace'] = value;
+                                                setState(() {});
+                                              }),
+                                        ),
                                         const Padding(
                                             padding: EdgeInsets.only(left: 30)),
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Work Website',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 360,
-                                                  child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['workWebsite'] =
-                                                        value;
-                                                    setState(() {});
-                                                  }),
-                                                )
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: customInput(
+                                              title: 'Work Website',
+                                              onChange: (value) async {
+                                                saveData['workWebsite'] = value;
+                                                setState(() {});
+                                              }),
+                                        ),
                                       ],
                                     ),
                                     const Padding(
@@ -1282,32 +956,14 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Major',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 750,
-                                                  child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['major'] = value;
-                                                    setState(() {});
-                                                  }),
-                                                )
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: customInput(
+                                              title: 'Major',
+                                              onChange: (value) async {
+                                                saveData['major'] = value;
+                                                setState(() {});
+                                              }),
+                                        ),
                                       ],
                                     ),
                                     const Padding(
@@ -1316,61 +972,25 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('School',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 360,
-                                                  child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['school'] = value;
-                                                    setState(() {});
-                                                  }),
-                                                )
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: customInput(
+                                              title: 'School',
+                                              onChange: (value) async {
+                                                saveData['school'] = value;
+                                                setState(() {});
+                                              }),
+                                        ),
                                         const Padding(
                                             padding: EdgeInsets.only(left: 30)),
                                         Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text('Class',
-                                                    style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 82, 95, 127),
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Container(
-                                                  width: 360,
-                                                  child: input(
-                                                      validator: (value) async {
-                                                    print(value);
-                                                  }, onchange: (value) async {
-                                                    saveData['class'] = value;
-                                                    setState(() {});
-                                                  }),
-                                                )
-                                              ],
-                                            )),
+                                          flex: 1,
+                                          child: customInput(
+                                              title: 'Class',
+                                              onChange: (value) async {
+                                                saveData['class'] = value;
+                                                setState(() {});
+                                              }),
+                                        ),
                                       ],
                                     ),
                                     const Padding(
@@ -1619,6 +1239,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               maximumSize: const Size(110, 40),
                                             ),
                                             onPressed: () async {
+                                              print(saveData);
                                               isShowProgressive = true;
                                               setState(() {});
                                               await userCon.saveProfile({
@@ -1710,17 +1331,137 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
         ));
   }
 
-  Widget input({label, onchange, obscureText = false, validator}) {
+  Widget customInput({title, onChange, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Color.fromRGBO(82, 95, 127, 1),
+              fontSize: 13,
+              fontWeight: FontWeight.w600),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 2)),
+        Container(
+          height: 40,
+          child: TextField(
+            controller: controller,
+            onChanged: onChange,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(top: 10, left: 10),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 1.0),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget customDropDownButton(
+      {title, double width = 0, item = const [], value, onChange}) {
+    List items = item;
     return Container(
-      height: 28,
-      child: StartedInput(
-        validator: (val) async {
-          validator(val);
-        },
-        obscureText: obscureText,
-        onChange: (val) async {
-          onchange(val);
-        },
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                color: Color.fromRGBO(82, 95, 127, 1),
+                fontSize: 13,
+                fontWeight: FontWeight.w600),
+          ),
+          const Padding(padding: EdgeInsets.only(top: 2)),
+          Container(
+            height: 40,
+            width: width,
+            child: DropdownButtonFormField(
+              value: value,
+              items: items
+                  .map((e) => DropdownMenuItem(
+                      value: e['value'], child: Text(e['title'])))
+                  .toList(),
+              onChanged: onChange,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.only(top: 10, left: 10),
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue, width: 1),
+                ),
+              ),
+              icon: const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Icon(Icons.arrow_drop_down)),
+              iconEnabledColor: Colors.grey, //Icon color
+
+              style: const TextStyle(
+                color: Colors.grey, //Font color
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+              dropdownColor: Colors.white,
+              isExpanded: true,
+              isDense: true,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
+    TextEditingController inputController = TextEditingController();
+    inputController.text = text;
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 85, 95, 127)),
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  width: 400,
+                  height: height,
+                  child: Column(
+                    children: [
+                      TextField(
+                        maxLines: line,
+                        minLines: line,
+                        controller: inputController,
+                        onChanged: (value) {
+                          onChange(value);
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 10, left: 10),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 1),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

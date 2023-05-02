@@ -386,7 +386,6 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                 }, userInfo['about'] ?? ''),
                               ),
                             ),
-                            const Padding(padding: EdgeInsets.only(right: 20))
                           ],
                         ),
                         Row(
