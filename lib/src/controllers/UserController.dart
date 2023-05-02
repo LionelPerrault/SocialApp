@@ -1110,6 +1110,27 @@ class UserController extends ControllerMVC {
   }
 
   deleteUserAccount(context) async {
+    // await RelysiaManager.authUser('razvan.petre@gmail.com', 'R3siks29').then(
+    //   (res) async => {
+    //     if (res["data"] != null)
+    //       {
+    //         if (res['statusCode'] == 200)
+    //           {
+    //             token = res['data']['token'],
+    //             await RelysiaManager.deleteUser(token),
+    //           }
+    //         else
+    //           {
+    //             Helper.showToast(res['data']['msg']),
+    //           }
+    //       }
+    //     else
+    //       {
+    //         Helper.showToast(res['data']),
+    //       }
+    //   },
+    // );
+    // return;
     isProfileChange = true;
     setState(() {});
     try {

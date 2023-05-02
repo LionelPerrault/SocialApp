@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -123,10 +124,28 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                                             ['eventPicture']))),
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 5),
-                          child: Text(
-                            con.unInterestedEvents[index]['data']['eventName'],
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 11),
+                          child: RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 11),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: con.unInterestedEvents[index]['data']
+                                        ['eventName'],
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
+                                        color: Colors.black),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        widget.routerChange({
+                                          'router': RouteNames.events,
+                                          'subRouter': con
+                                              .unInterestedEvents[index]['id']
+                                        });
+                                      })
+                              ],
+                            ),
                           ),
                         ),
                         subtitle: Padding(

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -119,12 +120,31 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                                         : con.unJoindGroups[index]['data']
                                             ['groupPicture']))),
                         title: Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              con.unJoindGroups[index]['data']['groupName'],
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: RichText(
+                            text: TextSpan(
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 11),
-                            )),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: con.unJoindGroups[index]['data']
+                                        ['groupName'],
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
+                                        color: Colors.black),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        widget.routerChange({
+                                          'router': RouteNames.groups,
+                                          'subRouter': con.unJoindGroups[index]
+                                              ['id']
+                                        });
+                                      })
+                              ],
+                            ),
+                          ),
+                        ),
                         subtitle: Padding(
                             padding: const EdgeInsets.only(bottom: 5),
                             child: Text(

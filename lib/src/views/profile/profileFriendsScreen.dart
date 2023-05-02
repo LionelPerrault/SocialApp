@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
@@ -362,14 +363,22 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
               height: 120,
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        friendAvatar != '' ? friendAvatar : Helper.avatar),
-                    fit: BoxFit.cover,
-                  ),
-                  color: const Color.fromARGB(255, 192, 124, 124),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(60),
                   border: Border.all(color: Colors.grey)),
+              child: friendAvatar != ''
+                  ? CircleAvatar(
+                      radius: 60,
+                      backgroundImage: NetworkImage(
+                        friendAvatar,
+                      ))
+                  : CircleAvatar(
+                      radius: 60,
+                      child: SvgPicture.network(
+                        Helper.avatar,
+                        width: 120,
+                      ),
+                    ),
             ),
             onTap: () {
               ProfileController().updateProfile(friendUserName);
