@@ -1262,7 +1262,19 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   Future<XFile> chooseAudio() async {
     //final _audioPicker = ImagePicker();
     XFile pickedFile;
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'wav',
+        'aiff',
+        'alac',
+        'flac',
+        'mp3',
+        'aac',
+        'wma',
+        'ogg'
+      ],
+    );
     if (result != null) {
       if (foundation.kIsWeb) {
         foundation.Uint8List? uploadfile = result.files.single.bytes;
