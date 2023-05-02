@@ -1273,10 +1273,18 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           pickedFile = XFile('');
         }
       } else {
-        if (result.files.single.path != null) {
-          pickedFile = XFile(result.files.single.path.toString());
+        if (Platform.isIOS) {
+          if (result.files.single.bytes != null) {
+            pickedFile = XFile.fromData(result.files.single.bytes!);
+          } else {
+            pickedFile = XFile('');
+          }
         } else {
-          pickedFile = XFile('');
+          if (result.files.single.path != null) {
+            pickedFile = XFile(result.files.single.path!);
+          } else {
+            pickedFile = XFile('');
+          }
         }
       }
     } else {
