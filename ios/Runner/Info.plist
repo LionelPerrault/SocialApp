@@ -49,8 +49,11 @@
 	<string>This app uses your microphone to allow you to record audio messages. We will never sell or share your recordings without your permission.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app uses your photos to allow you to share them with friends and family. We will never sell or share your photos without your permission.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Allow access to files to upload them</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
 	<key>NSAppTransportSecurity</key>
 	<dict>
     	<key>NSAllowsArbitraryLoads</key>
