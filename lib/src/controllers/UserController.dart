@@ -709,7 +709,7 @@ class UserController extends ControllerMVC {
         handleCodeInApp: false,
         iOSBundleId: DefaultFirebaseOptions.currentPlatform.iosBundleId);
     User? currentFirebaseUser = FirebaseAuth.instance.currentUser;
-    await currentFirebaseUser!.sendEmailVerification(acs);
+    await currentFirebaseUser!.sendEmailVerification();
     return uuid;
   }
 
@@ -718,7 +718,7 @@ class UserController extends ControllerMVC {
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${UserManager.userInfo['uid']}",
         handleCodeInApp: false);
-    await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
     return 'ok';
   }
 
