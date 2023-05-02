@@ -37,6 +37,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app needs access to your music library to post audio files.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app uses your camera to allow you to take photos. We will never sell or share your photos without your permission.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
