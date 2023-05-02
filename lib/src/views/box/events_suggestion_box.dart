@@ -6,6 +6,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
 import 'package:shnatter/src/utils/size_config.dart';
@@ -59,9 +60,16 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                     padding: EdgeInsets.only(top: 45.0),
                   ),
                   Row(children: [
-                    const Text(
-                      'See All',
-                      style: TextStyle(fontSize: 11),
+                    GestureDetector(
+                      onTap: () {
+                        widget.routerChange({
+                          'router': RouteNames.events,
+                        });
+                      },
+                      child: const Text(
+                        'See All',
+                        style: TextStyle(fontSize: 11),
+                      ),
                     ),
                     SizedBox(
                       height: 20,

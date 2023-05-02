@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
@@ -20,8 +22,7 @@ class AllEvents extends StatefulWidget {
 }
 
 class AllEventsState extends mvc.StateMVC<AllEvents> {
-  bool check1 = false;
-  bool check2 = false;
+  bool loading = false;
   late PostController con;
   var userInfo = UserManager.userInfo;
   var realAllEvents = [];
@@ -35,8 +36,11 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   }
 
   void getEventNow() {
+    loading = true;
+    setState(() {});
     con.getEvent('all', UserManager.userInfo['uid']).then((value) => {
           realAllEvents = value,
+          loading = false,
           setState(() {}),
         });
   }
@@ -44,41 +48,51 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    if (loading) {
+      return Row(
+        children: [
+          Expanded(
+              child: Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(color: Colors.grey),
+          )),
+        ],
+      );
+    }
     if (screenWidth <= 600) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: realAllEvents
-            .map(
-              (event) => EventCell(
-                routerChange: widget.routerChange,
-                eventData: event,
-                buttonFun: () {
-                  // con.interestedEvent(event['id']).then((value) {
-                  getEventNow();
-                  // });
-                },
-              ),
-            )
-            .toList(),
-      );
-    }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Expanded(
-          child: GridView.count(
-            crossAxisCount: screenWidth > 900
-                ? 3
-                : screenWidth > 600
-                    ? 2
-                    : 1,
-            // childAspectRatio: 2 / 3,
-            padding: const EdgeInsets.all(4.0),
-            mainAxisSpacing: 4.0,
-            shrinkWrap: true,
-            crossAxisSpacing: 4.0,
-            children: realAllEvents
+        children: realAllEvents.isEmpty
+            ? [
+                Container(
+                  padding: const EdgeInsets.only(top: 40),
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.network(Helper.emptySVG, width: 90),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        width: 140,
+                        decoration: const BoxDecoration(
+                            color: Color.fromRGBO(240, 240, 240, 1),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: const Text(
+                          'No data to show',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(108, 117, 125, 1)),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ]
+            : realAllEvents
                 .map(
                   (event) => EventCell(
                     routerChange: widget.routerChange,
@@ -91,7 +105,64 @@ class AllEventsState extends mvc.StateMVC<AllEvents> {
                   ),
                 )
                 .toList(),
-          ),
+      );
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Expanded(
+          child: realAllEvents.isEmpty
+              ? Container(
+                  padding: const EdgeInsets.only(top: 40),
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.network(Helper.emptySVG, width: 90),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        width: 140,
+                        decoration: const BoxDecoration(
+                            color: Color.fromRGBO(240, 240, 240, 1),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: const Text(
+                          'No data to show',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(108, 117, 125, 1)),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : GridView.count(
+                  crossAxisCount: screenWidth > 900
+                      ? 3
+                      : screenWidth > 600
+                          ? 2
+                          : 1,
+                  // childAspectRatio: 2 / 3,
+                  padding: const EdgeInsets.all(4.0),
+                  mainAxisSpacing: 4.0,
+                  shrinkWrap: true,
+                  crossAxisSpacing: 4.0,
+                  children: realAllEvents
+                      .map(
+                        (event) => EventCell(
+                          routerChange: widget.routerChange,
+                          eventData: event,
+                          buttonFun: () {
+                            // con.interestedEvent(event['id']).then((value) {
+                            getEventNow();
+                            // });
+                          },
+                        ),
+                      )
+                      .toList(),
+                ),
         ),
       ],
     );

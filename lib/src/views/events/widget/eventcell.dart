@@ -109,6 +109,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
           alignment: Alignment.center,
           width: 288,
           height: 233,
+          margin: const EdgeInsets.only(top: 10),
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
