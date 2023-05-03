@@ -5,6 +5,8 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'ProfileController.dart';
+
 enum EmailType { emailVerify, googleVerify }
 
 class SearchController extends ControllerMVC {
@@ -243,22 +245,29 @@ class SearchController extends ControllerMVC {
       } else {
         postData = allPosts[i]['value'];
       }
-      var adminSnap =
-          await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
-      adminInfo = adminSnap.data();
+
+      if (UserManager.userInfo['uid'] == allPosts[i]['postAdmin']) {
+        adminInfo = UserManager.userInfo;
+      } else {
+        adminInfo =
+            await ProfileController().getUserInfo(allPosts[i]['postAdmin']);
+      }
+      // var adminSnap =
+      //     await Helper.userCollection.doc(allPosts[i]['postAdmin']).get();
+      //adminInfo = adminSnap.data();
       var eachPost = {
         'id': allPosts[i].id,
         'data': postData,
         'type': allPosts[i]['type'],
         'adminInfo': adminInfo,
         'time': allPosts[i]['postTime'],
-        'adminUid': adminSnap.id,
+        'adminUid': allPosts[i]['postAdmin'],
         'privacy': allPosts[i]['privacy'],
         'header': allPosts[i]['header'],
         'timeline': allPosts[i]['timeline'],
         'comment': allPosts[i]['comment'],
-        'eventId': allPosts[i]['eventId'],
-        'groupId': allPosts[i]['groupId'],
+        // 'eventId': allPosts[i]['eventId'],
+        // 'groupId': allPosts[i]['groupId'],
       };
       if (eachPost['adminUid'] == UserManager.userInfo['uid'] ||
           eachPost['privacy'] == 'Public') {
@@ -266,6 +275,7 @@ class SearchController extends ControllerMVC {
       }
     }
     posts = postsBox;
+    print(posts);
     setState(() {});
 
     return posts;
