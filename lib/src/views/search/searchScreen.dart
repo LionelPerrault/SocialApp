@@ -55,7 +55,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
     searchCon = controller as SearchController;
     // searchCon.getUsersByFirstName('');
     // searchCon.getUsersByLastName('');
-    // searchCon.getPosts();
+    //searchCon.getPosts();
     // searchCon.getEvents();
     // searchCon.getGroups();
     super.initState();
@@ -114,6 +114,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                       searchValue = value;
 
                       await SearchController().updateSearchText(value);
+
                       await SearchController().getEvents(searchValue);
                       await SearchController().getGroups(searchValue);
                       if (value != '') {

@@ -89,6 +89,9 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
     product = widget.data['data'];
     productAdmin = widget.data['adminInfo'];
     productId = widget.data['id'];
+    print("product is $product");
+    print("productAdmin is $productAdmin");
+    print("productId is $productId");
     postTime = con.timeAgo(product['productDate']);
     setState(() {});
   }

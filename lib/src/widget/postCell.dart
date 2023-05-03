@@ -414,7 +414,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Row(
                         children: [
-                          widget.postInfo['adminInfo']['avatar'] != ''
+                          widget.postInfo['adminInfo'] != null &&
+                                  widget.postInfo['adminInfo']
+                                      .containsKey('avatar') &&
+                                  widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
                                   widget.postInfo['adminInfo']['avatar'],
@@ -443,7 +446,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               children: <TextSpan>[
                                             TextSpan(
                                                 text:
-                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                    '${widget.postInfo['adminInfo']?['firstName'] ?? "Unknown"} ${widget.postInfo['adminInfo']?['lastName'] ?? "Unknown"}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
@@ -730,7 +733,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo']['avatar'] != ''
+                          widget.postInfo['adminInfo'] != null &&
+                                  widget.postInfo['adminInfo']
+                                      .containsKey('avatar') &&
+                                  widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
                                   widget.postInfo['adminInfo']['avatar'],
@@ -756,7 +762,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                           children: <TextSpan>[
                                             TextSpan(
                                                 text:
-                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                    '${widget.postInfo['adminInfo']?['firstName'] ?? "Unknown"} ${widget.postInfo['adminInfo']?['lastName'] ?? "Unknown"}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
@@ -1016,7 +1022,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo']!['avatar'] != ''
+                          widget.postInfo['adminInfo'] != null &&
+                                  widget.postInfo['adminInfo']
+                                      .containsKey('avatar') &&
+                                  widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
                                   widget.postInfo['adminInfo']['avatar'],
@@ -1045,7 +1054,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               children: <TextSpan>[
                                             TextSpan(
                                                 text:
-                                                    '${widget.postInfo['adminInfo']!['firstName']!} ${widget.postInfo['adminInfo']!['lastName']!} ',
+                                                    '${widget.postInfo['adminInfo']?['firstName'] ?? "Unknown"} ${widget.postInfo['adminInfo']?['lastName'] ?? "Unknown"}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
@@ -1309,7 +1318,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo']['avatar'] != ''
+                          widget.postInfo['adminInfo'] != null &&
+                                  widget.postInfo['adminInfo']
+                                      .containsKey('avatar') &&
+                                  widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
                                   widget.postInfo['adminInfo']['avatar'],
@@ -1338,7 +1350,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               children: <TextSpan>[
                                             TextSpan(
                                               text:
-                                                  '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                  '${widget.postInfo['adminInfo']?['firstName'] ?? "Unknown"} ${widget.postInfo['adminInfo']?['lastName'] ?? "Unknown"}',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -1601,7 +1613,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo']['avatar'] != ''
+                          widget.postInfo['adminInfo'] != null &&
+                                  widget.postInfo['adminInfo']
+                                      .containsKey('avatar') &&
+                                  widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
                                   widget.postInfo['adminInfo']['avatar'],
@@ -1627,7 +1642,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                         children: <TextSpan>[
                                           TextSpan(
                                             text:
-                                                '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                '${widget.postInfo['adminInfo']?['firstName'] ?? "Unknown"} ${widget.postInfo['adminInfo']?['lastName'] ?? "Unknown"}',
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,
@@ -1902,7 +1917,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo']['avatar'] != ''
+                          widget.postInfo['adminInfo'] != null &&
+                                  widget.postInfo['adminInfo']
+                                      .containsKey('avatar') &&
+                                  widget.postInfo['adminInfo']['avatar'] != ''
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
                                   widget.postInfo['adminInfo']['avatar'],
@@ -1931,7 +1949,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                                               children: <TextSpan>[
                                             TextSpan(
                                                 text:
-                                                    '${widget.postInfo['adminInfo']['firstName']} ${widget.postInfo['adminInfo']['lastName']}',
+                                                    '${widget.postInfo['adminInfo']?['firstName'] ?? "Unknown"} ${widget.postInfo['adminInfo']?['lastName'] ?? "Unknown"}',
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
