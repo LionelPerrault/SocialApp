@@ -198,7 +198,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
       Column(
         children: [
           SizedBox(
-              height: SizeConfig(context).screenHeight - 200,
+              height: SizeConfig(context).screenHeight - 286,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
