@@ -136,7 +136,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
     return Column(
       children: [
         SizedBox(
-          height: SizeConfig(context).screenHeight - 200,
+          height: SizeConfig(context).screenHeight - 281,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
