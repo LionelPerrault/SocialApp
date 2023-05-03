@@ -119,12 +119,14 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
             .collection('user')
             .where('userName', isEqualTo: friendUserName)
             .get();
-        String userid = snapshot.docs[0].id.toString();
+        if (snapshot.docs.isNotEmpty) {
+          String userid = snapshot.docs[0].id.toString();
 
-        if (con.boolInvited(con.event, userid)) {
-          friendModel.friends.removeAt(index);
-          setState(() {});
-          index--;
+          if (con.boolInvited(con.event, userid)) {
+            friendModel.friends.removeAt(index);
+            setState(() {});
+            index--;
+          }
         }
       }
     });
