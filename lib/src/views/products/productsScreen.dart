@@ -50,7 +50,8 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                           : SizeConfig(context).screenWidth,
                   child: Column(
                     children: [
-                      SizedBox(
+                      Container(
+                          padding: const EdgeInsets.only(left: 20),
                           height: 70,
                           child: Row(
                             children: [

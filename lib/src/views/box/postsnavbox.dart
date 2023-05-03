@@ -16,7 +16,6 @@ class PostsNavBox extends StatefulWidget {
 
 class PostsNavBoxState extends State<PostsNavBox> {
   //
-  bool isSound = false;
   late List<Map> eachList = [
     // {
     //   'icon': Icons.photo_camera_back_outlined,
@@ -206,12 +205,9 @@ class PostsNavBoxState extends State<PostsNavBox> {
       child: Container(
           width: 160,
           color: Colors.white,
-          // padding: EdgeInsets.all(10),
           child: Column(
             children: [
               SizedBox(
-                height: 200,
-                //size: Size(100,100),
                 child: ListView(
                   shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),

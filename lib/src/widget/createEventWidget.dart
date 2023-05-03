@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:uuid/uuid.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
@@ -38,12 +41,54 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   TextEditingController endDateController = TextEditingController();
   bool footerBtnState = false;
   bool payLoading = false;
+  TextEditingController locationTextController = TextEditingController();
+  List<Suggestion> autoLocationList = [];
   // bool loading = false;
   @override
   void initState() {
     add(widget.postCon);
     postCon = controller as PostController;
     super.initState();
+  }
+
+  Future<void> fetchSuggestions(
+    String input,
+  ) async {
+    final sessionToken = Uuid().v4();
+
+    final request =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
+    try {
+      final response = await http.get(
+        Uri.parse(request),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        if (result['status'] == 'OK') {
+          // compose suggestions in a list
+          autoLocationList = result['predictions']
+              .map<Suggestion>(
+                  (p) => Suggestion(p['place_id'], p['description']))
+              .toList();
+          setState(() {});
+        }
+        if (result['status'] == 'ZERO_RESULTS') {
+          autoLocationList = [];
+          setState(() {});
+        }
+      } else {
+        throw Exception('Failed to fetch suggestion');
+      }
+    } catch (e) {
+      autoLocationList = [];
+      setState(() {});
+    }
   }
 
   getTokenBudget() async {
@@ -133,10 +178,10 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        SizedBox(
-          height: SizeConfig(context).screenHeight - 281,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 60),
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -148,93 +193,71 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                   endIndent: 0,
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customInput(
-                      title: 'Name Your Event',
-                      onChange: (value) async {
-                        eventInfo['eventName'] = value;
-                        setState(() {});
-                      },
-                    ),
-                  ],
+                customInput(
+                  title: 'Name Your Event',
+                  onChange: (value) async {
+                    eventInfo['eventName'] = value;
+                    setState(() {});
+                  },
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customInput(
-                      title: 'Location',
-                      onChange: (value) async {
-                        eventInfo['eventLocation'] = value;
-                        setState(() {});
-                      },
-                    ),
-                  ],
+                customInput(
+                  controller: locationTextController,
+                  title: 'Location',
+                  onChange: (value) async {
+                    eventInfo['eventLocation'] = value;
+                    await fetchSuggestions(value);
+                    setState(() {});
+                  },
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customDateInput(
-                      title: 'Start Date',
-                      controller: startDateController,
-                      onChange: (value) async {},
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(), //get today's date
-                            firstDate: DateTime(
-                                2000), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2101));
-                        if (pickedDate != null) {
-                          String formattedDate = DateFormat('yyyy-MM-dd').format(
-                              pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                          //You can format date as per your need
+                customDateInput(
+                  title: 'Start Date',
+                  controller: startDateController,
+                  onChange: (value) async {},
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(), //get today's date
+                        firstDate: DateTime(
+                            2000), //DateTime.now() - not to allow to choose before today.
+                        lastDate: DateTime(2101));
+                    if (pickedDate != null) {
+                      String formattedDate = DateFormat('yyyy-MM-dd').format(
+                          pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                      //You can format date as per your need
 
-                          setState(() {
-                            startDateController.text = formattedDate;
-                            eventInfo['eventStartDate'] = formattedDate;
-                          });
-                        } else {}
-                      },
-                    ),
-                  ],
+                      setState(() {
+                        startDateController.text = formattedDate;
+                        eventInfo['eventStartDate'] = formattedDate;
+                      });
+                    } else {}
+                  },
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customDateInput(
-                      title: 'End Date',
-                      controller: endDateController,
-                      onChange: (value) async {},
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(), //get today's date
-                            firstDate: DateTime(
-                                2000), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2101));
-                        if (pickedDate != null) {
-                          String formattedDate = DateFormat('yyyy-MM-dd').format(
-                              pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                customDateInput(
+                  title: 'End Date',
+                  controller: endDateController,
+                  onChange: (value) async {},
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(), //get today's date
+                        firstDate: DateTime(
+                            2000), //DateTime.now() - not to allow to choose before today.
+                        lastDate: DateTime(2101));
+                    if (pickedDate != null) {
+                      String formattedDate = DateFormat('yyyy-MM-dd').format(
+                          pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
 
-                          //You can format date as per your need
+                      //You can format date as per your need
 
-                          setState(() {
-                            eventInfo['eventEndDate'] = formattedDate;
-                            endDateController.text = formattedDate;
-                          });
-                        } else {}
-                      },
-                    ),
-                  ],
+                      setState(() {
+                        eventInfo['eventEndDate'] = formattedDate;
+                        endDateController.text = formattedDate;
+                      });
+                    } else {}
+                  },
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
                 Column(
@@ -383,58 +406,103 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
             ),
           ),
         ),
-        Container(
-          width: 400,
-          margin: const EdgeInsets.only(right: 20, bottom: 10),
-          child: Row(
-            children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[400],
-                  shadowColor: Colors.grey[400],
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: const Size(100, 50),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            width: 400,
+            margin: const EdgeInsets.only(right: 20),
+            child: Row(
+              children: [
+                const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[400],
+                    shadowColor: Colors.grey[400],
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0)),
+                    minimumSize: const Size(100, 50),
+                  ),
+                  onPressed: () {
+                    Navigator.of(widget.context).pop(true);
+                  },
+                  child: const Text('Cancel',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
-                onPressed: () {
-                  Navigator.of(widget.context).pop(true);
-                },
-                child: const Text('Cancel',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-              ),
-              const Padding(padding: EdgeInsets.only(left: 10)),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shadowColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: const Size(100, 50),
-                ),
-                onPressed: () {
-                  footerBtnState = true;
-                  setState(() {});
-                  getTokenBudget();
-                },
-                child: footerBtnState
-                    ? const SizedBox(
-                        width: 10,
-                        height: 10.0,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    : const Text('Create',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold)),
-              )
-            ],
+                const Padding(padding: EdgeInsets.only(left: 10)),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shadowColor: Colors.white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0)),
+                    minimumSize: const Size(100, 50),
+                  ),
+                  onPressed: () {
+                    footerBtnState = true;
+                    setState(() {});
+                    getTokenBudget();
+                  },
+                  child: footerBtnState
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const Text('Create',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
+                )
+              ],
+            ),
           ),
-        )
+        ),
+        if (autoLocationList.isNotEmpty)
+          Positioned(
+            top: 120,
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              height: 230,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: autoLocationList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                      onTap: () {
+                        locationTextController.text =
+                            autoLocationList[index].description;
+                        eventInfo['eventLocation'] =
+                            autoLocationList[index].description;
+                        setState(() {
+                          autoLocationList = [];
+                        });
+                      },
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.only(bottom: 3),
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Color.fromARGB(255, 209, 209, 209))),
+                            color: Color.fromARGB(255, 224, 224, 224)),
+                        child: Text(
+                          autoLocationList[index].description,
+                          textAlign: TextAlign.center,
+                        ),
+                      ));
+                },
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -545,4 +613,16 @@ Widget titleAndsubtitleInput(title, height, line, onChange) {
       ],
     ),
   );
+}
+
+class Suggestion {
+  final String placeId;
+  final String description;
+
+  Suggestion(this.placeId, this.description);
+
+  @override
+  String toString() {
+    return 'Suggestion(description: $description, placeId: $placeId)';
+  }
 }
