@@ -178,6 +178,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
               child: Container(
                 width: 200,
                 height: 50,
+                margin: const EdgeInsets.all(5),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     color: searchPageRoute == tabInfo[i]['text']

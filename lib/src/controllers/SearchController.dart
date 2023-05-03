@@ -228,7 +228,10 @@ class SearchController extends ControllerMVC {
     setState(() {});
   }
 
+  bool isGetPosts = true;
   getPosts() async {
+    isGetPosts = false;
+    setState(() {});
     var allSanp =
         await Helper.postCollection.orderBy('postTime', descending: true).get();
     var allPosts = allSanp.docs;
@@ -266,6 +269,7 @@ class SearchController extends ControllerMVC {
       }
     }
     posts = postsBox;
+    isGetPosts = false;
     setState(() {});
 
     return posts;

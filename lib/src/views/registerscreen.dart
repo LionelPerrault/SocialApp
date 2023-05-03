@@ -627,8 +627,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                       ? const Color.fromARGB(
                                                           255, 103, 181, 245)
                                                       : Colors.white,
-                                                  isShowProgressive:
-                                                      con.isSendRegisterInfo,
+                                                  // isShowProgressive:
+                                                  //     con.isSendRegisterInfo,
                                                   buttonName: "Sign up",
                                                   onPressed: () async {
                                                     if (!check2) {

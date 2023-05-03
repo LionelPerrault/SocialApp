@@ -52,7 +52,8 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 3),
+                        padding:
+                            const EdgeInsets.only(top: 3, left: 10, right: 10),
                         child: customInput(
                           place: 'I am looking for',
                           onChange: (value) {
@@ -65,6 +66,7 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                       Row(
                         children: [
                           Container(
+                            margin: const EdgeInsets.only(left: 10),
                             decoration: const BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
