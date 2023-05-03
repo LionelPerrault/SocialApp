@@ -463,190 +463,211 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                 //endIndent: 0,
                 //color: Colors.black,
               ),
-              AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  height: 260,
-                  curve: Curves.fastOutSlowIn,
-                  child: SizedBox(
-                    //size: Size(100,100),
-                    child: ListView.separated(
-                      itemCount: friendModel.friends.length,
-                      itemBuilder: (context, index) {
-                        var friendUserName =
-                            friendModel.friends[index]['requester'].toString();
-                        if (friendUserName ==
-                            UserManager.userInfo['userName']) {
-                          friendUserName =
-                              friendModel.friends[index]['receiver'].toString();
-                        }
+              friendModel.friends.isNotEmpty
+                  ? AnimatedContainer(
+                      duration: const Duration(milliseconds: 500),
+                      height: 260,
+                      curve: Curves.fastOutSlowIn,
+                      child: SizedBox(
+                        //size: Size(100,100),
+                        child: ListView.separated(
+                          itemCount: friendModel.friends.length,
+                          itemBuilder: (context, index) {
+                            var friendUserName = friendModel.friends[index]
+                                    ['requester']
+                                .toString();
+                            if (friendUserName ==
+                                UserManager.userInfo['userName']) {
+                              friendUserName = friendModel.friends[index]
+                                      ['receiver']
+                                  .toString();
+                            }
 
-                        return Material(
-                            child: ListTile(
-                                onTap: () {},
-                                hoverColor:
-                                    const Color.fromARGB(255, 243, 243, 243),
-                                // tileColor: Colors.white,
-                                enabled: true,
-                                leading: friendModel.friends[index]
-                                            [friendUserName]['avatar'] !=
-                                        ''
-                                    ? CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                          friendModel.friends[index]
-                                              [friendUserName]['avatar'],
-                                        ),
-                                      )
-                                    : CircleAvatar(
-                                        child:
-                                            SvgPicture.network(Helper.avatar),
-                                      ),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: 80,
-                                          child: Text(
-                                            friendModel.friends[index]
-                                                [friendUserName]['name'],
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 11),
+                            return Material(
+                                child: ListTile(
+                                    onTap: () {},
+                                    hoverColor: const Color.fromARGB(
+                                        255, 243, 243, 243),
+                                    // tileColor: Colors.white,
+                                    enabled: true,
+                                    leading: friendModel.friends[index]
+                                                [friendUserName]['avatar'] !=
+                                            ''
+                                        ? CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                              friendModel.friends[index]
+                                                  [friendUserName]['avatar'],
+                                            ),
+                                          )
+                                        : CircleAvatar(
+                                            child: SvgPicture.network(
+                                                Helper.avatar),
                                           ),
-                                        ),
-                                        Container(
-                                            child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 33, 37, 41),
-                                                    elevation: 3,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(2.0)),
-                                                    minimumSize:
-                                                        const Size(65, 30),
-                                                    maximumSize:
-                                                        const Size(65, 30)),
-                                                onPressed: () async {
-                                                  setState(() {
-                                                    invitingFriend = true;
-                                                    selectedUserIndex = index;
-                                                    currentIndex = index;
-                                                  });
-                                                  var querySnapshot =
-                                                      await Helper.eventsData
-                                                          .doc(con.viewEventId)
-                                                          .get();
+                                    title: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 80,
+                                              child: Text(
+                                                friendModel.friends[index]
+                                                    [friendUserName]['name'],
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 11),
+                                              ),
+                                            ),
+                                            Container(
+                                                child: ElevatedButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                        backgroundColor:
+                                                            const Color.fromARGB(
+                                                                255, 33, 37, 41),
+                                                        elevation: 3,
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        2.0)),
+                                                        minimumSize:
+                                                            const Size(65, 30),
+                                                        maximumSize:
+                                                            const Size(65, 30)),
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        invitingFriend = true;
+                                                        selectedUserIndex =
+                                                            index;
+                                                        currentIndex = index;
+                                                      });
+                                                      var querySnapshot =
+                                                          await Helper
+                                                              .eventsData
+                                                              .doc(con
+                                                                  .viewEventId)
+                                                              .get();
 
-                                                  var doc = querySnapshot;
-                                                  var joined =
-                                                      doc['eventInvited'];
+                                                      var doc = querySnapshot;
+                                                      var joined =
+                                                          doc['eventInvited'];
 
-                                                  var friendUserName =
-                                                      friendModel.friends[index]
-                                                              ['requester']
+                                                      var friendUserName =
+                                                          friendModel
+                                                              .friends[index]
+                                                                  ['requester']
+                                                              .toString();
+                                                      if (friendUserName ==
+                                                          UserManager.userInfo[
+                                                              'userName']) {
+                                                        friendUserName =
+                                                            friendModel
+                                                                .friends[index]
+                                                                    ['receiver']
+                                                                .toString();
+                                                      }
+                                                      print(friendUserName);
+
+                                                      var snapshot =
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'user')
+                                                              .where('userName',
+                                                                  isEqualTo:
+                                                                      friendUserName)
+                                                              .get();
+
+                                                      String userid = snapshot
+                                                          .docs[0].id
                                                           .toString();
-                                                  if (friendUserName ==
-                                                      UserManager.userInfo[
-                                                          'userName']) {
-                                                    friendUserName = friendModel
-                                                        .friends[index]
-                                                            ['receiver']
-                                                        .toString();
-                                                  }
-                                                  print(friendUserName);
 
-                                                  var snapshot =
+                                                      joined
+                                                          .add({'uid': userid});
+
                                                       await FirebaseFirestore
                                                           .instance
-                                                          .collection('user')
-                                                          .where('userName',
-                                                              isEqualTo:
-                                                                  friendUserName)
-                                                          .get();
-
-                                                  String userid = snapshot
-                                                      .docs[0].id
-                                                      .toString();
-
-                                                  joined.add({'uid': userid});
-
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection(
-                                                          Helper.eventsField)
-                                                      .doc(con.viewEventId)
-                                                      .update({
-                                                    'eventInvited': joined
-                                                  });
-                                                  await con.updateEvent();
-                                                  await getFriends();
-                                                  var notificationData = {
-                                                    'postType': 'requestFriend',
-                                                    'postId': userid,
-                                                    'postAdminId': UserManager
-                                                        .userInfo['uid'],
-                                                    'notifyTime': DateTime.now()
-                                                        .toString(),
-                                                    'tsNT': DateTime.now()
-                                                        .millisecondsSinceEpoch,
-                                                    'userList': [],
-                                                    'timeStamp': FieldValue
-                                                        .serverTimestamp(),
-                                                  };
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection(Helper
-                                                          .notificationField)
-                                                      .add(notificationData);
-                                                  setState(() {
-                                                    invitingFriend = false;
-                                                  });
-                                                },
-                                                child: invitingFriend &&
-                                                        selectedUserIndex ==
-                                                            index
-                                                    ? const SizedBox(
-                                                        width: 10,
-                                                        height: 10,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          color: Colors.grey,
-                                                        ),
-                                                      )
-                                                    : Row(
-                                                        children: const [
-                                                          Icon(
-                                                            Icons
-                                                                .person_add_alt_rounded,
-                                                            color: Colors.white,
-                                                            size: 15.0,
-                                                          ),
-                                                          Text('Add',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 10,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
-                                                        ],
-                                                      ))),
+                                                          .collection(Helper
+                                                              .eventsField)
+                                                          .doc(con.viewEventId)
+                                                          .update({
+                                                        'eventInvited': joined
+                                                      });
+                                                      await con.updateEvent();
+                                                      await getFriends();
+                                                      var notificationData = {
+                                                        'postType':
+                                                            'requestFriend',
+                                                        'postId': userid,
+                                                        'postAdminId':
+                                                            UserManager
+                                                                    .userInfo[
+                                                                'uid'],
+                                                        'notifyTime':
+                                                            DateTime.now()
+                                                                .toString(),
+                                                        'tsNT': DateTime.now()
+                                                            .millisecondsSinceEpoch,
+                                                        'userList': [],
+                                                        'timeStamp': FieldValue
+                                                            .serverTimestamp(),
+                                                      };
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(Helper
+                                                              .notificationField)
+                                                          .add(
+                                                              notificationData);
+                                                      setState(() {
+                                                        invitingFriend = false;
+                                                      });
+                                                    },
+                                                    child: invitingFriend &&
+                                                            selectedUserIndex ==
+                                                                index
+                                                        ? const SizedBox(
+                                                            width: 10,
+                                                            height: 10,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.grey,
+                                                            ),
+                                                          )
+                                                        : Row(
+                                                            children: const [
+                                                              Icon(
+                                                                Icons
+                                                                    .person_add_alt_rounded,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 15.0,
+                                                              ),
+                                                              Text('Add',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          10,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                            ],
+                                                          ))),
+                                          ],
+                                        )
                                       ],
-                                    )
-                                  ],
-                                )));
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(
-                        height: 1,
-                        endIndent: 10,
-                      ),
-                    ),
-                  ))
+                                    )));
+                          },
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Divider(
+                            height: 1,
+                            endIndent: 10,
+                          ),
+                        ),
+                      ))
+                  : const SizedBox(),
             ],
           )),
     );
