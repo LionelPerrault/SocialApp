@@ -42,7 +42,7 @@ class PostSearchState extends mvc.StateMVC<PostSearch> {
     } else {
       resultPosts = [];
     }
-    return searchCon.posts.isEmpty
+    return !searchCon.isGetPosts
         ? SizedBox(
             width: 10,
             height: 10,

@@ -49,11 +49,12 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
               },
               child: Padding(
                   padding: SizeConfig(context).screenWidth < 460
-                      ? const EdgeInsets.all(2)
+                      ? const EdgeInsets.all(4)
                       : const EdgeInsets.all(10),
                   child: Text(
                     paneName,
                     style: TextStyle(
+                        fontWeight: FontWeight.bold,
                         fontSize:
                             SizeConfig(context).screenWidth < 460 ? 12 : 13),
                   )))),
