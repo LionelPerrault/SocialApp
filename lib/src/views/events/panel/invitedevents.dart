@@ -141,7 +141,7 @@ class InvitedEventsState extends mvc.StateMVC<InvitedEvents> {
                       ? 3
                       : screenWidth > 600
                           ? 2
-                          : 1,
+                          : 2,
                   // childAspectRatio: 2 / 3,
                   padding: const EdgeInsets.all(4.0),
                   mainAxisSpacing: 4.0,

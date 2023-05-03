@@ -109,7 +109,7 @@ class ProfileAvatarandTabScreenState extends mvc
       children: [
         Container(
           width: SizeConfig(context).screenWidth,
-          height: SizeConfig(context).screenHeight * 0.45,
+          height: SizeConfig(context).screenHeight * 0.4,
           decoration: con.profile_cover == ''
               ? const BoxDecoration(
                   color: Color.fromRGBO(66, 66, 66, 1),

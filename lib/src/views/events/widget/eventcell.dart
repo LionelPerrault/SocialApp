@@ -133,6 +133,7 @@ class EventCellState extends mvc.StateMVC<EventCell> {
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
+                                con.viewEventId = widget.eventData['id'];
                                 con.updateEvent();
                                 widget.routerChange({
                                   'router': RouteNames.events,
