@@ -278,11 +278,7 @@ class SearchController extends ControllerMVC {
       }
     }
     posts = postsBox;
-<<<<<<< HEAD
     isGetPosts = false;
-=======
-    print(posts);
->>>>>>> ab62c6972a3444807e0f75567823b4614de381ff
     setState(() {});
 
     return posts;
