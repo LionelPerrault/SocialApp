@@ -183,7 +183,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                         ),
                       ],
                     ),
-                    kIsWeb ? Container(height: 35) : Container(),
+                    // kIsWeb ? Container(height: 35) : Container(),
                   ],
                 ),
               ),

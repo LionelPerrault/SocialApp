@@ -98,11 +98,12 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
               ),
               AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
-                  height: isSound ? con.unJoindGroups.length * 65 : 0,
+                  height: isSound ? con.unJoindGroups.length * 70 : 0,
                   curve: Curves.fastOutSlowIn,
                   child: SizedBox(
                     //size: Size(100,100),
                     child: ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: con.unJoindGroups.length,
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
@@ -119,38 +120,33 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                                         ? Helper.blankGroup
                                         : con.unJoindGroups[index]['data']
                                             ['groupPicture']))),
-                        title: Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 11),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: con.unJoindGroups[index]['data']
-                                        ['groupName'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11,
-                                        color: Colors.black),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        widget.routerChange({
-                                          'router': RouteNames.groups,
-                                          'subRouter': con.unJoindGroups[index]
-                                              ['id']
-                                        });
-                                      })
-                              ],
-                            ),
+                        title: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 11),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: con.unJoindGroups[index]['data']
+                                      ['groupName'],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11,
+                                      color: Colors.black),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      widget.routerChange({
+                                        'router': RouteNames.groups,
+                                        'subRouter': con.unJoindGroups[index]
+                                            ['id']
+                                      });
+                                    })
+                            ],
                           ),
                         ),
-                        subtitle: Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              '${con.unJoindGroups[index]['data']['groupJoined'].length} Members',
-                              style: const TextStyle(fontSize: 10),
-                            )),
+                        subtitle: Text(
+                          '${con.unJoindGroups[index]['data']['groupJoined'].length} Members',
+                          style: const TextStyle(fontSize: 10),
+                        ),
                         trailing: ElevatedButton(
                             onPressed: () async {
                               isJoining[index] = true;

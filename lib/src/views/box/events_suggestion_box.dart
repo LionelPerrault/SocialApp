@@ -101,11 +101,12 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
               ),
               AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
-                  height: isSound ? con.unInterestedEvents.length * 65 : 0,
+                  height: isSound ? con.unInterestedEvents.length * 70 : 0,
                   curve: Curves.fastOutSlowIn,
                   child: SizedBox(
                     //size: Size(100,100),
                     child: ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: con.unInterestedEvents.length,
                       itemBuilder: (context, index) => Material(
                           child: ListTile(
@@ -122,38 +123,33 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                                         ? Helper.blankEvent
                                         : con.unInterestedEvents[index]['data']
                                             ['eventPicture']))),
-                        title: Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 11),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: con.unInterestedEvents[index]['data']
-                                        ['eventName'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11,
-                                        color: Colors.black),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        widget.routerChange({
-                                          'router': RouteNames.events,
-                                          'subRouter': con
-                                              .unInterestedEvents[index]['id']
-                                        });
-                                      })
-                              ],
-                            ),
+                        title: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 11),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: con.unInterestedEvents[index]['data']
+                                      ['eventName'],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11,
+                                      color: Colors.black),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      widget.routerChange({
+                                        'router': RouteNames.events,
+                                        'subRouter':
+                                            con.unInterestedEvents[index]['id']
+                                      });
+                                    })
+                            ],
                           ),
                         ),
-                        subtitle: Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              '${con.unInterestedEvents[index]['data']['eventInterested'].length} Interested',
-                              style: const TextStyle(fontSize: 10),
-                            )),
+                        subtitle: Text(
+                          '${con.unInterestedEvents[index]['data']['eventInterested'].length} Interested',
+                          style: const TextStyle(fontSize: 10),
+                        ),
                         trailing: ElevatedButton(
                             onPressed: () async {
                               isJoining[index] = true;

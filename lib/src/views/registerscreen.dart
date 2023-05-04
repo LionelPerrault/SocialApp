@@ -35,7 +35,8 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   String inviteCode = '';
   String phoneNumber = '';
   late UserController con;
-
+  var backgrouImg = const NetworkImage(
+      "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8");
   @override
   void initState() {
     super.initState();
@@ -70,10 +71,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
             child: SingleChildScrollView(
                 child: Container(
                     width: double.infinity,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(
-                            "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8"),
+                        image: backgrouImg,
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -121,7 +121,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       },
       {
         'title': 'Add your relationship',
-        'add': userData['school'] == null ? false : true,
+        'add': userData['relationship'] == null ? false : true,
         'route': RouteNames.settings_profile_basic
       },
       {

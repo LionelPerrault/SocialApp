@@ -817,7 +817,6 @@ class UserController extends ControllerMVC {
     await Helper.makeOffline();
     FirebaseAuth.instance.signOut();
     UserManager.userInfo = {};
-    setState(() {});
     PeopleController().disposeAll();
     await Helper.removeAllPreference();
     // ignore: use_build_context_synchronously
