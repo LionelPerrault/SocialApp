@@ -9,6 +9,7 @@ import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/verfiyphonenumberscreen.dart';
 import 'package:shnatter/src/widget/primaryInput.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../helpers/helper.dart';
 import '../utils/size_config.dart';
 import '../widget/mprimary_button.dart';
@@ -35,10 +36,12 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
   String inviteCode = '';
   String phoneNumber = '';
   late UserController con;
-  var backgrouImg = const NetworkImage(
-      "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8");
   @override
   void initState() {
+    precacheImage(
+        const CachedNetworkImageProvider(
+            "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8"),
+        context);
     super.initState();
     add(widget.con);
     con = controller as UserController;
@@ -71,9 +74,10 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
             child: SingleChildScrollView(
                 child: Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: backgrouImg,
+                        image: CachedNetworkImageProvider(
+                            "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8"),
                         fit: BoxFit.cover,
                       ),
                     ),

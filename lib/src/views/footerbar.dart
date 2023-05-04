@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shnatter/src/views/contactus.dart';
 import 'package:shnatter/src/views/terms.dart';
 
 import 'about.dart';
@@ -67,9 +68,27 @@ class footbarState extends State<footbar> {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Contact Us', Colors.grey, 11),
+                InkWell(
+                  onTap: () => {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const ContactUs(),
+                      ),
+                    ),
+                  },
+                  child: GestureDetector(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Contact Us',
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
                 const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Directory', Colors.grey, 11),
+                // text('Directory', Colors.grey, 11),
               ]),
             )
           ],
@@ -161,15 +180,33 @@ class footbarMState extends State<footbarM> {
                 const Padding(padding: EdgeInsets.only(left: 5)),
                 Expanded(
                   // ignore: sort_child_properties_last
-                  child: text('Contact Us', Colors.grey, 13),
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const ContactUs(),
+                        ),
+                      ),
+                    },
+                    child: GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Contact Us',
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ),
                   flex: 1,
                 ),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                Expanded(
-                  // ignore: sort_child_properties_last
-                  child: text('Directory', Colors.grey, 13),
-                  flex: 1,
-                ),
+                // const Padding(padding: EdgeInsets.only(left: 5)),
+                // Expanded(
+                //   // ignore: sort_child_properties_last
+                //   child: text('Directory', Colors.grey, 13),
+                //   flex: 1,
+                // ),
                 const Padding(padding: EdgeInsets.only(right: 10)),
               ],
             )
