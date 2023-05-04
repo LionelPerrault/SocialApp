@@ -707,7 +707,7 @@ class UserController extends ControllerMVC {
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=$uuid",
         dynamicLinkDomain: "shnatter.page.link",
-        handleCodeInApp: false,
+        handleCodeInApp: true,
         androidPackageName: "com.shnatter",
         androidInstallApp: true,
         androidMinimumVersion: "10",
@@ -723,7 +723,7 @@ class UserController extends ControllerMVC {
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${UserManager.userInfo['uid']}",
         dynamicLinkDomain: "shnatter.page.link",
-        handleCodeInApp: false,
+        handleCodeInApp: true,
         androidPackageName: "com.shnatter",
         androidInstallApp: true,
         androidMinimumVersion: "10",
