@@ -706,10 +706,15 @@ class UserController extends ControllerMVC {
     ActionCodeSettings acs = ActionCodeSettings(
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=$uuid",
+        dynamicLinkDomain: "shnatter.page.link",
         handleCodeInApp: false,
-        iOSBundleId: DefaultFirebaseOptions.currentPlatform.iosBundleId);
+        androidPackageName: "com.shnatter",
+        androidInstallApp: true,
+        androidMinimumVersion: "10",
+        iOSBundleId:
+            "com.shnatter"); //DefaultFirebaseOptions.currentPlatform.iosBundleId);
     User? currentFirebaseUser = FirebaseAuth.instance.currentUser;
-    await currentFirebaseUser!.sendEmailVerification();
+    await currentFirebaseUser!.sendEmailVerification(acs);
     return uuid;
   }
 
@@ -717,8 +722,15 @@ class UserController extends ControllerMVC {
     ActionCodeSettings acs = ActionCodeSettings(
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${UserManager.userInfo['uid']}",
-        handleCodeInApp: false);
-    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+        dynamicLinkDomain: "shnatter.page.link",
+        handleCodeInApp: false,
+        androidPackageName: "com.shnatter",
+        androidInstallApp: true,
+        androidMinimumVersion: "10",
+        iOSBundleId:
+            "com.shnatter"); //DefaultFirebaseOptions.currentPlatform.iosBundleId);
+
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return 'ok';
   }
 
