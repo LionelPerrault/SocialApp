@@ -115,7 +115,6 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                       'Confirm',
                                       style: TextStyle(
                                           color: Colors.black,
-                                          overflow: TextOverflow.ellipsis,
                                           fontSize: 11,
                                           fontWeight: FontWeight.w900),
                                     ),
