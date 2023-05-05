@@ -225,7 +225,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     {
       'label': 'Loved',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fangry.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2F2043845.png?alt=media',
     },
     {
       'label': 'Satisfied',
