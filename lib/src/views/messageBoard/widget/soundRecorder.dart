@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:io' show Platform;
 
 const theSource = AudioSource.microphone;
 
@@ -69,7 +70,13 @@ class _SoundRecorderState extends State<SoundRecorder> {
       _mPath = '${generateRandomFilename()}.webm';
     }
     if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
-      var dir = await getExternalStorageDirectory();
+      var dir;
+      if (Platform.isIOS) {
+        dir = await getApplicationDocumentsDirectory();
+      } else {
+        dir = await getExternalStorageDirectory();
+      }
+
       _mPath = '${dir?.path}/${generateRandomFilename()}.mp4';
       _mRecorderIsInited = true;
       return;
