@@ -52,10 +52,14 @@ class _SoundRecorderState extends State<SoundRecorder> {
 
   Future<void> openTheRecorder() async {
     if (!kIsWeb) {
-      var status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-        throw RecordingPermissionException('Microphone permission not granted');
+      if (await Permission.contacts.request().isGranted) {
+        // Either the permission was already granted before or the user just granted it.
+      } else {
+        var status = await Permission.microphone.request();
+        print(status);
       }
+      //   throw RecordingPermissionException('Microphone permission not granted');
+      // }
     }
     _mRecorder!.closeRecorder();
 
