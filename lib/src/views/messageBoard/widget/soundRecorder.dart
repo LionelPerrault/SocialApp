@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:io' show Platform;
 
 const theSource = AudioSource.microphone;
 
@@ -51,10 +52,14 @@ class _SoundRecorderState extends State<SoundRecorder> {
 
   Future<void> openTheRecorder() async {
     if (!kIsWeb) {
-      var status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-        throw RecordingPermissionException('Microphone permission not granted');
+      if (await Permission.contacts.request().isGranted) {
+        // Either the permission was already granted before or the user just granted it.
+      } else {
+        var status = await Permission.microphone.request();
+        print(status);
       }
+      //   throw RecordingPermissionException('Microphone permission not granted');
+      // }
     }
     _mRecorder!.closeRecorder();
 
@@ -69,7 +74,13 @@ class _SoundRecorderState extends State<SoundRecorder> {
       _mPath = '${generateRandomFilename()}.webm';
     }
     if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
-      var dir = await getExternalStorageDirectory();
+      var dir;
+      if (Platform.isIOS) {
+        dir = await getApplicationDocumentsDirectory();
+      } else {
+        dir = await getExternalStorageDirectory();
+      }
+
       _mPath = '${dir?.path}/${generateRandomFilename()}.mp4';
       _mRecorderIsInited = true;
       return;
