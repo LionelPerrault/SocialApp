@@ -278,7 +278,7 @@ class SearchController extends ControllerMVC {
       }
     }
     posts = postsBox;
-    isGetPosts = false;
+    isGetPosts = true;
     setState(() {});
 
     return posts;
