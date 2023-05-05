@@ -982,7 +982,7 @@ class PostController extends ControllerMVC {
       'groupPhotos': [],
       'groupAlbums': [],
       'groupVideos': [],
-      'groupCanPub': false,
+      'groupCanPub': true,
       'groupApproval': true,
     };
 
