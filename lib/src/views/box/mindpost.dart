@@ -219,48 +219,78 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   List<Map> feelingAction = [
     {
       'label': 'Happy',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fhaha.png?alt=media',
     },
     {
       'label': 'Loved',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fangry.png?alt=media',
     },
     {
       'label': 'Satisfied',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fyay.png?alt=media',
     },
     {
       'label': 'Strong',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fangry.png?alt=media',
     },
     {
       'label': 'Sad',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsad.png?alt=media',
     },
     {
       'label': 'Crazy',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fangry.png?alt=media',
     },
     {
       'label': 'Tired',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsad.png?alt=media',
     },
     {
       'label': 'Sleepy',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsad.png?alt=media',
     },
     {
       'label': 'Confused',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsad.png?alt=media',
     },
     {
       'label': 'Worried',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsad.png?alt=media',
     },
     {
       'label': 'Angry',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fangry.png?alt=media',
     },
     {
       'label': 'Annoyed',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fangry.png?alt=media',
     },
     {
       'label': 'Shocked',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fwow.png?alt=media',
     },
     {
       'label': 'Down',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsad.png?alt=media',
     },
     {
       'label': 'Confounded',
+      'svg':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsad.png?alt=media',
     },
   ];
   @override
@@ -1048,8 +1078,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                         const Padding(
                                             padding:
                                                 EdgeInsets.only(left: 12.0)),
-                                        SvgPicture.network(
-                                          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fsellsomething.svg?alt=media&token=d4de8d00-e075-4e6f-8f65-111616413dda',
+                                        Image.network(
+                                          e['svg'],
                                           width: 30,
                                         ),
                                         const Padding(
