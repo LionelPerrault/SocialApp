@@ -223,6 +223,7 @@ class PeopleController extends ControllerMVC {
 
   requestFriendDirectlyMap(Map mapData) async {
     var receiver = mapData['userName'];
+    if (receiver == UserManager.userInfo['userName']) return;
     var fullName = '${mapData['firstName']} ${mapData['lastName']}';
     var avatar = mapData['avatar'];
     await requestFriendAsData(receiver, fullName, avatar, mapData: mapData);
