@@ -1,4 +1,3 @@
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -67,13 +66,6 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
   }
 
   Widget createApp() {
-    FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
-    dynamicLinks.onLink.listen((dynamicLinkData) {
-      Navigator.pushNamed(context, dynamicLinkData.link.path);
-    }).onError((error) {
-      print('onLink error');
-      print(error.message);
-    });
     return ValueListenableBuilder(
         valueListenable: Helper.setting,
         builder: (context, Setting setting, _) {
