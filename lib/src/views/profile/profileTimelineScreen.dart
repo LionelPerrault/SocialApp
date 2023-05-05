@@ -116,12 +116,22 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       },
       {
         'title': 'Add your birthdate',
-        'add': userData['birthY'] == null ? false : true,
+        'add': (userData['birthY'] == null ||
+                userData['birthY'] == 'none' ||
+                userData['birthM'] == null ||
+                userData['birthM'] == 'none' ||
+                userData['birthD'] == null ||
+                userData['birthD'] == 'none')
+            ? false
+            : true,
         'route': RouteNames.settings_profile_basic
       },
       {
         'title': 'Add your relationship',
-        'add': userData['relationship'] == null ? false : true,
+        'add': (userData['relationship'] == null ||
+                userData['relationship'] == 'none')
+            ? false
+            : true,
         'route': RouteNames.settings_profile_basic
       },
       {

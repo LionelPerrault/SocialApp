@@ -147,7 +147,10 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> bDay = day[userInfo['birthM'] ?? '1'];
+    List<dynamic> bDay = day[
+        (userInfo['birthM'] == null || userInfo['birthM'] == 'none')
+            ? '1'
+            : userInfo['birthM']];
     return Container(
         padding: const EdgeInsets.only(top: 20, left: 30),
         child: Column(
