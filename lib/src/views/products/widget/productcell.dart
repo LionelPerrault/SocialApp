@@ -154,8 +154,8 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             noFunc: () async {
               Navigator.of(context).pop(true);
             },
-            header: 'Pay Token',
-            text: 'Are you sure about pay token',
+            header: 'Confirmation',
+            text: 'Are you sure to buy this product?',
             progress: payLoading),
       ),
     );

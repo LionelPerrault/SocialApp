@@ -216,18 +216,18 @@ class SettingsLeftPanel extends StatelessWidget {
               ],
             ),
           ),
-          ListText(
-              onTap: () => {
-                    routerFunction({
-                      'router': RouteNames.settings,
-                      'subRouter': RouteNames.settings_privacy,
-                    })
-                  },
-              label: 'Privacy',
-              image: const Icon(
-                Icons.privacy_tip_rounded,
-                color: Color.fromARGB(255, 255, 179, 7),
-              )),
+          // ListText(
+          //     onTap: () => {
+          //           routerFunction({
+          //             'router': RouteNames.settings,
+          //             'subRouter': RouteNames.settings_privacy,
+          //           })
+          //         },
+          //     label: 'Privacy',
+          //     image: const Icon(
+          //       Icons.privacy_tip_rounded,
+          //       color: Color.fromARGB(255, 255, 179, 7),
+          //     )),
           // ListText(
           //     onTap: () => {
           //           routerFunction({

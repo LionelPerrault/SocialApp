@@ -543,11 +543,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               child: const Text('Settings'),
                             ),
                           ),
-                          PopupMenuItem<Menu>(
-                            value: Menu.itemPrivacy,
-                            child:
-                                GestureDetector(child: const Text('Privacy')),
-                          ),
+                          // PopupMenuItem<Menu>(
+                          //   value: Menu.itemPrivacy,
+                          //   child:
+                          //       GestureDetector(child: const Text('Privacy')),
+                          // ),
                           if (UserManager.userInfo['admin'] == 'admin')
                             const PopupMenuDivider(),
                           if (UserManager.userInfo['admin'] == 'admin')
@@ -587,14 +587,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 });
                                 break;
                               }
-                            case Menu.itemPrivacy:
-                              {
-                                widget.routerChange({
-                                  'router': RouteNames.settings,
-                                  'subRouter': RouteNames.settings_privacy
-                                });
-                                break;
-                              }
+                            // case Menu.itemPrivacy:
+                            //   {
+                            //     widget.routerChange({
+                            //       'router': RouteNames.settings,
+                            //       'subRouter': RouteNames.settings_privacy
+                            //     });
+                            //     break;
+                            //   }
                             case Menu.itemAdminPanel:
                               {
                                 Navigator.pushReplacementNamed(
@@ -860,11 +860,11 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                             child:
                                 GestureDetector(child: const Text('Settings')),
                           ),
-                          PopupMenuItem<Menu>(
-                            value: Menu.itemPrivacy,
-                            child:
-                                GestureDetector(child: const Text('Privacy')),
-                          ),
+                          // PopupMenuItem<Menu>(
+                          //   value: Menu.itemPrivacy,
+                          //   child:
+                          //       GestureDetector(child: const Text('Privacy')),
+                          // ),
                           const PopupMenuDivider(),
                           PopupMenuItem<Menu>(
                             value: Menu.itemAdminPanel,
@@ -905,14 +905,14 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 });
                                 break;
                               }
-                            case Menu.itemPrivacy:
-                              {
-                                widget.routerChange({
-                                  'router': RouteNames.settings,
-                                  'subRouter': RouteNames.settings_privacy
-                                });
-                                break;
-                              }
+                            // case Menu.itemPrivacy:
+                            //   {
+                            //     widget.routerChange({
+                            //       'router': RouteNames.settings,
+                            //       'subRouter': RouteNames.settings_privacy
+                            //     });
+                            //     break;
+                            //   }
                             case Menu.itemAdminPanel:
                               {
                                 Navigator.pushReplacementNamed(
