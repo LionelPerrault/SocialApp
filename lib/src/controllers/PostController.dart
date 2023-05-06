@@ -955,7 +955,8 @@ class PostController extends ControllerMVC {
   }
 
   //create group function
-  Future<Map> createGroup(context, Map<String, dynamic> groupData) async {
+  Future<Map> createGroup(context, Map<String, dynamic> groupData,
+      {bool canCreate = false}) async {
     if (groupData['groupName'] == null || groupData['groupName'] == '') {
       return {
         'msg': 'Please add your group name',
@@ -981,7 +982,7 @@ class PostController extends ControllerMVC {
       'groupPhotos': [],
       'groupAlbums': [],
       'groupVideos': [],
-      'groupCanPub': false,
+      'groupCanPub': true,
       'groupApproval': true,
     };
 
@@ -993,6 +994,12 @@ class PostController extends ControllerMVC {
       return {
         'msg': 'Group name already exist',
         'result': false,
+      };
+    }
+    if (canCreate) {
+      return {
+        'msg': 'You can create group',
+        'result': canCreate,
       };
     }
     Map<String, dynamic> notificationData;

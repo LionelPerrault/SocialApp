@@ -1292,8 +1292,19 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   Future<XFile> chooseAudio() async {
     //final _audioPicker = ImagePicker();
     XFile pickedFile;
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.audio);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'wav',
+        'aiff',
+        'alac',
+        'flac',
+        'mp3',
+        'aac',
+        'wma',
+        'ogg'
+      ],
+    );
     if (result != null) {
       if (foundation.kIsWeb) {
         foundation.Uint8List? uploadfile = result.files.single.bytes;
@@ -1303,18 +1314,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           pickedFile = XFile('');
         }
       } else {
-        if (Platform.isIOS) {
-          if (result.files.single.bytes != null) {
-            pickedFile = XFile.fromData(result.files.single.bytes!);
-          } else {
-            pickedFile = XFile('');
-          }
+        if (result.files.single.path != null) {
+          pickedFile = XFile(result.files.single.path!);
         } else {
-          if (result.files.single.path != null) {
-            pickedFile = XFile(result.files.single.path!);
-          } else {
-            pickedFile = XFile('');
-          }
+          pickedFile = XFile('');
         }
       }
     } else {

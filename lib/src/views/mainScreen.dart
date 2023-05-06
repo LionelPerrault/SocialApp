@@ -58,6 +58,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
     () async {
       var user = FirebaseAuth.instance.currentUser!;
       EmailVerified.setVerified(user.emailVerified);
+      print("getposts");
       SearchController().getPosts();
     }();
 
@@ -182,7 +183,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                         ),
                       ],
                     ),
-                    kIsWeb ? Container(height: 35) : Container(),
+                    // kIsWeb ? Container(height: 35) : Container(),
                   ],
                 ),
               ),

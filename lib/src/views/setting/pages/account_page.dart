@@ -23,10 +23,8 @@ class SettingAccountScreen extends StatefulWidget {
 // ignore: must_be_immutable
 class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
   bool showMind = false;
-  var user_email = '';
-  var user_name = '';
   var password = '';
-  bool nearByOptOut = false;
+  late bool nearByOptOut = false;
   var userInfo = UserManager.userInfo;
   TextEditingController emailController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
@@ -36,7 +34,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
   void initState() {
     emailController.text = userInfo['email'];
     userNameController.text = userInfo['userName'];
-    nearByOptOut = userInfo['nearbyOptOut'];
+    nearByOptOut = userInfo['nearbyOptOut'] ?? false;
     // passwordController.text = userInfo['password'];
     add(widget.con);
     con = controller as UserController;

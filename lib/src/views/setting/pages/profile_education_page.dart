@@ -18,7 +18,7 @@ class SettingEducationScreen extends StatefulWidget {
 
 // ignore: must_be_immutable
 class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
-  var educationInfo = {};
+  var educationInfo = UserManager.userInfo;
   late UserController con;
   var userInfo = UserManager.userInfo;
   @override
@@ -66,9 +66,8 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                           1,
                           (value) async {
                             educationInfo['school'] = value;
-                            setState(() {});
                           },
-                          userInfo['school'] ?? '',
+                          educationInfo['school'] ?? '',
                         ),
                       ),
                     ],
@@ -84,9 +83,8 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                           1,
                           (value) async {
                             educationInfo['major'] = value;
-                            setState(() {});
                           },
-                          userInfo['major'] ?? '',
+                          educationInfo['major'] ?? '',
                         ),
                       ),
                       const Padding(padding: EdgeInsets.only(left: 25)),
@@ -98,9 +96,8 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                           1,
                           (value) async {
                             educationInfo['class'] = value;
-                            setState(() {});
                           },
-                          userInfo['class'] ?? '',
+                          educationInfo['class'] ?? '',
                         ),
                       ),
                     ],

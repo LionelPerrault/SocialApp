@@ -270,7 +270,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   children: [
                     Expanded(
                       child: IgnorePointer(
-                        ignoring: !isVerified,
+                        ignoring: !EmailVerified.getVerified(),
                         child: MouseRegion(
                           cursor: SystemMouseCursors.click,
                           onEnter: (value) {
@@ -283,7 +283,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             setState(() {});
                           },
                           child: Container(
-                            foregroundDecoration: isVerified
+                            foregroundDecoration: EmailVerified.getVerified()
                                 ? null
                                 : const BoxDecoration(
                                     //this can make disabled effect

@@ -706,10 +706,15 @@ class UserController extends ControllerMVC {
     ActionCodeSettings acs = ActionCodeSettings(
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=$uuid",
+        dynamicLinkDomain: "shnatter.page.link",
         handleCodeInApp: false,
-        iOSBundleId: DefaultFirebaseOptions.currentPlatform.iosBundleId);
+        androidPackageName: "com.shnatter",
+        androidInstallApp: true,
+        androidMinimumVersion: "10",
+        iOSBundleId:
+            "com.shnatter"); //DefaultFirebaseOptions.currentPlatform.iosBundleId);
     User? currentFirebaseUser = FirebaseAuth.instance.currentUser;
-    await currentFirebaseUser!.sendEmailVerification();
+    await currentFirebaseUser!.sendEmailVerification(acs);
     return uuid;
   }
 
@@ -717,8 +722,15 @@ class UserController extends ControllerMVC {
     ActionCodeSettings acs = ActionCodeSettings(
         url:
             "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${UserManager.userInfo['uid']}",
-        handleCodeInApp: false);
-    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+        dynamicLinkDomain: "shnatter.page.link",
+        handleCodeInApp: false,
+        androidPackageName: "com.shnatter",
+        androidInstallApp: true,
+        androidMinimumVersion: "10",
+        iOSBundleId:
+            "com.shnatter"); //DefaultFirebaseOptions.currentPlatform.iosBundleId);
+
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification(acs);
     return 'ok';
   }
 
@@ -817,7 +829,6 @@ class UserController extends ControllerMVC {
     await Helper.makeOffline();
     FirebaseAuth.instance.signOut();
     UserManager.userInfo = {};
-    setState(() {});
     PeopleController().disposeAll();
     await Helper.removeAllPreference();
     // ignore: use_build_context_synchronously
@@ -922,10 +933,21 @@ class UserController extends ControllerMVC {
   }
 
   Future<void> resetGetUserInfo() async {
+    var info;
     FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
-        .get();
+        .get()
+        .then((value) async => {
+              userInfo = await Helper.getJSONPreference(Helper.userField),
+              userInfo['isStarted'] = true,
+              info = UserManager.userInfo.toString(),
+              UserManager.getUserInfo(),
+              await Helper.saveJSONPreference(Helper.userField,
+                  {...userInfo, 'avatar': value.data()!['avatar']}),
+              await Helper.getJSONPreference(Helper.userField),
+              setState(() {})
+            });
   }
 
   //change user avatar
@@ -1110,6 +1132,27 @@ class UserController extends ControllerMVC {
   }
 
   deleteUserAccount(context) async {
+    // await RelysiaManager.authUser('razvan.petre@gmail.com', 'R3siks29').then(
+    //   (res) async => {
+    //     if (res["data"] != null)
+    //       {
+    //         if (res['statusCode'] == 200)
+    //           {
+    //             token = res['data']['token'],
+    //             await RelysiaManager.deleteUser(token),
+    //           }
+    //         else
+    //           {
+    //             Helper.showToast(res['data']['msg']),
+    //           }
+    //       }
+    //     else
+    //       {
+    //         Helper.showToast(res['data']),
+    //       }
+    //   },
+    // );
+    // return;
     isProfileChange = true;
     setState(() {});
     try {

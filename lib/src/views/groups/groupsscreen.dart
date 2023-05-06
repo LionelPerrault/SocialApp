@@ -108,7 +108,11 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
                 setState(() {});
               },
               child: Padding(
-                  padding: const EdgeInsets.all(10), child: Text(paneName)))),
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    paneName,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )))),
       groupSubRoute == paneName
           ? Container(
               width: 50,

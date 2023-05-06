@@ -47,7 +47,8 @@ class SettingPrivacyScreenState extends mvc.StateMVC<SettingPrivacyScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.only(top: 20, left: 20),
+        padding: const EdgeInsets.only(top: 0, left: 20),
+        alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,6 +204,7 @@ class SettingPrivacyScreenState extends mvc.StateMVC<SettingPrivacyScreen> {
             // ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             GridView.count(
+                physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount:
                     SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                         ? 2

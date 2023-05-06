@@ -252,7 +252,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
       Column(
         children: [
           SizedBox(
-            height: SizeConfig(context).screenHeight - 240,
+            height: SizeConfig(context).screenHeight - 291,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,

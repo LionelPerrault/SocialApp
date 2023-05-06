@@ -83,7 +83,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                           50,
                           1,
                           (value) {
-                            workInfo['workplace'] = value;
+                            workInfo['workPlace'] = value;
                           },
                           userInfo['workPlace'] ?? '',
                         ),

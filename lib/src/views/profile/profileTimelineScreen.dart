@@ -116,12 +116,22 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
       },
       {
         'title': 'Add your birthdate',
-        'add': userData['birthY'] == null ? false : true,
+        'add': (userData['birthY'] == null ||
+                userData['birthY'] == 'none' ||
+                userData['birthM'] == null ||
+                userData['birthM'] == 'none' ||
+                userData['birthD'] == null ||
+                userData['birthD'] == 'none')
+            ? false
+            : true,
         'route': RouteNames.settings_profile_basic
       },
       {
         'title': 'Add your relationship',
-        'add': userData['school'] == null ? false : true,
+        'add': (userData['relationship'] == null ||
+                userData['relationship'] == 'none')
+            ? false
+            : true,
         'route': RouteNames.settings_profile_basic
       },
       {
@@ -435,7 +445,32 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
             : const SizedBox(),
         loadingFlagBottom || loadingFlag || !nextPostFlag
             ? !nextPostFlag && PostController().postsProfile.isNotEmpty
-                ? const Text("There is no more data to show")
+                ? Container(
+                    padding: const EdgeInsets.only(top: 40),
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.network(Helper.emptySVG, width: 90),
+                        Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          width: 140,
+                          decoration: const BoxDecoration(
+                              color: Color.fromRGBO(240, 240, 240, 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: const Text(
+                            'No data to show',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(108, 117, 125, 1)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 : const SizedBox()
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(

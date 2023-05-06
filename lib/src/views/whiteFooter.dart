@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/contactus.dart';
 import 'package:shnatter/src/views/terms.dart';
 
 import 'about.dart';
@@ -76,9 +77,27 @@ class footbarState extends State<footbar> {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Contact Us', Colors.black, 11),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                text('Directory', Colors.black, 11),
+                InkWell(
+                  onTap: () => {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const ContactUs(),
+                      ),
+                    ),
+                  },
+                  child: GestureDetector(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Contact Us',
+                        style: TextStyle(fontSize: 13, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+                // const Padding(padding: EdgeInsets.only(left: 5)),
+                // text('Directory', Colors.black, 11),
               ]),
             ),
           ],
@@ -176,15 +195,33 @@ class rightFootbarState extends State<rightFootbar> {
                 const Padding(padding: EdgeInsets.only(left: 5)),
                 Expanded(
                   // ignore: sort_child_properties_last
-                  child: text('Contact Us', Colors.black, 11),
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const ContactUs(),
+                        ),
+                      ),
+                    },
+                    child: GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Contact Us',
+                          style: TextStyle(fontSize: 11, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
                   flex: 1,
                 ),
                 const Padding(padding: EdgeInsets.only(left: 5)),
-                Expanded(
-                  // ignore: sort_child_properties_last
-                  child: text('Directory', Colors.black, 11),
-                  flex: 1,
-                ),
+                // Expanded(
+                //   // ignore: sort_child_properties_last
+                //   child: text('Directory', Colors.black, 11),
+                //   flex: 1,
+                // ),
               ],
             )
           ],

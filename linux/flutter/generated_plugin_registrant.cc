@@ -8,7 +8,6 @@
 
 #include <emoji_picker_flutter/emoji_picker_flutter_plugin.h>
 #include <flutter_window_close/flutter_window_close_plugin.h>
-#include <libwinmedia/libwinmedia_plugin.h>
 #include <smart_auth/smart_auth_plugin.h>
 #include <url_launcher_linux/url_launcher_plugin.h>
 
@@ -19,9 +18,6 @@ void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) flutter_window_close_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "FlutterWindowClosePlugin");
   flutter_window_close_plugin_register_with_registrar(flutter_window_close_registrar);
-  g_autoptr(FlPluginRegistrar) libwinmedia_registrar =
-      fl_plugin_registry_get_registrar_for_plugin(registry, "LibwinmediaPlugin");
-  libwinmedia_plugin_register_with_registrar(libwinmedia_registrar);
   g_autoptr(FlPluginRegistrar) smart_auth_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "SmartAuthPlugin");
   smart_auth_plugin_register_with_registrar(smart_auth_registrar);

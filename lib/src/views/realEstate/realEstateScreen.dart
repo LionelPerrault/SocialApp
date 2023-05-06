@@ -53,7 +53,8 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 3),
+                        padding:
+                            const EdgeInsets.only(top: 3, left: 10, right: 10),
                         child: customInput(
                           place: 'I am looking for real estate',
                           onChange: (value) {
@@ -66,6 +67,7 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                       Row(
                         children: [
                           Container(
+                            margin: const EdgeInsets.only(left: 10),
                             decoration: const BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
@@ -170,8 +172,8 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                               // elevation: 3,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0.0)),
-                              minimumSize: const Size(120, 50),
-                              maximumSize: const Size(120, 50),
+                              minimumSize: const Size(110, 40),
+                              maximumSize: const Size(110, 40),
                             ),
                             onPressed: () {
                               (showDialog(
@@ -228,6 +230,7 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                               ],
                             ),
                           ),
+                          const SizedBox(width: 10),
                         ],
                       ),
                       SizedBox(
