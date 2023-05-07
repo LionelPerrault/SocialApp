@@ -91,6 +91,7 @@ class ChatUserListScreenState extends mvc.StateMVC<ChatUserListScreen> {
             } else {
               lastData = t['lastData'];
             }
+            print('t[chatUserName] ${t[chatUserName]}');
             var chatUserFullName = t[chatUserName]['name'];
             var status = 0;
             for (var e in con.onlineStatus) {

@@ -63,7 +63,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
               document.get('users')[0] == value['userName'])) {
         exist = true;
         con.docId = document.id;
-        con.chatUserFullName = value['firstName'] + value['lastName'];
+        con.chatUserFullName = value['firstName'] + ' ' + value['lastName'];
         con.avatar = value['avatar'];
         con.chattingUser = value['userName'];
         con.isMessageTap = "message-list";
