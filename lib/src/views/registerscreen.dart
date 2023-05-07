@@ -828,6 +828,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
         validator: (val) async {
           validator(val);
         },
+        
         obscureText: obscureText,
         onChange: (val) async {
           onchange(val);
@@ -859,7 +860,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
         style: const TextStyle(
           color: Colors.white,
           fontSize: 14,
-          fontFamily: "Hind",
+          
         ),
         cursorColor: Colors.white,
         decoration: InputDecoration(
