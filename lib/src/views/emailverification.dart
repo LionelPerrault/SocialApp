@@ -23,6 +23,7 @@ class EmailVerificationScreenState
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = true;
   String actionString = "";
+  bool invalid = false;
   @override
   void initState() {
     super.initState();
@@ -45,6 +46,7 @@ class EmailVerificationScreenState
         actionString = "Sorry, The code is expired";
       } else if (e.code == 'invalid-action-code') {
         actionString = "Sorry, The code is invalid";
+        invalid = true;
       } else if (e.code == 'user-disabled') {
         actionString = "Sorry, This user disabled";
       } else if (e.code == 'user-not-found') {
@@ -83,16 +85,22 @@ class EmailVerificationScreenState
               const SizedBox(
                 height: 10,
               ),
-              SizedBox(
-                  width: 200,
-                  height: 30,
-                  child: MyPrimaryButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(
-                            context, RouteNames.login);
-                      },
-                      buttonName: "Login Now",
-                      color: Colors.blue))
+              invalid
+                  ? const Text(
+                      'Your email was confirmed, you can now login into Shnatter!',
+                      style: TextStyle(fontSize: 30),
+                    )
+                  : Container(),
+              // SizedBox(
+              //     width: 200,
+              //     height: 30,
+              //     child: MyPrimaryButton(
+              //         onPressed: () {
+              //           Navigator.pushReplacementNamed(
+              //               context, RouteNames.login);
+              //         },
+              //         buttonName: "Login Now",
+              //         color: Colors.blue))
             ],
           ));
   }

@@ -277,13 +277,13 @@ class SettingShnatterTokenScreenState
                   //         ],
                   //       )),
                   // ),
-                  ElevatedButton(
-                    onPressed: () {
-                      RelysiaManager.payNow(
-                          con.token, "4798@shnatter.app", "1000", "for test");
-                    },
-                    child: const Text("send for test"),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     RelysiaManager.payNow(
+                  //         con.token, "4798@shnatter.app", "1000", "for test");
+                  //   },
+                  //   child: const Text("send for test"),
+                  // ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
