@@ -35,6 +35,7 @@ class AppController extends ControllerMVC {
       await firebaseMessaging.requestPermission();
       firebaseMessaging.getToken().then((token) {
         //save to firebase
+        print("token is $token");
         saveToken(token, "mobile");
       }).onError((error, stackTrace) => null);
     }

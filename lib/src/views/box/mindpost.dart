@@ -225,72 +225,72 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     {
       'label': 'Loved',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Floved.png?alt=media&token=17163fd5-5a88-4cb0-acd9-98ecaeadbe32',
     },
     {
       'label': 'Satisfied',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fsatisfied.png?alt=media&token=689f8758-f399-4275-bd94-fef7d487b914',
     },
     {
       'label': 'Strong',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fstrong.png?alt=media&token=1571985c-a734-43ad-afe4-f589f82e8f4b',
     },
     {
       'label': 'Sad',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fsad.png?alt=media&token=67362a07-5b01-47ff-8c3f-507410601558',
     },
     {
       'label': 'Crazy',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fcrazy.png?alt=media&token=2203279e-4978-4b79-9521-de96d71f74a6',
     },
     {
       'label': 'Tired',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Ftired.png?alt=media&token=8f130df6-c096-4001-b097-d4bb48832bfe',
     },
     {
       'label': 'Sleepy',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fsleepy.png?alt=media&token=e3702b09-dfa6-48de-a8d2-ff505ebdf97b',
     },
     {
       'label': 'Confused',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fconfused.png?alt=media&token=6869a88b-2519-4f99-83e4-2b52463ca09d',
     },
     {
       'label': 'Worried',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fworried.png?alt=media&token=e9992c7a-a270-4165-be76-bf3140d93e4d',
     },
     {
       'label': 'Angry',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fangry.png?alt=media&token=dc20c610-e7aa-46ac-8349-25d31e1bff9b',
     },
     {
       'label': 'Annoyed',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fannoyed.png?alt=media&token=c44d5844-8a8b-4f27-9bb3-14d097ed96a1',
     },
     {
       'label': 'Shocked',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fshocked.png?alt=media&token=7c57f8c2-ae9a-4b02-aaf5-7e3f435c032d',
     },
     {
       'label': 'Down',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fdown.png?alt=media&token=8cdc02a6-1dc3-4cf3-999e-a34cd5368464',
     },
     {
       'label': 'Confounded',
       'svg':
-          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fhappy.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/emoji%2Fconfounded.png?alt=media&token=984288dc-5c43-4076-8ec9-8ef6746e11fe',
     },
   ];
   @override
