@@ -856,7 +856,11 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
         onChanged: (val) async {
           onchange(val);
         },
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontFamily: "Hind",
+        ),
         cursorColor: Colors.white,
         decoration: InputDecoration(
           filled: true,
