@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -143,12 +144,15 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
           const Padding(padding: EdgeInsets.only(left: 10)),
           MouseRegion(
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
                 showRecoder = false;
                 setState(() {});
-                con.uploadImage(widget.type, 'image');
-                if (widget.type == 'new') {
-                  widget.goMessage('message-list');
+                final status = await Permission.photos.request();
+                if (status.isGranted) {
+                  con.uploadImage(widget.type, 'image');
+                  if (widget.type == 'new') {
+                    widget.goMessage('message-list');
+                  }
                 }
               },
               child: const Icon(
