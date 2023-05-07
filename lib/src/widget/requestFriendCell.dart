@@ -111,12 +111,17 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                         color: Colors.black,
                                       ),
                                     )
-                                  : const Text(
-                                      'Confirm',
-                                      style: TextStyle(
+                                  : const FittedBox(
+                                      // Replace the Text widget with FittedBox
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        'Confirm',
+                                        style: TextStyle(
                                           color: Colors.black,
+                                          fontWeight: FontWeight.w900,
                                           fontSize: 11,
-                                          fontWeight: FontWeight.w900),
+                                        ),
+                                      ),
                                     ),
                             ),
                             const Padding(padding: EdgeInsets.only(left: 5)),
