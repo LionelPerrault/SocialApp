@@ -142,6 +142,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
       drawerEnableOpenDragGesture: false,
       drawer: const Drawer(),
       body: SafeArea(

@@ -110,9 +110,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
       height: UserManager.userInfo['isVerify'] == false ||
               UserManager.userInfo['isVerify'].toString().toLowerCase() ==
                   'null'
-          ? (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 60)
-          : (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 20),
-      child: SingleChildScrollView(
+          ? (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 68)
+          : (SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 28),
+      child: Container(
         child: widget.chatUser.isEmpty
             ? Column(
                 children: [
