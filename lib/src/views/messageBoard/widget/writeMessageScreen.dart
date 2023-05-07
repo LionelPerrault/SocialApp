@@ -147,13 +147,17 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               onTap: () async {
                 showRecoder = false;
                 setState(() {});
-                final status = await Permission.photos.request();
-                if (status.isGranted) {
+                final status = await Permission.photos.status;
+                
+                if (status.isPermanentlyDenied){
+                  openAppSettings();
+                }else{
                   con.uploadImage(widget.type, 'image');
                   if (widget.type == 'new') {
                     widget.goMessage('message-list');
                   }
                 }
+                
               },
               child: const Icon(
                 Icons.photo_size_select_actual_rounded,
