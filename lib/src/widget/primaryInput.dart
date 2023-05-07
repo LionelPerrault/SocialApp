@@ -40,7 +40,8 @@ class PrimaryInputState extends State<PrimaryInput> {
       },
       initialValue: widget.initialValue,
       obscureText: widget.obscureText,
-      style: const TextStyle(color: Colors.white, fontSize: 14),
+      style: const TextStyle(
+          color: Colors.white, fontSize: 14, fontFamily: "Hind"),
       cursorColor: Colors.white,
       decoration: InputDecoration(
         filled: true,
