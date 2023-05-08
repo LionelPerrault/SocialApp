@@ -5,6 +5,7 @@ import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 
 class RequestFriendCell extends StatefulWidget {
@@ -37,6 +38,12 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
   @override
   Widget build(BuildContext context) {
     var e = widget.cellData;
+    var friendUserName = e.value['requester'];
+    if (friendUserName == UserManager.userInfo['userName']) {
+      friendUserName = e.value['receiver'];
+    }
+    var friendFullName = e.value[friendUserName]['name'];
+    var friendAvatar = e.value[friendUserName]['avatar'];
     return Container(
         padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
         child: Column(
@@ -46,26 +53,24 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Padding(padding: EdgeInsets.only(left: 10)),
-                  e.value[e.value['requester']]['avatar'] == ''
+                  friendAvatar == ''
                       ? CircleAvatar(
                           radius: 20, child: SvgPicture.network(Helper.avatar))
                       : CircleAvatar(
                           radius: 20,
-                          backgroundImage: NetworkImage(
-                              e.value[e.value['requester']]['avatar'])),
+                          backgroundImage: NetworkImage(friendAvatar)),
                   Container(
                     padding: const EdgeInsets.only(left: 10, top: 5),
                     child: InkWell(
                         onTap: () {
-                          ProfileController()
-                              .updateProfile(e.value['requester']);
+                          ProfileController().updateProfile(friendUserName);
                           widget.routerChange({
                             'router': RouteNames.profile,
-                            'subRouter': e.value['requester']
+                            'subRouter': friendUserName
                           });
                         },
                         child: Text(
-                          e.value[e.value['requester']]['name'],
+                          friendFullName,
                           style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w900,
