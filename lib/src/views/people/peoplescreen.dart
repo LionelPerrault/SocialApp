@@ -8,6 +8,7 @@ import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/people/tabs/discoverScreen.dart';
 import 'package:shnatter/src/views/people/tabs/friendRequestsScreen.dart';
+import 'package:shnatter/src/views/people/tabs/friendsScreen.dart';
 import 'package:shnatter/src/views/people/tabs/sendRequestsScreen.dart';
 
 class PeopleScreen extends StatefulWidget {
@@ -52,7 +53,9 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
               )
             : con.tabName == 'Friend Requests'
                 ? FriendRequestsScreen(routerChange: widget.routerChange)
-                : SendRequestsScreen()
+                : con.tabName == 'Requests Sent'
+                    ? SendRequestsScreen()
+                    : FriendsScreen(routerChange: widget.routerChange)
       ],
     );
   }
@@ -89,6 +92,38 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                       con.tabName == 'Discover'
+                          ? Container(
+                              margin: EdgeInsets.only(top: 4.5),
+                              height: 2,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2))),
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(top: 19),
+                            )
+                    ],
+                  ),
+                )),
+            InkWell(
+                onTap: () async {
+                  con.tabName = 'Friends';
+                  // reload again.
+
+                  setState(() {});
+                },
+                child: Container(
+                  padding: EdgeInsets.only(top: 19.5),
+                  width: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Friends',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                      con.tabName == 'Friends'
                           ? Container(
                               margin: EdgeInsets.only(top: 4.5),
                               height: 2,
@@ -150,7 +185,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                 )),
             InkWell(
                 onTap: () async {
-                  con.tabName = 'Send Requests';
+                  con.tabName = 'Requests Sent';
                   setState(() {});
                 },
                 child: Container(
@@ -163,7 +198,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Send Requests',
+                            'Requests Sent',
                             style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                           Padding(padding: EdgeInsets.only(left: 10)),
@@ -181,7 +216,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                           )
                         ],
                       ),
-                      con.tabName == 'Send Requests'
+                      con.tabName == 'Requests Sent'
                           ? Container(
                               //margin: EdgeInsets.only(top: 17),
                               height: 2,

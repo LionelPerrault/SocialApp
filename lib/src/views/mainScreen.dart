@@ -58,8 +58,6 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
     () async {
       var user = FirebaseAuth.instance.currentUser!;
       EmailVerified.setVerified(user.emailVerified);
-      print("getposts");
-      SearchController().getPosts();
     }();
 
     triggerEmailVerify();
@@ -274,18 +272,20 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                         .getEvents(searchText);
                                     await SearchController()
                                         .getGroups(searchText);
+                                    await SearchController()
+                                        .getUsers(searchText);
                                     if (value != '') {
-                                      SearchController().users = [
-                                        ...SearchController().usersByFirstName,
-                                        ...SearchController()
-                                            .usersByFirstNameCaps,
-                                        ...SearchController().usersByLastName,
-                                        ...SearchController()
-                                            .usersByLastNameCaps,
-                                        ...SearchController().usersByWholeName,
-                                        ...SearchController()
-                                            .usersByWholeNameCaps,
-                                      ];
+                                      // SearchController().users = [
+                                      //   ...SearchController().usersByFirstName,
+                                      //   ...SearchController()
+                                      //       .usersByFirstNameCaps,
+                                      //   ...SearchController().usersByLastName,
+                                      //   ...SearchController()
+                                      //       .usersByLastNameCaps,
+                                      //   ...SearchController().usersByWholeName,
+                                      //   ...SearchController()
+                                      //       .usersByWholeNameCaps,
+                                      // ];
 
                                       SearchController().users = [
                                         ...{...SearchController().users}

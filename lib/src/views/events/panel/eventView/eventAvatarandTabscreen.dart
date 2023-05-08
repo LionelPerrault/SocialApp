@@ -148,7 +148,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
           height: SizeConfig(context).screenHeight * 0.5,
           decoration: con.event['eventPicture'] == ''
               ? const BoxDecoration(
-                  color: Color.fromRGBO(66, 66, 66, 1),
+                  color: Color.fromRGBO(115, 202, 231, 1),
                 )
               : const BoxDecoration(),
           child: con.event['eventPicture'] == ''
@@ -274,12 +274,13 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                   children: [
                     Text(
                       '${con.event['eventName']}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: SizeConfig(context).screenWidth < 800
-                              ? const Color.fromRGBO(51, 51, 51, 1)
-                              : Colors.white),
+                          color: Colors.white),
+                      // color: SizeConfig(context).screenWidth < 800
+                      //     ? const Color.fromRGBO(51, 51, 51, 1)
+                      //     : Colors.white),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 6)),
                     Icon(
@@ -298,8 +299,14 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                       Icons.punch_clock,
                       color: Colors.white,
                     ),
-                    Text('${con.event['eventStartDate']} to'),
-                    Text('${con.event['eventEndDate']}'),
+                    Text(
+                      '${con.event['eventStartDate']} to',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      '${con.event['eventEndDate']}',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ],
                 )
               ],
