@@ -15,6 +15,18 @@ class SearchController extends ControllerMVC {
   SearchController._(StateMVC? state) : super(state);
   static SearchController? _this;
 
+  var userSnap;
+  @override
+  Future<bool> initAsync() async {
+    //
+    print('initasnyc in seach');
+    getPosts();
+    loadUsers();
+    //userSnap = Helper.userCollection.get();
+
+    return true;
+  }
+
   List users = [];
   List usersByFirstName = [];
   List usersByFirstNameCaps = [];
@@ -57,6 +69,8 @@ class SearchController extends ControllerMVC {
     usersByLastNameCaps = [];
     usersByWholeName = [];
     usersByWholeNameCaps = [];
+    getUsers(searchParam);
+    /*
     if (hasSpace(searchParam)) {
       List name = splitBySpace(searchParam);
 
@@ -67,7 +81,7 @@ class SearchController extends ControllerMVC {
       getUsersByFirstNameCaps(searchParam);
       getUsersByLastName(searchParam);
       getUsersByLastNameCaps(searchParam);
-    }
+    }*/
   }
 
   getUsersByWholeName(name) async {
@@ -230,10 +244,50 @@ class SearchController extends ControllerMVC {
     setState(() {});
   }
 
+  loadUsers() async {
+    // isGetUsers = false;
+    //   setState(() {});
+    userSnap = await Helper.userCollection.get();
+    //  isGetUsers = true;
+  }
+
+  getUsers(String searchText) async {
+    searchText = searchText.toLowerCase();
+
+    if (userSnap == null) {
+      await loadUsers();
+    }
+    setState(() {});
+    //var allSanp = await Helper.userCollection.get();
+    List box = [];
+
+    for (var doc in userSnap.docs) {
+      if (doc.data()['userName'] != UserManager.userInfo['userName']) {
+        String userName = doc.data()['userName'];
+        if (userName.toLowerCase().contains(searchText) ||
+            '${doc.data()['firstName']} ${doc.data()['lastName']}'
+                .toLowerCase()
+                .contains(searchText)) {
+          box.add({
+            ...doc.data(),
+            'uid': doc.id,
+          });
+        }
+      }
+    }
+    users = box;
+
+    isGetUsers = true;
+    setState(() {});
+
+    return users;
+  }
+
   bool isGetPosts = true;
+  bool isGetUsers = true;
   getPosts() async {
     isGetPosts = false;
-    setState(() {});
+    // setState(() {});
     var allSanp =
         await Helper.postCollection.orderBy('postTime', descending: true).get();
     var allPosts = allSanp.docs;
@@ -279,7 +333,7 @@ class SearchController extends ControllerMVC {
     }
     posts = postsBox;
     isGetPosts = true;
-    setState(() {});
+    // setState(() {});
 
     return posts;
   }

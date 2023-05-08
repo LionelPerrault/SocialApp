@@ -113,23 +113,23 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                     onSubmitted: (value) async {
                       searchValue = value;
 
-                      await SearchController().updateSearchText(value);
+                      await searchCon.updateSearchText(value);
 
-                      await SearchController().getEvents(searchValue);
-                      await SearchController().getGroups(searchValue);
+                      await searchCon.getEvents(searchValue);
+                      await searchCon.getGroups(searchValue);
                       if (value != '') {
-                        SearchController().users = [
-                          ...SearchController().usersByFirstName,
-                          ...SearchController().usersByFirstNameCaps,
-                          ...SearchController().usersByLastName,
-                          ...SearchController().usersByLastNameCaps,
-                          ...SearchController().usersByWholeName,
-                          ...SearchController().usersByWholeNameCaps,
-                        ];
+                        // SearchController().users = [
+                        //   ...SearchController().usersByFirstName,
+                        //   ...SearchController().usersByFirstNameCaps,
+                        //   ...SearchController().usersByLastName,
+                        //   ...SearchController().usersByLastNameCaps,
+                        //   ...SearchController().usersByWholeName,
+                        //   ...SearchController().usersByWholeNameCaps,
+                        // ];
 
-                        searchResultUsers = [...SearchController().users];
-                        searchResultEvents = [...SearchController().events];
-                        searchResultGroups = [...SearchController().groups];
+                        searchResultUsers = [...searchCon.users];
+                        searchResultEvents = [...searchCon.events];
+                        searchResultGroups = [...searchCon.groups];
                       } else {
                         searchResultUsers = [];
 
