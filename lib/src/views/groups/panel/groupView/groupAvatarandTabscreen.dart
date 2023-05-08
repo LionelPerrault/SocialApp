@@ -332,12 +332,10 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
               children: [
                 Text(
                   '${con.group['groupName']}',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: SizeConfig(context).screenWidth < 800
-                          ? const Color.fromRGBO(51, 51, 51, 1)
-                          : Colors.white),
+                      color: Colors.black),
                 ),
                 const Padding(padding: EdgeInsets.only(left: 6)),
                 Icon(

@@ -198,8 +198,8 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
         : Container(
             height: 400,
             width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-                ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
-                : SizeConfig(context).screenWidth - 60,
+                ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
+                : SizeConfig(context).screenWidth,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: GridView.count(
                 crossAxisCount: SizeConfig(context).screenWidth > 800
@@ -240,8 +240,8 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
         : Container(
             height: 400,
             width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-                ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
-                : SizeConfig(context).screenWidth - 60,
+                ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
+                : SizeConfig(context).screenWidth,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: GridView.count(
               crossAxisCount: SizeConfig(context).screenWidth > 800
