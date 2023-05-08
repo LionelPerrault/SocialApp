@@ -335,7 +335,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                   style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                      color: Colors.white),
                 ),
                 const Padding(padding: EdgeInsets.only(left: 6)),
                 Icon(

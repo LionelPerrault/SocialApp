@@ -274,12 +274,13 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                   children: [
                     Text(
                       '${con.event['eventName']}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: SizeConfig(context).screenWidth < 800
-                              ? const Color.fromRGBO(51, 51, 51, 1)
-                              : Colors.white),
+                          color: Colors.white),
+                      // color: SizeConfig(context).screenWidth < 800
+                      //     ? const Color.fromRGBO(51, 51, 51, 1)
+                      //     : Colors.white),
                     ),
                     const Padding(padding: EdgeInsets.only(left: 6)),
                     Icon(
@@ -298,8 +299,14 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                       Icons.punch_clock,
                       color: Colors.white,
                     ),
-                    Text('${con.event['eventStartDate']} to'),
-                    Text('${con.event['eventEndDate']}'),
+                    Text(
+                      '${con.event['eventStartDate']} to',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      '${con.event['eventEndDate']}',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ],
                 )
               ],
