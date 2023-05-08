@@ -260,7 +260,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                 alignment: Alignment.center,
                                 child: RichText(
                                   text: TextSpan(
-                                      text: 'Not Regsitered?',
+                                      text: 'Not Registered?',
                                       style: const TextStyle(
                                           color: Colors.grey, fontSize: 12),
                                       children: <TextSpan>[
