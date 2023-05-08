@@ -142,7 +142,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
           height: SizeConfig(context).screenHeight * 0.5,
           decoration: con.group['groupCover'] == ''
               ? const BoxDecoration(
-                  color: Color.fromRGBO(66, 66, 66, 1),
+                  color: Color.fromRGBO(115, 202, 231, 1),
                 )
               : const BoxDecoration(),
           child: con.group['groupCover'] == ''
