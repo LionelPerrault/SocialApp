@@ -924,8 +924,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       cursor: SystemMouseCursors.click,
                       child: InkWell(
                         onTap: () {
+                          if (whatReply.isNotEmpty) whatReply.removeLast();
                           if (!whatReply.contains(e['id'])) {
                             whatReply.add(e['id']);
+                          } else {
+                            whatReply.remove(e['id']);
                           }
                           setState(() {});
                         },
@@ -997,7 +1000,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         )
                       ]),
                     ),
-              whatReply.contains(e['id']) //reply comment textedit
+              whatReply.contains(e['id']) &&
+                      (reply[e['id']] == null ||
+                          reply[e['id']] == '') //reply comment textedit
                   ? Container(
                       margin: const EdgeInsets.only(top: 10),
                       child: input((value) {
@@ -1008,7 +1013,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           print("reply[e['id']]  is ${reply[e['id']]}");
                           await con.saveReply(widget.postInfo['id'], e['id'],
                               reply[e['id']], 'text');
-                          //whatReply.remove(e['id']);
+                          reply[e['id']] = '';
+                          //   whatReply.remove(e['id']);
                           setState(() {});
                         }
                       }),
