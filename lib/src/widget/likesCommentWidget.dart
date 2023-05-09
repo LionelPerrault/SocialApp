@@ -559,6 +559,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             child: SizedBox(
                 height: 250,
                 child: EmojiPicker(
+                  onEmojiSelected: (category, Emoji emoji) {
+                    comment = comment + emoji.emoji;
+                  },
                   textEditingController: commentController,
                   config: Config(
                     columns: 7,
