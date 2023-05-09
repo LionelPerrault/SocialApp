@@ -119,6 +119,7 @@ class UserController extends ControllerMVC {
     context = cont;
     signUpUserInfo = info;
     email = signUpUserInfo['email'].toLowerCase().trim();
+    signUpUserInfo['email'] = email;
     password = signUpUserInfo['password'];
     var check = email.contains('@'); //return true if contains
     if (!check) {
@@ -260,7 +261,7 @@ class UserController extends ControllerMVC {
       'avatar': '',
       'isEmailVerify': false,
       'walletAddress': walletAddress,
-      'relysiaEmail': relysiaEmail,
+      'relysiaEmail': relysiaEmail.toLowerCase().trim(),
       'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
