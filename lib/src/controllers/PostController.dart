@@ -1203,11 +1203,12 @@ class PostController extends ControllerMVC {
 
   Future<Map> createRealEstate(
       context, Map<String, dynamic> realEstateData) async {
-    if (realEstateData['realEstateName'].isEmpty ||
-        realEstateData['realEstatePrice'].isEmpty ||
-        realEstateData['realEstateLocation'].isEmpty) {
+    if (realEstateData['realEstateName'] == '' ||
+        realEstateData['realEstatePrice'] == '0' ||
+        realEstateData['realEstateLocation'] == '' ||
+        realEstateData['realEstateAbout'] == '') {
       return {
-        'msg': 'Please add your real-estate name, price, and location',
+        'msg': 'Please add your real-estate name, price, location and about',
         'result': false,
       };
     }

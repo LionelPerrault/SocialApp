@@ -44,6 +44,9 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
     'realEstateStatus': 'New',
     'realEstateOffer': 'Sell',
     'realEstateAbout': '',
+    'realEstateName': '',
+    'realEstateLocation': '',
+    'realEstatePrice': '',
     'realEstatePhoto': [],
     'realEstateFile': [],
   };
@@ -90,10 +93,10 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
             (value) => {
               footerBtnState = false,
               setState(() => {}),
-              Navigator.of(context).pop(true),
               Helper.showToast(value['msg']),
-              if (value['result'] == true)
+              if (value['result'])
                 {
+                  Navigator.of(context).pop(true),
                   widget.routerChange({
                     'router': RouteNames.realEstate,
                     'subRouter': value['value'],
@@ -103,6 +106,8 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
           );
       setState(() {});
     } else {
+      footerBtnState = false;
+      setState(() {});
       showDialog(
         context: context,
         builder: (BuildContext dialogContext) => AlertDialog(
@@ -117,6 +122,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                           if (value)
                             {
                               payLoading = false,
+                              footerBtnState = false,
                               setState(() {}),
                               Navigator.of(dialogContext).pop(true),
                               // loading = true,
@@ -126,11 +132,11 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                                   .then((value) {
                                 footerBtnState = false;
                                 setState(() => {});
-                                Navigator.of(context).pop(true);
                                 // loading = true;
                                 setState(() {});
                                 Helper.showToast(value['msg']);
                                 if (value['result'] == true) {
+                                  Navigator.of(context).pop(true);
                                   widget.routerChange({
                                     'router': RouteNames.realEstate,
                                     'subRouter': value['value'],
@@ -529,7 +535,9 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                               (value) async {
                             realEstateInfo['realEstateAbout'] = value;
                             setState(() {});
-                          }, widget.editData['data']['realEstateAbout'] ?? ''),
+                          },
+                              widget.editData['data']['realEstateAbout'] ??
+                                  realEstateInfo['realEstateAbout']),
                         ),
                       ),
                     ],
@@ -696,9 +704,12 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                           postCon
                               .editRealEstate(context, widget.editData['id'],
                                   realEstateInfo)
-                              .then(
-                                  (value) => {Helper.showToast(value['msg'])});
-                          Navigator.of(context).pop(true);
+                              .then((value) {
+                            Helper.showToast(value['msg']);
+                            if (value['result']) {
+                              Navigator.of(context).pop(true);
+                            }
+                          });
                         }
                       },
                       child: footerBtnState
