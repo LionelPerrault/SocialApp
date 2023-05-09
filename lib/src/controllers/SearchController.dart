@@ -1,10 +1,11 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:flutter/cupertino.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'ProfileController.dart';
 
 enum EmailType { emailVerify, googleVerify }
@@ -12,7 +13,9 @@ enum EmailType { emailVerify, googleVerify }
 class SearchController extends ControllerMVC {
   factory SearchController([StateMVC? state]) =>
       _this ??= SearchController._(state);
-  SearchController._(StateMVC? state) : super(state);
+  SearchController._(StateMVC? state)
+      : notifiers = [],
+        super(state);
   static SearchController? _this;
 
   var userSnap;
@@ -27,6 +30,24 @@ class SearchController extends ControllerMVC {
     return true;
   }
 
+  //fix bugs on people screen
+  List<mvc.StateMVC> notifiers;
+  //fix bugs of unknown
+  void addNotifyCallBack(mvc.StateMVC notifi) {
+    notifiers.add(notifi);
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    for (int i = 0; i < notifiers.length; i++) {
+      mvc.StateMVC notifi = notifiers[i];
+      notifi.setState(() {});
+    }
+  }
+
+  //fix bugs of unknown
+  bool isLoading = false;
   List users = [];
   List usersByFirstName = [];
   List usersByFirstNameCaps = [];
@@ -62,6 +83,7 @@ class SearchController extends ControllerMVC {
 
   updateSearchText(searchParam) {
     //  searchText = searchParam;
+    isLoading = true;
     setState(() {});
     usersByFirstName = [];
     usersByLastName = [];
@@ -70,6 +92,7 @@ class SearchController extends ControllerMVC {
     usersByWholeName = [];
     usersByWholeNameCaps = [];
     getUsers(searchParam);
+    //isLoading = false;
     /*
     if (hasSpace(searchParam)) {
       List name = splitBySpace(searchParam);

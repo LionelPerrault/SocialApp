@@ -58,6 +58,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
     //searchCon.getPosts();
     // searchCon.getEvents();
     // searchCon.getGroups();
+    searchCon.addNotifyCallBack(this);
     super.initState();
   }
 
@@ -112,7 +113,10 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                     },
                     onSubmitted: (value) async {
                       searchValue = value;
-
+                      searchCon.isLoading = true;
+                      setState(
+                        () {},
+                      );
                       await searchCon.updateSearchText(value);
 
                       await searchCon.getEvents(searchValue);
@@ -136,7 +140,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                         searchResultEvents = [];
                         searchResultGroups = [];
                       }
-
+                      searchCon.isLoading = false;
                       super.setState(() {});
                     },
                     decoration: const InputDecoration(

@@ -25,11 +25,13 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
   late SearchController searchCon;
   var userInfo = UserManager.userInfo;
   var resultUsers = [];
+  bool isLoading = false;
   @override
   void initState() {
     add(widget.con);
 
     searchCon = controller as SearchController;
+    searchCon.addNotifyCallBack(this);
     super.initState();
 
     // QuerySnapshot snapshotFriend = await FirebaseFirestore.instance
@@ -61,57 +63,66 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.searchResult.isEmpty
-        ? Container(
-            padding: const EdgeInsets.only(top: 40),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.network(Helper.emptySVG, width: 90),
-                Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(top: 10),
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  width: 140,
-                  decoration: const BoxDecoration(
-                      color: Color.fromRGBO(240, 240, 240, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: const Text(
-                    'No data to show',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(108, 117, 125, 1)),
-                  ),
-                ),
-              ],
+    print(searchCon.isLoading);
+    return searchCon.isLoading
+        ? const SizedBox(
+            width: 10,
+            height: 10.0,
+            child: CircularProgressIndicator(
+              color: Colors.grey,
             ),
           )
-        : Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Expanded(
-                child: SizedBox(
-                  width: SizeConfig(context).screenWidth,
-                  height: SizeConfig(context).screenHeight -
-                      SizeConfig.navbarHeight -
-                      150 -
-                      (UserManager.userInfo['isVerify'] ? 0 : 50),
-                  child: ListView.separated(
-                    itemCount: widget.searchResult.length,
-                    itemBuilder: (context, index) => SearchUserCell(
-                      userInfo: widget.searchResult[index],
-                      routerChange: widget.routerChange,
+        : widget.searchResult.isEmpty
+            ? Container(
+                padding: const EdgeInsets.only(top: 40),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.network(Helper.emptySVG, width: 90),
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      width: 140,
+                      decoration: const BoxDecoration(
+                          color: Color.fromRGBO(240, 240, 240, 1),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: const Text(
+                        'No data to show',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(108, 117, 125, 1)),
+                      ),
                     ),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(
-                      height: 1,
-                      endIndent: 10,
+                  ],
+                ),
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: SizedBox(
+                      width: SizeConfig(context).screenWidth,
+                      height: SizeConfig(context).screenHeight -
+                          SizeConfig.navbarHeight -
+                          150 -
+                          (UserManager.userInfo['isVerify'] ? 0 : 50),
+                      child: ListView.separated(
+                        itemCount: widget.searchResult.length,
+                        itemBuilder: (context, index) => SearchUserCell(
+                          userInfo: widget.searchResult[index],
+                          routerChange: widget.routerChange,
+                        ),
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(
+                          height: 1,
+                          endIndent: 10,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ],
-          );
+                ],
+              );
   }
 }
