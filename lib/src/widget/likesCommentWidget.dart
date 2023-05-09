@@ -509,7 +509,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
           //     ),
           //   ),
           // ),
-          !isComment
+          !isComment || !widget.commentFlag
               ? const SizedBox()
               : Container(
                   color: const Color.fromRGBO(245, 245, 245, 1),
@@ -1001,6 +1001,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       ]),
                     ),
               whatReply.contains(e['id']) &&
+                      widget.commentFlag &&
                       (reply[e['id']] == null ||
                           reply[e['id']] == '') //reply comment textedit
                   ? Container(
