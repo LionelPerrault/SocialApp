@@ -598,21 +598,26 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   ),
                 )),
           ),
-          !isComment
-              ? Container()
-              : Container(
-                  width: SizeConfig(context).screenWidth > 600
-                      ? 600
-                      : SizeConfig(context).screenWidth,
-                  padding:
-                      const EdgeInsets.only(left: 20, right: 15, bottom: 10),
-                  color: const Color.fromRGBO(245, 245, 245, 1),
-                  child: Column(
-                    children: allComment.isNotEmpty
-                        ? allComment.map((data) => eachComment(data)).toList()
-                        : [],
-                  ),
-                ),
+          Container(
+            width: SizeConfig(context).screenWidth > 600
+                ? 600
+                : SizeConfig(context).screenWidth,
+            padding: const EdgeInsets.only(left: 20, right: 15, bottom: 10),
+            color: const Color.fromRGBO(245, 245, 245, 1),
+            child: isComment && allComment != null && allComment.isNotEmpty
+                ? ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: allComment.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return eachComment(
+                        allComment[index],
+                      );
+                    },
+                  )
+                : Container(),
+          )
         ],
       ),
     );
@@ -636,7 +641,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   ? 350
                   : SizeConfig(context).screenWidth - 225,
               child: TextField(
-                controller: commentController,
+                controller: null,
                 cursorWidth: 1,
                 onChanged: (value) {
                   onChange(value);
@@ -826,6 +831,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          //Avatar
           e['userInfo']['avatar'] == ''
               ? CircleAvatar(
                   radius: 18,
@@ -842,6 +848,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               Stack(
                 children: [
                   Container(
+                    //User and Comment
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Container(
                       key: key,
@@ -886,6 +893,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               ),
               const Padding(padding: EdgeInsets.only(left: 7)),
               Container(
+                //Like & reply button
                 padding: const EdgeInsets.only(left: 7),
                 child: Row(
                   children: [
@@ -958,7 +966,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   ],
                 ),
               ),
-              whatReply.contains(e['id'])
+              whatReply.contains(e['id']) //reply comment list
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -989,7 +997,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         )
                       ]),
                     ),
-              whatReply.contains(e['id'])
+              whatReply.contains(e['id']) //reply comment textedit
                   ? Container(
                       margin: const EdgeInsets.only(top: 10),
                       child: input((value) {
@@ -998,6 +1006,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                         if (reply[e['id']] != '') {
                           await con.saveReply(widget.postInfo['id'], e['id'],
                               reply[e['id']], 'text');
+                          //whatReply.remove(e['id']);
                           setState(() {});
                         }
                       }),
@@ -1101,77 +1110,79 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 ],
               ),
               const Padding(padding: EdgeInsets.only(left: 7)),
-              Container(
-                padding: const EdgeInsets.only(left: 7),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        if (whoComment == '') {
-                          whoComment = val['id'];
-                          commentHeight = key1.currentContext!.size!.height;
+              // Container(
+              //   padding: const EdgeInsets.only(left: 7),
+              //   child: Row(
+              //     children: [
+              //       // Like button of Reply Comment
+              //       // InkWell(
+              //       //   onTap: () {
+              //       //     if (whoComment == '') {
+              //       //       whoComment = val['id'];
+              //       //       commentHeight = key1.currentContext!.size!.height;
 
-                          setState(() {});
-                        } else {
-                          whoComment = '';
+              //       //       setState(() {});
+              //       //     } else {
+              //       //       whoComment = '';
 
-                          setState(() {});
-                        }
-                      },
-                      child: Text(
-                        con.replyLikes[val['id']] ?? 'Like',
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: con.replyLikes[val['id']] == null
-                                ? Colors.black
-                                : likesColor[con.replyLikes[val['id']]]),
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 6)),
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: InkWell(
-                        onTap: () {
-                          if (!whatReply.contains(e['id'])) {
-                            whatReply.add(e['id']);
-                          }
-                          setState(() {});
-                        },
-                        child: const Text(
-                          'Reply',
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 10)),
-                    InkWell(
-                      onTap: () {
-                        viewLikeUser(con.replyLikesCount[val['id']]);
-                      },
-                      child: Row(
-                        //children: con.replyLikesCount[val['id']]
-                        children: totalLikeImage
-                            .map<Widget>(
-                              (value) => Container(
-                                padding: const EdgeInsets.only(left: 3),
-                                child: Row(
-                                  children: [
-                                    Image.network(
-                                      emoticon[value].toString(),
-                                      width: 20,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 3)),
-                    Text(totalLikeImage.length.toString())
-                  ],
-                ),
-              ),
+              //       //       setState(() {});
+              //       //     }
+              //       //   },
+              //       //   child: Text(
+              //       //     con.replyLikes[val['id']] ?? 'Like',
+              //       //     style: TextStyle(
+              //       //         fontSize: 13,
+              //       //         color: con.replyLikes[val['id']] == null
+              //       //             ? Colors.black
+              //       //             : likesColor[con.replyLikes[val['id']]]),
+              //       //   ),
+              //       // ),
+              //       // const Padding(padding: EdgeInsets.only(left: 6)),
+              //       //Reply button of Reply Comment
+              //       // MouseRegion(
+              //       //   cursor: SystemMouseCursors.click,
+              //       //   child: InkWell(
+              //       //     onTap: () {
+              //       //       if (!whatReply.contains(val['id'])) {
+              //       //         whatReply.add(val['id']);
+              //       //       }
+              //       //       setState(() {});
+              //       //     },
+              //       //     child: const Text(
+              //       //       'Reply',
+              //       //       style: TextStyle(fontSize: 13),
+              //       //     ),
+              //       //   ),
+              //       // ),
+              //       // const Padding(padding: EdgeInsets.only(left: 10)),
+              //       // InkWell(
+              //       //   onTap: () {
+              //       //     //  viewLikeUser(con.replyLikesCount[val['id']]);
+              //       //   },
+              //       //   child: Row(
+              //       //     //children: con.replyLikesCount[val['id']]
+              //       //     children: totalLikeImage
+              //       //         .map<Widget>(
+              //       //           (value) => Container(
+              //       //             padding: const EdgeInsets.only(left: 3),
+              //       //             child: Row(
+              //       //               children: [
+              //       //                 Image.network(
+              //       //                   emoticon[value].toString(),
+              //       //                   width: 20,
+              //       //                 ),
+              //       //               ],
+              //       //             ),
+              //       //           ),
+              //       //         )
+              //       //         .toList(),
+              //       //   ),
+              //       // ),
+              //       // const Padding(padding: EdgeInsets.only(left: 3)),
+              //       // Text(totalLikeImage.length.toString())
+              //     ],
+              //   ),
+              // ),
             ],
           )
         ],
