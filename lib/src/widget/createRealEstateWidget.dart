@@ -720,7 +720,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
       ),
       if (autoLocationList.isNotEmpty)
         Positioned(
-            top: 300,
+            top: 250,
             left: 0,
             right: 0,
             child: SizedBox(
