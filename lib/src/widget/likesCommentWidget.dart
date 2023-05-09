@@ -1003,7 +1003,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       child: input((value) {
                         reply[e['id']] = value;
                       }, () async {
-                        if (reply[e['id']] != '') {
+                        print("reply[e['id']]  is ${reply[e['id']]}");
+                        if (reply[e['id']] != null && reply[e['id']] != '') {
+                          print("reply[e['id']]  is ${reply[e['id']]}");
                           await con.saveReply(widget.postInfo['id'], e['id'],
                               reply[e['id']], 'text');
                           //whatReply.remove(e['id']);
