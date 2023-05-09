@@ -144,7 +144,10 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                         color: Colors.white,
                                       ),
                                       onchange: (value) async {
-                                        email = value;
+                                        email = value
+                                            .toString()
+                                            .toLowerCase()
+                                            .trim();
                                         setState(() {});
                                       }),
                                   passwordTextField(
