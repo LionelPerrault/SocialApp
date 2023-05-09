@@ -326,10 +326,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                               MaterialStateProperty.all(Colors.transparent),
                         ),
                         child: SvgPicture.network(
-                          placeholderBuilder: (context) => const Icon(
-                              Icons.logo_dev,
-                              size: 30,
-                              color: Colors.white),
+                          placeholderBuilder: (context) => const SizedBox(),
                           SVGPath.home,
                           color: Colors.white,
                           width: 20,
@@ -351,10 +348,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
-                          placeholderBuilder: (context) => const Icon(
-                              Icons.logo_dev,
-                              size: 30,
-                              color: Colors.white),
+                          placeholderBuilder: (context) => const SizedBox(),
                           SVGPath.posts,
                           color: Colors.white,
                           width: 20,
@@ -391,10 +385,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 13)),
                               child: SvgPicture.network(
-                                placeholderBuilder: (context) => const Icon(
-                                    Icons.logo_dev,
-                                    size: 30,
-                                    color: Colors.white),
+                                placeholderBuilder: (context) =>
+                                    const SizedBox(),
                                 SVGPath.group,
                                 color: Colors.white,
                                 width: 24,
@@ -438,10 +430,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 style: const TextStyle(
                                     color: Colors.white, fontSize: 13)),
                             child: SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
+                              placeholderBuilder: (context) => const SizedBox(),
                               SVGPath.message,
                               color: Colors.white,
                               width: 20,
@@ -481,10 +470,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 style: const TextStyle(
                                     color: Colors.white, fontSize: 13)),
                             child: SvgPicture.network(
-                              placeholderBuilder: (context) => const Icon(
-                                  Icons.logo_dev,
-                                  size: 30,
-                                  color: Colors.white),
+                              placeholderBuilder: (context) => const SizedBox(),
                               SVGPath.notification,
                               color: Colors.white,
                               width: 20,
@@ -516,10 +502,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 MaterialStateProperty.all(Colors.transparent),
                           ),
                           child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
+                            placeholderBuilder: (context) => const SizedBox(),
                             SVGPath.search,
                             color: Colors.white,
                             width: 20,
@@ -651,10 +634,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         curve: Curves.easeIn,
                         opacity: onHover ? 0.5 : 1,
                         child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
+                            placeholderBuilder: (context) => const SizedBox(),
                             SVGPath.logo,
                             width: 40,
                             height: 40,
@@ -678,10 +658,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 MaterialStateProperty.all(Colors.transparent),
                           ),
                           child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
+                            placeholderBuilder: (context) => const SizedBox(),
                             SVGPath.home,
                             color: Colors.white,
                             width: 20,
@@ -709,10 +686,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         pressType: PressType.singleClick,
                         verticalMargin: -10,
                         child: SvgPicture.network(
-                          placeholderBuilder: (context) => const Icon(
-                              Icons.logo_dev,
-                              size: 30,
-                              color: Colors.white),
+                          placeholderBuilder: (context) => const SizedBox(),
                           SVGPath.posts,
                           color: Colors.white,
                           width: 20,
@@ -749,10 +723,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 13)),
                               child: SvgPicture.network(
-                                placeholderBuilder: (context) => const Icon(
-                                    Icons.logo_dev,
-                                    size: 30,
-                                    color: Colors.white),
+                                placeholderBuilder: (context) =>
+                                    const SizedBox(),
                                 SVGPath.group,
                                 color: Colors.white,
                                 width: 24.5,
@@ -793,10 +765,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 13)),
                               child: SvgPicture.network(
-                                placeholderBuilder: (context) => const Icon(
-                                    Icons.logo_dev,
-                                    size: 30,
-                                    color: Colors.white),
+                                placeholderBuilder: (context) =>
+                                    const SizedBox(),
                                 SVGPath.message,
                                 color: Colors.white,
                                 width: 20,
@@ -835,10 +805,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 13)),
                               child: SvgPicture.network(
-                                placeholderBuilder: (context) => const Icon(
-                                    Icons.logo_dev,
-                                    size: 30,
-                                    color: Color.fromARGB(255, 201, 61, 61)),
+                                placeholderBuilder: (context) =>
+                                    const SizedBox(),
                                 SVGPath.notification,
                                 color: Colors.white,
                                 width: 20,

@@ -114,10 +114,7 @@ class AdminShnatterNavigationState
                               MaterialStateProperty.all(Colors.transparent),
                         ),
                         child: SvgPicture.network(
-                          placeholderBuilder: (context) => const Icon(
-                              Icons.logo_dev,
-                              size: 30,
-                              color: Colors.white),
+                          placeholderBuilder: (context) => const SizedBox(),
                           SVGPath.home,
                           color: Colors.white,
                           width: 20,
@@ -191,10 +188,8 @@ class AdminShnatterNavigationState
                               curve: Curves.easeIn,
                               opacity: onHover ? 0.5 : 1,
                               child: SvgPicture.network(
-                                  placeholderBuilder: (context) => const Icon(
-                                      Icons.logo_dev,
-                                      size: 30,
-                                      color: Colors.white),
+                                  placeholderBuilder: (context) =>
+                                      const SizedBox(),
                                   SVGPath.logo,
                                   width: 40,
                                   height: 40,
@@ -225,10 +220,7 @@ class AdminShnatterNavigationState
                                 MaterialStateProperty.all(Colors.transparent),
                           ),
                           child: SvgPicture.network(
-                            placeholderBuilder: (context) => const Icon(
-                                Icons.logo_dev,
-                                size: 30,
-                                color: Colors.white),
+                            placeholderBuilder: (context) => const SizedBox(),
                             SVGPath.home,
                             color: Colors.white,
                             width: 20,
