@@ -175,13 +175,16 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                       ),
               ),
               const Divider(height: 1, indent: 0),
-              Container(
-                  color: const Color.fromARGB(255, 130, 163, 255),
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      color: const Color.fromARGB(255, 130, 163, 255),
+                      alignment: Alignment.center,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              fixedSize: const Size(400, 11)),
                           child: const Text('See All',
                               style: TextStyle(fontSize: 11)),
                           onPressed: () async {
@@ -190,8 +193,10 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                             });
                             widget.hideMenu();
                           }),
-                    ],
-                  ))
+                    ),
+                  ),
+                ],
+              ),
             ],
           )),
     );
