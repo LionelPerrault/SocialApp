@@ -222,7 +222,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 'uid': allNotifi[i].id,
                 'avatar': data['avatar'],
                 'userName': data['userName'],
-                'text': '${groupData['groupName']} $text',
+                'text': 'Group ${groupData['groupName']} $text',
                 'redirect': {
                   'router': RouteNames.groups,
                   'subRouter': allNotifi[i]['postId'],
