@@ -23,21 +23,51 @@ class ContactUsState extends mvc.StateMVC<ContactUs> {
     super.initState();
   }
 
+  bool isSending = false;
+
   sendContact() async {
+    isSending = true;
+    setState(() {});
     String email = emailCon.text;
     String name = nameCon.text;
     String message = messageCon.text;
     if (!email.contains('@') || !email.contains('.')) {
       Helper.showToast('Please insert valid email');
+      isSending = false;
+      setState(() {});
+      return;
     }
     if (name == '' || message == '') {
       Helper.showToast('Please fill all field');
+      isSending = false;
+      setState(() {});
+      return;
     }
-    var adminSnap = await FirebaseFirestore.instance
+    var reportSnap = await FirebaseFirestore.instance
         .collection(Helper.adminPanel)
-        .doc('treasure')
+        .doc('report')
         .get();
-    var adminData = adminSnap.data();
+    List contactUsDatas = reportSnap.data()!['contactUs'];
+
+    contactUsDatas = [
+      {
+        'email': email,
+        'name': name,
+        'message': message,
+      },
+      ...contactUsDatas,
+    ];
+    await FirebaseFirestore.instance
+        .collection(Helper.adminPanel)
+        .doc('report')
+        .update({'contactUs': contactUsDatas});
+
+    emailCon.text = '';
+    nameCon.text = '';
+    messageCon.text = '';
+    isSending = false;
+    setState(() {});
+    return;
   }
 
   @override
@@ -116,7 +146,7 @@ class ContactUsState extends mvc.StateMVC<ContactUs> {
                               child: SizedBox(
                                 width: 700,
                                 child: titleAndsubtitleInput(
-                                    'Your Name', 50, 1, nameCon, ''),
+                                    'Your Name', 50, 1, nameCon),
                               ),
                             ),
                           ],
@@ -128,7 +158,7 @@ class ContactUsState extends mvc.StateMVC<ContactUs> {
                               child: SizedBox(
                                 width: 700,
                                 child: titleAndsubtitleInput(
-                                    'Your Email Address', 50, 1, emailCon, ''),
+                                    'Your Email Address', 50, 1, emailCon),
                               ),
                             ),
                           ],
@@ -140,7 +170,7 @@ class ContactUsState extends mvc.StateMVC<ContactUs> {
                               child: SizedBox(
                                 width: 700,
                                 child: titleAndsubtitleInput(
-                                    'Your Message', 100, 4, messageCon, ''),
+                                    'Your Message', 100, 4, messageCon),
                               ),
                             ),
                           ],
@@ -162,23 +192,33 @@ class ContactUsState extends mvc.StateMVC<ContactUs> {
                                     maximumSize: const Size(140, 50),
                                   ),
                                   onPressed: () {
-                                    sendContact();
+                                    if (!isSending) sendContact();
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: const [
-                                      Icon(Icons.send),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text('Send Message',
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold))
-                                    ],
+                                    children: isSending
+                                        ? const [
+                                            SizedBox(
+                                              width: 30,
+                                              height: 30,
+                                              child: CircularProgressIndicator(
+                                                  color: Colors.grey),
+                                            )
+                                          ]
+                                        : const [
+                                            Icon(Icons.send),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text('Send Message',
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold))
+                                          ],
                                   ),
                                 ),
                               ),
@@ -197,7 +237,7 @@ class ContactUsState extends mvc.StateMVC<ContactUs> {
     );
   }
 
-  Widget titleAndsubtitleInput(title, double height, line, controller, text) {
+  Widget titleAndsubtitleInput(title, double height, line, controller) {
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Column(
