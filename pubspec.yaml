@@ -128,8 +128,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  #assets:
-  #   - assets/images/
+  assets:
+    - assets/images/
   #   - assets/images/svg/
   #   - assets/images/svg/logo.svg
   # An image asset can refer to one or more resolution-specific "variants", see
