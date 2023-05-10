@@ -63,8 +63,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
             width: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(
-                    "https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8"),
+                image: AssetImage(
+                    'assets/images/main-background-min.jpg'), //NetworkImage("https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fmain-background-min.jpg?alt=media&token=47b6ab2c-74b4-455c-a61a-632cf6d476a8"),
                 fit: BoxFit.cover,
               ),
             ),
