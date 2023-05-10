@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
+import '../helpers/emailverified.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
@@ -36,6 +37,7 @@ class EmailVerificationScreenState
       var response =
           await FirebaseAuth.instance.applyActionCode(widget.oobCode);
       isLoading = false;
+      EmailVerified.setVerified(true);
       actionString = "Successfully Verified";
       // send axios
       http.get(Uri.parse(widget.continueUrl));
