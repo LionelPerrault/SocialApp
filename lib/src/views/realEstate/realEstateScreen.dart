@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/views/realEstate/panel/realEstateAllProduct.dart';
@@ -85,7 +86,7 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                           Container(
                             width: 110,
                             height: 34,
-                            margin: const EdgeInsets.only(right: 20, top: 2),
+                            margin: const EdgeInsets.only(right: 20, top: 1),
                             child: PopupMenuButton(
                               onSelected: (value) {
                                 arrayOption = value;
@@ -173,37 +174,40 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                               // elevation: 3,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0.0)),
-                              minimumSize: const Size(110, 40),
-                              maximumSize: const Size(110, 40),
+                              minimumSize: kIsWeb
+                                  ? const Size(110, 40)
+                                  : const Size(110, 31),
+                              maximumSize: kIsWeb
+                                  ? const Size(110, 40)
+                                  : const Size(110, 31),
                             ),
                             onPressed: () {
                               (showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                          title: Row(
-                                            children: const [
-                                              Icon(
-                                                Icons
-                                                    .production_quantity_limits_sharp,
-                                                color: Color.fromARGB(
-                                                    255, 33, 150, 243),
-                                              ),
-                                              Text(
-                                                'Add New Real Estate',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontStyle:
-                                                        FontStyle.italic),
-                                              ),
-                                            ],
-                                          ),
-                                          content: CreateRealEstateModal(
-                                            context: context,
-                                            routerChange: widget.routerChange,
-                                          ))));
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: Row(
+                                    children: const [
+                                      Icon(
+                                        Icons.production_quantity_limits_sharp,
+                                        color:
+                                            Color.fromARGB(255, 33, 150, 243),
+                                      ),
+                                      Text(
+                                        'Add New Real Estate',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontStyle: FontStyle.italic),
+                                      ),
+                                    ],
+                                  ),
+                                  content: CreateRealEstateModal(
+                                    context: context,
+                                    routerChange: widget.routerChange,
+                                  ),
+                                ),
+                              ));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

@@ -738,7 +738,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
         right: 0,
         child: Container(
           width: 400,
-          margin: const EdgeInsets.only(right: 20, bottom: 10, top: 10),
+          margin: const EdgeInsets.only(right: 20, bottom: 10, top: 20),
           child: Row(
             children: [
               const Flexible(fit: FlexFit.tight, child: SizedBox()),
