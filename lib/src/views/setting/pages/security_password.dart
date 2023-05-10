@@ -22,7 +22,7 @@ class SettingSecurityPasswordScreenState
     extends mvc.StateMVC<SettingSecurityPasswordScreen> {
   late UserController con;
   var userInfo = UserManager.userInfo;
-  late String currentPassword;
+  late String currentPassword = '';
   String newPassword = '';
   String confirmPassword = '';
   @override
@@ -98,14 +98,13 @@ class SettingSecurityPasswordScreenState
                       Expanded(
                         flex: 1,
                         child: titleAndsubtitleInput(
-                          'Your New Password',
+                          'Your Old Password',
                           50,
                           1,
                           (value) async {
                             currentPassword = value;
-                            setState(() {});
                           },
-                          '',
+                          currentPassword,
                         ),
                       ),
                     ],
@@ -121,9 +120,8 @@ class SettingSecurityPasswordScreenState
                           1,
                           (value) async {
                             newPassword = value;
-                            setState(() {});
                           },
-                          '',
+                          newPassword,
                         ),
                       ),
                       const Padding(padding: EdgeInsets.only(left: 25)),
@@ -135,9 +133,8 @@ class SettingSecurityPasswordScreenState
                           1,
                           (value) async {
                             confirmPassword = value;
-                            setState(() {});
                           },
-                          '',
+                          confirmPassword,
                         ),
                       ),
                     ],

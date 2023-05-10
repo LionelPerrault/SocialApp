@@ -44,7 +44,7 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
       width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
           : SizeConfig(context).screenWidth - 60,
-      height: 110,
+      height: 70,
       margin: const EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),
@@ -68,73 +68,54 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
                   )
                 ],
               )),
-          // Container(
-          //   margin: const EdgeInsets.only(top: 22),
-          //   child: Row(children: [
-          //     MouseRegion(
-          //       cursor: SystemMouseCursors.click,
-          //       child: GestureDetector(
-          //         onTap: () {
-          //           tab = 'Photos';
-          //           setState(() {});
-          //         },
-          //         child: Container(
-          //           alignment: Alignment.center,
-          //           width: 100,
-          //           height: 40,
-          //           color: tab == 'Photos'
-          //               ? Colors.white
-          //               : Color.fromRGBO(240, 240, 240, 1),
-          //           child: const Text(
-          //             'Photos',
-          //             style: TextStyle(fontSize: 15, color: Colors.black),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     MouseRegion(
-          //       cursor: SystemMouseCursors.click,
-          //       child: GestureDetector(
-          //         onTap: () {
-          //           tab = 'Albums';
-          //           setState(() {});
-          //         },
-          //         child: Container(
-          //           alignment: Alignment.center,
-          //           width: 100,
-          //           height: 40,
-          //           color: tab == 'Albums'
-          //               ? Colors.white
-          //               : Color.fromRGBO(240, 240, 240, 1),
-          //           child: const Text(
-          //             'Albums',
-          //             style: TextStyle(fontSize: 15, color: Colors.black),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ]),
-          // )
         ],
       ),
     );
   }
 
   Widget PhotosData() {
-    return photoModel.photos.isEmpty
-        ? Container(
-            padding: const EdgeInsets.only(top: 40),
-            alignment: Alignment.center,
-            child: Text('${con.group['groupName']} doesn`t have photos',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children:
-                photoModel.photos.map((photo) => photoCell(photo)).toList(),
-          );
+    var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
+    return Container(
+      margin: const EdgeInsets.only(top: 10, bottom: 40),
+      child: photoModel.photos.isEmpty
+          ? Container(
+              padding: const EdgeInsets.only(top: 40),
+              alignment: Alignment.center,
+              child: Text('${con.group['groupName']} doesn`t have photos',
+                  style:
+                      const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
+            )
+          : Row(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.all(20),
+                  width: SizeConfig(context).screenWidth >
+                          SizeConfig.mediumScreenSize
+                      ? SizeConfig(context).screenWidth -
+                          SizeConfig.leftBarWidth -
+                          100
+                      : SizeConfig(context).screenWidth - 60,
+                  child: GridView.count(
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: screenWidth > 900
+                        ? 3
+                        : screenWidth > 500
+                            ? 2
+                            : 1,
+                    childAspectRatio: 1,
+                    padding: const EdgeInsets.all(4.0),
+                    mainAxisSpacing: 4.0,
+                    shrinkWrap: true,
+                    crossAxisSpacing: 4.0,
+                    children: photoModel.photos
+                        .map((photo) => photoCell(photo))
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+    );
   }
 
   Widget photoCell(value) {

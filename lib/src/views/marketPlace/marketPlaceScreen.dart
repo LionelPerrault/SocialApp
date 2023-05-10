@@ -206,8 +206,10 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
             onChanged: onChange,
             decoration: InputDecoration(
               hintText: place,
-              hintStyle:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              hintStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Color.fromRGBO(12, 12, 12, 0.1)),
               contentPadding: const EdgeInsets.only(top: 10, left: 10),
               border: const OutlineInputBorder(),
               focusedBorder: const OutlineInputBorder(

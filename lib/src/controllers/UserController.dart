@@ -497,7 +497,7 @@ class UserController extends ControllerMVC {
     password = pass;
     var returnVal = false;
     try {
-      if (!email.contains('@')) {
+      if (!(email.contains('@') && email.contains('.'))) {
         QuerySnapshot<TokenLogin> checkUsername =
             await Helper.authdata.where('userName', isEqualTo: email).get();
         if (checkUsername.size > 0) {
@@ -1064,17 +1064,41 @@ class UserController extends ControllerMVC {
       setState(() {});
       return;
     }
-    await RelysiaManager.changePassword(password, token).then((value) {
+    await RelysiaManager.authUser(email, UserManager.userInfo['password']).then(
+      (res) async => {
+        if (res["data"] != null)
+          {
+            if (res['statusCode'] == 200)
+              {
+                token = res['data']['token'],
+              }
+            else
+              {
+                Helper.showToast(res['data']['msg']),
+              }
+          }
+        else
+          {
+            Helper.showToast(res['data']),
+          }
+      },
+    );
+    await RelysiaManager.changePassword(password, token).then((value) async {
       if (value['statusCode'] != 200) {
-        Helper.showToast('change password failed. please try again');
+        Helper.showToast('Change password failed. Please try again');
         isSettingAction = false;
         setState(() {});
         return;
       }
       try {
-        final auth = FirebaseAuth.instance;
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: UserManager.userInfo['password'],
+        );
 
-        final user = auth.currentUser;
+        // Login successful
+        User? user = userCredential.user;
 
         // Update password
         user?.updatePassword(password).then((_) {
