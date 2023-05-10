@@ -84,8 +84,8 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                           const Flexible(fit: FlexFit.tight, child: SizedBox()),
                           Container(
                             width: 110,
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.only(right: 20),
+                            height: 34,
+                            margin: const EdgeInsets.only(right: 20, top: 2),
                             child: PopupMenuButton(
                               onSelected: (value) {
                                 arrayOption = value;
@@ -93,7 +93,8 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                               },
                               child: Container(
                                 alignment: Alignment.center,
-                                height: 40,
+                                width: 110,
+                                height: 34,
                                 decoration: BoxDecoration(
                                   color: const Color.fromARGB(255, 33, 37, 41),
                                   borderRadius: BorderRadius.circular(2),
@@ -274,8 +275,10 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
             onChanged: onChange,
             decoration: InputDecoration(
               hintText: place,
-              hintStyle:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              hintStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Color.fromRGBO(12, 12, 12, 0.1)),
               contentPadding: const EdgeInsets.only(top: 10, left: 10),
               border: const OutlineInputBorder(),
               focusedBorder: const OutlineInputBorder(

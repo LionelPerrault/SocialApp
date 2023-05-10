@@ -23,19 +23,16 @@ class SettingAccountScreen extends StatefulWidget {
 // ignore: must_be_immutable
 class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
   bool showMind = false;
-  var password = '';
   late bool nearByOptOut = false;
   var userInfo = UserManager.userInfo;
   TextEditingController emailController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   late UserController con;
   @override
   void initState() {
     emailController.text = userInfo['email'];
     userNameController.text = userInfo['userName'];
     nearByOptOut = userInfo['nearbyOptOut'] ?? false;
-    // passwordController.text = userInfo['password'];
     add(widget.con);
     con = controller as UserController;
     super.initState();
@@ -534,57 +531,6 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                             Text(
                               'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
                               style: TextStyle(fontSize: 12),
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 20)),
-                            Divider(
-                              indent: 5,
-                              endIndent: 20,
-                            ),
-                            const Text(
-                              'Current Password',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(244, 82, 95, 127)),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(7)),
-                              ),
-                              child: Row(children: [
-                                Expanded(
-                                    child: SizedBox(
-                                  height: 30,
-                                  child: TextFormField(
-                                    controller: passwordController,
-                                    obscureText: true,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color:
-                                                Color.fromARGB(255, 54, 54, 54),
-                                            width: 1.0),
-                                        borderRadius: BorderRadius.circular(0),
-                                      ),
-                                    ),
-                                    style: const TextStyle(fontSize: 14),
-                                    onSaved: (String? value) {
-                                      // This optional block of code can be used to run
-                                      // code when the user saves the form.
-                                    },
-                                    validator: (String? value) {
-                                      return (value != null &&
-                                              value.contains('@'))
-                                          ? 'Do not use the @ char.'
-                                          : null;
-                                    },
-                                  ),
-                                )),
-                              ]),
                             ),
                             const Padding(padding: EdgeInsets.only(top: 20)),
                             Divider(
