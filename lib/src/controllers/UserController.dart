@@ -1132,13 +1132,9 @@ class UserController extends ControllerMVC {
       isProfileChange = true;
       setState(() {});
       var userManager = UserManager.userInfo;
-      var snapshot = await FirebaseFirestore.instance
-          .collection(Helper.userField)
-          .where('userName', isEqualTo: userManager['userName'])
-          .get();
       await FirebaseFirestore.instance
           .collection(Helper.userField)
-          .doc(snapshot.docs[0].id)
+          .doc(userManager['uid'])
           .update({...profile});
       profile.forEach((key, value) {
         userManager[key] = value;
