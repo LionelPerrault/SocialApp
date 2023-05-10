@@ -438,6 +438,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       setState(() {
         postLoading = false;
         popupShowing = false;
+        emojiShowing = false;
         _controller.text = '';
       });
     });
@@ -869,7 +870,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                     nowPost == 'Upload Audio') ||
                                 (postPhoto == '' && nowPost == 'Upload Photos')
                             ? () {}
-                            : post();
+                            : {post()};
                       },
                       child: (postLoading)
                           ? Container(
