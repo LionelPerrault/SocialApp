@@ -174,27 +174,34 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                           ])
                         : ElevatedButton(
                             onPressed: () async {
-                              // if (e.value['state'] == 1) {
-                              //   e.value['state'] = -3;
-                              //   setState(() {});
-                              //   await con.rejectFriend(e.value['id']);
-                              //   e.value['state'] = 2;
-                              //   widget.onClick();
-                              //   setState(() {});
-                              // } else {
-                              //   if (e.value['state'] == 2) {
-                              //     e.value['state'] = -3;
-                              //     setState(() {});
-                              //     var requester = e.value['requester'];
-                              //     var name = e.value[requester]['name'];
-                              //     var avatar = e.value[requester]['avatar'];
-                              //     e.value['id'] = await con.requestFriendAsData(
-                              //         requester, name, avatar);
-                              //     e.value['state'] = 0;
-                              //     widget.onClick();
-                              //     setState(() {});
-                              //   }
-                              // }
+                              // e.value['state'] = -3;
+                              // setState(() {});
+                              // await PeopleController()
+                              //     .cancelFriend({"userName": friendUserName});
+                              // e.value['state'] = 2;
+                              // setState(() {});
+                              if (e.value['state'] == 1) {
+                                e.value['state'] = -3;
+                                setState(() {});
+                                await PeopleController()
+                                    .cancelFriend({"userName": friendUserName});
+                                e.value['state'] = 2;
+                                //widget.onClick();
+                                setState(() {});
+                              } else {
+                                if (e.value['state'] == 2) {
+                                  e.value['state'] = -3;
+                                  setState(() {});
+                                  var requester = e.value['requester'];
+                                  var name = e.value[requester]['name'];
+                                  var avatar = e.value[requester]['avatar'];
+                                  e.value['id'] = await con.requestFriendAsData(
+                                      requester, name, avatar);
+                                  e.value['state'] = 0;
+                                  widget.onClick();
+                                  setState(() {});
+                                }
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: e.value['state'] == 1

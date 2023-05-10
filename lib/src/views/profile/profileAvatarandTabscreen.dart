@@ -7,6 +7,7 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import '../../controllers/PeopleController.dart';
 import '../../utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,6 +17,8 @@ import 'package:shnatter/src/views/setting/settingsMain.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
+
+import 'model/friends.dart';
 
 class ProfileAvatarandTabScreen extends StatefulWidget {
   Function onClick;
@@ -51,13 +54,18 @@ class ProfileAvatarandTabScreenState extends mvc
   bool setPaywallProgress = false;
   String paywallPrice = '';
   var settingMainScreen = SettingMainScreenState();
-
+  Friends friendModel = Friends();
+  String friendUserName = '';
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
-
+    friendModel
+        .getFriends(ProfileController().viewProfileUserName)
+        .then((value) {
+      setState(() {});
+    });
     avatar = con.userData['avatar'];
     _gotoHome();
   }
@@ -289,6 +297,24 @@ class ProfileAvatarandTabScreenState extends mvc
     );
   }
 
+  bool isMyFriend() {
+    //profile selected is my friend?
+
+    for (var item in friendModel.friends) {
+      friendUserName = item['requester'].toString();
+      if (friendUserName == UserManager.userInfo['userName']) {
+        print("friend");
+        return true;
+      }
+      if (item['receiver'] == UserManager.userInfo['userName']) {
+        print("friend");
+        return true;
+      }
+    }
+    print("no friend");
+    return false;
+  }
+
   Widget mainTabWidget() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,10 +340,15 @@ class ProfileAvatarandTabScreenState extends mvc
             con.userData['userName'] == UserManager.userInfo['userName']
                 ? const SizedBox()
                 : PopupMenuButton(
-                    onSelected: (value) {
+                    onSelected: (value) async {
                       switch (value) {
                         case 'paywall':
                           modalView();
+                          break;
+                        case 'cancelfriend':
+                          await PeopleController()
+                              .cancelFriend({"userName": friendUserName});
+                          setState(() {});
                           break;
                         default:
                       }
@@ -343,7 +374,7 @@ class ProfileAvatarandTabScreenState extends mvc
                       ),
                     ),
                     itemBuilder: (BuildContext bc) {
-                      return const [
+                      return [
                         // PopupMenuItem(
                         //   value: 'block',
                         //   child: Text(
@@ -366,13 +397,21 @@ class ProfileAvatarandTabScreenState extends mvc
                         //   ),
 
                         // ),
-                        PopupMenuItem(
+                        const PopupMenuItem(
                           value: 'paywall',
                           child: Text(
                             "Paywall",
                             style: TextStyle(fontSize: 14),
                           ),
-                        )
+                        ),
+                        if (isMyFriend())
+                          const PopupMenuItem(
+                            value: 'cancelfriend',
+                            child: Text(
+                              "Cancel Friend",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
                       ];
                     },
                   ),
