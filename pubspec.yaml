@@ -60,7 +60,7 @@ dependencies:
   google_sign_in: ^6.1.0
   time_elapsed: ^0.2.6
   firebase_storage: ^11.0.4
-  image_picker: ^0.8.6
+  image_picker: ^0.8.7+4
   permission_handler: ^10.2.0
   universal_html: ^2.0.8
   mime: ^1.0.2
@@ -85,7 +85,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   just_audio: ^0.9.32
 
-  file_picker: ^5.2.11
+  file_picker: ^5.3.0
   flutter_sound: ^9.2.13
   flutter_otp_text_field: ^1.1.1
   otp_text_field: ^1.1.3
