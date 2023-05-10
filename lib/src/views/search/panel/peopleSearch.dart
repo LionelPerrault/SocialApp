@@ -108,18 +108,22 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
                           SizeConfig.navbarHeight -
                           150 -
                           (UserManager.userInfo['isVerify'] ? 0 : 50),
-                      child: ListView.separated(
-                        itemCount: widget.searchResult.length,
-                        itemBuilder: (context, index) => SearchUserCell(
-                          userInfo: widget.searchResult[index],
-                          routerChange: widget.routerChange,
-                        ),
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(
-                          height: 1,
-                          endIndent: 10,
-                        ),
-                      ),
+                      child: (widget.searchResult == null ||
+                              widget.searchResult.isEmpty)
+                          ? Center(child: Text('No search results found'))
+                          : ListView.separated(
+                              itemCount: widget.searchResult.length,
+                              itemBuilder: (context, index) => SearchUserCell(
+                                userInfo: widget.searchResult[index],
+                                routerChange: widget.routerChange,
+                              ),
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(
+                                height: 1,
+                                endIndent: 10,
+                              ),
+                            ),
                     ),
                   ),
                 ],
