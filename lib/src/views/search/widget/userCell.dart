@@ -157,19 +157,26 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                                     fontWeight: FontWeight.w900)),
                           ],
                         )
-                      : Row(
-                          children: const [
-                            Icon(
-                              Icons.check,
-                              color: Colors.white,
-                              size: 18.0,
-                            ),
-                            Text(' Friend',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w900)),
-                          ],
+                      : InkWell(
+                          onTap: () async {
+                            await PeopleController()
+                                .cancelFriend(widget.userInfo);
+                            setState(() {});
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 18.0,
+                              ),
+                              Text(' Friend',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w900)),
+                            ],
+                          ),
                         ),
         ),
       ),
