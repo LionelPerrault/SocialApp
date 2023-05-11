@@ -6,11 +6,8 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../managers/relysia_manager.dart';
 
 class SettingShnatterTokenScreen extends StatefulWidget {
   SettingShnatterTokenScreen({Key? key, required this.routerChange})
@@ -27,7 +24,6 @@ class SettingShnatterTokenScreenState
     extends mvc.StateMVC<SettingShnatterTokenScreen> {
   var setting_security = {};
 
-  late final PlutoGridStateManager stateManager;
   // List<Employee> employees = [];
   // late EmployeeDataSource employeeDataSource;
   late UserController con;

@@ -10,13 +10,13 @@ import 'ProfileController.dart';
 
 enum EmailType { emailVerify, googleVerify }
 
-class SearchController extends ControllerMVC {
-  factory SearchController([StateMVC? state]) =>
-      _this ??= SearchController._(state);
-  SearchController._(StateMVC? state)
+class SearcherController extends ControllerMVC {
+  factory SearcherController([StateMVC? state]) =>
+      _this ??= SearcherController._(state);
+  SearcherController._(StateMVC? state)
       : notifiers = [],
         super(state);
-  static SearchController? _this;
+  static SearcherController? _this;
 
   var userSnap;
   @override

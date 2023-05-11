@@ -11,7 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'controllers/AppController.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'controllers/SearchController.dart';
+import 'controllers/SearcherController.dart';
 import 'controllers/UserController.dart';
 import 'models/setting.dart';
 
@@ -28,7 +28,11 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
   _MyAppState._()
       : super(
           controller: AppController(),
-          controllers: [UserController(), SearchController(), PostController()],
+          controllers: [
+            UserController(),
+            SearcherController(),
+            PostController()
+          ],
         );
   static _MyAppState? _this;
   @override

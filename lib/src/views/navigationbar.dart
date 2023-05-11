@@ -12,7 +12,7 @@ import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
-import 'package:shnatter/src/controllers/SearchController.dart';
+import 'package:shnatter/src/controllers/SearcherController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/colors.dart';
@@ -251,7 +251,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       }
     });
 
-    SearchController().getAllSearchResult();
+    SearcherController().getAllSearchResult();
     super.initState();
   }
 

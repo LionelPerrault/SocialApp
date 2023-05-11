@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/SearchController.dart';
+import 'package:shnatter/src/controllers/SearcherController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -12,9 +12,9 @@ import 'package:shnatter/src/views/search/widget/userCell.dart';
 class PeopleSearch extends StatefulWidget {
   PeopleSearch(
       {Key? key, required this.routerChange, required this.searchResult})
-      : con = SearchController(),
+      : con = SearcherController(),
         super(key: key);
-  late SearchController con;
+  late SearcherController con;
 
   Function routerChange;
   List searchResult;
@@ -22,7 +22,7 @@ class PeopleSearch extends StatefulWidget {
 }
 
 class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
-  late SearchController searchCon;
+  late SearcherController searchCon;
   var userInfo = UserManager.userInfo;
   var resultUsers = [];
   bool isLoading = false;
@@ -30,7 +30,7 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
   void initState() {
     add(widget.con);
 
-    searchCon = controller as SearchController;
+    searchCon = controller as SearcherController;
     searchCon.addNotifyCallBack(this);
     super.initState();
 

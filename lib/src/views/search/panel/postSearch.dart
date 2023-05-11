@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/SearchController.dart';
+import 'package:shnatter/src/controllers/SearcherController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -11,22 +11,22 @@ import 'package:shnatter/src/widget/postCell.dart';
 
 class PostSearch extends StatefulWidget {
   PostSearch({Key? key, required this.routerChange, required this.searchValue})
-      : con = SearchController(),
+      : con = SearcherController(),
         super(key: key);
-  late SearchController con;
+  late SearcherController con;
   Function routerChange;
   String searchValue;
   State createState() => PostSearchState();
 }
 
 class PostSearchState extends mvc.StateMVC<PostSearch> {
-  late SearchController searchCon;
+  late SearcherController searchCon;
   var userInfo = UserManager.userInfo;
   var resultPosts = [];
   @override
   void initState() {
     add(widget.con);
-    searchCon = controller as SearchController;
+    searchCon = controller as SearcherController;
     super.initState();
   }
 

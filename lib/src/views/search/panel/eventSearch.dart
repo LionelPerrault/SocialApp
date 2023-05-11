@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/SearchController.dart';
+import 'package:shnatter/src/controllers/SearcherController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -12,9 +12,9 @@ import 'package:shnatter/src/views/search/widget/eventCell.dart';
 class EventSearch extends StatefulWidget {
   EventSearch(
       {Key? key, required this.routerChange, required this.searchResult})
-      : con = SearchController(),
+      : con = SearcherController(),
         super(key: key);
-  late SearchController con;
+  late SearcherController con;
   Function routerChange;
   List searchResult;
 
@@ -23,13 +23,13 @@ class EventSearch extends StatefulWidget {
 }
 
 class EventSearchState extends mvc.StateMVC<EventSearch> {
-  late SearchController searchCon;
+  late SearcherController searchCon;
   var userInfo = UserManager.userInfo;
 
   @override
   void initState() {
     add(widget.con);
-    searchCon = controller as SearchController;
+    searchCon = controller as SearcherController;
     super.initState();
   }
 

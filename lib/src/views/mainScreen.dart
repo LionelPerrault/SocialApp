@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/SearchController.dart';
+import 'package:shnatter/src/controllers/SearcherController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/GeolocationManager.dart';
@@ -266,34 +266,34 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                   onChanged: (value) async {
                                     searchText = value;
 
-                                    await SearchController()
+                                    await SearcherController()
                                         .updateSearchText(value);
-                                    await SearchController()
+                                    await SearcherController()
                                         .getEvents(searchText);
-                                    await SearchController()
+                                    await SearcherController()
                                         .getGroups(searchText);
-                                    await SearchController()
+                                    await SearcherController()
                                         .getUsers(searchText);
                                     if (value != '') {
-                                      // SearchController().users = [
-                                      //   ...SearchController().usersByFirstName,
-                                      //   ...SearchController()
+                                      // SearcherController().users = [
+                                      //   ...SearcherController().usersByFirstName,
+                                      //   ...SearcherController()
                                       //       .usersByFirstNameCaps,
-                                      //   ...SearchController().usersByLastName,
-                                      //   ...SearchController()
+                                      //   ...SearcherController().usersByLastName,
+                                      //   ...SearcherController()
                                       //       .usersByLastNameCaps,
-                                      //   ...SearchController().usersByWholeName,
-                                      //   ...SearchController()
+                                      //   ...SearcherController().usersByWholeName,
+                                      //   ...SearcherController()
                                       //       .usersByWholeNameCaps,
                                       // ];
 
-                                      SearchController().users = [
-                                        ...{...SearchController().users}
+                                      SearcherController().users = [
+                                        ...{...SearcherController().users}
                                       ];
                                       searchResult = [
-                                        ...SearchController().users,
-                                        ...SearchController().events,
-                                        ...SearchController().groups
+                                        ...SearcherController().users,
+                                        ...SearcherController().events,
+                                        ...SearcherController().groups
                                       ];
                                     } else {
                                       searchResult = [];

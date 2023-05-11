@@ -1,10 +1,8 @@
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminbodypanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/adminsList.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/countries.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/currencies.dart';
+
 import 'package:shnatter/src/views/admin/admin_panel/pages/design.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/genders.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/languages.dart';
+
 import 'package:shnatter/src/views/admin/admin_panel/pages/managePrice.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/onlinesList.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsAccountpanel.dart';
@@ -22,14 +20,8 @@ import 'package:shnatter/src/views/admin/admin_panel/pages/settingsPostpanel.dar
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSMSpanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/settingsSystempanel.dart';
 import 'package:shnatter/src/views/admin/admin_panel/pages/shnatter_tokens.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/themes.dart';
+
 import 'package:shnatter/src/views/admin/admin_panel/pages/usersList.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/listForums.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/listThreads.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/listReplies.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/listMovies.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/listGenres.dart';
-import 'package:shnatter/src/views/admin/admin_panel/pages/games.dart';
 
 class AdminRouter {
   AdminRouter(String settingPage);
@@ -69,37 +61,15 @@ class AdminRouter {
         return AdminManagePrice();
       case '/design':
         return const AdminDesign();
-      case '/currencies':
-        return const AdminCurrencies();
-      case '/languages':
-        return AdminLanguages();
-      case '/themes':
-        return const AdminThemes();
+
       case '/shnatter_token':
         return AdminShnatterToken();
-      case '/genders':
-        return const AdminGenders();
-      case '/countries':
-        return AdminCountries();
       case '/users':
         return AdminUsersList();
       case '/admins':
         return AdminAdminsList();
       case '/onlines':
         return AdminOnlinesList();
-
-      case '/forums/listForums':
-        return AdminListForums();
-      case '/forums/listThreads':
-        return AdminListThreads();
-      case '/forums/listReplies':
-        return const AdminListReplies();
-      case '/movies/listMovies':
-        return const AdminListMovies();
-      case '/movies/listGenres':
-        return const AdminListGenres();
-      case '/games':
-        return const AdminGames();
     }
   }
 }

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/SearchController.dart';
+import 'package:shnatter/src/controllers/SearcherController.dart';
 import 'package:shnatter/src/views/search/panel/eventSearch.dart';
 import 'package:shnatter/src/views/search/panel/groupSearch.dart';
 import 'package:shnatter/src/views/search/panel/peopleSearch.dart';
@@ -11,9 +11,9 @@ import 'package:shnatter/src/views/search/panel/postSearch.dart';
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key? key, required this.routerChange})
-      : con = SearchController(),
+      : con = SearcherController(),
         super(key: key);
-  final SearchController con;
+  final SearcherController con;
   Function routerChange;
 
   @override
@@ -29,7 +29,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
   List searchResultEvents = [];
   List searchResultGroups = [];
 
-  late SearchController searchCon;
+  late SearcherController searchCon;
   List tabInfo = [
     {
       'icon': Icons.calendar_month,
@@ -52,7 +52,7 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
   @override
   void initState() {
     add(widget.con);
-    searchCon = controller as SearchController;
+    searchCon = controller as SearcherController;
     // searchCon.getUsersByFirstName('');
     // searchCon.getUsersByLastName('');
     //searchCon.getPosts();
@@ -82,26 +82,26 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                     onChanged: (value) async {
                       // searchValue = value;
 
-                      // await SearchController().updateSearchText(value);
-                      // await SearchController().getEvents(searchValue);
-                      // await SearchController().getGroups(searchValue);
+                      // await SearcherController().updateSearchText(value);
+                      // await SearcherController().getEvents(searchValue);
+                      // await SearcherController().getGroups(searchValue);
                       // if (value != '') {
-                      //   SearchController().users = [
-                      //     ...SearchController().usersByFirstName,
-                      //     ...SearchController().usersByFirstNameCaps,
-                      //     ...SearchController().usersByLastName,
-                      //     ...SearchController().usersByLastNameCaps,
-                      //     ...SearchController().usersByWholeName,
-                      //     ...SearchController().usersByWholeNameCaps,
+                      //   SearcherController().users = [
+                      //     ...SearcherController().usersByFirstName,
+                      //     ...SearcherController().usersByFirstNameCaps,
+                      //     ...SearcherController().usersByLastName,
+                      //     ...SearcherController().usersByLastNameCaps,
+                      //     ...SearcherController().usersByWholeName,
+                      //     ...SearcherController().usersByWholeNameCaps,
                       //   ];
-                      //   print("searchText is ${SearchController().users}");
-                      //   SearchController().users = [
-                      //     ...{...SearchController().users}
+                      //   print("searchText is ${SearcherController().users}");
+                      //   SearcherController().users = [
+                      //     ...{...SearcherController().users}
                       //   ];
 
-                      //   searchResultUsers = [...SearchController().users];
-                      //   searchResultEvents = [...SearchController().events];
-                      //   searchResultGroups = [...SearchController().groups];
+                      //   searchResultUsers = [...SearcherController().users];
+                      //   searchResultEvents = [...SearcherController().events];
+                      //   searchResultGroups = [...SearcherController().groups];
                       // } else {
                       //   searchResultUsers = [];
 
@@ -122,13 +122,13 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
                       await searchCon.getEvents(searchValue);
                       await searchCon.getGroups(searchValue);
                       if (value != '') {
-                        // SearchController().users = [
-                        //   ...SearchController().usersByFirstName,
-                        //   ...SearchController().usersByFirstNameCaps,
-                        //   ...SearchController().usersByLastName,
-                        //   ...SearchController().usersByLastNameCaps,
-                        //   ...SearchController().usersByWholeName,
-                        //   ...SearchController().usersByWholeNameCaps,
+                        // SearcherController().users = [
+                        //   ...SearcherController().usersByFirstName,
+                        //   ...SearcherController().usersByFirstNameCaps,
+                        //   ...SearcherController().usersByLastName,
+                        //   ...SearcherController().usersByLastNameCaps,
+                        //   ...SearcherController().usersByWholeName,
+                        //   ...SearcherController().usersByWholeNameCaps,
                         // ];
 
                         searchResultUsers = [...searchCon.users];

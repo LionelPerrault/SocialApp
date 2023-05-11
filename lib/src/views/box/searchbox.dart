@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/controllers/SearchController.dart';
+import 'package:shnatter/src/controllers/SearcherController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
@@ -15,14 +15,14 @@ class ShnatterSearchBox extends StatefulWidget {
     required this.hideSearch,
     required this.searchText,
     required this.searchResult,
-  })  : con = SearchController(),
+  })  : con = SearcherController(),
         super(key: key);
 
   Function routerChange;
   Function hideSearch;
   String searchText;
   List searchResult = [];
-  final SearchController con;
+  final SearcherController con;
   @override
   State createState() => ShnatterSearchBoxState();
 }
@@ -31,11 +31,11 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   //
   bool isSound = false;
   // List searchResult = [];
-  late SearchController con;
+  late SearcherController con;
   @override
   void initState() {
     add(widget.con);
-    con = controller as SearchController;
+    con = controller as SearcherController;
     super.initState();
   }
 

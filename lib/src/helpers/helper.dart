@@ -141,9 +141,9 @@ class Helper {
             color: Color.fromRGBO(247, 86, 118, 1),
             borderRadius: BorderRadius.all(Radius.circular(3))),
         child: str == 'wrong-password'
-            ? Column(
+            ? const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                     Text(
                       'please re-enter password',
                       style: TextStyle(color: Colors.white, fontSize: 11),
