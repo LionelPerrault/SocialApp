@@ -77,17 +77,14 @@ Future<List> findSimilarUsers(String myUserId) async {
 
 Future<QueryDocumentSnapshot<Map<String, dynamic>>> _getInterestById(
     dynamic interestId) async {
-  final QuerySnapshot<Map<String, dynamic>> interestDoc = await firestore
-      .collection(Helper.interestsField)
-      .where('id', isEqualTo: interestId.toString())
-      .get();
-
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> interest = interestDoc.docs;
-  var returnvalue;
-  if (interest.isNotEmpty) {
-    returnvalue = interest[0];
-  }
-  return returnvalue;
+  final QueryDocumentSnapshot<Map<String, dynamic>> interestDoc =
+      await firestore
+          .collection(Helper.interestsField)
+          .where('id', isEqualTo: interestId.toString())
+          .limit(1)
+          .get()
+          .then((querySnapshot) => querySnapshot.docs[0]);
+  return interestDoc;
 }
 
 class PeopleController extends ControllerMVC {

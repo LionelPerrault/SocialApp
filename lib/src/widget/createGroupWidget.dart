@@ -9,7 +9,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
@@ -164,7 +163,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   Future<void> fetchSuggestions(
     String input,
   ) async {
-    final sessionToken = Uuid().v4();
+    final sessionToken = const Uuid().v4();
 
     final request =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
@@ -266,10 +265,10 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                                     const EdgeInsets.only(top: 7, left: 15),
                                 child: DropdownButton(
                                   value: privacy,
-                                  items: [
+                                  items: const [
                                     DropdownMenuItem(
                                       value: "public",
-                                      child: Row(children: const [
+                                      child: Row(children: [
                                         Icon(
                                           Icons.language,
                                           color: Colors.black,
@@ -284,7 +283,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                                     ),
                                     DropdownMenuItem(
                                       value: "closed",
-                                      child: Row(children: const [
+                                      child: Row(children: [
                                         Icon(
                                           Icons.groups,
                                           color: Colors.black,
@@ -299,7 +298,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                                     ),
                                     DropdownMenuItem(
                                       value: "security",
-                                      child: Row(children: const [
+                                      child: Row(children: [
                                         Icon(
                                           Icons.lock_outline,
                                           color: Colors.black,

@@ -181,8 +181,8 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                                       color: Colors.black,
                                     ),
                                   )
-                                : Row(
-                                    children: const [
+                                : const Row(
+                                    children: [
                                       Icon(
                                         Icons.person_add_alt_rounded,
                                         color: Colors.black,

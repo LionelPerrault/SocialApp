@@ -100,10 +100,10 @@ class YesNoWidgetState extends mvc.StateMVC<YesNoWidget> {
                             onPressed: () {
                               widget.noFunc();
                             },
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
+                              children: [
                                 Padding(padding: EdgeInsets.only(top: 17)),
                                 Icon(
                                   Icons.arrow_back,

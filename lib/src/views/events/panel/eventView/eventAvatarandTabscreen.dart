@@ -29,7 +29,7 @@ class EventAvatarandTabScreen extends StatefulWidget {
 
 class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     with SingleTickerProviderStateMixin {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   double itemWidth = 0;
   var tap = 'Timeline';
   var userInfo = UserManager.userInfo;

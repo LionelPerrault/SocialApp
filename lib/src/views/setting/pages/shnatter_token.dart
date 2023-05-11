@@ -130,10 +130,10 @@ class SettingShnatterTokenScreenState
                                 color: Colors.grey[400],
                                 borderRadius: BorderRadius.circular(3),
                               ),
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Icon(Icons.attach_money, color: Colors.black),
                                   Text(
                                     'Balance',

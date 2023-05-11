@@ -33,7 +33,7 @@ class AlertYesNoWidgetState extends mvc.StateMVC<AlertYesNoWidget> {
     return Container(
         width: 400,
         height: 220,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(10),
@@ -88,10 +88,10 @@ class AlertYesNoWidgetState extends mvc.StateMVC<AlertYesNoWidget> {
                       onPressed: () {
                         widget.noFunc();
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           Padding(padding: EdgeInsets.only(top: 17)),
                           Icon(
                             Icons.arrow_back,

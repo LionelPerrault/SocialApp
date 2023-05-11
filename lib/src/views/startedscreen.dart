@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -7,7 +6,6 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/widget/interests.dart';
-import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:path/path.dart' as PPath;
 
 import '../controllers/UserController.dart';
@@ -275,8 +273,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
               child: SingleChildScrollView(
                 child: Column(children: [
                   const Padding(padding: EdgeInsets.only(top: 50)),
-                  Column(
-                    children: const [
+                  const Column(
+                    children: [
                       Text('Getting Started',
                           style: TextStyle(
                             fontSize: 25,
@@ -573,12 +571,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               stepflag = false;
                                             });
                                           },
-                                          child: Row(
+                                          child: const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
-                                            children: const [
+                                            children: [
                                               Padding(
                                                   padding:
                                                       EdgeInsets.only(top: 17)),
@@ -610,12 +608,12 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                 width: double.infinity * 0.6,
                                 child: Column(
                                   children: [
-                                    Column(
+                                    const Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Text(
                                           'Update your info',
                                           style: TextStyle(
@@ -634,8 +632,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     ),
                                     const Padding(
                                         padding: EdgeInsets.only(top: 30)),
-                                    Row(
-                                      children: const [
+                                    const Row(
+                                      children: [
                                         Text('LOCATION',
                                             style: TextStyle(
                                                 color: Colors.black,
@@ -650,7 +648,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                       children: [
                                         Expanded(
                                           flex: 1,
-                                          child: Container(
+                                          child: SizedBox(
                                             width: 400,
                                             child: customDropDownButton(
                                               title: 'Country',
@@ -707,7 +705,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: 400,
                                                 child: customDropDownButton(
                                                   title: 'Relationship Status',
@@ -735,8 +733,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Row(
-                                                  children: const [
+                                                const Row(
+                                                  children: [
                                                     Padding(
                                                         padding:
                                                             EdgeInsets.only(
@@ -800,7 +798,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                       children: [
                                         Expanded(
                                           flex: 1,
-                                          child: Container(
+                                          child: SizedBox(
                                             width: 400,
                                             child: customDropDownButton(
                                               width: 400,
@@ -818,7 +816,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                         ),
                                         Expanded(
                                           flex: 1,
-                                          child: Container(
+                                          child: SizedBox(
                                             width: 400,
                                             child: customDropDownButton(
                                               title: '',
@@ -836,7 +834,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                         ),
                                         Expanded(
                                           flex: 1,
-                                          child: Container(
+                                          child: SizedBox(
                                             width: 400,
                                             child: customDropDownButton(
                                               width: 400,
@@ -861,7 +859,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                       children: [
                                         Expanded(
                                           flex: 1,
-                                          child: Container(
+                                          child: SizedBox(
                                             width: 700,
                                             child: titleAndsubtitleInput(
                                                 'About Me', 100, 4, (value) {
@@ -879,8 +877,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     const Padding(
                                         padding: EdgeInsets.only(top: 20)),
                                     //WORK
-                                    Row(
-                                      children: const [
+                                    const Row(
+                                      children: [
                                         Text('WORK',
                                             style: TextStyle(
                                                 color: Colors.black,
@@ -941,8 +939,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                     //EDUCATION
                                     const Padding(
                                         padding: EdgeInsets.only(top: 20)),
-                                    Row(
-                                      children: const [
+                                    const Row(
+                                      children: [
                                         Text('EDUCATION',
                                             style: TextStyle(
                                                 color: Colors.black,
@@ -1008,8 +1006,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Row(
-                                                  children: const [
+                                                const Row(
+                                                  children: [
                                                     Text('POLITICAL INTEREST',
                                                         style: TextStyle(
                                                             color: Colors.black,
@@ -1317,8 +1315,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                                   SizeConfig.smallScreenSize ||
                               _isDrawerClosed()
                           ? const SizedBox()
-                          : Padding(
-                              padding: const EdgeInsets.only(
+                          : const Padding(
+                              padding: EdgeInsets.only(
                                   top: SizeConfig.navbarHeight),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -1343,7 +1341,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
               fontWeight: FontWeight.w600),
         ),
         const Padding(padding: EdgeInsets.only(top: 2)),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             controller: controller,
@@ -1377,7 +1375,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                 fontWeight: FontWeight.w600),
           ),
           const Padding(padding: EdgeInsets.only(top: 2)),
-          Container(
+          SizedBox(
             height: 40,
             width: width,
             child: DropdownButtonFormField(
@@ -1434,7 +1432,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 400,
                   height: height,
                   child: Column(

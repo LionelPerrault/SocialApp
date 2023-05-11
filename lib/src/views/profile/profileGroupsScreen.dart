@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/views/groups/widget/groupcell.dart';
 import '../../helpers/helper.dart';
 import '../../utils/size_config.dart';
@@ -94,8 +93,8 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
         children: [
           Container(
               margin: const EdgeInsets.only(left: 20, top: 20),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.groups,
                     size: 15,

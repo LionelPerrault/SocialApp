@@ -185,11 +185,11 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                                       color: Colors.black,
                                     ),
                                   )
-                                : Row(
+                                : const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       Icon(
                                         Icons.star,
                                         color: Colors.black,

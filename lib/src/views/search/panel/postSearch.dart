@@ -16,6 +16,7 @@ class PostSearch extends StatefulWidget {
   late SearcherController con;
   Function routerChange;
   String searchValue;
+  @override
   State createState() => PostSearchState();
 }
 

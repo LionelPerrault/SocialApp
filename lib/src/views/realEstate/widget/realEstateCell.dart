@@ -163,8 +163,8 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
         showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: Row(
-              children: const [
+            title: const Row(
+              children: [
                 Icon(
                   Icons.production_quantity_limits_sharp,
                   color: Color.fromARGB(255, 33, 150, 243),
@@ -528,10 +528,10 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                     child: Column(children: [
                                       const Padding(
                                           padding: EdgeInsets.only(top: 20)),
-                                      Row(
+                                      const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: const [
+                                        children: [
                                           Icon(
                                             Icons.sell,
                                             color: Color.fromARGB(
@@ -572,10 +572,10 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                     child: Column(children: [
                                       const Padding(
                                           padding: EdgeInsets.only(top: 20)),
-                                      Row(
+                                      const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: const [
+                                        children: [
                                           Icon(
                                             Icons.money,
                                             color: Color.fromARGB(
@@ -615,10 +615,10 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                     child: Column(children: [
                                       const Padding(
                                           padding: EdgeInsets.only(top: 20)),
-                                      Row(
+                                      const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: const [
+                                        children: [
                                           Icon(
                                             Icons.gif_box,
                                             color: Color.fromARGB(
@@ -689,11 +689,11 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
 
                                     setState(() {});
                                   },
-                                  child: Row(
+                                  child: const Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       Icon(Icons.wechat_outlined),
                                       Padding(
                                           padding: EdgeInsets.only(left: 10)),
@@ -723,11 +723,11 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                   onPressed: () async {
                                     buyRealEstate();
                                   },
-                                  child: Row(
+                                  child: const Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       Icon(Icons.wechat_outlined),
                                       Padding(
                                           padding: EdgeInsets.only(left: 10)),

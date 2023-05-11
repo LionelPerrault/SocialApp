@@ -81,7 +81,7 @@ class MainLeftPanel extends StatelessWidget {
                   ),
                 )
               : const SizedBox(),
-          Row(children: const [
+          const Row(children: [
             Padding(padding: EdgeInsets.only(left: 30.0)),
             Text('FAVOURITES',
                 style: TextStyle(
@@ -116,7 +116,7 @@ class MainLeftPanel extends StatelessWidget {
           //     label: 'Memories',
           //     image:
           //         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmemories.svg?alt=media&token=a3432e12-3fab-4944-9a4e-3c73adf4f568'),
-          Row(children: const [
+          const Row(children: [
             Padding(padding: EdgeInsets.only(left: 30.0)),
             Text('EXPLORE',
                 style: TextStyle(

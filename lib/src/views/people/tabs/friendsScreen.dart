@@ -27,7 +27,7 @@ class FriendsScreenState extends mvc.StateMVC<FriendsScreen> {
   //route variable
   String tabName = 'Friends';
   Color color = const Color.fromRGBO(230, 236, 245, 1);
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   Friends friendModel = Friends();
   @override
   void initState() {
@@ -74,9 +74,9 @@ class FriendsScreenState extends mvc.StateMVC<FriendsScreen> {
                     ///title:Text("Search")
                   ));
         },
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(
               Icons.search,
               color: Colors.black,

@@ -24,7 +24,7 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
   //route variable
   String tabName = 'Discover';
   Color color = const Color.fromRGBO(230, 236, 245, 1);
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     add(widget.con);
@@ -68,9 +68,9 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
                     ///title:Text("Search")
                   ));
         },
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(
               Icons.search,
               color: Colors.black,

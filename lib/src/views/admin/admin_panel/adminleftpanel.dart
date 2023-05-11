@@ -15,7 +15,7 @@ class AdminLeftPanel extends StatelessWidget {
         padding: const EdgeInsets.only(top: 5.0),
         child: Column(
           children: [
-            Row(children: const [
+            const Row(children: [
               Padding(padding: EdgeInsets.only(left: 30.0)),
               Text('SYSTEM',
                   style: TextStyle(
@@ -156,7 +156,7 @@ class AdminLeftPanel extends StatelessWidget {
             //     onTap: () => {},
             //     label: 'Webmail',
             //     icon: const Icon(Icons.roundabout_left)),
-            Row(children: const [
+            const Row(children: [
               Padding(padding: EdgeInsets.only(left: 30.0)),
               Text('MODULES',
                   style: TextStyle(
@@ -166,8 +166,8 @@ class AdminLeftPanel extends StatelessWidget {
               data: const ExpansionTileThemeData(),
               child: ExpansionTile(
                 tilePadding: const EdgeInsets.all(0),
-                title: Row(
-                  children: const [
+                title: const Row(
+                  children: [
                     Padding(padding: EdgeInsets.only(left: 43)),
                     Icon(
                       Icons.person,

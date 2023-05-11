@@ -41,13 +41,13 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
               const SizedBox(
                 height: 10,
               ),
-              Padding(
-                  padding: const EdgeInsets.only(left: 10),
+              const Padding(
+                  padding: EdgeInsets.only(left: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
-                      const Text(
+                      Text(
                         "Friend Requests",
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),

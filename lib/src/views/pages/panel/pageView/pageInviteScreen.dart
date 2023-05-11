@@ -45,8 +45,8 @@ class PageInviteScreenState extends mvc.StateMVC<PageInviteScreen> {
         children: [
           Container(
               margin: const EdgeInsets.only(left: 20, top: 20),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.person_add_alt_rounded,
                     size: 15,

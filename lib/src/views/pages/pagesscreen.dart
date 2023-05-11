@@ -336,8 +336,8 @@ class PagesScreenState extends mvc.StateMVC<PagesScreen>
                                                           builder: (BuildContext
                                                                   context) =>
                                                               AlertDialog(
-                                                                  title: Row(
-                                                                    children: const [
+                                                                  title: const Row(
+                                                                    children: [
                                                                       Icon(
                                                                         Icons
                                                                             .flag,

@@ -11,7 +11,7 @@ class Setting {
   late String accentDarkColor;
   late String scaffoldDarkColor;
   late String scaffoldColor;
-  late Locale language = Locale('en', '');
+  late Locale language = const Locale('en', '');
   late String appVersion;
   late bool enableVersion = true;
   late bool isBright = false;

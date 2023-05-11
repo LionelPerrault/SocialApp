@@ -204,9 +204,9 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                     con.profileChange(educationInfo);
                   },
                   child: con.isProfileChange
-                      ? Row(
+                      ? const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             SizedBox(
                               width: 10,
                               height: 10,

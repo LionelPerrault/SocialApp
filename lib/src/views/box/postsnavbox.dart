@@ -87,8 +87,8 @@ class PostsNavBoxState extends State<PostsNavBox> {
             barrierDismissible: false,
             context: context,
             builder: (BuildContext context) => AlertDialog(
-                title: Row(
-                  children: const [
+                title: const Row(
+                  children: [
                     Icon(
                       Icons.shopping_bag,
                       color: Color.fromARGB(255, 43, 83, 164),
@@ -141,8 +141,8 @@ class PostsNavBoxState extends State<PostsNavBox> {
             barrierDismissible: false,
             context: context,
             builder: (BuildContext context) => AlertDialog(
-                title: Row(
-                  children: const [
+                title: const Row(
+                  children: [
                     Icon(
                       Icons.groups,
                       color: Color.fromARGB(255, 43, 83, 164),
@@ -169,8 +169,8 @@ class PostsNavBoxState extends State<PostsNavBox> {
         showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
-                title: Row(
-                  children: const [
+                title: const Row(
+                  children: [
                     Icon(
                       Icons.event,
                       color: Color.fromARGB(255, 247, 159, 88),

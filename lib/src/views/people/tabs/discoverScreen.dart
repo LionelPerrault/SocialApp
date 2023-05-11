@@ -77,9 +77,9 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                     ///title:Text("Search")
                   ));
         },
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(
               Icons.search,
               color: Colors.black,
@@ -333,8 +333,8 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                             ),
                                                           )
                                                         : e.containsKey('state') && e['state'] == 0
-                                                            ? Row(
-                                                                children: const [
+                                                            ? const Row(
+                                                                children: [
                                                                   Icon(
                                                                     FontAwesomeIcons
                                                                         .clock,
@@ -356,8 +356,8 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                                               FontWeight.w900)),
                                                                 ],
                                                               )
-                                                            : Row(
-                                                                children: const [
+                                                            : const Row(
+                                                                children: [
                                                                   Icon(
                                                                     Icons
                                                                         .person_add_alt_rounded,

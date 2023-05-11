@@ -42,9 +42,9 @@ class SettingFooter extends StatelessWidget {
                     onClick();
                   },
                   child: isChange
-                      ? Row(
+                      ? const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             SizedBox(
                               width: 10,
                               height: 10,

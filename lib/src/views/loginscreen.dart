@@ -110,7 +110,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                 height: 90,
                                 margin: const EdgeInsets.only(top: 50.0),
                                 color: const Color.fromARGB(255, 11, 35, 45),
-                                child: Row(children: const <Widget>[
+                                child: const Row(children: <Widget>[
                                   Padding(
                                     padding: EdgeInsets.only(left: 45.0),
                                   ),
@@ -339,7 +339,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
           height: 90,
           margin: const EdgeInsets.only(top: 50.0),
           color: const Color.fromARGB(255, 11, 35, 45),
-          child: Row(children: const <Widget>[
+          child: const Row(children: <Widget>[
             Padding(
               padding: EdgeInsets.only(left: 45.0),
             ),
@@ -517,7 +517,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              setState(() => {isObscure = !isObscure});
+              setState(() => isObscure = !isObscure);
             },
           ),
         ),

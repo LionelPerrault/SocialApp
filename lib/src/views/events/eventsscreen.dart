@@ -89,8 +89,8 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
             (showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
-                    title: Row(
-                      children: const [
+                    title: const Row(
+                      children: [
                         Icon(
                           Icons.event,
                           color: Color.fromARGB(255, 247, 159, 88),
@@ -486,8 +486,8 @@ class EventsScreenState extends mvc.StateMVC<EventsScreen>
                                           context: context,
                                           builder: (BuildContext context) =>
                                               AlertDialog(
-                                                  title: Row(
-                                                    children: const [
+                                                  title: const Row(
+                                                    children: [
                                                       Icon(
                                                         Icons.event,
                                                         color: Color.fromARGB(

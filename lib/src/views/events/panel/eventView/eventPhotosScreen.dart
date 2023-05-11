@@ -53,8 +53,8 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
           Container(
               height: 40,
               margin: const EdgeInsets.only(left: 20, top: 20),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.photo,
                     size: 15,

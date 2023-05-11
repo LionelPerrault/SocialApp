@@ -108,8 +108,7 @@ class PeopleSearchState extends mvc.StateMVC<PeopleSearch> {
                           SizeConfig.navbarHeight -
                           150 -
                           (UserManager.userInfo['isVerify'] ? 0 : 50),
-                      child: (widget.searchResult == null ||
-                              widget.searchResult.isEmpty)
+                      child: (widget.searchResult.isEmpty)
                           ? Center(child: Text('No search results found'))
                           : ListView.separated(
                               itemCount: widget.searchResult.length,

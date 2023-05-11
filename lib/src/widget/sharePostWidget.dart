@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
-import 'package:flutter/foundation.dart';
 
 class SharePostModal extends StatefulWidget {
   BuildContext context;
@@ -73,7 +72,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                 endIndent: 0,
               ),
               const Padding(padding: EdgeInsets.only(top: 15)),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
+              const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   'Share the post to',
                   style: TextStyle(
@@ -113,9 +112,9 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                               child: const Icon(Icons.camera_enhance_rounded,
                                   color: Colors.grey, size: 30.0),
                             ),
-                            Row(
+                            const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
+                              children: [
                                 Text(
                                   'Timeline',
                                   style: TextStyle(

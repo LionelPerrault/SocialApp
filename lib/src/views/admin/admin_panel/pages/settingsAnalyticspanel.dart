@@ -33,7 +33,7 @@ class AdminSettingsAnalytics extends StatelessWidget {
             ),
             Expanded(
                 flex: 2,
-                child: Container(
+                child: SizedBox(
                   width: 500,
                   child: Column(children: [
                     Container(

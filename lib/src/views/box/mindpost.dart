@@ -781,10 +781,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                       //     ],
                                       //   ),
                                       // ),
-                                      items: [
+                                      items: const [
                                         DropdownMenuItem(
                                           value: "Public",
-                                          child: Row(children: const [
+                                          child: Row(children: [
                                             Icon(
                                               Icons.language,
                                               color: Colors.black,
@@ -800,7 +800,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                         ),
                                         DropdownMenuItem(
                                           value: "Friends",
-                                          child: Row(children: const [
+                                          child: Row(children: [
                                             Icon(
                                               Icons.groups,
                                               color: Colors.black,
@@ -816,7 +816,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                         ),
                                         DropdownMenuItem(
                                           value: "Only Me",
-                                          child: Row(children: const [
+                                          child: Row(children: [
                                             Icon(
                                               Icons.lock_outline,
                                               color: Colors.black,

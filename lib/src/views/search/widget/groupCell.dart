@@ -115,8 +115,8 @@ class SearchGroupCellState extends mvc.StateMVC<SearchGroupCell> {
                   ),
                 )
               : joined
-                  ? Row(
-                      children: const [
+                  ? const Row(
+                      children: [
                         Icon(
                           Icons.check,
                           color: Colors.white,
@@ -129,8 +129,8 @@ class SearchGroupCellState extends mvc.StateMVC<SearchGroupCell> {
                                 fontWeight: FontWeight.w900)),
                       ],
                     )
-                  : Row(
-                      children: const [
+                  : const Row(
+                      children: [
                         Icon(
                           Icons.person_add,
                           color: Colors.white,

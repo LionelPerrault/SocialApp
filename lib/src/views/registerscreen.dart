@@ -896,7 +896,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              setState(() => {isObscure = !isObscure});
+              setState(() => isObscure = !isObscure);
             },
           ),
         ),

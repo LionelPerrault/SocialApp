@@ -315,7 +315,7 @@ class SearcherController extends ControllerMVC {
         await Helper.postCollection.orderBy('postTime', descending: true).get();
     var allPosts = allSanp.docs;
     var postData;
-    var adminInfo;
+    Map? adminInfo;
     var postsBox = [];
     for (var i = 0; i < allPosts.length; i++) {
       if (allPosts[i]['type'] == 'product') {

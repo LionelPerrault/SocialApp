@@ -41,8 +41,8 @@ class PageVideosScreenState extends mvc.StateMVC<PageVideosScreen> {
         children: [
           Container(
               margin: const EdgeInsets.only(left: 20, top: 20),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.video_call,
                     size: 15,

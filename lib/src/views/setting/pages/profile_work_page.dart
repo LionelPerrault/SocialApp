@@ -201,9 +201,9 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                     con.profileChange(workInfo);
                   },
                   child: con.isProfileChange
-                      ? Row(
+                      ? const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             SizedBox(
                               width: 10,
                               height: 10,

@@ -47,8 +47,8 @@ class PageEventsScreenState extends mvc.StateMVC<PageEventsScreen> {
         children: [
           Container(
               margin: const EdgeInsets.only(left: 20, top: 30),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.add_box,
                     size: 17,

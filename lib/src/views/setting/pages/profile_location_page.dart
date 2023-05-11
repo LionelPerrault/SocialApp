@@ -188,9 +188,9 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
                     con.profileChange(locationInfo);
                   },
                   child: con.isProfileChange
-                      ? Row(
+                      ? const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             SizedBox(
                               width: 10,
                               height: 10,

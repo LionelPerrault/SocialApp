@@ -122,9 +122,9 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                               ),
                               itemBuilder: (BuildContext bc) {
                                 return [
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 'Latest',
-                                    child: Row(children: const [
+                                    child: Row(children: [
                                       Icon(Icons.menu),
                                       Padding(
                                           padding: EdgeInsets.only(left: 10)),
@@ -134,10 +134,10 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                                       )
                                     ]),
                                   ),
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 'Price High',
                                     child: Row(
-                                      children: const [
+                                      children: [
                                         Icon(Icons.sort),
                                         Padding(
                                             padding: EdgeInsets.only(left: 10)),
@@ -148,10 +148,10 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                                       ],
                                     ),
                                   ),
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 'Price Low',
                                     child: Row(
-                                      children: const [
+                                      children: [
                                         Icon(Icons.sort),
                                         Padding(
                                             padding: EdgeInsets.only(left: 10)),
@@ -186,8 +186,8 @@ class RealEstateScreenState extends mvc.StateMVC<RealEstateScreen>
                                 barrierDismissible: false,
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
-                                  title: Row(
-                                    children: const [
+                                  title: const Row(
+                                    children: [
                                       Icon(
                                         Icons.production_quantity_limits_sharp,
                                         color:

@@ -162,7 +162,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                 setState(() {});
                               },
                             ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   )
                 ],
@@ -198,7 +198,7 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                               setState(() {});
                             },
                           ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     )
                   ]),

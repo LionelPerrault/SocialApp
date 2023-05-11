@@ -66,9 +66,9 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
   @override
   Widget build(BuildContext context) {
     return phoneVerifySuccess
-        ? SafeArea(
+        ? const SafeArea(
             child: Column(
-            children: const [
+            children: [
               Expanded(
                 child: SizedBox(),
               ),
@@ -174,10 +174,10 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                     ],
                   ),
                   body: controller.isSendingCode
-                      ? Column(
+                      ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
+                          children: [
                             CustomLoader(color: Colors.blue),
                             SizedBox(height: 50),
                             Center(
@@ -201,8 +201,8 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                             const SizedBox(height: 10),
                             const Divider(),
                             if (controller.isListeningForOtpAutoRetrieve)
-                              Column(
-                                children: const [
+                              const Column(
+                                children: [
                                   // CustomLoader(
                                   //   color: Colors.blue,
                                   // ),
@@ -236,8 +236,9 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                               child: PinInputField(
                                 length: 6,
                                 onFocusChange: (hasFocus) async {
-                                  if (hasFocus)
+                                  if (hasFocus) {
                                     await _scrollToBottomOnKeyboardOpen();
+                                  }
                                 },
                                 onSubmit: (enteredOtp) async {
                                   final verified =

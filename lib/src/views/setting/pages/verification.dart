@@ -60,10 +60,10 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                             Container(
                               width: 230,
                               color: const Color.fromARGB(255, 235, 235, 235),
-                              child: Row(
+                              child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     Icon(Icons.camera_alt),
                                     Padding(padding: EdgeInsets.only(left: 20)),
                                     Expanded(
@@ -132,10 +132,10 @@ class SettingVerificationScreenState extends State<SettingVerificationScreen> {
                               width: 230,
                               height: 30,
                               color: const Color.fromARGB(255, 235, 235, 235),
-                              child: Row(
+                              child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     Icon(Icons.card_membership),
                                     Padding(padding: EdgeInsets.only(left: 20)),
                                     Expanded(

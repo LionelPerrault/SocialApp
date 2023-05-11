@@ -67,7 +67,7 @@ class SettingInfoScreenState extends State<SettingInfoScreen> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12),
                                   ),
-                                  Container(
+                                  SizedBox(
                                     width:
                                         SizeConfig(context).screenWidth * 0.6,
                                     child: const Text(

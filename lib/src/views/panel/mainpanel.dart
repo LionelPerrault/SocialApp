@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/box/daytimeM.dart';
 import 'package:shnatter/src/views/box/mindpost.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
@@ -254,13 +253,13 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                       loadingFlagBottom = false;
                     });
                   },
-                  child: Column(
+                  child: const Column(
                     children: [
-                      const Padding(padding: EdgeInsets.only(top: 11.0)),
+                      Padding(padding: EdgeInsets.only(top: 11.0)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             'Load More...',
                             style: TextStyle(
@@ -271,7 +270,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                           )
                         ],
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 8.0)),
+                      Padding(padding: EdgeInsets.only(top: 8.0)),
                     ],
                   ),
                 ),

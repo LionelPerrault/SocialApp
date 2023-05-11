@@ -655,8 +655,8 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                                         progress: loadingFlag),
                                                   ),
                                                 ),
-                                                child: Row(
-                                                  children: const [
+                                                child: const Row(
+                                                  children: [
                                                     Icon(
                                                       Icons.delete,
                                                       color: Colors.white,
@@ -777,8 +777,8 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5)),
                               ),
-                              child: Row(
-                                children: const [
+                              child: const Row(
+                                children: [
                                   SizedBox(width: 10),
                                   Icon(
                                     Icons.warning_rounded,
@@ -849,12 +849,12 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                                                   progress: loadingFlag),
                                             ),
                                           ),
-                                      child: Row(
+                                      child: const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
-                                        children: const [
+                                        children: [
                                           Icon(Icons.delete),
                                           Text('Delete Group',
                                               style: TextStyle(

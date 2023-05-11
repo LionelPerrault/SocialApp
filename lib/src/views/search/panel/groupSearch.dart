@@ -18,6 +18,7 @@ class GroupSearch extends StatefulWidget {
   Function routerChange;
   List searchResult;
 
+  @override
   State createState() => GroupSearchState();
 }
 

@@ -372,11 +372,11 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                       ? (600 - 60) / 3
                                       : (SizeConfig(context).screenWidth - 60) /
                                           3,
-                                  child: Row(
+                                  child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       Icon(
                                         FontAwesomeIcons.message,
                                         color: Color(0xff505050),
@@ -416,8 +416,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                 builder: (BuildContext context) => Padding(
                                     padding: const EdgeInsets.all(20),
                                     child: AlertDialog(
-                                        title: Row(
-                                          children: const [
+                                        title: const Row(
+                                          children: [
                                             Icon(
                                               FontAwesomeIcons.share,
                                               size: 15,
@@ -455,10 +455,10 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             width: SizeConfig(context).screenWidth > 600
                                 ? (600 - 60) / 3
                                 : (SizeConfig(context).screenWidth - 60) / 3,
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
+                              children: [
                                 Icon(
                                   FontAwesomeIcons.share,
                                   color: Color(0xff505050),
@@ -1339,8 +1339,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             minimumSize: const Size(80, 35),
                             maximumSize: const Size(80, 35),
                           ),
-                          child: Row(
-                            children: const [
+                          child: const Row(
+                            children: [
                               Icon(
                                 Icons.person_add_alt_rounded,
                                 color: Colors.white,

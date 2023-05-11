@@ -94,8 +94,8 @@ class ProductsScreenState extends mvc.StateMVC<ProductsScreen>
                                           context: context,
                                           builder: (BuildContext context) =>
                                               AlertDialog(
-                                                  title: Row(
-                                                    children: const [
+                                                  title: const Row(
+                                                    children: [
                                                       Icon(
                                                         Icons
                                                             .production_quantity_limits_sharp,

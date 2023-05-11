@@ -115,8 +115,8 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
                   ),
                 )
               : interested
-                  ? Row(
-                      children: const [
+                  ? const Row(
+                      children: [
                         Icon(
                           Icons.check,
                           color: Colors.white,
@@ -129,8 +129,8 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
                                 fontWeight: FontWeight.w900)),
                       ],
                     )
-                  : Row(
-                      children: const [
+                  : const Row(
+                      children: [
                         Icon(
                           Icons.star,
                           color: Colors.white,

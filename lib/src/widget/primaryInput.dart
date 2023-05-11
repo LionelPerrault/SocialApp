@@ -80,6 +80,7 @@ class PrimaryInputState extends State<PrimaryInput> {
       },
       validator: (String? value) {
         widget.validator(value);
+        return null;
       },
     );
   }

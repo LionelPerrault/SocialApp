@@ -33,7 +33,7 @@ class RelysiaManager {
                 //print(responseData),
               });
     } catch (exception) {
-      print("occurs exception" + exception.toString());
+      print("occurs exception$exception");
     }
     return responseData;
   }
@@ -59,7 +59,7 @@ class RelysiaManager {
               });
     } catch (exception) {
       if (kDebugMode) {
-        print("occurs exception" + exception.toString());
+        print("occurs exception$exception");
       }
     }
     return responseData;
@@ -253,7 +253,7 @@ class RelysiaManager {
         String s = RelysiaHelper.adminDocId[i];
         DocumentSnapshot<Map<String, dynamic>> data =
             await FirebaseFirestore.instance.collection('User').doc(s).get();
-        strPaymailList = strPaymailList + "," + data['paymail'];
+        strPaymailList = "$strPaymailList," + data['paymail'];
       }
     } catch (exception) {}
     try {

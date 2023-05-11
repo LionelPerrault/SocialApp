@@ -100,10 +100,10 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                       flex: 1,
                       child: Container(
                         alignment: Alignment.center,
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text('Reset Password',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 30)),
@@ -227,10 +227,10 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                                               child:
                                                   const CircularProgressIndicator(),
                                             )
-                                          : Row(
+                                          : const Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: const [
+                                              children: [
                                                 Icon(
                                                   Icons.mail,
                                                   color: Color.fromARGB(

@@ -2221,8 +2221,8 @@ class PostCellState extends mvc.StateMVC<PostCell> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
-                  title: Column(
-                    children: const [
+                  title: const Column(
+                    children: [
                       Text(
                         'People Who Voted For This Option',
                         style: TextStyle(fontSize: 17),

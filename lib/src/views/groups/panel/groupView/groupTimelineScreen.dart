@@ -265,13 +265,13 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                   loadingFlagBottom = false;
                 });
               },
-              child: Column(
+              child: const Column(
                 children: [
-                  const Padding(padding: EdgeInsets.only(top: 11.0)),
+                  Padding(padding: EdgeInsets.only(top: 11.0)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
                         'Load More...',
                         style: TextStyle(
@@ -282,7 +282,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                       )
                     ],
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 8.0)),
+                  Padding(padding: EdgeInsets.only(top: 8.0)),
                 ],
               ),
             ),
@@ -570,8 +570,8 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                           color: Colors.grey,
                                                         ),
                                                       )
-                                                    : Row(
-                                                        children: const [
+                                                    : const Row(
+                                                        children: [
                                                           Icon(
                                                             Icons
                                                                 .person_add_alt_rounded,

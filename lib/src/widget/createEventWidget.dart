@@ -10,7 +10,6 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/interests.dart';
 
@@ -54,7 +53,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
   Future<void> fetchSuggestions(
     String input,
   ) async {
-    final sessionToken = Uuid().v4();
+    final sessionToken = const Uuid().v4();
 
     final request =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
@@ -260,12 +259,12 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                   },
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
+                const Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      children: const [
+                      children: [
                         Text('Select Privacy',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 82, 95, 127),
@@ -296,10 +295,10 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                     const EdgeInsets.only(top: 7, left: 15),
                                 child: DropdownButton(
                                   value: privacy,
-                                  items: [
+                                  items: const [
                                     DropdownMenuItem(
                                       value: "public",
-                                      child: Row(children: const [
+                                      child: Row(children: [
                                         Icon(
                                           Icons.language,
                                           color: Colors.black,
@@ -314,7 +313,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                     ),
                                     DropdownMenuItem(
                                       value: "closed",
-                                      child: Row(children: const [
+                                      child: Row(children: [
                                         Icon(
                                           Icons.groups,
                                           color: Colors.black,
@@ -329,7 +328,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                     ),
                                     DropdownMenuItem(
                                       value: "security",
-                                      child: Row(children: const [
+                                      child: Row(children: [
                                         Icon(
                                           Icons.lock_outline,
                                           color: Colors.black,

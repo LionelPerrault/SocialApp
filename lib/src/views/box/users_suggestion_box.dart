@@ -193,8 +193,8 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                     )
                                   : itemData.containsKey('state') &&
                                           itemData['state'] == 0
-                                      ? Row(
-                                          children: const [
+                                      ? const Row(
+                                          children: [
                                             Icon(
                                               FontAwesomeIcons.clock,
                                               color: Colors.white,
@@ -211,8 +211,8 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                                                         FontWeight.w900)),
                                           ],
                                         )
-                                      : Row(
-                                          children: const [
+                                      : const Row(
+                                          children: [
                                             Icon(
                                               Icons.person_add_alt_rounded,
                                               color: Colors.white,

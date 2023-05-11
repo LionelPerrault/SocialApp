@@ -62,8 +62,8 @@ class ProfileLikesScreenState extends mvc.StateMVC<ProfileLikesScreen> {
         children: [
           Container(
               margin: const EdgeInsets.only(left: 20, top: 20),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.thumb_up,
                     size: 15,

@@ -111,9 +111,9 @@ class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
                     usercon.profileChange(updatedData);
                   },
                   child: usercon.isProfileChange
-                      ? Row(
+                      ? const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             SizedBox(
                               width: 10,
                               height: 10,

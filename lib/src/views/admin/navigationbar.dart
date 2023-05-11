@@ -131,7 +131,7 @@ class AdminShnatterNavigationState
                           PopupMenuItem<Menu>(
                             onTap: () => {onLogOut()},
                             value: Menu.itemLogout,
-                            child: Row(children: const [
+                            child: const Row(children: [
                               Icon(Icons.logout),
                               SizedBox(width: 8),
                               Text('Log Out'),
@@ -243,7 +243,7 @@ class AdminShnatterNavigationState
                           PopupMenuItem<Menu>(
                             onTap: () => {onLogOut()},
                             value: Menu.itemLogout,
-                            child: Row(children: const [
+                            child: const Row(children: [
                               Icon(Icons.logout),
                               SizedBox(width: 8),
                               Text('Log Out'),

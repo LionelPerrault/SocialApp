@@ -166,7 +166,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
   Future<void> fetchSuggestions(
     String input,
   ) async {
-    final sessionToken = Uuid().v4();
+    final sessionToken = const Uuid().v4();
 
     final request =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
@@ -262,8 +262,8 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                               children: [
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                Row(
-                                  children: const [
+                                const Row(
+                                  children: [
                                     Text(
                                       'Offer',
                                       style: TextStyle(
@@ -535,8 +535,8 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Text(
                             'Photos',
                             style: TextStyle(
@@ -586,8 +586,8 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Text(
                             'Files',
                             style: TextStyle(
@@ -896,7 +896,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
       setState(() {});
     }
     final firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
+    UploadTask uploadTask;
     Reference reference;
     try {
       if (kIsWeb) {

@@ -542,9 +542,9 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
                     con.profileChange(socialProfile);
                   },
                   child: con.isProfileChange
-                      ? Row(
+                      ? const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             SizedBox(
                               width: 10,
                               height: 10,

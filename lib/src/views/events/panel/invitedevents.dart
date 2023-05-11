@@ -9,7 +9,6 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/events/widget/eventcell.dart';
 
 import '../../../controllers/PostController.dart';
-import '../../../models/chatModel.dart';
 
 class InvitedEvents extends StatefulWidget {
   InvitedEvents({Key? key, required this.routerChange})
@@ -18,6 +17,7 @@ class InvitedEvents extends StatefulWidget {
   late PostController con;
   Function routerChange;
 
+  @override
   State createState() => InvitedEventsState();
 }
 

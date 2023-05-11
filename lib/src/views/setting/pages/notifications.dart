@@ -68,8 +68,8 @@ class SettingNotificationScreenState
               button: const {'flag': false},
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Padding(padding: EdgeInsets.only(left: 20)),
                 Text('SYSTEM NOTIFICATIONS'),
                 Flexible(fit: FlexFit.tight, child: SizedBox()),

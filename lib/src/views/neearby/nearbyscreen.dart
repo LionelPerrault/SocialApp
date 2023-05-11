@@ -385,8 +385,8 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
             Container(
               color: Colors.white,
               alignment: Alignment.center,
-              child: Column(
-                children: const [
+              child: const Column(
+                children: [
                   Padding(padding: EdgeInsets.only(top: 10)),
                   Text(
                     "Choose a radius to see",
@@ -505,9 +505,9 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                       _getAddressFromLatLng(choosePoint);
                       setState(() {});
                     },
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text("Explore here",
                             style: TextStyle(
                               color: Colors.lightBlue,
@@ -534,9 +534,9 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                       isSelectArea = false;
                       setState(() {});
                     },
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.location_pin,
                           color: Colors.lightBlue,

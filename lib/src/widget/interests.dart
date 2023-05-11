@@ -148,8 +148,8 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
         // ),
         //all interests
         widget.header
-            ? Row(
-                children: const [
+            ? const Row(
+                children: [
                   Text('INTERESTS',
                       style: TextStyle(color: Colors.black, fontSize: 11)),
                   Flexible(fit: FlexFit.tight, child: SizedBox()),
@@ -167,7 +167,7 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                       Row(
                         children: [
                           Expanded(
-                            child: Container(
+                            child: SizedBox(
                               width: 750,
                               child: customDropDownButton(
                                 title: '',
@@ -223,13 +223,13 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
         Container(
           child: SingleChildScrollView(
             child: Column(children: [
-              Column(children: [
-                const Divider(
+              const Column(children: [
+                Divider(
                   thickness: 0.1,
                   color: Colors.black,
                 ),
                 Row(
-                  children: const [
+                  children: [
                     Padding(padding: EdgeInsets.only(left: 10)),
                     Text(
                       'Title',
@@ -249,7 +249,7 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                     Padding(padding: EdgeInsets.only(left: 30))
                   ],
                 ),
-                const Divider(
+                Divider(
                   thickness: 0.1,
                   color: Colors.black,
                 )
@@ -358,7 +358,7 @@ class InterestsWidgetState extends mvc.StateMVC<InterestsWidget> {
                 fontWeight: FontWeight.w600),
           ),
           const Padding(padding: EdgeInsets.only(top: 2)),
-          Container(
+          SizedBox(
             height: 40,
             // width: width,
             child: DropdownButtonFormField(

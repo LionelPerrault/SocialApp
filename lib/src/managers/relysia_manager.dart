@@ -31,7 +31,7 @@ class RelysiaManager {
               });
     } catch (exception) {
       if (kDebugMode) {
-        print("occurs exception" + exception.toString());
+        print("occurs exception$exception");
       }
     }
     return responseData;

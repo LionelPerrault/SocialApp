@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, must_be_immutable
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:io' show Platform;
 
 const theSource = AudioSource.microphone;
 
@@ -74,7 +74,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
       _mPath = '${generateRandomFilename()}.webm';
     }
     if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
-      var dir;
+      Directory? dir;
       if (Platform.isIOS) {
         dir = await getApplicationDocumentsDirectory();
       } else {
@@ -178,8 +178,8 @@ class _SoundRecorderState extends State<SoundRecorder> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.blue),
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       SizedBox(width: 5),
                       Icon(
                         Icons.mic,

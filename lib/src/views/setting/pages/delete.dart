@@ -104,12 +104,12 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                                         height: 20,
                                         child: CircularProgressIndicator(),
                                       )
-                                    : Row(
+                                    : const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
-                                        children: const [
+                                        children: [
                                           Icon(Icons.delete),
                                           Text('Delete My Account',
                                               style: TextStyle(

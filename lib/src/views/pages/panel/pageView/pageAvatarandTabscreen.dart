@@ -27,7 +27,7 @@ class PageAvatarandTabScreen extends StatefulWidget {
 
 class PageAvatarandTabScreenState extends mvc.StateMVC<PageAvatarandTabScreen>
     with SingleTickerProviderStateMixin {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   double width = 0;
   double itemWidth = 0;
   var tap = 'Timeline';

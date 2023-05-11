@@ -54,11 +54,11 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                const Padding(
+                    padding: EdgeInsets.only(left: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           "Search Results",
                           style: TextStyle(

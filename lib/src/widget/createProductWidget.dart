@@ -209,7 +209,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   Future<void> fetchSuggestions(
     String input,
   ) async {
-    final sessionToken = Uuid().v4();
+    final sessionToken = const Uuid().v4();
     // HttpsCallable callable =
     //     FirebaseFunctions.instance.httpsCallable('getLocationAutoList');
     // await callable.call(<String, dynamic>{
@@ -331,8 +331,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                               children: [
                                 const Padding(
                                     padding: EdgeInsets.only(top: 20)),
-                                Row(
-                                  children: const [
+                                const Row(
+                                  children: [
                                     Text(
                                       'Offer',
                                       style: TextStyle(
@@ -623,8 +623,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Text(
                             'Photos',
                             style: TextStyle(
@@ -674,8 +674,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Text(
                             'Files',
                             style: TextStyle(
@@ -951,14 +951,14 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   }
 
   Future<XFile> chooseImage() async {
-    final _imagePicker = ImagePicker();
+    final imagePicker = ImagePicker();
     XFile? pickedFile;
     if (kIsWeb) {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
-      pickedFile = await _imagePicker.pickImage(
+      pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
       );
     }
@@ -976,7 +976,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
       setState(() {});
     }
     final firebaseStorage = FirebaseStorage.instance;
-    var uploadTask;
+    UploadTask uploadTask;
     Reference reference;
     try {
       if (kIsWeb) {

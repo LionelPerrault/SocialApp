@@ -496,13 +496,13 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     loadingFlagBottom = false;
                   });
                 },
-                child: Column(
+                child: const Column(
                   children: [
-                    const Padding(padding: EdgeInsets.only(top: 11.0)),
+                    Padding(padding: EdgeInsets.only(top: 11.0)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text(
                           'Load More...',
                           style: TextStyle(
@@ -513,7 +513,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                         )
                       ],
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 8.0)),
+                    Padding(padding: EdgeInsets.only(top: 8.0)),
                   ],
                 ),
               ),
@@ -575,10 +575,10 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                           : const SizedBox(),
                       postColumn(),
                     ])
-              : SizedBox(
+              : const SizedBox(
                   width: double.infinity,
                   child: Column(
-                    children: const [
+                    children: [
                       Padding(padding: EdgeInsets.only(top: 115)),
                       Text(
                         "You can see the friends Timeline only if you are friends.",
@@ -632,10 +632,10 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     postColumn()
                   ],
                 )
-              : SizedBox(
+              : const SizedBox(
                   width: double.infinity,
                   child: Column(
-                    children: const [
+                    children: [
                       Padding(padding: EdgeInsets.only(top: 115)),
                       Text(
                         "You can see the friends data only if you are friends.",

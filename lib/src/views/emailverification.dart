@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:shnatter/src/routes/route_names.dart';
-import 'package:shnatter/src/widget/mprimary_button.dart';
 import '../helpers/emailverified.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;

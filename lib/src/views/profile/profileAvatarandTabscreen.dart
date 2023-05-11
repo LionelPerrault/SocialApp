@@ -362,10 +362,10 @@ class ProfileAvatarandTabScreenState extends mvc
                           Radius.circular(22),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(
                             Icons.settings,
                             size: 20,
@@ -434,10 +434,10 @@ class ProfileAvatarandTabScreenState extends mvc
                           }),
                         }
                     },
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.chat,
                           size: 20,
@@ -464,10 +464,10 @@ class ProfileAvatarandTabScreenState extends mvc
                           'subRouter': RouteNames.settings_profile_basic
                         }),
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(
                             Icons.edit,
                             size: 20,
@@ -648,10 +648,10 @@ class ProfileAvatarandTabScreenState extends mvc
                           onPressed: () {
                             Navigator.of(context).pop(true);
                           },
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
+                            children: [
                               Padding(padding: EdgeInsets.only(top: 17)),
                               Icon(
                                 Icons.arrow_back,

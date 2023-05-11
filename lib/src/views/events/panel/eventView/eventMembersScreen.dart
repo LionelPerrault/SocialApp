@@ -98,8 +98,8 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
         children: [
           Container(
               margin: const EdgeInsets.only(left: 20, top: 20),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.groups,
                     size: 15,

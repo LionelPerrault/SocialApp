@@ -549,7 +549,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                           PopupMenuItem<Menu>(
                               onTap: () => {onLogOut()},
                               value: Menu.itemLogout,
-                              child: Row(children: const [
+                              child: const Row(children: [
                                 Icon(Icons.logout),
                                 SizedBox(width: 8),
                                 Text('Log Out'),
@@ -850,7 +850,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                                 onLogOut();
                               },
                               value: Menu.itemLogout,
-                              child: Row(children: const [
+                              child: const Row(children: [
                                 Icon(Icons.logout),
                                 SizedBox(width: 8),
                                 Text('Log Out'),

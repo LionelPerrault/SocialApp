@@ -158,8 +158,8 @@ class ShnatterPageSuggestState extends mvc.StateMVC<ShnatterPageSuggest> {
                                         color: Colors.black,
                                       ),
                                     )
-                                  : Row(
-                                      children: const [
+                                  : const Row(
+                                      children: [
                                         Icon(
                                           Icons.thumb_up,
                                           color: Colors.black,

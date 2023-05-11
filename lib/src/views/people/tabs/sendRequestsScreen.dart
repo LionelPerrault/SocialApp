@@ -72,9 +72,9 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                     ///title:Text("Search")
                   ));
         },
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(
               Icons.search,
               color: Colors.black,
@@ -269,11 +269,11 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                   )
                                                 : (e).containsKey('state') &&
                                                         e['state'] == -2
-                                                    ? Row(
+                                                    ? const Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        children: const [
+                                                        children: [
                                                           Icon(
                                                             Icons
                                                                 .person_add_alt_rounded,
@@ -294,11 +294,11 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                                           .w900))
                                                         ],
                                                       )
-                                                    : Row(
+                                                    : const Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        children: const [
+                                                        children: [
                                                           Icon(
                                                             FontAwesomeIcons
                                                                 .clock,

@@ -231,12 +231,12 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
               Container(
                 padding: const EdgeInsets.only(left: 20),
                 child: Column(children: [
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        children: const [
+                        children: [
                           Text(
                             'Select Privacy',
                             style: TextStyle(
@@ -270,10 +270,10 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                       const EdgeInsets.only(top: 7, left: 15),
                                   child: DropdownButton(
                                     value: eventPrivacy,
-                                    items: [
+                                    items: const [
                                       DropdownMenuItem(
                                         value: "public",
-                                        child: Row(children: const [
+                                        child: Row(children: [
                                           Icon(
                                             Icons.language,
                                             color: Colors.black,
@@ -289,7 +289,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                       ),
                                       DropdownMenuItem(
                                         value: "closed",
-                                        child: Row(children: const [
+                                        child: Row(children: [
                                           Icon(
                                             Icons.groups,
                                             color: Colors.black,
@@ -305,7 +305,7 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                       ),
                                       DropdownMenuItem(
                                         value: "security",
-                                        child: Row(children: const [
+                                        child: Row(children: [
                                           Icon(
                                             Icons.lock_outline,
                                             color: Colors.black,
@@ -463,8 +463,8 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                           color: Color.fromARGB(255, 252, 124, 95),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: Row(
-                          children: const [
+                        child: const Row(
+                          children: [
                             Padding(padding: EdgeInsets.only(left: 30)),
                             Icon(
                               Icons.warning_rounded,
@@ -533,10 +533,10 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                                           progress: loadingFlag),
                                     ),
                                   ),
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Icon(Icons.delete),
                                   Text('Delete Event',
                                       style: TextStyle(

@@ -172,12 +172,12 @@ class TwoFactorAuthenticationScreenState
                         padding: const EdgeInsets.only(left: 10),
                         child: Row(
                           children: [
-                            Row(
+                            const Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               // ignore: prefer_const_literals_to_create_immutables
                               children: [
-                                const Text('JBSWY3DPEHPK3PXP',
+                                Text('JBSWY3DPEHPK3PXP',
                                     style: TextStyle(
                                         fontSize: 11,
                                         color:
@@ -215,10 +215,10 @@ class TwoFactorAuthenticationScreenState
                   style: TextStyle(fontSize: 11),
                 )),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
+              children: [
                 Text('Verification Code',
                     style:
                         TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),

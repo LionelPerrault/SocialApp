@@ -119,9 +119,9 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                               ),
                               itemBuilder: (BuildContext bc) {
                                 return [
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 'Latest',
-                                    child: Row(children: const [
+                                    child: Row(children: [
                                       Icon(Icons.menu),
                                       Padding(
                                           padding: EdgeInsets.only(left: 10)),
@@ -131,10 +131,10 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                                       )
                                     ]),
                                   ),
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 'Price High',
                                     child: Row(
-                                      children: const [
+                                      children: [
                                         Icon(Icons.sort),
                                         Padding(
                                             padding: EdgeInsets.only(left: 10)),
@@ -145,10 +145,10 @@ class MarketPlaceScreenState extends mvc.StateMVC<MarketPlaceScreen>
                                       ],
                                     ),
                                   ),
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 'Price Low',
                                     child: Row(
-                                      children: const [
+                                      children: [
                                         Icon(Icons.sort),
                                         Padding(
                                             padding: EdgeInsets.only(left: 10)),

@@ -30,8 +30,8 @@ class SettingsLeftPanel extends StatelessWidget {
             data: const ExpansionTileThemeData(),
             child: ExpansionTile(
               tilePadding: const EdgeInsets.all(0),
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Padding(padding: EdgeInsets.only(left: 43)),
                   Icon(
                     Icons.person,
@@ -152,8 +152,8 @@ class SettingsLeftPanel extends StatelessWidget {
             data: const ExpansionTileThemeData(),
             child: ExpansionTile(
               tilePadding: const EdgeInsets.all(0),
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Padding(padding: EdgeInsets.only(left: 43)),
                   Icon(
                     Icons.security,

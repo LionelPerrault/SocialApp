@@ -127,8 +127,8 @@ class MarketPlaceLeftPanelState extends mvc.StateMVC<MarketPlaceLeftPanel> {
                   barrierDismissible: false,
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
-                      title: Row(
-                        children: const [
+                      title: const Row(
+                        children: [
                           Icon(
                             Icons.production_quantity_limits_sharp,
                             color: Color.fromARGB(255, 33, 150, 243),

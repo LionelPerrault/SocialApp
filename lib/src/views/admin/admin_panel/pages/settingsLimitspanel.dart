@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/controllers/AdminController.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_footer.dart';
 import 'package:shnatter/src/views/admin/admin_panel/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;

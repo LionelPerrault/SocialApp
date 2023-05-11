@@ -848,8 +848,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                         onPressed: () {
                                           () => {};
                                         },
-                                        child: Row(
-                                          children: const [
+                                        child: const Row(
+                                          children: [
                                             Icon(
                                               Icons.delete,
                                               color: Colors.white,
@@ -969,8 +969,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                       onPressed: () {
                                         () => {};
                                       },
-                                      child: Row(
-                                        children: const [
+                                      child: const Row(
+                                        children: [
                                           Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -999,8 +999,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                                       onPressed: () {
                                         () => {};
                                       },
-                                      child: Row(
-                                        children: const [
+                                      child: const Row(
+                                        children: [
                                           Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -1066,10 +1066,10 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                           Container(
                             width: 230,
                             color: const Color.fromARGB(255, 235, 235, 235),
-                            child: Row(
+                            child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Icon(Icons.camera_alt),
                                   Padding(padding: EdgeInsets.only(left: 20)),
                                   Expanded(
@@ -1138,10 +1138,10 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                             width: 230,
                             height: 30,
                             color: const Color.fromARGB(255, 235, 235, 235),
-                            child: Row(
+                            child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Icon(Icons.card_membership),
                                   Padding(padding: EdgeInsets.only(left: 20)),
                                   Expanded(
@@ -1287,8 +1287,8 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                           color: Color.fromARGB(255, 252, 124, 95),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: Row(
-                          children: const [
+                        child: const Row(
+                          children: [
                             Padding(padding: EdgeInsets.only(left: 30)),
                             Icon(
                               Icons.warning_rounded,
@@ -1329,10 +1329,10 @@ class PageSettingsScreenState extends mvc.StateMVC<PageSettingsScreen> {
                               onPressed: () {
                                 (() => {});
                               },
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Icon(Icons.delete),
                                   Text('Delete Group',
                                       style: TextStyle(

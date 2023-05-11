@@ -128,8 +128,8 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                 )
               : !widget.userInfo.containsKey("state") ||
                       widget.userInfo['state'] == -1
-                  ? Row(
-                      children: const [
+                  ? const Row(
+                      children: [
                         Icon(
                           Icons.person_add_alt_rounded,
                           color: Colors.white,
@@ -143,8 +143,8 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                       ],
                     )
                   : widget.userInfo['state'] == 0
-                      ? Row(
-                          children: const [
+                      ? const Row(
+                          children: [
                             Icon(
                               Icons.timelapse,
                               color: Colors.white,
@@ -163,8 +163,8 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                                 .cancelFriend(widget.userInfo);
                             setState(() {});
                           },
-                          child: Row(
-                            children: const [
+                          child: const Row(
+                            children: [
                               Icon(
                                 Icons.check,
                                 color: Colors.white,
