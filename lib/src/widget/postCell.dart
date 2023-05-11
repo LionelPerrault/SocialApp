@@ -2290,6 +2290,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   }
 
   Widget editPost() {
+    //headerCon.text = widget.postInfo['header'] ?? '';
     return Column(
       children: [
         SizedBox(

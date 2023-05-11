@@ -58,8 +58,10 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
     } else if (nowTime.hour > 20) {
       time = 2;
     }
-    final Stream<QuerySnapshot> postStream =
-        Helper.postCollection.orderBy('postTime').snapshots();
+    final Stream<QuerySnapshot> postStream = Helper.postCollection
+        .where('followers', arrayContains: UserManager.userInfo['userName'])
+        .orderBy('postTime', descending: true)
+        .snapshots();
     loadingFlag = true;
 
     con
