@@ -996,7 +996,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       }
     }
     verbSentence =
-        'shared ${widget.sharedPost!['adminInfo']!['firstName']} ${widget.sharedPost!['adminInfo']!['lastName']} \'s ${widget.sharedPost['type'] == 'photo' || widget.sharedPost['type'] == 'audio' || widget.sharedPost['type'] == 'poll' || widget.sharedPost['type'] == 'product' || widget.sharedPost['type'] == 'realestate' ? widget.sharedPost['type'] : 'Post'}';
+        ' shared ${widget.sharedPost!['adminInfo']!['firstName']} ${widget.sharedPost!['adminInfo']!['lastName']} \'s ${widget.sharedPost['type'] == 'photo' || widget.sharedPost['type'] == 'audio' || widget.sharedPost['type'] == 'poll' || widget.sharedPost['type'] == 'product' || widget.sharedPost['type'] == 'realestate' ? widget.sharedPost['type'] : 'Post'}';
     verbSentence = '$verbSentence$whereWord';
 
     return Row(
