@@ -91,6 +91,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       widget.textChange(searchCon.text);
       widget.onSearchBarFocus();
     });
+
     PeopleController().listenData();
     final Stream<QuerySnapshot> messageStrem = FirebaseFirestore.instance
         .collection(Helper.message)
@@ -127,8 +128,16 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       },
     );
 
-    final Stream<QuerySnapshot> streamBadge =
-        Helper.notifiCollection.snapshots();
+    var usercheckTime = 0;
+    if (userInfo == null) return;
+    if (userInfo['checkNotifyTime'] != null) {
+      usercheckTime = userInfo['checkNotifyTime'];
+    } else {
+      return;
+    }
+    final Stream<QuerySnapshot> streamBadge = Helper.notifiCollection
+        .orderBy('timeStamp', descending: true)
+        .snapshots();
     streamBadge.listen((event) async {
       var allNotifi = event.docs;
       var userSnap = await FirebaseFirestore.instance
@@ -139,14 +148,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       var userInfo = userSnap.data();
 
       var changeData = [];
-
-      var usercheckTime = 0;
-      if (userInfo == null) return;
-      if (userInfo['checkNotifyTime'] != null) {
-        usercheckTime = userInfo['checkNotifyTime'];
-      } else {
-        return;
-      }
+      var remainData = [];
 
       var tsNT;
       for (var i = 0; i < allNotifi.length; i++) {
@@ -155,93 +157,96 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
 
         var adminUid = allNotifi[i]['postAdminId'];
         var postType = allNotifi[i]['postType'];
-
-        if (tsNT > usercheckTime) {
-          var addData = {};
-          if (adminUid != UserManager.userInfo['uid'] &&
-              postType != 'requestFriend' &&
-              postType != 'inviteGroup') {
-            dynamic userV = await FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(allNotifi[i]['postAdminId'])
-                .get();
-            dynamic data = userV.data();
-            var type = allNotifi[i]['postType'];
-            var text = Helper.notificationText[type.toString()]['text'];
-            var date = await postCon.formatDate(allNotifi[i]['timeStamp']);
-            if (data != null) {
-              addData = {
-                'uid': allNotifi[i].id,
-                'avatar': data['avatar'],
-                'userName': userV.data()!['userName'],
-                'text': text,
-                'date': date,
-              };
+        bool includeMe =
+            allNotifi[i]['userList'].contains(UserManager.userInfo['uid']);
+        var addData = {};
+        if (adminUid != UserManager.userInfo['uid'] &&
+            postType != 'requestFriend' &&
+            postType != 'inviteGroup') {
+          dynamic userV = await FirebaseFirestore.instance
+              .collection(Helper.userField)
+              .doc(adminUid)
+              .get();
+          dynamic data = userV.data();
+          var text = Helper.notificationText[postType.toString()]['text'];
+          var date = await postCon.formatDate(allNotifi[i]['timeStamp']);
+          if (data != null) {
+            addData = {
+              'uid': allNotifi[i].id,
+              'avatar': data['avatar'],
+              'userName': userV.data()!['userName'],
+              'text': text,
+              'date': date,
+            };
+            if (tsNT > usercheckTime) {
               changeData.add(addData);
             }
+            if (!includeMe) remainData.add(addData);
           }
-          if (postType == 'requestFriend' &&
-              adminUid == UserManager.userInfo['uid']) {
-            dynamic userV = await FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(allNotifi[i]['postAdminId'])
-                .get();
-            dynamic data = userV.data();
-            var type = allNotifi[i]['postType'];
-            var text = Helper.notificationText[type.toString()]['text'];
-            if (data != null) {
-              addData = {
-                // ...allNotifi[i],
-                'uid': allNotifi[i].id,
-                'avatar': Helper.systemAvatar,
-                'userName': Helper.notificationName[allNotifi[i]['postType']]
-                    ['name'],
-                'text': text,
-              };
+        }
+        if (postType == 'requestFriend' &&
+            adminUid == UserManager.userInfo['uid']) {
+          dynamic userV = await FirebaseFirestore.instance
+              .collection(Helper.userField)
+              .doc(adminUid)
+              .get();
+          dynamic data = userV.data();
+          var text = Helper.notificationText[postType.toString()]['text'];
+          if (data != null) {
+            addData = {
+              // ...allNotifi[i],
+              'uid': allNotifi[i].id,
+              'avatar': Helper.systemAvatar,
+              'userName': Helper.notificationName[postType]['name'],
+              'text': text,
+            };
+            if (tsNT > usercheckTime) {
               changeData.add(addData);
             }
+            if (!includeMe) remainData.add(addData);
           }
-          if (postType == 'inviteGroup' &&
-              adminUid != UserManager.userInfo['uid']) {
-            dynamic userV = await FirebaseFirestore.instance
-                .collection(Helper.userField)
-                .doc(allNotifi[i]['postAdminId'])
-                .get();
-            dynamic data = userV.data();
-            dynamic groupV = await FirebaseFirestore.instance
-                .collection(Helper.groupsField)
-                .doc(allNotifi[i]['postId'])
-                .get();
-            dynamic groupData = groupV.data();
-            var type = allNotifi[i]['postType'];
-            var text = Helper.notificationText[type.toString()]['text'];
+        }
+        if (postType == 'inviteGroup' &&
+            adminUid != UserManager.userInfo['uid']) {
+          dynamic userV = await FirebaseFirestore.instance
+              .collection(Helper.userField)
+              .doc(adminUid)
+              .get();
+          dynamic data = userV.data();
+          dynamic groupV = await FirebaseFirestore.instance
+              .collection(Helper.groupsField)
+              .doc(allNotifi[i]['postId'])
+              .get();
+          dynamic groupData = groupV.data();
+          var text = Helper.notificationText[postType.toString()]['text'];
 
-            if (data != null && groupData != null) {
-              addData = {
-                // ...allNotifi[i],
-                'uid': allNotifi[i].id,
-                'avatar': data['avatar'],
-                'userName': data['userName'],
-                'text': 'Group ${groupData['groupName']} $text',
-                'redirect': {
-                  'router': RouteNames.groups,
-                  'subRouter': allNotifi[i]['postId'],
-                }
-              };
+          if (data != null && groupData != null) {
+            addData = {
+              // ...allNotifi[i],
+              'uid': allNotifi[i].id,
+              'avatar': data['avatar'],
+              'userName': data['userName'],
+              'text': 'Group ${groupData['groupName']} $text',
+              'redirect': {
+                'router': RouteNames.groups,
+                'subRouter': allNotifi[i]['postId'],
+              }
+            };
+            if (tsNT > usercheckTime) {
               changeData.add(addData);
             }
+            if (!includeMe) remainData.add(addData);
           }
         }
       }
       postCon.realNotifi = changeData;
-      postCon.allNotification = changeData;
-
+      postCon.allNotification = remainData;
       setState(() {});
       if (!kIsWeb) {
         dynamic res = await FlutterAppBadger.isAppBadgeSupported();
 
         if (res != false) {
-          FlutterAppBadger.updateBadgeCount(postCon.allNotification.length);
+          FlutterAppBadger.updateBadgeCount(postCon.realNotifi.length);
         }
       }
     });

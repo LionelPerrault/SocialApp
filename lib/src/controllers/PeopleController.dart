@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
@@ -172,13 +173,14 @@ class PeopleController extends ControllerMVC {
   }
 
   // save the notifcation when friend request sent
-  saveNotifications(addFriendsDocumentId) {
+  saveNotifications(addFriendsDocumentId) async {
+    await PostController().getServerTime();
     var notificationData = {
       'postType': 'requestFriend',
       'postId': addFriendsDocumentId,
       'postAdminId': UserManager.userInfo['uid'],
       'notifyTime': DateTime.now().toString(),
-      'tsNT': DateTime.now().millisecondsSinceEpoch,
+      'tsNT': PostController().serverTimeStamp,
       'userList': [],
       'timeStamp': FieldValue.serverTimestamp(),
     };

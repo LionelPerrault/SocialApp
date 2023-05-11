@@ -598,6 +598,8 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                                       });
                                                       await con.updateEvent();
                                                       await getFriends();
+
+                                                      await con.getServerTime();
                                                       var notificationData = {
                                                         'postType':
                                                             'requestFriend',
@@ -609,8 +611,8 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                                         'notifyTime':
                                                             DateTime.now()
                                                                 .toString(),
-                                                        'tsNT': DateTime.now()
-                                                            .millisecondsSinceEpoch,
+                                                        'tsNT':
+                                                            con.serverTimeStamp,
                                                         'userList': [],
                                                         'timeStamp': FieldValue
                                                             .serverTimestamp(),

@@ -39,14 +39,18 @@ class PostController extends ControllerMVC {
   List unJoindGroups = [];
   List unInterestedEvents = [];
   List<mvc.StateMVC> notifiers;
-
+  var serverTimeStamp;
   @override
   Future<bool> initAsync() async {
     //
     Helper.eventsData =
         FirebaseFirestore.instance.collection(Helper.eventsField);
-
     return true;
+  }
+
+  getServerTime() async {
+    var serverTime = await getNowTime();
+    serverTimeStamp = await changeTimeType(d: serverTime);
   }
 
   //fix bugs of unknown
@@ -411,12 +415,13 @@ class PostController extends ControllerMVC {
         .collection(Helper.eventsField)
         .add(eventData)
         .then((value) async => {
+              await getServerTime(),
               notificationData = {
                 'postType': 'events',
                 'postId': value.id,
                 'postAdminId': UserManager.userInfo['uid'],
                 'notifyTime': DateTime.now().toString(),
-                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'tsNT': serverTimeStamp,
                 'userList': [],
                 'timeStamp': FieldValue.serverTimestamp(),
               },
@@ -744,13 +749,14 @@ class PostController extends ControllerMVC {
     await FirebaseFirestore.instance
         .collection(Helper.pagesField)
         .add(pageData)
-        .then((value) => {
+        .then((value) async => {
+              await getServerTime(),
               notificationData = {
                 'postType': 'pages',
                 'postId': value.id,
                 'postAdminId': UserManager.userInfo['uid'],
                 'notifyTime': DateTime.now().toString(),
-                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'tsNT': serverTimeStamp,
                 'userList': [],
                 'timeStamp': FieldValue.serverTimestamp(),
               },
@@ -1008,12 +1014,13 @@ class PostController extends ControllerMVC {
         .collection(Helper.groupsField)
         .add(groupData)
         .then((value) async => {
+              await getServerTime(),
               notificationData = {
                 'postType': 'groups',
                 'postId': value.id,
                 'postAdminId': UserManager.userInfo['uid'],
                 'notifyTime': DateTime.now().toString(),
-                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'tsNT': serverTimeStamp,
                 'userList': [],
                 'timeStamp': FieldValue.serverTimestamp(),
               },
@@ -1181,12 +1188,13 @@ class PostController extends ControllerMVC {
                 'comment': true,
               },
               await Helper.postCollection.add(postData),
+              await getServerTime(),
               notificationData = {
                 'postType': 'products',
                 'postId': value.id,
                 'postAdminId': UserManager.userInfo['uid'],
                 'notifyTime': DateTime.now().toString(),
-                'tsNT': DateTime.now().millisecondsSinceEpoch,
+                'tsNT': serverTimeStamp,
                 'userList': [],
                 'timeStamp': FieldValue.serverTimestamp(),
               },
@@ -1242,12 +1250,13 @@ class PostController extends ControllerMVC {
         'comment': true,
       };
       await Helper.postCollection.add(postData);
+      await getServerTime();
       notificationData = {
         'postType': 'realEstates',
         'postId': result.id,
         'postAdminId': UserManager.userInfo['uid'],
         'notifyTime': DateTime.now().toString(),
-        'tsNT': DateTime.now().millisecondsSinceEpoch,
+        'tsNT': serverTimeStamp,
         'userList': [],
         'timeStamp': FieldValue.serverTimestamp(),
       };
@@ -2165,24 +2174,43 @@ class PostController extends ControllerMVC {
     await Helper.notifiCollection
         .doc(notiUid)
         .update({'userList': allNot['userList']});
+  }
 
+  clearAllNotify(array, userUid) async {
+    allNotification = [];
     setState(() {});
+    for (var i = 0; i < array.length; i++) {
+      var notiSnap = await Helper.notifiCollection.doc(array[i]['uid']).get();
+      var allNot = notiSnap.data();
+      allNot!['userList'].add(userUid);
+      await Helper.notifiCollection.doc(array[i]['uid']).update({
+        'userList': allNot['userList'],
+      });
+    }
   }
 
   Future checkNotify() async {
     try {
       realNotifi = [];
       print("removed realNotifi empty");
-      var serverTime = await getNowTime();
-      var serverTimeStamp = await changeTimeType(d: serverTime);
+      await getServerTime();
       await FirebaseFirestore.instance
           .collection(Helper.userField)
           .doc(UserManager.userInfo['uid'])
           .update({'checkNotifyTime': serverTimeStamp});
+      var userManager = UserManager.userInfo;
+      userManager['checkNotifyTime'] = serverTimeStamp;
+      var j = {};
+      userManager.forEach((key, value) {
+        j = {...j, key.toString(): value};
+      });
+      await Helper.saveJSONPreference(Helper.userField, {...j});
+      await UserManager.getUserInfo();
+      setState(() {});
+      await UserManager.getUserInfo();
       await Helper.saveJSONPreference(
           Helper.userField, {...UserManager.userInfo});
-      await UserManager.getUserInfo();
-
+      UserManager.userInfo['checkNotifyTime'] = serverTimeStamp;
       setState(() {});
     } catch (e) {
       print(e);

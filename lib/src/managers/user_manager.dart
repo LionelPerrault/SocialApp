@@ -17,6 +17,7 @@ class UserManager {
       userInfo = await Helper.getJSONPreference(Helper.userField);
       isLogined = true;
       // RouteNames.userName = '/${userInfo['userName']}';
+      print(userInfo);
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_generator.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -27,7 +28,7 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
   _MyAppState._()
       : super(
           controller: AppController(),
-          controllers: [UserController(), SearchController()],
+          controllers: [UserController(), SearchController(), PostController()],
         );
   static _MyAppState? _this;
   @override

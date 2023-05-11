@@ -59,37 +59,26 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Padding(
+                children: [
+                  const Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Text(
                         "Notifications",
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       )),
-                  // Row(children: [
-                  //   const Text(
-                  //     'Alert Sound',
-                  //     style: TextStyle(fontSize: 11),
-                  //   ),
-                  //   SizedBox(
-                  //     height: 20,
-                  //     child: Transform.scale(
-                  //       scaleX: 0.55,
-                  //       scaleY: 0.55,
-                  //       child: CupertinoSwitch(
-                  //         //thumbColor: kprimaryColor,
-                  //         activeColor: kprimaryColor,
-                  //         value: isSound,
-                  //         onChanged: (value) {
-                  //           setState(() {
-                  //             isSound = value;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ])
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: InkWell(
+                      onTap: () {
+                        postCon.clearAllNotify(
+                          postCon.allNotification,
+                          UserManager.userInfo['uid'],
+                        );
+                      },
+                      child: const Text('Clear All'),
+                    ),
+                  )
                 ],
               ),
               const SizedBox(

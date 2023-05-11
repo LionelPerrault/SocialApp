@@ -537,6 +537,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                   String userid = snapshot
                                                       .docs[0].id
                                                       .toString();
+                                                  await con.getServerTime();
                                                   var notificationData = {
                                                     'postType': 'inviteGroup',
                                                     'postId': con.viewGroupId,
@@ -545,8 +546,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                         .userInfo['uid'],
                                                     'notifyTime': DateTime.now()
                                                         .toString(),
-                                                    'tsNT': DateTime.now()
-                                                        .millisecondsSinceEpoch,
+                                                    'tsNT': con.serverTimeStamp,
                                                     'userList': [],
                                                     'timeStamp': FieldValue
                                                         .serverTimestamp(),
