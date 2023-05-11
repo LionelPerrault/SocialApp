@@ -8,7 +8,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import '../../firebase_options.dart';
 import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
+import 'dart:io' show File;
 
 class FileController extends ControllerMVC {
   factory FileController([StateMVC? state]) =>

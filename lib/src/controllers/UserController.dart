@@ -933,21 +933,19 @@ class UserController extends ControllerMVC {
   }
 
   Future<void> resetGetUserInfo() async {
-    String info;
     FirebaseFirestore.instance
         .collection(Helper.userField)
         .doc(UserManager.userInfo['uid'])
         .get()
-        .then((value) async => {
-              userInfo = await Helper.getJSONPreference(Helper.userField),
-              userInfo['isStarted'] = true,
-              info = UserManager.userInfo.toString(),
-              UserManager.getUserInfo(),
-              await Helper.saveJSONPreference(Helper.userField,
-                  {...userInfo, 'avatar': value.data()!['avatar']}),
-              await Helper.getJSONPreference(Helper.userField),
-              setState(() {})
-            });
+        .then((value) async {
+      userInfo = await Helper.getJSONPreference(Helper.userField);
+      userInfo['isStarted'] = true;
+      UserManager.getUserInfo();
+      await Helper.saveJSONPreference(
+          Helper.userField, {...userInfo, 'avatar': value.data()!['avatar']});
+      await Helper.getJSONPreference(Helper.userField);
+      setState(() {});
+    });
   }
 
   //change user avatar

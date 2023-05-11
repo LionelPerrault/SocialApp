@@ -113,7 +113,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                 itemCount: messageList.length,
                                 itemBuilder: (context, index) {
                                   var list = messageList[index].data();
-                                  var chatUserName = '';
+
                                   var me = UserManager.userInfo['userName'];
                                   return Container(
                                     padding: EdgeInsets.only(

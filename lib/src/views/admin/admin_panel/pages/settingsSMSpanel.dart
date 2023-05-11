@@ -572,7 +572,6 @@ class AdminSettingsSMSState extends mvc.StateMVC<AdminSettingsSMS> {
     );
   }
 
-  @override
   Widget section(picture, text) {
     return Container(
       width: SizeConfig(context).screenWidth > 470

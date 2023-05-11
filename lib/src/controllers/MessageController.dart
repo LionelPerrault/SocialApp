@@ -12,7 +12,7 @@ import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';
 import 'package:path/path.dart' as PPath;
-import 'dart:io' show File, Platform;
+import 'dart:io' show File;
 
 class MessageController extends ControllerMVC {
   factory MessageController([StateMVC? state]) =>

@@ -328,8 +328,6 @@ class PeopleController extends ControllerMVC {
             return m['users'][userName] == true;
           });
           if (value.isEmpty) {
-            Map data = elem.data() as Map;
-
             //  if (friendids.contains(data['userName'])) {
             //    userList = [elem.data(), ...userList];
             //    print("datausername is ${data['userName']}");

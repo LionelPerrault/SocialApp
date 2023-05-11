@@ -69,9 +69,6 @@ class PostController extends ControllerMVC {
   }
 
   String timeAgo(Timestamp timestamp) {
-    if (timestamp == null) {
-      return "unknown";
-    }
     DateTime now = DateTime.now();
 
     DateTime time = timestamp.toDate();
