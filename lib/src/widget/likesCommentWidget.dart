@@ -73,7 +73,8 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
   var whoHover = '';
   var whatReply = [];
   var reply = {};
-  bool emojiShowing = false;
+  bool emojiShowingOfComment = false;
+  bool emojiShowingOfReply = false;
   var likesColor = {
     'Like': Colors.blue,
     'Love': const Color.fromRGBO(242, 82, 104, 1),
@@ -534,7 +535,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                 userInfo['avatar'],
                               )),
                       const Padding(padding: EdgeInsets.only(left: 10)),
-                      input(
+                      inputComment(
                         (value) {
                           comment = value;
                         },
@@ -550,12 +551,15 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                             setState(() {});
                           }
                         },
+                        () {
+                          emojiShowingOfComment = !emojiShowingOfComment;
+                        },
                       ),
                     ],
                   ),
                 ),
           Offstage(
-            offstage: !emojiShowing,
+            offstage: !emojiShowingOfComment,
             child: SizedBox(
                 height: 250,
                 child: EmojiPicker(
@@ -617,13 +621,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                     },
                   )
                 : Container(),
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget input(onChange, onClick) {
+  Widget inputComment(onChange, onSend, onEmoticon) {
     return Container(
         height: 30,
         width: SizeConfig(context).screenWidth > 600
@@ -663,9 +667,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               child: InkWell(
                 onTap: () async {
                   print("onclick ");
-                  onClick();
+                  onSend();
                   setState(() {
-                    emojiShowing = false;
+                    emojiShowingOfComment = false;
                   });
                 },
                 child: const Icon(
@@ -706,8 +710,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               cursor: SystemMouseCursors.click,
               child: InkWell(
                 onTap: () {
+                  onEmoticon();
                   setState(() {
-                    emojiShowing = !emojiShowing;
+                    // emojiShowingOfComment = !emojiShowingOfComment;
                   });
                 },
                 child: const Icon(
@@ -717,6 +722,106 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 ),
               ),
             ),
+            const Padding(padding: EdgeInsets.only(right: 20)),
+          ],
+        ));
+  }
+
+  Widget inputReply(onChange, onSend, onEmoticon) {
+    return Container(
+        height: 30,
+        width: SizeConfig(context).screenWidth > 600
+            ? 500
+            : SizeConfig(context).screenWidth - 148,
+        decoration: BoxDecoration(
+            border: Border.all(
+                color: const Color.fromRGBO(220, 220, 220, 1), width: 1),
+            borderRadius: const BorderRadius.all(Radius.circular(30))),
+        child: Row(
+          children: [
+            SizedBox(
+              height: 30,
+              width: SizeConfig(context).screenWidth > 600
+                  ? 350
+                  : SizeConfig(context).screenWidth - 225,
+              child: TextField(
+                controller: null,
+                cursorWidth: 1,
+                onChanged: (value) {
+                  onChange(value);
+                },
+                style: const TextStyle(fontSize: 12, fontFamily: 'Hind'),
+                decoration: const InputDecoration(
+                    hintText: 'Write a reply',
+                    hintStyle: TextStyle(fontSize: 12, fontFamily: 'Hind'),
+                    contentPadding: foundation.kIsWeb
+                        ? EdgeInsets.only(top: 20, left: 10, bottom: 12)
+                        : EdgeInsets.only(top: 20, left: 10, bottom: 7),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none),
+              ),
+            ),
+            const Flexible(fit: FlexFit.tight, child: SizedBox()),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: InkWell(
+                onTap: () async {
+                  print("onclick ");
+                  commentController.text = '';
+                  onSend();
+                  setState(() {
+                    emojiShowingOfReply = false;
+                  });
+                },
+                child: const Icon(
+                  Icons.send,
+                  size: 20,
+                  color: Colors.lightBlue,
+                ),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(right: 5)),
+            // MouseRegion(
+            //   cursor: SystemMouseCursors.click,
+            //   child: InkWell(
+            //     onTap: () {
+            //       // uploadImage('photo');
+            //     },
+            //     child: const Icon(
+            //       Icons.photo,
+            //       size: 20,
+            //       color: Colors.grey,
+            //     ),
+            //   ),
+            // ),
+            // const Padding(padding: EdgeInsets.only(right: 5)),
+            // MouseRegion(
+            //   cursor: SystemMouseCursors.click,
+            //   child: InkWell(
+            //     onTap: () {},
+            //     child: const Icon(
+            //       Icons.mic,
+            //       size: 20,
+            //       color: Colors.grey,
+            //     ),
+            //   ),
+            // ),
+            // const Padding(padding: EdgeInsets.only(right: 5)),
+            // MouseRegion(
+            //   cursor: SystemMouseCursors.click,
+            //   child: InkWell(
+            //     onTap: () {
+            //       setState(() {
+            //         emojiShowingOfReply = !emojiShowingOfReply;
+            //       });
+            //     },
+            //     child: const Icon(
+            //       Icons.emoji_emotions,
+            //       color: Colors.yellow,
+            //       size: 20,
+            //     ),
+            //   ),
+            // ),
             const Padding(padding: EdgeInsets.only(right: 20)),
           ],
         ));
@@ -1006,21 +1111,80 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           reply[e['id']] == '') //reply comment textedit
                   ? Container(
                       margin: const EdgeInsets.only(top: 10),
-                      child: input((value) {
-                        reply[e['id']] = value;
-                      }, () async {
-                        print("reply[e['id']]  is ${reply[e['id']]}");
-                        if (reply[e['id']] != null && reply[e['id']] != '') {
-                          print("reply[e['id']]  is ${reply[e['id']]}");
-                          await con.saveReply(widget.postInfo['id'], e['id'],
-                              reply[e['id']], 'text');
-                          reply[e['id']] = '';
-                          //   whatReply.remove(e['id']);
-                          setState(() {});
-                        }
-                      }),
+                      child: Column(
+                        children: [
+                          inputReply((value) {
+                            reply[e['id']] = value;
+                          }, () async {
+                            print("reply[e['id']]  is ${reply[e['id']]}");
+                            if (reply[e['id']] != null &&
+                                reply[e['id']] != '') {
+                              print("reply[e['id']]  is ${reply[e['id']]}");
+                              await con.saveReply(widget.postInfo['id'],
+                                  e['id'], reply[e['id']], 'text');
+                              reply[e['id']] = '';
+                              //   whatReply.remove(e['id']);
+                              setState(() {});
+                            }
+                          }, () {
+                            setState(() {
+                              emojiShowingOfReply = !emojiShowingOfReply;
+                            });
+                          }),
+                          Offstage(
+                            offstage: !emojiShowingOfReply,
+                            child: Expanded(
+                              child: SizedBox(
+                                height: 250,
+                                child: EmojiPicker(
+                                  onEmojiSelected: (category, Emoji emoji) {
+                                    comment = comment + emoji.emoji;
+                                  },
+                                  textEditingController: commentController,
+                                  config: Config(
+                                    columns: 7,
+                                    // Issue: https://github.com/flutter/flutter/issues/28894
+                                    emojiSizeMax: 32 *
+                                        (foundation.defaultTargetPlatform ==
+                                                TargetPlatform.iOS
+                                            ? 1.30
+                                            : 1.0),
+                                    verticalSpacing: 0,
+                                    horizontalSpacing: 0,
+                                    gridPadding: EdgeInsets.zero,
+                                    initCategory: Category.RECENT,
+                                    bgColor: const Color(0xFFF2F2F2),
+                                    indicatorColor: Colors.blue,
+                                    iconColor: Colors.grey,
+                                    iconColorSelected: Colors.blue,
+                                    backspaceColor: Colors.blue,
+                                    skinToneDialogBgColor: Colors.white,
+                                    skinToneIndicatorColor: Colors.grey,
+                                    enableSkinTones: true,
+                                    showRecentsTab: true,
+                                    recentsLimit: 28,
+                                    replaceEmojiOnLimitExceed: false,
+                                    noRecents: const Text(
+                                      'No Recents',
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.black26),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    loadingIndicator: const SizedBox.shrink(),
+                                    tabIndicatorAnimDuration:
+                                        kTabScrollDuration,
+                                    categoryIcons: const CategoryIcons(),
+                                    buttonMode: ButtonMode.MATERIAL,
+                                    checkPlatformCompatibility: true,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     )
-                  : Container()
+                  : Container(),
             ],
           )
         ],
