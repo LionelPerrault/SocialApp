@@ -226,11 +226,13 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                                   '';
                                                               con.setState(
                                                                   () {});
-                                                              Navigator
-                                                                  .pushReplacementNamed(
-                                                                      context,
-                                                                      RouteNames
-                                                                          .login);
+                                                              Navigator.pop(
+                                                                  context);
+                                                              // Navigator
+                                                              //     .pushReplacementNamed(
+                                                              //         context,
+                                                              //         RouteNames
+                                                              //             .login);
                                                             })
                                                 ]),
                                           ),
@@ -828,7 +830,6 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
         validator: (val) async {
           validator(val);
         },
-        
         obscureText: obscureText,
         onChange: (val) async {
           onchange(val);
@@ -860,7 +861,6 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
         style: const TextStyle(
           color: Colors.white,
           fontSize: 14,
-          
         ),
         cursorColor: Colors.white,
         decoration: InputDecoration(
