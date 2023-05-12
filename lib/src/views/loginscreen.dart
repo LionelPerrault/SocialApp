@@ -281,11 +281,10 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                                   recognizer:
                                                       TapGestureRecognizer()
                                                         ..onTap = () {
-                                                          Navigator
-                                                              .pushReplacementNamed(
-                                                                  context,
-                                                                  RouteNames
-                                                                      .register);
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              RouteNames
+                                                                  .register);
                                                         })
                                             ]),
                                       ),
