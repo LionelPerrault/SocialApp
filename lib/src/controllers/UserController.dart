@@ -264,7 +264,7 @@ class UserController extends ControllerMVC {
       'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
-      'nearbyOptOut': false
+      'nearbyOptOut': false,
     });
 
     await Helper.saveJSONPreference(Helper.userField, {
@@ -1220,6 +1220,14 @@ class UserController extends ControllerMVC {
         await FirebaseAuth.instance.currentUser?.delete();
       });
     } catch (e) {}
+    await Helper.makeOffline();
+    FirebaseAuth.instance.signOut();
+    UserManager.userInfo = {};
+    PeopleController().disposeAll();
+    PostController().disposeAll();
+    await Helper.removeAllPreference();
+    GeolocationManager.stopGeoTimer();
+    setState(() {});
     timer?.cancel();
     UserManager.isLogined = false;
     await Navigator.pushReplacementNamed(context, RouteNames.login);

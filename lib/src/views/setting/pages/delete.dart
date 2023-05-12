@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
@@ -25,6 +26,26 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
     add(widget.con);
     con = controller as UserController;
     super.initState();
+  }
+
+  deleteAccount(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        title: const SizedBox(),
+        content: AlertYesNoWidget(
+            yesFunc: () async {
+              con.deleteUserAccount(context);
+              Navigator.of(context).pop(true);
+            },
+            noFunc: () {
+              Navigator.of(context).pop(true);
+            },
+            header: 'Delete account',
+            text: 'Do you want to delete your account?',
+            progress: false),
+      ),
+    );
   }
 
   @override
@@ -96,7 +117,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
                                   maximumSize: const Size(140, 50),
                                 ),
                                 onPressed: () {
-                                  con.deleteUserAccount(context);
+                                  deleteAccount(context);
                                 },
                                 child: con.isProfileChange
                                     ? const SizedBox(
