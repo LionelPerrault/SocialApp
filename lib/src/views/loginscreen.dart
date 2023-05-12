@@ -2,6 +2,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/footerbar.dart';
@@ -58,6 +59,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
 
     return WillPopScope(
       onWillPop: () async {
+        SystemNavigator.pop();
         return false;
       }, // Empty Function.
       child: Scaffold(
