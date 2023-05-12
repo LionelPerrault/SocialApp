@@ -830,6 +830,7 @@ class UserController extends ControllerMVC {
     FirebaseAuth.instance.signOut();
     UserManager.userInfo = {};
     PeopleController().disposeAll();
+    PostController().disposeAll();
     await Helper.removeAllPreference();
     // ignore: use_build_context_synchronously
     await Navigator.pushReplacementNamed(context, RouteNames.login);

@@ -2219,4 +2219,9 @@ class PostController extends ControllerMVC {
     var eachPost = fData.data();
     return eachPost;
   }
+
+  disposeAll() {
+    allNotification = [];
+    realNotifi = [];
+  }
 }
