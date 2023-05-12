@@ -98,7 +98,8 @@ class NotificationsScreenState extends mvc.StateMVC<NotificationsScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
+                Container(
+                  margin: const EdgeInsets.only(bottom: 10),
                   height: SizeConfig(context).screenHeight - 100,
                   //size: Size(100,100),
                   child: notifications.isEmpty
