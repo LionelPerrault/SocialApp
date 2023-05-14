@@ -583,18 +583,59 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
               Row(
                 children: [
                   Expanded(
-                    child: SizedBox(
-                      width: 400,
-                      child: customInput(
-                        controller: locationTextController,
-                        title: 'Location',
-                        onChange: (value) async {
-                          productInfo['productLocation'] = value;
-                          await fetchSuggestions(value);
-                        },
-                        value: widget.editData['data']['productLocation'] ?? '',
+                    child: Column(children: [
+                      SizedBox(
+                        width: 400,
+                        child: customInput(
+                          controller: locationTextController,
+                          title: 'Location',
+                          onChange: (value) async {
+                            productInfo['productLocation'] = value;
+                            await fetchSuggestions(value);
+                          },
+                          value:
+                              widget.editData['data']['productLocation'] ?? '',
+                        ),
                       ),
-                    ),
+                      if (autoLocationList.isNotEmpty)
+                        SizedBox(
+                          width: 400,
+                          height: autoLocationList.length * 50,
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: autoLocationList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                  onTap: () {
+                                    locationTextController.text =
+                                        autoLocationList[index].description;
+                                    productInfo['productLocation'] =
+                                        autoLocationList[index].description;
+                                    setState(() {
+                                      autoLocationList = [];
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.only(bottom: 3),
+                                    decoration: const BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 209, 209, 209))),
+                                        color:
+                                            Color.fromARGB(255, 224, 224, 224)),
+                                    child: Text(
+                                      autoLocationList[index].description,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ));
+                            },
+                          ),
+                        )
+                    ]),
                   ),
                 ],
               ),
@@ -797,44 +838,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
           ),
         ),
       ),
-      if (autoLocationList.isNotEmpty)
-        Positioned(
-            top: 150,
-            left: 0,
-            right: 0,
-            child: SizedBox(
-              height: 230,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: autoLocationList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                      onTap: () {
-                        locationTextController.text =
-                            autoLocationList[index].description;
-                        productInfo['productLocation'] =
-                            autoLocationList[index].description;
-                        setState(() {
-                          autoLocationList = [];
-                        });
-                      },
-                      child: Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.only(bottom: 3),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromARGB(255, 209, 209, 209))),
-                            color: Color.fromARGB(255, 224, 224, 224)),
-                        child: Text(
-                          autoLocationList[index].description,
-                          textAlign: TextAlign.center,
-                        ),
-                      ));
-                },
-              ),
-            ))
     ]);
   }
 

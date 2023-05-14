@@ -494,18 +494,61 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
               Row(
                 children: [
                   Expanded(
-                    child: SizedBox(
-                      width: 400,
-                      child: customInput(
-                        controller: locationTextController,
-                        title: 'Location',
-                        onChange: (value) async {
-                          realEstateInfo['realEstateLocation'] = value;
-                          await fetchSuggestions(value);
-                        },
-                        value:
-                            widget.editData['data']['realEstateLocation'] ?? '',
-                      ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                          child: customInput(
+                            controller: locationTextController,
+                            title: 'Location',
+                            onChange: (value) async {
+                              realEstateInfo['realEstateLocation'] = value;
+                              await fetchSuggestions(value);
+                            },
+                            value: widget.editData['data']
+                                    ['realEstateLocation'] ??
+                                '',
+                          ),
+                        ),
+                        if (autoLocationList.isNotEmpty)
+                          SizedBox(
+                            width: 400,
+                            height: autoLocationList.length * 50,
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: autoLocationList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                    onTap: () {
+                                      locationTextController.text =
+                                          autoLocationList[index].description;
+                                      realEstateInfo['realEstateLocation'] =
+                                          autoLocationList[index].description;
+                                      setState(() {
+                                        autoLocationList = [];
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.only(bottom: 3),
+                                      decoration: const BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  color: Color.fromARGB(
+                                                      255, 209, 209, 209))),
+                                          color: Color.fromARGB(
+                                              255, 224, 224, 224)),
+                                      child: Text(
+                                        autoLocationList[index].description,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                              },
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ],
