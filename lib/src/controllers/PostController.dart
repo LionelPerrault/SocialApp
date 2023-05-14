@@ -313,50 +313,69 @@ class PostController extends ControllerMVC {
       for (var i = 0; i < event['eventAdmin'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventAdmin'][i]['uid']);
-        if (addAdmin == null) continue;
-        event['eventAdmin'][i] = {
-          ...event['eventAdmin'][i],
-          'userName': addAdmin['userName'],
-          'avatar': addAdmin['avatar'],
-          'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
-        };
+        if (addAdmin != null) {
+          event['eventAdmin'][i] = {
+            ...event['eventAdmin'][i],
+            'userName': addAdmin['userName'],
+            'avatar': addAdmin['avatar'],
+            'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+          };
+        } else {
+          event['eventAdmin'].removeWhere(
+              (item) => item['uid'] == event['eventAdmin'][i]['uid']);
+          i--;
+        }
       }
 
       for (var i = 0; i < event['eventInterested'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInterested'][i]['uid']);
-        if (addAdmin == null) continue;
-
-        event['eventInterested'][i] = {
-          ...event['eventInterested'][i],
-          'userName': addAdmin['userName'],
-          'avatar': addAdmin['avatar'],
-          'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
-        };
+        if (addAdmin != null) {
+          event['eventInterested'][i] = {
+            ...event['eventInterested'][i],
+            'userName': addAdmin['userName'],
+            'avatar': addAdmin['avatar'],
+            'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+          };
+        } else {
+          event['eventInterested'].removeWhere(
+              (item) => item['uid'] == event['eventInterested'][i]['uid']);
+          i--;
+        }
       }
 
       for (var i = 0; i < event['eventInvited'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvited'][i]['uid']);
-        if (addAdmin == null) continue;
-        event['eventInvited'][i] = {
-          ...event['eventInvited'][i],
-          'userName': addAdmin['userName'],
-          'avatar': addAdmin['avatar'],
-          'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
-        };
+        if (addAdmin != null) {
+          event['eventInvited'][i] = {
+            ...event['eventInvited'][i],
+            'userName': addAdmin['userName'],
+            'avatar': addAdmin['avatar'],
+            'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+          };
+        } else {
+          event['eventInvited'].removeWhere(
+              (item) => item['uid'] == event['eventInvited'][i]['uid']);
+          i--;
+        }
       }
 
       for (var i = 0; i < event['eventInvites'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvites'][i]['uid']);
-        if (addAdmin == null) continue;
-        event['eventInvites'][i] = {
-          ...event['eventInvites'][i],
-          'userName': addAdmin['userName'],
-          'avatar': addAdmin['avatar'],
-          'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
-        };
+        if (addAdmin != null) {
+          event['eventInvites'][i] = {
+            ...event['eventInvites'][i],
+            'userName': addAdmin['userName'],
+            'avatar': addAdmin['avatar'],
+            'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+          };
+        } else {
+          event['eventInvited'].removeWhere(
+              (item) => item['uid'] == event['eventInvited'][i]['uid']);
+          i--;
+        }
       }
       setState(() {});
     });
@@ -931,12 +950,17 @@ class PostController extends ControllerMVC {
       for (var i = 0; i < group['groupAdmin'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(group['groupAdmin'][i]['uid']);
-        if (addAdmin == null) continue;
-        group['groupAdmin'][i] = {
-          ...group['groupAdmin'][i],
-          'userName': addAdmin['userName'],
-          'avatar': addAdmin['avatar'],
-        };
+        if (addAdmin != null) {
+          group['groupAdmin'][i] = {
+            ...group['groupAdmin'][i],
+            'userName': addAdmin['userName'],
+            'avatar': addAdmin['avatar'],
+          };
+        } else {
+          group['groupAdmin'].removeWhere(
+              (item) => item['uid'] == group['groupAdmin'][i]['uid']);
+          i--;
+        }
       }
 
       for (var i = 0; i < group['groupJoined'].length; i++) {
@@ -945,13 +969,16 @@ class PostController extends ControllerMVC {
         if (groupUser != null) {
           group['groupJoined'][i] = {
             ...group['groupJoined'][i],
-            'userName': groupUser['userName'],
-            'avatar': groupUser['avatar'],
+            'userName': groupUser['userName'] ?? '',
+            'avatar': groupUser['avatar'] ?? '',
             'fullName': '${groupUser["firstName"]} ${groupUser["lastName"]}'
           };
+        } else {
+          group['groupJoined'].removeWhere(
+              (item) => item['uid'] == group['groupJoined'][i]['uid']);
+          i--;
         }
       }
-
       setState(() {});
     });
     return true;

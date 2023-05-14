@@ -274,13 +274,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                           },
                                         ),
                                       ),
-                                      con.failLogin != ''
-                                          ? Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 30, right: 30, top: 10),
-                                              child: Helper.failAlert(
-                                                  con.failLogin))
-                                          : Container(),
                                       Container(
                                         margin: const EdgeInsets.only(
                                             top: 10.0, bottom: 100),
@@ -308,6 +301,13 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                               ]),
                                         ),
                                       ),
+                                      Offstage(
+                                          offstage: con.failLogin == '',
+                                          child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 30, right: 30, top: 10),
+                                              child: Helper.failAlert(
+                                                  con.failLogin))),
                                     ],
                                   ),
                           ),

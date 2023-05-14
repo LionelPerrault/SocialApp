@@ -504,7 +504,9 @@ class UserController extends ControllerMVC {
           email = getInfo.email;
         } else {
           failLogin = 'The username you entered does not belong to any account';
+          isSendLoginedInfo = false;
           setState(() {});
+          return false;
         }
       }
       setState(() {});
@@ -578,13 +580,13 @@ class UserController extends ControllerMVC {
         }
       }
     } on FirebaseAuthException catch (e) {
-      if (kDebugMode) {
-        print(e.code);
-      }
+      if (kDebugMode) {}
+      print(e.code);
+      print(e.message);
       if (e.code == 'invalid-email' || e.code == 'user-not-found') {
         failLogin = 'The email you entered does not belong to any account';
         setState(() {});
-      } else if (e.code == 'wrong-password') {
+      } else if (e.code == 'wrong-password' || e.code == 'unknown') {
         failLogin = 'wrong-password';
         isSendLoginedInfo = false;
         setState(() {});

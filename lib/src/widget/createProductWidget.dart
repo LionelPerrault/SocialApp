@@ -799,7 +799,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
       ),
       if (autoLocationList.isNotEmpty)
         Positioned(
-            top: 300,
+            top: 150,
             left: 0,
             right: 0,
             child: SizedBox(
