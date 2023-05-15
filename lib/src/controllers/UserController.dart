@@ -1452,4 +1452,35 @@ class UserController extends ControllerMVC {
     );
     return state;
   }
+
+  checkAuthToken(context) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: UserManager.userInfo['email'],
+        password: UserManager.userInfo['password'],
+      );
+      await RelysiaManager.authUser(
+              UserManager.userInfo['email'], UserManager.userInfo['password'])
+          .then((responseData) {
+        if (responseData['data'] != null) {
+          if (responseData['statusCode'] == 200) {
+            token = responseData['data']['token'];
+          }
+        }
+      });
+    } catch (e) {
+      UserManager.isLogined = false;
+      await Helper.makeOffline();
+      FirebaseAuth.instance.signOut();
+      UserManager.userInfo = {};
+      PeopleController().disposeAll();
+      PostController().disposeAll();
+      await Helper.removeAllPreference();
+      // ignore: use_build_context_synchronously
+      await Navigator.pushReplacementNamed(context, RouteNames.login);
+
+      GeolocationManager.stopGeoTimer();
+      setState(() {});
+    }
+  }
 }

@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/models/userModel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 import 'package:shnatter/src/views/whiteFooter.dart';
@@ -27,6 +31,13 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
     add(widget.con);
     con = controller as UserController;
     super.initState();
+    Stream<QuerySnapshot<TokenLogin>> stream = Helper.authdata
+        .where('email', isEqualTo: UserManager.userInfo['email'])
+        .snapshots();
+    stream.listen((event) async {
+      await con.checkAuthToken(context);
+      setState(() {});
+    });
   }
 
   @override
