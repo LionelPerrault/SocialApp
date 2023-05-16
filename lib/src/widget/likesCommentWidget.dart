@@ -1229,14 +1229,14 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          val['userInfo']['avatar'] == ''
+          val['userInfo']?['avatar'] == ''
               ? CircleAvatar(
                   radius: 18,
                   child: SvgPicture.network(Helper.avatar),
                 )
               : CircleAvatar(
                   radius: 18,
-                  backgroundImage: NetworkImage(val['userInfo']['avatar']),
+                  backgroundImage: NetworkImage(val?['userInfo']?['avatar']),
                 ),
           const Padding(padding: EdgeInsets.only(left: 10)),
           Column(
@@ -1246,34 +1246,34 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               Stack(
                 children: [
                   Container(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Container(
-                          key: key1,
-                          constraints: BoxConstraints(
-                              minWidth: 50, maxWidth: width - 40),
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(val['userInfo']['firstName'] +
-                                  " " +
-                                  val['userInfo']['lastName']),
-                              const Padding(padding: EdgeInsets.only(top: 10)),
-                              Text(val['data']['content']),
-                            ],
-                          ))),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Container(
+                        key: key1,
+                        constraints:
+                            BoxConstraints(minWidth: 50, maxWidth: width - 40),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                                '${val?['userInfo']?['firstName']} ${val?['userInfo']?['lastName']}'),
+                            const Padding(padding: EdgeInsets.only(top: 10)),
+                            Text(val?['data']?['content']),
+                          ],
+                        )),
+                  ),
                   whoComment == val['id']
                       ? Container(
                           margin: EdgeInsets.only(top: commentHeight - 40),
                           child: likesWidget(val['id'], (value) {
                             whoComment = '';
                             con.replyLikes[val['id']] = value;
-                            setState(() {});
+
                             con.saveLikesReply(
                                 widget.postInfo['id'], e, val['id'], value);
                             setState(() {});

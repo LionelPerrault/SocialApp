@@ -255,7 +255,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             },
             header: 'Hide from Timeline',
             text:
-                'Are you sure you want to hide this post from your profile timeline? It may still appear in other places like newsfeed and search results',
+                'Are you sure you want to hide this post from your profile timeline?',
             progress: false),
       ),
     );

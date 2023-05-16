@@ -254,7 +254,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
             },
             header: 'Hide from Timeline',
             text:
-                'Are you sure you want to hide this real estate from your profile timeline? It may still appear in other places like newsfeed and search results',
+                'Are you sure you want to hide this real estate from your profile timeline?',
             progress: false),
       ),
     );
