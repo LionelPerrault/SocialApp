@@ -594,10 +594,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                         },
                         child: Row(
                           children: [
-                            userAvatar != ''
+                            UserManager.userInfo['avatar'] != ''
                                 ? CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                    userAvatar,
+                                    UserManager.userInfo['avatar'],
                                   ))
                                 : CircleAvatar(
                                     child: SvgPicture.network(Helper.avatar),
