@@ -83,7 +83,7 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
   Widget mainTabs() {
     return Container(
       width: SizeConfig(context).screenWidth,
-      height: 100,
+      height: 70,
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),
         borderRadius: BorderRadius.circular(3),

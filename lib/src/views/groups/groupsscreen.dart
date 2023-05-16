@@ -126,7 +126,8 @@ class GroupsScreenState extends mvc.StateMVC<GroupsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+        margin: const EdgeInsets.only(bottom: 70),
         width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
             ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
             : SizeConfig(context).screenWidth,

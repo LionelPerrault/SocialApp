@@ -213,6 +213,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
             children: <Widget>[
               Expanded(
                 child: GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: screenWidth > 800
                       ? 4
                       : screenWidth > 600
