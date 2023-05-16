@@ -1829,6 +1829,16 @@ class PostController extends ControllerMVC {
         doc.reference.update({'avatar': ""});
       }
     });
+
+    FirebaseFirestore.instance
+        .collection(Helper.userField)
+        .where('profile_cover', isEqualTo: value['url'])
+        .get()
+        .then((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        doc.reference.update({'profile_cover': ""});
+      }
+    });
   }
 
   deletePhotoFromTimeline(Map value) {
