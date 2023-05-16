@@ -232,7 +232,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                                                       '';
                                                                   setState(
                                                                       () {});
-                                                                  Navigator.pushReplacementNamed(
+                                                                  Navigator.pushNamed(
                                                                       context,
                                                                       RouteNames
                                                                           .reset);
