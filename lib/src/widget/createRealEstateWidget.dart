@@ -198,186 +198,82 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 60),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Divider(
-                height: 0,
-                indent: 0,
-                endIndent: 0,
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 285,
-                    child: SizedBox(
-                      width: 285,
-                      child: customInput(
-                        title: 'Real Estate Name',
-                        onChange: (value) async {
-                          realEstateInfo['realEstateName'] = value;
-                        },
-                        value: widget.editData['data']['realEstateName'] ?? '',
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Stack(children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 60),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Divider(
+                  height: 0,
+                  indent: 0,
+                  endIndent: 0,
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 285,
+                      child: SizedBox(
+                        width: 285,
+                        child: customInput(
+                          title: 'Real Estate Name',
+                          onChange: (value) async {
+                            realEstateInfo['realEstateName'] = value;
+                          },
+                          value:
+                              widget.editData['data']['realEstateName'] ?? '',
+                        ),
                       ),
                     ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 15)),
-                  Expanded(
-                    flex: 100,
-                    child: SizedBox(
-                      width: 100,
-                      child: customInput(
-                        title: 'Price',
-                        onChange: (value) async {
-                          realEstateInfo['realEstatePrice'] =
-                              (int.tryParse(value) ?? 0).toString();
-                          setState(() {});
-                        },
-                        value: widget.editData['data']['realEstatePrice'] ??
-                            realEstateInfo['realEstatePrice'],
+                    const Padding(padding: EdgeInsets.only(left: 15)),
+                    Expanded(
+                      flex: 100,
+                      child: SizedBox(
+                        width: 100,
+                        child: customInput(
+                          title: 'Price',
+                          onChange: (value) async {
+                            realEstateInfo['realEstatePrice'] =
+                                (int.tryParse(value) ?? 0).toString();
+                            setState(() {});
+                          },
+                          value: widget.editData['data']['realEstatePrice'] ??
+                              realEstateInfo['realEstatePrice'],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                  ? Row(
-                      children: [
-                        Expanded(
-                          flex: 100,
-                          child: SizedBox(
-                            width: 100,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.only(top: 20)),
-                                const Row(
-                                  children: [
-                                    Text(
-                                      'Offer',
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(82, 95, 127, 1),
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                    width: 85,
-                                    child: Row(
-                                      children: [
-                                        Transform.scale(
-                                            scale: 0.7,
-                                            child: Checkbox(
-                                              fillColor: MaterialStateProperty
-                                                  .all<Color>(Colors.black),
-                                              checkColor: Colors.blue,
-                                              activeColor: const Color.fromRGBO(
-                                                  0, 123, 255, 1),
-                                              value: offer1,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  5.0))),
-                                              onChanged: (value) {
-                                                print(value);
-                                                offer1 = value!;
-                                                offer2 = !offer1;
-                                                realEstateInfo[
-                                                    'realEstateOffer'] = 'Sell';
-                                                setState(() {});
-                                              },
-                                            )),
-                                        const Text('Sell')
-                                      ],
-                                    )),
-                                SizedBox(
-                                    width: 85,
-                                    child: Row(
-                                      children: [
-                                        Transform.scale(
-                                            scale: 0.7,
-                                            child: Checkbox(
-                                              fillColor: MaterialStateProperty
-                                                  .all<Color>(Colors.black),
-                                              checkColor: Colors.blue,
-                                              activeColor: const Color.fromRGBO(
-                                                  0, 123, 255, 1),
-                                              value: offer2,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  5.0))),
-                                              onChanged: (value) {
-                                                offer2 = value!;
-                                                offer1 = !offer2;
-                                                realEstateInfo[
-                                                    'realEstateOffer'] = 'Rent';
-                                                setState(() {});
-                                              },
-                                            )),
-                                        const Text('Rent')
-                                      ],
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 100,
-                          child: SizedBox(
-                            width: 100,
-                            child: customDropDownButton(
-                              title: 'Status',
-                              width: 100.0,
-                              item: [
-                                {'value': 'New', 'title': 'New'},
-                                {'value': 'Used', 'title': 'Used'}
-                              ],
-                              onChange: (value) {
-                                realEstateInfo['realEstateStatus'] = value;
-                                setState(() {});
-                              },
-                              value: widget.editData['data']
-                                      ['realEstateStatus'] ??
-                                  'New',
-                              context: context,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                width: 400,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Padding(
-                                        padding: EdgeInsets.only(top: 20)),
-                                    const Padding(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: Text(
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                    ? Row(
+                        children: [
+                          Expanded(
+                            flex: 100,
+                            child: SizedBox(
+                              width: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                      padding: EdgeInsets.only(top: 20)),
+                                  const Row(
+                                    children: [
+                                      Text(
                                         'Offer',
                                         style: TextStyle(
                                             color:
@@ -385,424 +281,545 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                                             fontSize: 13,
                                             fontWeight: FontWeight.w600),
                                       ),
-                                    ),
-                                    SizedBox(
-                                        width: 85,
-                                        child: Row(
-                                          children: [
-                                            Transform.scale(
-                                                scale: 0.7,
-                                                child: Checkbox(
-                                                  fillColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(Colors.black),
-                                                  checkColor: Colors.blue,
-                                                  activeColor:
-                                                      const Color.fromRGBO(
-                                                          0, 123, 255, 1),
-                                                  value: offer1,
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          5.0))),
-                                                  onChanged: (value) {
-                                                    print(value);
-                                                    offer1 = value!;
-                                                    offer2 = !offer1;
-                                                    realEstateInfo[
-                                                            'realEstateOffer'] =
-                                                        'Sell';
-                                                    setState(() {});
-                                                  },
-                                                )),
-                                            const Text('Sell')
-                                          ],
-                                        )),
-                                    SizedBox(
-                                        width: 85,
-                                        child: Row(
-                                          children: [
-                                            Transform.scale(
-                                                scale: 0.7,
-                                                child: Checkbox(
-                                                  fillColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(Colors.black),
-                                                  checkColor: Colors.blue,
-                                                  activeColor:
-                                                      const Color.fromRGBO(
-                                                          0, 123, 255, 1),
-                                                  value: offer2,
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          5.0))),
-                                                  onChanged: (value) {
-                                                    offer2 = value!;
-                                                    offer1 = !offer2;
-                                                    realEstateInfo[
-                                                            'realEstateOffer'] =
-                                                        'Rent';
-                                                    setState(() {});
-                                                  },
-                                                )),
-                                            const Text('Rent')
-                                          ],
-                                        )),
-                                  ],
-                                ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                      width: 85,
+                                      child: Row(
+                                        children: [
+                                          Transform.scale(
+                                              scale: 0.7,
+                                              child: Checkbox(
+                                                fillColor: MaterialStateProperty
+                                                    .all<Color>(Colors.black),
+                                                checkColor: Colors.blue,
+                                                activeColor:
+                                                    const Color.fromRGBO(
+                                                        0, 123, 255, 1),
+                                                value: offer1,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5.0))),
+                                                onChanged: (value) {
+                                                  print(value);
+                                                  offer1 = value!;
+                                                  offer2 = !offer1;
+                                                  realEstateInfo[
+                                                          'realEstateOffer'] =
+                                                      'Sell';
+                                                  setState(() {});
+                                                },
+                                              )),
+                                          const Text('Sell')
+                                        ],
+                                      )),
+                                  SizedBox(
+                                      width: 85,
+                                      child: Row(
+                                        children: [
+                                          Transform.scale(
+                                              scale: 0.7,
+                                              child: Checkbox(
+                                                fillColor: MaterialStateProperty
+                                                    .all<Color>(Colors.black),
+                                                checkColor: Colors.blue,
+                                                activeColor:
+                                                    const Color.fromRGBO(
+                                                        0, 123, 255, 1),
+                                                value: offer2,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5.0))),
+                                                onChanged: (value) {
+                                                  offer2 = value!;
+                                                  offer1 = !offer2;
+                                                  realEstateInfo[
+                                                          'realEstateOffer'] =
+                                                      'Rent';
+                                                  setState(() {});
+                                                },
+                                              )),
+                                          const Text('Rent')
+                                        ],
+                                      )),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                width: 400,
-                                child: customDropDownButton(
-                                  title: 'Status',
-                                  width: 400.0,
-                                  item: [
-                                    {'value': 'New', 'title': 'New'},
-                                    {'value': 'Used', 'title': 'Used'}
-                                  ],
-                                  onChange: (value) {
-                                    realEstateInfo['realEstateStatus'] = value;
-                                    setState(() {});
-                                  },
-                                  value: widget.editData['data']
-                                          ['realEstateStatus'] ??
-                                      'New',
-                                  context: context,
+                          ),
+                          Expanded(
+                            flex: 100,
+                            child: SizedBox(
+                              width: 100,
+                              child: customDropDownButton(
+                                title: 'Status',
+                                width: 100.0,
+                                item: [
+                                  {'value': 'New', 'title': 'New'},
+                                  {'value': 'Used', 'title': 'Used'}
+                                ],
+                                onChange: (value) {
+                                  realEstateInfo['realEstateStatus'] = value;
+                                  setState(() {});
+                                },
+                                value: widget.editData['data']
+                                        ['realEstateStatus'] ??
+                                    'New',
+                                context: context,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  width: 400,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Padding(
+                                          padding: EdgeInsets.only(top: 20)),
+                                      const Padding(
+                                        padding: EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          'Offer',
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  82, 95, 127, 1),
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          width: 85,
+                                          child: Row(
+                                            children: [
+                                              Transform.scale(
+                                                  scale: 0.7,
+                                                  child: Checkbox(
+                                                    fillColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(
+                                                                Colors.black),
+                                                    checkColor: Colors.blue,
+                                                    activeColor:
+                                                        const Color.fromRGBO(
+                                                            0, 123, 255, 1),
+                                                    value: offer1,
+                                                    shape: const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5.0))),
+                                                    onChanged: (value) {
+                                                      print(value);
+                                                      offer1 = value!;
+                                                      offer2 = !offer1;
+                                                      realEstateInfo[
+                                                              'realEstateOffer'] =
+                                                          'Sell';
+                                                      setState(() {});
+                                                    },
+                                                  )),
+                                              const Text('Sell')
+                                            ],
+                                          )),
+                                      SizedBox(
+                                          width: 85,
+                                          child: Row(
+                                            children: [
+                                              Transform.scale(
+                                                  scale: 0.7,
+                                                  child: Checkbox(
+                                                    fillColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(
+                                                                Colors.black),
+                                                    checkColor: Colors.blue,
+                                                    activeColor:
+                                                        const Color.fromRGBO(
+                                                            0, 123, 255, 1),
+                                                    value: offer2,
+                                                    shape: const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5.0))),
+                                                    onChanged: (value) {
+                                                      offer2 = value!;
+                                                      offer1 = !offer2;
+                                                      realEstateInfo[
+                                                              'realEstateOffer'] =
+                                                          'Rent';
+                                                      setState(() {});
+                                                    },
+                                                  )),
+                                              const Text('Rent')
+                                            ],
+                                          )),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: 400,
-                          child: customInput(
-                            controller: locationTextController,
-                            title: 'Location',
-                            onChange: (value) async {
-                              realEstateInfo['realEstateLocation'] = value;
-                              await fetchSuggestions(value);
-                            },
-                            value: widget.editData['data']
-                                    ['realEstateLocation'] ??
-                                '',
+                            ],
                           ),
-                        ),
-                        if (autoLocationList.isNotEmpty)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  width: 400,
+                                  child: customDropDownButton(
+                                    title: 'Status',
+                                    width: 400.0,
+                                    item: [
+                                      {'value': 'New', 'title': 'New'},
+                                      {'value': 'Used', 'title': 'Used'}
+                                    ],
+                                    onChange: (value) {
+                                      realEstateInfo['realEstateStatus'] =
+                                          value;
+                                      setState(() {});
+                                    },
+                                    value: widget.editData['data']
+                                            ['realEstateStatus'] ??
+                                        'New',
+                                    context: context,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
                           SizedBox(
                             width: 400,
-                            height: autoLocationList.length * 50,
-                            child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: autoLocationList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                    onTap: () {
-                                      locationTextController.text =
-                                          autoLocationList[index].description;
-                                      realEstateInfo['realEstateLocation'] =
-                                          autoLocationList[index].description;
-                                      setState(() {
-                                        autoLocationList = [];
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.only(bottom: 3),
-                                      decoration: const BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 209, 209, 209))),
-                                          color: Color.fromARGB(
-                                              255, 224, 224, 224)),
-                                      child: Text(
-                                        autoLocationList[index].description,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ));
+                            child: customInput(
+                              controller: locationTextController,
+                              title: 'Location',
+                              onChange: (value) async {
+                                realEstateInfo['realEstateLocation'] = value;
+                                await fetchSuggestions(value);
                               },
+                              value: widget.editData['data']
+                                      ['realEstateLocation'] ??
+                                  '',
                             ),
                           ),
+                          if (autoLocationList.isNotEmpty)
+                            SizedBox(
+                              width: 400,
+                              height: autoLocationList.length * 50,
+                              child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: autoLocationList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        locationTextController.text =
+                                            autoLocationList[index].description;
+                                        realEstateInfo['realEstateLocation'] =
+                                            autoLocationList[index].description;
+                                        setState(() {
+                                          autoLocationList = [];
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        alignment: Alignment.center,
+                                        padding:
+                                            const EdgeInsets.only(bottom: 3),
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 209, 209, 209))),
+                                            color: Color.fromARGB(
+                                                255, 224, 224, 224)),
+                                        child: Text(
+                                          autoLocationList[index].description,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ));
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        width: 400,
+                        child: titleAndsubtitleInput('About', 70, 5,
+                            (value) async {
+                          realEstateInfo['realEstateAbout'] = value;
+                          setState(() {});
+                        },
+                            widget.editData['data']['realEstateAbout'] ??
+                                realEstateInfo['realEstateAbout']),
+                      ),
+                    ),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          children: [
+                            Text(
+                              'Photos',
+                              style: TextStyle(
+                                  color: Color.fromRGBO(82, 95, 127, 1),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 100,
+                          // padding: const EdgeInsets.only(top: 45, left: 45),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(4),
+                              backgroundColor: Colors.grey[300],
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13)),
+                              minimumSize: const Size(100, 100),
+                              maximumSize: const Size(100, 100),
+                            ),
+                            onPressed: () {
+                              uploadImage('photo');
+                            },
+                            child: const Icon(Icons.camera_enhance_rounded,
+                                color: Colors.grey, size: 30.0),
+                          ),
+                        ),
+                        Container(
+                            alignment: Alignment.center,
+                            width: 100,
+                            child: Column(
+                              children: realEstatePhoto
+                                  .map(((e) =>
+                                      realEstatePhotoWidget(e['url'], e['id'])))
+                                  .toList(),
+                            ))
                       ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      width: 400,
-                      child: titleAndsubtitleInput('About', 70, 5,
-                          (value) async {
-                        realEstateInfo['realEstateAbout'] = value;
-                        setState(() {});
-                      },
-                          widget.editData['data']['realEstateAbout'] ??
-                              realEstateInfo['realEstateAbout']),
-                    ),
-                  ),
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        children: [
-                          Text(
-                            'Photos',
-                            style: TextStyle(
-                                color: Color.fromRGBO(82, 95, 127, 1),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 100,
-                        height: 100,
-                        // padding: const EdgeInsets.only(top: 45, left: 45),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(4),
-                            backgroundColor: Colors.grey[300],
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(13)),
-                            minimumSize: const Size(100, 100),
-                            maximumSize: const Size(100, 100),
-                          ),
-                          onPressed: () {
-                            uploadImage('photo');
-                          },
-                          child: const Icon(Icons.camera_enhance_rounded,
-                              color: Colors.grey, size: 30.0),
-                        ),
-                      ),
-                      Container(
-                          alignment: Alignment.center,
-                          width: 100,
-                          child: Column(
-                            children: realEstatePhoto
-                                .map(((e) =>
-                                    realEstatePhotoWidget(e['url'], e['id'])))
-                                .toList(),
-                          ))
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 15)),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        children: [
-                          Text(
-                            'Files',
-                            style: TextStyle(
-                                color: Color.fromRGBO(82, 95, 127, 1),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 100,
-                        height: 100,
-                        // padding: const EdgeInsets.only(top: 45, left: 45),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(4),
-                            backgroundColor: Colors.grey[300],
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(13)),
-                            minimumSize: const Size(100, 100),
-                            maximumSize: const Size(100, 100),
-                          ),
-                          onPressed: () {
-                            uploadImage('file');
-                          },
-                          child: const Icon(Icons.file_open,
-                              color: Colors.grey, size: 30.0),
-                        ),
-                      ),
-                      Container(
-                          alignment: Alignment.center,
-                          width: 100,
-                          child: Column(
-                            children: realEstateFile
-                                .map(((e) =>
-                                    realEstateFileWidget(e['url'], e['id'])))
-                                .toList(),
-                          ))
-                    ],
-                  ),
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              const Divider(
-                thickness: 0.1,
-                color: Colors.black,
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-            ],
-          ),
-        ),
-      ),
-      Positioned(
-        bottom: 0,
-        left: 0,
-        right: 0,
-        child: Container(
-          alignment: Alignment.center,
-          width: 400,
-          margin: const EdgeInsets.only(right: 20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[300],
-                      shadowColor: Colors.white,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(3.0)),
-                      minimumSize: const Size(100, 50),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                    },
-                    child: const Text('Cancel',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold)),
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 10)),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shadowColor: Colors.white,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(3.0)),
-                      minimumSize: const Size(100, 50),
-                    ),
-                    onPressed: () {
-                      footerBtnState = true;
-                      setState(() {});
-                      if (widget.editData['id'] == '') {
-                        getTokenBudget();
-                      } else {
-                        postCon
-                            .editRealEstate(
-                                context, widget.editData['id'], realEstateInfo)
-                            .then((value) {
-                          Helper.showToast(value['msg']);
-                          if (value['result']) {
-                            Navigator.of(context).pop(true);
-                          }
-                        });
-                      }
-                    },
-                    child: footerBtnState
-                        ? const SizedBox(
-                            width: 10,
-                            height: 10.0,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
+                    const Padding(padding: EdgeInsets.only(left: 15)),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          children: [
+                            Text(
+                              'Files',
+                              style: TextStyle(
+                                  color: Color.fromRGBO(82, 95, 127, 1),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600),
                             ),
-                          )
-                        : const Text('Publish',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                  )
-                ],
-              ),
-            ],
+                          ],
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 100,
+                          // padding: const EdgeInsets.only(top: 45, left: 45),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(4),
+                              backgroundColor: Colors.grey[300],
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13)),
+                              minimumSize: const Size(100, 100),
+                              maximumSize: const Size(100, 100),
+                            ),
+                            onPressed: () {
+                              uploadImage('file');
+                            },
+                            child: const Icon(Icons.file_open,
+                                color: Colors.grey, size: 30.0),
+                          ),
+                        ),
+                        Container(
+                            alignment: Alignment.center,
+                            width: 100,
+                            child: Column(
+                              children: realEstateFile
+                                  .map(((e) =>
+                                      realEstateFileWidget(e['url'], e['id'])))
+                                  .toList(),
+                            ))
+                      ],
+                    ),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                const Divider(
+                  thickness: 0.1,
+                  color: Colors.black,
+                ),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+              ],
+            ),
           ),
         ),
-      ),
-      // if (autoLocationList.isNotEmpty)
-      //   Positioned(
-      //     top: 250,
-      //     left: 0,
-      //     right: 0,
-      //     child: SizedBox(
-      //       height: 230,
-      //       child: ListView.builder(
-      //         shrinkWrap: true,
-      //         itemCount: autoLocationList.length,
-      //         itemBuilder: (BuildContext context, int index) {
-      //           return InkWell(
-      //             onTap: () {
-      //               locationTextController.text =
-      //                   autoLocationList[index].description;
-      //               realEstateInfo['realEstateLocation'] =
-      //                   autoLocationList[index].description;
-      //               setState(() {
-      //                 autoLocationList = [];
-      //               });
-      //             },
-      //             child: Container(
-      //               height: 50,
-      //               alignment: Alignment.center,
-      //               padding: const EdgeInsets.only(bottom: 3),
-      //               decoration: const BoxDecoration(
-      //                   border: Border(
-      //                       bottom: BorderSide(
-      //                           color: Color.fromARGB(255, 209, 209, 209))),
-      //                   color: Color.fromARGB(255, 224, 224, 224)),
-      //               child: Text(
-      //                 autoLocationList[index].description,
-      //                 textAlign: TextAlign.center,
-      //               ),
-      //             ),
-      //           );
-      //         },
-      //       ),
-      //     ),
-      //   )
-    ]);
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            alignment: Alignment.center,
+            width: 400,
+            margin: const EdgeInsets.only(right: 20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[300],
+                        shadowColor: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(100, 50),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text('Cancel',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shadowColor: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(100, 50),
+                      ),
+                      onPressed: () {
+                        footerBtnState = true;
+                        setState(() {});
+                        if (widget.editData['id'] == '') {
+                          getTokenBudget();
+                        } else {
+                          postCon
+                              .editRealEstate(context, widget.editData['id'],
+                                  realEstateInfo)
+                              .then((value) {
+                            Helper.showToast(value['msg']);
+                            if (value['result']) {
+                              Navigator.of(context).pop(true);
+                            }
+                          });
+                        }
+                      },
+                      child: footerBtnState
+                          ? const SizedBox(
+                              width: 10,
+                              height: 10.0,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : const Text('Publish',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        // if (autoLocationList.isNotEmpty)
+        //   Positioned(
+        //     top: 250,
+        //     left: 0,
+        //     right: 0,
+        //     child: SizedBox(
+        //       height: 230,
+        //       child: ListView.builder(
+        //         shrinkWrap: true,
+        //         itemCount: autoLocationList.length,
+        //         itemBuilder: (BuildContext context, int index) {
+        //           return InkWell(
+        //             onTap: () {
+        //               locationTextController.text =
+        //                   autoLocationList[index].description;
+        //               realEstateInfo['realEstateLocation'] =
+        //                   autoLocationList[index].description;
+        //               setState(() {
+        //                 autoLocationList = [];
+        //               });
+        //             },
+        //             child: Container(
+        //               height: 50,
+        //               alignment: Alignment.center,
+        //               padding: const EdgeInsets.only(bottom: 3),
+        //               decoration: const BoxDecoration(
+        //                   border: Border(
+        //                       bottom: BorderSide(
+        //                           color: Color.fromARGB(255, 209, 209, 209))),
+        //                   color: Color.fromARGB(255, 224, 224, 224)),
+        //               child: Text(
+        //                 autoLocationList[index].description,
+        //                 textAlign: TextAlign.center,
+        //               ),
+        //             ),
+        //           );
+        //         },
+        //       ),
+        //     ),
+        //   )
+      ]),
+    );
   }
 
   Widget realEstateFileWidget(file, id) {
