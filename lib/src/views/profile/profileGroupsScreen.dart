@@ -82,7 +82,7 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
   Widget mainTabs() {
     return Container(
       width: SizeConfig(context).screenWidth,
-      height: 100,
+      height: 70,
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),
         borderRadius: BorderRadius.circular(3),
@@ -156,6 +156,7 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
                 children: <Widget>[
                   Expanded(
                     child: GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: screenWidth > 1200
                           ? 4
                           : screenWidth > 900

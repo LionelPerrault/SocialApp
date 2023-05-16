@@ -261,7 +261,7 @@ class UserController extends ControllerMVC {
       'isEmailVerify': false,
       'walletAddress': walletAddress,
       'relysiaEmail': relysiaEmail.toLowerCase().trim(),
-      'relysiaPassword': relysiaPassword,
+      // 'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
       'nearbyOptOut': false,
