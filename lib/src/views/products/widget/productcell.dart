@@ -361,11 +361,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                       600
                                                   ? SizeConfig(context)
                                                           .screenWidth -
-                                                      340
-                                                  : 350,
+                                                      200
+                                                  : 410,
                                           child: Text(
                                             ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
-                                            overflow: TextOverflow.ellipsis,
+                                            overflow: TextOverflow.clip,
                                             style:
                                                 const TextStyle(fontSize: 14),
                                           ),
