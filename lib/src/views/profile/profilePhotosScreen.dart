@@ -273,13 +273,18 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                                 if (UserManager.userInfo['avatar'] ==
                                     value['url']) {
                                   UserManager.userInfo['avatar'] = '';
+                                  con.updateProfile(
+                                      UserManager.userInfo['userName']);
+                                  //ProfileController().setState(() {});
                                   //  setState(() {});
                                 }
                                 if (UserManager.userInfo['profile_cover'] ==
                                     value['url']) {
                                   UserManager.userInfo['profile_cover'] = '';
-                                  ProfileController().profile_cover = '';
-                                  setState(() {});
+                                  con.profile_cover = '';
+                                  con.updateProfile(
+                                      UserManager.userInfo['userName']);
+                                  //ProfileController().setState(() {});
                                 }
                                 photoModel.photos.removeAt(index);
 
