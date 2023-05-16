@@ -102,7 +102,6 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                               height: UserManager.userInfo['isVerify']
                                   ? SizeConfig(context).screenHeight -
                                       210 -
-                                      verifyAlertHeight -
                                       viewInsets.bottom
                                   : SizeConfig(context).screenHeight -
                                       210 -
