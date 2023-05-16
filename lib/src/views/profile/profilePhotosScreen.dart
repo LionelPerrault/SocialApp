@@ -278,7 +278,8 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                                 if (UserManager.userInfo['profile_cover'] ==
                                     value['url']) {
                                   UserManager.userInfo['profile_cover'] = '';
-                                  //   setState(() {});
+                                  ProfileController().profile_cover = '';
+                                  setState(() {});
                                 }
                                 photoModel.photos.removeAt(index);
 
