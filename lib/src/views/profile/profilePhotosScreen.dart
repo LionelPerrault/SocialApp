@@ -265,35 +265,32 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                           title: const SizedBox(),
                           content: AlertYesNoWidget(
                               yesFunc: () {
-                                Navigator.of(context).pop(
-                                    true); // call Navigator outside of the previous block.
-                                // setState(() {
-                                //   deleteLoading = true;
-                                // });
+                                deleteLoading = true;
+                                setState(() {});
                                 if (UserManager.userInfo['avatar'] ==
                                     value['url']) {
                                   UserManager.userInfo['avatar'] = '';
-                                  con.updateProfile(
-                                      UserManager.userInfo['userName']);
-                                  //ProfileController().setState(() {});
-                                  //  setState(() {});
+
+                                  con.userData['avatar'] = '';
+                                  con.setState(() {});
                                 }
                                 if (UserManager.userInfo['profile_cover'] ==
                                     value['url']) {
                                   UserManager.userInfo['profile_cover'] = '';
                                   con.profile_cover = '';
-                                  con.updateProfile(
-                                      UserManager.userInfo['userName']);
-                                  //ProfileController().setState(() {});
+
+                                  con.setState(() {});
                                 }
                                 photoModel.photos.removeAt(index);
-
+                                deleteLoading = false;
+                                setState(() {});
+                                Navigator.of(context).pop(true);
                                 PostController().deletePhoto(value);
                                 PostController()
-                                    .deletePhotoFromTimeline(value['url']);
-
-//                                 setState(() {
-//                                   deleteLoading = false;
+                                    .deletePhotoFromTimeline(value['url'])
+                                    .then((value) => {});
+                                // call Navigator outside of the previous block.
+//
 // // set flag when both operations have completed successfully
 //                                 });
                               },
@@ -302,7 +299,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                               },
                               header: 'Remove Photo',
                               text:
-                                  'Do you want to remove photo? it will delete the post of this photo.',
+                                  'Do you want to remove photo? It will also remove the post of this photo.',
                               progress: deleteLoading),
                         ),
                       );

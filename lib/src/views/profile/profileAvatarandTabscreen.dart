@@ -41,7 +41,7 @@ class ProfileAvatarandTabScreenState extends mvc
   var userInfo = UserManager.userInfo;
   double avatarProgress = 0;
   double coverProgress = 0;
-  String avatar = '';
+
   List<Map> mainTabList = [
     {'title': 'Timeline', 'icon': Icons.timeline},
     {'title': 'Friends', 'icon': Icons.people},
@@ -67,7 +67,7 @@ class ProfileAvatarandTabScreenState extends mvc
         .then((value) {
       setState(() {});
     });
-    avatar = con.userData['avatar'];
+
     _gotoHome();
   }
 
@@ -213,12 +213,13 @@ class ProfileAvatarandTabScreenState extends mvc
   Widget userAvatarWidget() {
     return Stack(
       children: [
-        avatar != ''
+        con.userData['avatar'] != ''
             ? CircleAvatar(
                 radius: 78,
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
-                    radius: 75, backgroundImage: NetworkImage(avatar)),
+                    radius: 75,
+                    backgroundImage: NetworkImage(con.userData['avatar'])),
               )
             : CircleAvatar(
                 radius: 78,
@@ -809,7 +810,7 @@ class ProfileAvatarandTabScreenState extends mvc
         } else {
           userCon.userAvatar = downloadUrl;
           await userCon.changeAvatar();
-          avatar = downloadUrl;
+          con.userData['avatar'] = downloadUrl;
           setState(() {});
         }
       });
