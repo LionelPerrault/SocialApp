@@ -202,6 +202,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                 : SizeConfig(context).screenWidth,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: GridView.count(
+                physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: SizeConfig(context).screenWidth > 800
                     ? 4
                     : SizeConfig(context).screenWidth > 600
@@ -244,6 +245,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                 : SizeConfig(context).screenWidth,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: GridView.count(
+              physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: SizeConfig(context).screenWidth > 800
                   ? 4
                   : SizeConfig(context).screenWidth > 600

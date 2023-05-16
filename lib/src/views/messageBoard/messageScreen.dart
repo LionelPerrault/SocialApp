@@ -103,6 +103,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
   }
 
   Widget MobileScreen() {
+    final viewInsets = EdgeInsets.fromWindowPadding(
+        WidgetsBinding.instance.window.viewInsets,
+        WidgetsBinding.instance.window.devicePixelRatio);
     return SizedBox(
       width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth
@@ -139,9 +142,12 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                           ? Padding(
                               padding: EdgeInsets.only(
                                   top: UserManager.userInfo['isVerify']
-                                      ? SizeConfig(context).screenHeight - 260
+                                      ? SizeConfig(context).screenHeight -
+                                          260 -
+                                          viewInsets.bottom
                                       : SizeConfig(context).screenHeight -
                                           260 -
+                                          viewInsets.bottom -
                                           verifyAlertToastHeight),
                               child: WriteMessageScreen(
                                 type: 'new',
