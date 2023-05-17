@@ -28,6 +28,7 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
     add(widget.con);
     super.initState();
     con = controller as UserController;
+    con.isEmailExist = '';
   }
 
   @override
@@ -61,7 +62,8 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
                     maximumSize: const Size(30, 30),
                   ),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, RouteNames.login);
+                    Navigator.pop(context);
+                    //Navigator.pushReplacementNamed(context, RouteNames.login);
                   },
                   child: const Icon(
                     Icons.logout,
