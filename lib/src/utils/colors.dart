@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+MaterialColor headerColor = createMaterialColor(Colors.blueAccent);
 MaterialColor kprimaryColor = createMaterialColor(Colors.black);
 MaterialColor kprimarySwatch = createMaterialColor(Colors.black);
 

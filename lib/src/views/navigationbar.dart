@@ -281,7 +281,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       children: [
         Container(
             decoration: BoxDecoration(
-              color: kprimaryColor,
+              color: headerColor,
             ),
             padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: Row(
@@ -291,20 +291,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   children: [
                     Container(
                         padding: const EdgeInsets.only(right: 0, left: 15),
-                        child: ElevatedButton(
-                            onPressed: () {
+                        child: InkWell(
+                            onTap: () {
                               widget.drawClicked();
                             },
-                            style: ButtonStyle(
-                              minimumSize:
-                                  MaterialStateProperty.all(const Size(30, 30)),
-                              padding: MaterialStateProperty.all(
-                                  const EdgeInsets.all(2)),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.black),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.transparent),
-                            ),
                             child: const Icon(CupertinoIcons.line_horizontal_3,
                                 size: 30, color: Colors.white))
                         //Icon(Icons.home_outlined, size: 30, color: Colors.white),
@@ -314,22 +304,12 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 Row(children: [
                   Container(
                       padding: const EdgeInsets.only(right: 12),
-                      child: ElevatedButton(
-                        onPressed: () {
+                      child: InkWell(
+                        onTap: () {
                           widget.routerChange({
                             'router': RouteNames.homePage,
                           });
                         },
-                        style: ButtonStyle(
-                          minimumSize:
-                              MaterialStateProperty.all(const Size(30, 30)),
-                          padding: MaterialStateProperty.all(
-                              const EdgeInsets.all(2)),
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.transparent),
-                        ),
                         child: SvgPicture.network(
                           placeholderBuilder: (context) => const SizedBox(),
                           SVGPath.home,
@@ -490,22 +470,12 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                       padding: const EdgeInsets.only(right: 1),
                       child: ButtonTheme(
                         minWidth: 30,
-                        child: ElevatedButton(
-                          onPressed: () {
+                        child: InkWell(
+                          onTap: () {
                             widget.routerChange({
                               'router': RouteNames.search,
                             });
                           },
-                          style: ButtonStyle(
-                            minimumSize:
-                                MaterialStateProperty.all(const Size(30, 30)),
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.all(2)),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black),
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                          ),
                           child: SvgPicture.network(
                             placeholderBuilder: (context) => const SizedBox(),
                             SVGPath.search,
@@ -619,7 +589,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       children: [
         Container(
             decoration: BoxDecoration(
-              color: kprimaryColor,
+              color: headerColor,
             ),
             padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: Row(
@@ -627,8 +597,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
               children: [
                 Padding(
                     padding: const EdgeInsets.only(left: 58.0),
-                    child: TextButton(
-                      onPressed: () {},
+                    child: InkWell(
+                      onTap: () {},
                       onHover: (hover) {
                         setState(() {
                           onHover = hover;
@@ -650,18 +620,12 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                   children: [
                     Container(
                         padding: const EdgeInsets.only(right: 20),
-                        child: ElevatedButton(
-                          onPressed: () {
+                        child: InkWell(
+                          onTap: () {
                             widget.routerChange({
                               'router': RouteNames.homePage,
                             });
                           },
-                          style: ButtonStyle(
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black),
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                          ),
                           child: SvgPicture.network(
                             placeholderBuilder: (context) => const SizedBox(),
                             SVGPath.home,
@@ -937,9 +901,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
                   filled: true,
-                  fillColor: Color(0xff202020),
+                  fillColor: Colors.white,
                   hintText: 'Search',
-                  hintStyle: TextStyle(fontSize: 15.0, color: Colors.white),
+                  hintStyle: TextStyle(
+                      fontSize: 15.0, color: Color.fromARGB(193, 0, 0, 0)),
                 ),
               ),
             )
