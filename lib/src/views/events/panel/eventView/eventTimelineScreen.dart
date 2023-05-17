@@ -332,7 +332,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     );
   }
 
-  @override
   Widget eventInfo() {
     return Container(
       child: Column(
@@ -396,7 +395,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     );
   }
 
-  @override
   Widget eventInfoCell({icon, text}) {
     return Container(
       child: Row(children: [
@@ -410,7 +408,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     );
   }
 
-  @override
   Widget groupInfoCell({icon, text}) {
     return Container(
       margin: const EdgeInsets.all(3),
@@ -425,7 +422,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
     );
   }
 
-  @override
   Widget friendInvites() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(3),

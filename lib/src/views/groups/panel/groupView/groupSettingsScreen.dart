@@ -125,7 +125,6 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
         ));
   }
 
-  // ignore: non_constant_identifier_names
   Widget LeftSettingBar() {
     return Container(
       padding: const EdgeInsets.only(top: 30, right: 20),
