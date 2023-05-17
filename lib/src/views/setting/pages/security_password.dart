@@ -25,6 +25,9 @@ class SettingSecurityPasswordScreenState
   late String currentPassword = '';
   String newPassword = '';
   String confirmPassword = '';
+  bool obsboolOld = true;
+  bool obsboolNew = true;
+  bool obsboolConfirm = true;
   @override
   void initState() {
     super.initState();
@@ -35,126 +38,151 @@ class SettingSecurityPasswordScreenState
 
   @override
   Widget build(BuildContext context) {
+    final viewInsets = EdgeInsets.fromWindowPadding(
+        WidgetsBinding.instance.window.viewInsets,
+        WidgetsBinding.instance.window.devicePixelRatio);
     return Container(
-        padding: const EdgeInsets.only(top: 20, left: 30),
-        child: Column(
-          children: [
-            SettingHeader(
-              routerChange: widget.routerChange,
-              icon: const Icon(
-                Icons.security_outlined,
-                color: Color.fromARGB(255, 139, 195, 74),
+      alignment: Alignment.topCenter,
+      height: SizeConfig(context).screenHeight -
+          SizeConfig.navbarHeight -
+          30 -
+          viewInsets.bottom,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.only(top: 20, left: 30),
+          child: Column(
+            children: [
+              SettingHeader(
+                routerChange: widget.routerChange,
+                icon: const Icon(
+                  Icons.security_outlined,
+                  color: Color.fromARGB(255, 139, 195, 74),
+                ),
+                pagename: 'Change Password',
+                button: const {'flag': false},
               ),
-              pagename: 'Change Password',
-              button: const {'flag': false},
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            SizedBox(
-              width:
-                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                      ? SizeConfig(context).screenWidth * 0.5 + 40
-                      : SizeConfig(context).screenWidth * 0.9 - 30,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          width: 680,
-                          height: 65,
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 252, 124, 95),
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              SizedBox(
+                width:
+                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                        ? SizeConfig(context).screenWidth * 0.5 + 40
+                        : SizeConfig(context).screenWidth * 0.9 - 30,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 680,
+                            height: 65,
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 252, 124, 95),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                            ),
+                            child: Row(
+                              children: [
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 30)),
+                                const Icon(
+                                  Icons.warning_rounded,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 10)),
+                                SizedBox(
+                                    width: SizeConfig(context).screenWidth >
+                                            SizeConfig.smallScreenSize
+                                        ? SizeConfig(context).screenWidth * 0.3
+                                        : SizeConfig(context).screenWidth *
+                                                0.5 -
+                                            20,
+                                    child: const Text(
+                                      'Changing password will log you out from all other sessions',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 11),
+                                    ))
+                              ],
+                            ),
                           ),
-                          child: Row(
-                            children: [
-                              const Padding(padding: EdgeInsets.only(left: 30)),
-                              const Icon(
-                                Icons.warning_rounded,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                              const Padding(padding: EdgeInsets.only(left: 10)),
-                              SizedBox(
-                                  width: SizeConfig(context).screenWidth >
-                                          SizeConfig.smallScreenSize
-                                      ? SizeConfig(context).screenWidth * 0.3
-                                      : SizeConfig(context).screenWidth * 0.5 -
-                                          20,
-                                  child: const Text(
-                                    'Changing password will log you out from all other sessions',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 11),
-                                  ))
-                            ],
-                          ),
+                        )
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: titleAndsubtitleInput(
+                              'Your Old Password',
+                              50,
+                              1,
+                              (value) async {
+                                currentPassword = value;
+                              },
+                              obsboolOld,
+                              () {
+                                obsboolOld = !obsboolOld;
+                                setState(() {});
+                              }),
                         ),
-                      )
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: titleAndsubtitleInput(
-                          'Your Old Password',
-                          50,
-                          1,
-                          (value) async {
-                            currentPassword = value;
-                          },
-                          currentPassword,
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: titleAndsubtitleInput(
+                              'Your New Password',
+                              50,
+                              1,
+                              (value) async {
+                                newPassword = value;
+                              },
+                              obsboolNew,
+                              () {
+                                obsboolNew = !obsboolNew;
+                                setState(() {});
+                              }),
                         ),
-                      ),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: titleAndsubtitleInput(
-                          'Your New Password',
-                          50,
-                          1,
-                          (value) async {
-                            newPassword = value;
-                          },
-                          newPassword,
+                        const Padding(padding: EdgeInsets.only(left: 25)),
+                        Expanded(
+                          flex: 1,
+                          child: titleAndsubtitleInput(
+                              'Confirm New Password',
+                              50,
+                              1,
+                              (value) async {
+                                confirmPassword = value;
+                              },
+                              obsboolConfirm,
+                              () {
+                                obsboolConfirm = !obsboolConfirm;
+                                setState(() {});
+                              }),
                         ),
-                      ),
-                      const Padding(padding: EdgeInsets.only(left: 25)),
-                      Expanded(
-                        flex: 1,
-                        child: titleAndsubtitleInput(
-                          'Confirm New Password',
-                          50,
-                          1,
-                          (value) async {
-                            confirmPassword = value;
-                          },
-                          confirmPassword,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            SettingFooter(
-                onClick: () {
-                  saveAccountSettings();
-                },
-                isChange: con.isSettingAction)
-          ],
-        ));
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              SettingFooter(
+                  onClick: () {
+                    saveAccountSettings();
+                  },
+                  isChange: con.isSettingAction)
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
-  Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
-    TextEditingController inputController = TextEditingController();
-    inputController.text = text;
+  Widget titleAndsubtitleInput(
+      title, double height, line, onChange, obsecure, changeOb) {
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Column(
@@ -177,20 +205,44 @@ class SettingSecurityPasswordScreenState
                   height: height,
                   child: Column(
                     children: [
+                      // TextField(
+                      //   maxLines: line,
+                      //   minLines: line,
+                      //   controller: inputController,
+                      //   obscureText: true,
+                      //   onChanged: (value) {
+                      //     onChange(value);
+                      //   },
+                      //   decoration: const InputDecoration(
+                      //     contentPadding: EdgeInsets.only(top: 10, left: 10),
+                      //     border: OutlineInputBorder(),
+                      //     focusedBorder: OutlineInputBorder(
+                      //       borderSide:
+                      //           BorderSide(color: Colors.blue, width: 1),
+                      //     ),
+                      //   ),
+                      // ),
                       TextField(
                         maxLines: line,
                         minLines: line,
-                        controller: inputController,
-                        obscureText: true,
+                        obscureText: obsecure,
                         onChanged: (value) {
                           onChange(value);
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(top: 10, left: 10),
-                          border: OutlineInputBorder(),
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder: const OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.blue, width: 1),
+                          ),
+                          border: const OutlineInputBorder(),
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              changeOb();
+                            },
+                            child: Icon(obsecure
+                                ? Icons.visibility
+                                : Icons.visibility_off),
                           ),
                         ),
                       ),
