@@ -56,7 +56,7 @@ dependencies:
   material_floating_search_bar: ^0.3.7
   fl_chart: ^0.61.0
   crypto: ^3.0.2
-  firebase_auth: ^4.5.0
+  firebase_auth: ^4.6.1
   google_sign_in: ^6.1.0
   time_elapsed: ^0.2.6
   firebase_storage: ^11.0.4
@@ -72,7 +72,7 @@ dependencies:
   flutter_window_close: ^0.2.2
   syncfusion_flutter_datagrid: ^21.1.39
   flutter_html: ^3.0.0-alpha.6
-  firebase_core: ^2.3.0
+  firebase_core: ^2.13.0
   percent_indicator: ^4.2.2
   firebase_messaging: ^14.1.1
   rounded_loading_button: ^2.1.0
