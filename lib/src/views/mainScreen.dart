@@ -188,18 +188,15 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
             ),
             if (showSideBar == true)
               GestureDetector(
-                  onTap: () {
-                    _drawerSlideController.reverse();
-                    setState(() {
-                      showSideBar = false;
-                    });
-                  },
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: SizeConfig.navbarHeight),
-                    child: Container(
-                        color: const Color.fromARGB(41, 236, 236, 236)),
-                  )),
+                onTap: () {
+                  _drawerSlideController.reverse();
+                  setState(() {
+                    showSideBar = false;
+                  });
+                },
+                child:
+                    Container(color: const Color.fromARGB(41, 236, 236, 236)),
+              ),
             AnimatedBuilder(
               animation: _drawerSlideController,
               builder: (context, child) {

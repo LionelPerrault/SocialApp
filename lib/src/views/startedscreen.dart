@@ -215,11 +215,11 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     //});
     //Scaffold.of(context).openDrawer();
     //print("showmenu is {$showMenu}");
-    if (_isDrawerOpen() || _isDrawerOpening()) {
-      _drawerSlideController.reverse();
-    } else {
-      _drawerSlideController.forward();
-    }
+    // if (_isDrawerOpen() || _isDrawerOpening()) {
+    //   _drawerSlideController.reverse();
+    // } else {
+    //   _drawerSlideController.forward();
+    // }
   }
 
   void onSearchBarDismiss() {
@@ -1316,8 +1316,8 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
                               _isDrawerClosed()
                           ? const SizedBox()
                           : const Padding(
-                              padding: EdgeInsets.only(
-                                  top: SizeConfig.navbarHeight),
+                              padding:
+                                  EdgeInsets.only(top: SizeConfig.navbarHeight),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
