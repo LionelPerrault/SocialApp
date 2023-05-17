@@ -1049,6 +1049,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
           height: 40,
           child: TextField(
             controller: controller,
+            textInputAction: TextInputAction.done,
             onChanged: (value) {
               onChange(value);
             },
@@ -1092,6 +1093,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                   height: height,
                   child: TextField(
                     controller: controller,
+                    textInputAction: TextInputAction.done,
                     maxLines: line,
                     minLines: line,
                     onChanged: (value) {
