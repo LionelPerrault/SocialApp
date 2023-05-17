@@ -365,7 +365,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                   : 410,
                                           child: Text(
                                             ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
-                                            overflow: TextOverflow.clip,
+                                            overflow: TextOverflow.ellipsis,
                                             style:
                                                 const TextStyle(fontSize: 14),
                                           ),

@@ -345,7 +345,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                   ),
                                   SizedBox(
                                     width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 340
+                                        ? SizeConfig(context).screenWidth - 200
                                         : 350,
                                     child: Text(
                                       ' added new real estate for ${realEstate["realEstateOffer"]}',
