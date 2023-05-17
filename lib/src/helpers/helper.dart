@@ -139,7 +139,7 @@ class Helper {
   static failAlert(String str) {
     return Container(
         padding:
-            const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 10),
+            const EdgeInsets.only(left: 10.0, right: 10, top: 5, bottom: 4),
         decoration: const BoxDecoration(
             color: Color.fromRGBO(247, 86, 118, 1),
             borderRadius: BorderRadius.all(Radius.circular(3))),
@@ -148,10 +148,10 @@ class Helper {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                     Text(
-                      'please re-enter password',
+                      'Please re-enter password',
                       style: TextStyle(color: Colors.white, fontSize: 11),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Padding(padding: EdgeInsets.only(top: 6)),
                     Text(
                       'The password you entered is incorrect. If you forgot your password? Request a new one',
                       style: TextStyle(color: Colors.white, fontSize: 11),

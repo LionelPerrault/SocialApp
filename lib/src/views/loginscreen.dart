@@ -93,7 +93,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                             alignment: AlignmentDirectional.topCenter,
                             child: Container(
                               width: 340,
-                              height: 500,
+                              height: 540,
                               margin: EdgeInsets.only(
                                   top: 10,
                                   left: SizeConfig(context).screenWidth >
@@ -135,7 +135,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                         ),
                                         Container(
                                           margin:
-                                              const EdgeInsets.only(top: 30.0),
+                                              const EdgeInsets.only(top: 20.0),
                                           child: Row(children: [
                                             const Padding(
                                               padding:
@@ -286,7 +286,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                         ),
                                         Container(
                                           margin: const EdgeInsets.only(
-                                              top: 10.0, bottom: 100),
+                                              top: 10.0, bottom: 10),
                                           alignment: Alignment.center,
                                           child: RichText(
                                             text: TextSpan(
@@ -318,7 +318,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                                 margin: const EdgeInsets.only(
                                                     left: 30,
                                                     right: 30,
-                                                    top: 10),
+                                                    top: 0),
                                                 child: Helper.failAlert(
                                                     con.failLogin))),
                                       ],

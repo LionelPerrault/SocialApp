@@ -502,21 +502,29 @@ class UserController extends ControllerMVC {
     email = em;
     password = pass;
     var returnVal = false;
-    try {
-      if (!(email.contains('@') && email.contains('.'))) {
-        QuerySnapshot<TokenLogin> checkUsername =
-            await Helper.authdata.where('userName', isEqualTo: email).get();
-        if (checkUsername.size > 0) {
-          TokenLogin getInfo = checkUsername.docs[0].data();
-          email = getInfo.email;
-        } else {
-          failLogin = 'The username you entered does not belong to any account';
-          isSendLoginedInfo = false;
-          setState(() {});
-          return false;
-        }
+    if (email.contains('@') && email.contains('.')) {
+      QuerySnapshot<TokenLogin> checkEmail =
+          await Helper.authdata.where('email', isEqualTo: email).get();
+      if (checkEmail.docs.isEmpty) {
+        failLogin = 'The email you entered does not belong to any account';
+        isSendLoginedInfo = false;
+        setState(() {});
+        return false;
       }
-      setState(() {});
+    } else {
+      QuerySnapshot<TokenLogin> checkUsername =
+          await Helper.authdata.where('userName', isEqualTo: email).get();
+      if (checkUsername.docs.isNotEmpty) {
+        TokenLogin getInfo = checkUsername.docs[0].data();
+        email = getInfo.email;
+      } else {
+        failLogin = 'The username you entered does not belong to any account';
+        isSendLoginedInfo = false;
+        setState(() {});
+        return false;
+      }
+    }
+    try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       failLogin = '';
