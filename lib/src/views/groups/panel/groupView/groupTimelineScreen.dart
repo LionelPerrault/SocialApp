@@ -452,11 +452,16 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                       itemBuilder: (context, index) {
                         var friendUserName =
                             friendModel.friends[index]['requester'].toString();
+                        var userId = friendModel.friends[index]['requesterId']
+                            .toString();
                         if (friendUserName ==
                             UserManager.userInfo['userName']) {
                           friendUserName =
                               friendModel.friends[index]['receiver'].toString();
+                          userId = friendModel.friends[index]['receiverId']
+                              .toString();
                         }
+                        bool sent = con.boolInvitedGroup(con.group, userId);
                         return Material(
                             child: ListTile(
                                 onTap: () {},
@@ -514,34 +519,10 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                       invitingFriend = true;
                                                   });
 
-                                                  var friendUserName =
-                                                      friendModel.friends[index]
-                                                              ['requester']
-                                                          .toString();
-                                                  if (friendUserName ==
-                                                      UserManager
-                                                          .userInfo['userName'])
-                                                    friendUserName = friendModel
-                                                        .friends[index]
-                                                            ['receiver']
-                                                        .toString();
-
-                                                  var snapshot =
-                                                      await FirebaseFirestore
-                                                          .instance
-                                                          .collection('user')
-                                                          .where('userName',
-                                                              isEqualTo:
-                                                                  friendUserName)
-                                                          .get();
-                                                  String userid = snapshot
-                                                      .docs[0].id
-                                                      .toString();
                                                   await con.getServerTime();
                                                   var notificationData = {
-                                                    'postType': 'inviteGroup',
                                                     'postId': con.viewGroupId,
-                                                    'userId': userid,
+                                                    'userId': userId,
                                                     'postAdminId': UserManager
                                                         .userInfo['uid'],
                                                     'notifyTime': DateTime.now()
@@ -551,11 +532,23 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                     'timeStamp': FieldValue
                                                         .serverTimestamp(),
                                                   };
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection(Helper
-                                                          .notificationField)
-                                                      .add(notificationData);
+                                                  await con
+                                                      .inviteGroup(
+                                                          con.viewGroupId,
+                                                          userId)
+                                                      .then((value) async {
+                                                    notificationData[
+                                                            'postType'] =
+                                                        value
+                                                            ? 'inviteGroup'
+                                                            : 'removeInviteGroup';
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection(Helper
+                                                            .notificationField)
+                                                        .add(notificationData);
+                                                  });
+
                                                   setState(() {
                                                     invitingFriend = false;
                                                   });
@@ -570,16 +563,19 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                           color: Colors.grey,
                                                         ),
                                                       )
-                                                    : const Row(
+                                                    : Row(
                                                         children: [
-                                                          Icon(
+                                                          const Icon(
                                                             Icons
                                                                 .person_add_alt_rounded,
                                                             color: Colors.white,
                                                             size: 15.0,
                                                           ),
-                                                          Text('Add',
-                                                              style: TextStyle(
+                                                          Text(
+                                                              sent
+                                                                  ? 'Sent'
+                                                                  : 'Add',
+                                                              style: const TextStyle(
                                                                   color: Colors
                                                                       .white,
                                                                   fontSize: 10,

@@ -40,6 +40,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
     super.initState();
     add(widget.con);
     con = controller as PostController;
+    invites = con.group['groupInvites'];
     friendModel
         .getFriends(UserManager.userInfo['userName'])
         .then((value) async {
@@ -54,17 +55,10 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
             .where('userName', isEqualTo: friendUserName)
             .get();
         String userid = snapshot.docs[0].id.toString();
-        var data = snapshot.docs[0].data();
         if (con.boolJoined(con.group, userid)) {
           friendModel.friends.removeAt(index);
           setState(() {});
           index--;
-        } else {
-          invites.add({
-            'userName': friendUserName,
-            'avatar': data['avatar'],
-            'fullName': data['firstName'] + data['lastName']
-          });
         }
       }
     });

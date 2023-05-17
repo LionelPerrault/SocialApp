@@ -102,6 +102,8 @@ class Helper {
         .hasMatch(input);
   }
 
+  static Map userNameToUid = {};
+
   static Map notificationText = {
     'storys': {
       'text': 'added story',
@@ -117,7 +119,8 @@ class Helper {
     'events': {'text': 'added event'},
     'requestFriend': {'text': 'Friend request sent'},
     'realEstates': {'text': 'Real Estates created'},
-    'inviteGroup': {'text': 'invited you'}
+    'inviteGroup': {'text': 'invited you'},
+    'removeInviteGroup': {'text': 'remove invited'},
   };
 
   static Map notificationName = {

@@ -13,7 +13,13 @@ class Friends {
         .get();
     var s = [];
     s = snapshot.docs.map((doc) => doc.data()).toList();
-    friends = s;
+    var box = [];
+    for (var element in s) {
+      element['requesterId'] = Helper.userNameToUid[element['requester']];
+      element['receiverId'] = Helper.userNameToUid[element['receiver']];
+      box.add(element);
+    }
+    friends = box;
     return friends;
   }
 }

@@ -979,6 +979,23 @@ class PostController extends ControllerMVC {
           i--;
         }
       }
+
+      for (var i = 0; i < group['groupInvites'].length; i++) {
+        var groupUser = await ProfileController()
+            .getUserInfo(group['groupInvites'][i]['uid']);
+        if (groupUser != null) {
+          group['groupInvites'][i] = {
+            ...group['groupInvites'][i],
+            'userName': groupUser['userName'] ?? '',
+            'avatar': groupUser['avatar'] ?? '',
+            'fullName': '${groupUser["firstName"]} ${groupUser["lastName"]}'
+          };
+        } else {
+          group['groupInvites'].removeWhere(
+              (item) => item['uid'] == group['groupInvites'][i]['uid']);
+          i--;
+        }
+      }
       setState(() {});
     });
     return true;
@@ -1006,6 +1023,7 @@ class PostController extends ControllerMVC {
       ],
       'groupDate': DateTime.now().toString(),
       'groupJoined': [],
+      'groupInvites': [],
       'groupPost': true,
       'groupPicture': '',
       'groupCover': '',
@@ -1089,6 +1107,35 @@ class PostController extends ControllerMVC {
     }
   }
 
+  //user invite in group liked function
+  Future<bool> inviteGroup(String groupId, userId) async {
+    var querySnapshot = await Helper.groupsData.doc(groupId).get();
+    var doc = querySnapshot;
+    var invited = doc['groupInvites'];
+    var respon = boolInvitedGroup(doc, userId);
+    if (respon) {
+      invited.removeWhere((item) => item['uid'] == userId);
+      await FirebaseFirestore.instance
+          .collection(Helper.groupsField)
+          .doc(groupId)
+          .update({'groupInvites': invited});
+      Helper.showToast('Remove Invited group');
+      setState(() {});
+      return false;
+    } else {
+      invited.add({
+        'uid': userId,
+      });
+      await FirebaseFirestore.instance
+          .collection(Helper.groupsField)
+          .doc(groupId)
+          .update({'groupInvites': invited});
+      Helper.showToast('Invited group');
+      setState(() {});
+      return true;
+    }
+  }
+
   //bool of user already in group interested or not
   bool boolJoined(var groupData, String uid) {
     var joined = groupData['groupJoined'];
@@ -1096,6 +1143,20 @@ class PostController extends ControllerMVC {
       return false;
     }
     var returnData = joined.where((eachUser) => eachUser['uid'] == uid);
+    if (returnData.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  //bool of user already in group invite or not
+  bool boolInvitedGroup(var groupData, String uid) {
+    var invited = groupData['groupJoined'];
+    if (invited == null) {
+      return false;
+    }
+    var returnData = invited.where((eachUser) => eachUser['uid'] == uid);
     if (returnData.length == 0) {
       return false;
     } else {

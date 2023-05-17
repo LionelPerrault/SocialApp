@@ -206,7 +206,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
             if (!includeMe) remainData.add(addData);
           }
         }
-        if (postType == 'inviteGroup' &&
+        if ((postType == 'inviteGroup' || postType == 'removeInviteGroup') &&
             adminUid != UserManager.userInfo['uid']) {
           dynamic userV = await FirebaseFirestore.instance
               .collection(Helper.userField)

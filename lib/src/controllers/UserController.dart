@@ -68,6 +68,13 @@ class UserController extends ControllerMVC {
   @override
   Future<bool> initAsync() async {
     //
+
+    var usersSnap =
+        await FirebaseFirestore.instance.collection(Helper.userField).get();
+    for (var i = 0; i < usersSnap.docs.length; i++) {
+      Helper.userNameToUid[usersSnap.docs[i]['userName']] =
+          usersSnap.docs[i].id;
+    }
     Helper.authdata = FirebaseFirestore.instance
         .collection(Helper.userField)
         .withConverter<TokenLogin>(
