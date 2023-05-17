@@ -40,10 +40,11 @@
               "client_type": 3
             },
             {
-              "client_id": "444281700591-1p7f4j0taft8hkg62mjcv5em4aeegjce.apps.googleusercontent.com",
+              "client_id": "444281700591-1183rtg1j452u048l8cnjb3s7edj6fbh.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.shantter"
+                "bundle_id": "com.shnatter",
+                "app_store_id": "6447631325"
               }
             }
           ]
