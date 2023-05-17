@@ -33,9 +33,18 @@ class ResetScreenState extends mvc.StateMVC<ResetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: resetPasswordModal(),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: resetPasswordModal(),
+        ),
       ),
     );
   }
