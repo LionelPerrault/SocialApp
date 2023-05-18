@@ -45,22 +45,32 @@ class AdminSettingsAccountState extends mvc.StateMVC<AdminSettingsAccount> {
   late var headerTab;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          AdminSettingHeader(
-            icon: const Icon(Icons.settings),
-            pagename: 'Settings › Account',
-            button: const {'flag': false},
-            headerTab: headerTab,
-          ),
-          Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth > 700
-                  ? SizeConfig(context).screenWidth * 0.75
-                  : SizeConfig(context).screenWidth,
-              child: tabTitle == 'General' ? generalWidget() : ProfileWidget())
-        ],
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+        child: Column(
+          children: [
+            AdminSettingHeader(
+              icon: const Icon(Icons.settings),
+              pagename: 'Settings › Account',
+              button: const {'flag': false},
+              headerTab: headerTab,
+            ),
+            Container(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                width: SizeConfig(context).screenWidth > 700
+                    ? SizeConfig(context).screenWidth * 0.75
+                    : SizeConfig(context).screenWidth,
+                child:
+                    tabTitle == 'General' ? generalWidget() : ProfileWidget())
+          ],
+        ),
       ),
     );
   }

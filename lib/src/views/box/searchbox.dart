@@ -41,112 +41,121 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(3),
-      child: Column(
-        children: [
-          Container(
-            width: 400,
-            color: const Color.fromARGB(255, 255, 255, 255),
-            padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                const Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Search Results",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    )),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Divider(
-                  height: 1,
-                  endIndent: 10,
-                ),
-                const Divider(height: 1, indent: 0),
-                widget.searchResult.isEmpty
-                    ? Container(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 140,
-                              decoration: const BoxDecoration(
-                                  color: Color.fromRGBO(240, 240, 240, 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: const Text(
-                                'No data to show',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromRGBO(108, 117, 125, 1)),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(3),
+        child: Column(
+          children: [
+            Container(
+              width: 400,
+              color: const Color.fromARGB(255, 255, 255, 255),
+              padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Search Results",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      )),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  const Divider(
+                    height: 1,
+                    endIndent: 10,
+                  ),
+                  const Divider(height: 1, indent: 0),
+                  widget.searchResult.isEmpty
+                      ? Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                width: 140,
+                                decoration: const BoxDecoration(
+                                    color: Color.fromRGBO(240, 240, 240, 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                child: const Text(
+                                  'No data to show',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromRGBO(108, 117, 125, 1)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Expanded(
+                              child: SizedBox(
+                                width: SizeConfig(context).screenWidth,
+                                height: SizeConfig(context).screenHeight -
+                                    SizeConfig.navbarHeight -
+                                    150 -
+                                    (UserManager.userInfo['isVerify'] ? 0 : 50),
+                                child: ListView.separated(
+                                  itemCount: widget.searchResult.length,
+                                  itemBuilder: (context, index) =>
+                                      searchCell(widget.searchResult[index]),
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const Divider(
+                                    height: 1,
+                                    endIndent: 10,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      )
-                    : Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Expanded(
-                            child: SizedBox(
-                              width: SizeConfig(context).screenWidth,
-                              height: SizeConfig(context).screenHeight -
-                                  SizeConfig.navbarHeight -
-                                  150 -
-                                  (UserManager.userInfo['isVerify'] ? 0 : 50),
-                              child: ListView.separated(
-                                itemCount: widget.searchResult.length,
-                                itemBuilder: (context, index) =>
-                                    searchCell(widget.searchResult[index]),
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const Divider(
-                                  height: 1,
-                                  endIndent: 10,
-                                ),
-                              ),
-                            ),
+                  Container(
+                    color: Colors.grey[300],
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          child: const Text(
+                            'Search All Result',
+                            style: TextStyle(fontSize: 11),
                           ),
-                        ],
-                      ),
-                Container(
-                  color: Colors.grey[300],
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        child: const Text(
-                          'Search All Result',
-                          style: TextStyle(fontSize: 11),
+                          onPressed: () {
+                            widget.routerChange({
+                              'router': RouteNames.search,
+                            });
+                            widget.hideSearch();
+                          },
                         ),
-                        onPressed: () {
-                          widget.routerChange({
-                            'router': RouteNames.search,
-                          });
-                          widget.hideSearch();
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

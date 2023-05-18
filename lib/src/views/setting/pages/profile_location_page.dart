@@ -30,74 +30,83 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.only(top: 20, left: 30),
-        child: Column(
-          children: [
-            SettingHeader(
-              routerChange: widget.routerChange,
-              icon: const Icon(
-                Icons.location_on,
-                color: Color.fromARGB(255, 43, 83, 164),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+          padding: const EdgeInsets.only(top: 20, left: 30),
+          child: Column(
+            children: [
+              SettingHeader(
+                routerChange: widget.routerChange,
+                icon: const Icon(
+                  Icons.location_on,
+                  color: Color.fromARGB(255, 43, 83, 164),
+                ),
+                pagename: 'Location',
+                button: const {
+                  'buttoncolor': Color.fromARGB(255, 17, 205, 239),
+                  'icon': Icon(Icons.person),
+                  'text': 'View Profile',
+                  'flag': true
+                },
               ),
-              pagename: 'Location',
-              button: const {
-                'buttoncolor': Color.fromARGB(255, 17, 205, 239),
-                'icon': Icon(Icons.person),
-                'text': 'View Profile',
-                'flag': true
-              },
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            SizedBox(
-              width:
-                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                      ? SizeConfig(context).screenWidth * 0.5 + 40
-                      : SizeConfig(context).screenWidth * 0.9 - 30,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: titleAndsubtitleInput(
-                          'Current Location',
-                          50,
-                          1,
-                          (value) {
-                            locationInfo['current'] = value;
-                            setState(() {});
-                          },
-                          userInfo['current'] ?? '',
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              SizedBox(
+                width:
+                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                        ? SizeConfig(context).screenWidth * 0.5 + 40
+                        : SizeConfig(context).screenWidth * 0.9 - 30,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: titleAndsubtitleInput(
+                            'Current Location',
+                            50,
+                            1,
+                            (value) {
+                              locationInfo['current'] = value;
+                              setState(() {});
+                            },
+                            userInfo['current'] ?? '',
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: titleAndsubtitleInput(
-                          'Hometown',
-                          50,
-                          1,
-                          (value) {
-                            locationInfo['hometown'] = value;
-                            setState(() {});
-                          },
-                          userInfo['hometown'] ?? '',
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: titleAndsubtitleInput(
+                            'Hometown',
+                            50,
+                            1,
+                            (value) {
+                              locationInfo['hometown'] = value;
+                              setState(() {});
+                            },
+                            userInfo['hometown'] ?? '',
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            footer()
-          ],
-        ));
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              footer()
+            ],
+          )),
+    );
   }
 
   Widget titleAndsubtitleInput(title, double height, line, onChange, text) {

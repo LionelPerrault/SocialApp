@@ -64,108 +64,118 @@ class SearchScreenState extends mvc.StateMVC<SearchScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(
-                      top: 10, bottom: 10, left: 20, right: 20),
-                  width: 500,
-                  child: TextField(
-                    cursorColor: Colors.white,
-                    style: const TextStyle(color: Colors.white),
-                    onChanged: (value) async {
-                      // searchValue = value;
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-                      // await SearcherController().updateSearchText(value);
-                      // await SearcherController().getEvents(searchValue);
-                      // await SearcherController().getGroups(searchValue);
-                      // if (value != '') {
-                      //   SearcherController().users = [
-                      //     ...SearcherController().usersByFirstName,
-                      //     ...SearcherController().usersByFirstNameCaps,
-                      //     ...SearcherController().usersByLastName,
-                      //     ...SearcherController().usersByLastNameCaps,
-                      //     ...SearcherController().usersByWholeName,
-                      //     ...SearcherController().usersByWholeNameCaps,
-                      //   ];
-                      //   print("searchText is ${SearcherController().users}");
-                      //   SearcherController().users = [
-                      //     ...{...SearcherController().users}
-                      //   ];
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                        top: 10, bottom: 10, left: 20, right: 20),
+                    width: 500,
+                    child: TextField(
+                      cursorColor: Colors.white,
+                      style: const TextStyle(color: Colors.white),
+                      onChanged: (value) async {
+                        // searchValue = value;
 
-                      //   searchResultUsers = [...SearcherController().users];
-                      //   searchResultEvents = [...SearcherController().events];
-                      //   searchResultGroups = [...SearcherController().groups];
-                      // } else {
-                      //   searchResultUsers = [];
+                        // await SearcherController().updateSearchText(value);
+                        // await SearcherController().getEvents(searchValue);
+                        // await SearcherController().getGroups(searchValue);
+                        // if (value != '') {
+                        //   SearcherController().users = [
+                        //     ...SearcherController().usersByFirstName,
+                        //     ...SearcherController().usersByFirstNameCaps,
+                        //     ...SearcherController().usersByLastName,
+                        //     ...SearcherController().usersByLastNameCaps,
+                        //     ...SearcherController().usersByWholeName,
+                        //     ...SearcherController().usersByWholeNameCaps,
+                        //   ];
+                        //   print("searchText is ${SearcherController().users}");
+                        //   SearcherController().users = [
+                        //     ...{...SearcherController().users}
+                        //   ];
 
-                      //   searchResultEvents = [];
-                      //   searchResultGroups = [];
-                      // }
+                        //   searchResultUsers = [...SearcherController().users];
+                        //   searchResultEvents = [...SearcherController().events];
+                        //   searchResultGroups = [...SearcherController().groups];
+                        // } else {
+                        //   searchResultUsers = [];
 
-                      // super.setState(() {});
-                    },
-                    onSubmitted: (value) async {
-                      searchValue = value;
-                      searchCon.isLoading = true;
-                      setState(
-                        () {},
-                      );
-                      await searchCon.updateSearchText(value);
+                        //   searchResultEvents = [];
+                        //   searchResultGroups = [];
+                        // }
 
-                      await searchCon.getEvents(searchValue);
-                      await searchCon.getGroups(searchValue);
-                      if (value != '') {
-                        // SearcherController().users = [
-                        //   ...SearcherController().usersByFirstName,
-                        //   ...SearcherController().usersByFirstNameCaps,
-                        //   ...SearcherController().usersByLastName,
-                        //   ...SearcherController().usersByLastNameCaps,
-                        //   ...SearcherController().usersByWholeName,
-                        //   ...SearcherController().usersByWholeNameCaps,
-                        // ];
+                        // super.setState(() {});
+                      },
+                      onSubmitted: (value) async {
+                        searchValue = value;
+                        searchCon.isLoading = true;
+                        setState(
+                          () {},
+                        );
+                        await searchCon.updateSearchText(value);
 
-                        searchResultUsers = [...searchCon.users];
-                        searchResultEvents = [...searchCon.events];
-                        searchResultGroups = [...searchCon.groups];
-                      } else {
-                        searchResultUsers = [];
+                        await searchCon.getEvents(searchValue);
+                        await searchCon.getGroups(searchValue);
+                        if (value != '') {
+                          // SearcherController().users = [
+                          //   ...SearcherController().usersByFirstName,
+                          //   ...SearcherController().usersByFirstNameCaps,
+                          //   ...SearcherController().usersByLastName,
+                          //   ...SearcherController().usersByLastNameCaps,
+                          //   ...SearcherController().usersByWholeName,
+                          //   ...SearcherController().usersByWholeNameCaps,
+                          // ];
 
-                        searchResultEvents = [];
-                        searchResultGroups = [];
-                      }
-                      searchCon.isLoading = false;
-                      super.setState(() {});
-                    },
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.search,
-                          color: Color.fromARGB(150, 170, 212, 255), size: 20),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                          searchResultUsers = [...searchCon.users];
+                          searchResultEvents = [...searchCon.events];
+                          searchResultGroups = [...searchCon.groups];
+                        } else {
+                          searchResultUsers = [];
+
+                          searchResultEvents = [];
+                          searchResultGroups = [];
+                        }
+                        searchCon.isLoading = false;
+                        super.setState(() {});
+                      },
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.search,
+                            color: Color.fromARGB(150, 170, 212, 255),
+                            size: 20),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey,
+                        hintText: 'I am looking for',
+                        hintStyle: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
-                      filled: true,
-                      fillColor: Colors.grey,
-                      hintText: 'I am looking for',
-                      hintStyle: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
-                tabWidget(() {}),
-                const SizedBox(height: 20),
-                searchRouteWidget()
-              ],
+                  tabWidget(() {}),
+                  const SizedBox(height: 20),
+                  searchRouteWidget()
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

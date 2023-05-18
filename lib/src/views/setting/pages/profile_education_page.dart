@@ -36,85 +36,94 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.only(top: 20, left: 30),
-        child: Column(
-          children: [
-            SettingHeader(
-              routerChange: widget.routerChange,
-              icon: const Icon(
-                Icons.school,
-                color: Color.fromARGB(255, 43, 83, 164),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+          padding: const EdgeInsets.only(top: 20, left: 30),
+          child: Column(
+            children: [
+              SettingHeader(
+                routerChange: widget.routerChange,
+                icon: const Icon(
+                  Icons.school,
+                  color: Color.fromARGB(255, 43, 83, 164),
+                ),
+                pagename: 'Education',
+                button: const {
+                  'buttoncolor': Color.fromARGB(255, 17, 205, 239),
+                  'icon': Icon(Icons.person),
+                  'text': 'View Profile',
+                  'flag': true
+                },
               ),
-              pagename: 'Education',
-              button: const {
-                'buttoncolor': Color.fromARGB(255, 17, 205, 239),
-                'icon': Icon(Icons.person),
-                'text': 'View Profile',
-                'flag': true
-              },
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            SizedBox(
-              width:
-                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                      ? SizeConfig(context).screenWidth * 0.5 + 40
-                      : SizeConfig(context).screenWidth * 0.9 - 30,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: titleAndsubtitleInput(
-                          'School',
-                          50,
-                          1,
-                          (value) async {
-                            educationInfo['school'] = value;
-                          },
-                          schoolCon,
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              SizedBox(
+                width:
+                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+                        ? SizeConfig(context).screenWidth * 0.5 + 40
+                        : SizeConfig(context).screenWidth * 0.9 - 30,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: titleAndsubtitleInput(
+                            'School',
+                            50,
+                            1,
+                            (value) async {
+                              educationInfo['school'] = value;
+                            },
+                            schoolCon,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: titleAndsubtitleInput(
-                          'Major',
-                          50,
-                          1,
-                          (value) async {
-                            educationInfo['major'] = value;
-                          },
-                          majorCon,
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20)),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: titleAndsubtitleInput(
+                            'Major',
+                            50,
+                            1,
+                            (value) async {
+                              educationInfo['major'] = value;
+                            },
+                            majorCon,
+                          ),
                         ),
-                      ),
-                      const Padding(padding: EdgeInsets.only(left: 25)),
-                      Expanded(
-                        flex: 1,
-                        child: titleAndsubtitleInput(
-                          'Class',
-                          50,
-                          1,
-                          (value) async {
-                            educationInfo['class'] = value;
-                          },
-                          classCon,
+                        const Padding(padding: EdgeInsets.only(left: 25)),
+                        Expanded(
+                          flex: 1,
+                          child: titleAndsubtitleInput(
+                            'Class',
+                            50,
+                            1,
+                            (value) async {
+                              educationInfo['class'] = value;
+                            },
+                            classCon,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            footer()
-          ],
-        ));
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              footer()
+            ],
+          )),
+    );
   }
 
   Widget titleAndsubtitleInput(title, double height, line, onChange, con) {
