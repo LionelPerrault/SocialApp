@@ -397,6 +397,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
         ),
         SingleChildScrollView(
             controller: _scrollController,
+            physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.horizontal,
             child: Container(
               width:
