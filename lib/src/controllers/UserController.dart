@@ -966,7 +966,7 @@ class UserController extends ControllerMVC {
       userInfo['isStarted'] = true;
       UserManager.getUserInfo();
       await Helper.saveJSONPreference(
-          Helper.userField, {...userInfo, 'avatar': value.data()!['avatar']});
+          Helper.userField, {...userInfo, 'avatar': userAvatar});
       await Helper.getJSONPreference(Helper.userField);
       setState(() {});
     });
