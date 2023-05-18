@@ -104,6 +104,8 @@ class Helper {
 
   static Map userNameToUid = {};
 
+  static Map userUidToInfo = {};
+
   static Map notificationText = {
     'storys': {
       'text': 'added story',

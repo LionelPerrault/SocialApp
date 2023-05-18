@@ -74,6 +74,12 @@ class UserController extends ControllerMVC {
     for (var i = 0; i < usersSnap.docs.length; i++) {
       Helper.userNameToUid[usersSnap.docs[i]['userName']] =
           usersSnap.docs[i].id;
+      Helper.userUidToInfo[usersSnap.docs[i].id] = {
+        'avatar': usersSnap.docs[i].data()['avatar'],
+        'userName': usersSnap.docs[i].data()['userName'],
+        'fullName':
+            '${usersSnap.docs[i].data()['firstName']} ${usersSnap.docs[i].data()['lastname']}',
+      };
     }
     Helper.authdata = FirebaseFirestore.instance
         .collection(Helper.userField)
