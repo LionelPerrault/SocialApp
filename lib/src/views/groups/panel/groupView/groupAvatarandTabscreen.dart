@@ -31,7 +31,6 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   final ScrollController _scrollController = ScrollController();
   double width = 0;
   double itemWidth = 0;
-  var tap = 'Timeline';
   var userInfo = UserManager.userInfo;
   double avatarProgress = 0;
   double coverProgress = 0;
