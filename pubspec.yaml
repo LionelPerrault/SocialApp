@@ -132,6 +132,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/shnatter-logo-login.svg
   #   - assets/images/svg/
   #   - assets/images/svg/logo.svg
   # An image asset can refer to one or more resolution-specific "variants", see

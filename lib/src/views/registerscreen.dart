@@ -133,8 +133,12 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                   EdgeInsets.only(top: 20)),
                                           Align(
                                             alignment: Alignment.topLeft,
-                                            child: SvgPicture.network(
-                                                'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719'),
+                                            child: SvgPicture.asset(
+                                              'assets/images/shnatter-logo-login.svg',
+                                              semanticsLabel: 'Logo',
+                                            ),
+                                            // child: SvgPicture.network(
+                                            //     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719'),
                                           ),
                                           const Padding(
                                               padding:
@@ -268,8 +272,12 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                       EdgeInsets.only(top: 20)),
                                               Align(
                                                 alignment: Alignment.topLeft,
-                                                child: SvgPicture.network(
-                                                    'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719'),
+                                                child: SvgPicture.asset(
+                                                  'assets/images/shnatter-logo-login.svg',
+                                                  semanticsLabel: 'Logo',
+                                                ),
+                                                // child: SvgPicture.network(
+                                                //     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719'),
                                               ),
                                               const Padding(
                                                   padding:
@@ -778,8 +786,12 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                                                   Align(
                                                     alignment:
                                                         Alignment.topLeft,
-                                                    child: SvgPicture.network(
-                                                        'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719'),
+                                                    child: SvgPicture.asset(
+                                                      'assets/images/shnatter-logo-login.svg',
+                                                      semanticsLabel: 'Logo',
+                                                    ),
+                                                    // child: SvgPicture.network(
+                                                    //     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719'),
                                                   ),
                                                   PhoneNumberScreen(
                                                     onBack: (value1, value2) {
