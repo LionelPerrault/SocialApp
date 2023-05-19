@@ -141,6 +141,19 @@ class UserController extends ControllerMVC {
       return false;
     }
 
+    //username validation
+
+    String pattern = r'^[a-zA-Z0-9]+$';
+    RegExp regExp = RegExp(pattern);
+    bool validUserName = regExp.hasMatch(signUpUserInfo['userName']);
+    if (!validUserName) {
+      failRegister =
+          'Username must be over 4 character and can\'t contain special character.';
+      isSendRegisterInfo = false;
+      setState(() {});
+      return false;
+    }
+
     passworkdValidation = passworkdValidate(password);
     if (signUpUserInfo['password'] != signUpUserInfo['confirmPassword']) {
       failRegister =
@@ -1048,6 +1061,20 @@ class UserController extends ControllerMVC {
       //   });
       // }
       if (UserManager.userInfo['userName'] != userName) {
+        //username validation
+
+        String pattern = r'^[a-zA-Z0-9]+$';
+        RegExp regExp = RegExp(pattern);
+        bool validUserName = regExp.hasMatch(userName);
+        print(validUserName);
+        if (!validUserName) {
+          Helper.showToast(
+              'Username must be over 4 character and can\'t contain special character.');
+          isSettingAction = false;
+          setState(() {});
+          return;
+        }
+
         await FirebaseFirestore.instance
             .collection(Helper.userField)
             .doc(UserManager.userInfo['uid'])
