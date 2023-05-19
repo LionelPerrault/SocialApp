@@ -46,19 +46,19 @@ class MainLeftPanel extends StatelessWidget {
               width: 21,
             ),
           ),
-          ListText(
-            onTap: () => {
-              routerFunction({
-                'router': RouteNames.settings,
-                'subRouter': '',
-              })
-            },
-            label: 'Settings',
-            image: SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb',
-              width: 21,
-            ),
-          ),
+          // ListText(
+          //   onTap: () => {
+          //     routerFunction({
+          //       'router': RouteNames.settings,
+          //       'subRouter': '',
+          //     })
+          //   },
+          //   label: 'Settings',
+          //   image: SvgPicture.network(
+          //     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fsettings.svg?alt=media&token=adf57926-9cd9-444b-970a-9e4f2c5b34bb',
+          //     width: 21,
+          //   ),
+          // ),
           ListText(
             onTap: () => {
               routerFunction({
@@ -90,12 +90,33 @@ class MainLeftPanel extends StatelessWidget {
           ListText(
             onTap: () => {
               routerFunction({
+                'router': RouteNames.nearby,
+              })
+            },
+            label: 'Near By',
+            image: const Icon(Icons.pin_drop, size: 21, color: Colors.grey),
+          ),
+          ListText(
+            onTap: () => {
+              routerFunction({
                 'router': RouteNames.people,
               })
             },
             label: 'People',
             image: SvgPicture.network(
               'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpeople.svg?alt=media&token=64d020ea-d767-45da-826e-2c24a989b175',
+              width: 21,
+            ),
+          ),
+          ListText(
+            onTap: () => {
+              routerFunction({
+                'router': RouteNames.groups,
+              })
+            },
+            label: 'Groups',
+            image: SvgPicture.network(
+              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fgroups.svg?alt=media&token=56ef9dc4-2c1b-4dfd-b945-3439cb5dfe25',
               width: 21,
             ),
           ),
@@ -127,18 +148,7 @@ class MainLeftPanel extends StatelessWidget {
           //     label: 'My Articles',
           //     image:
           //         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_articles.svg?alt=media&token=e98ee341-30f4-4e2d-8797-0e8396c4fada'),
-          ListText(
-            onTap: () => {
-              routerFunction({
-                'router': RouteNames.products,
-              })
-            },
-            label: 'My Products',
-            image: SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_products.svg?alt=media&token=91cdcfb3-cb0a-4061-a19f-b020c61299a0',
-              width: 21,
-            ),
-          ),
+
           // ListText(
           //     onTap: () => {},
           //     label: 'Saved Posts',
@@ -150,18 +160,7 @@ class MainLeftPanel extends StatelessWidget {
           //     label: 'Pages',
           //     image:
           //         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fpages.svg?alt=media&token=eed0ae72-6faf-4fdc-8581-bf3a99a04fa7'),
-          ListText(
-            onTap: () => {
-              routerFunction({
-                'router': RouteNames.groups,
-              })
-            },
-            label: 'Groups',
-            image: SvgPicture.network(
-              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fgroups.svg?alt=media&token=56ef9dc4-2c1b-4dfd-b945-3439cb5dfe25',
-              width: 21,
-            ),
-          ),
+
           // ListText(
           //     onTap: () => {},
           //     label: 'News',
@@ -194,11 +193,14 @@ class MainLeftPanel extends StatelessWidget {
           ListText(
             onTap: () => {
               routerFunction({
-                'router': RouteNames.nearby,
+                'router': RouteNames.products,
               })
             },
-            label: 'Near By',
-            image: const Icon(Icons.pin_drop, size: 21, color: Colors.grey),
+            label: 'My Products',
+            image: SvgPicture.network(
+              'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_products.svg?alt=media&token=91cdcfb3-cb0a-4061-a19f-b020c61299a0',
+              width: 21,
+            ),
           ),
           // ListText(
           //   onTap: () => {

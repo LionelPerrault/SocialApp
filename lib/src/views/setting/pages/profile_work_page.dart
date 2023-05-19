@@ -30,7 +30,15 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
         padding: const EdgeInsets.only(top: 20, left: 30),
         child: Column(
           children: [
@@ -110,7 +118,9 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
             const Padding(padding: EdgeInsets.only(top: 20)),
             footer()
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Widget titleAndsubtitleInput(title, double height, line, onChange, text) {

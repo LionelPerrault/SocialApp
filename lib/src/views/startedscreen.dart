@@ -8,6 +8,8 @@ import 'package:shnatter/src/views/navigationbar.dart';
 import 'package:shnatter/src/widget/interests.dart';
 import 'package:path/path.dart' as PPath;
 
+import '../controllers/PostController.dart';
+import '../controllers/ProfileController.dart';
 import '../controllers/UserController.dart';
 import '../utils/size_config.dart';
 import 'dart:io' show File, Platform;
@@ -1519,10 +1521,21 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
         uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
+        Map postPayload = {};
         var downloadUrl = await reference.getDownloadURL();
         userCon.userAvatar = downloadUrl;
         userCon.setState(() {});
         userCon.changeAvatar();
+        var postPhoto = [];
+        postPhoto.add({'id': 0, 'url': downloadUrl});
+        postPayload['photo'] = postPhoto;
+
+        await PostController().savePost('photo', postPayload, 'Public',
+            header: '${UserManager.userInfo['fullName']} changed Avatar');
+        //UserManager.userInfo['avatar'] = downloadUrl;
+        //  ProfileController().userData['avatar'] = downloadUrl;
+        setState(() {});
+
         //await _reference.getDownloadURL().then((value) {
         //  uploadedPhotoUrl = value;
         //});

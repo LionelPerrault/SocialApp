@@ -45,7 +45,15 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
         padding: const EdgeInsets.only(top: 20, left: 30),
         child: Column(
           children: [
@@ -487,7 +495,9 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
             const Padding(padding: EdgeInsets.only(top: 20)),
             footer()
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Widget input({label, onchange, obscureText = false, validator, text}) {

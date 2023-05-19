@@ -38,137 +38,147 @@ class SettingSecurityPasswordScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
-      height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 30,
-      child: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.only(top: 20, left: 30),
-          child: Column(
-            children: [
-              SettingHeader(
-                routerChange: widget.routerChange,
-                icon: const Icon(
-                  Icons.security_outlined,
-                  color: Color.fromARGB(255, 139, 195, 74),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+        alignment: Alignment.topCenter,
+        height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 30,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.only(top: 20, left: 30),
+            child: Column(
+              children: [
+                SettingHeader(
+                  routerChange: widget.routerChange,
+                  icon: const Icon(
+                    Icons.security_outlined,
+                    color: Color.fromARGB(255, 139, 195, 74),
+                  ),
+                  pagename: 'Change Password',
+                  button: const {'flag': false},
                 ),
-                pagename: 'Change Password',
-                button: const {'flag': false},
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              SizedBox(
-                width:
-                    SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                        ? SizeConfig(context).screenWidth * 0.5 + 40
-                        : SizeConfig(context).screenWidth * 0.9 - 30,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: 680,
-                            height: 65,
-                            decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 252, 124, 95),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                SizedBox(
+                  width: SizeConfig(context).screenWidth >
+                          SizeConfig.smallScreenSize
+                      ? SizeConfig(context).screenWidth * 0.5 + 40
+                      : SizeConfig(context).screenWidth * 0.9 - 30,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: 680,
+                              height: 65,
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 252, 124, 95),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 30)),
+                                  const Icon(
+                                    Icons.warning_rounded,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 10)),
+                                  SizedBox(
+                                      width: SizeConfig(context).screenWidth >
+                                              SizeConfig.smallScreenSize
+                                          ? SizeConfig(context).screenWidth *
+                                              0.3
+                                          : SizeConfig(context).screenWidth *
+                                                  0.5 -
+                                              20,
+                                      child: const Text(
+                                        'Changing password will log you out from all other sessions',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 11),
+                                      ))
+                                ],
+                              ),
                             ),
-                            child: Row(
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.only(left: 30)),
-                                const Icon(
-                                  Icons.warning_rounded,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                                const Padding(
-                                    padding: EdgeInsets.only(left: 10)),
-                                SizedBox(
-                                    width: SizeConfig(context).screenWidth >
-                                            SizeConfig.smallScreenSize
-                                        ? SizeConfig(context).screenWidth * 0.3
-                                        : SizeConfig(context).screenWidth *
-                                                0.5 -
-                                            20,
-                                    child: const Text(
-                                      'Changing password will log you out from all other sessions',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 11),
-                                    ))
-                              ],
-                            ),
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: titleAndsubtitleInput(
+                                'Your Old Password',
+                                50,
+                                1,
+                                (value) async {
+                                  currentPassword = value;
+                                },
+                                obsboolOld,
+                                () {
+                                  obsboolOld = !obsboolOld;
+                                  setState(() {});
+                                }),
                           ),
-                        )
-                      ],
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 20)),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: titleAndsubtitleInput(
-                              'Your Old Password',
-                              50,
-                              1,
-                              (value) async {
-                                currentPassword = value;
-                              },
-                              obsboolOld,
-                              () {
-                                obsboolOld = !obsboolOld;
-                                setState(() {});
-                              }),
-                        ),
-                      ],
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 20)),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: titleAndsubtitleInput(
-                              'Your New Password',
-                              50,
-                              1,
-                              (value) async {
-                                newPassword = value;
-                              },
-                              obsboolNew,
-                              () {
-                                obsboolNew = !obsboolNew;
-                                setState(() {});
-                              }),
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 25)),
-                        Expanded(
-                          flex: 1,
-                          child: titleAndsubtitleInput(
-                              'Confirm New Password',
-                              50,
-                              1,
-                              (value) async {
-                                confirmPassword = value;
-                              },
-                              obsboolConfirm,
-                              () {
-                                obsboolConfirm = !obsboolConfirm;
-                                setState(() {});
-                              }),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: titleAndsubtitleInput(
+                                'Your New Password',
+                                50,
+                                1,
+                                (value) async {
+                                  newPassword = value;
+                                },
+                                obsboolNew,
+                                () {
+                                  obsboolNew = !obsboolNew;
+                                  setState(() {});
+                                }),
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 25)),
+                          Expanded(
+                            flex: 1,
+                            child: titleAndsubtitleInput(
+                                'Confirm New Password',
+                                50,
+                                1,
+                                (value) async {
+                                  confirmPassword = value;
+                                },
+                                obsboolConfirm,
+                                () {
+                                  obsboolConfirm = !obsboolConfirm;
+                                  setState(() {});
+                                }),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              SettingFooter(
-                  onClick: () {
-                    saveAccountSettings();
-                  },
-                  isChange: con.isSettingAction)
-            ],
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                SettingFooter(
+                    onClick: () {
+                      saveAccountSettings();
+                    },
+                    isChange: con.isSettingAction)
+              ],
+            ),
           ),
         ),
       ),
