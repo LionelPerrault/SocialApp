@@ -38,9 +38,6 @@ class SettingSecurityPasswordScreenState
 
   @override
   Widget build(BuildContext context) {
-    final viewInsets = EdgeInsets.fromWindowPadding(
-        WidgetsBinding.instance.window.viewInsets,
-        WidgetsBinding.instance.window.devicePixelRatio);
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -51,10 +48,7 @@ class SettingSecurityPasswordScreenState
       },
       child: Container(
         alignment: Alignment.topCenter,
-        height: SizeConfig(context).screenHeight -
-            SizeConfig.navbarHeight -
-            30 -
-            viewInsets.bottom,
+        height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 30,
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.only(top: 20, left: 30),

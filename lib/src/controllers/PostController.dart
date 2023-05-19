@@ -1173,6 +1173,7 @@ class PostController extends ControllerMVC {
         .then((value) async {
       await updateGroup();
     });
+    Helper.showToast('Successfully updated');
     return viewGroupId;
     // }
     // if (groupInfo['groupUserName'] == group['groupUserName']) {
