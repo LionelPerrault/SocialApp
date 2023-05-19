@@ -153,11 +153,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
             : userInfo['birthM']];
     return GestureDetector(
       onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+        FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Container(
           padding: const EdgeInsets.only(top: 20, left: 30),
@@ -642,6 +638,9 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                   child: Column(
                     children: [
                       TextField(
+                        onTapOutside: (event) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                         maxLines: line,
                         minLines: line,
                         controller: inputController,
