@@ -152,7 +152,8 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
             ? '1'
             : userInfo['birthM']];
     return Container(
-        padding: const EdgeInsets.only(top: 20, left: 30),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.only(left: 30),
         child: Column(
           children: [
             SettingHeader(
@@ -589,7 +590,8 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                           ),
                           const Padding(padding: EdgeInsets.only(right: 20))
                         ],
-                      )),
+                      ),
+                    ),
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             SettingFooter(

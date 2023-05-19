@@ -101,10 +101,10 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                             SizedBox(
                               height: UserManager.userInfo['isVerify']
                                   ? SizeConfig(context).screenHeight -
-                                      210 -
+                                      260 -
                                       viewInsets.bottom
                                   : SizeConfig(context).screenHeight -
-                                      210 -
+                                      260 -
                                       verifyAlertHeight -
                                       viewInsets.bottom,
                               child: ListView.builder(

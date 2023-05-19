@@ -137,6 +137,9 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
 
   @override
   Widget build(BuildContext context) {
+    final viewInsets = EdgeInsets.fromWindowPadding(
+        WidgetsBinding.instance.window.viewInsets,
+        WidgetsBinding.instance.window.devicePixelRatio);
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
@@ -154,8 +157,10 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
               routerChange: routerChange,
               textChange: textChange,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: SizeConfig.navbarHeight),
+            Container(
+              padding: EdgeInsets.only(
+                  top: SizeConfig.navbarHeight, bottom: viewInsets.bottom),
+              // margin: EdgeInsets.only(bottom: viewInsets.bottom),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
