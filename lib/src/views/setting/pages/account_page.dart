@@ -312,20 +312,10 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                   Expanded(
                                       child: SizedBox(
                                     width: 350,
-                                    height: 30,
+                                    height: 40,
                                     child: TextFormField(
                                       readOnly: true,
                                       initialValue: userInfo['uid'].toString(),
-                                      decoration: InputDecoration(
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(
-                                              color: Color.fromARGB(
-                                                  255, 54, 54, 54),
-                                              width: 1.0),
-                                          borderRadius:
-                                              BorderRadius.circular(0),
-                                        ),
-                                      ),
                                       style: const TextStyle(fontSize: 14),
                                       onSaved: (String? value) {
                                         // This optional block of code can be used to run
