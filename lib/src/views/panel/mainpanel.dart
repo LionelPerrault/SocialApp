@@ -103,181 +103,192 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(
-        top: 20,
-        left: 0,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          MindPost(showPrivacy: true),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          showDayTimeM
-              ? DayTimeM(time: time, username: UserManager.userInfo['fullName'])
-              : Container(),
-          const Padding(padding: EdgeInsets.only(bottom: 30)),
-          newPostNum <= 0
-              ? const SizedBox()
-              : ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21.0)),
-                    minimumSize: const Size(240, 42),
-                    maximumSize: const Size(240, 42),
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      loadingFlag = true;
-                    });
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-                    await con.getTimelinePost(
-                        newPostNum, -1, PostType.timeline.index, '');
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.only(
+          top: 20,
+          left: 0,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            MindPost(showPrivacy: true),
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            showDayTimeM
+                ? DayTimeM(
+                    time: time, username: UserManager.userInfo['fullName'])
+                : Container(),
+            const Padding(padding: EdgeInsets.only(bottom: 30)),
+            newPostNum <= 0
+                ? const SizedBox()
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(21.0)),
+                      minimumSize: const Size(240, 42),
+                      maximumSize: const Size(240, 42),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        loadingFlag = true;
+                      });
 
-                    setState(() {
-                      newPostNum = 0;
-                      loadingFlag = false;
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      const Padding(padding: EdgeInsets.only(top: 11.0)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 90, 90, 90),
-                                fontFamily: 'var(--body-font-family)',
-                                fontWeight: FontWeight.w900,
-                                fontSize: 15),
-                          )
-                        ],
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 8.0)),
-                    ],
+                      await con.getTimelinePost(
+                          newPostNum, -1, PostType.timeline.index, '');
+
+                      setState(() {
+                        newPostNum = 0;
+                        loadingFlag = false;
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        const Padding(padding: EdgeInsets.only(top: 11.0)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'View $newPostNum new Post${newPostNum == 1 ? '' : 's'}',
+                              style: const TextStyle(
+                                  color: Color.fromARGB(255, 90, 90, 90),
+                                  fontFamily: 'var(--body-font-family)',
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 15),
+                            )
+                          ],
+                        ),
+                        const Padding(padding: EdgeInsets.only(top: 8.0)),
+                      ],
+                    ),
                   ),
-                ),
-          loadingFlag
-              ? const SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircularProgressIndicator(
-                    color: Colors.grey,
-                  ),
-                )
-              : const SizedBox(),
-          SizedBox(
-            width: 600,
-            child: con.postsTimeline.isEmpty
-                ? const SizedBox() // Return an empty SizedBox widget when the list is empty
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: con.postsTimeline.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return PostCell(
-                              postInfo: con.postsTimeline[index],
-                              routerChange: widget.routerChange,
-                            );
-                          },
+            loadingFlag
+                ? const SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      color: Colors.grey,
+                    ),
+                  )
+                : const SizedBox(),
+            SizedBox(
+              width: 600,
+              child: con.postsTimeline.isEmpty
+                  ? const SizedBox() // Return an empty SizedBox widget when the list is empty
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: con.postsTimeline.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return PostCell(
+                                postInfo: con.postsTimeline[index],
+                                routerChange: widget.routerChange,
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+            ),
+            loadingFlagBottom
+                ? const SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      color: Colors.grey,
+                    ),
+                  )
+                : const SizedBox(),
+            loadingFlagBottom || loadingFlag || !nextPostFlag
+                ? !nextPostFlag && !loadingFlag
+                    ? Container(
+                        padding: const EdgeInsets.only(top: 40),
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.network(Helper.emptySVG, width: 90),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(top: 10),
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              width: 140,
+                              decoration: const BoxDecoration(
+                                  color: Color.fromRGBO(240, 240, 240, 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: const Text(
+                                'No data to show',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromRGBO(108, 117, 125, 1)),
+                              ),
+                            ),
+                          ],
                         ),
                       )
-                    ],
-                  ),
-          ),
-          loadingFlagBottom
-              ? const SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircularProgressIndicator(
-                    color: Colors.grey,
-                  ),
-                )
-              : const SizedBox(),
-          loadingFlagBottom || loadingFlag || !nextPostFlag
-              ? !nextPostFlag && !loadingFlag
-                  ? Container(
-                      padding: const EdgeInsets.only(top: 40),
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.network(Helper.emptySVG, width: 90),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.only(top: 10),
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            width: 140,
-                            decoration: const BoxDecoration(
-                                color: Color.fromRGBO(240, 240, 240, 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            child: const Text(
-                              'No data to show',
+                    : const SizedBox()
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(21.0)),
+                      minimumSize: const Size(240, 42),
+                      maximumSize: const Size(240, 42),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        loadingFlagBottom = true;
+                      });
+                      var t = await con.getTimelinePost(
+                          defaultSlide, 0, PostType.timeline.index, '');
+                      setState(() {
+                        nextPostFlag = t;
+                        loadingFlagBottom = false;
+                      });
+                    },
+                    child: const Column(
+                      children: [
+                        Padding(padding: EdgeInsets.only(top: 11.0)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Load More...',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(108, 117, 125, 1)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : const SizedBox()
-              : ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21.0)),
-                    minimumSize: const Size(240, 42),
-                    maximumSize: const Size(240, 42),
+                                  color: Color.fromARGB(255, 90, 90, 90),
+                                  fontFamily: 'var(--body-font-family)',
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 15),
+                            )
+                          ],
+                        ),
+                        Padding(padding: EdgeInsets.only(top: 8.0)),
+                      ],
+                    ),
                   ),
-                  onPressed: () async {
-                    setState(() {
-                      loadingFlagBottom = true;
-                    });
-                    var t = await con.getTimelinePost(
-                        defaultSlide, 0, PostType.timeline.index, '');
-                    setState(() {
-                      nextPostFlag = t;
-                      loadingFlagBottom = false;
-                    });
-                  },
-                  child: const Column(
-                    children: [
-                      Padding(padding: EdgeInsets.only(top: 11.0)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Load More...',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 90, 90, 90),
-                                fontFamily: 'var(--body-font-family)',
-                                fontWeight: FontWeight.w900,
-                                fontSize: 15),
-                          )
-                        ],
-                      ),
-                      Padding(padding: EdgeInsets.only(top: 8.0)),
-                    ],
-                  ),
-                ),
-          const Padding(padding: EdgeInsets.only(top: 18.0)),
-        ],
+            const Padding(padding: EdgeInsets.only(top: 18.0)),
+          ],
+        ),
       ),
     );
   }
