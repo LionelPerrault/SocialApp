@@ -25,6 +25,9 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
   void initState() {
     add(widget.con);
     con = controller as UserController;
+    workInfo['workTitle'] = userInfo['workTitle'];
+    workInfo['workPlace'] = userInfo['workPlace'];
+    workInfo['workWebsite'] = userInfo['workWebsite'];
     super.initState();
   }
 
@@ -75,7 +78,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                           (value) {
                             workInfo['workTitle'] = value;
                           },
-                          userInfo['workTitle'] ?? '',
+                          workInfo['workTitle'] ?? '',
                         ),
                       ),
                       const Padding(padding: EdgeInsets.only(right: 20))
@@ -93,7 +96,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                           (value) {
                             workInfo['workPlace'] = value;
                           },
-                          userInfo['workPlace'] ?? '',
+                          workInfo['workPlace'] ?? '',
                         ),
                       ),
                       const Padding(padding: EdgeInsets.only(left: 25)),
@@ -106,7 +109,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                           (value) async {
                             workInfo['workWebsite'] = value;
                           },
-                          userInfo['workWebsite'] ?? '',
+                          workInfo['workWebsite'] ?? '',
                         ),
                       ),
                       const Padding(padding: EdgeInsets.only(right: 20))

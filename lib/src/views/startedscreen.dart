@@ -138,7 +138,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
     selectFlag['policy1'] = false;
     selectFlag['policy2'] = false;
     selectFlag['policy3'] = false;
-    selectFlag['avatar'] = '';
+    selectFlag['avatar'] = UserManager.userInfo['avatar'];
     for (int i = 1; i < 13; i++) {
       var d = [
         {'value': 'none', 'title': 'Day'}
@@ -1526,6 +1526,7 @@ class StartedScreenState extends mvc.StateMVC<StartedScreen>
         userCon.userAvatar = downloadUrl;
         userCon.setState(() {});
         userCon.changeAvatar();
+        saveData['avatar'] = downloadUrl;
         var postPhoto = [];
         postPhoto.add({'id': 0, 'url': downloadUrl});
         postPayload['photo'] = postPhoto;
