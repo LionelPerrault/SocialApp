@@ -36,7 +36,8 @@ class EmailVerificationScreenState
           await FirebaseAuth.instance.applyActionCode(widget.oobCode);
       isLoading = false;
       EmailVerified.setVerified(true);
-      actionString = "Successfully Verified";
+      actionString =
+          "Good news, your email has been verified!\nPlease log in to your Shnatter app, Your Shnatter Team";
       // send axios
       http.get(Uri.parse(widget.continueUrl));
 
@@ -50,7 +51,7 @@ class EmailVerificationScreenState
       } else if (e.code == 'user-disabled') {
         actionString = "Sorry, This user disabled";
       } else if (e.code == 'user-not-found') {
-        actionString = "Sorry,We can't find user";
+        actionString = "Sorry, We can't find user";
       } else {
         actionString = "Unknown Error";
       }
