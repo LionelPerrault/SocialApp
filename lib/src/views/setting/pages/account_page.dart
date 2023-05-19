@@ -211,6 +211,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     width: 300,
                                     height: 30,
                                     child: TextFormField(
+                                      readOnly: true,
                                       controller: userNameController,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -243,29 +244,29 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               )),
                         ],
                       ),
-                      Row(
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 130),
-                            ),
-                          ),
-                          Expanded(
-                              flex: 7,
-                              child: Container(
-                                width: 350,
-                                // ignore: sort_child_properties_last
-                                padding: EdgeInsets.only(
-                                    top: 10, left: 20, right: 20),
-                                child: Text(
-                                  'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              )),
-                        ],
-                      ),
+                      // Row(
+                      //   // ignore: prefer_const_literals_to_create_immutables
+                      //   children: [
+                      //     Expanded(
+                      //       flex: 3,
+                      //       child: Padding(
+                      //         padding: EdgeInsets.only(left: 130),
+                      //       ),
+                      //     ),
+                      //     Expanded(
+                      //         flex: 7,
+                      //         child: Container(
+                      //           width: 350,
+                      //           // ignore: sort_child_properties_last
+                      //           padding: EdgeInsets.only(
+                      //               top: 10, left: 20, right: 20),
+                      //           child: Text(
+                      //             'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
+                      //             style: TextStyle(fontSize: 12),
+                      //           ),
+                      //         )),
+                      //   ],
+                      // ),
                       const Padding(padding: EdgeInsets.only(top: 20)),
                       const Divider(
                         indent: 5,
