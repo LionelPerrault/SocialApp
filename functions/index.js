@@ -315,7 +315,7 @@ exports.signup = functions.https.onRequest(async (req, res) => {
       cipher.update(friendId, "utf8", "hex") + cipher.final("hex");
     //await firebase.auth().signInWithEmailAndPassword(email,password)
     await admin.firestore().collection("user").doc(userId).update({
-      friendId: '',
+      friendId: encrypted,
     });
     return res.send({ data: "success" });
   });
