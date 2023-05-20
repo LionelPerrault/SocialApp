@@ -18,11 +18,14 @@ class SettingLocationScreen extends StatefulWidget {
 
 // ignore: must_be_immutable
 class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
-  var locationInfo = {};
   late UserController con;
   var userInfo = UserManager.userInfo;
+
+  var locationInfo = {};
   @override
   void initState() {
+    locationInfo['current'] = userInfo['current'];
+    locationInfo['hometown'] = userInfo['hometown'];
     add(widget.con);
     con = controller as UserController;
     super.initState();
@@ -74,9 +77,8 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
                             1,
                             (value) {
                               locationInfo['current'] = value;
-                              setState(() {});
                             },
-                            userInfo['current'] ?? '',
+                            locationInfo['current'] ?? '',
                           ),
                         ),
                       ],
@@ -92,9 +94,8 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
                             1,
                             (value) {
                               locationInfo['hometown'] = value;
-                              setState(() {});
                             },
-                            userInfo['hometown'] ?? '',
+                            locationInfo['hometown'] ?? '',
                           ),
                         ),
                       ],

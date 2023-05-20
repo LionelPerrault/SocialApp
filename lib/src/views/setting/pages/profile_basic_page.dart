@@ -106,16 +106,13 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
   List<dynamic> year = [
     {'value': 'none', 'title': 'Year'}
   ];
-  TextEditingController aboutController = TextEditingController();
-  TextEditingController religionController = TextEditingController();
   late UserController con;
   @override
   void initState() {
     add(widget.con);
     con = controller as UserController;
     // sex = userInfo['sex'] ?? 'male';
-    aboutController.text = userInfo['about'] ?? '';
-    religionController.text = userInfo['current'] ?? '';
+    setting_profile['current'] = userInfo['current'] ?? '';
     for (int i = 1; i < 13; i++) {
       var d = [
         {'value': 'none', 'title': 'Day'}
@@ -415,9 +412,8 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                     1,
                                     (value) async {
                                       setting_profile['current'] = value;
-                                      setState(() {});
                                     },
-                                    userInfo['current'] ?? '',
+                                    setting_profile['current'] ?? '',
                                   ),
                                 ),
                               ),
@@ -597,7 +593,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                   setting_profile['current'] = value;
                                   setState(() {});
                                 },
-                                userInfo['current'] ?? '',
+                                setting_profile['current'] ?? '',
                               ),
                             ),
                             const Padding(padding: EdgeInsets.only(right: 20))
