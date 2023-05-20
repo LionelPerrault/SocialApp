@@ -747,6 +747,13 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               child: TextField(
                 controller: null,
                 cursorWidth: 1,
+                onSubmitted: (value) {
+                  commentController.text = '';
+                  onSend();
+                  setState(() {
+                    emojiShowingOfReply = false;
+                  });
+                },
                 onChanged: (value) {
                   onChange(value);
                 },
