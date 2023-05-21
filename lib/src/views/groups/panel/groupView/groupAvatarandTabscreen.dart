@@ -349,48 +349,50 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
             ),
             Row(
               children: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 45, 205, 137),
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2.0)),
-                        minimumSize: const Size(120, 45),
-                        maximumSize: const Size(120, 45)),
-                    onPressed: () {
-                      groupJoinFunc();
-                    },
-                    child: joinStatus
-                        ? const SizedBox(
-                            width: 10,
-                            height: 10,
-                            child: CircularProgressIndicator(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              !con.viewGroupJoined
-                                  ? const Icon(
-                                      Icons.edit_calendar,
-                                      color: Colors.white,
-                                      size: 18.0,
-                                    )
-                                  : const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 18.0,
-                                    ),
-                              Text(con.viewGroupJoined ? 'Joined' : 'Join',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          )),
+                if (con.group['groupAdmin'][0]['uid'] !=
+                    UserManager.userInfo['uid'])
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 45, 205, 137),
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2.0)),
+                          minimumSize: const Size(120, 45),
+                          maximumSize: const Size(120, 45)),
+                      onPressed: () {
+                        groupJoinFunc();
+                      },
+                      child: joinStatus
+                          ? const SizedBox(
+                              width: 10,
+                              height: 10,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                !con.viewGroupJoined
+                                    ? const Icon(
+                                        Icons.edit_calendar,
+                                        color: Colors.white,
+                                        size: 18.0,
+                                      )
+                                    : const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 18.0,
+                                      ),
+                                Text(con.viewGroupJoined ? 'Joined' : 'Join',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            )),
               ],
             )
           ]),

@@ -45,6 +45,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   int currentIndex = 0;
   bool nextPostFlag = true;
   double itemWidth = 0;
+  var itemData = {};
 
   get kprimaryColor => null;
   //
@@ -462,6 +463,8 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                               .toString();
                         }
                         bool sent = con.boolInvitedGroup(con.group, userId);
+                        itemData['state'] = sent;
+                        print('$sent this is sent');
                         return Material(
                             child: ListTile(
                                 onTap: () {},
@@ -509,10 +512,12 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                             BorderRadius
                                                                 .circular(2.0)),
                                                     minimumSize:
-                                                        const Size(65, 30),
+                                                        const Size(70, 30),
                                                     maximumSize:
-                                                        const Size(65, 30)),
+                                                        const Size(70, 30)),
                                                 onPressed: () async {
+                                                  if (itemData['state'] == true)
+                                                    return;
                                                   setState(() {
                                                     currentIndex = index;
                                                     if (currentIndex == index)
@@ -549,7 +554,10 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                         .add(notificationData);
                                                   });
 
+                                                  await con.getSelectedGroup(
+                                                      con.viewGroupId);
                                                   setState(() {
+                                                    itemData['state'] = true;
                                                     invitingFriend = false;
                                                   });
                                                 },
@@ -572,7 +580,8 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                             size: 15.0,
                                                           ),
                                                           Text(
-                                                              sent
+                                                              itemData['state'] ==
+                                                                      true
                                                                   ? 'Sent'
                                                                   : 'Add',
                                                               style: const TextStyle(

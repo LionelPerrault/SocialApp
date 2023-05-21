@@ -1152,7 +1152,7 @@ class PostController extends ControllerMVC {
 
   //bool of user already in group invite or not
   bool boolInvitedGroup(var groupData, String uid) {
-    var invited = groupData['groupJoined'];
+    var invited = groupData['groupInvites'];
     if (invited == null) {
       return false;
     }

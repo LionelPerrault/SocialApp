@@ -99,8 +99,8 @@ class NotificationsScreenState extends mvc.StateMVC<NotificationsScreen> {
                   height: 10,
                 ),
                 Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  height: SizeConfig(context).screenHeight - 100,
+                  margin: const EdgeInsets.only(bottom: 40),
+                  height: SizeConfig(context).screenHeight - 130,
                   //size: Size(100,100),
                   child: notifications.isEmpty
                       ? const Center(child: Text("No notifications."))
