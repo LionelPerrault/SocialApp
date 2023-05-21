@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 
@@ -224,6 +225,19 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         if (res != false) {
           FlutterAppBadger.updateBadgeCount(postCon.realNotifi.length);
         }
+      }
+    });
+
+    final Stream<QuerySnapshot> triggerLogout = Helper.userCollection
+        .where('userName', isEqualTo: UserManager.userInfo['uid'])
+        .snapshots();
+    triggerLogout.listen((event) async {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: UserManager.userInfo['email'],
+            password: UserManager.userInfo['password']);
+      } catch (e) {
+        UserController().signOutUser(context);
       }
     });
 
