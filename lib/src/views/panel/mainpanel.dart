@@ -46,12 +46,13 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
   bool hasMore = true; // flag for more posts available or not
 
   var showTenCountPosts = [];
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     add(widget.con);
     con = controller as PostController;
-
+    _scrollController.addListener(_loadMorePosts);
     super.initState();
     if (nowTime.hour > 12) {
       time = 1;
@@ -99,6 +100,30 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
 
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_loadMorePosts);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _loadMorePosts() async {
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !loadingFlagBottom) {
+      setState(() {
+        loadingFlagBottom = true;
+      });
+      // Perform your asynchronous operation to load more posts here
+      var t = await con.getTimelinePost(
+          defaultSlide, 0, PostType.timeline.index, '');
+      setState(() {
+        nextPostFlag = t;
+        loadingFlagBottom = false;
+      });
+    }
   }
 
   @override
@@ -191,6 +216,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
                       children: [
                         Expanded(
                           child: ListView.builder(
+                            controller: _scrollController,
                             scrollDirection: Axis.vertical,
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
