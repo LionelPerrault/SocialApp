@@ -5,11 +5,15 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 
 class PhotoEachScreen extends StatefulWidget {
-  PhotoEachScreen({Key? key, required this.docId})
+  final PostController con;
+
+  final List<String> photoUrls;
+  final int initialIndex;
+
+  PhotoEachScreen(
+      {Key? key, required this.photoUrls, required this.initialIndex})
       : con = PostController(),
         super(key: key);
-  final PostController con;
-  String docId;
 
   @override
   State createState() => PhotoEachScreenState();
@@ -18,13 +22,31 @@ class PhotoEachScreen extends StatefulWidget {
 class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
     with SingleTickerProviderStateMixin {
   bool loading = true;
+  late int currentIndex;
   late PostController con;
   var userInfo = UserManager.userInfo;
   @override
   void initState() {
+    super.initState();
     add(widget.con);
     con = controller as PostController;
-    super.initState();
+    currentIndex = widget.initialIndex;
+  }
+
+  void goToPreviousPhoto() {
+    if (currentIndex > 0) {
+      setState(() {
+        currentIndex--;
+      });
+    }
+  }
+
+  void goToNextPhoto() {
+    if (currentIndex < widget.photoUrls.length - 1) {
+      setState(() {
+        currentIndex++;
+      });
+    }
   }
 
   void getSelectedPhoto(String docId) {
@@ -36,63 +58,58 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
-    //       ? SizeConfig(context).screenWidth
-    //       : SizeConfig(context).screenWidth - 200,
-    //   height: SizeConfig(context).screenHeight - 120,
-    //   decoration: BoxDecoration(
-    //     color: Colors.black,
-    //     image: DecorationImage(
-    //       image: NetworkImage(widget.docId),
-    //       fit: BoxFit.contain,
-    //     ),
-    //   ),
-    // );
-
-    return Stack(
-      children: [
-        Container(
-          color: Colors.black,
-          width: SizeConfig(context).screenWidth,
-          height: SizeConfig(context).screenHeight,
-          alignment: Alignment.center,
-          child: Container(
+    return GestureDetector(
+      onHorizontalDragEnd: (DragEndDetails details) {
+        if (details.primaryVelocity! < 0) {
+          goToNextPhoto();
+        } else if (details.primaryVelocity! > 0) {
+          goToPreviousPhoto();
+        }
+      },
+      child: Stack(
+        children: [
+          Container(
             color: Colors.black,
-            child: Center(
-              child: FittedBox(
-                fit: BoxFit.none,
-                child: LimitedBox(
-                  maxWidth: SizeConfig(context).screenWidth,
-                  maxHeight: SizeConfig(context).screenHeight,
-                  child: Image.network(widget.docId),
+            width: SizeConfig(context).screenWidth,
+            height: SizeConfig(context).screenHeight,
+            alignment: Alignment.center,
+            child: Container(
+              color: Colors.black,
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.none,
+                  child: LimitedBox(
+                    maxWidth: SizeConfig(context).screenWidth,
+                    maxHeight: SizeConfig(context).screenHeight,
+                    child: Image.network(widget.photoUrls[currentIndex]),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          top: 10,
-          right: 10,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              padding: const EdgeInsets.all(8),
-              child: const Icon(
-                Icons.close,
-                color: Colors.black,
-                size: 20,
+          Positioned(
+            top: 10,
+            right: 10,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(8),
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                  size: 20,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -221,6 +221,8 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   }
 
   Widget photoCell(value, index) {
+    List<String> listUrl =
+        photoModel.photos.map((map) => map['url'] as String).toList();
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
@@ -247,7 +249,9 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => PhotoEachScreen(
-                    docId: value['url'],
+                    //docId: value['url'],
+                    photoUrls: listUrl,
+                    initialIndex: index,
                   ),
                 ),
               );
