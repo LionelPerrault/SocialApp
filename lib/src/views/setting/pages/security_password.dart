@@ -234,7 +234,7 @@ class SettingSecurityPasswordScreenState
                           onChange(value);
                         },
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(top: 10, left: 10),
+                          contentPadding: const EdgeInsets.only(top: 10, left: 10),
                           focusedBorder: const OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.blue, width: 1),

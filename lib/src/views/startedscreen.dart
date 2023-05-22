@@ -9,7 +9,6 @@ import 'package:shnatter/src/widget/interests.dart';
 import 'package:path/path.dart' as PPath;
 
 import '../controllers/PostController.dart';
-import '../controllers/ProfileController.dart';
 import '../controllers/UserController.dart';
 import '../utils/size_config.dart';
 import 'dart:io' show File, Platform;
