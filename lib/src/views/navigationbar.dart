@@ -64,7 +64,6 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late TextEditingController searchCon;
   late FocusNode searchFocusNode;
-  var userInfo = UserManager.userInfo;
   bool onHover = false;
   var chatCon = ChatController();
   var messageCon = MessageController();
@@ -96,7 +95,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     PeopleController().listenData();
     final Stream<QuerySnapshot> messageStrem = FirebaseFirestore.instance
         .collection(Helper.message)
-        .where('users', arrayContains: userInfo['userName'])
+        .where('users', arrayContains: UserManager.userInfo['userName'])
         .snapshots();
     messageStrem.listen(
       (value) {
@@ -105,7 +104,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         for (int i = 0; i < value.docs.length; i++) {
           var docs = value.docs[i].data() as Map;
           var s = docs['users']
-              .where((val) => val != userInfo['userName'])
+              .where((val) => val != UserManager.userInfo['userName'])
               .toList();
           if (docs[docs[s[0]]['name']] != null &&
               docs[docs[s[0]]['name']] != 0) {
@@ -135,6 +134,10 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
         .snapshots();
     streamBadge.listen((event) async {
       var allNotifi = event.docs;
+      var userSnap =
+          await Helper.userCollection.doc(UserManager.userInfo['uid']).get();
+      var userInfo = userSnap.data() ?? {};
+
       usercheckTime = userInfo['checkNotifyTime'] ?? 0;
 
       var changeData = [];
