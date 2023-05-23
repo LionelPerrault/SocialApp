@@ -338,6 +338,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     child: CustomPopupMenu(
                       controller: _navControllerFriend,
                       menuBuilder: () => ShnatterFriendRequest(
+                        hideMenu: () {
+                          _navControllerFriend.hideMenu();
+                        },
                         onClick: () {
                           setState(() {});
                         },
@@ -660,6 +663,9 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                     child: CustomPopupMenu(
                       controller: _navControllerFriend,
                       menuBuilder: () => ShnatterFriendRequest(
+                        hideMenu: () {
+                          _navControllerFriend.hideMenu();
+                        },
                         onClick: () {
                           setState(() {});
                         },

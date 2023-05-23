@@ -36,7 +36,15 @@ class MainRouter {
         return SettingMainScreen(
             settingRouter: mainRouterValue, routerChange: routerChange);
       case RouteNames.people:
-        return PeopleScreen(routerChange: routerChange);
+        if (mainRouterValue['subRouter'] != null &&
+            mainRouterValue['subRouter'] != '') {
+          return PeopleScreen(
+              routerChange: routerChange,
+              subRouter: mainRouterValue['subRouter']);
+        } else {
+          return PeopleScreen(routerChange: routerChange);
+        }
+
       case RouteNames.nearby:
         return UserExplore(routerChange: routerChange);
       case RouteNames.events:

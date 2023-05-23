@@ -12,10 +12,14 @@ import 'package:shnatter/src/views/people/tabs/friendsScreen.dart';
 import 'package:shnatter/src/views/people/tabs/sendRequestsScreen.dart';
 
 class PeopleScreen extends StatefulWidget {
-  PeopleScreen({Key? key, required this.routerChange})
-      : con = PeopleController(),
+  PeopleScreen({
+    Key? key,
+    required this.routerChange,
+    this.subRouter = '',
+  })  : con = PeopleController(),
         super(key: key);
   final PeopleController con;
+  String subRouter;
   Function routerChange;
 
   @override
@@ -32,6 +36,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
     add(widget.con);
     super.initState();
     con = controller as PeopleController;
+    con.tabName = widget.subRouter == '' ? 'Discover' : widget.subRouter;
     con.addNotifyCallBack(this);
     updateBadge();
   }
