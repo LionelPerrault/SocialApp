@@ -587,7 +587,6 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                 1,
                                 (value) async {
                                   setting_profile['current'] = value;
-                                  setState(() {});
                                 },
                                 setting_profile['current'] ?? '',
                               ),
