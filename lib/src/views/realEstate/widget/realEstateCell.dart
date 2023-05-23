@@ -298,14 +298,25 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                     children: [
                       Row(
                         children: [
-                          realEstateAdmin['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  realEstateAdmin['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
+                          GestureDetector(
+                            onTap: () {
+                              ProfileController()
+                                  .updateProfile(realEstateAdmin['userName']!);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': realEstateAdmin['userName']!,
+                              });
+                            },
+                            child: realEstateAdmin['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      realEstateAdmin['avatar'],
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,

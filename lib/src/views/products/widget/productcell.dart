@@ -303,15 +303,26 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                             )
                           : Row(
                               children: [
-                                productAdmin['avatar'] != ''
-                                    ? CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                        productAdmin['avatar'],
-                                      ))
-                                    : CircleAvatar(
-                                        child:
-                                            SvgPicture.network(Helper.avatar),
-                                      ),
+                                GestureDetector(
+                                  onTap: () {
+                                    ProfileController().updateProfile(
+                                        productAdmin['userName']!);
+                                    widget.routerChange({
+                                      'router': RouteNames.profile,
+                                      'subRouter': productAdmin['userName']!,
+                                    });
+                                  },
+                                  child: productAdmin['avatar'] != ''
+                                      ? CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                            productAdmin['avatar'],
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          child:
+                                              SvgPicture.network(Helper.avatar),
+                                        ),
+                                ),
                                 const Padding(
                                     padding: EdgeInsets.only(left: 10)),
                                 Column(

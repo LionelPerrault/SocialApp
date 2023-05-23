@@ -317,9 +317,9 @@ class PostCellState extends mvc.StateMVC<PostCell> {
   Widget total() {
     switch (widget.postInfo['type']) {
       case 'photo':
-        return picturePostCell();
       case 'feeling':
         return picturePostCell();
+
       case 'checkIn':
         return checkInPostCell();
       case 'poll':
@@ -414,17 +414,29 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Row(
                         children: [
-                          widget.postInfo['adminInfo'] != null &&
-                                  widget.postInfo['adminInfo']
-                                      .containsKey('avatar') &&
-                                  widget.postInfo['adminInfo']['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  widget.postInfo['adminInfo']['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
+                          GestureDetector(
+                            onTap: () {
+                              ProfileController().updateProfile(
+                                  widget.postInfo['adminInfo']['userName']);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': widget.postInfo['adminInfo']
+                                    ['userName'],
+                              });
+                            },
+                            child: widget.postInfo['adminInfo'] != null &&
+                                    widget.postInfo['adminInfo']
+                                        .containsKey('avatar') &&
+                                    widget.postInfo['adminInfo']['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      widget.postInfo['adminInfo']['avatar'],
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -733,17 +745,29 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo'] != null &&
-                                  widget.postInfo['adminInfo']
-                                      .containsKey('avatar') &&
-                                  widget.postInfo['adminInfo']['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  widget.postInfo['adminInfo']['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
+                          GestureDetector(
+                            onTap: () {
+                              ProfileController().updateProfile(
+                                  widget.postInfo['adminInfo']['userName']);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': widget.postInfo['adminInfo']
+                                    ['userName'],
+                              });
+                            },
+                            child: widget.postInfo['adminInfo'] != null &&
+                                    widget.postInfo['adminInfo']
+                                        .containsKey('avatar') &&
+                                    widget.postInfo['adminInfo']['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      widget.postInfo['adminInfo']['avatar'],
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -1022,17 +1046,29 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo'] != null &&
-                                  widget.postInfo['adminInfo']
-                                      .containsKey('avatar') &&
-                                  widget.postInfo['adminInfo']['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  widget.postInfo['adminInfo']['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
+                          GestureDetector(
+                            onTap: () {
+                              ProfileController().updateProfile(
+                                  widget.postInfo['adminInfo']['userName']);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': widget.postInfo['adminInfo']
+                                    ['userName'],
+                              });
+                            },
+                            child: widget.postInfo['adminInfo'] != null &&
+                                    widget.postInfo['adminInfo']
+                                        .containsKey('avatar') &&
+                                    widget.postInfo['adminInfo']['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      widget.postInfo['adminInfo']['avatar'],
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -1318,17 +1354,29 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo'] != null &&
-                                  widget.postInfo['adminInfo']
-                                      .containsKey('avatar') &&
-                                  widget.postInfo['adminInfo']['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  widget.postInfo['adminInfo']['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
+                        GestureDetector(
+                            onTap: () {
+                              ProfileController().updateProfile(
+                                  widget.postInfo['adminInfo']['userName']);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': widget.postInfo['adminInfo']
+                                    ['userName'],
+                              });
+                            },
+                            child: widget.postInfo['adminInfo'] != null &&
+                                    widget.postInfo['adminInfo']
+                                        .containsKey('avatar') &&
+                                    widget.postInfo['adminInfo']['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      widget.postInfo['adminInfo']['avatar'],
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -1613,17 +1661,29 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo'] != null &&
-                                  widget.postInfo['adminInfo']
-                                      .containsKey('avatar') &&
-                                  widget.postInfo['adminInfo']['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  widget.postInfo['adminInfo']['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
+                          GestureDetector(
+                            onTap: () {
+                              ProfileController().updateProfile(
+                                  widget.postInfo['adminInfo']['userName']);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': widget.postInfo['adminInfo']
+                                    ['userName'],
+                              });
+                            },
+                            child: widget.postInfo['adminInfo'] != null &&
+                                    widget.postInfo['adminInfo']
+                                        .containsKey('avatar') &&
+                                    widget.postInfo['adminInfo']['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      widget.postInfo['adminInfo']['avatar'],
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -1917,17 +1977,29 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                          widget.postInfo['adminInfo'] != null &&
-                                  widget.postInfo['adminInfo']
-                                      .containsKey('avatar') &&
-                                  widget.postInfo['adminInfo']['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  widget.postInfo['adminInfo']['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
+                          GestureDetector(
+                            onTap: () {
+                              ProfileController().updateProfile(
+                                  widget.postInfo['adminInfo']['userName']);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': widget.postInfo['adminInfo']
+                                    ['userName'],
+                              });
+                            },
+                            child: widget.postInfo['adminInfo'] != null &&
+                                    widget.postInfo['adminInfo']
+                                        .containsKey('avatar') &&
+                                    widget.postInfo['adminInfo']['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      widget.postInfo['adminInfo']['avatar'],
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
