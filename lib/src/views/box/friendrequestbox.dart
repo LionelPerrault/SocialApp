@@ -66,7 +66,7 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                 endIndent: 10,
               ),
               SizedBox(
-                  height: 300,
+                  height: con.requestFriends.isEmpty ? 100 : 300,
                   //size: Size(100,100),
                   child: con.requestFriends.isEmpty
                       ? Container(
