@@ -253,9 +253,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             noFunc: () {
               Navigator.of(context).pop(true);
             },
-            header: 'Hide from Timeline',
+            header:
+                '${product['productTimeline'] ? 'Hide' : 'Show'} from Timeline',
             text:
-                'Are you sure you want to hide this post from your profile timeline?',
+                "Are you sure you want to ${product['productTimeline'] ? 'hide' : 'show'} this post from your profile timeline?",
             progress: false),
       ),
     );

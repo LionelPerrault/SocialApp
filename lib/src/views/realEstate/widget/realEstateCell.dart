@@ -252,9 +252,10 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
             noFunc: () {
               Navigator.of(context).pop(true);
             },
-            header: 'Hide from Timeline',
+            header:
+                '${realEstate['realEstateTimeline'] ? 'Hide' : 'Show'} from Timeline',
             text:
-                'Are you sure you want to hide this real estate from your profile timeline?',
+                "Are you sure you want to ${realEstate['realEstateTimeline'] ? 'hide' : 'show'} this post from your profile timeline?",
             progress: false),
       ),
     );

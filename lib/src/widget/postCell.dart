@@ -215,9 +215,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
             noFunc: () {
               Navigator.of(context).pop(true);
             },
-            header: 'Hide from Timeline',
+            header:
+                '${widget.postInfo['timeline'] ? 'Hide' : 'Show'} from Timeline',
             text:
-                'Are you sure you want to hide this post from your profile timeline?',
+                "Are you sure you want to ${widget.postInfo['timeline'] ? 'hide' : 'show'} this post from your profile timeline?",
             progress: false),
       ),
     );
@@ -1354,7 +1355,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     children: [
                       Row(
                         children: [
-                        GestureDetector(
+                          GestureDetector(
                             onTap: () {
                               ProfileController().updateProfile(
                                   widget.postInfo['adminInfo']['userName']);
