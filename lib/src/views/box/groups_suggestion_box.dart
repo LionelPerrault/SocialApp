@@ -109,17 +109,28 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                           child: ListTile(
                         contentPadding:
                             const EdgeInsets.only(left: 10, right: 10),
-                        leading: Padding(
+                        leading: GestureDetector(
+                          onTap: () {
+                            widget.routerChange({
+                              'router': RouteNames.groups,
+                              'subRouter': con.unJoindGroups[index]['id'],
+                            });
+                          },
+                          child: Padding(
                             padding: const EdgeInsets.only(top: 5),
                             child: CircleAvatar(
-                                radius: 17,
-                                backgroundImage: NetworkImage(
-                                    con.unJoindGroups[index]['data']
-                                                ['groupPicture'] ==
-                                            ''
-                                        ? Helper.blankGroup
-                                        : con.unJoindGroups[index]['data']
-                                            ['groupPicture']))),
+                              radius: 17,
+                              backgroundImage: NetworkImage(
+                                con.unJoindGroups[index]['data']
+                                            ['groupPicture'] ==
+                                        ''
+                                    ? Helper.blankGroup
+                                    : con.unJoindGroups[index]['data']
+                                        ['groupPicture'],
+                              ),
+                            ),
+                          ),
+                        ),
                         title: RichText(
                           text: TextSpan(
                             style: const TextStyle(

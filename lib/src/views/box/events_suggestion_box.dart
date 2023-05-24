@@ -112,17 +112,28 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                           child: ListTile(
                         contentPadding:
                             const EdgeInsets.only(left: 5, right: 5),
-                        leading: Padding(
+                        leading: GestureDetector(
+                          onTap: () {
+                            widget.routerChange({
+                              'router': RouteNames.events,
+                              'subRouter': con.unInterestedEvents[index]['id'],
+                            });
+                          },
+                          child: Padding(
                             padding: const EdgeInsets.only(top: 5),
                             child: CircleAvatar(
-                                radius: 17,
-                                backgroundImage: NetworkImage(
-                                    con.unInterestedEvents[index]['data']
-                                                ['eventPicture'] ==
-                                            ''
-                                        ? Helper.blankEvent
-                                        : con.unInterestedEvents[index]['data']
-                                            ['eventPicture']))),
+                              radius: 17,
+                              backgroundImage: NetworkImage(
+                                con.unInterestedEvents[index]['data']
+                                            ['eventPicture'] ==
+                                        ''
+                                    ? Helper.blankEvent
+                                    : con.unInterestedEvents[index]['data']
+                                        ['eventPicture'],
+                              ),
+                            ),
+                          ),
+                        ),
                         title: RichText(
                           text: TextSpan(
                             style: const TextStyle(

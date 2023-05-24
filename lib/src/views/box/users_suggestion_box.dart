@@ -118,14 +118,26 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                             child: ListTile(
                           contentPadding:
                               const EdgeInsets.only(left: 10, right: 10),
-                          leading: itemData['avatar'] == ''
-                              ? CircleAvatar(
-                                  radius: 17,
-                                  child: SvgPicture.network(Helper.avatar))
-                              : CircleAvatar(
-                                  radius: 17,
-                                  backgroundImage:
-                                      NetworkImage(itemData['avatar'])),
+                          leading: GestureDetector(
+                            onTap: () {
+                              ProfileController()
+                                  .updateProfile(itemData['userName']);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': itemData['userName'],
+                              });
+                            },
+                            child: itemData['avatar'] == ''
+                                ? CircleAvatar(
+                                    radius: 17,
+                                    child: SvgPicture.network(Helper.avatar),
+                                  )
+                                : CircleAvatar(
+                                    radius: 17,
+                                    backgroundImage:
+                                        NetworkImage(itemData['avatar']),
+                                  ),
+                          ),
                           title: RichText(
                             text: TextSpan(
                               style: const TextStyle(

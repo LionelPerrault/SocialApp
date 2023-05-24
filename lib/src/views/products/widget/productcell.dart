@@ -253,9 +253,10 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
             noFunc: () {
               Navigator.of(context).pop(true);
             },
-            header: 'Hide from Timeline',
+            header:
+                '${product['productTimeline'] ? 'Hide' : 'Show'} from Timeline',
             text:
-                'Are you sure you want to hide this post from your profile timeline?',
+                "Are you sure you want to ${product['productTimeline'] ? 'hide' : 'show'} this post from your profile timeline?",
             progress: false),
       ),
     );
@@ -303,15 +304,26 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                             )
                           : Row(
                               children: [
-                                productAdmin['avatar'] != ''
-                                    ? CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                        productAdmin['avatar'],
-                                      ))
-                                    : CircleAvatar(
-                                        child:
-                                            SvgPicture.network(Helper.avatar),
-                                      ),
+                                GestureDetector(
+                                  onTap: () {
+                                    ProfileController().updateProfile(
+                                        productAdmin['userName']!);
+                                    widget.routerChange({
+                                      'router': RouteNames.profile,
+                                      'subRouter': productAdmin['userName']!,
+                                    });
+                                  },
+                                  child: productAdmin['avatar'] != ''
+                                      ? CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                            productAdmin['avatar'],
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          child:
+                                              SvgPicture.network(Helper.avatar),
+                                        ),
+                                ),
                                 const Padding(
                                     padding: EdgeInsets.only(left: 10)),
                                 Column(

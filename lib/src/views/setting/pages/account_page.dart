@@ -135,7 +135,8 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                                 BorderRadius.circular(0),
                                           ),
                                         ),
-                                        style: const TextStyle(fontSize: 14),
+                                        style: const TextStyle(
+                                            fontSize: 14, color: Colors.black),
                                         onSaved: (String? value) {
                                           // This optional block of code can be used to run
                                           // code when the user saves the form.
@@ -315,8 +316,10 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     height: 40,
                                     child: TextFormField(
                                       readOnly: true,
+                                      enabled: false,
                                       initialValue: userInfo['uid'].toString(),
-                                      style: const TextStyle(fontSize: 14),
+                                      style: const TextStyle(
+                                          fontSize: 14, color: Colors.black),
                                       onSaved: (String? value) {
                                         // This optional block of code can be used to run
                                         // code when the user saves the form.

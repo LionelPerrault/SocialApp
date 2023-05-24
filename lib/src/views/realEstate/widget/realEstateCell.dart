@@ -252,9 +252,10 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
             noFunc: () {
               Navigator.of(context).pop(true);
             },
-            header: 'Hide from Timeline',
+            header:
+                '${realEstate['realEstateTimeline'] ? 'Hide' : 'Show'} from Timeline',
             text:
-                'Are you sure you want to hide this real estate from your profile timeline?',
+                "Are you sure you want to ${realEstate['realEstateTimeline'] ? 'hide' : 'show'} this post from your profile timeline?",
             progress: false),
       ),
     );
@@ -298,14 +299,25 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                     children: [
                       Row(
                         children: [
-                          realEstateAdmin['avatar'] != ''
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                  realEstateAdmin['avatar'],
-                                ))
-                              : CircleAvatar(
-                                  child: SvgPicture.network(Helper.avatar),
-                                ),
+                          GestureDetector(
+                            onTap: () {
+                              ProfileController()
+                                  .updateProfile(realEstateAdmin['userName']!);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': realEstateAdmin['userName']!,
+                              });
+                            },
+                            child: realEstateAdmin['avatar'] != ''
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      realEstateAdmin['avatar'],
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    child: SvgPicture.network(Helper.avatar),
+                                  ),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
