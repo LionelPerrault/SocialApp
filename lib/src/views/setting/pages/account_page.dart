@@ -315,8 +315,15 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     height: 40,
                                     child: TextFormField(
                                       readOnly: true,
+                                      enabled: false,
                                       initialValue: userInfo['uid'].toString(),
                                       style: const TextStyle(fontSize: 14),
+                                      decoration: InputDecoration(
+                                        labelStyle:
+                                            TextStyle(color: Colors.black),
+                                        hintStyle:
+                                            TextStyle(color: Colors.black),
+                                      ),
                                       onSaved: (String? value) {
                                         // This optional block of code can be used to run
                                         // code when the user saves the form.
