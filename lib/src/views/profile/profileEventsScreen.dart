@@ -155,6 +155,7 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
                 children: <Widget>[
                   Expanded(
                     child: GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: screenWidth > 1200
                           ? 4
                           : screenWidth > 900
