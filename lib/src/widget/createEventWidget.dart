@@ -178,349 +178,365 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 60),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Divider(
-                  height: 0,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                customInput(
-                  title: 'Name Your Event',
-                  onChange: (value) async {
-                    eventInfo['eventName'] = value;
-                    setState(() {});
-                  },
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                customInput(
-                  controller: locationTextController,
-                  title: 'Location',
-                  onChange: (value) async {
-                    eventInfo['eventLocation'] = value;
-                    await fetchSuggestions(value);
-                    setState(() {});
-                  },
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                customDateInput(
-                  title: 'Start Date',
-                  controller: startDateController,
-                  onChange: (value) async {},
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(), //get today's date
-                        firstDate: DateTime(
-                            2000), //DateTime.now() - not to allow to choose before today.
-                        lastDate: DateTime(2101));
-                    if (pickedDate != null) {
-                      String formattedDate = DateFormat('yyyy-MM-dd').format(
-                          pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                      //You can format date as per your need
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-                      setState(() {
-                        startDateController.text = formattedDate;
-                        eventInfo['eventStartDate'] = formattedDate;
-                      });
-                    } else {}
-                  },
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                customDateInput(
-                  title: 'End Date',
-                  controller: endDateController,
-                  onChange: (value) async {},
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(), //get today's date
-                        firstDate: DateTime(
-                            2000), //DateTime.now() - not to allow to choose before today.
-                        lastDate: DateTime(2101));
-                    if (pickedDate != null) {
-                      String formattedDate = DateFormat('yyyy-MM-dd').format(
-                          pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-
-                      //You can format date as per your need
-
-                      setState(() {
-                        eventInfo['eventEndDate'] = formattedDate;
-                        endDateController.text = formattedDate;
-                      });
-                    } else {}
-                  },
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text('Select Privacy',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 82, 95, 127),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        width: 400,
-                        height: 40,
-                        child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 17, 205, 239),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                  color:
-                                      const Color.fromARGB(255, 17, 205, 239),
-                                  width:
-                                      0.1), //bordrder raiuds of dropdown button
-                            ),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 7, left: 15),
-                                child: DropdownButton(
-                                  value: privacy,
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: "public",
-                                      child: Row(children: [
-                                        Icon(
-                                          Icons.language,
-                                          color: Colors.black,
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Public",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "closed",
-                                      child: Row(children: [
-                                        Icon(
-                                          Icons.groups,
-                                          color: Colors.black,
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Closed",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "security",
-                                      child: Row(children: [
-                                        Icon(
-                                          Icons.lock_outline,
-                                          color: Colors.black,
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Security",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    //get value when changed
-                                    eventInfo['eventPrivacy'] = value;
-                                    privacy = value.toString();
-                                    print(privacy);
-                                    // click(value);
-                                    setState(() {});
-                                  },
-                                  icon: const Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.arrow_drop_down)),
-                                  iconEnabledColor: Colors.white, //Icon color
-                                  style: const TextStyle(
-                                    color: Colors.black, //Font color
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  dropdownColor: Colors.white,
-                                  underline: Container(), //remove underline
-                                  isExpanded: true,
-                                  isDense: true,
-                                ))),
-                      ),
-                    ),
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                titleAndsubtitleInput('About', 70, 5, (value) {
-                                  eventInfo['eventAbout'] = value;
-                                  setState(() {});
-                                }),
-                              ],
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
-                SizedBox(
-                  width: 400,
-                  child: InterestsWidget(
-                    context: context,
-                    sendUpdate: (value) {
-                      eventInfo['eventInterests'] = value;
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+          autoLocationList = [];
+        }
+      },
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 60),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Divider(
+                    height: 0,
+                    indent: 0,
+                    endIndent: 0,
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  customInput(
+                    title: 'Name Your Event',
+                    onChange: (value) async {
+                      eventInfo['eventName'] = value;
+                      setState(() {});
                     },
                   ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            width: 400,
-            margin: const EdgeInsets.only(right: 20),
-            child: Row(
-              children: [
-                const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[400],
-                    shadowColor: Colors.grey[400],
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    minimumSize: const Size(100, 50),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  customInput(
+                    controller: locationTextController,
+                    title: 'Location',
+                    onChange: (value) async {
+                      eventInfo['eventLocation'] = value;
+
+                      await fetchSuggestions(value);
+                      setState(() {});
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.of(widget.context).pop(true);
-                  },
-                  child: const Text('Cancel',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                ),
-                const Padding(padding: EdgeInsets.only(left: 10)),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shadowColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    minimumSize: const Size(100, 50),
-                  ),
-                  onPressed: () {
-                    if (eventInfo['eventName'] == null ||
-                        eventInfo['eventName'] == '') {
-                      Helper.showToast('Please add your event name');
-                      return;
-                    } else if (eventInfo['eventLocation'] == null ||
-                        eventInfo['eventLocation'] == '') {
-                      Helper.showToast('Please add your event location');
-                      return;
-                    } else if (eventInfo['eventStartDate'] == null ||
-                        eventInfo['eventStartDate'] == '') {
-                      Helper.showToast('Please add your event start date');
-                      return;
-                    } else if (eventInfo['eventEndDate'] == null ||
-                        eventInfo['eventEndDate'] == '') {
-                      Helper.showToast('Please add your event end date');
-                      return;
-                    }
-                    footerBtnState = true;
-                    setState(() {});
-                    getTokenBudget();
-                  },
-                  child: footerBtnState
-                      ? const SizedBox(
-                          width: 10,
-                          height: 10.0,
-                          child: CircularProgressIndicator(
-                            color: Colors.grey,
-                          ),
-                        )
-                      : const Text('Create',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                )
-              ],
-            ),
-          ),
-        ),
-        if (autoLocationList.isNotEmpty)
-          Positioned(
-            top: 120,
-            left: 0,
-            right: 0,
-            child: SizedBox(
-              height: 190,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: autoLocationList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                      onTap: () {
-                        locationTextController.text =
-                            autoLocationList[index].description;
-                        eventInfo['eventLocation'] =
-                            autoLocationList[index].description;
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  customDateInput(
+                    title: 'Start Date',
+                    controller: startDateController,
+                    onChange: (value) async {},
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(), //get today's date
+                          firstDate: DateTime(
+                              2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2101));
+                      if (pickedDate != null) {
+                        String formattedDate = DateFormat('yyyy-MM-dd').format(
+                            pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                        //You can format date as per your need
+
                         setState(() {
-                          autoLocationList = [];
+                          startDateController.text = formattedDate;
+                          eventInfo['eventStartDate'] = formattedDate;
                         });
-                      },
-                      child: Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.only(bottom: 3),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromARGB(255, 209, 209, 209))),
-                            color: Color.fromARGB(255, 224, 224, 224)),
-                        child: Text(
-                          autoLocationList[index].description,
-                          textAlign: TextAlign.center,
+                      } else {}
+                    },
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  customDateInput(
+                    title: 'End Date',
+                    controller: endDateController,
+                    onChange: (value) async {},
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(), //get today's date
+                          firstDate: DateTime(
+                              2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2101));
+                      if (pickedDate != null) {
+                        String formattedDate = DateFormat('yyyy-MM-dd').format(
+                            pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+
+                        //You can format date as per your need
+
+                        setState(() {
+                          eventInfo['eventEndDate'] = formattedDate;
+                          endDateController.text = formattedDate;
+                        });
+                      } else {}
+                    },
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  const Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text('Select Privacy',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 82, 95, 127),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600)),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          width: 400,
+                          height: 40,
+                          child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 17, 205, 239),
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                    color:
+                                        const Color.fromARGB(255, 17, 205, 239),
+                                    width:
+                                        0.1), //bordrder raiuds of dropdown button
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 7, left: 15),
+                                  child: DropdownButton(
+                                    value: privacy,
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: "public",
+                                        child: Row(children: [
+                                          Icon(
+                                            Icons.language,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Public",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: "closed",
+                                        child: Row(children: [
+                                          Icon(
+                                            Icons.groups,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Closed",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: "security",
+                                        child: Row(children: [
+                                          Icon(
+                                            Icons.lock_outline,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Security",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      //get value when changed
+                                      eventInfo['eventPrivacy'] = value;
+                                      privacy = value.toString();
+                                      print(privacy);
+                                      // click(value);
+                                      setState(() {});
+                                    },
+                                    icon: const Padding(
+                                        padding: EdgeInsets.only(left: 20),
+                                        child: Icon(Icons.arrow_drop_down)),
+                                    iconEnabledColor: Colors.white, //Icon color
+                                    style: const TextStyle(
+                                      color: Colors.black, //Font color
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    dropdownColor: Colors.white,
+                                    underline: Container(), //remove underline
+                                    isExpanded: true,
+                                    isDense: true,
+                                  ))),
                         ),
-                      ));
-                },
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  titleAndsubtitleInput('About', 70, 5,
+                                      (value) {
+                                    eventInfo['eventAbout'] = value;
+                                    setState(() {});
+                                  }),
+                                ],
+                              )),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
+                  SizedBox(
+                    width: 400,
+                    child: InterestsWidget(
+                      context: context,
+                      sendUpdate: (value) {
+                        eventInfo['eventInterests'] = value;
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-      ],
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              width: 400,
+              margin: const EdgeInsets.only(right: 20),
+              child: Row(
+                children: [
+                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[400],
+                      shadowColor: Colors.grey[400],
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3.0)),
+                      minimumSize: const Size(100, 50),
+                    ),
+                    onPressed: () {
+                      Navigator.of(widget.context).pop(true);
+                    },
+                    child: const Text('Cancel',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 10)),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      shadowColor: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3.0)),
+                      minimumSize: const Size(100, 50),
+                    ),
+                    onPressed: () {
+                      if (eventInfo['eventName'] == null ||
+                          eventInfo['eventName'] == '') {
+                        Helper.showToast('Please add your event name');
+                        return;
+                      } else if (eventInfo['eventLocation'] == null ||
+                          eventInfo['eventLocation'] == '') {
+                        Helper.showToast('Please add your event location');
+                        return;
+                      } else if (eventInfo['eventStartDate'] == null ||
+                          eventInfo['eventStartDate'] == '') {
+                        Helper.showToast('Please add your event start date');
+                        return;
+                      } else if (eventInfo['eventEndDate'] == null ||
+                          eventInfo['eventEndDate'] == '') {
+                        Helper.showToast('Please add your event end date');
+                        return;
+                      }
+                      footerBtnState = true;
+                      setState(() {});
+                      getTokenBudget();
+                    },
+                    child: footerBtnState
+                        ? const SizedBox(
+                            width: 10,
+                            height: 10.0,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey,
+                            ),
+                          )
+                        : const Text('Create',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                  )
+                ],
+              ),
+            ),
+          ),
+          if (autoLocationList.isNotEmpty)
+            Positioned(
+              top: 120,
+              left: 0,
+              right: 0,
+              child: SizedBox(
+                height: 190,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: autoLocationList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                        onTap: () {
+                          locationTextController.text =
+                              autoLocationList[index].description;
+                          eventInfo['eventLocation'] =
+                              autoLocationList[index].description;
+                          setState(() {
+                            autoLocationList = [];
+                          });
+                        },
+                        child: Container(
+                          height: 50,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(bottom: 3),
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 209, 209, 209))),
+                              color: Color.fromARGB(255, 224, 224, 224)),
+                          child: Text(
+                            autoLocationList[index].description,
+                            textAlign: TextAlign.center,
+                          ),
+                        ));
+                  },
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
