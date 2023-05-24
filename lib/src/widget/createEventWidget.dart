@@ -118,22 +118,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
       setState(() {});
     } else {
       footerBtnState = false;
-      if (eventInfo['eventName'] == null || eventInfo['eventName'] == '') {
-        Helper.showToast('Please add your event name');
-        return;
-      } else if (eventInfo['eventLocation'] == null ||
-          eventInfo['eventLocation'] == '') {
-        Helper.showToast('Please add your event location');
-        return;
-      } else if (eventInfo['eventStartDate'] == null ||
-          eventInfo['eventStartDate'] == '') {
-        Helper.showToast('Please add your event start date');
-        return;
-      } else if (eventInfo['eventEndDate'] == null ||
-          eventInfo['eventEndDate'] == '') {
-        Helper.showToast('Please add your event end date');
-        return;
-      }
+
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
@@ -458,6 +443,23 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                     minimumSize: const Size(100, 50),
                   ),
                   onPressed: () {
+                    if (eventInfo['eventName'] == null ||
+                        eventInfo['eventName'] == '') {
+                      Helper.showToast('Please add your event name');
+                      return;
+                    } else if (eventInfo['eventLocation'] == null ||
+                        eventInfo['eventLocation'] == '') {
+                      Helper.showToast('Please add your event location');
+                      return;
+                    } else if (eventInfo['eventStartDate'] == null ||
+                        eventInfo['eventStartDate'] == '') {
+                      Helper.showToast('Please add your event start date');
+                      return;
+                    } else if (eventInfo['eventEndDate'] == null ||
+                        eventInfo['eventEndDate'] == '') {
+                      Helper.showToast('Please add your event end date');
+                      return;
+                    }
                     footerBtnState = true;
                     setState(() {});
                     getTokenBudget();
