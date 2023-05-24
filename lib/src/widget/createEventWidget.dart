@@ -185,6 +185,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
           autoLocationList = [];
+          setState(() {});
         }
       },
       child: Stack(
@@ -206,6 +207,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                     title: 'Name Your Event',
                     onChange: (value) async {
                       eventInfo['eventName'] = value;
+                      autoLocationList = [];
                       setState(() {});
                     },
                   ),
@@ -226,6 +228,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                     controller: startDateController,
                     onChange: (value) async {},
                     onTap: () async {
+                      autoLocationList = [];
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(), //get today's date
@@ -250,6 +253,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                     controller: endDateController,
                     onChange: (value) async {},
                     onTap: () async {
+                      autoLocationList = [];
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(), //get today's date
@@ -358,6 +362,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                     ],
                                     onChanged: (value) {
                                       //get value when changed
+                                      autoLocationList = [];
                                       eventInfo['eventPrivacy'] = value;
                                       privacy = value.toString();
                                       print(privacy);
@@ -397,6 +402,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                 children: [
                                   titleAndsubtitleInput('About', 70, 5,
                                       (value) {
+                                    autoLocationList = [];
                                     eventInfo['eventAbout'] = value;
                                     setState(() {});
                                   }),
