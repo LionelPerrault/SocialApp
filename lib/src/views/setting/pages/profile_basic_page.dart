@@ -193,7 +193,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                     (value) async {
                                       setting_profile['firstName'] = value;
                                     },
-                                    userInfo['firstName'],
+                                    setting_profile['firstName'] ?? '',
                                   ),
                                 ),
                               ),
@@ -431,7 +431,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                 (value) async {
                                   setting_profile['firstName'] = value;
                                 },
-                                userInfo['firstName'],
+                                setting_profile['firstName'] ?? '',
                               ),
                             ),
                             const Padding(
@@ -445,7 +445,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                 (value) async {
                                   setting_profile['lastName'] = value;
                                 },
-                                userInfo['lastName'],
+                                setting_profile['lastName'] ?? '',
                               ),
                             ),
                             const Padding(padding: EdgeInsets.only(right: 20)),
@@ -516,7 +516,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                       (value) async {
                                         setting_profile['workWebsite'] = value;
                                       },
-                                      userInfo['workWebsite'] ?? '',
+                                      setting_profile['workWebsite'] ?? '',
                                     ),
                                     const Text(
                                         'Website link must start with http:// or https://'),
@@ -576,7 +576,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                               child: titleAndsubtitleInput('About Me', 100, 4,
                                   (value) {
                                 setting_profile['about'] = value;
-                              }, userInfo['about'] ?? ''),
+                              }, setting_profile['about'] ?? ''),
                             ),
                             const Padding(padding: EdgeInsets.only(right: 20)),
                             SizedBox(
