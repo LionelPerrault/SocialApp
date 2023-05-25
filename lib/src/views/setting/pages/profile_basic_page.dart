@@ -632,13 +632,14 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                   height: height,
                   child: Column(
                     children: [
-                      TextField(
+                      TextFormField(
+                        initialValue: text,
                         onTapOutside: (event) {
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         maxLines: line,
                         minLines: line,
-                        controller: inputController,
+                        // controller: inputController,
                         onChanged: (value) {
                           onChange(value);
                         },
