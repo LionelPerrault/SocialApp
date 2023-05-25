@@ -116,12 +116,16 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                   Expanded(
                                     child: Container(
                                       padding: EdgeInsets.only(right: 20),
-                                      width: 300,
+                                      width: 400,
                                       height: 30,
                                       child: TextFormField(
+                                        maxLines: 1,
                                         enabled: false,
                                         controller: emailController,
                                         decoration: InputDecoration(
+                                          isDense: true,
+                                          contentPadding: EdgeInsets.fromLTRB(
+                                              3.0, 15.0, 0.0, 1.0),
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(0),
@@ -136,7 +140,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                           ),
                                         ),
                                         style: const TextStyle(
-                                            fontSize: 14, color: Colors.black),
+                                            fontSize: 13, color: Colors.black),
                                         onSaved: (String? value) {
                                           // This optional block of code can be used to run
                                           // code when the user saves the form.
