@@ -50,7 +50,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
     super.dispose();
   }
 
-  Future<void> openTheRecorder() async {
+  Future<bool> openTheRecorder() async {
     if (!kIsWeb) {
       var contactsPermissionStatus = await Permission.contacts.request();
       if (contactsPermissionStatus.isGranted) {
@@ -59,7 +59,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
         var microphonePermissionStatus = await Permission.microphone.request();
         if (!microphonePermissionStatus.isGranted) {
           print('Microphone permission not granted');
-          return; // Exit the function or handle the error accordingly
+          return false; // Exit the function or handle the error accordingly
         }
       }
     }
@@ -71,7 +71,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
     });
     await _mRecorder!.openRecorder().then((value) => {openedRecorder = true});
     setState(() {});
-    if (openedRecorder == false) return;
+    if (openedRecorder == false) return false;
     if (kIsWeb) {
       _codec = Codec.opusWebM;
       _mPath = '${generateRandomFilename()}.webm';
@@ -86,10 +86,11 @@ class _SoundRecorderState extends State<SoundRecorder> {
 
       _mPath = '${dir?.path}/${generateRandomFilename()}.mp4';
       _mRecorderIsInited = true;
-      return;
+      return true;
     }
 
     _mRecorderIsInited = true;
+    return true;
   }
 
   String twoDigits(int n) {
