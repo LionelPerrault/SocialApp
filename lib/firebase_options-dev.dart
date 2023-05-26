@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
     appId: '1:414573634624:android:8d5d0fc6f5db25902b6ba5',
     messagingSenderId: '414573634624',
     projectId: 'shnatter-dev',
-    databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
+    databaseURL: 'https://shnatter-dev-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-dev.appspot.com',
     androidClientId:
         '414573634624-idmquvtvjovu9uta10i65f171i1h6ihe.apps.googleusercontent.com',
@@ -71,7 +71,7 @@ class DefaultFirebaseOptions {
     appId: '1:414573634624:ios:a7dc5ce7b040ddb62b6ba5',
     messagingSenderId: '414573634624',
     projectId: 'shnatter-dev',
-    databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
+    databaseURL: 'https://shnatter-dev-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-dev.appspot.com',
     androidClientId:
         '414573634624-idmquvtvjovu9uta10i65f171i1h6ihe.apps.googleusercontent.com',
@@ -85,7 +85,7 @@ class DefaultFirebaseOptions {
     appId: '1:414573634624:ios:a7dc5ce7b040ddb62b6ba5',
     messagingSenderId: '414573634624',
     projectId: 'shnatter-dev',
-    databaseURL: 'https://shnatter-a69cd-default-rtdb.firebaseio.com',
+    databaseURL: 'https://shnatter-dev-default-rtdb.firebaseio.com',
     storageBucket: 'shnatter-dev.appspot.com',
     androidClientId:
         '414573634624-idmquvtvjovu9uta10i65f171i1h6ihe.apps.googleusercontent.com',

@@ -6,7 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
-import '../../firebase_options.dart';
+import 'package:shnatter/src/helpers/helper.dart';
+import '../../firebase_options.dart' as ProdEnv;
+import '../../firebase_options-dev.dart' as DevEnv;
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
 
@@ -23,9 +25,16 @@ class FileController extends ControllerMVC {
   static var downloadUrl;
   @override
   Future<bool> initAsync() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    if (Helper.environment == Environment.dev) {
+      await Firebase.initializeApp(
+        options: DevEnv.DefaultFirebaseOptions.currentPlatform,
+      );
+    } else if (Helper.environment == Environment.prod) {
+      await Firebase.initializeApp(
+        options: ProdEnv.DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+
     return true;
   }
 

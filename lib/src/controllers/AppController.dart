@@ -5,7 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import '../../firebase_options.dart';
+import '../../firebase_options.dart' as ProdEnv;
+import '../../firebase_options-dev.dart' as DevEnv;
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,9 +18,15 @@ class AppController extends ControllerMVC {
 
   @override
   Future<bool> initAsync() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    if (Helper.environment == Environment.dev) {
+      await Firebase.initializeApp(
+        options: DevEnv.DefaultFirebaseOptions.currentPlatform,
+      );
+    } else if (Helper.environment == Environment.prod) {
+      await Firebase.initializeApp(
+        options: ProdEnv.DefaultFirebaseOptions.currentPlatform,
+      );
+    }
     FirebaseAuth.instance.setSettings(appVerificationDisabledForTesting: false);
     FirebaseMessaging firebaseMessaging =
         FirebaseMessaging.instance; // Change here

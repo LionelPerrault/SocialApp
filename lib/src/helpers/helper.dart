@@ -11,7 +11,10 @@ import 'package:crypto/crypto.dart';
 
 import '../models/userModel.dart';
 
+enum Environment { dev, prod }
+
 class Helper {
+  static Environment environment = Environment.dev;
   static var systemSnap =
       FirebaseFirestore.instance.collection(Helper.adminPanel);
   static ValueNotifier<Setting> setting = ValueNotifier(Setting());
