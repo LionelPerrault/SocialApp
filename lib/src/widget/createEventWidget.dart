@@ -178,6 +178,11 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      autoLocationList = [];
+      setState(() {});
+    });
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -193,6 +198,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
           Padding(
             padding: const EdgeInsets.only(bottom: 60),
             child: SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,6 +316,10 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                                       const EdgeInsets.only(top: 7, left: 15),
                                   child: DropdownButton(
                                     value: privacy,
+                                    onTap: () {
+                                      autoLocationList = [];
+                                      setState(() {});
+                                    },
                                     items: const [
                                       DropdownMenuItem(
                                         value: "public",
