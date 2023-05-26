@@ -147,23 +147,23 @@ class WriteMessageScreenState extends mvc.StateMVC<WriteMessageScreen> {
               onTap: () async {
                 showRecoder = false;
                 setState(() {});
-                final status = await Permission.photos.status;
-                if (status.isGranted) {
-                  con.uploadImage(widget.type, 'image');
-                  if (widget.type == 'new') {
-                    widget.goMessage('message-list');
-                  }
-                } else {
-                  // Request permission to access the photo library
-                  if (await Permission.photos.request().isGranted) {
-                    con.uploadImage(widget.type, 'image');
-                    if (widget.type == 'new') {
-                      widget.goMessage('message-list');
-                    }
-                  } else {
-                    // Permission has been denied, handle the situation appropriately
-                  }
+                // final status = await Permission.photos.status;
+                // if (status.isGranted) {
+                con.uploadImage(widget.type, 'image');
+                if (widget.type == 'new') {
+                  widget.goMessage('message-list');
                 }
+                // } else {
+                //   // Request permission to access the photo library
+                //   if (await Permission.photos.request().isGranted) {
+                //     con.uploadImage(widget.type, 'image');
+                //     if (widget.type == 'new') {
+                //       widget.goMessage('message-list');
+                //     }
+                //   } else {
+                //     // Permission has been denied, handle the situation appropriately
+                //   }
+                // }
               },
               child: const Icon(
                 Icons.photo_size_select_actual_rounded,
