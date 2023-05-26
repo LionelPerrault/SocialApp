@@ -259,7 +259,6 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
 
   Widget GoingData() {
     List going = con.event['eventGoing'];
-    print('going $going');
     return going.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
@@ -317,6 +316,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
             children: [
               Expanded(
                 child: GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: SizeConfig(context).screenWidth > 800
                       ? 4
                       : SizeConfig(context).screenWidth > 600
@@ -361,6 +361,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
             children: [
               Expanded(
                 child: GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: SizeConfig(context).screenWidth > 800
                       ? 4
                       : SizeConfig(context).screenWidth > 600
@@ -404,6 +405,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
             children: [
               Expanded(
                 child: GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: SizeConfig(context).screenWidth > 800
                       ? 4
                       : SizeConfig(context).screenWidth > 600
