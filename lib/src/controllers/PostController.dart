@@ -344,6 +344,23 @@ class PostController extends ControllerMVC {
         }
       }
 
+      for (var i = 0; i < event['eventGoing'].length; i++) {
+        var addAdmin = await ProfileController()
+            .getUserInfo(event['eventGoing'][i]['uid']);
+        if (addAdmin != null) {
+          event['eventGoing'][i] = {
+            ...event['eventGoing'][i],
+            'userName': addAdmin['userName'],
+            'avatar': addAdmin['avatar'],
+            'fullName': '${addAdmin["firstName"]} ${addAdmin["lastName"]}',
+          };
+        } else {
+          event['eventGoing'].removeWhere(
+              (item) => item['uid'] == event['eventGoing'][i]['uid']);
+          i--;
+        }
+      }
+
       for (var i = 0; i < event['eventInvited'].length; i++) {
         var addAdmin = await ProfileController()
             .getUserInfo(event['eventInvited'][i]['uid']);

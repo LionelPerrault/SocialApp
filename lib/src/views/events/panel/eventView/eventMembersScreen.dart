@@ -259,6 +259,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
 
   Widget GoingData() {
     List going = con.event['eventGoing'];
+    print('going $going');
     return going.isEmpty
         ? Container(
             padding: const EdgeInsets.only(top: 40),
