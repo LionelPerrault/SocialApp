@@ -37,7 +37,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
   void initState() {
     openTheRecorder().then((value) {
       setState(() {
-        _mRecorderIsInited = true;
+        _mRecorderIsInited = value;
       });
     });
     super.initState();
