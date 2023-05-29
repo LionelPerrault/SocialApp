@@ -316,6 +316,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                     controller: controller,
                     maxLines: line,
                     minLines: line,
+                    textInputAction: TextInputAction.done,
                     onChanged: (value) {
                       postMessage = controller.text;
                     },
