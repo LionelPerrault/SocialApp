@@ -234,7 +234,8 @@ class SettingSecurityPasswordScreenState
                           onChange(value);
                         },
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(top: 10, left: 10),
+                          contentPadding:
+                              const EdgeInsets.only(top: 10, left: 10),
                           focusedBorder: const OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.blue, width: 1),
@@ -274,19 +275,38 @@ class SettingSecurityPasswordScreenState
       Helper.showToast("Please input confirm password");
       return;
     }
+    // RegExp upperCase = RegExp(r'[A-Z]');
+    // RegExp lowerCase = RegExp(r'[a-z]');
+    // RegExp digit = RegExp(r'[0-9]');
+    // RegExp specialChar = RegExp(r'[!@#\$%\^&\*(),.?":{}|<>]');
 
-    if (currentPassword == userInfo['password']) {
+    if (newPassword == currentPassword) {
+      Helper.showToast("New password cannot be the same as the old password.");
+    } else if (currentPassword == userInfo['password']) {
       if (newPassword == confirmPassword) {
         if (newPassword.length < 8) {
-          Helper.showToast("Password shoule be at least 8 characters");
-        } else {
+          Helper.showToast("Password should be at least 8 characters");
+        }
+        // else if (!upperCase.hasMatch(newPassword)) {
+        //   Helper.showToast(
+        //       "Password should contain at least one uppercase letter");
+        // } else if (!lowerCase.hasMatch(newPassword)) {
+        //   Helper.showToast(
+        //       "Password should contain at least one lowercase letter");
+        // } else if (!digit.hasMatch(newPassword)) {
+        //   Helper.showToast("Password should contain at least one digit");
+        // } else if (!specialChar.hasMatch(newPassword)) {
+        //   Helper.showToast(
+        //       "Password should contain at least one special character");
+        // }
+        else {
           con.changePassword(userInfo['email'], newPassword);
         }
       } else {
-        Helper.showToast("Password mismatching. Please check again!");
+        Helper.showToast("Passwords do not match. Please check again!");
       }
     } else {
-      Helper.showToast("You inputed wrong current password.");
+      Helper.showToast("You inputted wrong current password.");
     }
   }
 }
