@@ -34,7 +34,8 @@ class AllProductsState extends mvc.StateMVC<AllProducts> {
   }
 
   void getProductNow() {
-    con.getProduct().then(
+    var userInfo = UserManager.userInfo;
+    con.getProduct(userInfo['uid']).then(
           (value) => {
             roundFlag = false,
             setState(() => {}),

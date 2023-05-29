@@ -1451,12 +1451,13 @@ class PostController extends ControllerMVC {
   List<Map> allProduct = [];
 
   //get all product function
-  Future<void> getProduct() async {
+  Future<void> getProduct([String uid = ""]) async {
     allProduct = [];
-    await Helper.productsData
-        .orderBy('productDate', descending: true)
-        .get()
-        .then((value) async {
+    var query = Helper.productsData.orderBy('productDate', descending: true);
+    if (uid.isNotEmpty) {
+      query = query.where('productAdmin.uid', isEqualTo: uid);
+    }
+    await query.get().then((value) async {
       var doc = value.docs;
       for (int i = 0; i < doc.length; i++) {
         var id = doc[i].id;
