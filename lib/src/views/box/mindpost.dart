@@ -125,12 +125,14 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         createPoll();
       }
     },
-    // {
-    //   'title': 'Upload Video',
-    //   'image':
-    //       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvideo_camera.svg?alt=media&token=89343741-3bfc-4001-87d4-9344e752192d',
-    //   'mindFunc': (context) {}
-    // },
+    {
+      'title': 'Upload Video',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvideo_camera.svg?alt=media&token=89343741-3bfc-4001-87d4-9344e752192d',
+      'mindFunc': (option) {
+        uploadVideoReady(option);
+      }
+    },
     {
       'title': 'Upload Audio',
       'image':
@@ -319,6 +321,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     uploadReady('audio', 0);
   }
 
+  uploadVideoReady(int option) {
+    nowPost = 'Upload Video';
+    setState(() {});
+    uploadReady('video', 0);
+  }
+
   feelingReady() {
     if (nowPost == 'Feelings/Activity') {
       nowPost = '';
@@ -421,6 +429,10 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         break;
       case 'Upload Audio':
         postCase = 'audio';
+        postPayload[postCase] = postAudio;
+        break;
+      case 'Upload Video':
+        postCase = 'video';
         postPayload[postCase] = postAudio;
         break;
       default:
@@ -1297,13 +1309,45 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       type: FileType.custom,
       allowedExtensions: [
         'wav',
-        'aiff',
-        'alac',
+        //'aiff',
+        //'alac',
         'flac',
         'mp3',
         'aac',
-        'wma',
+        //'wma',
         'ogg'
+      ],
+    );
+    if (result != null) {
+      if (foundation.kIsWeb) {
+        foundation.Uint8List? uploadfile = result.files.single.bytes;
+        if (uploadfile != null) {
+          pickedFile = XFile.fromData(uploadfile);
+        } else {
+          pickedFile = XFile('');
+        }
+      } else {
+        if (result.files.single.path != null) {
+          pickedFile = XFile(result.files.single.path!);
+        } else {
+          pickedFile = XFile('');
+        }
+      }
+    } else {
+      pickedFile = XFile('');
+    }
+    return pickedFile;
+  }
+
+  Future<XFile> chooseVideo() async {
+    //final _audioPicker = ImagePicker();
+    XFile pickedFile;
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'mp4',
+        'mov',
+        'avi',
       ],
     );
     if (result != null) {
@@ -1412,10 +1456,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     XFile? pickedFile;
     if (type == 'photo') {
       pickedFile = await chooseImage(option);
-    } else {
+    } else if (type == 'audio') {
       pickedFile = await chooseAudio();
+    } else {
+      pickedFile = await chooseVideo();
     }
-    if (type != 'photo' && pickedFile.path == '') return;
+    if (type != 'photo' && pickedFile?.path == '') return;
     postLoading = true;
     uploadFile(pickedFile, type);
   }
