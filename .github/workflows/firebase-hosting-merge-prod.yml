@@ -3,10 +3,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - production
   pull_request:
     branches:
-      - main
+      - production
 jobs:
   build_web:
     name: Build Shnatter (Web)

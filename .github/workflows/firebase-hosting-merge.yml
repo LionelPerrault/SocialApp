@@ -27,5 +27,5 @@ jobs:
       with:
         args: deploy --only hosting --public build/web
       env:
-        FIREBASE_TOKEN: '1//0c2LK7NixkZPYCgYIARAAGAwSNwF-L9IrsY2z0GTmmDTaVr0c5vQQ7ePwVeDqY_IEK0Y4IpqtQbTVqbWZjsxSKQDYSQonC3vY0uA'
-        PROJECT_ID: default
+        FIREBASE_TOKEN: '1//09NaVvluAd3LbCgYIARAAGAkSNwF-L9IrrV5Q1ziHI4P_QLra8Aecw8eBqbN-Q_nwY871byeDPd1Tl1XApevwFzhfmWKfQExUJls'
+        PROJECT_ID: shnatter-dev

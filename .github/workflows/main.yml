@@ -1,4 +1,4 @@
-name: Android Prod Build
+name: Android Dev Build
 on: 
   workflow_dispatch:
   #push:
@@ -23,8 +23,8 @@ jobs:
     - name: Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1
       with:
-          appId: 1:444281700591:android:b19909a8e52d4326379b1a          
-          token: 1//0c2LK7NixkZPYCgYIARAAGAwSNwF-L9IrsY2z0GTmmDTaVr0c5vQQ7ePwVeDqY_IEK0Y4IpqtQbTVqbWZjsxSKQDYSQonC3vY0uA
+          appId: 1:414573634624:android:8d5d0fc6f5db25902b6ba5          
+          token: 1//09NaVvluAd3LbCgYIARAAGAkSNwF-L9IrrV5Q1ziHI4P_QLra8Aecw8eBqbN-Q_nwY871byeDPd1Tl1XApevwFzhfmWKfQExUJls
           groups: ts
           #file: 'build/app/outputs/flutter-apk/app-dev-release.apk'
           file: 'build/app/outputs/flutter-apk/app-release.apk'
