@@ -264,6 +264,46 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
 
   @override
   Widget build(BuildContext context) {
+    if (product?['productAdmin']?['uid'] != UserManager.userInfo['uid']) {
+      popupMenuItem = [
+        {
+          'icon': Icons.link,
+          'label': 'Open post in new tab',
+          'value': 'open',
+        },
+      ];
+    } else {
+      popupMenuItem = [
+        {
+          'icon': Icons.edit,
+          'label': 'Edit Product',
+          'value': 'edit',
+        },
+        {
+          'icon': Icons.delete,
+          'label': 'Delete Product',
+          'value': 'delete',
+        },
+        {
+          'icon': Icons.remove_red_eye_sharp,
+          'label': 'Hide from Timeline',
+          'labelE': 'Allow on Timeline',
+          'value': 'timeline',
+        },
+        {
+          'icon': Icons.chat_bubble,
+          'label': 'Turn off Commenting',
+          'labelE': 'Turn on Commenting',
+          'value': 'comment',
+        },
+        {
+          'icon': Icons.link,
+          'label': 'Open post in new tab',
+          'value': 'open',
+        },
+      ];
+    }
+
     return product['productTimeline'] == false
         ? DottedBorder(
             borderType: BorderType.RRect,

@@ -123,7 +123,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 100,
+                      width: 80,
                       height: 40,
                       color: tab == 'Going'
                           ? Colors.white
@@ -157,7 +157,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 100,
+                      width: 90,
                       height: 40,
                       color: tab == 'Interested'
                           ? Colors.white
@@ -191,7 +191,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 100,
+                      width: 80,
                       height: 40,
                       color: tab == 'Invited'
                           ? Colors.white
@@ -225,7 +225,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 100,
+                      width: 80,
                       height: 40,
                       color: tab == 'Invites'
                           ? Colors.white

@@ -59,200 +59,213 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Divider(
-                height: 0,
-                indent: 0,
-                endIndent: 0,
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(
-                  'Share the post to',
-                  style: TextStyle(
-                      color: Color.fromRGBO(82, 95, 127, 1),
-                      fontSize: 23,
-                      fontWeight: FontWeight.w600),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Divider(
+                  height: 0,
+                  indent: 0,
+                  endIndent: 0,
                 ),
-              ]),
-              const Padding(padding: EdgeInsets.only(top: 25)),
-              Container(
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _color = const Color.fromRGBO(51, 103, 214, 0.65);
-                          _width = 2;
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13),
-                          border: Border.all(color: _color, width: _width),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 100,
-                              height: 70,
-                              child: const Icon(Icons.camera_enhance_rounded,
-                                  color: Colors.grey, size: 30.0),
-                            ),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Timeline',
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(82, 95, 127, 1),
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            const Padding(padding: EdgeInsets.only(top: 15)),
-                          ],
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Share the post to',
+                        style: TextStyle(
+                            color: Color.fromRGBO(82, 95, 127, 1),
+                            fontSize: 23,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ]),
+                const Padding(padding: EdgeInsets.only(top: 25)),
+                Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _color = const Color.fromRGBO(51, 103, 214, 0.65);
+                            _width = 2;
+                          });
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(13),
+                            border: Border.all(color: _color, width: _width),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                width: 100,
+                                height: 70,
+                                child: const Icon(Icons.camera_enhance_rounded,
+                                    color: Colors.grey, size: 30.0),
+                              ),
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Timeline',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(82, 95, 127, 1),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.only(top: 15)),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    // const Padding(padding: EdgeInsets.only(left: 15)),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     print("Container clicked");
-                    //     print(context);
+                      // const Padding(padding: EdgeInsets.only(left: 15)),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     print("Container clicked");
+                      //     print(context);
 
-                    //     setState(() {
-                    //       _color2 = Color.fromRGBO(51, 103, 214, 0.65);
-                    //       _color = Color.fromRGBO(0, 0, 0, 0.2);
-                    //       _width2 = 2;
-                    //       _width = 1;
-                    //     });
-                    //   },
-                    //   child: Container(
-                    //     alignment: Alignment.center,
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(13),
-                    //       border: Border.all(color: _color2, width: _width2),
-                    //     ),
-                    //     child: Column(
-                    //       mainAxisAlignment: MainAxisAlignment.center,
-                    //       crossAxisAlignment: CrossAxisAlignment.center,
-                    //       children: [
-                    //         Container(
-                    //           alignment: Alignment.center,
-                    //           width: 100,
-                    //           height: 70,
-                    //           child: const Icon(Icons.camera_enhance_rounded,
-                    //               color: Colors.grey, size: 30.0),
-                    //         ),
-                    //         Row(
-                    //           mainAxisAlignment: MainAxisAlignment.center,
-                    //           children: const [
-                    //             Text(
-                    //               'Groups',
-                    //               style: TextStyle(
-                    //                   color: Color.fromRGBO(82, 95, 127, 1),
-                    //                   fontSize: 13,
-                    //                   fontWeight: FontWeight.w600),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //         const Padding(padding: EdgeInsets.only(top: 15)),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
+                      //     setState(() {
+                      //       _color2 = Color.fromRGBO(51, 103, 214, 0.65);
+                      //       _color = Color.fromRGBO(0, 0, 0, 0.2);
+                      //       _width2 = 2;
+                      //       _width = 1;
+                      //     });
+                      //   },
+                      //   child: Container(
+                      //     alignment: Alignment.center,
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(13),
+                      //       border: Border.all(color: _color2, width: _width2),
+                      //     ),
+                      //     child: Column(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       crossAxisAlignment: CrossAxisAlignment.center,
+                      //       children: [
+                      //         Container(
+                      //           alignment: Alignment.center,
+                      //           width: 100,
+                      //           height: 70,
+                      //           child: const Icon(Icons.camera_enhance_rounded,
+                      //               color: Colors.grey, size: 30.0),
+                      //         ),
+                      //         Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: const [
+                      //             Text(
+                      //               'Groups',
+                      //               style: TextStyle(
+                      //                   color: Color.fromRGBO(82, 95, 127, 1),
+                      //                   fontSize: 13,
+                      //                   fontWeight: FontWeight.w600),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         const Padding(padding: EdgeInsets.only(top: 15)),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 15)),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        child: titleAndsubtitleInput('Message', 70, 5,
+                            (value) async {
+                          //postMessage = controller.text;
+
+                          setState(() {});
+                        }, widget.editData['data']['productAbout'] ?? ''),
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 15)),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: titleAndsubtitleInput('Message', 70, 5,
-                          (value) async {
-                        //postMessage = controller.text;
-
-                        setState(() {});
-                      }, widget.editData['data']['productAbout'] ?? ''),
-                    ),
-                  ),
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              const Divider(
-                thickness: 0.1,
-                color: Colors.black,
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-            ],
-          ),
-        ),
-        Container(
-          height: 50,
-          margin: const EdgeInsets.only(right: 20, bottom: 10),
-          child: Row(
-            children: [
-              const Flexible(fit: FlexFit.tight, child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shadowColor: Colors.white,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3.0)),
-                  minimumSize: const Size(100, 50),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                const Divider(
+                  thickness: 0.1,
+                  color: Colors.black,
                 ),
-                onPressed: () async {
-                  setState(() {});
-                  if (_width != 2) return;
-                  String postCase = 'share';
-                  var postPayload;
-                  String header = postMessage;
-
-                  postPayload = widget.postInfo;
-
-                  postLoading = true;
-                  await postCon
-                      .savePost(postCase, postPayload, 'Public', header: header)
-                      .then((value) {
-                    postLoading = false;
-
-                    setState(() {});
-                    Navigator.of(context).pop(true);
-                  });
-                },
-                child: footerBtnState
-                    ? const SizedBox(
-                        width: 10,
-                        height: 10.0,
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    : const Text('Share',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold)),
-              )
-            ],
+                const Padding(padding: EdgeInsets.only(top: 20)),
+              ],
+            ),
           ),
-        ),
-      ],
+          Container(
+            height: 50,
+            margin: const EdgeInsets.only(right: 20, bottom: 10),
+            child: Row(
+              children: [
+                const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shadowColor: Colors.white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.0)),
+                    minimumSize: const Size(100, 50),
+                  ),
+                  onPressed: () async {
+                    setState(() {});
+                    if (_width != 2) return;
+                    String postCase = 'share';
+                    var postPayload;
+                    String header = postMessage;
+
+                    postPayload = widget.postInfo;
+
+                    postLoading = true;
+                    await postCon
+                        .savePost(postCase, postPayload, 'Public',
+                            header: header)
+                        .then((value) {
+                      postLoading = false;
+
+                      setState(() {});
+                      Navigator.of(context).pop(true);
+                    });
+                  },
+                  child: footerBtnState
+                      ? const SizedBox(
+                          width: 10,
+                          height: 10.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const Text('Share',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -316,6 +329,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                     controller: controller,
                     maxLines: line,
                     minLines: line,
+                    textInputAction: TextInputAction.done,
                     onChanged: (value) {
                       postMessage = controller.text;
                     },
