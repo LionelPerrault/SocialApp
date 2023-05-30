@@ -16,4 +16,4 @@ jobs:
         args: deploy --only functions
       env:
         FIREBASE_TOKEN: '1//09NaVvluAd3LbCgYIARAAGAkSNwF-L9IrrV5Q1ziHI4P_QLra8Aecw8eBqbN-Q_nwY871byeDPd1Tl1XApevwFzhfmWKfQExUJls'
-        PROJECT_ID: default
+        PROJECT_ID: shnatter-dev
