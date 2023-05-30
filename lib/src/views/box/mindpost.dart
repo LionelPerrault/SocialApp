@@ -99,12 +99,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     //       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcolor.svg?alt=media&token=7d8b7631-2471-4acf-8f34-e0071e7a4600',
     //   'mindFunc': (context) {}
     // },
-    // {
-    //   'title': 'Voice Notes',
-    //   'image':
-    //       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvoice.svg?alt=media&token=b49c28b5-3b27-487e-a6c1-ffd978c215fa',
-    //   'mindFunc': (context) {}
-    // },
+    {
+      'title': 'Voice Notes',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvoice.svg?alt=media&token=b49c28b5-3b27-487e-a6c1-ffd978c215fa',
+      'mindFunc': (context) {}
+    },
     // {
     //   'title': 'Write Aticle',
     //   'image':
