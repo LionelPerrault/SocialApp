@@ -127,8 +127,6 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
   }
 
   Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
-    TextEditingController inputController = TextEditingController();
-    inputController.text = text;
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Column(
@@ -151,10 +149,10 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                   height: height,
                   child: Column(
                     children: [
-                      TextField(
+                      TextFormField(
+                        initialValue: text,
                         maxLines: line,
                         minLines: line,
-                        controller: inputController,
                         onChanged: (value) {
                           onChange(value);
                         },

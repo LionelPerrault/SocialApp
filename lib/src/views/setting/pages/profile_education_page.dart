@@ -20,17 +20,11 @@ class SettingEducationScreen extends StatefulWidget {
 class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
   var educationInfo = {};
   late UserController con;
-  TextEditingController schoolCon = TextEditingController();
-  TextEditingController majorCon = TextEditingController();
-  TextEditingController classCon = TextEditingController();
 
   @override
   void initState() {
     add(widget.con);
     con = controller as UserController;
-    schoolCon.text = UserManager.userInfo['school'] ?? '';
-    majorCon.text = UserManager.userInfo['major'] ?? '';
-    classCon.text = UserManager.userInfo['class'] ?? '';
     super.initState();
   }
 
@@ -81,7 +75,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                             (value) async {
                               educationInfo['school'] = value;
                             },
-                            schoolCon,
+                            UserManager.userInfo['school'] ?? '',
                           ),
                         ),
                       ],
@@ -98,7 +92,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                             (value) async {
                               educationInfo['major'] = value;
                             },
-                            majorCon,
+                            UserManager.userInfo['major'] ?? '',
                           ),
                         ),
                         const Padding(padding: EdgeInsets.only(left: 25)),
@@ -111,7 +105,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                             (value) async {
                               educationInfo['class'] = value;
                             },
-                            classCon,
+                            UserManager.userInfo['class'] ?? '',
                           ),
                         ),
                       ],
@@ -126,7 +120,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
     );
   }
 
-  Widget titleAndsubtitleInput(title, double height, line, onChange, con) {
+  Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Column(
@@ -149,10 +143,10 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                   height: height,
                   child: Column(
                     children: [
-                      TextField(
+                      TextFormField(
+                        initialValue: text,
                         maxLines: line,
                         minLines: line,
-                        controller: con,
                         onChanged: (value) {
                           onChange(value);
                         },

@@ -111,8 +111,6 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
   }
 
   Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
-    TextEditingController inputController = TextEditingController();
-    inputController.text = text;
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Column(
@@ -135,10 +133,10 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
                   height: height,
                   child: Column(
                     children: [
-                      TextField(
+                      TextFormField(
+                        initialValue: text,
                         maxLines: line,
                         minLines: line,
-                        controller: inputController,
                         onChanged: (value) {
                           onChange(value);
                         },
