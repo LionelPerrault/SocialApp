@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "414573634624",
+    "project_id": "shnatter-dev",
+    "storage_bucket": "shnatter-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414573634624:android:8d5d0fc6f5db25902b6ba5",
+        "android_client_info": {
+          "package_name": "com.shnatter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414573634624-djsqdejebpqklt9r8gmb70jku14g46c6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQgyL0Hb_aGBKqXcrX4VFieV1t5wy-fHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414573634624-djsqdejebpqklt9r8gmb70jku14g46c6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "414573634624-252t1qbcfg2h338l3735ufndfcadca3b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shnatter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

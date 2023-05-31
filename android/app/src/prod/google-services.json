@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "444281700591",
+    "firebase_url": "https://shnatter-a69cd-default-rtdb.firebaseio.com",
+    "project_id": "shnatter-a69cd",
+    "storage_bucket": "shnatter-a69cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444281700591:android:b19909a8e52d4326379b1a",
+        "android_client_info": {
+          "package_name": "com.shnatter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444281700591-kj13rriv881n343802b13kqhjo9gat8v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shnatter",
+            "certificate_hash": "91757d3614bb410c4456d6e71d9d1eb8b1b93325"
+          }
+        },
+        {
+          "client_id": "444281700591-lb7ld0ct3g1j90larhft8c378eapfk39.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-RqSJmu411enQssXc1vlyZyh-FVyJYUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444281700591-lb7ld0ct3g1j90larhft8c378eapfk39.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "444281700591-1183rtg1j452u048l8cnjb3s7edj6fbh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shnatter",
+                "app_store_id": "6447631325"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

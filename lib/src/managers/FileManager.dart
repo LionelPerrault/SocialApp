@@ -25,15 +25,17 @@ class FileController extends ControllerMVC {
   static var downloadUrl;
   @override
   Future<bool> initAsync() async {
-    if (Helper.environment == Environment.dev) {
-      await Firebase.initializeApp(
-        options: DevEnv.DefaultFirebaseOptions.currentPlatform,
-      );
-    } else if (Helper.environment == Environment.prod) {
-      await Firebase.initializeApp(
-        options: ProdEnv.DefaultFirebaseOptions.currentPlatform,
-      );
-    }
+    // if (Helper.environment == Environment.dev) {
+    //   await Firebase.initializeApp(
+    //     name: 'shnatter-dev',
+    //     options: DevEnv.DefaultFirebaseOptions.currentPlatform,
+    //   );
+    // } else if (Helper.environment == Environment.prod) {
+    //   await Firebase.initializeApp(
+    //     name: 'shnatter-a69cd',
+    //     options: ProdEnv.DefaultFirebaseOptions.currentPlatform,
+    //   );
+    // }
 
     return true;
   }
