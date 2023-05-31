@@ -44,7 +44,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: "AIzaSyCQ0h5N5NovMzGQy2yXp99X3DLaRyY6Bpw",
+    apiKey: "AIzaSyBQgyL0Hb_aGBKqXcrX4VFieV1t5wy-fHg",
     authDomain: "shnatter-dev.firebaseapp.com",
     projectId: "shnatter-dev",
     storageBucket: "shnatter-dev.appspot.com",

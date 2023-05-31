@@ -50,6 +50,10 @@ class Helper {
       FirebaseFirestore.instance.collection(Helper.transactionField);
   static var invitationsCollection =
       FirebaseFirestore.instance.collection(Helper.invitationsField);
+  static String couldFunctionProd =
+      "https://us-central1-shnatter-a69cd.cloudfunctions.net/";
+  static String couldFunctionDev =
+      "https://us-central1-shnatter-dev.cloudfunctions.net/";
   static var systemAvatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsystem_avatar.svg?alt=media&token=1b903903-95d8-4826-808d-ddbde4ac55c3';
   static var avatar =

@@ -29,6 +29,7 @@ class UserController extends ControllerMVC {
         isProfileChange = false,
         super(state);
   static UserController? _this;
+  String couldURL = '';
   String token = '';
   String email = '';
   String relysiaEmail = '';
@@ -68,7 +69,9 @@ class UserController extends ControllerMVC {
   @override
   Future<bool> initAsync() async {
     //
-
+    couldURL = Helper.environment == Environment.dev
+        ? Helper.couldFunctionDev
+        : Helper.couldFunctionProd;
     var usersSnap =
         await FirebaseFirestore.instance.collection(Helper.userField).get();
     for (var i = 0; i < usersSnap.docs.length; i++) {
@@ -740,8 +743,7 @@ class UserController extends ControllerMVC {
     }
 
     ActionCodeSettings acs = ActionCodeSettings(
-      url:
-          "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=$uuid",
+      url: "${couldURL}emailVerification?uid=$uuid",
       // dynamicLinkDomain: "shnatter.page.link",
       handleCodeInApp: false,
       // androidPackageName: "com.shnatter",
@@ -756,8 +758,7 @@ class UserController extends ControllerMVC {
 
   Future<String> reSendEmailVeryfication() async {
     ActionCodeSettings acs = ActionCodeSettings(
-      url:
-          "https://us-central1-shnatter-a69cd.cloudfunctions.net/emailVerification?uid=${UserManager.userInfo['uid']}",
+      url: "${couldURL}emailVerification?uid=${UserManager.userInfo['uid']}",
       // dynamicLinkDomain: "shnatter.page.link",
       handleCodeInApp: false,
       // androidPackageName: "com.shnatter",
