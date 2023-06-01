@@ -56,29 +56,12 @@ class ShnatterMobileMessageState extends mvc.StateMVC<ShnatterMobileMessage> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              color: const Color.fromARGB(255, 130, 163, 255),
-                              alignment: Alignment.center,
-                              child: TextButton(
-                                  style: TextButton.styleFrom(
-                                      fixedSize: const Size(400, 11)),
-                                  child: const Text('See All',
-                                      style: TextStyle(fontSize: 11)),
-                                  onPressed: () async {
-                                    widget.hideNavBox();
-                                    widget.routerChange({
-                                      'router': RouteNames.messages,
-                                      'subRouter': '',
-                                    });
-                                  }),
-                            ),
-                          ),
-                        ],
-                      ),
+                      Row(children: [
+                        TextButton(
+                            child: const Text('ShnatterMobileMessage',
+                                style: TextStyle(fontSize: 11)),
+                            onPressed: () {}),
+                      ]),
                     ],
                   )),
               const SizedBox(
@@ -177,6 +160,29 @@ class ShnatterMobileMessageState extends mvc.StateMVC<ShnatterMobileMessage> {
                         ),
                       ),
                     ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      color: const Color.fromARGB(255, 130, 163, 255),
+                      alignment: Alignment.center,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              fixedSize: const Size(400, 11)),
+                          child: const Text('See All',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () async {
+                            widget.hideNavBox();
+                            widget.routerChange({
+                              'router': RouteNames.messages,
+                              'subRouter': '',
+                            });
+                          }),
+                    ),
+                  ),
+                ],
+              ),
               // const Divider(height: 1, indent: 0),
               // Container(
               //     color: Colors.grey[300],
