@@ -939,6 +939,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             .where((like) => like['uid'] == userInfo['uid'])
             .toList()[0];
     var key = GlobalKey();
+    print("eid :" + e['id']);
     double width = SizeConfig(context).screenWidth > 600
         ? 500
         : SizeConfig(context).screenWidth - 81;

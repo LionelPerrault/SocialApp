@@ -2099,23 +2099,28 @@ class PostController extends ControllerMVC {
     //    reply = value;
     //  });
 
-    comment.insert(0, {
-      'data': {'uid': userManager['uid'], 'content': data, 'type': type},
-      'userInfo': userManager,
-      'id': postId,
-      'reply': reply,
-      'likes': [],
-    });
-
     // if (!existId) {
     //   await Helper.postLikeComment.doc(postId).set({'likes': {}});
     // }
-    await Helper.postLikeComment.doc(postId).collection('comments').doc().set({
+    DocumentReference commentRef =
+        await Helper.postLikeComment.doc(postId).collection('comments').doc();
+    String commentId = commentRef.id;
+
+    await commentRef.set({
       'data': {'type': type, 'content': data, 'uid': userManager['uid']},
       'timeStamp': FieldValue.serverTimestamp(),
       'likes': []
     });
+    print('Comment ID: $commentId');
+    comment.insert(0, {
+      'data': {'uid': userManager['uid'], 'content': data, 'type': type},
+      'userInfo': userManager,
+      'id': commentId,
+      'reply': reply,
+      'likes': [],
+    });
     comments[postId] = comment;
+    print("comments:----${comments[postId]}");
     setState(() {});
   }
 
