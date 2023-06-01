@@ -197,9 +197,9 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                         child: titleAndsubtitleInput('Message', 70, 5,
                             (value) async {
                           //postMessage = controller.text;
-
+                          // controller.text = value;
                           setState(() {});
-                        }, widget.editData['data']['productAbout'] ?? ''),
+                        }, postMessage),
                       ),
                     ),
                   ],
