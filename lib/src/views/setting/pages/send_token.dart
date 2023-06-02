@@ -120,8 +120,11 @@ class SendTokenWdigetState extends mvc.StateMVC<SendTokenWdiget>
             ],
           ),
         ),
-        body:
-            _currentTabIndex == 0 ? QrCodeScanner(context) : tokenPay(context));
+        body: Container(
+            alignment: Alignment.topCenter,
+            child: _currentTabIndex == 0
+                ? QrCodeScanner(context)
+                : tokenPay(context)));
   }
 
   Widget QrCodeScanner(BuildContext context) {
@@ -157,6 +160,7 @@ class SendTokenWdigetState extends mvc.StateMVC<SendTokenWdiget>
               alignment: Alignment.topCenter,
               children: [
                 Container(
+                  alignment: Alignment.topCenter,
                   padding: const EdgeInsets.all(25),
                   width: 1000,
                   decoration: BoxDecoration(
