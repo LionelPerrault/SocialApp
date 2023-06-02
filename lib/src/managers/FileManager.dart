@@ -1,14 +1,10 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shnatter/src/controllers/UserController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
-import '../../firebase_options.dart' as ProdEnv;
-import '../../firebase_options-dev.dart' as DevEnv;
 import 'package:path/path.dart' as PPath;
 import 'dart:io' show File;
 

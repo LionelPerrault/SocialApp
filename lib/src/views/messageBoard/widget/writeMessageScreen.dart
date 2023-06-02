@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:flutter_sound/flutter_sound.dart';

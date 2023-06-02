@@ -1461,7 +1461,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     } else {
       pickedFile = await chooseVideo();
     }
-    if (type != 'photo' && pickedFile?.path == '') return;
+    if (type != 'photo' && pickedFile.path == '') return;
     postLoading = true;
     uploadFile(pickedFile, type);
   }

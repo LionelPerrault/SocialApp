@@ -1,13 +1,10 @@
 // ignore: file_names
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:mvc_pattern/mvc_pattern.dart';
-import '../../firebase_options.dart' as ProdEnv;
-import '../../firebase_options-dev.dart' as DevEnv;
 import '../helpers/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../managers/user_manager.dart';

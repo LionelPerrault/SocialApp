@@ -178,8 +178,8 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
 
   @override
   Widget build(BuildContext context) {
-    ScrollController _scrollController = ScrollController();
-    _scrollController.addListener(() {
+    ScrollController scrollController = ScrollController();
+    scrollController.addListener(() {
       autoLocationList = [];
       setState(() {});
     });
@@ -198,7 +198,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
           Padding(
             padding: const EdgeInsets.only(bottom: 60),
             child: SingleChildScrollView(
-              controller: _scrollController,
+              controller: scrollController,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -492,8 +492,8 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                       }
 
                       if (strtoast.isNotEmpty) {
-                        strtoast = 'Please add your ' +
-                            strtoast.substring(0, strtoast.length - 2);
+                        strtoast =
+                            'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
                         Helper.showToast(strtoast);
                         return;
                       }

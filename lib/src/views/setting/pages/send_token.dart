@@ -57,7 +57,7 @@ class SendTokenWdigetState extends mvc.StateMVC<SendTokenWdiget>
     List paymails = [];
     if (address.contains(',') || address.length < 21) {
       List addresses = address.split(',');
-      addresses.forEach((e) {
+      for (var e in addresses) {
         e = e.replaceAll('@', '');
         if (int.tryParse(e) != null) {
           paymails.add('$e@shnatter.app');
@@ -69,7 +69,7 @@ class SendTokenWdigetState extends mvc.StateMVC<SendTokenWdiget>
                 .add(Helper.userUidToInfo[Helper.userNameToUid[e]]['paymail']);
           }
         }
-      });
+      }
       await con.payMultiUserShnToken(paymails, amount, message).then((value) {
         if (value) {
           Helper.showToast('Successfully paid');
