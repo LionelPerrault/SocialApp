@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
@@ -465,6 +466,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                         bool sent = con.boolInvitedGroup(con.group, userId);
                         itemData['state'] = sent;
                         print('$sent this is sent');
+
                         return Material(
                             child: ListTile(
                                 onTap: () {},
@@ -503,9 +505,12 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                         Container(
                                             child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 33, 37, 41),
+                                                    backgroundColor: (itemData[
+                                                                'state'] !=
+                                                            true)
+                                                        ? Colors.black
+                                                        : const Color.fromRGBO(
+                                                            245, 54, 92, 1),
                                                     elevation: 3,
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
@@ -573,9 +578,13 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                                       )
                                                     : Row(
                                                         children: [
-                                                          const Icon(
-                                                            Icons
-                                                                .person_add_alt_rounded,
+                                                          Icon(
+                                                            itemData['state'] !=
+                                                                    true
+                                                                ? Icons
+                                                                    .person_add_alt_rounded
+                                                                : FontAwesomeIcons
+                                                                    .clock,
                                                             color: Colors.white,
                                                             size: 15.0,
                                                           ),

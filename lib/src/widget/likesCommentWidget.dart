@@ -52,7 +52,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
     'productOffer': 'Sell'
   };
   var category = 'Choose Category';
+  //TextEditingController emojiController = TextEditingController();
   TextEditingController commentController = TextEditingController();
+  TextEditingController replyController = TextEditingController();
   double uploadPhotoProgress = 0;
   // List<dynamic> postPhoto = [];
   // List<dynamic> productFile = [];
@@ -545,10 +547,10 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                 .saveComment(
                                     widget.postInfo['id'], comment, 'text')
                                 .then((value1) {
-                              commentController.text = '';
-                            });
+                              comment = '';
 
-                            setState(() {});
+                              setState(() {});
+                            });
                           }
                         },
                         () {
@@ -645,7 +647,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   ? 350
                   : SizeConfig(context).screenWidth - 225,
               child: TextField(
-                controller: null,
+                controller: commentController,
                 cursorWidth: 1,
                 onChanged: (value) {
                   onChange(value);
@@ -667,6 +669,9 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               child: InkWell(
                 onTap: () async {
                   print("onclick ");
+                  //  value = '';
+                  commentController.text = '';
+
                   onSend();
                   setState(() {
                     emojiShowingOfComment = false;
@@ -748,7 +753,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                 controller: null,
                 cursorWidth: 1,
                 onSubmitted: (value) {
-                  commentController.text = '';
+                  replyController.text = '';
                   onSend();
                   setState(() {
                     emojiShowingOfReply = false;
@@ -774,7 +779,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
               child: InkWell(
                 onTap: () async {
                   print("onclick ");
-                  commentController.text = '';
+                  replyController.text = '';
                   onSend();
                   setState(() {
                     emojiShowingOfReply = false;
@@ -934,6 +939,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             .where((like) => like['uid'] == userInfo['uid'])
             .toList()[0];
     var key = GlobalKey();
+    print("eid :" + e['id']);
     double width = SizeConfig(context).screenWidth > 600
         ? 500
         : SizeConfig(context).screenWidth - 81;

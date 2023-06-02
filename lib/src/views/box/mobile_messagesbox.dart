@@ -13,6 +13,7 @@ class ShnatterMobileMessage extends StatefulWidget {
       : con = MessageController(),
         super(key: key);
   final MessageController con;
+
   Function routerChange;
   Function hideNavBox;
 
@@ -60,7 +61,7 @@ class ShnatterMobileMessageState extends mvc.StateMVC<ShnatterMobileMessage> {
                             child: const Text('ShnatterMobileMessage',
                                 style: TextStyle(fontSize: 11)),
                             onPressed: () {}),
-                      ])
+                      ]),
                     ],
                   )),
               const SizedBox(
@@ -159,6 +160,29 @@ class ShnatterMobileMessageState extends mvc.StateMVC<ShnatterMobileMessage> {
                         ),
                       ),
                     ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      color: const Color.fromARGB(255, 130, 163, 255),
+                      alignment: Alignment.center,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              fixedSize: const Size(400, 11)),
+                          child: const Text('See All',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () async {
+                            widget.hideNavBox();
+                            widget.routerChange({
+                              'router': RouteNames.messages,
+                              'subRouter': '',
+                            });
+                          }),
+                    ),
+                  ),
+                ],
+              ),
               // const Divider(height: 1, indent: 0),
               // Container(
               //     color: Colors.grey[300],
