@@ -476,26 +476,24 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                       String strtoast = "";
                       if (eventInfo['eventName'] == null ||
                           eventInfo['eventName'] == '') {
-                        strtoast += 'Please add your event name\n';
-                        //Helper.showToast('Please add your event name');
-                        // return;
-                      } else if (eventInfo['eventLocation'] == null ||
-                          eventInfo['eventLocation'] == '') {
-                        strtoast += 'Please add your event location\n';
-                        //Helper.showToast('Please add your event location');
-                        //  return;
-                      } else if (eventInfo['eventStartDate'] == null ||
-                          eventInfo['eventStartDate'] == '') {
-                        strtoast += 'Please add your event start date\n';
-                        //Helper.showToast('Please add your event start date');
-                        //  return;
-                      } else if (eventInfo['eventEndDate'] == null ||
-                          eventInfo['eventEndDate'] == '') {
-                        strtoast += 'Please add your event end date\n';
-                        //Helper.showToast('Please add your event end date');
-                        // return;
+                        strtoast += 'event name, ';
                       }
+                      if (eventInfo['eventLocation'] == null ||
+                          eventInfo['eventLocation'] == '') {
+                        strtoast += 'location, ';
+                      }
+                      if (eventInfo['eventStartDate'] == null ||
+                          eventInfo['eventStartDate'] == '') {
+                        strtoast += 'start date, ';
+                      }
+                      if (eventInfo['eventEndDate'] == null ||
+                          eventInfo['eventEndDate'] == '') {
+                        strtoast += 'end date, ';
+                      }
+
                       if (strtoast.isNotEmpty) {
+                        strtoast = 'Please add your ' +
+                            strtoast.substring(0, strtoast.length - 2);
                         Helper.showToast(strtoast);
                         return;
                       }
