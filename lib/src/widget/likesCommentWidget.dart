@@ -358,7 +358,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                               },
                               child: InkWell(
                                 onTap: () async {
-                                  isComment = true;
+                                  isComment = !isComment;
                                   setState(() {});
                                 },
                                 child: AnimatedContainer(
