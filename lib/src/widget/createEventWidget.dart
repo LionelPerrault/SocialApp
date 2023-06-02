@@ -473,23 +473,29 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                       minimumSize: const Size(100, 50),
                     ),
                     onPressed: () {
+                      String strtoast = "";
                       if (eventInfo['eventName'] == null ||
                           eventInfo['eventName'] == '') {
-                        Helper.showToast('Please add your event name');
-                        return;
+                        strtoast += 'Please add your event name\n';
+                        //Helper.showToast('Please add your event name');
+                        // return;
                       } else if (eventInfo['eventLocation'] == null ||
                           eventInfo['eventLocation'] == '') {
-                        Helper.showToast('Please add your event location');
-                        return;
+                        strtoast += 'Please add your event location\n';
+                        //Helper.showToast('Please add your event location');
+                        //  return;
                       } else if (eventInfo['eventStartDate'] == null ||
                           eventInfo['eventStartDate'] == '') {
-                        Helper.showToast('Please add your event start date');
-                        return;
+                        strtoast += 'Please add your event start date\n';
+                        //Helper.showToast('Please add your event start date');
+                        //  return;
                       } else if (eventInfo['eventEndDate'] == null ||
                           eventInfo['eventEndDate'] == '') {
-                        Helper.showToast('Please add your event end date');
-                        return;
+                        strtoast += 'Please add your event end date\n';
+                        //Helper.showToast('Please add your event end date');
+                        // return;
                       }
+                      Helper.showToast(strtoast);
                       footerBtnState = true;
                       setState(() {});
                       getTokenBudget();
