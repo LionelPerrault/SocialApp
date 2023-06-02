@@ -495,7 +495,10 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                         //Helper.showToast('Please add your event end date');
                         // return;
                       }
-                      Helper.showToast(strtoast);
+                      if (strtoast.isNotEmpty) {
+                        Helper.showToast(strtoast);
+                        return;
+                      }
                       footerBtnState = true;
                       setState(() {});
                       getTokenBudget();
