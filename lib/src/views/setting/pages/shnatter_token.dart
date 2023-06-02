@@ -376,7 +376,7 @@ class SettingShnatterTokenScreenState
                           itemCount: transactionData.length,
                           itemBuilder: (BuildContext context, int index) {
                             var data = transactionData[index];
-
+                            print('$transactionData this is transaction data');
                             return Container(
                                 padding: const EdgeInsets.all(5),
                                 alignment: Alignment.center,

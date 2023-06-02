@@ -396,6 +396,9 @@ class UserController extends ControllerMVC {
         .doc(Helper.backPaymail)
         .get();
     var backPaymail = snapshot.data()!['address'];
+    DateTime dateTimeBefore;
+    int timestampBefore = 0;
+    int timestampNow = 0;
     await RelysiaManager.getTransactionHistory(token, nextPageToken).then(
       (res) async => {
         if (res['success'] == true)
@@ -403,6 +406,7 @@ class UserController extends ControllerMVC {
             if (allUser != [])
               {
                 trdata = res['history'],
+                print(trdata),
                 if (trdata != [])
                   {
                     for (int i = 0; i < trdata.length; i++)
@@ -423,20 +427,57 @@ class UserController extends ControllerMVC {
                                     sender = allUser[j].data()['userName'],
                                   }
                               },
-                            if (trdata[i]['to'] ==
-                                allUser[j].data()['walletAddress'])
+                            if (trdata[i]['to'] == allUser[j].data()['paymail'])
                               recipient = allUser[j].data()['userName'],
                           },
-                        transactionData.add({
-                          'from': trdata[i]['from'],
-                          'to': trdata[i]['to'],
-                          'txId': trdata[i]['txId'],
-                          'sender': sender,
-                          'recipient': recipient,
-                          'sendtime': trdata[i]['timestamp'],
-                          'notes': trdata[i]['notes'],
-                          'balance': trdata[i]['balance_change'],
-                        }),
+                        if (transactionData.isNotEmpty)
+                          {
+                            dateTimeBefore = DateTime.parse(
+                                transactionData[transactionData.length - 1]
+                                    ['sendtime']),
+                            timestampBefore =
+                                dateTimeBefore.millisecondsSinceEpoch,
+                            dateTimeBefore =
+                                DateTime.parse(trdata[i]['timestamp']),
+                            timestampNow =
+                                dateTimeBefore.millisecondsSinceEpoch,
+                            print(dateTimeBefore),
+                            if ((timestampNow - timestampBefore).abs() <
+                                    10000 &&
+                                trdata[i]['from'] ==
+                                    UserManager.userInfo['paymail'])
+                              {
+                                transactionData[transactionData.length - 1]
+                                        ['recipient'] =
+                                    '${transactionData[transactionData.length - 1]['recipient']}, $recipient'
+                              }
+                            else
+                              {
+                                transactionData.add({
+                                  'from': trdata[i]['from'],
+                                  'to': trdata[i]['to'],
+                                  'txId': trdata[i]['txId'],
+                                  'sender': sender,
+                                  'recipient': recipient,
+                                  'sendtime': trdata[i]['timestamp'],
+                                  'notes': trdata[i]['notes'],
+                                  'balance': trdata[i]['balance_change'],
+                                }),
+                              }
+                          }
+                        else
+                          {
+                            transactionData.add({
+                              'from': trdata[i]['from'],
+                              'to': trdata[i]['to'],
+                              'txId': trdata[i]['txId'],
+                              'sender': sender,
+                              'recipient': recipient,
+                              'sendtime': trdata[i]['timestamp'],
+                              'notes': trdata[i]['notes'],
+                              'balance': trdata[i]['balance_change'],
+                            }),
+                          }
                       },
                   },
                 nextPageTokenCount = res['nextPageToken'],
