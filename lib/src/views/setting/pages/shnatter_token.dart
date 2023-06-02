@@ -5,6 +5,7 @@ import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/setting/pages/send_token.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:url_launcher/url_launcher.dart';
@@ -181,105 +182,9 @@ class SettingShnatterTokenScreenState
                       const Padding(
                         padding: EdgeInsets.only(left: 20.0),
                       ),
-                      // Expanded(
-                      //   child: Column(
-                      //     children: [
-                      //       Container(
-                      //         margin: const EdgeInsets.only(bottom: 20),
-                      //         width: 330,
-                      //         height: 40,
-                      //         decoration: BoxDecoration(
-                      //           color: Colors.grey[400],
-                      //           borderRadius: BorderRadius.circular(3),
-                      //         ),
-                      //         child: Row(
-                      //           mainAxisAlignment: MainAxisAlignment.center,
-                      //           crossAxisAlignment: CrossAxisAlignment.center,
-                      //           children: const [
-                      //             Icon(Icons.attach_money, color: Colors.black),
-                      //             Text(
-                      //               'Reserved Balance',
-                      //               style: TextStyle(
-                      //                 fontSize: 13,
-                      //                 fontWeight: FontWeight.bold,
-                      //               ),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //       Container(
-                      //         width: 330,
-                      //         height: 90,
-                      //         decoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(3),
-                      //           gradient: const LinearGradient(
-                      //             begin: Alignment.topLeft,
-                      //             end: Alignment.topRight,
-                      //             colors: <Color>[
-                      //               Color.fromARGB(255, 94, 114, 228),
-                      //               Color.fromARGB(255, 130, 94, 228),
-                      //             ],
-                      //             tileMode: TileMode.mirror,
-                      //           ),
-                      //         ),
-                      //         child: Row(
-                      //           mainAxisAlignment: MainAxisAlignment.center,
-                      //           crossAxisAlignment: CrossAxisAlignment.center,
-                      //           children: const [
-                      //             Text(
-                      //               '0.00',
-                      //               style: TextStyle(
-                      //                 fontSize: 25,
-                      //                 color: Colors.white,
-                      //                 fontWeight: FontWeight.bold,
-                      //               ),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
-                  // const Padding(padding: EdgeInsets.only(top: 15)),
-                  // Container(
-                  //   margin: const EdgeInsets.all(20),
-                  //   child: ElevatedButton(
-                  //       style: ElevatedButton.styleFrom(
-                  //         padding: const EdgeInsets.all(3),
-                  //         backgroundColor:
-                  //             const Color.fromARGB(255, 251, 99, 64),
-                  //         elevation: 3,
-                  //         shape: RoundedRectangleBorder(
-                  //             borderRadius: BorderRadius.circular(3.0)),
-                  //         minimumSize: const Size(720, 40),
-                  //         maximumSize: const Size(720, 40),
-                  //       ),
-                  //       onPressed: () {
-                  //         (() => {});
-                  //       },
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         children: const [
-                  //           Text(
-                  //             'Buy Tokens',
-                  //             style: TextStyle(
-                  //                 fontSize: 11,
-                  //                 color: Colors.white,
-                  //                 fontWeight: FontWeight.bold),
-                  //           ),
-                  //         ],
-                  //       )),
-                  // ),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     RelysiaManager.payNow(
-                  //         con.token, "4798@shnatter.app", "1000", "for test");
-                  //   },
-                  //   child: const Text("send for test"),
-                  // ),
+
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,6 +241,41 @@ class SettingShnatterTokenScreenState
                         ),
                       ),
                     ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 5),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.all(3),
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(330, 50),
+                        maximumSize: const Size(330, 50),
+                      ),
+                      onPressed: () {
+                        Navigator.push<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                SendTokenWdiget(),
+                          ),
+                        );
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Send Token',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   transList()
                   // generalWidget()

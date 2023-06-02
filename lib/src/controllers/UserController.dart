@@ -82,6 +82,7 @@ class UserController extends ControllerMVC {
         'userName': usersSnap.docs[i].data()['userName'],
         'fullName':
             '${usersSnap.docs[i].data()['firstName']} ${usersSnap.docs[i].data()['lastname']}',
+        'paymail': usersSnap.docs[i].data()['paymail'],
       };
     }
     Helper.authdata = FirebaseFirestore.instance
@@ -1320,6 +1321,26 @@ class UserController extends ControllerMVC {
           }
       },
     );
+    return payResult;
+  }
+
+  Future<bool> payMultiUserShnToken(
+      List payMail, String amount, String notes) async {
+    bool payResult = false;
+    if (token == '') {
+      var relysiaAuth = await RelysiaManager.authUser(
+          UserManager.userInfo['email'], UserManager.userInfo['password']);
+      token = relysiaAuth['data']['token'];
+    }
+    List result = [];
+    for (var i = 0; i < payMail.length; i++) {
+      await RelysiaManager.payNow(token, payMail[i], amount, notes)
+          .then((value) => {result.add(value)});
+    }
+    result = result.where((element) => element == "Successfully paid").toList();
+    if (result.length == payMail.length) {
+      payResult = true;
+    }
     return payResult;
   }
 

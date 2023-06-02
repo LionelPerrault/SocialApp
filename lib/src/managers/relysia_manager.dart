@@ -181,6 +181,57 @@ class RelysiaManager {
     return returnData;
   }
 
+  static Future<String> payMultiUserNow(
+      String token, List payMail, String amount, String notes) async {
+    String returnData = '';
+    var respondData = {};
+    String body = '';
+    try {
+      body = '{ "dataArray" : [';
+      for (var i = 0; i < payMail.length; i++) {
+        body +=
+            '{"to" : "${payMail[i]}","amount" : $amount ,"tokenId" : "$shnToken","notes":"$notes"}';
+        if (i != payMail.length - 1) {
+          body += ',';
+        }
+      }
+      body += ']}';
+      var senderBalance = await getBalance(token);
+      if (senderBalance < int.parse(amount * payMail.length)) {
+        returnData = 'Not enough token amount';
+      } else {
+        await http
+            .post(
+              Uri.parse('https://api.relysia.com/v1/send'),
+              headers: {
+                'authToken': token,
+                'content-type': 'application/json',
+                'serviceID': serviceId,
+              },
+              body: body,
+            )
+            .then(
+              (res) => {
+                respondData = jsonDecode(res.body),
+                if (respondData['statusCode'] == 200)
+                  {
+                    returnData = 'Successfully paid',
+                  }
+                else
+                  {
+                    returnData = 'Failed payment',
+                  },
+              },
+            );
+      }
+    } catch (exception) {
+      if (kDebugMode) {
+        print(exception.toString());
+      }
+    }
+    return returnData;
+  }
+
   static Future<Map> getTransactionHistory(String token, nextPageToken) async {
     var response = {};
     bool? result;
