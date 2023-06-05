@@ -174,6 +174,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
 
                 setState(() {
                   loadingFlag = false;
+                  editShow = false;
                 });
                 Navigator.of(context).pop(true);
               },

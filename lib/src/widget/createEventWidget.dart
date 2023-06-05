@@ -178,8 +178,8 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
 
   @override
   Widget build(BuildContext context) {
-    ScrollController _scrollController = ScrollController();
-    _scrollController.addListener(() {
+    ScrollController scrollController = ScrollController();
+    scrollController.addListener(() {
       autoLocationList = [];
       setState(() {});
     });
@@ -198,7 +198,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
           Padding(
             padding: const EdgeInsets.only(bottom: 60),
             child: SingleChildScrollView(
-              controller: _scrollController,
+              controller: scrollController,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -473,21 +473,28 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
                       minimumSize: const Size(100, 50),
                     ),
                     onPressed: () {
+                      String strtoast = "";
                       if (eventInfo['eventName'] == null ||
                           eventInfo['eventName'] == '') {
-                        Helper.showToast('Please add your event name');
-                        return;
-                      } else if (eventInfo['eventLocation'] == null ||
+                        strtoast += 'event name, ';
+                      }
+                      if (eventInfo['eventLocation'] == null ||
                           eventInfo['eventLocation'] == '') {
-                        Helper.showToast('Please add your event location');
-                        return;
-                      } else if (eventInfo['eventStartDate'] == null ||
+                        strtoast += 'location, ';
+                      }
+                      if (eventInfo['eventStartDate'] == null ||
                           eventInfo['eventStartDate'] == '') {
-                        Helper.showToast('Please add your event start date');
-                        return;
-                      } else if (eventInfo['eventEndDate'] == null ||
+                        strtoast += 'start date, ';
+                      }
+                      if (eventInfo['eventEndDate'] == null ||
                           eventInfo['eventEndDate'] == '') {
-                        Helper.showToast('Please add your event end date');
+                        strtoast += 'end date, ';
+                      }
+
+                      if (strtoast.isNotEmpty) {
+                        strtoast =
+                            'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
+                        Helper.showToast(strtoast);
                         return;
                       }
                       footerBtnState = true;

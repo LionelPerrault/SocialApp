@@ -2103,7 +2103,7 @@ class PostController extends ControllerMVC {
     //   await Helper.postLikeComment.doc(postId).set({'likes': {}});
     // }
     DocumentReference commentRef =
-        await Helper.postLikeComment.doc(postId).collection('comments').doc();
+        Helper.postLikeComment.doc(postId).collection('comments').doc();
     String commentId = commentRef.id;
 
     await commentRef.set({

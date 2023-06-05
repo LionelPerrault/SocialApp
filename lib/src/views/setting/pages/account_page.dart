@@ -115,7 +115,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                   ),
                                   Expanded(
                                     child: Container(
-                                      padding: EdgeInsets.only(right: 20),
+                                      padding: EdgeInsets.only(right: 10),
                                       width: 400,
                                       height: 30,
                                       child: TextFormField(
@@ -140,7 +140,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                           ),
                                         ),
                                         style: const TextStyle(
-                                            fontSize: 13, color: Colors.black),
+                                            fontSize: 12, color: Colors.black),
                                         onSaved: (String? value) {
                                           // This optional block of code can be used to run
                                           // code when the user saves the form.
