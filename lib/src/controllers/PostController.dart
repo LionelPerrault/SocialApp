@@ -1235,7 +1235,8 @@ class PostController extends ControllerMVC {
 
   ///////////////////////////end groups functions //////////////////////////////////////////////////
 
-  Future<Map> createProduct(context, Map<String, dynamic> productData) async {
+  Future<Map> createProduct(context, Map<String, dynamic> productData,
+      {canCreate = false}) async {
     if (productData['productName'] == null ||
         productData['productName'] == '') {
       return {
@@ -1259,6 +1260,12 @@ class PostController extends ControllerMVC {
       return {
         'msg': 'Please add your product location',
         'result': false,
+      };
+    }
+    if (canCreate) {
+      return {
+        'msg': 'Confirm',
+        'result': true,
       };
     }
     productData = {

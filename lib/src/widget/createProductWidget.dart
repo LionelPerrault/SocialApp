@@ -152,57 +152,69 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
           );
       setState(() {});
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) => AlertDialog(
-          title: const SizedBox(),
-          content: AlertYesNoWidget(
-              yesFunc: () async {
-                payLoading = true;
-                setState(() {});
-                await UserController()
-                    .payShnToken(paymail, price, 'Pay for creating product')
-                    .then((value) async => {
-                          if (value)
-                            {
-                              payLoading = false,
-                              setState(() {}),
-                              Navigator.of(dialogContext).pop(true),
-                              // loading = true,
-                              setState(() {}),
-                              await postCon
-                                  .createProduct(context, productInfo)
-                                  .then((value) {
-                                footerBtnState = false;
-                                setState(() => {});
-                                Navigator.of(context).pop(true);
-                                // loading = true;
-                                setState(() {});
-                                Helper.showToast(value['msg']);
-                                if (value['result'] == true) {
-                                  widget.routerChange({
-                                    'router': RouteNames.products,
-                                    'subRouter': value['value'],
-                                  });
-                                }
-                              }),
-                              setState(() {}),
-                              // loading = false,
-                              setState(() {}),
-                            }
-                        });
-              },
-              noFunc: () {
-                Navigator.of(context).pop(true);
-                footerBtnState = false;
-                setState(() {});
-              },
-              header: 'Costs for creating page',
-              text:
-                  'By paying the fee of $price tokens, the product will be published.',
-              progress: payLoading),
-        ),
-      );
+      postCon
+          .createProduct(context, productInfo, canCreate: true)
+          .then((value) => {
+                if (!value['result'])
+                  {
+                    Helper.showToast(value['msg']),
+                    footerBtnState = false,
+                    setState(() => {}),
+                  }
+                else
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContext) => AlertDialog(
+                      title: const SizedBox(),
+                      content: AlertYesNoWidget(
+                          yesFunc: () async {
+                            payLoading = true;
+                            setState(() {});
+                            await UserController()
+                                .payShnToken(
+                                    paymail, price, 'Pay for creating product')
+                                .then((value) async => {
+                                      if (value)
+                                        {
+                                          payLoading = false,
+                                          setState(() {}),
+                                          Navigator.of(dialogContext).pop(true),
+                                          // loading = true,
+                                          setState(() {}),
+                                          await postCon
+                                              .createProduct(
+                                                  context, productInfo)
+                                              .then((value) {
+                                            footerBtnState = false;
+                                            setState(() => {});
+                                            Navigator.of(context).pop(true);
+                                            // loading = true;
+                                            setState(() {});
+                                            Helper.showToast(value['msg']);
+                                            if (value['result'] == true) {
+                                              widget.routerChange({
+                                                'router': RouteNames.products,
+                                                'subRouter': value['value'],
+                                              });
+                                            }
+                                          }),
+                                          setState(() {}),
+                                          // loading = false,
+                                        }
+                                    });
+                          },
+                          noFunc: () {
+                            Navigator.of(context).pop(true);
+                            footerBtnState = false;
+                            setState(() {});
+                          },
+                          header: 'Costs for creating page',
+                          text:
+                              'By paying the fee of $price tokens, the product will be published.',
+                          progress: payLoading),
+                    ),
+                  )
+              });
     }
   }
 
