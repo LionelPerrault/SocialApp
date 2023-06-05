@@ -380,7 +380,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                               children: <TextSpan>[
                                                 TextSpan(
                                                     text:
-                                                        '${productAdmin['firstName']!} ${productAdmin['lastName']!}',
+                                                        '${productAdmin['firstName']!} ${productAdmin['lastName']!} ',
                                                     style: const TextStyle(
                                                         color: Colors.black,
                                                         fontWeight:
@@ -413,11 +413,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                       600
                                                   ? SizeConfig(context)
                                                           .screenWidth -
-                                                      200
-                                                  : 410,
+                                                      230
+                                                  : 380,
                                           child: Text(
                                             ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
-                                            overflow: TextOverflow.ellipsis,
+                                            overflow: TextOverflow.clip,
                                             style:
                                                 const TextStyle(fontSize: 14),
                                           ),
