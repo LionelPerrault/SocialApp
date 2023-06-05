@@ -78,12 +78,12 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
                 con.changeTimeType(d: a['data']['productDate'], type: false)));
         break;
       case 'Price High':
-        allProducts.sort((a, b) => int.parse(a['data']['productPrice'])
-            .compareTo(int.parse(b['data']['productPrice'])));
-        break;
-      case 'Price Low':
         allProducts.sort((a, b) => int.parse(b['data']['productPrice'])
             .compareTo(int.parse(a['data']['productPrice'])));
+        break;
+      case 'Price Low':
+        allProducts.sort((a, b) => int.parse(a['data']['productPrice'])
+            .compareTo(int.parse(b['data']['productPrice'])));
         break;
       default:
     }
