@@ -426,14 +426,14 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           visible: !widget.isShared,
                                           child: Container(
                                             padding: const EdgeInsets.only(
-                                                right: 9.0),
+                                                left: 5, right: 9.0),
                                             child: PopupMenuButton(
                                               onSelected: (value) {
                                                 popUpFunction(value);
                                               },
                                               child: const Icon(
                                                 Icons.arrow_drop_down,
-                                                size: 18,
+                                                size: 25,
                                               ),
                                               itemBuilder: (BuildContext bc) {
                                                 return popupMenuItem
