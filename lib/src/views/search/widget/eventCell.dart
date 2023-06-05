@@ -39,22 +39,20 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return GestureDetector(
+      onTap: () {
+        widget.routerChange({
+          'router': RouteNames.events,
+          'subRouter': widget.eventInfo['uid']
+        });
+      },
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 10, right: 10),
-        leading: GestureDetector(
-            onTap: () {
-              widget.routerChange({
-                'router': RouteNames.events,
-                'subRouter': widget.eventInfo['uid']
-              });
-            },
-            child: CircleAvatar(
-                radius: 17,
-                backgroundImage: NetworkImage(
-                    widget.eventInfo['eventPicture'] == ''
-                        ? Helper.eventImage
-                        : widget.eventInfo['eventPicture']))),
+        leading: CircleAvatar(
+            radius: 17,
+            backgroundImage: NetworkImage(widget.eventInfo['eventPicture'] == ''
+                ? Helper.eventImage
+                : widget.eventInfo['eventPicture'])),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
