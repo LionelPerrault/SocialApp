@@ -134,22 +134,13 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                           ]),
                                         ),
                                         Container(
-                                          margin:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Row(
-                                            children: [
-                                              const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 30.0),
-                                              ),
-                                              SvgPicture.asset(
-                                                'assets/images/shnatter-logo-login.svg',
-                                                semanticsLabel: 'Logo',
-                                                width: 200,
-                                              ),
-                                              // SvgPicture.network(
-                                              //     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fshnatter-logo-login.svg?alt=media&token=9fd6f2bf-3e41-4d43-b052-10509f0b3719')
-                                            ],
+                                          alignment: Alignment.centerLeft,
+                                          margin: const EdgeInsets.only(
+                                              top: 20.0, left: 30),
+                                          child: SvgPicture.asset(
+                                            'assets/images/shnatter-logo-login.svg',
+                                            semanticsLabel: 'Logo',
+                                            width: 200,
                                           ),
                                         ),
                                         Container(

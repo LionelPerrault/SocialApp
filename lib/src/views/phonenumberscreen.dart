@@ -71,21 +71,23 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                 width: 10,
               ),
               OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 44, 44, 44),
-                      foregroundColor: Colors.white70,
-                      fixedSize: const Size(100, 40)),
-                  onPressed: () {
-                    if (isNullOrBlank(phoneNumber) ||
-                        !_formKey.currentState!.validate()) {
-                      Helper.showToast('Please enter a valid phone number!');
-                    } else {
-                      widget.onBack(phoneNumber, false);
-                    }
-                  },
-                  child: const Text('Verify')),
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 44, 44, 44),
+                    foregroundColor: Colors.white70,
+                    fixedSize: const Size(100, 40)),
+                onPressed: () {
+                  if (isNullOrBlank(phoneNumber) ||
+                      !_formKey.currentState!.validate()) {
+                    Helper.showToast('Please enter a valid phone number!');
+                  } else {
+                    widget.onBack(phoneNumber, false);
+                  }
+                },
+                child: const Text('Verify'),
+              ),
             ],
-          )
+          ),
+          const Padding(padding: EdgeInsets.only(bottom: 30))
         ],
       ),
     );

@@ -66,29 +66,30 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
   @override
   Widget build(BuildContext context) {
     return phoneVerifySuccess
-        ? const SafeArea(
-            child: Column(
-            children: [
-              Expanded(
-                child: SizedBox(),
-              ),
-              Center(
-                  child: Text(
-                'Creating your account. Please wait...',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              )),
-              SizedBox(
-                height: 10,
-              ),
-              CircularProgressIndicator(
-                color: Colors.blue,
-              ),
-              Expanded(
-                child: SizedBox(),
-              )
-            ],
-          ))
-        : SafeArea(
+        ? Container(
+            height: 450,
+            alignment: Alignment.center,
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                    child: Text(
+                  'Creating your account. Please wait...',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                )),
+                SizedBox(
+                  height: 10,
+                ),
+                CircularProgressIndicator(
+                  color: Colors.blue,
+                ),
+              ],
+            ),
+          )
+        : Container(
+            alignment: Alignment.center,
+            height: 450,
             child: FirebasePhoneAuthHandler(
               phoneNumber: widget.phoneNumber,
               signOutOnSuccessfulVerification: false,
