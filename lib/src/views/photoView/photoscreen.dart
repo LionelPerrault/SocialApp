@@ -25,16 +25,20 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
   late int currentIndex;
   late PostController con;
   var userInfo = UserManager.userInfo;
+  late TransformationController _transformationController;
+
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
     currentIndex = widget.initialIndex;
+    _transformationController = TransformationController();
   }
 
   void goToPreviousPhoto() {
     if (currentIndex > 0) {
+      resetZoomLevel();
       setState(() {
         currentIndex--;
       });
@@ -43,10 +47,15 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
 
   void goToNextPhoto() {
     if (currentIndex < widget.photoUrls.length - 1) {
+      resetZoomLevel();
       setState(() {
         currentIndex++;
       });
     }
+  }
+
+  void resetZoomLevel() {
+    _transformationController.value = Matrix4.identity();
   }
 
   void getSelectedPhoto(String docId) {
@@ -82,13 +91,12 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
                     maxWidth: SizeConfig(context).screenWidth,
                     maxHeight: SizeConfig(context).screenHeight,
                     child: InteractiveViewer(
-                      minScale: 0.1,
-                      maxScale: 4,
+                      transformationController: _transformationController,
                       boundaryMargin: const EdgeInsets.all(20),
-                      child: KeyedSubtree(
-                        key: ValueKey(currentIndex),
-                        child: Image.network(widget.photoUrls[currentIndex]),
-                      ),
+                      onInteractionEnd: (_) {
+                        //  _transformationController.value = Matrix4.identity();
+                      },
+                      child: Image.network(widget.photoUrls[currentIndex]),
                     ),
                   ),
                 ),
