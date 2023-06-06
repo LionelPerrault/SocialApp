@@ -137,12 +137,14 @@ class UserController extends ControllerMVC {
     email = signUpUserInfo['email'].toLowerCase().trim();
     signUpUserInfo['email'] = email;
     password = signUpUserInfo['password'];
-    var check = email.contains('@'); //return true if contains
+    bool check = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
     if (!check) {
       failRegister = 'Invalid Email';
       isSendRegisterInfo = false;
       setState(() {});
-      return false;
+      return false; // return if email is invalid
     }
 
     //username validation
