@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -391,6 +390,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                   cursor: SystemMouseCursors.click,
                   child: InkWell(
                     onTap: () async {
+                      if (con.pageIndex * 5 > con.userList.length) return;
                       con.pageIndex++;
                       isShowProgressive = true;
                       //if (con.isSearch == true) {
@@ -398,14 +398,17 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                       //  con.pageIndex = 1;
                       //}
                       setState(() {});
-                      await con.getUserList();
+                      // await con.getUserList();
                       isShowProgressive = false;
                       setState(() {});
                     },
                     child: Container(
-                      decoration: const BoxDecoration(
-                          color: Color.fromRGBO(55, 213, 242, 1),
-                          borderRadius: BorderRadius.all(Radius.circular(3))),
+                      decoration: BoxDecoration(
+                          color: con.pageIndex * 5 > con.userList.length
+                              ? Colors.grey
+                              : const Color.fromRGBO(55, 213, 242, 1),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(3))),
                       alignment: Alignment.center,
                       height: 45,
                       child: isShowProgressive
@@ -420,7 +423,8 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                               style: TextStyle(color: Colors.white)),
                     ),
                   ),
-                )
+                ),
+                const Padding(padding: EdgeInsets.only(bottom: 40)),
               ],
             ))
         : Container(
