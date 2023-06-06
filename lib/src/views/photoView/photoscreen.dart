@@ -24,7 +24,6 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
   bool loading = true;
   late int currentIndex;
   late PostController con;
-  late GlobalKey<PhotoViewerState> _viewerKey = GlobalKey();
   var userInfo = UserManager.userInfo;
   @override
   void initState() {
@@ -35,17 +34,19 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
   }
 
   void goToPreviousPhoto() {
-    setState(() {
-      currentIndex = (currentIndex - 1) % widget.photoUrls.length;
-      _viewerKey.currentState?.resetViewer();
-    });
+    if (currentIndex > 0) {
+      setState(() {
+        currentIndex--;
+      });
+    }
   }
 
   void goToNextPhoto() {
-    setState(() {
-      currentIndex = (currentIndex + 1) % widget.photoUrls.length;
-      _viewerKey.currentState?.resetViewer();
-    });
+    if (currentIndex < widget.photoUrls.length - 1) {
+      setState(() {
+        currentIndex++;
+      });
+    }
   }
 
   void getSelectedPhoto(String docId) {
@@ -65,97 +66,57 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
           goToPreviousPhoto();
         }
       },
-      child: PhotoViewer(
-        key: _viewerKey,
-        photoUrls: widget.photoUrls,
-        initialIndex: widget.initialIndex,
-      ),
-    );
-  }
-}
-
-class PhotoViewer extends StatefulWidget {
-  final List<String> photoUrls;
-  final int initialIndex;
-
-  const PhotoViewer({
-    Key? key,
-    required this.photoUrls,
-    required this.initialIndex,
-  }) : super(key: key);
-
-  @override
-  PhotoViewerState createState() => PhotoViewerState();
-}
-
-class PhotoViewerState extends State<PhotoViewer> {
-  late TransformationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TransformationController();
-  }
-
-  void resetViewer() {
-    setState(() {
-      _controller = TransformationController();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          color: Colors.black,
-          width: SizeConfig(context).screenWidth,
-          height: SizeConfig(context).screenHeight,
-          alignment: Alignment.center,
-          child: Container(
+      child: Stack(
+        children: [
+          Container(
             color: Colors.black,
-            child: Center(
-              child: FittedBox(
-                fit: BoxFit.none,
-                child: LimitedBox(
-                  maxWidth: SizeConfig(context).screenWidth,
-                  maxHeight: SizeConfig(context).screenHeight,
-                  child: InteractiveViewer(
-                    transformationController: _controller,
-                    child: Image.network(widget.photoUrls[widget.initialIndex]),
-                    minScale: 0.1,
-                    maxScale: 4,
-                    boundaryMargin:
-                        EdgeInsets.all(SizeConfig(context).screenWidth * 2),
-                    constrained: false,
+            width: SizeConfig(context).screenWidth,
+            height: SizeConfig(context).screenHeight,
+            alignment: Alignment.center,
+            child: Container(
+              color: Colors.black,
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.none,
+                  child: LimitedBox(
+                    maxWidth: SizeConfig(context).screenWidth,
+                    maxHeight: SizeConfig(context).screenHeight,
+                    child: InteractiveViewer(
+                      child: Image.network(widget.photoUrls[currentIndex]),
+                      minScale: 0.1,
+                      maxScale: 4,
+                      boundaryMargin:
+                          EdgeInsets.all(SizeConfig(context).screenWidth * 2),
+                      constrained: false,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          top: 10,
-          right: 10,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              padding: const EdgeInsets.all(8),
-              child: const Icon(
-                Icons.close,
-                color: Colors.black,
-                size: 20,
+          Positioned(
+            top: 10,
+            right: 10,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(8),
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                  size: 20,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
