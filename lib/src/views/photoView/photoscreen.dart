@@ -85,7 +85,10 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
                       minScale: 0.1,
                       maxScale: 4,
                       boundaryMargin: const EdgeInsets.all(20),
-                      child: Image.network(widget.photoUrls[currentIndex]),
+                      child: KeyedSubtree(
+                        key: ValueKey(currentIndex),
+                        child: Image.network(widget.photoUrls[currentIndex]),
+                      ),
                     ),
                   ),
                 ),
