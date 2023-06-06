@@ -81,7 +81,15 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
                   child: LimitedBox(
                     maxWidth: SizeConfig(context).screenWidth,
                     maxHeight: SizeConfig(context).screenHeight,
-                    child: Image.network(widget.photoUrls[currentIndex]),
+                    child: InteractiveViewer(
+                      minScale: 0.1,
+                      maxScale: 4,
+                      boundaryMargin: const EdgeInsets.all(20),
+                      child: KeyedSubtree(
+                        key: ValueKey(currentIndex),
+                        child: Image.network(widget.photoUrls[currentIndex]),
+                      ),
+                    ),
                   ),
                 ),
               ),
