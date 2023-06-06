@@ -43,8 +43,8 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   Map mainRouterValue = {
     'router': RouteNames.homePage,
   };
+  List routerList = [];
   late UserController con;
-
   @override
   void initState() {
     GeolocationManager.startGeoTimer();
@@ -126,7 +126,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
     showSideBar = false;
     _drawerSlideController.reverse();
     mainRouterValue = value;
-
+    routerList.add(mainRouterValue);
     setState(() {});
   }
 
@@ -146,200 +146,210 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
       drawerEnableOpenDragGesture: false,
       drawer: const Drawer(),
       body: SafeArea(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ShnatterNavigation(
-              searchController: searchController,
-              onSearchBarFocus: onSearchBarFocus,
-              onSearchBarDismiss: onSearchBarDismiss,
-              drawClicked: clickMenu,
-              routerChange: routerChange,
-              textChange: textChange,
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                  top: SizeConfig.navbarHeight, bottom: viewInsets.bottom),
-              // margin: EdgeInsets.only(bottom: viewInsets.bottom),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    isEmailVerify ? const SizedBox() : emailVerificationNoify(),
-                    Stack(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizeConfig(context).screenWidth <
-                                        SizeConfig.mediumScreenSize ||
-                                    mainRouterValue['router'] ==
-                                        'RouteNames.photos'
-                                ? const SizedBox()
-                                : LeftPanel(
-                                    routerFunction: routerChange,
-                                    router: mainRouterValue,
-                                  ),
-                            MainRouter.mainRouter(
-                                mainRouterValue, routerChange),
-                          ],
-                        ),
-                      ],
-                    ),
-                    // kIsWeb ? Container(height: 35) : Container(),
-                  ],
-                ),
+        child: WillPopScope(
+          onWillPop: () async {
+            var router = routerList[routerList.length - 2];
+            routerList.length = routerList.length - 2;
+            routerChange(router);
+            return false;
+          }, // Empty Function.
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              ShnatterNavigation(
+                searchController: searchController,
+                onSearchBarFocus: onSearchBarFocus,
+                onSearchBarDismiss: onSearchBarDismiss,
+                drawClicked: clickMenu,
+                routerChange: routerChange,
+                textChange: textChange,
               ),
-            ),
-            if (showSideBar == true)
-              GestureDetector(
-                onTap: () {
-                  _drawerSlideController.reverse();
-                  setState(() {
-                    showSideBar = false;
-                  });
-                },
-                child:
-                    Container(color: const Color.fromARGB(41, 236, 236, 236)),
-              ),
-            AnimatedBuilder(
-              animation: _drawerSlideController,
-              builder: (context, child) {
-                return FractionalTranslation(
-                    translation: SizeConfig(context).screenWidth >
-                            SizeConfig.mediumScreenSize
-                        ? const Offset(0, 0)
-                        : Offset(_drawerSlideController.value * 0.001, 0.0),
-                    child: SizeConfig(context).screenWidth >
-                                SizeConfig.mediumScreenSize ||
-                            _isDrawerClosed()
-                        ? const SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.only(
-                                top: SizeConfig.navbarHeight),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  color: Colors.white,
-                                  width: SizeConfig.leftToggleBar,
-                                  child: SingleChildScrollView(
-                                    child: LeftPanel(
+              Container(
+                padding: EdgeInsets.only(
+                    top: SizeConfig.navbarHeight, bottom: viewInsets.bottom),
+                // margin: EdgeInsets.only(bottom: viewInsets.bottom),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      isEmailVerify
+                          ? const SizedBox()
+                          : emailVerificationNoify(),
+                      Stack(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizeConfig(context).screenWidth <
+                                          SizeConfig.mediumScreenSize ||
+                                      mainRouterValue['router'] ==
+                                          'RouteNames.photos'
+                                  ? const SizedBox()
+                                  : LeftPanel(
                                       routerFunction: routerChange,
                                       router: mainRouterValue,
+                                    ),
+                              MainRouter.mainRouter(
+                                  mainRouterValue, routerChange),
+                            ],
+                          ),
+                        ],
+                      ),
+                      // kIsWeb ? Container(height: 35) : Container(),
+                    ],
+                  ),
+                ),
+              ),
+              if (showSideBar == true)
+                GestureDetector(
+                  onTap: () {
+                    _drawerSlideController.reverse();
+                    setState(() {
+                      showSideBar = false;
+                    });
+                  },
+                  child:
+                      Container(color: const Color.fromARGB(41, 236, 236, 236)),
+                ),
+              AnimatedBuilder(
+                animation: _drawerSlideController,
+                builder: (context, child) {
+                  return FractionalTranslation(
+                      translation: SizeConfig(context).screenWidth >
+                              SizeConfig.mediumScreenSize
+                          ? const Offset(0, 0)
+                          : Offset(_drawerSlideController.value * 0.001, 0.0),
+                      child: SizeConfig(context).screenWidth >
+                                  SizeConfig.mediumScreenSize ||
+                              _isDrawerClosed()
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.only(
+                                  top: SizeConfig.navbarHeight),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    color: Colors.white,
+                                    width: SizeConfig.leftToggleBar,
+                                    child: SingleChildScrollView(
+                                      child: LeftPanel(
+                                        routerFunction: routerChange,
+                                        router: mainRouterValue,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ));
+                },
+              ),
+              showSearch
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          showSearch = false;
+                        });
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: const Color.fromARGB(0, 214, 212, 212),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    padding: const EdgeInsets.only(right: 20.0),
+                                    child: const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                    )),
+                                Container(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10, right: 9),
+                                  width: SizeConfig(context).screenWidth * 0.4,
+                                  child: TextField(
+                                    focusNode: searchFocusNode,
+                                    onChanged: (value) async {
+                                      searchText = value;
+
+                                      await SearcherController()
+                                          .updateSearchText(value);
+                                      await SearcherController()
+                                          .getEvents(searchText);
+                                      await SearcherController()
+                                          .getGroups(searchText);
+                                      await SearcherController()
+                                          .getUsers(searchText);
+                                      if (value != '') {
+                                        // SearcherController().users = [
+                                        //   ...SearcherController().usersByFirstName,
+                                        //   ...SearcherController()
+                                        //       .usersByFirstNameCaps,
+                                        //   ...SearcherController().usersByLastName,
+                                        //   ...SearcherController()
+                                        //       .usersByLastNameCaps,
+                                        //   ...SearcherController().usersByWholeName,
+                                        //   ...SearcherController()
+                                        //       .usersByWholeNameCaps,
+                                        // ];
+
+                                        SearcherController().users = [
+                                          ...{...SearcherController().users}
+                                        ];
+                                        searchResult = [
+                                          ...SearcherController().users,
+                                          ...SearcherController().events,
+                                          ...SearcherController().groups
+                                        ];
+                                      } else {
+                                        searchResult = [];
+                                      }
+                                      setState(() {});
+                                    },
+                                    controller: searchController,
+                                    cursorColor: Colors.white,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
+                                      prefixIcon: Icon(Icons.search,
+                                          color: Color.fromARGB(
+                                              150, 170, 212, 255),
+                                          size: 20),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                      ),
+                                      filled: true,
+                                      fillColor: Color(0xff202020),
+                                      hintText: 'Search',
+                                      hintStyle: TextStyle(
+                                          fontSize: 15.0, color: Colors.white),
                                     ),
                                   ),
                                 )
                               ],
                             ),
-                          ));
-              },
-            ),
-            showSearch
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showSearch = false;
-                      });
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      color: const Color.fromARGB(0, 214, 212, 212),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  padding: const EdgeInsets.only(right: 20.0),
-                                  child: const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                  )),
-                              Container(
-                                padding: const EdgeInsets.only(
-                                    top: 10, bottom: 10, right: 9),
-                                width: SizeConfig(context).screenWidth * 0.4,
-                                child: TextField(
-                                  focusNode: searchFocusNode,
-                                  onChanged: (value) async {
-                                    searchText = value;
-
-                                    await SearcherController()
-                                        .updateSearchText(value);
-                                    await SearcherController()
-                                        .getEvents(searchText);
-                                    await SearcherController()
-                                        .getGroups(searchText);
-                                    await SearcherController()
-                                        .getUsers(searchText);
-                                    if (value != '') {
-                                      // SearcherController().users = [
-                                      //   ...SearcherController().usersByFirstName,
-                                      //   ...SearcherController()
-                                      //       .usersByFirstNameCaps,
-                                      //   ...SearcherController().usersByLastName,
-                                      //   ...SearcherController()
-                                      //       .usersByLastNameCaps,
-                                      //   ...SearcherController().usersByWholeName,
-                                      //   ...SearcherController()
-                                      //       .usersByWholeNameCaps,
-                                      // ];
-
-                                      SearcherController().users = [
-                                        ...{...SearcherController().users}
-                                      ];
-                                      searchResult = [
-                                        ...SearcherController().users,
-                                        ...SearcherController().events,
-                                        ...SearcherController().groups
-                                      ];
-                                    } else {
-                                      searchResult = [];
-                                    }
-                                    setState(() {});
-                                  },
-                                  controller: searchController,
-                                  cursorColor: Colors.white,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: const InputDecoration(
-                                    prefixIcon: Icon(Icons.search,
-                                        color:
-                                            Color.fromARGB(150, 170, 212, 255),
-                                        size: 20),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0)),
-                                    ),
-                                    filled: true,
-                                    fillColor: Color(0xff202020),
-                                    hintText: 'Search',
-                                    hintStyle: TextStyle(
-                                        fontSize: 15.0, color: Colors.white),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          ShnatterSearchBox(
-                            routerChange: routerChange,
-                            hideSearch: () {
-                              setState(() {
-                                showSearch = false;
-                              });
-                            },
-                            searchText: searchText,
-                            searchResult: searchResult,
-                          )
-                        ],
+                            ShnatterSearchBox(
+                              routerChange: routerChange,
+                              hideSearch: () {
+                                setState(() {
+                                  showSearch = false;
+                                });
+                              },
+                              searchText: searchText,
+                              searchResult: searchResult,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                : const SizedBox(),
-            ChatScreen(),
-          ],
+                    )
+                  : const SizedBox(),
+              ChatScreen(),
+            ],
+          ),
         ),
       ),
     );
