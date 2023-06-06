@@ -82,10 +82,12 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
                     maxWidth: SizeConfig(context).screenWidth,
                     maxHeight: SizeConfig(context).screenHeight,
                     child: InteractiveViewer(
+                      child: Image.network(widget.photoUrls[currentIndex]),
                       minScale: 0.1,
                       maxScale: 4,
-                      boundaryMargin: const EdgeInsets.all(20),
-                      child: Image.network(widget.photoUrls[currentIndex]),
+                      boundaryMargin:
+                          EdgeInsets.all(SizeConfig(context).screenWidth * 2),
+                      constrained: false,
                     ),
                   ),
                 ),
