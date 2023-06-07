@@ -372,8 +372,16 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                   children: [
                                     Row(
                                       children: [
-                                        RichText(
-                                          text: TextSpan(
+                                        SizedBox(
+                                          width:
+                                              SizeConfig(context).screenWidth <
+                                                      600
+                                                  ? SizeConfig(context)
+                                                          .screenWidth -
+                                                      150
+                                                  : 450, // 1st set height
+                                          child: RichText(
+                                            text: TextSpan(
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 10),
@@ -404,22 +412,18 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                                                   productAdmin[
                                                                       'userName']!,
                                                             });
-                                                          })
-                                              ]),
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              SizeConfig(context).screenWidth <
-                                                      600
-                                                  ? SizeConfig(context)
-                                                          .screenWidth -
-                                                      230
-                                                  : 380,
-                                          child: Text(
-                                            ' added new ${product["productCategory"]} products item for ${product["productOffer"]}',
-                                            overflow: TextOverflow.clip,
-                                            style:
-                                                const TextStyle(fontSize: 14),
+                                                          }),
+                                                TextSpan(
+                                                  text:
+                                                      'added new ${product["productCategory"]} products item for ${product["productOffer"]}',
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      overflow: TextOverflow
+                                                          .ellipsis),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         Visibility(
@@ -544,11 +548,19 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                             color: Colors.grey,
                             size: 20,
                           ),
-                          Text(
-                            product['productLocation'] ?? '',
-                            style: const TextStyle(color: Colors.grey),
-                            overflow: TextOverflow.ellipsis,
-                          )
+                          SizedBox(
+                            width: SizeConfig(context).screenWidth < 600
+                                ? SizeConfig(context).screenWidth - 110
+                                : 490, // 1st set height
+                            child: RichText(
+                              text: TextSpan(
+                                text: product['productLocation'] ?? '',
+                                style: const TextStyle(
+                                    color: Colors.grey,
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
@@ -583,7 +595,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       const Text(
                                         'Offer',
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       const Padding(
@@ -624,7 +636,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           Text(
                                             'Condition',
                                             style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                             overflow: TextOverflow.fade,
                                           ),
@@ -668,7 +680,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           Text(
                                             'Price',
                                             style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -711,7 +723,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           Text(
                                             'Status',
                                             style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -732,7 +744,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           'In Stock',
                                           style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 15),
+                                              fontSize: 14),
                                         ),
                                       )
                                     ]),
