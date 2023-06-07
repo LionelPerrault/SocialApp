@@ -88,7 +88,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
               },
               child: Container(
                 padding: EdgeInsets.only(top: 19.5),
-                width: 100,
+                width: 60,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -121,7 +121,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
               },
               child: Container(
                 padding: EdgeInsets.only(top: 19.5),
-                width: 100,
+                width: 60,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -152,7 +152,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
               },
               child: Container(
                 padding: EdgeInsets.only(top: 15),
-                width: 150,
+                width: 130,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -163,7 +163,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                           'Friend Requests',
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 5)),
                         badges.Badge(
                           badgeStyle: badges.BadgeStyle(
                             badgeColor: Colors.blue,
@@ -197,7 +197,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                 setState(() {});
               },
               child: Container(
-                width: 130,
+                width: 120,
                 padding: EdgeInsets.only(top: 15),
                 child: Column(
                   children: [
@@ -209,7 +209,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
                           'Requests Sent',
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 10)),
+                        Padding(padding: EdgeInsets.only(left: 5)),
                         badges.Badge(
                           badgeStyle: badges.BadgeStyle(
                             badgeColor: Colors.blue,
