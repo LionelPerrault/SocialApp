@@ -647,7 +647,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       Text(
                                         '${product['productStatus']}',
                                         style: const TextStyle(
-                                            color: Colors.grey, fontSize: 15),
+                                            color: Colors.grey, fontSize: 14),
                                         overflow: TextOverflow.ellipsis,
                                       )
                                     ]),
@@ -690,7 +690,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       Text(
                                         '${product['productPrice']} (SHN)',
                                         style: const TextStyle(
-                                            color: Colors.grey, fontSize: 15),
+                                            color: Colors.grey, fontSize: 14),
                                         overflow: TextOverflow.ellipsis,
                                       )
                                     ]),
@@ -732,7 +732,7 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                           padding: EdgeInsets.only(top: 5)),
                                       Container(
                                         alignment: Alignment.center,
-                                        width: 90,
+                                        width: 80,
                                         height: 25,
                                         decoration: const BoxDecoration(
                                           color:
