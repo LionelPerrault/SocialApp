@@ -190,7 +190,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
         : Container(
-            height: 400,
+            //height: 400,
             width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
                 ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
                 : SizeConfig(context).screenWidth,
@@ -233,7 +233,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                     const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
           )
         : Container(
-            height: 400,
+            //  height: 400,
             width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
                 ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth
                 : SizeConfig(context).screenWidth,
