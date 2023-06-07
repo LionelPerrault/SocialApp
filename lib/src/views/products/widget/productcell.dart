@@ -601,9 +601,9 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                       const Padding(
                                           padding: EdgeInsets.only(top: 5)),
                                       Text(
-                                        'For ${product['productOffer']}',
+                                        '${product['productOffer']}',
                                         style: const TextStyle(
-                                            color: Colors.grey, fontSize: 15),
+                                            color: Colors.grey, fontSize: 14),
                                         overflow: TextOverflow.ellipsis,
                                       )
                                     ]),
