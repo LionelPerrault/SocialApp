@@ -2302,17 +2302,20 @@ class PostController extends ControllerMVC {
         .update({'userList': allNot['userList']});
   }
 
+  bool removingNotify = false;
   clearAllNotify(array, userUid) async {
+    removingNotify = true;
+    setState((){});
+    print(allNotification);
     allNotification = [];
     setState(() {});
     for (var i = 0; i < array.length; i++) {
-      var notiSnap = await Helper.notifiCollection.doc(array[i]['uid']).get();
-      var allNot = notiSnap.data();
-      allNot!['userList'].add(userUid);
       await Helper.notifiCollection.doc(array[i]['uid']).update({
-        'userList': allNot['userList'],
+        'userList': [...array[i]['userList'], userUid],
       });
     }
+    removingNotify = false;
+    setState((){});
   }
 
   Future checkNotify() async {

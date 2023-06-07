@@ -166,6 +166,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 'userName': usersInfo[adminUid]['userName'],
                 'text': text,
                 'date': date,
+                'userList': allNotifi[i]['userList'],
               };
               if (tsNT > usercheckTime) {
                 changeData.add(addData);
@@ -183,6 +184,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 'avatar': Helper.systemAvatar,
                 'userName': Helper.notificationName[postType]['name'],
                 'text': text,
+                'userList': allNotifi[i]['userList'],
               };
               if (tsNT > usercheckTime) {
                 changeData.add(addData);
@@ -209,7 +211,8 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 'redirect': {
                   'router': RouteNames.groups,
                   'subRouter': allNotifi[i]['postId'],
-                }
+                },
+                'userList': allNotifi[i]['userList'],
               };
               if (tsNT > usercheckTime) {
                 changeData.add(addData);
