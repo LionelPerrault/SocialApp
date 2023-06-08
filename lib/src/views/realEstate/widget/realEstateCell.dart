@@ -325,14 +325,18 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                             children: [
                               Row(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
+                                  SizedBox(
+                                    width: SizeConfig(context).screenWidth < 600
+                                        ? SizeConfig(context).screenWidth - 150
+                                        : 450, // 1st set height
+                                    child: RichText(
+                                      text: TextSpan(
                                         style: const TextStyle(
                                             color: Colors.grey, fontSize: 10),
                                         children: <TextSpan>[
                                           TextSpan(
                                               text:
-                                                  '${realEstateAdmin['firstName']!} ${realEstateAdmin['lastName']!}',
+                                                  '${realEstateAdmin['firstName']!} ${realEstateAdmin['lastName']!} ',
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -352,17 +356,18 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                                         realEstateAdmin[
                                                             'userName']!,
                                                   });
-                                                })
-                                        ]),
-                                  ),
-                                  SizedBox(
-                                    width: SizeConfig(context).screenWidth < 600
-                                        ? SizeConfig(context).screenWidth - 200
-                                        : 350,
-                                    child: Text(
-                                      ' added new real estate for ${realEstate["realEstateOffer"]}',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontSize: 14),
+                                                }),
+                                          TextSpan(
+                                            text:
+                                                'added new real estate for ${realEstate["realestateOffer"]}',
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                overflow:
+                                                    TextOverflow.ellipsis),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Visibility(
@@ -476,11 +481,19 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                             color: Colors.grey,
                             size: 20,
                           ),
-                          Text(
-                            realEstate['realEstateLocation'] ?? '',
-                            style: const TextStyle(color: Colors.grey),
-                            overflow: TextOverflow.ellipsis,
-                          )
+                          SizedBox(
+                            width: SizeConfig(context).screenWidth < 600
+                                ? SizeConfig(context).screenWidth - 110
+                                : 490, // 1st set height
+                            child: RichText(
+                              text: TextSpan(
+                                text: realEstate['realEstateLocation'] ?? '',
+                                style: const TextStyle(
+                                    color: Colors.grey,
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
@@ -515,15 +528,15 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                       const Text(
                                         'Offer',
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       const Padding(
                                           padding: EdgeInsets.only(top: 5)),
                                       Text(
-                                        'For ${realEstate['realEstateOffer']}',
+                                        '${realEstate['realEstateOffer']}',
                                         style: const TextStyle(
-                                            color: Colors.grey, fontSize: 15),
+                                            color: Colors.grey, fontSize: 14),
                                         overflow: TextOverflow.ellipsis,
                                       )
                                     ]),
@@ -556,7 +569,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                           Text(
                                             'Condition',
                                             style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                             overflow: TextOverflow.fade,
                                           ),
@@ -567,7 +580,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                       Text(
                                         '${realEstate['realEstateStatus']}',
                                         style: const TextStyle(
-                                            color: Colors.grey, fontSize: 15),
+                                            color: Colors.grey, fontSize: 14),
                                         overflow: TextOverflow.ellipsis,
                                       )
                                     ]),
@@ -600,7 +613,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                           Text(
                                             'Price',
                                             style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -610,7 +623,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                       Text(
                                         '${realEstate['realEstatePrice']} (SHN)',
                                         style: const TextStyle(
-                                            color: Colors.grey, fontSize: 15),
+                                            color: Colors.grey, fontSize: 14),
                                         overflow: TextOverflow.ellipsis,
                                       )
                                     ]),
@@ -643,7 +656,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                           Text(
                                             'Status',
                                             style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -652,7 +665,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                           padding: EdgeInsets.only(top: 5)),
                                       Container(
                                         alignment: Alignment.center,
-                                        width: 90,
+                                        width: 80,
                                         height: 25,
                                         decoration: const BoxDecoration(
                                           color:
@@ -664,7 +677,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                           'In Stock',
                                           style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 15),
+                                              fontSize: 14),
                                         ),
                                       )
                                     ]),
