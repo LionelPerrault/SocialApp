@@ -870,6 +870,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     return Container(
       width: 90,
       height: 90,
+      margin: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         border: Border.all(width: 0.5, color: Colors.grey),
         borderRadius: BorderRadius.circular(13),
@@ -928,6 +929,7 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
     return Container(
       width: 90,
       height: 90,
+      margin: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(13),
       ),
