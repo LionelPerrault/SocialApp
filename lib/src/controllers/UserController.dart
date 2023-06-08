@@ -1078,69 +1078,32 @@ class UserController extends ControllerMVC {
     return doc;
   }
 
-  saveAccountSettings(email, userName, nearByOptOut) async {
+  saveAccountSettings(userName, nearByOptOut) async {
     isSettingAction = true;
     setState(() {});
-    if (!email.contains('@')) {
-      isSettingAction = false;
-      setState(() {});
-
-      return;
-    }
-    if (userName == "") {
-      isSettingAction = false;
-      setState(() {});
-
-      return;
-    }
-
     try {
-      // final auth = FirebaseAuth.instance;
-      // final user = auth.currentUser;
-      // if (user?.email != email) {
-      //   user?.updateEmail(email).then((_) async {
-      //     await FirebaseFirestore.instance
-      //         .collection(Helper.userField)
-      //         .doc(UserManager.userInfo['uid'])
-      //         .update({'email': email});
-      //   });
-      // }
-      if (UserManager.userInfo['userName'] != userName) {
-        //username validation
-
-        String pattern = r'^[a-zA-Z0-9]+$';
-        RegExp regExp = RegExp(pattern);
-        bool validUserName = regExp.hasMatch(userName);
-        print(validUserName);
-        if (!validUserName) {
-          Helper.showToast(
-              'Username must be over 4 character and can\'t contain special character.');
-          isSettingAction = false;
-          setState(() {});
-          return;
-        }
-
-        await FirebaseFirestore.instance
-            .collection(Helper.userField)
-            .doc(UserManager.userInfo['uid'])
-            .update({'userName': userName, 'nearbyOptOut': nearByOptOut});
-        dynamic data = UserManager.userInfo;
-        data['userName'] = userName;
-        data['nearbyOptOut'] = nearByOptOut;
-        await Helper.saveJSONPreference(Helper.userField, {...data});
-        Helper.showToast('updated settings!');
+      String pattern = r'^[a-zA-Z0-9]+$';
+      RegExp regExp = RegExp(pattern);
+      bool validUserName = regExp.hasMatch(userName);
+      print(validUserName);
+      if (!validUserName) {
+        Helper.showToast(
+            'Username must be over 4 character and can\'t contain special character.');
         isSettingAction = false;
-      } else {
-        await FirebaseFirestore.instance
-            .collection(Helper.userField)
-            .doc(UserManager.userInfo['uid'])
-            .update({'nearbyOptOut': nearByOptOut});
-        dynamic data = UserManager.userInfo;
-        data['nearbyOptOut'] = nearByOptOut;
-        await Helper.saveJSONPreference(Helper.userField, {...data});
-        Helper.showToast('updated settigns!');
-        isSettingAction = false;
+        setState(() {});
+        return;
       }
+      await FirebaseFirestore.instance
+          .collection(Helper.userField)
+          .doc(UserManager.userInfo['uid'])
+          .update({'userName': userName, 'nearbyOptOut': nearByOptOut});
+      dynamic data = UserManager.userInfo;
+      data['userName'] = userName;
+      data['nearbyOptOut'] = nearByOptOut;
+      await Helper.saveJSONPreference(Helper.userField, {...data});
+      Helper.showToast('updated settings!');
+      isSettingAction = false;
+
       setState(() {});
 
       return;

@@ -235,7 +235,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
     });
 
     final Stream<QuerySnapshot> triggerLogout = Helper.userCollection
-        .where('userName', isEqualTo: UserManager.userInfo['uid'])
+        .where('userName', isEqualTo: UserManager.userInfo['userName'])
         .snapshots();
     triggerLogout.listen((event) async {
       try {

@@ -9,6 +9,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 class SettingAccountScreen extends StatefulWidget {
   SettingAccountScreen({Key? key, required this.routerChange})
@@ -26,16 +27,41 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
   late bool nearByOptOut = false;
   var userInfo = UserManager.userInfo;
   TextEditingController emailController = TextEditingController();
-  TextEditingController userNameController = TextEditingController();
+  String userName = '';
   late UserController con;
   @override
   void initState() {
     emailController.text = userInfo['email'];
-    userNameController.text = userInfo['userName'];
+    userName = userInfo['userName'];
     nearByOptOut = userInfo['nearbyOptOut'] ?? false;
     add(widget.con);
     con = controller as UserController;
     super.initState();
+  }
+
+  handleSubmitAccount() {
+    if (userName != UserManager.userInfo['userName']) {
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                con.saveAccountSettings(userName, nearByOptOut);
+                Navigator.of(context).pop(true);
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Change Username',
+              text:
+                  'If you change username, all posts, products, events, groups you posted will be removed',
+              progress: false),
+        ),
+      );
+    } else {
+      con.saveAccountSettings(userName, nearByOptOut);
+    }
   }
 
   @override
@@ -216,8 +242,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                     width: 300,
                                     height: 30,
                                     child: TextFormField(
-                                      readOnly: true,
-                                      controller: userNameController,
+                                      initialValue: userName,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -233,9 +258,8 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                                         ),
                                       ),
                                       style: const TextStyle(fontSize: 14),
-                                      onSaved: (String? value) {
-                                        // This optional block of code can be used to run
-                                        // code when the user saves the form.
+                                      onChanged: (value) {
+                                        userName = value;
                                       },
                                       validator: (String? value) {
                                         return (value != null &&
@@ -412,8 +436,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                   )),
               SettingFooter(
                 onClick: () {
-                  con.saveAccountSettings(emailController.text,
-                      userNameController.text, nearByOptOut);
+                  handleSubmitAccount();
                 },
                 isChange: con.isSettingAction,
               )
