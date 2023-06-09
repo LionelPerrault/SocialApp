@@ -524,7 +524,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
               left: 0,
               right: 0,
               child: SizedBox(
-                height: 190,
+                height: 150,
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: autoLocationList.length,
