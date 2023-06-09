@@ -39,12 +39,9 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
 
   getState() async {
     await PeopleController()
-        .getRelation(
-            UserManager.userInfo['userName'], widget.userInfo['userName'])
+        .getRelation(UserManager.userInfo['uid'], widget.userInfo['uid'])
         .then((value) {
-      if (value >= 0) {
-        widget.userInfo['state'] = value;
-      }
+      widget.userInfo['state'] = value;
       setState(() {});
     });
   }
@@ -127,35 +124,49 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
                   ),
                 )
               : !widget.userInfo.containsKey("state") ||
-                      widget.userInfo['state'] == -1
-                  ? const Row(
-                      children: [
-                        Icon(
-                          Icons.person_add_alt_rounded,
-                          color: Colors.white,
-                          size: 18.0,
-                        ),
-                        Text(' Add',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w900)),
-                      ],
+                      widget.userInfo['state'] == null
+                  ? InkWell(
+                      onTap: () async {
+                        await PeopleController().requestFriend(widget.userInfo);
+                        widget.userInfo['state'] = false;
+                        setState(() {});
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.person_add_alt_rounded,
+                            color: Colors.white,
+                            size: 18.0,
+                          ),
+                          Text(' Add',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w900)),
+                        ],
+                      ),
                     )
-                  : widget.userInfo['state'] == 0
-                      ? const Row(
-                          children: [
-                            Icon(
-                              Icons.timelapse,
-                              color: Colors.white,
-                              size: 18.0,
-                            ),
-                            Text(' Sent',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w900)),
-                          ],
+                  : !widget.userInfo['state'] == true
+                      ? InkWell(
+                          onTap: () async {
+                            await PeopleController()
+                                .cancelFriend(widget.userInfo);
+                            setState(() {});
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.timelapse,
+                                color: Colors.white,
+                                size: 18.0,
+                              ),
+                              Text(' Sent',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w900)),
+                            ],
+                          ),
                         )
                       : InkWell(
                           onTap: () async {

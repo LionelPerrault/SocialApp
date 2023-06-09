@@ -145,7 +145,7 @@ class FriendsScreenState extends mvc.StateMVC<FriendsScreen> {
                   child: const Text('No people available for your search',
                       style: TextStyle(fontSize: 14)))
               : Column(
-                  children: con.friends.asMap().entries.map((e) {
+                  children: con.friends.map((e) {
                   return RequestFriendCell(
                       cellData: e,
                       onClick: () {},

@@ -146,48 +146,6 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                   ),
                 ),
               ),
-              // MouseRegion(
-              //   cursor: SystemMouseCursors.click,
-              //   child: GestureDetector(
-              //     onTap: () {
-              //       tab = 'Follows';
-              //       setState(() {});
-              //     },
-              //     child: Container(
-              //       alignment: Alignment.center,
-              //       width: 100,
-              //       height: 40,
-              //       color: tab == 'Follows'
-              //           ? Colors.white
-              //           : Color.fromRGBO(240, 240, 240, 1),
-              //       child: const Text(
-              //         'Follows',
-              //         style: TextStyle(fontSize: 15, color: Colors.black),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // MouseRegion(
-              //   cursor: SystemMouseCursors.click,
-              //   child: GestureDetector(
-              //     onTap: () {
-              //       tab = 'Followings';
-              //       setState(() {});
-              //     },
-              //     child: Container(
-              //       alignment: Alignment.center,
-              //       width: 100,
-              //       height: 40,
-              //       color: tab == 'Followings'
-              //           ? Colors.white
-              //           : Color.fromRGBO(240, 240, 240, 1),
-              //       child: const Text(
-              //         'Followings',
-              //         style: TextStyle(fontSize: 15, color: Colors.black),
-              //       ),
-              //     ),
-              //   ),
-              // )
             ]),
           )
         ],
@@ -234,88 +192,6 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
             ],
           );
   }
-
-  // Widget followingsData() {
-  //   var screenWidth = SizeConfig(context).screenWidth;
-  //   return friendModel.requestFriends.isEmpty
-  //       ? Container(
-  //           margin: const EdgeInsets.only(left: 10),
-  //           height: SizeConfig(context).screenHeight * 0.2,
-  //           color: Colors.white,
-  //           alignment: Alignment.center,
-  //           child: Text(
-  //               '${profileCon.viewProfileFullName} doesn`t have followings',
-  //               style:
-  //                   const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-  //         )
-  //       : Container(
-  //           child: Row(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: <Widget>[
-  //               Expanded(
-  //                 child: GridView.count(
-  //                   crossAxisCount: screenWidth > 800
-  //                       ? 4
-  //                       : screenWidth > 600
-  //                           ? 3
-  //                           : screenWidth > 210
-  //                               ? 2
-  //                               : 1,
-  //                   childAspectRatio: 3 / 2.5,
-  //                   padding: const EdgeInsets.only(top: 30),
-  //                   mainAxisSpacing: 4.0,
-  //                   shrinkWrap: true,
-  //                   crossAxisSpacing: 4.0,
-  //                   children: con.requestFriends
-  //                       .map((friend) => friendCell(friend))
-  //                       .toList(),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  // }
-
-  // Widget followsData() {
-  //   var screenWidth = SizeConfig(context).screenWidth;
-  //   return con.sendFriends.isEmpty
-  //       ? Container(
-  //           margin: const EdgeInsets.only(left: 10),
-  //           height: SizeConfig(context).screenHeight * 0.2,
-  //           color: Colors.white,
-  //           alignment: Alignment.center,
-  //           child: Text(
-  //               '${profileCon.viewProfileFullName} doesn`t have followers',
-  //               style:
-  //                   const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-  //         )
-  //       : Container(
-  //           child: Row(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: <Widget>[
-  //               Expanded(
-  //                 child: GridView.count(
-  //                   crossAxisCount: screenWidth > 800
-  //                       ? 4
-  //                       : screenWidth > 600
-  //                           ? 3
-  //                           : screenWidth > 210
-  //                               ? 2
-  //                               : 1,
-  //                   childAspectRatio: 3 / 3,
-  //                   padding: const EdgeInsets.only(top: 30),
-  //                   mainAxisSpacing: 4.0,
-  //                   shrinkWrap: true,
-  //                   crossAxisSpacing: 4.0,
-  //                   children: con.sendFriends
-  //                       .map((friend) => friendCell(friend))
-  //                       .toList(),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  // }
 
   Widget friendCell(value) {
     var friendUserName = value['requester'];
