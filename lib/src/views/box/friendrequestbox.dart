@@ -75,7 +75,7 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                           child: const Text('No new requests'),
                         )
                       : Column(
-                          children: con.requestFriends.asMap().entries.map((e) {
+                          children: con.requestFriends.map((e) {
                           return RequestFriendCell(
                               cellData: e,
                               onClick: widget.onClick,

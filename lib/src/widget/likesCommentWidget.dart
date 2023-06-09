@@ -1505,10 +1505,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                       : ElevatedButton(
                           onPressed: () async {
                             PeopleController().requestFriendAsData(
-                              likeUsers[index]['userInfo']['userName'],
-                              '${likeUsers[index]['userInfo']['firstName']} ${likeUsers[index]['userInfo']['lastName']}',
-                              likeUsers[index]['userInfo']['avatar'],
-                            );
+                                likeUsers[index]['userInfo']['userName']);
                             //   setState(() {});
                           },
                           style: ElevatedButton.styleFrom(

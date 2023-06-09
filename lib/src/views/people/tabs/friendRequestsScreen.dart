@@ -158,7 +158,7 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
                       child: const Text('No new requests',
                           style: TextStyle(fontSize: 14)))
                   : Column(
-                      children: con.requestFriends.asMap().entries.map((e) {
+                      children: con.requestFriends.map((e) {
                       return RequestFriendCell(
                           cellData: e,
                           onClick: () {},

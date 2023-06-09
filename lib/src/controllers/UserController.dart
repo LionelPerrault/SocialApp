@@ -81,7 +81,7 @@ class UserController extends ControllerMVC {
         'avatar': usersSnap.docs[i].data()['avatar'],
         'userName': usersSnap.docs[i].data()['userName'],
         'fullName':
-            '${usersSnap.docs[i].data()['firstName']} ${usersSnap.docs[i].data()['lastname']}',
+            '${usersSnap.docs[i].data()['firstName']} ${usersSnap.docs[i].data()['lastName']}',
         'paymail': usersSnap.docs[i].data()['paymail'],
       };
     }

@@ -175,21 +175,20 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                       children: [
                                         const Padding(
                                             padding: EdgeInsets.only(left: 10)),
-                                        e[e['receiver']]['avatar'] == ''
+                                        e['avatar'] == ''
                                             ? CircleAvatar(
                                                 radius: 20,
                                                 child: SvgPicture.network(
                                                     Helper.avatar))
                                             : CircleAvatar(
                                                 radius: 20,
-                                                backgroundImage: NetworkImage(
-                                                    e[e['receiver']]
-                                                        ['avatar'])),
+                                                backgroundImage:
+                                                    NetworkImage(e['avatar'])),
                                         Container(
                                           padding: const EdgeInsets.only(
                                               left: 10, top: 5),
                                           child: Text(
-                                            e[e['receiver']]['name'],
+                                            e['fullName'],
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.w900,
@@ -208,31 +207,25 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                                                   e['state'] == 0) {
                                                 e['state'] = -1;
                                                 setState(() {});
-                                                //await con.rejectFriend(e['id']);
                                                 await con
-                                                    .cancelFriendDirectlyMap({
-                                                  'userName': e['receiver']
-                                                });
+                                                    .cancelFriendDirectlyMap(
+                                                        {'uid': e['uid']});
                                                 e['state'] = -2;
                                                 setState(() {});
                                               } else if (e['state'] == 0) {
                                                 e['state'] = -1;
                                                 setState(() {});
-                                                //await con.rejectFriend(e['id']);
                                                 await con
-                                                    .cancelFriendDirectlyMap({
-                                                  'userName': e['receiver']
-                                                });
+                                                    .cancelFriendDirectlyMap(
+                                                        {'uid': e['uid']});
                                                 e['state'] = -2;
                                                 setState(() {});
                                               } else if (e['state'] == -2) {
                                                 e['state'] = -1;
                                                 setState(() {});
-                                                //await con.rejectFriend(e['id']);
                                                 await con.requestFriendAsData(
-                                                    e['receiver'],
-                                                    e[e['receiver']]['name'],
-                                                    e[e['receiver']]['avatar']);
+                                                  e['uid'],
+                                                );
                                                 e['state'] = 0;
                                                 setState(() {});
                                               }

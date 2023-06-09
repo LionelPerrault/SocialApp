@@ -5,7 +5,6 @@ import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 
 class RequestFriendCell extends StatefulWidget {
@@ -33,17 +32,15 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
     super.initState();
     add(widget.con);
     con = controller as PeopleController;
+    print(widget.cellData);
   }
 
   @override
   Widget build(BuildContext context) {
     var e = widget.cellData;
-    var friendUserName = e.value['requester'];
-    if (friendUserName == UserManager.userInfo['userName']) {
-      friendUserName = e.value['receiver'];
-    }
-    var friendFullName = e.value[friendUserName]['name'];
-    var friendAvatar = e.value[friendUserName]['avatar'];
+    var friendUseruid = e['uid'];
+    var friendFullName = e['fullName'];
+    var friendAvatar = e['avatar'];
     return Container(
         padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
         child: Column(
@@ -63,10 +60,10 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                     padding: const EdgeInsets.only(left: 10, top: 5),
                     child: InkWell(
                         onTap: () {
-                          ProfileController().updateProfile(friendUserName);
+                          ProfileController().updateProfile(friendUseruid);
                           widget.routerChange({
                             'router': RouteNames.profile,
-                            'subRouter': friendUserName
+                            'subRouter': e['userName'],
                           });
                         },
                         child: Text(
@@ -80,15 +77,15 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                   const Flexible(fit: FlexFit.tight, child: SizedBox()),
                   Container(
                     padding: const EdgeInsets.only(top: 6),
-                    child: e.value['state'] == 0
+                    child: (e['state'] == null || e['state'] == 0)
                         ? Row(children: [
                             ElevatedButton(
                               onPressed: () async {
-                                e.value['state'] = -1;
+                                e['state'] = -1;
                                 setState(() {});
-                                await con.confirmFriend(e.value['id']);
+                                await con.confirmFriend(e['fieldUid']);
 
-                                e.value['state'] = 1;
+                                e['state'] = 1;
                                 widget.onClick();
                                 setState(() {});
                               },
@@ -98,17 +95,17 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(2.0)),
                                   minimumSize:
-                                      (e.value as Map).containsKey('state') &&
-                                              e.value['state'] == -1
+                                      (e as Map).containsKey('state') &&
+                                              e['state'] == -1
                                           ? const Size(80, 35)
                                           : const Size(80, 35),
                                   maximumSize:
-                                      (e.value as Map).containsKey('state') &&
-                                              e.value['state'] == -1
+                                      (e as Map).containsKey('state') &&
+                                              e['state'] == -1
                                           ? const Size(80, 35)
                                           : const Size(80, 35)),
-                              child: (e.value as Map).containsKey('state') &&
-                                      e.value['state'] == -1
+                              child: (e as Map).containsKey('state') &&
+                                      e['state'] == -1
                                   ? const SizedBox(
                                       width: 10,
                                       height: 10,
@@ -133,10 +130,10 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                             ElevatedButton(
                               onHover: (value) {},
                               onPressed: () async {
-                                e.value['state'] = -2;
+                                e['state'] = -2;
                                 setState(() {});
-                                await con.rejectFriend(e.value['id']);
-                                e.value['state'] = 2;
+                                await con.rejectFriend(e['fieldUid']);
+                                e['state'] = 2;
                                 widget.onClick();
                                 setState(() {});
                               },
@@ -147,17 +144,17 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(2.0)),
                                   minimumSize:
-                                      (e.value as Map).containsKey('state') &&
-                                              e.value['state'] == -2
+                                      (e as Map).containsKey('state') &&
+                                              e['state'] == -2
                                           ? const Size(80, 35)
                                           : const Size(80, 35),
                                   maximumSize:
-                                      (e.value as Map).containsKey('state') &&
-                                              e.value['state'] == -2
+                                      (e as Map).containsKey('state') &&
+                                              e['state'] == -2
                                           ? const Size(80, 35)
                                           : const Size(80, 35)),
-                              child: (e.value as Map).containsKey('state') &&
-                                      e.value['state'] == -2
+                              child: (e as Map).containsKey('state') &&
+                                      e['state'] == -2
                                   ? const SizedBox(
                                       width: 10,
                                       height: 10,
@@ -174,56 +171,52 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                           ])
                         : ElevatedButton(
                             onPressed: () async {
-                              // e.value['state'] = -3;
+                              // e['state'] = -3;
                               // setState(() {});
                               // await PeopleController()
-                              //     .cancelFriend({"userName": friendUserName});
-                              // e.value['state'] = 2;
+                              //     .cancelFriend({"userName": friendUseruid});
+                              // e['state'] = 2;
                               // setState(() {});
-                              if (e.value['state'] == 1) {
-                                e.value['state'] = -3;
+                              if (e['state'] == 1) {
+                                e['state'] = -3;
                                 setState(() {});
                                 await PeopleController()
-                                    .cancelFriend({"userName": friendUserName});
-                                e.value['state'] = 2;
+                                    .cancelFriend({"uid": friendUseruid});
+                                e['state'] = 2;
                                 //widget.onClick();
                                 setState(() {});
                               } else {
-                                if (e.value['state'] == 2) {
-                                  e.value['state'] = -3;
+                                if (e['state'] == 2) {
+                                  e['state'] = -3;
                                   setState(() {});
-                                  var requester = e.value['requester'];
-                                  var name = e.value[requester]['name'];
-                                  var avatar = e.value[requester]['avatar'];
-                                  e.value['id'] = await con.requestFriendAsData(
-                                      requester, name, avatar);
-                                  e.value['state'] = 0;
+                                  var requester = e['uid'];
+                                  e['id'] =
+                                      await con.requestFriendAsData(requester);
+                                  e['state'] = 0;
                                   widget.onClick();
                                   setState(() {});
                                 }
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: e.value['state'] == 1
+                                backgroundColor: e['state'] == 1
                                     ? Colors.green
                                     : Colors.black,
                                 elevation: 3,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(2.0)),
-                                minimumSize:
-                                    (e.value as Map).containsKey('state') &&
-                                            e.value['state'] == -3
-                                        ? const Size(60, 35)
-                                        : const Size(90, 35),
-                                maximumSize:
-                                    (e.value as Map).containsKey('state') &&
-                                            e.value['state'] == -3
-                                        ? const Size(60, 35)
-                                        : const Size(90, 35)),
-                            child: (e.value as Map).containsKey('state') &&
-                                    (e.value['state'] == -3 ||
-                                        e.value['state'] == -1 ||
-                                        e.value['state'] == -2)
+                                minimumSize: (e as Map).containsKey('state') &&
+                                        e['state'] == -3
+                                    ? const Size(60, 35)
+                                    : const Size(90, 35),
+                                maximumSize: (e as Map).containsKey('state') &&
+                                        e['state'] == -3
+                                    ? const Size(60, 35)
+                                    : const Size(90, 35)),
+                            child: (e as Map).containsKey('state') &&
+                                    (e['state'] == -3 ||
+                                        e['state'] == -1 ||
+                                        e['state'] == -2)
                                 ? const SizedBox(
                                     width: 10,
                                     height: 10,
@@ -243,8 +236,8 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                       ),
                                       const Padding(
                                           padding: EdgeInsets.only(left: 3)),
-                                      ((e.value as Map).containsKey('state') &&
-                                              e.value['state'] == 1)
+                                      ((e as Map).containsKey('state') &&
+                                              e['state'] == 1)
                                           ? const Text('Friend',
                                               style: TextStyle(
                                                   color: Colors.white,

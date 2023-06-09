@@ -32,8 +32,6 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
   void initState() {
     super.initState();
     con.addNotifyCallBack(this);
-    print("call======================================== suggest");
-    //con.getFriendSuggestList();
     con.getUserList();
   }
 
@@ -114,6 +112,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                       itemBuilder: (context, index) {
                         var item = con.userList[index];
                         var itemData = item as Map;
+                        print(itemData);
                         return Material(
                             child: ListTile(
                           contentPadding:
