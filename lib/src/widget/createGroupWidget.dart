@@ -420,7 +420,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                         }
 
                         if (groupInfo['groupInterests'].length == 0) {
-                          strtoast += 'interest, ';
+                          strtoast += 'group interest, ';
                         }
                         if (strtoast.isNotEmpty) {
                           strtoast =
