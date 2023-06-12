@@ -5,6 +5,7 @@ class SizeConfig {
   late double screenWidth;
   late double screenHeight;
   late double defaultSize;
+  late double padding;
   late Orientation orientation;
   static const mediumScreenSize = 900;
   static const smallScreenSize = 600;
@@ -19,6 +20,7 @@ class SizeConfig {
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
     orientation = _mediaQueryData.orientation;
+    padding = _mediaQueryData.padding.bottom + _mediaQueryData.padding.top;
   }
 
 // Get the proportionate height as per screen size

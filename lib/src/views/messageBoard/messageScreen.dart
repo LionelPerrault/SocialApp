@@ -143,10 +143,10 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                               padding: EdgeInsets.only(
                                   top: UserManager.userInfo['isVerify']
                                       ? SizeConfig(context).screenHeight -
-                                          260 -
+                                          280 -
                                           viewInsets.bottom
                                       : SizeConfig(context).screenHeight -
-                                          260 -
+                                          280 -
                                           viewInsets.bottom -
                                           verifyAlertToastHeight),
                               child: WriteMessageScreen(
@@ -168,9 +168,6 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                                 setState(() {});
                               },
                             ),
-                  const SizedBox(
-                    height: 10,
-                  )
                 ],
               )
             : isCheckingChatHistory
@@ -181,9 +178,9 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                         ? Padding(
                             padding: EdgeInsets.only(
                                 top: UserManager.userInfo['isVerify']
-                                    ? SizeConfig(context).screenHeight - 260
+                                    ? SizeConfig(context).screenHeight - 280
                                     : SizeConfig(context).screenHeight -
-                                        260 -
+                                        280 -
                                         verifyAlertToastHeight),
                             child: WriteMessageScreen(
                               type: 'new',
@@ -204,9 +201,6 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                               setState(() {});
                             },
                           ),
-                    const SizedBox(
-                      height: 10,
-                    )
                   ]),
       ),
     );
