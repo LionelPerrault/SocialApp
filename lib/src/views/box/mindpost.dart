@@ -105,8 +105,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Voice Notes',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvoice.svg?alt=media&token=b49c28b5-3b27-487e-a6c1-ffd978c215fa',
-      'mindFunc': (context) {
-        voiceNotes();
+      'mindFunc': (option) {
+        uploadVoiceNotesReady(option);
       }
     },
     // {
@@ -325,6 +325,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     uploadReady('audio', 0);
   }
 
+  uploadVoiceNotesReady(int option) {
+    nowPost = 'Voice Notes';
+    setState(() {});
+    // uploadReady('voice', 0);
+  }
+
   uploadVideoReady(int option) {
     nowPost = 'Upload Video';
     setState(() {});
@@ -336,15 +342,6 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       nowPost = '';
     } else {
       nowPost = 'Feelings/Activity';
-    }
-    setState(() {});
-  }
-
-  voiceNotes() {
-    if (nowPost == 'Voice Notes') {
-      nowPost = '';
-    } else {
-      nowPost = 'Voice Notes';
     }
     setState(() {});
   }
@@ -413,13 +410,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         break;
 
       case 'Voice Notes':
-        postPayload['photo'] = postPhoto;
-        if (activity != '' && subActivity != '') {
-          postPayload['feeling'] = {
-            'action': activity,
-            'subAction': subActivity,
-          };
-        }
+        postCase = 'audio';
+        postPayload[postCase] = postAudio;
         break;
       case 'Check In':
         if (checkLocation == '') {
@@ -902,6 +894,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         maximumSize: const Size(85, 45),
                       ),
                       onPressed: () {
+                        if (postAudio != '' && nowPost == 'Voice Notes') {
+                          uploadReady('voice', 0);
+                        }
                         postLoading ||
                                 (postAudio == '' &&
                                     nowPost == 'Upload Audio') ||
@@ -993,6 +988,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   var audioPath = '';
   saveFilePath(value) {
     audioPath = value;
+
     setState(() {});
   }
 
@@ -1495,10 +1491,16 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       pickedFile = await chooseImage(option);
     } else if (type == 'audio') {
       pickedFile = await chooseAudio();
-    } else {
+    } else if (type == 'video') {
       pickedFile = await chooseVideo();
+    } else if (type == 'voice') {
+      pickedFile = XFile(audioPath);
+      print("audioPath is $audioPath");
+
+      //con.uploadFile(XFile(audioPath), widget.type, 'audio');
     }
-    if (type != 'photo' && pickedFile.path == '') return;
+
+    if (type != 'photo' && pickedFile?.path == '') return;
     postLoading = true;
     uploadFile(pickedFile, type);
   }
