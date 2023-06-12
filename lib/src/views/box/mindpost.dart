@@ -411,6 +411,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
 
       case 'Voice Notes':
         postCase = 'audio';
+        print("postAUdio is $postAudio");
         postPayload[postCase] = postAudio;
         break;
       case 'Check In':
@@ -893,16 +894,18 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         minimumSize: const Size(85, 45),
                         maximumSize: const Size(85, 45),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (nowPost == 'Voice Notes') {
                           uploadReady('voice', 0);
+                        } else {
+                          postLoading ||
+                                  (postAudio == '' &&
+                                      nowPost == 'Upload Audio') ||
+                                  (postPhoto == '' &&
+                                      nowPost == 'Upload Photos')
+                              ? () {}
+                              : {post()};
                         }
-                        postLoading ||
-                                (postAudio == '' &&
-                                    nowPost == 'Upload Audio') ||
-                                (postPhoto == '' && nowPost == 'Upload Photos')
-                            ? () {}
-                            : {post()};
                       },
                       child: (postLoading)
                           ? Container(
@@ -1431,6 +1434,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
+
+        print('images/${PPath.basename(pickedFile.path)}');
+
         uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
@@ -1444,6 +1450,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           }
         } else {
           postAudio = downloadUrl;
+          if (type == 'voice') {
+            post();
+          }
           setState(() {});
         }
         postLoading = false;
@@ -1496,9 +1505,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     } else if (type == 'voice') {
       pickedFile = XFile(audioPath);
       print("audioPath is $audioPath");
-    postLoading = true;
-    uploadFile(pickedFile, type);
-    return;
+      postLoading = true;
+      uploadFile(pickedFile, type);
+      return;
       //con.uploadFile(XFile(audioPath), widget.type, 'audio');
     }
 
