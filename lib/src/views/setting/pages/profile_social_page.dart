@@ -6,6 +6,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/startedInput.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingSocialScreen extends StatefulWidget {
   SettingSocialScreen({Key? key, required this.routerChange})
@@ -165,7 +166,7 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
                               border:
                                   Border.all(color: Colors.black, width: 0.1)),
                           child: const Icon(
-                            Icons.new_releases_sharp,
+                            FontAwesomeIcons.twitter,
                             color: Color.fromARGB(255, 59, 87, 157),
                           ),
                         ),
@@ -222,7 +223,7 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
                               border:
                                   Border.all(color: Colors.black, width: 0.1)),
                           child: const Icon(
-                            Icons.facebook,
+                            FontAwesomeIcons.youtube,
                             color: Color.fromARGB(255, 59, 87, 157),
                           ),
                         ),
@@ -279,7 +280,7 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
                               border:
                                   Border.all(color: Colors.black, width: 0.1)),
                           child: const Icon(
-                            Icons.new_releases_sharp,
+                            FontAwesomeIcons.instagram,
                             color: Color.fromARGB(255, 59, 87, 157),
                           ),
                         ),
@@ -336,7 +337,7 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
                               border:
                                   Border.all(color: Colors.black, width: 0.1)),
                           child: const Icon(
-                            Icons.youtube_searched_for_sharp,
+                            FontAwesomeIcons.twitch,
                             color: Color.fromARGB(255, 59, 87, 157),
                           ),
                         ),
@@ -393,7 +394,7 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
                               border:
                                   Border.all(color: Colors.black, width: 0.1)),
                           child: const Icon(
-                            Icons.new_releases_sharp,
+                            FontAwesomeIcons.linkedin,
                             color: Color.fromARGB(255, 59, 87, 157),
                           ),
                         ),
@@ -450,7 +451,7 @@ class SettingSocialScreenState extends mvc.StateMVC<SettingSocialScreen> {
                               border:
                                   Border.all(color: Colors.black, width: 0.1)),
                           child: const Icon(
-                            Icons.facebook,
+                            FontAwesomeIcons.vk,
                             color: Color.fromARGB(255, 59, 87, 157),
                           ),
                         ),

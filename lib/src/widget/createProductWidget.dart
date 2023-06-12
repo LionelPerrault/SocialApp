@@ -836,6 +836,8 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                     footerBtnState = true;
                     setState(() {});
                     if (widget.editData['id'] == '') {
+                      print(productInfo);
+                      // return;
                       getTokenBudget();
                     } else {
                       postCon
@@ -1117,8 +1119,6 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
   }
 
   Widget titleAndsubtitleInput(title, double height, line, onChange, value) {
-    TextEditingController controller = TextEditingController();
-    controller.text = value;
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Column(
@@ -1139,13 +1139,13 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
                 child: SizedBox(
                   width: 400,
                   height: height,
-                  child: TextField(
-                    controller: controller,
+                  child: TextFormField(
+                    initialValue: value,
                     maxLines: line,
                     minLines: line,
                     textInputAction: TextInputAction.done,
                     onChanged: (value) {
-                      productInfo['productAbout'] = value;
+                      onChange(value);
                     },
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(top: 10, left: 10),

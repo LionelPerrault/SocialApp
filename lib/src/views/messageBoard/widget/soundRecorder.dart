@@ -69,7 +69,9 @@ class _SoundRecorderState extends State<SoundRecorder> {
     setState(() {
       openedRecorder = false;
     });
-    await _mRecorder!.openRecorder().then((value) => {openedRecorder = true});
+    await _mRecorder!.openRecorder().then((value) {
+      openedRecorder = value != null;
+    });
     setState(() {});
     if (openedRecorder == false) return false;
     if (kIsWeb) {

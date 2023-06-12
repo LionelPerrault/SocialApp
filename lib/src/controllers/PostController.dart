@@ -1244,7 +1244,7 @@ class PostController extends ControllerMVC {
         'result': false,
       };
     } else if (productData['productPrice'] == null ||
-        productData['productPrice'] == '') {
+        productData['productPrice'] == '0') {
       return {
         'msg': 'Please add your product price',
         'result': false,
@@ -2305,7 +2305,7 @@ class PostController extends ControllerMVC {
   bool removingNotify = false;
   clearAllNotify(array, userUid) async {
     removingNotify = true;
-    setState((){});
+    setState(() {});
     print(allNotification);
     allNotification = [];
     setState(() {});
@@ -2315,7 +2315,7 @@ class PostController extends ControllerMVC {
       });
     }
     removingNotify = false;
-    setState((){});
+    setState(() {});
   }
 
   Future checkNotify() async {

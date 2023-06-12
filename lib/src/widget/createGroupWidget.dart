@@ -409,18 +409,38 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                         minimumSize: const Size(100, 50),
                       ),
                       onPressed: () {
+                        String strtoast = "";
                         if (groupInfo['groupName'] == null ||
                             groupInfo['groupName'] == '') {
-                          Helper.showToast('Please add your group name');
-                          return;
-                        } else if (groupInfo['groupLocation'] == null ||
+                          strtoast += 'group name, ';
+                        }
+                        if (groupInfo['groupLocation'] == null ||
                             groupInfo['groupLocation'] == '') {
-                          Helper.showToast('Please add your group location');
-                          return;
-                        } else if (groupInfo['groupInterests'].length == 0) {
-                          Helper.showToast('Please select interest');
+                          strtoast += 'location, ';
+                        }
+
+                        if (groupInfo['groupInterests'].length == 0) {
+                          strtoast += 'group interest, ';
+                        }
+                        if (strtoast.isNotEmpty) {
+                          strtoast =
+                              'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
+                          Helper.showToast(strtoast);
                           return;
                         }
+
+                        // if (groupInfo['groupName'] == null ||
+                        //     groupInfo['groupName'] == '') {
+                        //   Helper.showToast('Please add your group name');
+                        //   return;
+                        // } else if (groupInfo['groupLocation'] == null ||
+                        //     groupInfo['groupLocation'] == '') {
+                        //   Helper.showToast('Please add your group location');
+                        //   return;
+                        // } else if (groupInfo['groupInterests'].length == 0) {
+                        //   Helper.showToast('Please select interest');
+                        //   return;
+                        // }
                         footerBtnState = true;
                         setState(() {});
                         getTokenBudget();
