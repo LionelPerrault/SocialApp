@@ -1496,7 +1496,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     } else if (type == 'voice') {
       pickedFile = XFile(audioPath);
       print("audioPath is $audioPath");
-
+    postLoading = true;
+    uploadFile(pickedFile, type);
+    return;
       //con.uploadFile(XFile(audioPath), widget.type, 'audio');
     }
 
