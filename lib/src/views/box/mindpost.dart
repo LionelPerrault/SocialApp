@@ -18,6 +18,8 @@ import 'package:shnatter/src/widget/mindslice.dart';
 
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
+import '../messageBoard/widget/soundRecorder.dart';
+
 class MindPost extends StatefulWidget {
   MindPost({Key? key, required this.showPrivacy})
       : con = PostController(),
@@ -103,7 +105,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Voice Notes',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvoice.svg?alt=media&token=b49c28b5-3b27-487e-a6c1-ffd978c215fa',
-      'mindFunc': (context) {}
+      'mindFunc': (context) {
+        voiceNotes();
+      }
     },
     // {
     //   'title': 'Write Aticle',
@@ -336,6 +340,15 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     setState(() {});
   }
 
+  voiceNotes() {
+    if (nowPost == 'Voice Notes') {
+      nowPost = '';
+    } else {
+      nowPost = 'Voice Notes';
+    }
+    setState(() {});
+  }
+
   checkIn() {
     if (nowPost == 'Check In') {
       nowPost = '';
@@ -390,6 +403,16 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         } else {
           postCase = 'photo';
         }
+        postPayload['photo'] = postPhoto;
+        if (activity != '' && subActivity != '') {
+          postPayload['feeling'] = {
+            'action': activity,
+            'subAction': subActivity,
+          };
+        }
+        break;
+
+      case 'Voice Notes':
         postPayload['photo'] = postPhoto;
         if (activity != '' && subActivity != '') {
           postPayload['feeling'] = {
@@ -690,11 +713,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       ),
                       nowPost == 'Feelings/Activity'
                           ? feelingActivityWidget()
-                          : nowPost == 'Check In'
-                              ? checkInWidget()
-                              : nowPost == 'Create Poll'
-                                  ? createPollWidget()
-                                  : const SizedBox(),
+                          : nowPost == 'Voice Notes'
+                              ? voiceNoteWidget()
+                              : nowPost == 'Check In'
+                                  ? checkInWidget()
+                                  : nowPost == 'Create Poll'
+                                      ? createPollWidget()
+                                      : const SizedBox(),
                       const Padding(padding: EdgeInsets.only(top: 5)),
                       nowPost == ''
                           ? const SizedBox()
@@ -962,6 +987,18 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               : const SizedBox(),
         ],
       ),
+    );
+  }
+
+  var audioPath = '';
+  saveFilePath(value) {
+    audioPath = value;
+    setState(() {});
+  }
+
+  Widget voiceNoteWidget() {
+    return SoundRecorder(
+      savePath: saveFilePath,
     );
   }
 
