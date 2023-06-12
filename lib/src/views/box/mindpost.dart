@@ -894,7 +894,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         maximumSize: const Size(85, 45),
                       ),
                       onPressed: () {
-                        if (postAudio != '' && nowPost == 'Voice Notes') {
+                        if (nowPost == 'Voice Notes') {
                           uploadReady('voice', 0);
                         }
                         postLoading ||
