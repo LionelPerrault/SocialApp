@@ -17,56 +17,6 @@ class PostsNavBox extends StatefulWidget {
 class PostsNavBoxState extends State<PostsNavBox> {
   //
   late List<Map> eachList = [
-    // {
-    //   'icon': Icons.photo_camera_back_outlined,
-    //   'color': Color.fromARGB(255, 103, 58, 183),
-    //   'text': 'Create Story',
-    //   'onTap': (context) {
-    //     //Navigator.of(context).pop(true);
-    //     showDialog(
-    //         context: context,
-    //         builder: (BuildContext context) => AlertDialog(
-    //             title: Row(
-    //               children: const [
-    //                 Icon(
-    //                   Icons.event,
-    //                   color: Color.fromARGB(255, 247, 159, 88),
-    //                 ),
-    //                 Text(
-    //                   'Create New Event',
-    //                   style:
-    //                       TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
-    //                 ),
-    //               ],
-    //             ),
-    //             content: CreateEventModal(context: context)));
-    //   },
-    // },
-    // {
-    //   'icon': Icons.low_priority_outlined,
-    //   'color': Color.fromARGB(255, 242, 94, 78),
-    //   'text': 'Create News',
-    //   'onTap': (context) {
-    //     //Navigator.of(context).pop(true);
-    //     showDialog(
-    //         context: context,
-    //         builder: (BuildContext context) => AlertDialog(
-    //             title: Row(
-    //               children: const [
-    //                 Icon(
-    //                   Icons.event,
-    //                   color: Color.fromARGB(255, 247, 159, 88),
-    //                 ),
-    //                 Text(
-    //                   'Create New Event',
-    //                   style:
-    //                       TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
-    //                 ),
-    //               ],
-    //             ),
-    //             content: CreateEventModal(context: context)));
-    //   },
-    // },
     {
       'icon': Icons.person_add_sharp,
       'color': const Color.fromARGB(255, 43, 83, 164),
@@ -106,31 +56,6 @@ class PostsNavBoxState extends State<PostsNavBox> {
                 )));
       },
     },
-    // {
-    //   'icon': Icons.flag,
-    //   'color': Color.fromARGB(255, 33, 150, 243),
-    //   'text': 'Create Page',
-    //   'onTap': (context) {
-    //     //Navigator.of(context).pop(true);
-    //     showDialog(
-    //         context: context,
-    //         builder: (BuildContext context) => AlertDialog(
-    //             title: Row(
-    //               children: const [
-    //                 Icon(
-    //                   Icons.flag,
-    //                   color: Color.fromARGB(255, 33, 150, 243),
-    //                 ),
-    //                 Text(
-    //                   'Create New Event',
-    //                   style:
-    //                       TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
-    //                 ),
-    //               ],
-    //             ),
-    //             content: CreatePageModal(context: context)));
-    //   },
-    // },
     {
       'icon': Icons.groups,
       'color': const Color.fromARGB(255, 43, 83, 164),
@@ -167,25 +92,26 @@ class PostsNavBoxState extends State<PostsNavBox> {
       'onTap': (context) {
         //Navigator.of(context).pop(true);
         showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-                title: const Row(
-                  children: [
-                    Icon(
-                      Icons.event,
-                      color: Color.fromARGB(255, 247, 159, 88),
-                    ),
-                    Text(
-                      'Create New Event',
-                      style:
-                          TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
-                    ),
-                  ],
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Row(
+              children: [
+                Icon(
+                  Icons.event,
+                  color: Color.fromARGB(255, 247, 159, 88),
                 ),
-                content: CreateEventModal(
-                  context: context,
-                  routerChange: widget.routerChange,
-                )));
+                Text(
+                  'Create New Event',
+                  style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+                ),
+              ],
+            ),
+            content: CreateEventModal(
+              context: context,
+              routerChange: widget.routerChange,
+            ),
+          ),
+        );
       },
     },
   ];
@@ -200,26 +126,18 @@ class PostsNavBoxState extends State<PostsNavBox> {
 
   @override
   Widget build(BuildContext nowContext) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(3),
-      child: Container(
-          width: 160,
+    return Container(
+        width: 160,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
           color: Colors.white,
-          child: Column(
-            children: [
-              SizedBox(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: eachList
-                      .map((list) => PostButtonCell(nowContext, list['icon'],
-                          list['color'], list['text'], list['onTap']))
-                      .toList(),
-                ),
-              )
-            ],
-          )),
-    );
+        ),
+        child: Column(
+          children: eachList
+              .map((list) => PostButtonCell(nowContext, list['icon'],
+                  list['color'], list['text'], list['onTap']))
+              .toList(),
+        ));
   }
 
   Widget PostButtonCell(nowContext, icon, iconColor, text, onTap) {
