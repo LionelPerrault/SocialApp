@@ -1237,31 +1237,35 @@ class PostController extends ControllerMVC {
 
   Future<Map> createProduct(context, Map<String, dynamic> productData,
       {canCreate = false}) async {
+    String strtoast = "";
     if (productData['productName'] == null ||
         productData['productName'] == '') {
-      return {
-        'msg': 'Please add your product name',
-        'result': false,
-      };
-    } else if (productData['productPrice'] == null ||
-        productData['productPrice'] == '0') {
-      return {
-        'msg': 'Please add your product price',
-        'result': false,
-      };
-    } else if (productData['productCategory'] == null ||
+      strtoast += 'product name, ';
+    }
+    if (productData['productPrice'] == null ||
+        productData['productPrice'] == '') {
+      strtoast += 'product price, ';
+    }
+    if (productData['productCategory'] == null ||
         productData['productCategory'] == '') {
-      return {
-        'msg': 'Please add your product category',
-        'result': false,
-      };
-    } else if (productData['productLocation'] == null ||
+      strtoast += 'product category, ';
+    }
+
+    if (productData['productLocation'] == null ||
         productData['productLocation'] == '') {
+      strtoast += 'product location, ';
+    }
+
+    if (strtoast.isNotEmpty) {
+      strtoast =
+          'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
+      // Helper.showToast(strtoast);
       return {
-        'msg': 'Please add your product location',
+        'msg': strtoast,
         'result': false,
       };
     }
+
     if (canCreate) {
       return {
         'msg': 'Confirm',
@@ -1321,12 +1325,41 @@ class PostController extends ControllerMVC {
 
   Future<Map> createRealEstate(
       context, Map<String, dynamic> realEstateData) async {
-    if (realEstateData['realEstateName'] == '' ||
-        realEstateData['realEstatePrice'] == '0' ||
-        realEstateData['realEstateLocation'] == '' ||
+    // if (realEstateData['realEstateName'] == '' ||
+    //     realEstateData['realEstatePrice'] == '0' ||
+    //     realEstateData['realEstateLocation'] == '' ||
+    //     realEstateData['realEstateAbout'] == '') {
+    //   return {
+    //     'msg': 'Please add your real-estate name, price, location and about',
+    //     'result': false,
+    //   };
+    // }
+
+    String strtoast = "";
+    if (realEstateData['realEstateName'] == null ||
+        realEstateData['realEstateName'] == '') {
+      strtoast += 'real-estate name, ';
+    }
+    if (realEstateData['realEstatePrice'] == null ||
+        realEstateData['realEstatePrice'] == '') {
+      strtoast += 'real-estate price, ';
+    }
+    if (realEstateData['realEstateAbout'] == null ||
         realEstateData['realEstateAbout'] == '') {
+      strtoast += 'real-estate about, ';
+    }
+
+    if (realEstateData['realEstateLocation'] == null ||
+        realEstateData['realEstateLocation'] == '') {
+      strtoast += 'real-estate location, ';
+    }
+
+    if (strtoast.isNotEmpty) {
+      strtoast =
+          'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
+      // Helper.showToast(strtoast);
       return {
-        'msg': 'Please add your real-estate name, price, location and about',
+        'msg': strtoast,
         'result': false,
       };
     }
@@ -1389,22 +1422,31 @@ class PostController extends ControllerMVC {
 
   Future<Map> editProduct(
       context, uid, Map<String, dynamic> productData) async {
+    String strtoast = "";
     if (productData['productName'] == null ||
         productData['productName'] == '') {
-      return {
-        'msg': 'Please add your product name',
-        'result': false,
-      };
-    } else if (productData['productPrice'] == null ||
+      strtoast += 'product name, ';
+    }
+    if (productData['productPrice'] == null ||
         productData['productPrice'] == '') {
-      return {
-        'msg': 'Please add your product price',
-        'result': false,
-      };
-    } else if (productData['productCategory'] == null ||
+      strtoast += 'product price, ';
+    }
+    if (productData['productCategory'] == null ||
         productData['productCategory'] == '') {
+      strtoast += 'product category, ';
+    }
+
+    if (productData['productLocation'] == null ||
+        productData['productLocation'] == '') {
+      strtoast += 'product location, ';
+    }
+
+    if (strtoast.isNotEmpty) {
+      strtoast =
+          'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
+      // Helper.showToast(strtoast);
       return {
-        'msg': 'Please add your product category',
+        'msg': strtoast,
         'result': false,
       };
     }
@@ -1423,22 +1465,50 @@ class PostController extends ControllerMVC {
 
   Future<Map> editRealEstate(
       context, uid, Map<String, dynamic> realEstateData) async {
+    // if (realEstateData['realEstateName'] == null ||
+    //     realEstateData['realEstateName'] == '') {
+    //   return {
+    //     'msg': 'Please add your real estate name',
+    //     'result': false,
+    //   };
+    // } else if (realEstateData['realEstatePrice'] == null ||
+    //     realEstateData['realEstatePrice'] == '') {
+    //   return {
+    //     'msg': 'Please add your real estate price',
+    //     'result': false,
+    //   };
+    // } else if (realEstateData['realEstateCategory'] == null ||
+    //     realEstateData['realEstateCategory'] == '') {
+    //   return {
+    //     'msg': 'Please add your real estate category',
+    //     'result': false,
+    //   };
+    // }
+    String strtoast = "";
     if (realEstateData['realEstateName'] == null ||
         realEstateData['realEstateName'] == '') {
-      return {
-        'msg': 'Please add your real estate name',
-        'result': false,
-      };
-    } else if (realEstateData['realEstatePrice'] == null ||
+      strtoast += 'real-estate name, ';
+    }
+    if (realEstateData['realEstatePrice'] == null ||
         realEstateData['realEstatePrice'] == '') {
+      strtoast += 'real-estate price, ';
+    }
+    if (realEstateData['realEstateAbout'] == null ||
+        realEstateData['realEstateAbout'] == '') {
+      strtoast += 'real-estate about, ';
+    }
+
+    if (realEstateData['realEstateLocation'] == null ||
+        realEstateData['realEstateLocation'] == '') {
+      strtoast += 'real-estate location, ';
+    }
+
+    if (strtoast.isNotEmpty) {
+      strtoast =
+          'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
+      // Helper.showToast(strtoast);
       return {
-        'msg': 'Please add your real estate price',
-        'result': false,
-      };
-    } else if (realEstateData['realEstateCategory'] == null ||
-        realEstateData['realEstateCategory'] == '') {
-      return {
-        'msg': 'Please add your real estate category',
+        'msg': strtoast,
         'result': false,
       };
     }
