@@ -5,6 +5,7 @@ import 'package:shnatter/src/views/groups/groupsscreen.dart';
 import 'package:shnatter/src/views/groups/panel/groupView/groupeachscreen.dart';
 
 import 'package:shnatter/src/views/homescreen.dart';
+import 'package:shnatter/src/views/liveStreaming/searchScreen.dart';
 import 'package:shnatter/src/views/marketPlace/marketPlaceScreen.dart';
 import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
 import 'package:shnatter/src/views/neearby/nearbyscreen.dart';
@@ -103,6 +104,10 @@ class MainRouter {
         return SearchScreen(routerChange: routerChange);
       case RouteNames.notifications:
         return NotificationsScreen();
+      case RouteNames.liveStreaming:
+        return LiveStreaming(
+          routerChange: routerChange,
+        );
     }
   }
 }

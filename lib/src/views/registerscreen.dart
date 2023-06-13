@@ -71,7 +71,9 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
             width: double.infinity,
             height: registerStep == Menu.register
                 ? 800
-                : SizeConfig(context).screenHeight,
+                : SizeConfig(context).screenHeight -
+                    MediaQuery.of(context).padding.bottom -
+                    MediaQuery.of(context).padding.top,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -201,6 +202,15 @@ class MainLeftPanel extends StatelessWidget {
               'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmy_products.svg?alt=media&token=91cdcfb3-cb0a-4061-a19f-b020c61299a0',
               width: 21,
             ),
+          ),
+          ListText(
+            onTap: () => {
+              routerFunction({
+                'router': RouteNames.liveStreaming,
+              })
+            },
+            label: 'Live Streaming',
+            image: Icon(Icons.stream),
           ),
           // ListText(
           //   onTap: () => {

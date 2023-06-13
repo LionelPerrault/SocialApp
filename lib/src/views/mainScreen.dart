@@ -167,8 +167,10 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
               Container(
                 padding: EdgeInsets.only(
                     top: SizeConfig.navbarHeight, bottom: viewInsets.bottom),
-                // margin: EdgeInsets.only(bottom: viewInsets.bottom),
                 child: SingleChildScrollView(
+                  physics: mainRouterValue['router'] == RouteNames.messages
+                      ? const NeverScrollableScrollPhysics()
+                      : null,
                   child: Column(
                     children: [
                       isEmailVerify
