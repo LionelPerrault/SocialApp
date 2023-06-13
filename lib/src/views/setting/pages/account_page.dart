@@ -26,16 +26,17 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
   bool showMind = false;
   late bool nearByOptOut = false;
   var userInfo = UserManager.userInfo;
-  TextEditingController emailController = TextEditingController();
   String userName = '';
+  String email = '';
   late UserController con;
   @override
   void initState() {
-    emailController.text = userInfo['email'];
+    email = userInfo['email'];
     userName = userInfo['userName'];
     nearByOptOut = userInfo['nearbyOptOut'] ?? false;
     add(widget.con);
     con = controller as UserController;
+    print('$email $userName');
     super.initState();
   }
 
@@ -54,8 +55,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                 Navigator.of(context).pop(true);
               },
               header: 'Change Username',
-              text:
-                  'If you change username, all posts, products, events, groups you posted will be removed',
+              text: 'Do you want to change username',
               progress: false),
         ),
       );
@@ -69,7 +69,6 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
-
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
         }
@@ -84,7 +83,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                 pagename: 'Account Settings',
                 button: const {'flag': false},
               ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
+              const SizedBox(height: 20),
               Container(
                   // width: SizeConfig.,
                   padding: EdgeInsets.only(
@@ -104,90 +103,15 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                           fontSize: 12,
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Padding(padding: EdgeInsets.only(left: 30)),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: SizedBox(
-                              width: 120,
-                              child: const Text(
-                                'Email Address',
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(244, 82, 95, 127)),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                              flex: 7,
-                              child: Container(
-                                width: 350,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(7)),
-                                ),
-                                child: Row(children: [
-                                  Container(
-                                    width: 40,
-                                    height: 30,
-                                    color: Colors.grey,
-                                    child: Icon(Icons.mail),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.only(right: 10),
-                                      width: 400,
-                                      height: 30,
-                                      child: TextFormField(
-                                        maxLines: 1,
-                                        enabled: false,
-                                        controller: emailController,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding: EdgeInsets.fromLTRB(
-                                              3.0, 15.0, 0.0, 1.0),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(0),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                                color: Color.fromARGB(
-                                                    255, 54, 54, 54),
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(0),
-                                          ),
-                                        ),
-                                        style: const TextStyle(
-                                            fontSize: 12, color: Colors.black),
-                                        onSaved: (String? value) {
-                                          // This optional block of code can be used to run
-                                          // code when the user saves the form.
-                                        },
-                                        validator: (String? value) {
-                                          return (value != null &&
-                                                  value.contains('@'))
-                                              ? 'Do not use the @ char.'
-                                              : null;
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                ]),
-                              ))
-                        ],
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      const SizedBox(height: 20),
+                      customInput(
+                          title: 'Email Address',
+                          onChange: () {},
+                          value: UserManager.userInfo['email'],
+                          editable: false),
+                      const SizedBox(height: 20),
                       Divider(
                         indent: 5,
-                        endIndent: 20,
                       ),
                       const Text(
                         'USERNAME',
@@ -195,111 +119,16 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                           fontSize: 12,
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Padding(padding: EdgeInsets.only(left: 30)),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: SizedBox(
-                              width: 80,
-                              child: const Text(
-                                'Username',
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(244, 82, 95, 127)),
-                              ),
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.only(left: 30)),
-                          Expanded(
-                              flex: 7,
-                              child: Container(
-                                padding: EdgeInsets.only(right: 20),
-                                width: 350,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(7)),
-                                ),
-                                child: Row(children: [
-                                  SizeConfig(context).screenWidth > 650
-                                      ? Container(
-                                          padding: EdgeInsets.only(top: 7),
-                                          alignment: Alignment.topCenter,
-                                          width: 200,
-                                          height: 30,
-                                          color: Colors.grey,
-                                          child: Text(
-                                              'https://test.shnatter.com/'),
-                                        )
-                                      : Container(),
-                                  Expanded(
-                                      child: SizedBox(
-                                    width: 300,
-                                    height: 30,
-                                    child: TextFormField(
-                                      initialValue: userName,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(0),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(
-                                              color: Color.fromARGB(
-                                                  255, 54, 54, 54),
-                                              width: 1.0),
-                                          borderRadius:
-                                              BorderRadius.circular(0),
-                                        ),
-                                      ),
-                                      style: const TextStyle(fontSize: 14),
-                                      onChanged: (value) {
-                                        userName = value;
-                                      },
-                                      validator: (String? value) {
-                                        return (value != null &&
-                                                value.contains('@'))
-                                            ? 'Do not use the @ char.'
-                                            : null;
-                                      },
-                                    ),
-                                  )),
-                                ]),
-                              )),
-                        ],
-                      ),
-                      // Row(
-                      //   // ignore: prefer_const_literals_to_create_immutables
-                      //   children: [
-                      //     Expanded(
-                      //       flex: 3,
-                      //       child: Padding(
-                      //         padding: EdgeInsets.only(left: 130),
-                      //       ),
-                      //     ),
-                      //     Expanded(
-                      //         flex: 7,
-                      //         child: Container(
-                      //           width: 350,
-                      //           // ignore: sort_child_properties_last
-                      //           padding: EdgeInsets.only(
-                      //               top: 10, left: 20, right: 20),
-                      //           child: Text(
-                      //             'Can only contain alphanumeric characters (A–Z, 0–9) and periods (\'.\')',
-                      //             style: TextStyle(fontSize: 12),
-                      //           ),
-                      //         )),
-                      //   ],
-                      // ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      const SizedBox(height: 10),
+                      customInput(
+                          title: 'Username',
+                          onChange: (value) {
+                            userName = value;
+                          },
+                          value: userName),
+                      const SizedBox(height: 10),
                       const Divider(
                         indent: 5,
-                        endIndent: 20,
                       ),
                       const Text(
                         'SHARE MY CODE',
@@ -307,12 +136,12 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                           fontSize: 12,
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      const SizedBox(height: 10),
                       Row(
                         children: [
                           Expanded(
                             flex: 1,
-                            child: Padding(padding: EdgeInsets.only(left: 30)),
+                            child: Padding(padding: EdgeInsets.only(left: 20)),
                           ),
                           Expanded(
                             flex: 2,
@@ -374,10 +203,9 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ))
                         ],
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      const SizedBox(height: 10),
                       const Divider(
                         indent: 5,
-                        endIndent: 20,
                       ),
                       const Text(
                         'NearBy Opt Out',
@@ -385,12 +213,12 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                           fontSize: 12,
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      const SizedBox(height: 10),
                       Row(
                         children: [
                           Expanded(
                             flex: 1,
-                            child: Padding(padding: EdgeInsets.only(left: 30)),
+                            child: Padding(padding: EdgeInsets.only(left: 20)),
                           ),
                           Expanded(
                             flex: 2,
@@ -405,7 +233,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ),
                             ),
                           ),
-                          const Padding(padding: EdgeInsets.only(left: 30)),
+                          const Padding(padding: EdgeInsets.only(left: 20)),
                           Expanded(
                               flex: 7,
                               child: Container(
@@ -431,7 +259,6 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
                               ))
                         ],
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 20)),
                     ],
                   )),
               SettingFooter(
@@ -442,6 +269,60 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
               )
             ],
           )),
+    );
+  }
+
+  Widget customInput({title, onChange, value, editable = true}) {
+    return Row(
+      children: [
+        Padding(padding: EdgeInsets.only(left: 20)),
+        Expanded(
+          flex: 1,
+          child: SizedBox(
+            width: 80,
+            child: Text(
+              title,
+              style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(244, 82, 95, 127)),
+            ),
+          ),
+        ),
+        Padding(padding: EdgeInsets.only(left: 20)),
+        Expanded(
+            flex: 4,
+            child: Container(
+              padding: EdgeInsets.only(right: 20),
+              width: 350,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(7)),
+              ),
+              child: Row(children: [
+                Expanded(
+                    child: SizedBox(
+                  height: 35,
+                  child: TextFormField(
+                    enabled: editable,
+                    enableInteractiveSelection: editable,
+                    initialValue: value,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (value) {
+                      onChange(value);
+                    },
+                    style: TextStyle(fontSize: 13),
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 10, left: 10),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                      ),
+                    ),
+                  ),
+                )),
+              ]),
+            )),
+      ],
     );
   }
 }
